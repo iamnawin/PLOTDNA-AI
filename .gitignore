@@ -1,0 +1,47 @@
+# Environment
+.env
+.env.local
+.env.production
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+backend/venv/
+backend/.venv/
+backend/__pycache__/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# GEE credentials
+*.json
+!tsconfig.json
+!package.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Data (large files — commit only small samples)
+data/hyderabad/*.geojson.gz
+data/india/*.geojson.gz
+scripts/__pycache__/

@@ -1,0 +1,39 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  font-family: "Inter", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Leaflet dark tile override */
+.leaflet-container {
+  background: #1a1a2e;
+  border-radius: 0.75rem;
+}
+
+.leaflet-tile-pane {
+  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+}
+
+.leaflet-control-attribution {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #262626;
+  border-radius: 0.5rem;
+}
+
+.leaflet-popup-tip {
+  background: #1a1a1a;
+}
