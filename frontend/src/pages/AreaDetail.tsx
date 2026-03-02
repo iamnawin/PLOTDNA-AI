@@ -5,6 +5,7 @@ import { hyderabadAreas } from '@/data/hyderabad'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SignalBar from '@/components/ui/SignalBar'
+import SatelliteCompare from '@/components/ui/SatelliteCompare'
 
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -196,11 +197,20 @@ export default function AreaDetail() {
           </p>
         </motion.section>
 
+        {/* ── Satellite Growth ── */}
+        <motion.section
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.25 }}
+        >
+          <SatelliteCompare area={area} />
+        </motion.section>
+
         {/* ── Key Highlights ── */}
         <motion.section
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.35 }}
           className="mb-10"
         >
           <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest mb-5">Key Highlights</h2>
@@ -226,7 +236,7 @@ export default function AreaDetail() {
           <motion.section
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.45 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
             <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest mb-5">Similar Zones to Compare</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
