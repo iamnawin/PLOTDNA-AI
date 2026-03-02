@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronDown, Car, Clock, Eye } from 'lucide-react'
+import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { hyderabadAreas } from '@/data/hyderabad'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
@@ -411,26 +411,28 @@ export default function Home() {
       </AnimatePresence>
 
       {/* ═══════════════════════════════════════════════
-          TOP RIGHT (below stats): Layer / View switcher
+          BOTTOM RIGHT: Layer / View switcher
       ════════════════════════════════════════════════ */}
-      <div className="absolute z-[1001]" style={{ top: 72, right: 20 }}>
+      <div className="absolute z-[1001]" style={{ bottom: 88, right: 20 }}>
 
         {/* Trigger pill */}
         <button
           onClick={() => setShowLayers(v => !v)}
-          className="flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all duration-200"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-200"
           style={{
-            background: showLayers ? 'rgba(0,230,118,0.1)' : 'rgba(5,5,10,0.88)',
+            background: showLayers ? 'rgba(0,230,118,0.12)' : 'rgba(5,5,10,0.92)',
             backdropFilter: 'blur(22px)',
-            border: showLayers ? '1px solid rgba(0,230,118,0.35)' : '1px solid rgba(255,255,255,0.08)',
-            boxShadow: showLayers ? '0 0 16px rgba(0,230,118,0.15), 0 4px 20px rgba(0,0,0,0.5)' : '0 4px 20px rgba(0,0,0,0.45)',
+            border: showLayers ? '1px solid rgba(0,230,118,0.4)' : '1px solid rgba(255,255,255,0.1)',
+            boxShadow: showLayers
+              ? '0 0 20px rgba(0,230,118,0.18), 0 4px 24px rgba(0,0,0,0.55)'
+              : '0 4px 20px rgba(0,0,0,0.5)',
           }}
         >
-          <Layers size={12} style={{ color: showLayers ? '#00e676' : '#555566' }} />
-          <span className="text-[11px] font-mono font-semibold" style={{ color: showLayers ? '#00e676' : '#888899' }}>
+          <Layers size={13} style={{ color: showLayers ? '#00e676' : '#666680' }} />
+          <span className="text-[11px] font-mono font-semibold" style={{ color: showLayers ? '#00e676' : '#aaaabc' }}>
             Layers
           </span>
-          <ChevronDown
+          <ChevronUp
             size={10}
             style={{
               color: showLayers ? '#00e676' : '#444455',
@@ -440,15 +442,15 @@ export default function Home() {
           />
         </button>
 
-        {/* Dropdown panel */}
+        {/* Dropdown panel — opens UPWARD */}
         <AnimatePresence>
           {showLayers && (
             <motion.div
-              initial={{ opacity: 0, y: -6, scale: 0.97 }}
+              initial={{ opacity: 0, y: 8, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -6, scale: 0.97 }}
+              exit={{ opacity: 0, y: 8, scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 mt-2 rounded-xl overflow-hidden"
+              className="absolute right-0 bottom-full mb-2 rounded-xl overflow-hidden"
               style={{
                 width: 228,
                 background: 'rgba(6,6,16,0.97)',
