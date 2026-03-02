@@ -1,11 +1,251 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, TrendingUp, MapPin, Building2, Zap } from 'lucide-react'
+import { ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText } from 'lucide-react'
+import jsPDF from 'jspdf'
 import { hyderabadAreas } from '@/data/hyderabad'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
+import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
+import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/areaSources'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SignalBar from '@/components/ui/SignalBar'
 import SatelliteCompare from '@/components/ui/SatelliteCompare'
+
+// ── PDF generator ─────────────────────────────────────────────────────────────
+function generatePDF(area: ReturnType<typeof hyderabadAreas.find> & object) {
+  if (!area) return
+  const doc     = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+  const color   = getScoreColor(area.score)
+  const label   = getScoreLabel(area.score)
+  const outlook = getOutlook(area)
+  const milestones = getGrowthMilestones(area)
+  const sources    = getAreaSources(area.slug)
+
+  // Helper: hex → RGB
+  function hexRgb(hex: string): [number, number, number] {
+    const r = parseInt(hex.slice(1, 3), 16)
+    const g = parseInt(hex.slice(3, 5), 16)
+    const b = parseInt(hex.slice(5, 7), 16)
+    return [r, g, b]
+  }
+  const [cr, cg, cb] = hexRgb(color)
+
+  const W = 210, margin = 14
+
+  // ── Background ──
+  doc.setFillColor(5, 5, 10)
+  doc.rect(0, 0, W, 297, 'F')
+
+  // ── Header band ──
+  doc.setFillColor(cr, cg, cb)
+  doc.rect(0, 0, W, 2, 'F')
+
+  // ── Logo + Title ──
+  doc.setFillColor(cr, cg, cb)
+  doc.roundedRect(margin, 10, 12, 12, 2, 2, 'F')
+  doc.setTextColor(5, 5, 10)
+  doc.setFontSize(9)
+  doc.setFont('helvetica', 'bold')
+  doc.text('P', margin + 3.8, 18)
+
+  doc.setTextColor(232, 232, 240)
+  doc.setFontSize(18)
+  doc.setFont('helvetica', 'bold')
+  doc.text('PlotDNA', margin + 16, 18)
+
+  doc.setTextColor(cr, cg, cb)
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'normal')
+  doc.text('Area DNA Analysis Report  ·  Hyderabad, Telangana', margin + 16, 23)
+
+  // Date
+  doc.setTextColor(80, 80, 100)
+  doc.setFontSize(7)
+  doc.text(`Generated: ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}`, W - margin, 18, { align: 'right' })
+
+  // ── Divider ──
+  doc.setDrawColor(cr, cg, cb)
+  doc.setLineWidth(0.3)
+  doc.line(margin, 28, W - margin, 28)
+
+  // ── Area name + score ring ──
+  let y = 36
+
+  doc.setTextColor(232, 232, 240)
+  doc.setFontSize(22)
+  doc.setFont('helvetica', 'bold')
+  doc.text(area.name, margin, y)
+
+  doc.setTextColor(cr, cg, cb)
+  doc.setFontSize(9)
+  doc.text(`${area.category}  ·  ${label}`, margin, y + 7)
+
+  // Score badge
+  doc.setFillColor(cr, cg, cb)
+  doc.setTextColor(5, 5, 10)
+  doc.roundedRect(W - margin - 26, y - 10, 26, 18, 3, 3, 'F')
+  doc.setFontSize(20)
+  doc.setFont('helvetica', 'bold')
+  doc.text(`${area.score}`, W - margin - 13, y + 3, { align: 'center' })
+  doc.setFontSize(6)
+  doc.text('DNA SCORE', W - margin - 13, y + 9, { align: 'center' })
+
+  y += 20
+
+  // Stats row
+  const stats = [
+    { label: 'YoY Growth', value: `+${area.yoy}%` },
+    { label: 'Price Range', value: area.priceRange },
+    { label: '5-Yr Outlook', value: outlook.range },
+    { label: 'Confidence', value: outlook.confidence },
+  ]
+  const colW = (W - margin * 2) / stats.length
+  stats.forEach(({ label: sl, value }, i) => {
+    const x = margin + i * colW
+    doc.setFillColor(20, 20, 35)
+    doc.roundedRect(x, y, colW - 2, 14, 2, 2, 'F')
+    doc.setTextColor(cr, cg, cb)
+    doc.setFontSize(10)
+    doc.setFont('helvetica', 'bold')
+    doc.text(value, x + (colW - 2) / 2, y + 7, { align: 'center' })
+    doc.setTextColor(80, 80, 100)
+    doc.setFontSize(6)
+    doc.setFont('helvetica', 'normal')
+    doc.text(sl.toUpperCase(), x + (colW - 2) / 2, y + 12, { align: 'center' })
+  })
+
+  y += 22
+
+  // ── Signal breakdown ──
+  doc.setTextColor(80, 80, 100)
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'bold')
+  doc.text('DNA SIGNAL BREAKDOWN', margin, y)
+  y += 5
+
+  const signalEntries = Object.entries(area.signals) as [keyof typeof area.signals, number][]
+  signalEntries.forEach(([key, val]) => {
+    const slabel = SIGNAL_LABELS[key] ?? key
+    const weight = SIGNAL_WEIGHTS[key] ?? 0
+    const barMaxW = W - margin * 2 - 45
+    const barW    = (val / 100) * barMaxW
+
+    doc.setTextColor(150, 150, 170)
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'normal')
+    doc.text(`${slabel} (${weight}%)`, margin, y + 3)
+
+    doc.setFillColor(25, 25, 42)
+    doc.roundedRect(margin + 50, y, barMaxW, 4, 1, 1, 'F')
+    doc.setFillColor(cr, cg, cb)
+    doc.roundedRect(margin + 50, y, barW, 4, 1, 1, 'F')
+
+    doc.setTextColor(cr, cg, cb)
+    doc.text(`${val}`, W - margin, y + 3.5, { align: 'right' })
+
+    y += 8
+  })
+
+  y += 4
+
+  // ── 15-Year Growth Timeline ──
+  doc.setTextColor(80, 80, 100)
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'bold')
+  doc.text('15-YEAR GROWTH TIMELINE', margin, y)
+  y += 6
+
+  const msW = (W - margin * 2) / milestones.length
+  milestones.forEach((m, i) => {
+    const x = margin + i * msW + msW / 2
+    const alpha = (i + 1) / milestones.length
+    const rr = Math.round(cr * alpha), rg = Math.round(cg * alpha), rb = Math.round(cb * alpha)
+    doc.setFillColor(rr, rg, rb)
+    doc.circle(x, y, 2.5, 'F')
+    doc.setTextColor(150, 150, 170)
+    doc.setFontSize(6.5)
+    doc.text(String(m.year), x, y + 6, { align: 'center' })
+    doc.setFontSize(5.5)
+    doc.text(m.label, x, y + 10, { align: 'center', maxWidth: msW - 2 })
+  })
+
+  y += 18
+
+  // ── 5-Year Forecast ──
+  doc.setFillColor(20, 20, 35)
+  doc.roundedRect(margin, y, W - margin * 2, 28, 3, 3, 'F')
+  doc.setDrawColor(cr, cg, cb)
+  doc.setLineWidth(0.4)
+  doc.roundedRect(margin, y, W - margin * 2, 28, 3, 3, 'S')
+
+  doc.setTextColor(cr, cg, cb)
+  doc.setFontSize(8)
+  doc.setFont('helvetica', 'bold')
+  doc.text('5-YEAR FORECAST', margin + 4, y + 7)
+
+  doc.setTextColor(232, 232, 240)
+  doc.setFontSize(12)
+  doc.text(outlook.range, margin + 4, y + 15)
+
+  doc.setTextColor(150, 150, 170)
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'normal')
+  const lines = doc.splitTextToSize(outlook.headline, W - margin * 2 - 8)
+  doc.text(lines, margin + 4, y + 22)
+
+  y += 36
+
+  // ── Key Highlights ──
+  doc.setTextColor(80, 80, 100)
+  doc.setFontSize(7)
+  doc.setFont('helvetica', 'bold')
+  doc.text('KEY HIGHLIGHTS', margin, y)
+  y += 5
+
+  area.highlights.forEach(h => {
+    doc.setFillColor(cr, cg, cb)
+    doc.circle(margin + 1.5, y + 1, 1, 'F')
+    doc.setTextColor(150, 150, 170)
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'normal')
+    const hlines = doc.splitTextToSize(h, W - margin * 2 - 8)
+    doc.text(hlines, margin + 5, y + 2)
+    y += hlines.length * 5 + 2
+  })
+
+  y += 4
+
+  // ── Sources ──
+  if (y < 255) {
+    doc.setTextColor(80, 80, 100)
+    doc.setFontSize(7)
+    doc.setFont('helvetica', 'bold')
+    doc.text('SOURCES & REFERENCES', margin, y)
+    y += 5
+    sources.slice(0, 5).forEach(s => {
+      doc.setFillColor(30, 30, 50)
+      doc.roundedRect(margin, y, W - margin * 2, 7, 1, 1, 'F')
+      doc.setTextColor(150, 150, 170)
+      doc.setFontSize(6.5)
+      doc.text(s.title, margin + 4, y + 4.5)
+      doc.setTextColor(100, 140, 200)
+      doc.text(s.url, W - margin - 2, y + 4.5, { align: 'right' })
+      y += 9
+    })
+  }
+
+  // ── Footer ──
+  doc.setDrawColor(cr, cg, cb)
+  doc.setLineWidth(0.3)
+  doc.line(margin, 287, W - margin, 287)
+  doc.setTextColor(60, 60, 80)
+  doc.setFontSize(6)
+  doc.text('PlotDNA — AI-powered real estate intelligence for India  ·  plotdna.in', margin, 292)
+  doc.text('Data reflects area-level signals only. Always verify RERA before purchasing.  ·  rera.telangana.gov.in', W - margin, 292, { align: 'right' })
+
+  doc.save(`PlotDNA_${area.name.replace(/\s+/g, '_')}_Report.pdf`)
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -31,8 +271,9 @@ export default function AreaDetail() {
   const circumference = 2 * Math.PI * r
   const dashOffset = circumference - (area.score / 100) * circumference
   const signals = Object.entries(area.signals) as [keyof typeof area.signals, number][]
+  const sources = getAreaSources(area.slug)
 
-  // Nearby areas (same category or adjacent scores)
+  // Nearby areas (similar score range)
   const nearby = hyderabadAreas
     .filter((a) => a.slug !== area.slug && Math.abs(a.score - area.score) <= 15)
     .slice(0, 4)
@@ -63,10 +304,21 @@ export default function AreaDetail() {
           <span className="font-display font-bold text-[#e8e8f0] text-sm">PlotDNA</span>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs font-mono text-[#555566]">
-          <MapPin size={11} className="text-[#00e676]" />
-          Hyderabad, Telangana
-        </div>
+        {/* Download PDF button */}
+        <button
+          onClick={() => generatePDF(area)}
+          className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all"
+          style={{
+            background: `${color}12`,
+            border: `1px solid ${color}30`,
+            color,
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = `${color}12` }}
+        >
+          <Download size={12} />
+          Download PDF Report
+        </button>
       </nav>
 
       <div className="max-w-4xl mx-auto px-6 py-10">
@@ -229,6 +481,63 @@ export default function AreaDetail() {
               </div>
             ))}
           </div>
+        </motion.section>
+
+        {/* ── Sources & Citations ── */}
+        <motion.section
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="mb-10"
+        >
+          <div className="flex items-center gap-2 mb-5">
+            <FileText size={11} className="text-[#555566]" />
+            <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+              Sources &amp; References
+            </h2>
+          </div>
+          <div className="space-y-2">
+            {sources.map((s, i) => {
+              const tc = SOURCE_TYPE_COLOR[s.type]
+              const tl = SOURCE_TYPE_LABEL[s.type]
+              return (
+                <a
+                  key={i}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl group transition-all duration-150"
+                  style={{
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.05)',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = `${tc}25` }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)' }}
+                >
+                  {/* Type badge */}
+                  <span
+                    className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded flex-shrink-0"
+                    style={{ background: `${tc}15`, color: tc, border: `1px solid ${tc}25` }}
+                  >
+                    {tl}
+                  </span>
+
+                  <span className="flex-1 text-[12px] font-mono text-[#888899] group-hover:text-[#ccccdd] transition-colors">
+                    {s.title}
+                  </span>
+
+                  <ExternalLink
+                    size={11}
+                    className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                    style={{ color: tc }}
+                  />
+                </a>
+              )
+            })}
+          </div>
+          <p className="text-[9px] font-mono text-[#2a2a3e] mt-3">
+            Links open in a new tab · Always verify independently before making investment decisions
+          </p>
         </motion.section>
 
         {/* ── Nearby areas ── */}

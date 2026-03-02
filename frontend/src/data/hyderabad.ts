@@ -1,15 +1,5 @@
 import type { MicroMarket } from '@/types'
 
-/** Build a simple rectangle polygon around a center point */
-function rect(lat: number, lng: number, d = 0.025): [number, number][] {
-  return [
-    [lat + d, lng - d],
-    [lat + d, lng + d],
-    [lat - d, lng + d],
-    [lat - d, lng - d],
-  ]
-}
-
 export const hyderabadAreas: MicroMarket[] = [
   {
     slug: 'adibatla',
@@ -17,7 +7,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 88,
     category: 'Emerging',
     center: [17.265, 78.575],
-    polygon: rect(17.265, 78.575, 0.028),
+    polygon: [
+      [17.296, 78.548], [17.304, 78.572], [17.298, 78.605],
+      [17.274, 78.614], [17.250, 78.604], [17.238, 78.576],
+      [17.244, 78.546], [17.262, 78.538],
+    ],
     signals: {
       infrastructure: 92,
       population: 85,
@@ -42,7 +36,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 84,
     category: 'Emerging',
     center: [17.225, 78.575],
-    polygon: rect(17.225, 78.575, 0.024),
+    polygon: [
+      [17.250, 78.551], [17.248, 78.576], [17.252, 78.600],
+      [17.230, 78.608], [17.204, 78.600], [17.200, 78.574],
+      [17.204, 78.550], [17.222, 78.542],
+    ],
     signals: {
       infrastructure: 88,
       population: 82,
@@ -67,7 +65,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 81,
     category: 'High Growth',
     center: [17.375, 78.335],
-    polygon: rect(17.375, 78.335, 0.025),
+    polygon: [
+      [17.402, 78.310], [17.400, 78.340], [17.404, 78.364],
+      [17.385, 78.372], [17.360, 78.368], [17.346, 78.352],
+      [17.347, 78.322], [17.358, 78.308], [17.380, 78.304],
+    ],
     signals: {
       infrastructure: 88,
       population: 82,
@@ -92,7 +94,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 78,
     category: 'Emerging',
     center: [17.375, 78.185],
-    polygon: rect(17.375, 78.185, 0.030),
+    polygon: [
+      [17.408, 78.156], [17.412, 78.188], [17.406, 78.220],
+      [17.384, 78.228], [17.360, 78.218], [17.345, 78.196],
+      [17.348, 78.164], [17.362, 78.150], [17.385, 78.148],
+    ],
     signals: {
       infrastructure: 82,
       population: 75,
@@ -117,7 +123,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 76,
     category: 'High Growth',
     center: [17.360, 78.355],
-    polygon: rect(17.360, 78.355, 0.022),
+    polygon: [
+      [17.382, 78.336], [17.381, 78.358], [17.383, 78.382],
+      [17.362, 78.388], [17.340, 78.382], [17.332, 78.362],
+      [17.337, 78.340], [17.352, 78.330], [17.370, 78.330],
+    ],
     signals: {
       infrastructure: 80,
       population: 75,
@@ -142,7 +152,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 75,
     category: 'Emerging',
     center: [17.500, 78.270],
-    polygon: rect(17.500, 78.270, 0.022),
+    polygon: [
+      [17.526, 78.248], [17.528, 78.272], [17.524, 78.297],
+      [17.504, 78.301], [17.478, 78.294], [17.474, 78.270],
+      [17.477, 78.247], [17.494, 78.240], [17.514, 78.242],
+    ],
     signals: {
       infrastructure: 78,
       population: 72,
@@ -167,7 +181,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 74,
     category: 'High Growth',
     center: [17.400, 78.225],
-    polygon: rect(17.400, 78.225, 0.025),
+    polygon: [
+      [17.428, 78.200], [17.426, 78.226], [17.425, 78.252],
+      [17.402, 78.260], [17.376, 78.252], [17.374, 78.225],
+      [17.376, 78.200], [17.393, 78.192], [17.416, 78.194],
+    ],
     signals: {
       infrastructure: 80,
       population: 72,
@@ -192,7 +210,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 73,
     category: 'Emerging',
     center: [17.480, 78.810],
-    polygon: rect(17.480, 78.810, 0.025),
+    polygon: [
+      [17.508, 78.786], [17.510, 78.812], [17.506, 78.836],
+      [17.482, 78.842], [17.456, 78.834], [17.452, 78.808],
+      [17.457, 78.784], [17.476, 78.776], [17.500, 78.778],
+    ],
     signals: {
       infrastructure: 76,
       population: 70,
@@ -217,7 +239,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 72,
     category: 'High Growth',
     center: [17.420, 78.275],
-    polygon: rect(17.420, 78.275, 0.022),
+    polygon: [
+      [17.444, 78.254], [17.443, 78.278], [17.440, 78.300],
+      [17.420, 78.304], [17.398, 78.298], [17.395, 78.274],
+      [17.398, 78.252], [17.412, 78.246], [17.432, 78.248],
+    ],
     signals: {
       infrastructure: 76,
       population: 70,
@@ -242,7 +268,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 71,
     category: 'Emerging',
     center: [17.455, 78.740],
-    polygon: rect(17.455, 78.740, 0.025),
+    polygon: [
+      [17.482, 78.716], [17.483, 78.742], [17.480, 78.768],
+      [17.458, 78.774], [17.430, 78.765], [17.427, 78.738],
+      [17.431, 78.714], [17.450, 78.708], [17.470, 78.710],
+    ],
     signals: {
       infrastructure: 74,
       population: 68,
@@ -267,7 +297,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 69,
     category: 'Emerging',
     center: [17.195, 78.580],
-    polygon: rect(17.195, 78.580, 0.025),
+    polygon: [
+      [17.222, 78.556], [17.220, 78.582], [17.218, 78.608],
+      [17.196, 78.612], [17.170, 78.604], [17.167, 78.578],
+      [17.171, 78.554], [17.188, 78.546], [17.210, 78.548],
+    ],
     signals: {
       infrastructure: 72,
       population: 65,
@@ -292,7 +326,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 68,
     category: 'High Growth',
     center: [17.630, 78.485],
-    polygon: rect(17.630, 78.485, 0.025),
+    polygon: [
+      [17.658, 78.462], [17.659, 78.488], [17.655, 78.514],
+      [17.630, 78.518], [17.604, 78.510], [17.601, 78.482],
+      [17.607, 78.458], [17.626, 78.452], [17.650, 78.455],
+    ],
     signals: {
       infrastructure: 72,
       population: 65,
@@ -317,7 +355,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 66,
     category: 'High Growth',
     center: [17.240, 78.420],
-    polygon: rect(17.240, 78.420, 0.025),
+    polygon: [
+      [17.268, 78.396], [17.269, 78.422], [17.266, 78.450],
+      [17.242, 78.454], [17.214, 78.446], [17.211, 78.420],
+      [17.216, 78.396], [17.232, 78.388], [17.256, 78.390],
+    ],
     signals: {
       infrastructure: 70,
       population: 62,
@@ -342,7 +384,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 62,
     category: 'Established',
     center: [17.420, 78.360],
-    polygon: rect(17.420, 78.360, 0.025),
+    polygon: [
+      [17.436, 78.336], [17.440, 78.356], [17.440, 78.382],
+      [17.424, 78.390], [17.406, 78.386], [17.400, 78.364],
+      [17.403, 78.340], [17.414, 78.332], [17.430, 78.332],
+    ],
     signals: {
       infrastructure: 65,
       population: 55,
@@ -367,7 +413,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 61,
     category: 'Industrial',
     center: [17.520, 78.260],
-    polygon: rect(17.520, 78.260, 0.025),
+    polygon: [
+      [17.548, 78.236], [17.546, 78.262], [17.542, 78.290],
+      [17.518, 78.294], [17.494, 78.286], [17.491, 78.258],
+      [17.497, 78.234], [17.515, 78.226], [17.537, 78.230],
+    ],
     signals: {
       infrastructure: 62,
       population: 58,
@@ -392,7 +442,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 70,
     category: 'Emerging',
     center: [17.470, 78.620],
-    polygon: rect(17.470, 78.620, 0.022),
+    polygon: [
+      [17.494, 78.598], [17.493, 78.622], [17.492, 78.647],
+      [17.472, 78.651], [17.447, 78.644], [17.444, 78.618],
+      [17.449, 78.596], [17.466, 78.590], [17.486, 78.593],
+    ],
     signals: {
       infrastructure: 74,
       population: 68,
@@ -417,7 +471,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 58,
     category: 'Established',
     center: [17.310, 78.410],
-    polygon: rect(17.310, 78.410, 0.020),
+    polygon: [
+      [17.332, 78.390], [17.331, 78.412], [17.330, 78.433],
+      [17.311, 78.437], [17.291, 78.432], [17.289, 78.410],
+      [17.293, 78.390], [17.307, 78.383], [17.325, 78.385],
+    ],
     signals: {
       infrastructure: 60,
       population: 55,
@@ -442,7 +500,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 55,
     category: 'Established',
     center: [17.545, 78.480],
-    polygon: rect(17.545, 78.480, 0.025),
+    polygon: [
+      [17.572, 78.456], [17.571, 78.482], [17.568, 78.507],
+      [17.544, 78.511], [17.519, 78.504], [17.516, 78.478],
+      [17.520, 78.454], [17.536, 78.448], [17.558, 78.450],
+    ],
     signals: {
       infrastructure: 58,
       population: 52,
@@ -467,7 +529,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 54,
     category: 'Established',
     center: [17.345, 78.545],
-    polygon: rect(17.345, 78.545, 0.020),
+    polygon: [
+      [17.368, 78.526], [17.366, 78.547], [17.364, 78.569],
+      [17.344, 78.574], [17.321, 78.567], [17.319, 78.544],
+      [17.324, 78.523], [17.340, 78.516], [17.360, 78.520],
+    ],
     signals: {
       infrastructure: 56,
       population: 52,
@@ -492,7 +558,11 @@ export const hyderabadAreas: MicroMarket[] = [
     score: 79,
     category: 'Emerging',
     center: [17.065, 78.215],
-    polygon: rect(17.065, 78.215, 0.030),
+    polygon: [
+      [17.098, 78.186], [17.096, 78.218], [17.095, 78.250],
+      [17.064, 78.255], [17.036, 78.245], [17.033, 78.214],
+      [17.038, 78.184], [17.058, 78.174], [17.082, 78.176],
+    ],
     signals: {
       infrastructure: 82,
       population: 75,

@@ -6,13 +6,44 @@ import Map, {
   type MapRef,
   type MapLayerMouseEvent,
 } from 'react-map-gl/maplibre'
+import type { StyleSpecification } from 'maplibre-gl'
 import { useNavigate } from 'react-router-dom'
 import { hyderabadAreas, cityMeta } from '@/data/hyderabad'
-import { useAppStore } from '@/store'
+import { useAppStore, type MapStyleKey } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 
-// Beautiful dark vector map — free, no API key
-const MAP_STYLE = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+// ── Basemap style definitions (all free, no API key) ─────────────────────────
+
+const SATELLITE_SPEC: StyleSpecification = {
+  version: 8,
+  sources: {
+    sat: {
+      type: 'raster',
+      tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+      tileSize: 256,
+    },
+  },
+  layers: [{ id: 'sat-base', type: 'raster', source: 'sat' }],
+}
+
+const TERRAIN_SPEC: StyleSpecification = {
+  version: 8,
+  sources: {
+    topo: {
+      type: 'raster',
+      tiles: ['https://tile.opentopomap.org/{z}/{x}/{y}.png'],
+      tileSize: 256,
+    },
+  },
+  layers: [{ id: 'topo-base', type: 'raster', source: 'topo' }],
+}
+
+const MAP_STYLES: Record<MapStyleKey, string | StyleSpecification> = {
+  dark:      'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+  light:     'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+  satellite: SATELLITE_SPEC,
+  terrain:   TERRAIN_SPEC,
+}
 
 export default function MapView() {
   const mapRef   = useRef<MapRef>(null)
@@ -24,6 +55,7 @@ export default function MapView() {
     highlightTier,
     searchCoords,
     is3D,
+    mapStyleKey,
     setSelectedArea,
     setHoveredSlug,
   } = useAppStore()
@@ -100,7 +132,7 @@ export default function MapView() {
   return (
     <Map
       ref={mapRef}
-      mapStyle={MAP_STYLE}
+      mapStyle={MAP_STYLES[mapStyleKey]}
       initialViewState={{
         latitude:  cityMeta.center[0],
         longitude: cityMeta.center[1],
@@ -181,37 +213,37 @@ export default function MapView() {
           latitude={searchCoords[0]}
           anchor="center"
         >
-          <div style={{ position: 'relative', width: 36, height: 36 }}>
+          <div style={{ position: 'relative', width: 40, height: 40 }}>
             {/* Pulse ring 1 */}
             <div style={{
               position: 'absolute',
               top: '50%', left: '50%',
-              width: 36, height: 36,
+              width: 40, height: 40,
               borderRadius: '50%',
-              border: '1.5px solid #00e676',
-              backgroundColor: 'rgba(0,230,118,0.08)',
+              border: '2px solid #ef4444',
+              backgroundColor: 'rgba(239,68,68,0.1)',
               animation: 'pin-ping 1.6s ease-out infinite',
             }} />
             {/* Pulse ring 2 (staggered) */}
             <div style={{
               position: 'absolute',
               top: '50%', left: '50%',
-              width: 36, height: 36,
+              width: 40, height: 40,
               borderRadius: '50%',
-              border: '1.5px solid #00e676',
+              border: '2px solid #ef4444',
               backgroundColor: 'transparent',
-              animation: 'pin-ping 1.6s ease-out 0.5s infinite',
+              animation: 'pin-ping 1.6s ease-out 0.6s infinite',
             }} />
             {/* Center dot */}
             <div style={{
               position: 'absolute',
               top: '50%', left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 10, height: 10,
+              width: 12, height: 12,
               borderRadius: '50%',
-              backgroundColor: '#00e676',
-              border: '2px solid #050508',
-              boxShadow: '0 0 14px #00e67690',
+              backgroundColor: '#ef4444',
+              border: '2.5px solid #fff',
+              boxShadow: '0 0 18px #ef444490, 0 2px 8px rgba(0,0,0,0.6)',
             }} />
           </div>
         </Marker>

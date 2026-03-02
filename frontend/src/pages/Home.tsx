@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Search, X, Zap, ChevronRight, Navigation, Layers } from 'lucide-react'
+import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronDown, Car, Clock, Eye } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { hyderabadAreas } from '@/data/hyderabad'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
@@ -22,9 +23,11 @@ const TOP_SUGGESTIONS = sorted.slice(0, 4)
 const AVG_DNA = Math.round(hyderabadAreas.reduce((s, a) => s + a.score, 0) / hyderabadAreas.length)
 
 export default function Home() {
-  const { selectedArea, highlightTier, searchCoords, is3D, setSelectedArea, setHighlightTier, setSearchCoords, setIs3D } = useAppStore()
+  const navigate = useNavigate()
+  const { selectedArea, highlightTier, searchCoords, is3D, mapStyleKey, setSelectedArea, setHighlightTier, setSearchCoords, setIs3D, setMapStyleKey } = useAppStore()
   const [searchQuery, setSearchQuery]     = useState('')
   const [searchFocused, setSearchFocused] = useState(false)
+  const [showLayers, setShowLayers]       = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const parsedCoords   = parseCoords(searchQuery)
@@ -254,7 +257,7 @@ export default function Home() {
                 return (
                   <button
                     key={area.slug}
-                    onClick={() => selectArea(area)}
+                    onClick={() => navigate(`/area/${area.slug}`)}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all"
                     style={{
                       background: `${color}16`,
@@ -337,7 +340,7 @@ export default function Home() {
               return (
                 <button
                   key={area.slug}
-                  onClick={() => setSelectedArea(isSelected ? null : area)}
+                  onClick={() => navigate(`/area/${area.slug}`)}
                   className="w-full text-left transition-all duration-150"
                   style={{
                     padding: '9px 14px',
@@ -408,29 +411,152 @@ export default function Home() {
       </AnimatePresence>
 
       {/* ═══════════════════════════════════════════════
-          BOTTOM RIGHT: 3D / 2D view toggle
+          TOP RIGHT (below stats): Layer / View switcher
       ════════════════════════════════════════════════ */}
-      <button
-        onClick={() => setIs3D(!is3D)}
-        className="absolute bottom-5 right-5 z-[999] flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300"
-        style={{
-          background: is3D ? 'rgba(0,230,118,0.12)' : 'rgba(5,5,10,0.88)',
-          backdropFilter: 'blur(22px)',
-          border: is3D ? '1px solid rgba(0,230,118,0.4)' : '1px solid rgba(255,255,255,0.08)',
-          boxShadow: is3D ? '0 0 20px rgba(0,230,118,0.2), 0 4px 24px rgba(0,0,0,0.5)' : '0 4px 24px rgba(0,0,0,0.5)',
-        }}
-      >
-        <Layers size={13} style={{ color: is3D ? '#00e676' : '#666680' }} />
-        <span
-          className="text-[11px] font-mono font-semibold tracking-wide"
-          style={{ color: is3D ? '#00e676' : '#666680' }}
+      <div className="absolute z-[1001]" style={{ top: 72, right: 20 }}>
+
+        {/* Trigger pill */}
+        <button
+          onClick={() => setShowLayers(v => !v)}
+          className="flex items-center gap-2 px-3.5 py-2 rounded-xl transition-all duration-200"
+          style={{
+            background: showLayers ? 'rgba(0,230,118,0.1)' : 'rgba(5,5,10,0.88)',
+            backdropFilter: 'blur(22px)',
+            border: showLayers ? '1px solid rgba(0,230,118,0.35)' : '1px solid rgba(255,255,255,0.08)',
+            boxShadow: showLayers ? '0 0 16px rgba(0,230,118,0.15), 0 4px 20px rgba(0,0,0,0.5)' : '0 4px 20px rgba(0,0,0,0.45)',
+          }}
         >
-          {is3D ? '3D' : '2D'}
-        </span>
-        <span className="text-[9px] font-mono text-[#333344]">
-          {is3D ? 'TILT ON' : 'TILT OFF'}
-        </span>
-      </button>
+          <Layers size={12} style={{ color: showLayers ? '#00e676' : '#555566' }} />
+          <span className="text-[11px] font-mono font-semibold" style={{ color: showLayers ? '#00e676' : '#888899' }}>
+            Layers
+          </span>
+          <ChevronDown
+            size={10}
+            style={{
+              color: showLayers ? '#00e676' : '#444455',
+              transform: showLayers ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 0.2s',
+            }}
+          />
+        </button>
+
+        {/* Dropdown panel */}
+        <AnimatePresence>
+          {showLayers && (
+            <motion.div
+              initial={{ opacity: 0, y: -6, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, scale: 0.97 }}
+              transition={{ duration: 0.15 }}
+              className="absolute right-0 mt-2 rounded-xl overflow-hidden"
+              style={{
+                width: 228,
+                background: 'rgba(6,6,16,0.97)',
+                backdropFilter: 'blur(28px)',
+                border: '1px solid rgba(255,255,255,0.07)',
+                boxShadow: '0 20px 48px rgba(0,0,0,0.7)',
+              }}
+            >
+              {/* ── Basemap section ── */}
+              <div
+                className="px-3.5 pt-3 pb-2"
+                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+              >
+                <p className="text-[8px] font-mono text-[#333344] uppercase tracking-[0.16em] mb-2">
+                  Basemap Style
+                </p>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {([
+                    { key: 'dark',      Icon: Map,       label: 'Standard'  },
+                    { key: 'satellite', Icon: Satellite,  label: 'Satellite' },
+                    { key: 'terrain',   Icon: Globe,      label: 'Terrain'   },
+                    { key: 'light',     Icon: Sun,        label: 'Light'     },
+                  ] as const).map(({ key, Icon, label }) => {
+                    const active = mapStyleKey === key
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setMapStyleKey(key)}
+                        className="flex flex-col items-center gap-1.5 py-2.5 rounded-lg transition-all duration-150"
+                        style={{
+                          background: active ? 'rgba(0,230,118,0.1)' : 'rgba(255,255,255,0.03)',
+                          border: active ? '1px solid rgba(0,230,118,0.3)' : '1px solid rgba(255,255,255,0.05)',
+                          boxShadow: active ? '0 0 10px rgba(0,230,118,0.12)' : 'none',
+                        }}
+                      >
+                        <Icon size={15} style={{ color: active ? '#00e676' : '#555566' }} />
+                        <span
+                          className="text-[9px] font-mono"
+                          style={{ color: active ? '#00e676' : '#555566' }}
+                        >
+                          {label}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              {/* ── 3D toggle ── */}
+              <button
+                onClick={() => setIs3D(!is3D)}
+                className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
+                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <Box size={12} style={{ color: is3D ? '#00e676' : '#555566' }} />
+                  <span className="text-[11px] font-mono" style={{ color: is3D ? '#00e676' : '#888899' }}>
+                    3D Tilt View
+                  </span>
+                </div>
+                {/* Toggle pill */}
+                <div
+                  className="relative w-8 h-4.5 rounded-full transition-all duration-250"
+                  style={{
+                    width: 30, height: 16,
+                    background: is3D ? 'rgba(0,230,118,0.25)' : 'rgba(255,255,255,0.08)',
+                    border: is3D ? '1px solid rgba(0,230,118,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                  }}
+                >
+                  <div
+                    className="absolute top-0.5 rounded-full transition-all duration-250"
+                    style={{
+                      width: 10, height: 10,
+                      top: 2,
+                      left: is3D ? 16 : 2,
+                      backgroundColor: is3D ? '#00e676' : '#555566',
+                      boxShadow: is3D ? '0 0 6px #00e67680' : 'none',
+                    }}
+                  />
+                </div>
+              </button>
+
+              {/* ── Locked / Coming soon ── */}
+              <div className="px-3.5 pt-2.5 pb-3">
+                <p className="text-[8px] font-mono text-[#252535] uppercase tracking-[0.16em] mb-1.5">
+                  Phase 3 — Coming Soon
+                </p>
+                {([
+                  { Icon: Eye,  label: 'Street View 360°'  },
+                  { Icon: Car,  label: 'Traffic Overlay'   },
+                  { Icon: Clock,label: 'Historical Imagery' },
+                ] as const).map(({ Icon, label }) => (
+                  <div
+                    key={label}
+                    className="flex items-center gap-2.5 py-1.5 opacity-35"
+                  >
+                    <Icon size={11} className="text-[#444455]" />
+                    <span className="text-[10px] font-mono text-[#444455] flex-1">{label}</span>
+                    <Lock size={9} className="text-[#2a2a3e]" />
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* ═══════════════════════════════════════════════
           BOTTOM CENTER: Risk tier legend (clickable)

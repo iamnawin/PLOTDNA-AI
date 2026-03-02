@@ -1,9 +1,10 @@
+import { useState } from 'react'
 import Map, { Source, Layer } from 'react-map-gl/maplibre'
 import type { StyleSpecification } from 'maplibre-gl'
-import { Satellite, Clock, Sparkles } from 'lucide-react'
+import { Satellite, Sparkles } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreColor } from '@/lib/utils'
-import { getGrowthMilestones } from '@/lib/plotAnalysis'
+import { getGrowthMilestones, type Milestone } from '@/lib/plotAnalysis'
 
 // ESRI World Imagery — free, no API key required
 const SATELLITE_STYLE: StyleSpecification = {
@@ -20,6 +21,45 @@ const SATELLITE_STYLE: StyleSpecification = {
   layers: [{ id: 'satellite', type: 'raster', source: 'satellite' }],
 }
 
+// Per-phase visual config for the "Before" map
+const PHASE_CONFIG: Record<Milestone['phase'], {
+  zoom:    number
+  filter:  string
+  label:   string
+  caption: string
+}> = {
+  baseline: {
+    zoom:    9,
+    filter:  'grayscale(1) brightness(0.50) sepia(0.55) contrast(0.85)',
+    label:   '~2009',
+    caption: 'Agricultural / Sparse',
+  },
+  early: {
+    zoom:    10,
+    filter:  'grayscale(0.8) brightness(0.6) sepia(0.4) contrast(0.9)',
+    label:   '~2013',
+    caption: 'Early Infrastructure',
+  },
+  growth: {
+    zoom:    11,
+    filter:  'grayscale(0.5) brightness(0.72) sepia(0.25) contrast(0.95)',
+    label:   '~2018',
+    caption: 'Roads & Plots Emerging',
+  },
+  boom: {
+    zoom:    12,
+    filter:  'grayscale(0.2) brightness(0.85) sepia(0.1) contrast(1.0)',
+    label:   '~2021',
+    caption: 'Rapid Construction',
+  },
+  now: {
+    zoom:    13,
+    filter:  'none',
+    label:   '2024',
+    caption: 'Current State',
+  },
+}
+
 interface Props {
   area: MicroMarket
 }
@@ -29,6 +69,11 @@ export default function SatelliteCompare({ area }: Props) {
   const milestones = getGrowthMilestones(area)
   const lng        = area.center[1]  // MapLibre uses [lng, lat]
   const lat        = area.center[0]
+
+  // Which milestone bar is active (default = oldest = index 0)
+  const [activeIdx, setActiveIdx] = useState(0)
+  const activeMilestone = milestones[activeIdx]
+  const phaseConfig     = PHASE_CONFIG[activeMilestone.phase]
 
   // Area polygon as GeoJSON for "Now" map overlay
   const geojson = {
@@ -56,23 +101,24 @@ export default function SatelliteCompare({ area }: Props) {
       {/* Side-by-side maps */}
       <div className="grid grid-cols-2 gap-4">
 
-        {/* ── THEN ~2009 (monochrome context view) ── */}
+        {/* ── THEN (reactive to selected milestone) ── */}
         <div>
           <div
             className="relative rounded-xl overflow-hidden"
             style={{ height: 210 }}
           >
-            {/* Grayscale + sepia filter = "vintage satellite" illusion */}
+            {/* key forces remount when zoom changes */}
             <div
+              key={`before-${activeIdx}`}
               style={{
                 position: 'absolute', inset: 0,
-                filter: 'grayscale(1) brightness(0.52) sepia(0.5) contrast(0.88)',
+                filter: phaseConfig.filter,
               }}
             >
               <div style={{ pointerEvents: 'none', width: '100%', height: '100%' }}>
                 <Map
                   mapStyle={SATELLITE_STYLE}
-                  initialViewState={{ longitude: lng, latitude: lat, zoom: 11 }}
+                  initialViewState={{ longitude: lng, latitude: lat, zoom: phaseConfig.zoom }}
                   style={{ width: '100%', height: '100%' }}
                   scrollZoom={false}
                   dragPan={false}
@@ -94,10 +140,10 @@ export default function SatelliteCompare({ area }: Props) {
                 border: '1px solid rgba(255,255,255,0.1)',
               }}
             >
-              <Clock size={9} className="text-[#666680]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#555566]" />
               <div>
-                <p className="text-[9px] font-mono text-[#888899]">~2009</p>
-                <p className="text-[8px] font-mono text-[#444455]">Low density context</p>
+                <p className="text-[9px] font-mono text-[#888899]">{phaseConfig.label}</p>
+                <p className="text-[8px] font-mono text-[#444455]">{activeMilestone.label}</p>
               </div>
             </div>
 
@@ -112,7 +158,7 @@ export default function SatelliteCompare({ area }: Props) {
 
           <div className="flex items-center gap-2 mt-2">
             <div className="flex-1 h-px bg-[#1a1a2e]" />
-            <span className="text-[9px] font-mono text-[#333344]">Agricultural / Sparse</span>
+            <span className="text-[9px] font-mono text-[#333344]">{phaseConfig.caption}</span>
             <div className="flex-1 h-px bg-[#1a1a2e]" />
           </div>
         </div>
@@ -180,7 +226,7 @@ export default function SatelliteCompare({ area }: Props) {
         </div>
       </div>
 
-      {/* Growth progression bar */}
+      {/* ── Clickable development progression bars ── */}
       <div
         className="mt-4 p-4 rounded-xl"
         style={{
@@ -191,30 +237,67 @@ export default function SatelliteCompare({ area }: Props) {
         <div className="flex items-center justify-between mb-3">
           <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest">
             Est. Development Progression
+            <span className="ml-2 normal-case tracking-normal text-[#2e2e42]">— click a year</span>
           </p>
           <span className="text-[11px] font-mono font-bold" style={{ color }}>
             +{Math.round(area.signals.satellite * 0.42)}% coverage
           </span>
         </div>
 
-        <div className="flex items-end gap-1">
+        <div className="flex items-end gap-1.5">
           {milestones.map((m, i) => {
             const heightPct = 20 + ((i + 1) / milestones.length) * 80
-            const isLast = i === milestones.length - 1
+            const isActive  = i === activeIdx
+            const isLast    = i === milestones.length - 1
+            const barColor  = isLast
+              ? color
+              : `${color}${Math.round(((i + 1) / milestones.length) * 140 + 60).toString(16).padStart(2, '0')}`
+
             return (
-              <div key={m.year} className="flex-1 flex flex-col items-center gap-1">
+              <button
+                key={m.year}
+                onClick={() => setActiveIdx(i)}
+                className="flex-1 flex flex-col items-center gap-1"
+                title={`View ${m.year} — ${m.label}`}
+              >
                 <div
-                  className="w-full rounded-sm transition-all"
+                  className="w-full rounded-sm transition-all duration-300"
                   style={{
-                    height: heightPct * 0.5,
-                    background: isLast ? color : `${color}${Math.round(((i + 1) / milestones.length) * 140 + 60).toString(16).padStart(2, '0')}`,
-                    boxShadow: isLast ? `0 0 8px ${color}60` : 'none',
+                    height: heightPct * 0.52,
+                    background: barColor,
+                    opacity: isActive ? 1 : 0.45,
+                    transform: isActive ? 'scaleY(1.06)' : 'scaleY(1)',
+                    transformOrigin: 'bottom',
+                    boxShadow: isActive ? `0 0 14px ${barColor}90` : isLast ? `0 0 8px ${color}60` : 'none',
+                    outline: isActive ? `2px solid ${barColor}` : '2px solid transparent',
+                    outlineOffset: 2,
                   }}
                 />
-                <p className="text-[7px] font-mono text-[#333344]">{m.year}</p>
-              </div>
+                <p
+                  className="text-[7px] font-mono transition-colors duration-150"
+                  style={{ color: isActive ? color : '#444455' }}
+                >
+                  {m.year}
+                </p>
+              </button>
             )
           })}
+        </div>
+
+        {/* Active year description strip */}
+        <div
+          className="mt-3 flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-300"
+          style={{
+            background: `${color}0a`,
+            border: `1px solid ${color}1e`,
+          }}
+        >
+          <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
+          <p className="text-[9px] font-mono text-[#666680]">
+            <span style={{ color }} className="font-semibold">{activeMilestone.year}</span>
+            {' — '}{activeMilestone.label}
+            {' · '}{phaseConfig.caption}
+          </p>
         </div>
       </div>
 
