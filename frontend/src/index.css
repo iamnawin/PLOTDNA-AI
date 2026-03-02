@@ -1,39 +1,91 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
+/* ── Custom fonts for Tailwind v4 ── */
+@theme {
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
 * {
   box-sizing: border-box;
 }
 
-body {
+html,
+body,
+#root {
+  height: 100%;
   margin: 0;
-  background-color: #0a0a0a;
-  color: #ffffff;
-  font-family: "Inter", system-ui, sans-serif;
+}
+
+body {
+  background-color: #050508;
+  color: #e8e8f0;
+  font-family: 'IBM Plex Mono', monospace;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Leaflet dark tile override */
+/* ── Leaflet dark map overrides ── */
 .leaflet-container {
-  background: #1a1a2e;
-  border-radius: 0.75rem;
+  background: #0d0d16;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
+/* Dark tile filter */
 .leaflet-tile-pane {
-  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+  filter: brightness(0.55) invert(1) contrast(3) hue-rotate(200deg) saturate(0.25) brightness(0.7);
 }
 
+/* Hide attribution */
 .leaflet-control-attribution {
   display: none;
 }
 
+/* Dark popup */
 .leaflet-popup-content-wrapper {
-  background: #1a1a1a;
-  color: #ffffff;
-  border: 1px solid #262626;
+  background: #0d0d16;
+  color: #e8e8f0;
+  border: 1px solid #1e1e2e;
   border-radius: 0.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  padding: 0;
+}
+
+.leaflet-popup-content {
+  margin: 0;
 }
 
 .leaflet-popup-tip {
-  background: #1a1a1a;
+  background: #0d0d16;
+}
+
+.leaflet-popup-close-button {
+  color: #555566 !important;
+}
+
+/* Dark tooltip */
+.leaflet-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.leaflet-tooltip::before {
+  display: none !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2a3e;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3a5e;
 }
