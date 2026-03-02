@@ -1,5 +1,8 @@
 # PlotDNA
 
+<img width="1918" height="942" alt="Screenshot 2026-03-02 152539" src="https://github.com/user-attachments/assets/fa337221-b6c9-4f62-b839-810c00f24124" />
+
+
 > Decode any plot before you buy.
 
 PlotDNA is an AI-powered real estate investment intelligence platform for India.
