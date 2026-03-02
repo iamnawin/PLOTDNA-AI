@@ -21,6 +21,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 88,
       govtScheme: 95,
     },
+    livability: {
+      connectivity: 55,
+      amenities: 40,
+      ecommerce: 70,
+      entertainment: 25,
+      greenSpaces: 65,
+    },
     highlights: [
       'Fab City government IT park — 1 lakh+ jobs pipeline',
       'Aerospace & defence manufacturing corridor',
@@ -49,6 +56,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 85,
       priceVelocity: 80,
       govtScheme: 88,
+    },
+    livability: {
+      connectivity: 48,
+      amenities: 38,
+      ecommerce: 65,
+      entertainment: 22,
+      greenSpaces: 60,
     },
     highlights: [
       'NIMZ — National Investment & Manufacturing Zone',
@@ -79,6 +93,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 70,
       govtScheme: 68,
     },
+    livability: {
+      connectivity: 78,
+      amenities: 72,
+      ecommerce: 88,
+      entertainment: 68,
+      greenSpaces: 45,
+    },
     highlights: [
       'Radiance 15M township — city within a city',
       'ORR Node 7 frontage with direct access',
@@ -107,6 +128,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 76,
       priceVelocity: 70,
       govtScheme: 80,
+    },
+    livability: {
+      connectivity: 52,
+      amenities: 42,
+      ecommerce: 55,
+      entertainment: 20,
+      greenSpaces: 88,
     },
     highlights: [
       'Eco-buffer zone — forest cover protects premium appeal',
@@ -137,6 +165,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 68,
       govtScheme: 62,
     },
+    livability: {
+      connectivity: 70,
+      amenities: 65,
+      ecommerce: 82,
+      entertainment: 60,
+      greenSpaces: 55,
+    },
     highlights: [
       'Adjacency to Financial District at lower price point',
       'Township projects by Prestige & Lodha incoming',
@@ -165,6 +200,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 74,
       priceVelocity: 68,
       govtScheme: 72,
+    },
+    livability: {
+      connectivity: 60,
+      amenities: 52,
+      ecommerce: 70,
+      entertainment: 35,
+      greenSpaces: 72,
     },
     highlights: [
       'ORR direct connectivity to HITEC City — 25 min',
@@ -195,6 +237,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 67,
       govtScheme: 62,
     },
+    livability: {
+      connectivity: 48,
+      amenities: 38,
+      ecommerce: 55,
+      entertainment: 20,
+      greenSpaces: 82,
+    },
     highlights: [
       'ORR extension planned through Mokila corridor',
       'Weekend & second-home market boom',
@@ -223,6 +272,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 72,
       priceVelocity: 65,
       govtScheme: 72,
+    },
+    livability: {
+      connectivity: 55,
+      amenities: 45,
+      ecommerce: 58,
+      entertainment: 30,
+      greenSpaces: 50,
     },
     highlights: [
       'IIM Hyderabad campus proximity',
@@ -253,6 +309,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 65,
       govtScheme: 58,
     },
+    livability: {
+      connectivity: 65,
+      amenities: 60,
+      ecommerce: 78,
+      entertainment: 52,
+      greenSpaces: 58,
+    },
     highlights: [
       'BHEL township — steady rental demand',
       'Metro Phase III alignment proposed',
@@ -281,6 +344,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 70,
       priceVelocity: 62,
       govtScheme: 65,
+    },
+    livability: {
+      connectivity: 52,
+      amenities: 42,
+      ecommerce: 60,
+      entertainment: 28,
+      greenSpaces: 48,
     },
     highlights: [
       'Warangal NH-163 corridor — strategic location',
@@ -311,6 +381,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 60,
       govtScheme: 68,
     },
+    livability: {
+      connectivity: 42,
+      amenities: 35,
+      ecommerce: 48,
+      entertainment: 18,
+      greenSpaces: 55,
+    },
     highlights: [
       'Southern growth corridor — NIMZ spillover',
       'Pharma & logistics hub under planning',
@@ -339,6 +416,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 65,
       priceVelocity: 60,
       govtScheme: 65,
+    },
+    livability: {
+      connectivity: 58,
+      amenities: 50,
+      ecommerce: 65,
+      entertainment: 35,
+      greenSpaces: 65,
     },
     highlights: [
       'HMDA extended master plan zone',
@@ -369,6 +453,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 58,
       govtScheme: 62,
     },
+    livability: {
+      connectivity: 62,
+      amenities: 48,
+      ecommerce: 72,
+      entertainment: 38,
+      greenSpaces: 42,
+    },
     highlights: [
       'Aerotropolis development plan — airport city',
       'Rajiv Gandhi International Airport corridor',
@@ -397,6 +488,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 85,
       priceVelocity: 55,
       govtScheme: 45,
+    },
+    livability: {
+      connectivity: 95,
+      amenities: 88,
+      ecommerce: 95,
+      entertainment: 90,
+      greenSpaces: 22,
     },
     highlights: [
       'IT employment hub — Amazon, Google, Microsoft',
@@ -427,6 +525,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 52,
       govtScheme: 55,
     },
+    livability: {
+      connectivity: 55,
+      amenities: 45,
+      ecommerce: 62,
+      entertainment: 28,
+      greenSpaces: 38,
+    },
     highlights: [
       'IDA Patancheru — major industrial zone',
       'Pharma & chemical belt — stable rental base',
@@ -455,6 +560,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 70,
       priceVelocity: 62,
       govtScheme: 65,
+    },
+    livability: {
+      connectivity: 68,
+      amenities: 58,
+      ecommerce: 72,
+      entertainment: 48,
+      greenSpaces: 40,
     },
     highlights: [
       'Metro Blue Line end station — connectivity premium',
@@ -485,6 +597,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 52,
       govtScheme: 45,
     },
+    livability: {
+      connectivity: 72,
+      amenities: 78,
+      ecommerce: 80,
+      entertainment: 72,
+      greenSpaces: 45,
+    },
     highlights: [
       'Established residential — good schools & hospitals',
       'Near BHEL township & Outer Ring Road',
@@ -513,6 +632,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 55,
       priceVelocity: 48,
       govtScheme: 42,
+    },
+    livability: {
+      connectivity: 62,
+      amenities: 68,
+      ecommerce: 70,
+      entertainment: 55,
+      greenSpaces: 52,
     },
     highlights: [
       'North Hyderabad established residential belt',
@@ -543,6 +669,13 @@ export const hyderabadAreas: MicroMarket[] = [
       priceVelocity: 48,
       govtScheme: 40,
     },
+    livability: {
+      connectivity: 78,
+      amenities: 82,
+      ecommerce: 85,
+      entertainment: 78,
+      greenSpaces: 32,
+    },
     highlights: [
       'Metro Blue Line access — commuter connectivity',
       'Near Ramoji Film City — tourism premium',
@@ -571,6 +704,13 @@ export const hyderabadAreas: MicroMarket[] = [
       employment: 78,
       priceVelocity: 72,
       govtScheme: 82,
+    },
+    livability: {
+      connectivity: 45,
+      amenities: 38,
+      ecommerce: 50,
+      entertainment: 22,
+      greenSpaces: 58,
     },
     highlights: [
       'PHARMA City — 68,000 acre industrial township',

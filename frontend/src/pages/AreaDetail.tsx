@@ -1,14 +1,46 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText } from 'lucide-react'
+import {
+  ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
+  Hammer, Users, Globe, Shield, Briefcase, Landmark,
+  Navigation, ShoppingBag, Package, Film, Leaf,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
 import { hyderabadAreas } from '@/data/hyderabad'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
 import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/areaSources'
+import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
-import SignalBar from '@/components/ui/SignalBar'
 import SatelliteCompare from '@/components/ui/SatelliteCompare'
+
+// ── Signal tier helper ─────────────────────────────────────────────────────────
+function getSignalTier(v: number) {
+  if (v >= 85) return { label: 'Excellent', color: '#10b981' }
+  if (v >= 65) return { label: 'Good',      color: '#22c55e' }
+  if (v >= 45) return { label: 'Moderate',  color: '#f59e0b' }
+  return               { label: 'Weak',      color: '#ef4444' }
+}
+
+// ── Signal card configs ────────────────────────────────────────────────────────
+const SIGNAL_CONFIG: { key: keyof Signals; icon: LucideIcon; label: string }[] = [
+  { key: 'infrastructure', icon: Hammer,     label: 'Infrastructure'    },
+  { key: 'population',     icon: Users,      label: 'Population Growth' },
+  { key: 'satellite',      icon: Globe,      label: 'Satellite Growth'  },
+  { key: 'rera',           icon: Shield,     label: 'RERA Activity'     },
+  { key: 'employment',     icon: Briefcase,  label: 'Employment Hub'    },
+  { key: 'priceVelocity',  icon: TrendingUp, label: 'Price Velocity'    },
+  { key: 'govtScheme',     icon: Landmark,   label: 'Govt Schemes'      },
+]
+
+const LIVABILITY_CONFIG: { key: keyof Livability; icon: LucideIcon; label: string; description: string }[] = [
+  { key: 'connectivity',  icon: Navigation,  label: 'Connectivity',    description: 'Roads, metro & transit' },
+  { key: 'amenities',     icon: ShoppingBag, label: 'Basic Amenities', description: 'Schools, hospitals, shops' },
+  { key: 'ecommerce',     icon: Package,     label: 'E-Commerce',      description: 'Delivery accessibility' },
+  { key: 'entertainment', icon: Film,        label: 'Entertainment',   description: 'Malls, theaters & dining' },
+  { key: 'greenSpaces',   icon: Leaf,        label: 'Green Spaces',    description: 'Parks, lakes & open areas' },
+]
 
 // ── PDF generator ─────────────────────────────────────────────────────────────
 function generatePDF(area: ReturnType<typeof hyderabadAreas.find> & object) {
@@ -422,32 +454,137 @@ export default function AreaDetail() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="mb-10"
         >
-          <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest mb-5">
-            DNA Signal Breakdown
-          </h2>
-          <div
-            className="rounded-xl p-6 space-y-5"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
-          >
-            {signals.map(([key, val], i) => (
-              <motion.div
-                key={key}
-                initial={{ opacity: 0, x: -16 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 + i * 0.07 }}
-              >
-                <SignalBar
-                  label={SIGNAL_LABELS[key] ?? key}
-                  value={val}
-                  weight={SIGNAL_WEIGHTS[key] ?? 0}
-                />
-              </motion.div>
-            ))}
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+              DNA Signal Breakdown
+            </h2>
+            <span
+              className="text-[8px] font-mono text-[#333344] px-2 py-1 rounded"
+              style={{ background: '#0d0d1a', border: '1px solid rgba(255,255,255,0.05)' }}
+            >
+              Weighted composite
+            </span>
           </div>
+
+          {/* Signal card grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {SIGNAL_CONFIG.map(({ key, icon: Icon, label }, i) => {
+              const val = area.signals[key]
+              const weight = SIGNAL_WEIGHTS[key] ?? 0
+              const tier = getSignalTier(val)
+              return (
+                <motion.div
+                  key={key}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 + i * 0.06 }}
+                  className="p-4 rounded-xl"
+                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={{ background: `${tier.color}18` }}
+                    >
+                      <Icon size={14} style={{ color: tier.color }} />
+                    </div>
+                    <span className="text-2xl font-mono font-bold" style={{ color: tier.color }}>
+                      {val}
+                    </span>
+                  </div>
+
+                  <p className="text-[10px] font-mono text-[#888899] leading-snug mb-2.5">{label}</p>
+
+                  {/* Animated fill bar */}
+                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: '#1a1a2e' }}>
+                    <motion.div
+                      className="h-full rounded-full"
+                      style={{ backgroundColor: tier.color, boxShadow: `0 0 6px ${tier.color}50` }}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${val}%` }}
+                      transition={{ duration: 1.2, delay: 0.3 + i * 0.06, ease: 'easeOut' }}
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between mt-2">
+                    <span
+                      className="text-[8px] font-mono px-1.5 py-0.5 rounded"
+                      style={{ background: `${tier.color}12`, color: tier.color, border: `1px solid ${tier.color}28` }}
+                    >
+                      {tier.label}
+                    </span>
+                    <span className="text-[8px] font-mono text-[#333344]">{weight}% wt</span>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+
           <p className="text-[10px] font-mono text-[#333344] mt-3">
             Weighted formula: Infrastructure (25%) + Population (20%) + Satellite (20%) + RERA (15%) + Employment (10%) + Price (5%) + Govt Scheme (5%)
           </p>
         </motion.section>
+
+        {/* ── Livability Index ── */}
+        {area.livability && (
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.22 }}
+            className="mb-10"
+          >
+            <div className="flex items-center gap-3 mb-5">
+              <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+                Livability Index
+              </h2>
+              <span
+                className="text-[8px] font-mono text-[#444455] px-2 py-0.5 rounded-full"
+                style={{ background: '#0d0d1a', border: '1px solid rgba(255,255,255,0.06)' }}
+              >
+                not in DNA score
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+              {LIVABILITY_CONFIG.map(({ key, icon: Icon, label, description }, i) => {
+                const val = area.livability![key]
+                const tier = getSignalTier(val)
+                return (
+                  <motion.div
+                    key={key}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.35 + i * 0.07 }}
+                    className="p-4 rounded-xl text-center"
+                    style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
+                  >
+                    <div
+                      className="w-9 h-9 rounded-full mx-auto flex items-center justify-center mb-2"
+                      style={{ background: `${tier.color}15`, border: `1px solid ${tier.color}28` }}
+                    >
+                      <Icon size={15} style={{ color: tier.color }} />
+                    </div>
+
+                    <p className="text-xl font-mono font-bold mb-1" style={{ color: tier.color }}>{val}</p>
+                    <p className="text-[9px] font-mono text-[#888899] mb-0.5">{label}</p>
+                    <p className="text-[8px] font-mono text-[#444455]">{description}</p>
+
+                    {/* Mini bar */}
+                    <div className="h-1 rounded-full overflow-hidden mt-2.5" style={{ background: '#1a1a2e' }}>
+                      <motion.div
+                        className="h-full rounded-full"
+                        style={{ backgroundColor: tier.color }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${val}%` }}
+                        transition={{ duration: 1, delay: 0.45 + i * 0.07 }}
+                      />
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </motion.section>
+        )}
 
         {/* ── Satellite Growth ── */}
         <motion.section

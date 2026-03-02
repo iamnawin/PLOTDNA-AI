@@ -71,6 +71,17 @@ export default function MapView() {
     })
   }, [searchCoords])
 
+  // ── Fly to selected area (sidebar / chip click) ───────────────────────────
+  useEffect(() => {
+    if (!selectedArea || !mapRef.current) return
+    mapRef.current.flyTo({
+      center: [selectedArea.center[1], selectedArea.center[0]], // [lng, lat]
+      zoom: 13,
+      duration: 1200,
+      essential: true,
+    })
+  }, [selectedArea])
+
   // ── 3D / 2D camera toggle ─────────────────────────────────────────────────
   useEffect(() => {
     if (!mapRef.current) return

@@ -340,7 +340,7 @@ export default function Home() {
               return (
                 <button
                   key={area.slug}
-                  onClick={() => navigate(`/area/${area.slug}`)}
+                  onClick={() => setSelectedArea(isSelected ? null : area)}
                   className="w-full text-left transition-all duration-150"
                   style={{
                     padding: '9px 14px',
