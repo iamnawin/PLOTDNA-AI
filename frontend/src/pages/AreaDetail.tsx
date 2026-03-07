@@ -7,7 +7,8 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
-import { hyderabadAreas } from '@/data/hyderabad'
+import { getAllAreas } from '@/data/cities'
+import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
 import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/areaSources'
@@ -43,7 +44,7 @@ const LIVABILITY_CONFIG: { key: keyof Livability; icon: LucideIcon; label: strin
 ]
 
 // ── PDF generator ─────────────────────────────────────────────────────────────
-function generatePDF(area: ReturnType<typeof hyderabadAreas.find> & object) {
+function generatePDF(area: MicroMarket) {
   if (!area) return
   const doc     = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
   const color   = getScoreColor(area.score)
@@ -154,10 +155,10 @@ function generatePDF(area: ReturnType<typeof hyderabadAreas.find> & object) {
   doc.text('DNA SIGNAL BREAKDOWN', margin, y)
   y += 5
 
-  const signalEntries = Object.entries(area.signals) as [keyof typeof area.signals, number][]
+  const signalEntries = Object.entries(area.signals) as [string, number][]
   signalEntries.forEach(([key, val]) => {
-    const slabel = SIGNAL_LABELS[key] ?? key
-    const weight = SIGNAL_WEIGHTS[key] ?? 0
+    const slabel = SIGNAL_LABELS[key as keyof typeof SIGNAL_LABELS] ?? key
+    const weight = SIGNAL_WEIGHTS[key as keyof typeof SIGNAL_WEIGHTS] ?? 0
     const barMaxW = W - margin * 2 - 45
     const barW    = (val / 100) * barMaxW
 
@@ -233,7 +234,7 @@ function generatePDF(area: ReturnType<typeof hyderabadAreas.find> & object) {
   doc.text('KEY HIGHLIGHTS', margin, y)
   y += 5
 
-  area.highlights.forEach(h => {
+  area.highlights.forEach((h: string) => {
     doc.setFillColor(cr, cg, cb)
     doc.circle(margin + 1.5, y + 1, 1, 'F')
     doc.setTextColor(150, 150, 170)
@@ -282,7 +283,7 @@ function generatePDF(area: ReturnType<typeof hyderabadAreas.find> & object) {
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
-  const area = hyderabadAreas.find((a) => a.slug === slug)
+  const area = getAllAreas().find((a) => a.slug === slug)
 
   if (!area) {
     return (
@@ -305,9 +306,10 @@ export default function AreaDetail() {
   const signals = Object.entries(area.signals) as [keyof typeof area.signals, number][]
   const sources = getAreaSources(area.slug)
 
-  // Nearby areas (similar score range)
-  const nearby = hyderabadAreas
-    .filter((a) => a.slug !== area.slug && Math.abs(a.score - area.score) <= 15)
+  // Nearby areas (similar score range, same city)
+  const cityAreas = getAllAreas().filter(a => a.slug !== area.slug)
+  const nearby = cityAreas
+    .filter((a: MicroMarket) => Math.abs(a.score - area.score) <= 15)
     .slice(0, 4)
 
   return (

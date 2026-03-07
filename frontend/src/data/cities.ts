@@ -27,3 +27,13 @@ export const CITY_LIST: CityMeta[] = [
 export function getCityEntry(slug: string): CityEntry {
   return CITIES[slug] ?? CITIES.hyderabad
 }
+
+/** Flat list of every area across all cities — used for slug lookup and coord search */
+export function getAllAreas(): MicroMarket[] {
+  return Object.values(CITIES).flatMap(c => c.areas)
+}
+
+/** Find which city an area slug belongs to */
+export function getCityForArea(slug: string): CityEntry | undefined {
+  return Object.values(CITIES).find(c => c.areas.some(a => a.slug === slug))
+}

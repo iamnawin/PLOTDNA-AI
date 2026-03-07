@@ -1,5 +1,5 @@
 import type { MicroMarket } from '@/types'
-import { hyderabadAreas } from '@/data/hyderabad'
+import { getAllAreas } from '@/data/cities'
 
 // ── Coordinate parsing ────────────────────────────────────────────────────────
 // Accepts: "17.51, 78.29"  |  "17.51 78.29"  |  "17.513607429705296,  78.2920650662839"
@@ -28,9 +28,10 @@ function distKm(lat1: number, lng1: number, lat2: number, lng2: number): number 
 }
 
 export function findNearestArea(lat: number, lng: number): { area: MicroMarket; distKm: number } {
-  let best = hyderabadAreas[0]
+  const allAreas = getAllAreas()
+  let best = allAreas[0]
   let bestDist = Infinity
-  for (const area of hyderabadAreas) {
+  for (const area of allAreas) {
     const d = distKm(lat, lng, area.center[0], area.center[1])
     if (d < bestDist) {
       best = area
