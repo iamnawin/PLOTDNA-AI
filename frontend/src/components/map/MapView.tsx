@@ -8,7 +8,7 @@ import Map, {
 } from 'react-map-gl/maplibre'
 import type { StyleSpecification } from 'maplibre-gl'
 import { useNavigate } from 'react-router-dom'
-import { hyderabadAreas, cityMeta } from '@/data/hyderabad'
+import { getCityEntry } from '@/data/cities'
 import { useAppStore, type MapStyleKey } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 
@@ -58,9 +58,12 @@ export default function MapView() {
     searchCoords,
     is3D,
     mapStyleKey,
+    selectedCitySlug,
     setSelectedArea,
     setHoveredSlug,
   } = useAppStore()
+
+  const { areas, meta: cityMeta } = getCityEntry(selectedCitySlug)
 
   const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null)
 
@@ -97,10 +100,21 @@ export default function MapView() {
     })
   }, [is3D])
 
+  // ── Fly to city center when city changes ─────────────────────────────────
+  useEffect(() => {
+    if (!mapRef.current) return
+    mapRef.current.flyTo({
+      center: [cityMeta.center[1], cityMeta.center[0]],
+      zoom: cityMeta.zoom,
+      duration: 1500,
+      essential: true,
+    })
+  }, [selectedCitySlug]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── GeoJSON: rebuild when selection / hover / filter changes ──────────────
   const geojson = useMemo(() => ({
     type: 'FeatureCollection' as const,
-    features: hyderabadAreas.map(area => {
+    features: areas.map(area => {
       const tierMatch = highlightTier === null || getScoreLabel(area.score) === highlightTier
       return {
         type: 'Feature' as const,
@@ -120,16 +134,16 @@ export default function MapView() {
         },
       }
     }),
-  }), [selectedArea, hoveredSlug, highlightTier])
+  }), [selectedArea, hoveredSlug, highlightTier, areas])
 
   // ── Event handlers ────────────────────────────────────────────────────────
   const handleClick = useCallback((e: MapLayerMouseEvent) => {
     const feat = e.features?.[0]
     if (!feat) return
     const slug = feat.properties?.slug as string
-    const area = hyderabadAreas.find(a => a.slug === slug)
+    const area = areas.find(a => a.slug === slug)
     if (area) setSelectedArea(area)
-  }, [setSelectedArea])
+  }, [setSelectedArea, areas])
 
   const handleDblClick = useCallback((e: MapLayerMouseEvent) => {
     const slug = e.features?.[0]?.properties?.slug as string | undefined
@@ -152,7 +166,7 @@ export default function MapView() {
   }, [setHoveredSlug])
 
   // ── Compute hover tooltip area ───────────────────────────────────────────────
-  const tooltipArea = hoverInfo ? hyderabadAreas.find(a => a.slug === hoverInfo.slug) : null
+  const tooltipArea = hoverInfo ? areas.find(a => a.slug === hoverInfo.slug) : null
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -307,7 +321,7 @@ export default function MapView() {
                   {tooltipArea.name}
                 </p>
                 <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 9, color: '#555566', margin: '3px 0 0' }}>
-                  {tooltipArea.category} · Hyderabad
+                  {tooltipArea.category} · {cityMeta.name}
                 </p>
               </div>
               <div style={{ textAlign: 'right', flexShrink: 0, marginLeft: 10 }}>

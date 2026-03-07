@@ -1,5 +1,12 @@
 export type Category = 'Established' | 'High Growth' | 'Emerging' | 'Industrial'
 
+export interface CityMeta {
+  slug: string
+  name: string
+  center: [number, number]  // [lat, lng]
+  zoom: number
+}
+
 export interface Signals {
   infrastructure: number
   population: number

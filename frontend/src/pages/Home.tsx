@@ -1,15 +1,15 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye } from 'lucide-react'
+import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu } from 'lucide-react'
 import { useAppStore } from '@/store'
-import { hyderabadAreas } from '@/data/hyderabad'
+import { getCityEntry, CITY_LIST } from '@/data/cities'
+import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import { parseCoords, findNearestArea } from '@/lib/plotAnalysis'
 import MapView from '@/components/map/MapView'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
-import type { MicroMarket } from '@/types'
 
 const RISK_TIERS = [
   { color: '#ef4444', label: 'High Risk',    range: '0–40'   },
@@ -18,17 +18,18 @@ const RISK_TIERS = [
   { color: '#10b981', label: 'Goldzone',     range: '86–100' },
 ]
 
-const sorted = [...hyderabadAreas].sort((a, b) => b.score - a.score)
-const TOP_SUGGESTIONS = sorted.slice(0, 4)
-const AVG_DNA = Math.round(hyderabadAreas.reduce((s, a) => s + a.score, 0) / hyderabadAreas.length)
-
 export default function Home() {
   const navigate = useNavigate()
-  const { selectedArea, highlightTier, searchCoords, is3D, mapStyleKey, setSelectedArea, setHighlightTier, setSearchCoords, setIs3D, setMapStyleKey } = useAppStore()
-  const [searchQuery, setSearchQuery]     = useState('')
-  const [searchFocused, setSearchFocused] = useState(false)
-  const [showLayers, setShowLayers]       = useState(false)
+  const { selectedArea, highlightTier, searchCoords, is3D, mapStyleKey, selectedCitySlug, setSelectedArea, setHighlightTier, setSearchCoords, setIs3D, setMapStyleKey, setSelectedCitySlug } = useAppStore()
+  const [searchQuery, setSearchQuery]         = useState('')
+  const [searchFocused, setSearchFocused]     = useState(false)
+  const [showLayers, setShowLayers]           = useState(false)
+  const [showMobileSidebar, setShowMobileSidebar] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const { areas: cityAreas, meta: cityMeta } = getCityEntry(selectedCitySlug)
+  const sorted = [...cityAreas].sort((a, b) => b.score - a.score)
+  const AVG_DNA = Math.round(cityAreas.reduce((s, a) => s + a.score, 0) / cityAreas.length)
 
   const parsedCoords   = parseCoords(searchQuery)
   const searchResults: MicroMarket[] = searchQuery.trim() && !parsedCoords
@@ -40,6 +41,11 @@ export default function Home() {
   const sidebarList = highlightTier
     ? sorted.filter(a => getScoreLabel(a.score) === highlightTier)
     : sorted
+
+  function handleCityChange(slug: string) {
+    setSelectedCitySlug(slug)
+    setShowMobileSidebar(false)
+  }
 
   function selectArea(area: MicroMarket) {
     setSelectedArea(area)
@@ -74,7 +80,7 @@ export default function Home() {
       />
 
       {/* ═══════════════════════════════════════════════
-          TOP-LEFT: Logo watermark
+          TOP-LEFT: Logo watermark + mobile hamburger
       ════════════════════════════════════════════════ */}
       <div className="absolute top-5 left-5 z-[1000] flex items-center gap-2.5">
         <div
@@ -94,16 +100,24 @@ export default function Home() {
               style={{ boxShadow: '0 0 5px #00e676', animation: 'pulse 2s infinite' }}
             />
             <span className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.14em]">Live</span>
-            <span className="text-[9px] font-mono text-[#444455]">· Hyderabad</span>
+            <span className="text-[9px] font-mono text-[#444455]">· {cityMeta.name}</span>
           </div>
         </div>
+        {/* Mobile hamburger — visible only on small screens */}
+        <button
+          className="md:hidden ml-2 flex items-center justify-center w-8 h-8 rounded-lg"
+          style={{ background: 'rgba(5,5,10,0.85)', border: '1px solid rgba(255,255,255,0.08)' }}
+          onClick={() => setShowMobileSidebar(v => !v)}
+        >
+          <Menu size={14} style={{ color: '#888899' }} />
+        </button>
       </div>
 
       {/* ═══════════════════════════════════════════════
-          TOP-RIGHT: Stats pill
+          TOP-RIGHT: Stats pill (hidden on mobile)
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute top-5 right-5 z-[1000] flex items-center gap-4 px-4 py-2.5 rounded-xl"
+        className="absolute top-5 right-5 z-[1000] hidden md:flex items-center gap-4 px-4 py-2.5 rounded-xl"
         style={{
           background: 'rgba(5,5,10,0.78)',
           backdropFilter: 'blur(20px)',
@@ -113,7 +127,7 @@ export default function Home() {
       >
         <div className="text-center">
           <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest">Markets</p>
-          <p className="text-[15px] font-mono font-bold text-[#e8e8f0] leading-tight">{hyderabadAreas.length}</p>
+          <p className="text-[15px] font-mono font-bold text-[#e8e8f0] leading-tight">{cityAreas.length}</p>
         </div>
         <div className="w-px h-6 bg-[#1e1e2e]" />
         <div className="text-center">
@@ -130,7 +144,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════
           CENTER TOP: Search + Suggestions
       ════════════════════════════════════════════════ */}
-      <div className="absolute top-5 left-1/2 -translate-x-1/2 z-[1002] w-[460px]">
+      <div className="absolute top-14 md:top-5 left-3 right-3 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[1002] md:w-[460px]">
 
         {/* Search bar */}
         <div className="relative">
@@ -242,7 +256,7 @@ export default function Home() {
           </AnimatePresence>
         </div>
 
-        {/* Suggested area chips */}
+        {/* City selector + top area chips */}
         <AnimatePresence>
           {!searchQuery && (
             <motion.div
@@ -250,36 +264,49 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2, delay: 0.05 }}
-              className="flex items-center justify-center gap-2 mt-2.5"
+              className="mt-2"
             >
-              {TOP_SUGGESTIONS.map((area) => {
-                const color = getScoreColor(area.score)
-                return (
-                  <button
-                    key={area.slug}
-                    onClick={() => navigate(`/area/${area.slug}`)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all"
-                    style={{
-                      background: `${color}16`,
-                      border: `1px solid ${color}28`,
-                      color,
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = `${color}28`
-                      e.currentTarget.style.borderColor = `${color}55`
-                      e.currentTarget.style.boxShadow = `0 0 12px ${color}25`
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = `${color}16`
-                      e.currentTarget.style.borderColor = `${color}28`
-                      e.currentTarget.style.boxShadow = 'none'
-                    }}
-                  >
-                    <Zap size={9} />
-                    {area.name}
-                  </button>
-                )
-              })}
+              {/* City pills row */}
+              <div className="flex items-center justify-center gap-1.5 mb-2">
+                {CITY_LIST.map(city => {
+                  const isActive = selectedCitySlug === city.slug
+                  return (
+                    <button
+                      key={city.slug}
+                      onClick={() => handleCityChange(city.slug)}
+                      className="px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150"
+                      style={{
+                        background: isActive ? 'rgba(0,230,118,0.12)' : 'rgba(5,5,10,0.82)',
+                        border: isActive ? '1px solid rgba(0,230,118,0.4)' : '1px solid rgba(255,255,255,0.07)',
+                        color: isActive ? '#00e676' : '#666680',
+                        boxShadow: isActive ? '0 0 10px rgba(0,230,118,0.15)' : 'none',
+                        backdropFilter: 'blur(12px)',
+                      }}
+                    >
+                      {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
+                    </button>
+                  )
+                })}
+              </div>
+              {/* Top area chips */}
+              <div className="flex items-center justify-center gap-2">
+                {sorted.slice(0, 4).map((area: MicroMarket) => {
+                  const color = getScoreColor(area.score)
+                  return (
+                    <button
+                      key={area.slug}
+                      onClick={() => navigate(`/area/${area.slug}`)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all"
+                      style={{ background: `${color}16`, border: `1px solid ${color}28`, color }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = `${color}28`; e.currentTarget.style.boxShadow = `0 0 12px ${color}25` }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = `${color}16`; e.currentTarget.style.boxShadow = 'none' }}
+                    >
+                      <Zap size={9} />
+                      {area.name}
+                    </button>
+                  )
+                })}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
@@ -288,8 +315,17 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════
           LEFT: DNA Rankings panel
       ════════════════════════════════════════════════ */}
+      {/* Mobile sidebar overlay backdrop */}
+      {showMobileSidebar && (
+        <div
+          className="absolute inset-0 z-[998] md:hidden"
+          style={{ background: 'rgba(0,0,0,0.5)' }}
+          onClick={() => setShowMobileSidebar(false)}
+        />
+      )}
+
       <div
-        className="absolute left-5 z-[999] flex flex-col rounded-xl overflow-hidden"
+        className={`absolute left-5 z-[999] flex-col rounded-xl overflow-hidden ${showMobileSidebar ? 'flex' : 'hidden'} md:flex`}
         style={{
           top: 78,
           bottom: 76,
@@ -564,13 +600,15 @@ export default function Home() {
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute bottom-5 left-1/2 -translate-x-1/2 z-[999] flex items-center p-1 gap-1 rounded-full"
+        className="absolute bottom-5 left-3 right-3 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto"
         style={{
           background: 'rgba(5,5,10,0.88)',
           backdropFilter: 'blur(22px)',
           border: '1px solid rgba(255,255,255,0.06)',
           boxShadow: '0 4px 24px rgba(0,0,0,0.55)',
-        }}
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+        } as React.CSSProperties}
       >
         {RISK_TIERS.map((tier) => {
           const isActive = highlightTier === tier.label
