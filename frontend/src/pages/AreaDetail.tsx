@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
   Hammer, Users, Globe, Shield, Briefcase, Landmark,
-  Navigation, ShoppingBag, Package, Film, Leaf, Command,
+  Navigation, ShoppingBag, Package, Film, Leaf,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
