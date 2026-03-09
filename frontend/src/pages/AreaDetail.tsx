@@ -7,7 +7,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
-import { getAllAreas, getCityForArea } from '@/data/cities'
+import { CITIES, getAllAreas, getCityForArea } from '@/data/cities'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
@@ -308,6 +308,13 @@ export default function AreaDetail() {
   const signals = Object.entries(area.signals) as [keyof typeof area.signals, number][]
   const sources = getAreaSources(area.slug)
 
+  // Derive city slug for live-data components
+  const citySlug = (() => {
+    const entry = getCityForArea(area.slug)
+    if (!entry) return 'hyderabad'
+    return Object.entries(CITIES).find(([, v]) => v === entry)?.[0] ?? 'hyderabad'
+  })()
+
   // Nearby areas (similar score range, same city)
   const cityAreas = getAllAreas().filter(a => a.slug !== area.slug)
   const nearby = cityAreas
@@ -449,6 +456,26 @@ export default function AreaDetail() {
               </div>
             </div>
           </div>
+        </motion.div>
+
+        {/* ── AI Verdict ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-10"
+        >
+          <VerdictCard citySlug={citySlug} areaSlug={area.slug} />
+        </motion.div>
+
+        {/* ── Live News ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.12 }}
+          className="mb-10"
+        >
+          <NewsSection citySlug={citySlug} areaSlug={area.slug} accentColor={color} />
         </motion.div>
 
         {/* ── Signal breakdown ── */}
