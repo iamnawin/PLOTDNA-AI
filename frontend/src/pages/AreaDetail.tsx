@@ -3,11 +3,11 @@ import { motion } from 'framer-motion'
 import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
   Hammer, Users, Globe, Shield, Briefcase, Landmark,
-  Navigation, ShoppingBag, Package, Film, Leaf,
+  Navigation, ShoppingBag, Package, Film, Leaf, Command,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
-import { getAllAreas } from '@/data/cities'
+import { getAllAreas, getCityForArea } from '@/data/cities'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
@@ -15,6 +15,8 @@ import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/area
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SatelliteCompare from '@/components/ui/SatelliteCompare'
+import VerdictCard from '@/components/ui/VerdictCard'
+import NewsSection from '@/components/ui/NewsSection'
 
 // ── Signal tier helper ─────────────────────────────────────────────────────────
 function getSignalTier(v: number) {
