@@ -1,0 +1,24 @@
+# requirements-render.txt
+# Lean deps for Phase 1 Render.com deployment.
+# Excludes: geopandas, earthengine-api, redis, celery, psycopg2 (Phase 2+)
+
+# Web framework
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+
+# HTTP & async (news feed fetching)
+httpx==0.28.1
+aiohttp==3.11.10
+
+# Data validation & config
+pydantic==2.10.3
+pydantic-settings==2.7.0
+
+# Environment
+python-dotenv==1.0.1
+
+# AI — Gemini Flash (verdict service)
+google-generativeai==0.8.3
+
+# News aggregation — RSS feeds
+feedparser==6.0.11

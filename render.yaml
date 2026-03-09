@@ -1,0 +1,36 @@
+# render.yaml — PlotDNA backend deployment on Render.com
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: plotdna-api
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements-render.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+
+    # Render free plan: 512 MB RAM, spins down after 15 min inactivity
+    # Upgrade to Starter ($7/mo) to avoid cold starts in production
+    plan: free
+
+    envVars:
+      # ── Required ────────────────────────────────────────────────────────────
+      - key: GEMINI_API_KEY
+        sync: false           # set manually in Render dashboard
+
+      # ── Optional — tighten once you have a custom domain ──────────────────
+      - key: ALLOWED_ORIGINS
+        value: "*"            # replace with https://plotdna.in,https://plotdna-*.vercel.app
+
+      # ── Runtime ─────────────────────────────────────────────────────────────
+      - key: APP_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+      # ── Phase 2 (leave blank until Supabase is wired up) ──────────────────
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
