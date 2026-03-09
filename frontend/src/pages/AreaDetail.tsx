@@ -90,7 +90,7 @@ function generatePDF(area: MicroMarket) {
   doc.setTextColor(cr, cg, cb)
   doc.setFontSize(7)
   doc.setFont('helvetica', 'normal')
-  doc.text('Area DNA Analysis Report  ·  Hyderabad, Telangana', margin + 16, 23)
+  doc.text(`Area DNA Analysis Report  ·  ${area.category}`, margin + 16, 23)
 
   // Date
   doc.setTextColor(80, 80, 100)
@@ -275,7 +275,7 @@ function generatePDF(area: MicroMarket) {
   doc.setTextColor(60, 60, 80)
   doc.setFontSize(6)
   doc.text('PlotDNA — AI-powered real estate intelligence for India  ·  plotdna.in', margin, 292)
-  doc.text('Data reflects area-level signals only. Always verify RERA before purchasing.  ·  rera.telangana.gov.in', W - margin, 292, { align: 'right' })
+  doc.text('Data reflects area-level signals only. Always verify RERA registration before purchasing.', W - margin, 292, { align: 'right' })
 
   doc.save(`PlotDNA_${area.name.replace(/\s+/g, '_')}_Report.pdf`)
 }
@@ -306,19 +306,19 @@ export default function AreaDetail() {
   const circumference = 2 * Math.PI * r
   const dashOffset = circumference - (area.score / 100) * circumference
   const signals = Object.entries(area.signals) as [keyof typeof area.signals, number][]
-  const sources = getAreaSources(area.slug)
 
-  // Derive city slug for live-data components
-  const citySlug = (() => {
-    const entry = getCityForArea(area.slug)
-    if (!entry) return 'hyderabad'
-    return Object.entries(CITIES).find(([, v]) => v === entry)?.[0] ?? 'hyderabad'
-  })()
+  // City context — drives sources, verdict, news, nearby zones, and city label
+  const cityEntry = getCityForArea(area.slug)
+  const citySlug = cityEntry
+    ? Object.entries(CITIES).find(([, v]) => v === cityEntry)?.[0] ?? 'hyderabad'
+    : 'hyderabad'
+  const cityName = cityEntry?.meta.name ?? 'India'
 
-  // Nearby areas (similar score range, same city)
-  const cityAreas = getAllAreas().filter(a => a.slug !== area.slug)
-  const nearby = cityAreas
-    .filter((a: MicroMarket) => Math.abs(a.score - area.score) <= 15)
+  const sources = getAreaSources(area.slug, citySlug)
+
+  // Nearby areas — same city only, ±15 DNA score range
+  const nearby = (cityEntry?.areas ?? [])
+    .filter((a: MicroMarket) => a.slug !== area.slug && Math.abs(a.score - area.score) <= 15)
     .slice(0, 4)
 
   return (
@@ -409,7 +409,7 @@ export default function AreaDetail() {
             <h1 className="font-display text-4xl font-black text-[#e8e8f0] mt-3 leading-tight">
               {area.name}
             </h1>
-            <p className="text-[#555566] font-mono text-sm mt-1">{area.category} · Hyderabad</p>
+            <p className="text-[#555566] font-mono text-sm mt-1">{area.category} · {cityName}</p>
 
             <div
               className="mt-6 p-4 rounded-xl"
