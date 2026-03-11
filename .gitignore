@@ -49,3 +49,6 @@ logs/
 data/hyderabad/*.geojson.gz
 data/india/*.geojson.gz
 scripts/__pycache__/
+
+# Claude Code
+.claude/worktrees/
