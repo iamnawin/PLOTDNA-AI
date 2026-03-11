@@ -6,7 +6,7 @@
  */
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { BarChart2, TrendingUp, IndianRupee, Clock, Info } from 'lucide-react'
+import { BarChart2, Info } from 'lucide-react'
 
 interface YearProjection {
   year: number
@@ -173,7 +173,6 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
           style={{
             background: 'rgba(255,255,255,0.015)',
             borderBottom: '1px solid rgba(255,255,255,0.05)',
-            divideColor: 'rgba(255,255,255,0.05)',
           }}
         >
           <KpiCell label="Gross Yield" value={`${data.gross_yield_pct.toFixed(1)}%`} color="#22c55e" />
