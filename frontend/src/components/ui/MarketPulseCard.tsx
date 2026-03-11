@@ -125,7 +125,6 @@ export default function MarketPulseCard({ citySlug, areaSlug, country = 'india' 
   const cfg = SENTIMENT_CONFIG[data.sentiment_label]
   const score = data.sentiment_score
   // Gauge: -180° to 0° maps to 0–100
-  const gaugeAngle = -180 + (score / 100) * 180
   const total = data.positive_count + data.neutral_count + data.negative_count || 1
 
   return (
@@ -241,7 +240,7 @@ export default function MarketPulseCard({ citySlug, areaSlug, country = 'india' 
 
         {/* Articles with sentiment badges */}
         {data.articles.length > 0 && (
-          <div className="divide-y" style={{ divideColor: 'rgba(255,255,255,0.04)' }}>
+          <div className="divide-y divide-white/5">
             {data.articles.slice(0, 5).map((article, i) => {
               const ac = SENTIMENT_CONFIG[article.sentiment]
               const AIcon = ac.Icon

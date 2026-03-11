@@ -51,14 +51,12 @@ export default function BrochureUploadCard() {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<BrochureResult | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [expanded, setExpanded] = useState(false)
   const [showClausesAll, setShowClausesAll] = useState(false)
 
   const reset = () => {
     setFile(null)
     setResult(null)
     setError(null)
-    setExpanded(false)
     setShowClausesAll(false)
   }
 
@@ -87,7 +85,6 @@ export default function BrochureUploadCard() {
       if (!res.ok) throw new Error(`Server error ${res.status}`)
       const data: BrochureResult = await res.json()
       setResult(data)
-      setExpanded(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Analysis failed — start the FastAPI backend.')
     } finally {
