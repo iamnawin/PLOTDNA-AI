@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
   Hammer, Users, Globe, Shield, Briefcase, Landmark,
-  Navigation, ShoppingBag, Package, Film, Leaf,
+  Navigation, ShoppingBag, Package, Film, Leaf, Sparkles,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
@@ -17,6 +17,9 @@ import ScoreBadge from '@/components/ui/ScoreBadge'
 import SatelliteCompare from '@/components/ui/SatelliteCompare'
 import VerdictCard from '@/components/ui/VerdictCard'
 import NewsSection from '@/components/ui/NewsSection'
+import MarketPulseCard from '@/components/ui/MarketPulseCard'
+import AVMCard from '@/components/ui/AVMCard'
+import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
 
 // ── Signal tier helper ─────────────────────────────────────────────────────────
 function getSignalTier(v: number) {
@@ -347,6 +350,22 @@ export default function AreaDetail() {
           <span className="font-display font-bold text-[#e8e8f0] text-sm">PlotDNA</span>
         </div>
 
+        {/* Brochure AI link */}
+        <button
+          onClick={() => navigate('/brochure')}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all mr-2"
+          style={{
+            background: '#6366f112',
+            border: '1px solid #6366f128',
+            color: '#6366f1',
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = '#6366f122' }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = '#6366f112' }}
+        >
+          <Sparkles size={11} />
+          Brochure AI
+        </button>
+
         {/* Download PDF button */}
         <button
           onClick={() => generatePDF(area)}
@@ -477,6 +496,15 @@ export default function AreaDetail() {
         >
           <NewsSection citySlug={citySlug} areaSlug={area.slug} accentColor={color} />
         </motion.div>
+
+        {/* ── Phase 2: Market Pulse ── */}
+        <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
+
+        {/* ── Phase 2: Automated Valuation ── */}
+        <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
+
+        {/* ── Phase 2: Brochure Analyzer ── */}
+        <BrochureUploadCard />
 
         {/* ── Signal breakdown ── */}
         <motion.section
