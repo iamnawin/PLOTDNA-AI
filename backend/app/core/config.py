@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     # CORS (set "*" for public APIs, or comma-separated origins for production)
     ALLOWED_ORIGINS: str = "*"
 
-    # AI — required for live verdicts
+    # AI — required for live verdicts + brochure parsing
     GEMINI_API_KEY: str = ""
 
     # Database (Supabase) — Phase 2
@@ -34,6 +34,23 @@ class Settings(BaseSettings):
 
     # Redis — Phase 2 (replaced by in-memory cache for Phase 1)
     REDIS_URL: str = "redis://localhost:6379"
+
+    # Phase 2: News Intelligence
+    NEWS_API_KEY: str = ""          # newsapi.org — 100 req/day free
+
+    # Phase 2: UAE — Dubai Land Department Open Data
+    DLD_API_KEY: str = ""           # data.gov.ae API key
+
+    # Phase 2: India — API Setu (national land records, RERA 2.0)
+    API_SETU_KEY: str = ""          # api.setu.in developer key
+
+    # Phase 2: Brochure parsing
+    MAX_BROCHURE_SIZE_MB: int = 10
+    UPLOAD_TEMP_DIR:      str = ""  # defaults to system temp if empty
+
+    # Multi-country
+    DEFAULT_COUNTRY:     str = "India"
+    SUPPORTED_COUNTRIES: str = "India,UAE"
 
     model_config = {
         "env_file": _find_env(),
