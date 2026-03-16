@@ -870,13 +870,17 @@ export default function AreaDetail() {
               const tc = SOURCE_TYPE_COLOR[s.type]
               const tl = SOURCE_TYPE_LABEL[s.type]
               return (
-                <button
+                <a
                   key={i}
-                  onClick={() => window.open(s.url, '_blank', 'noopener,noreferrer')}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl group transition-all duration-150 text-left cursor-pointer"
                   style={{
+                    display: 'flex',
                     background: 'rgba(255,255,255,0.02)',
                     border: '1px solid rgba(255,255,255,0.05)',
+                    textDecoration: 'none',
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = `${tc}25` }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)' }}
@@ -898,7 +902,7 @@ export default function AreaDetail() {
                     className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
                     style={{ color: tc }}
                   />
-                </button>
+                </a>
               )
             })}
           </div>
