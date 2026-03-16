@@ -11,6 +11,43 @@ import { useNavigate } from 'react-router-dom'
 import { getCityEntry } from '@/data/cities'
 import { useAppStore, type MapStyleKey } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
+import type { ActiveProject } from '@/types'
+
+// ── Construction marker helpers ───────────────────────────────────────────────
+const PROJECT_TYPE_COLOR: Record<string, string> = {
+  metro:          '#3b82f6',
+  highway:        '#f97316',
+  flyover:        '#fb923c',
+  it_park:        '#8b5cf6',
+  residential:    '#14b8a6',
+  commercial:     '#a855f7',
+  hospital:       '#ef4444',
+  airport:        '#0ea5e9',
+  industrial:     '#eab308',
+  infrastructure: '#64748b',
+}
+
+const PROJECT_TYPE_LABEL: Record<string, string> = {
+  metro: 'Metro', highway: 'Highway', flyover: 'Flyover',
+  it_park: 'IT Park', residential: 'Residential', commercial: 'Commercial',
+  hospital: 'Hospital', airport: 'Airport', industrial: 'Industrial',
+  infrastructure: 'Infrastructure',
+}
+
+const STATUS_LABEL: Record<string, string> = {
+  planning: 'Planning', approved: 'Approved',
+  under_construction: 'Under Construction', near_completion: 'Near Completion',
+}
+const STATUS_COLOR: Record<string, string> = {
+  planning: '#64748b', approved: '#f59e0b',
+  under_construction: '#3b82f6', near_completion: '#10b981',
+}
+const STATUS_OPACITY: Record<string, number> = {
+  planning: 0.4, approved: 0.65,
+  under_construction: 1.0, near_completion: 1.0,
+}
+
+interface ConstructionHover { x: number; y: number; project: ActiveProject }
 
 // ── Basemap style definitions (all free, no API key) ─────────────────────────
 
@@ -48,8 +85,9 @@ const MAP_STYLES: Record<MapStyleKey, string | StyleSpecification> = {
 interface HoverInfo { x: number; y: number; slug: string }
 
 export default function MapView() {
-  const mapRef   = useRef<MapRef>(null)
-  const navigate = useNavigate()
+  const mapRef      = useRef<MapRef>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const navigate    = useNavigate()
 
   const {
     selectedArea,
@@ -59,13 +97,20 @@ export default function MapView() {
     is3D,
     mapStyleKey,
     selectedCitySlug,
+    showConstruction,
     setSelectedArea,
     setHoveredSlug,
   } = useAppStore()
 
   const { areas, meta: cityMeta } = getCityEntry(selectedCitySlug)
 
-  const [hoverInfo, setHoverInfo] = useState<HoverInfo | null>(null)
+  const [hoverInfo, setHoverInfo]             = useState<HoverInfo | null>(null)
+  const [constructionHover, setConstructionHover] = useState<ConstructionHover | null>(null)
+
+  const constructionProjects = useMemo(() =>
+    showConstruction ? areas.flatMap(a => a.activeProjects ?? []) : [],
+    [areas, showConstruction],
+  )
 
   // ── Fly to coordinate pin ─────────────────────────────────────────────────
   useEffect(() => {
@@ -169,7 +214,7 @@ export default function MapView() {
   const tooltipArea = hoverInfo ? areas.find(a => a.slug === hoverInfo.slug) : null
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
       <Map
         ref={mapRef}
         mapStyle={MAP_STYLES[mapStyleKey]}
@@ -246,6 +291,58 @@ export default function MapView() {
           />
         </Source>
 
+        {/* ── Construction activity markers ── */}
+        {constructionProjects.map(proj => {
+          const c       = PROJECT_TYPE_COLOR[proj.type] ?? '#64748b'
+          const opacity = STATUS_OPACITY[proj.status] ?? 1
+          const isPulsing = proj.status === 'under_construction' || proj.status === 'near_completion'
+          return (
+            <Marker
+              key={proj.id}
+              longitude={proj.coordinates[1]}
+              latitude={proj.coordinates[0]}
+              anchor="center"
+            >
+              <div
+                style={{ position: 'relative', width: 20, height: 20, cursor: 'pointer' }}
+                onMouseEnter={(e) => {
+                  const rect = containerRef.current?.getBoundingClientRect()
+                  if (!rect) return
+                  setConstructionHover({ x: e.clientX - rect.left, y: e.clientY - rect.top, project: proj })
+                }}
+                onMouseMove={(e) => {
+                  const rect = containerRef.current?.getBoundingClientRect()
+                  if (!rect) return
+                  setConstructionHover(prev => prev ? { ...prev, x: e.clientX - rect.left, y: e.clientY - rect.top } : null)
+                }}
+                onMouseLeave={() => setConstructionHover(null)}
+              >
+                {isPulsing && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%', left: '50%',
+                    width: 20, height: 20,
+                    borderRadius: '50%',
+                    border: `1.5px solid ${c}90`,
+                    animation: `construction-pulse ${proj.status === 'near_completion' ? '1.6s' : '2.4s'} ease-out infinite`,
+                  }} />
+                )}
+                <div style={{
+                  position: 'absolute',
+                  top: '50%', left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: 11, height: 11,
+                  borderRadius: '50%',
+                  backgroundColor: c,
+                  border: '2px solid rgba(5,5,10,0.9)',
+                  opacity,
+                  boxShadow: `0 0 10px ${c}80`,
+                }} />
+              </div>
+            </Marker>
+          )
+        })}
+
         {/* ── Coordinate pin ── */}
         {searchCoords && (
           <Marker
@@ -286,6 +383,76 @@ export default function MapView() {
           </Marker>
         )}
       </Map>
+
+      {/* ── Construction project tooltip ── */}
+      {constructionHover && (() => {
+        const { x: cx, y: cy, project } = constructionHover
+        const c   = PROJECT_TYPE_COLOR[project.type] ?? '#64748b'
+        const sc  = STATUS_COLOR[project.status] ?? '#64748b'
+        const TW  = 244
+        const tx  = Math.min(cx + 16, window.innerWidth - TW - 24)
+        const ty  = Math.max(8, cy - 72)
+        return (
+          <div style={{
+            position: 'absolute', left: tx, top: ty,
+            width: TW, pointerEvents: 'none', zIndex: 300,
+            background: 'rgba(5,5,10,0.97)', backdropFilter: 'blur(28px)',
+            border: `1px solid ${c}35`, borderRadius: 12,
+            padding: '12px 14px', boxShadow: `0 16px 48px rgba(0,0,0,0.8)`,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 7 }}>
+              <span style={{
+                fontFamily: 'IBM Plex Mono, monospace', fontSize: 8, fontWeight: 700,
+                color: c, background: `${c}18`, border: `1px solid ${c}35`,
+                borderRadius: 4, padding: '2px 6px',
+              }}>
+                {PROJECT_TYPE_LABEL[project.type] ?? project.type}
+              </span>
+              <span style={{
+                fontFamily: 'IBM Plex Mono, monospace', fontSize: 8, fontWeight: 700,
+                color: sc, background: `${sc}18`, border: `1px solid ${sc}35`,
+                borderRadius: 4, padding: '2px 6px',
+              }}>
+                {STATUS_LABEL[project.status] ?? project.status}
+              </span>
+              {project.impact === 'high' && (
+                <span style={{
+                  fontFamily: 'IBM Plex Mono, monospace', fontSize: 7, fontWeight: 700,
+                  color: '#f59e0b', background: '#f59e0b18', border: '1px solid #f59e0b35',
+                  borderRadius: 4, padding: '2px 6px',
+                }}>HIGH IMPACT</span>
+              )}
+            </div>
+            <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: '#e8e8f0', fontWeight: 700, lineHeight: 1.3, margin: '0 0 5px' }}>
+              {project.name}
+            </p>
+            {project.description && (
+              <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 9, color: '#666680', lineHeight: 1.5, margin: '0 0 8px' }}>
+                {project.description}
+              </p>
+            )}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+              {project.investment && (
+                <div>
+                  <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 7, color: '#444455', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 2px' }}>Investment</p>
+                  <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: '#e8e8f0', fontWeight: 700, margin: 0 }}>{project.investment}</p>
+                </div>
+              )}
+              {project.expectedCompletion && (
+                <div>
+                  <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 7, color: '#444455', textTransform: 'uppercase', letterSpacing: '0.08em', margin: '0 0 2px' }}>ETA</p>
+                  <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 12, color: '#aaaabc', margin: 0 }}>{project.expectedCompletion}</p>
+                </div>
+              )}
+            </div>
+            {project.developer && (
+              <p style={{ fontFamily: 'IBM Plex Mono, monospace', fontSize: 9, color: '#555566', marginTop: 7 }}>
+                by {project.developer}
+              </p>
+            )}
+          </div>
+        )
+      })()}
 
       {/* ── Hover tooltip ─────────────────────────────────────────────────────── */}
       {tooltipArea && hoverInfo && (() => {

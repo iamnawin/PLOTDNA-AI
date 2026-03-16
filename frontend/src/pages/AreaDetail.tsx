@@ -4,6 +4,7 @@ import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
   Hammer, Users, Globe, Shield, Briefcase, Landmark,
   Navigation, ShoppingBag, Package, Film, Leaf, Sparkles,
+  HardHat, Train, Car, Home, Building, Plane, Factory, Wifi,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
@@ -20,6 +21,32 @@ import NewsSection from '@/components/ui/NewsSection'
 import MarketPulseCard from '@/components/ui/MarketPulseCard'
 import AVMCard from '@/components/ui/AVMCard'
 import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
+
+// ── Active project helpers ──────────────────────────────────────────────────────
+const PROJECT_TYPE_COLOR: Record<string, string> = {
+  metro: '#3b82f6', highway: '#f97316', flyover: '#fb923c',
+  it_park: '#8b5cf6', residential: '#14b8a6', commercial: '#a855f7',
+  hospital: '#ef4444', airport: '#0ea5e9', industrial: '#eab308',
+  infrastructure: '#64748b',
+}
+const PROJECT_TYPE_ICON: Record<string, LucideIcon> = {
+  metro: Train, highway: Car, flyover: Car, it_park: Wifi,
+  residential: Home, commercial: Building, hospital: Building2,
+  airport: Plane, industrial: Factory, infrastructure: HardHat,
+}
+const PROJECT_TYPE_LABEL: Record<string, string> = {
+  metro: 'Metro', highway: 'Highway', flyover: 'Flyover', it_park: 'IT Park',
+  residential: 'Residential', commercial: 'Commercial', hospital: 'Hospital',
+  airport: 'Airport', industrial: 'Industrial', infrastructure: 'Infrastructure',
+}
+const STATUS_COLOR: Record<string, string> = {
+  planning: '#64748b', approved: '#f59e0b',
+  under_construction: '#3b82f6', near_completion: '#10b981',
+}
+const STATUS_LABEL: Record<string, string> = {
+  planning: 'Planning', approved: 'Approved',
+  under_construction: 'Under Construction', near_completion: 'Near Completion',
+}
 
 // ── Signal tier helper ─────────────────────────────────────────────────────────
 function getSignalTier(v: number) {
@@ -678,6 +705,152 @@ export default function AreaDetail() {
             ))}
           </div>
         </motion.section>
+
+        {/* ── Active Development Pipeline ── */}
+        {area.activeProjects && area.activeProjects.length > 0 && (() => {
+          const totalInvestment = area.activeProjects
+            .filter(p => p.investment)
+            .map(p => {
+              const match = p.investment!.replace(/[₹,]/g, '').match(/[\d.]+/)
+              return match ? parseFloat(match[0]) : 0
+            })
+            .reduce((a, b) => a + b, 0)
+          const activeCount = area.activeProjects.filter(
+            p => p.status === 'under_construction' || p.status === 'near_completion'
+          ).length
+          return (
+            <motion.section
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.38 }}
+              className="mb-10"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-2.5">
+                  <HardHat size={12} className="text-[#f97316]" />
+                  <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+                    Active Development Pipeline
+                  </h2>
+                </div>
+                <div className="flex items-center gap-2">
+                  {activeCount > 0 && (
+                    <span
+                      className="text-[8px] font-mono font-bold px-2 py-1 rounded"
+                      style={{ background: '#3b82f618', color: '#3b82f6', border: '1px solid #3b82f630' }}
+                    >
+                      {activeCount} ACTIVE
+                    </span>
+                  )}
+                  {totalInvestment > 0 && (
+                    <span
+                      className="text-[8px] font-mono text-[#888899] px-2 py-1 rounded"
+                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                    >
+                      ₹{totalInvestment.toLocaleString('en-IN')} Cr pipeline
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Project cards */}
+              <div className="space-y-3">
+                {area.activeProjects.map((proj, i) => {
+                  const tc   = PROJECT_TYPE_COLOR[proj.type]   ?? '#64748b'
+                  const sc   = STATUS_COLOR[proj.status]        ?? '#64748b'
+                  const sl   = STATUS_LABEL[proj.status]        ?? proj.status
+                  const tl   = PROJECT_TYPE_LABEL[proj.type]   ?? proj.type
+                  const Icon = PROJECT_TYPE_ICON[proj.type]    ?? HardHat
+                  const isPulsing = proj.status === 'under_construction' || proj.status === 'near_completion'
+                  return (
+                    <motion.div
+                      key={proj.id}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.42 + i * 0.07 }}
+                      className="flex items-start gap-4 p-4 rounded-xl"
+                      style={{
+                        background: `${tc}06`,
+                        border: `1px solid ${tc}20`,
+                      }}
+                    >
+                      {/* Type icon */}
+                      <div
+                        className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                        style={{ background: `${tc}18` }}
+                      >
+                        <Icon size={15} style={{ color: tc }} />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1.5">
+                          <p className="text-sm font-mono font-semibold text-[#e8e8f0] leading-snug">
+                            {proj.name}
+                          </p>
+                          <div className="flex items-center gap-1.5 flex-shrink-0">
+                            {isPulsing && (
+                              <span className="relative flex items-center">
+                                <span
+                                  className="inline-block w-1.5 h-1.5 rounded-full"
+                                  style={{ backgroundColor: sc, boxShadow: `0 0 6px ${sc}` }}
+                                />
+                              </span>
+                            )}
+                            <span
+                              className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded"
+                              style={{ background: `${sc}15`, color: sc, border: `1px solid ${sc}30` }}
+                            >
+                              {sl}
+                            </span>
+                          </div>
+                        </div>
+
+                        {proj.description && (
+                          <p className="text-[11px] font-mono text-[#666680] leading-relaxed mb-2.5">
+                            {proj.description}
+                          </p>
+                        )}
+
+                        <div className="flex flex-wrap items-center gap-3">
+                          <span
+                            className="text-[8px] font-mono px-1.5 py-0.5 rounded"
+                            style={{ background: `${tc}12`, color: tc, border: `1px solid ${tc}25` }}
+                          >
+                            {tl}
+                          </span>
+                          {proj.investment && (
+                            <span className="text-[11px] font-mono font-bold text-[#e8e8f0]">
+                              {proj.investment}
+                            </span>
+                          )}
+                          {proj.expectedCompletion && (
+                            <span className="text-[10px] font-mono text-[#666680]">
+                              ETA {proj.expectedCompletion}
+                            </span>
+                          )}
+                          {proj.developer && (
+                            <span className="text-[10px] font-mono text-[#555566]">
+                              · {proj.developer}
+                            </span>
+                          )}
+                          {proj.impact === 'high' && (
+                            <span
+                              className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded"
+                              style={{ background: '#f59e0b12', color: '#f59e0b', border: '1px solid #f59e0b25' }}
+                            >
+                              HIGH IMPACT
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </motion.section>
+          )
+        })()}
 
         {/* ── Sources & Citations ── */}
         <motion.section

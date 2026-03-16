@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu } from 'lucide-react'
+import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { getCityEntry, CITY_LIST } from '@/data/cities'
 import type { MicroMarket } from '@/types'
@@ -20,7 +20,7 @@ const RISK_TIERS = [
 
 export default function Home() {
   const navigate = useNavigate()
-  const { selectedArea, highlightTier, searchCoords, is3D, mapStyleKey, selectedCitySlug, setSelectedArea, setHighlightTier, setSearchCoords, setIs3D, setMapStyleKey, setSelectedCitySlug } = useAppStore()
+  const { selectedArea, highlightTier, searchCoords, is3D, mapStyleKey, selectedCitySlug, showConstruction, setSelectedArea, setHighlightTier, setSearchCoords, setIs3D, setMapStyleKey, setSelectedCitySlug, setShowConstruction } = useAppStore()
   const [searchQuery, setSearchQuery]         = useState('')
   const [searchFocused, setSearchFocused]     = useState(false)
   const [showLayers, setShowLayers]           = useState(false)
@@ -568,6 +568,44 @@ export default function Home() {
                       boxShadow: is3D ? '0 0 6px #00e67680' : 'none',
                     }}
                   />
+                </div>
+              </button>
+
+              {/* ── Construction Sites toggle ── */}
+              <button
+                onClick={() => setShowConstruction(!showConstruction)}
+                className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
+                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <HardHat size={12} style={{ color: showConstruction ? '#f97316' : '#555566' }} />
+                  <div className="text-left">
+                    <span className="text-[11px] font-mono block" style={{ color: showConstruction ? '#f97316' : '#888899' }}>
+                      Construction Sites
+                    </span>
+                    <span className="text-[8px] font-mono text-[#333344]">Active projects &amp; pipeline</span>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    width: 30, height: 16,
+                    background: showConstruction ? 'rgba(249,115,22,0.25)' : 'rgba(255,255,255,0.08)',
+                    border: showConstruction ? '1px solid rgba(249,115,22,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: 9999,
+                    position: 'relative',
+                  }}
+                >
+                  <div style={{
+                    width: 10, height: 10,
+                    position: 'absolute',
+                    top: 2, left: showConstruction ? 16 : 2,
+                    borderRadius: '50%',
+                    backgroundColor: showConstruction ? '#f97316' : '#555566',
+                    boxShadow: showConstruction ? '0 0 6px #f9731680' : 'none',
+                    transition: 'all 0.25s',
+                  }} />
                 </div>
               </button>
 
