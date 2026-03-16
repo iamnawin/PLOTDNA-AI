@@ -29,6 +29,7 @@ build/
 !package.json
 !package-lock.json
 !vercel.json
+!frontend/public/manifest.json
 
 # IDE
 .vscode/

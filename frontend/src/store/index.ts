@@ -11,6 +11,7 @@ interface AppStore {
   is3D: boolean
   mapStyleKey: MapStyleKey
   selectedCitySlug: string
+  showConstruction: boolean
   setSelectedArea: (area: MicroMarket | null) => void
   setHoveredSlug: (slug: string | null) => void
   setHighlightTier: (tier: string | null) => void
@@ -18,6 +19,7 @@ interface AppStore {
   setIs3D: (v: boolean) => void
   setMapStyleKey: (key: MapStyleKey) => void
   setSelectedCitySlug: (slug: string) => void
+  setShowConstruction: (v: boolean) => void
 }
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -28,6 +30,7 @@ export const useAppStore = create<AppStore>((set) => ({
   is3D: false,
   mapStyleKey: 'dark',
   selectedCitySlug: 'hyderabad',
+  showConstruction: false,
   setSelectedArea: (area) => set({ selectedArea: area }),
   setHoveredSlug: (slug) => set({ hoveredSlug: slug }),
   setHighlightTier: (tier) => set({ highlightTier: tier }),
@@ -35,4 +38,5 @@ export const useAppStore = create<AppStore>((set) => ({
   setIs3D: (v) => set({ is3D: v }),
   setMapStyleKey: (key) => set({ mapStyleKey: key }),
   setSelectedCitySlug: (slug) => set({ selectedCitySlug: slug, selectedArea: null, highlightTier: null, searchCoords: null }),
+  setShowConstruction: (v) => set({ showConstruction: v }),
 }))

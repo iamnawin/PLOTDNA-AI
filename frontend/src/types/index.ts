@@ -1,5 +1,24 @@
 export type Category = 'Established' | 'High Growth' | 'Emerging' | 'Industrial'
 
+export type ProjectType =
+  | 'metro' | 'highway' | 'flyover' | 'it_park' | 'residential'
+  | 'commercial' | 'hospital' | 'airport' | 'industrial' | 'infrastructure'
+
+export type ProjectStatus = 'planning' | 'approved' | 'under_construction' | 'near_completion'
+
+export interface ActiveProject {
+  id: string
+  name: string
+  type: ProjectType
+  status: ProjectStatus
+  developer?: string
+  investment?: string          // e.g. "₹3,500 Cr"
+  expectedCompletion?: string  // e.g. "2026 Q3"
+  coordinates: [number, number]  // [lat, lng]
+  impact: 'high' | 'medium' | 'low'
+  description?: string
+}
+
 export interface CityMeta {
   slug: string
   name: string
@@ -37,4 +56,5 @@ export interface MicroMarket {
   highlights: string[]
   priceRange: string
   yoy: number                  // year-over-year % growth
+  activeProjects?: ActiveProject[]
 }
