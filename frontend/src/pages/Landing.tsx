@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Search, ChevronRight, Navigation, Zap, Map, TrendingUp,
-  Shield, Activity, X,
+  Shield, Activity, X, Clock, Satellite, Building2, AlertTriangle,
+  ArrowRight,
 } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { CITY_LIST, CITIES } from '@/data/cities'
@@ -371,6 +372,247 @@ export default function Landing() {
             })}
           </div>
         </motion.div>
+      </section>
+
+      {/* ══════════════════════════════════════════════
+          WHY THIS EXISTS — problem + before/after
+      ═══════════════════════════════════════════════ */}
+      <section
+        className="px-5 py-16"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+      >
+        <div className="max-w-3xl mx-auto">
+
+          {/* Problem hook */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.45 }}
+            className="text-center mb-14"
+          >
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-5"
+              style={{
+                background: 'rgba(239,68,68,0.08)',
+                border: '1px solid rgba(239,68,68,0.2)',
+                fontSize: 10,
+                color: '#ef4444',
+                letterSpacing: '0.1em',
+              }}
+            >
+              <AlertTriangle size={10} />
+              THE REAL PROBLEM
+            </div>
+            <h2
+              style={{
+                fontSize: 'clamp(20px, 3.5vw, 34px)',
+                fontWeight: 800,
+                letterSpacing: '-0.03em',
+                lineHeight: 1.2,
+                color: '#f0f0fa',
+                maxWidth: 560,
+                margin: '0 auto',
+              }}
+            >
+              Confused about whether to buy this plot?
+            </h2>
+            <p
+              style={{
+                fontSize: 13,
+                color: '#555566',
+                marginTop: 14,
+                maxWidth: 480,
+                margin: '14px auto 0',
+                lineHeight: 1.7,
+              }}
+            >
+              Most people buy plots based on a broker's word, a gut feeling, or
+              a friend's tip. Nobody shows you the <em style={{ color: '#888899' }}>actual data</em> —
+              what this land looked like 10 years ago, what changed, and where
+              it's realistically heading.
+            </p>
+          </motion.div>
+
+          {/* Before / Now / Future timeline */}
+          <div className="relative">
+
+            {/* Connecting line */}
+            <div
+              className="absolute top-10 left-0 right-0 hidden md:block"
+              style={{ height: 1, background: 'linear-gradient(90deg, rgba(239,68,68,0.3) 0%, rgba(0,230,118,0.4) 50%, rgba(0,180,255,0.3) 100%)' }}
+            />
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+              {/* 10 years ago */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0 }}
+                className="relative rounded-2xl p-5"
+                style={{
+                  background: 'rgba(239,68,68,0.05)',
+                  border: '1px solid rgba(239,68,68,0.18)',
+                }}
+              >
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center mb-4 relative z-10"
+                  style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)' }}
+                >
+                  <Clock size={14} style={{ color: '#ef4444' }} />
+                </div>
+                <p style={{ fontSize: 9, color: '#ef4444', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>
+                  10 Years Ago
+                </p>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#ccccdd', marginBottom: 10 }}>
+                  Open farmland. No road. No power.
+                </p>
+                <div className="flex flex-col gap-2">
+                  {[
+                    'No metro connectivity',
+                    'Sparse satellite density',
+                    'Zero RERA registrations',
+                    'Price: ₹800/sq.yd',
+                  ].map(item => (
+                    <div key={item} className="flex items-center gap-2">
+                      <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#ef444460' }} />
+                      <span style={{ fontSize: 10, color: '#555566' }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Today */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.1 }}
+                className="relative rounded-2xl p-5"
+                style={{
+                  background: 'rgba(0,230,118,0.05)',
+                  border: '1px solid rgba(0,230,118,0.25)',
+                  boxShadow: '0 0 32px rgba(0,230,118,0.06)',
+                }}
+              >
+                {/* "You are here" badge */}
+                <div
+                  className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[9px] font-mono"
+                  style={{
+                    background: 'rgba(0,230,118,0.15)',
+                    border: '1px solid rgba(0,230,118,0.4)',
+                    color: '#00e676',
+                    letterSpacing: '0.1em',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  · TODAY ·
+                </div>
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center mb-4"
+                  style={{ background: 'rgba(0,230,118,0.12)', border: '1px solid rgba(0,230,118,0.3)' }}
+                >
+                  <Satellite size={14} style={{ color: '#00e676' }} />
+                </div>
+                <p style={{ fontSize: 9, color: '#00e676', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>
+                  Right Now
+                </p>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#ccccdd', marginBottom: 10 }}>
+                  Infrastructure arrived. Price tripled.
+                </p>
+                <div className="flex flex-col gap-2">
+                  {[
+                    'Metro phase 2 under construction',
+                    'Satellite: high-density buildup',
+                    '38 active RERA projects',
+                    'Price: ₹2,800/sq.yd',
+                  ].map(item => (
+                    <div key={item} className="flex items-center gap-2">
+                      <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#00e67660' }} />
+                      <span style={{ fontSize: 10, color: '#666680' }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+                {/* DNA score badge */}
+                <div
+                  className="mt-4 flex items-center gap-2 px-3 py-2 rounded-lg"
+                  style={{ background: 'rgba(0,230,118,0.08)', border: '1px solid rgba(0,230,118,0.2)' }}
+                >
+                  <span style={{ fontSize: 10, color: '#444455' }}>DNA Score</span>
+                  <span style={{ fontSize: 18, fontWeight: 800, color: '#00e676', marginLeft: 'auto' }}>82</span>
+                  <span style={{ fontSize: 9, color: '#00e676' }}>Good Growth</span>
+                </div>
+              </motion.div>
+
+              {/* 10 years from now */}
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                className="relative rounded-2xl p-5"
+                style={{
+                  background: 'rgba(0,180,255,0.04)',
+                  border: '1px solid rgba(0,180,255,0.15)',
+                }}
+              >
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center mb-4"
+                  style={{ background: 'rgba(0,180,255,0.1)', border: '1px solid rgba(0,180,255,0.25)' }}
+                >
+                  <Building2 size={14} style={{ color: '#00b4ff' }} />
+                </div>
+                <p style={{ fontSize: 9, color: '#00b4ff', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>
+                  10 Years From Now
+                </p>
+                <p style={{ fontSize: 13, fontWeight: 700, color: '#ccccdd', marginBottom: 10 }}>
+                  Projected outlook based on signals
+                </p>
+                <div className="flex flex-col gap-2">
+                  {[
+                    'Metro fully operational',
+                    'IT corridor expansion likely',
+                    'Estimated 3–4× price appreciation',
+                    'Entry window: closing fast',
+                  ].map(item => (
+                    <div key={item} className="flex items-center gap-2">
+                      <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#00b4ff50' }} />
+                      <span style={{ fontSize: 10, color: '#555566' }}>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+            </div>
+          </div>
+
+          {/* Bridge line */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: 0.3 }}
+            className="flex items-center justify-center gap-3 mt-12"
+          >
+            <div style={{ height: 1, flex: 1, background: 'rgba(255,255,255,0.06)' }} />
+            <div
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl"
+              style={{
+                background: 'rgba(0,230,118,0.07)',
+                border: '1px solid rgba(0,230,118,0.2)',
+                fontSize: 11,
+                color: '#00e676',
+              }}
+            >
+              <span>PlotDNA decodes all of this for any area you search</span>
+              <ArrowRight size={11} />
+            </div>
+            <div style={{ height: 1, flex: 1, background: 'rgba(255,255,255,0.06)' }} />
+          </motion.div>
+
+        </div>
       </section>
 
       {/* ── Feature grid ── */}
