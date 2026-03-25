@@ -184,24 +184,9 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
         </div>
       </div>
 
-      {/* ── Not covered: show explore nearby CTA instead of wrong analysis ── */}
+      {/* ── Not covered: single CTA, no repeated messaging ── */}
       {!withinCoverage && (
-        <div className="flex-1 flex flex-col items-center justify-center gap-4 px-6 py-8 text-center">
-          <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center"
-            style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}
-          >
-            <SearchX size={22} style={{ color: '#ef4444' }} />
-          </div>
-          <div>
-            <p className="text-[13px] font-mono font-semibold text-[#ccccdd] mb-2">
-              No coverage for this location yet
-            </p>
-            <p className="text-[10px] font-mono text-[#444455] leading-relaxed max-w-[240px]">
-              We currently support selected micro-markets across 6 cities.
-              Exact coordinate-level DNA analysis is coming in a future release.
-            </p>
-          </div>
+        <div className="flex-1 flex flex-col items-center justify-center gap-3 px-6 py-8 text-center">
           <button
             onClick={() => navigate(`/area/${area.slug}`)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[11px] font-mono transition-all"
