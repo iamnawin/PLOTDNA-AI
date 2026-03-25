@@ -1,0 +1,459 @@
+import { useState, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { AnimatePresence, motion } from 'framer-motion'
+import {
+  Search, ChevronRight, Navigation, Zap, Map, TrendingUp,
+  Shield, Activity, X,
+} from 'lucide-react'
+import { useAppStore } from '@/store'
+import { CITY_LIST, CITIES } from '@/data/cities'
+import type { MicroMarket } from '@/types'
+import { getScoreColor } from '@/lib/utils'
+import { parseCoords, findNearestArea } from '@/lib/plotAnalysis'
+
+const FEATURES = [
+  {
+    icon: Activity,
+    title: 'DNA Score',
+    desc: 'A 0–100 score built from 7 signals — infrastructure, RERA, satellite, employment, and more.',
+  },
+  {
+    icon: Map,
+    title: 'Polygon Map',
+    desc: 'Every micro-market drawn on a live map. Click any zone to see its full breakdown.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Growth Story',
+    desc: 'See a 5-year outlook and key milestones driving value in each area.',
+  },
+  {
+    icon: Shield,
+    title: 'Risk Tiers',
+    desc: 'Goldzone → Good Growth → Moderate → High Risk. Know before you invest.',
+  },
+]
+
+export default function Landing() {
+  const navigate  = useNavigate()
+  const { setSelectedArea, setSearchCoords, setSelectedCitySlug } = useAppStore()
+
+  const [query, setQuery]           = useState('')
+  const [focused, setFocused]       = useState(false)
+  const [activeCity, setActiveCity] = useState('hyderabad')
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  // Gather all areas across all cities for search
+  const allAreas: (MicroMarket & { citySlug: string })[] = Object.entries(CITIES).flatMap(
+    ([slug, { areas }]) => areas.map(a => ({ ...a, citySlug: slug }))
+  )
+
+  const parsedCoords = parseCoords(query)
+  const results = query.trim() && !parsedCoords
+    ? allAreas.filter(a => a.name.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
+    : []
+  const showDropdown = focused && (results.length > 0 || parsedCoords !== null)
+
+  function goToArea(area: MicroMarket & { citySlug: string }) {
+    setSelectedCitySlug(area.citySlug)
+    setSelectedArea(area)
+    navigate('/map')
+  }
+
+  function goToCoords(coords: [number, number]) {
+    const { area } = findNearestArea(coords[0], coords[1])
+    setSearchCoords(coords)
+    setSelectedArea(area)
+    navigate('/map')
+  }
+
+  function handleEnter() {
+    if (parsedCoords) { goToCoords(parsedCoords); return }
+    if (results.length > 0) { goToArea(results[0]); return }
+  }
+
+  function goToMap() {
+    setSelectedCitySlug(activeCity)
+    navigate('/map')
+  }
+
+  // Top areas for the selected preview city
+  const previewAreas = [...(CITIES[activeCity]?.areas ?? [])].sort((a, b) => b.score - a.score).slice(0, 5)
+
+  return (
+    <div
+      className="min-h-screen w-full flex flex-col"
+      style={{ background: '#050508', color: '#e8e8f0', fontFamily: "'IBM Plex Mono', monospace" }}
+    >
+      {/* ── Nav ── */}
+      <nav className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="flex items-center gap-2.5">
+          <div
+            className="w-8 h-8 rounded-xl flex items-center justify-center"
+            style={{
+              background: 'linear-gradient(135deg, #00e676 0%, #00b36b 100%)',
+              boxShadow: '0 0 20px #00e67640',
+            }}
+          >
+            <span style={{ fontWeight: 900, color: '#000', fontSize: 13 }}>P</span>
+          </div>
+          <span style={{ fontWeight: 700, fontSize: 15, letterSpacing: '-0.02em', color: '#e8e8f0' }}>PlotDNA</span>
+          <span
+            className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px]"
+            style={{ background: 'rgba(0,230,118,0.1)', border: '1px solid rgba(0,230,118,0.25)', color: '#00e676' }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-[#00e676]"
+              style={{ boxShadow: '0 0 4px #00e676', animation: 'pulse 2s infinite' }}
+            />
+            Live · 6 Cities
+          </span>
+        </div>
+        <button
+          onClick={goToMap}
+          className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-mono transition-all"
+          style={{
+            background: 'rgba(0,230,118,0.1)',
+            border: '1px solid rgba(0,230,118,0.3)',
+            color: '#00e676',
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,230,118,0.18)' }}
+          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,230,118,0.1)' }}
+        >
+          <Map size={12} />
+          Open Map
+        </button>
+      </nav>
+
+      {/* ── Hero ── */}
+      <section className="flex-1 flex flex-col items-center justify-center px-5 pt-16 pb-10 text-center">
+
+        {/* Eyebrow */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6"
+          style={{
+            background: 'rgba(0,230,118,0.07)',
+            border: '1px solid rgba(0,230,118,0.2)',
+            fontSize: 10,
+            color: '#00e676',
+            letterSpacing: '0.12em',
+          }}
+        >
+          <Zap size={10} />
+          REAL ESTATE INVESTMENT INTELLIGENCE · INDIA
+        </motion.div>
+
+        {/* Headline */}
+        <motion.h1
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.08 }}
+          style={{
+            fontSize: 'clamp(28px, 5vw, 52px)',
+            fontWeight: 800,
+            letterSpacing: '-0.03em',
+            lineHeight: 1.1,
+            maxWidth: 680,
+            color: '#f0f0fa',
+          }}
+        >
+          Decode the DNA of<br />
+          <span style={{ color: '#00e676' }}>any plot</span> in India
+        </motion.h1>
+
+        {/* Sub */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.18 }}
+          style={{ fontSize: 14, color: '#666680', maxWidth: 480, marginTop: 16, lineHeight: 1.65 }}
+        >
+          Get a 0–100 DNA score for any land micro-market — built from infrastructure,
+          satellite imagery, RERA data, employment hubs, and growth signals.
+        </motion.p>
+
+        {/* ── Search box ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.26 }}
+          className="relative w-full mt-10"
+          style={{ maxWidth: 540 }}
+        >
+          <div
+            style={{
+              background: 'rgba(10,10,22,0.92)',
+              backdropFilter: 'blur(24px)',
+              border: `1px solid ${focused ? 'rgba(0,230,118,0.4)' : 'rgba(255,255,255,0.1)'}`,
+              borderRadius: showDropdown ? '16px 16px 0 0' : 16,
+              boxShadow: focused
+                ? '0 0 0 1px rgba(0,230,118,0.1), 0 20px 56px rgba(0,0,0,0.6)'
+                : '0 8px 32px rgba(0,0,0,0.5)',
+              transition: 'border-color 0.2s, box-shadow 0.2s, border-radius 0.15s',
+            }}
+          >
+            <div className="flex items-center px-5 py-4 gap-3">
+              <Search
+                size={16}
+                style={{ color: focused ? '#00e676' : '#444455', transition: 'color 0.2s', flexShrink: 0 }}
+              />
+              <input
+                ref={inputRef}
+                type="text"
+                placeholder="Search area  or paste lat, lng..."
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                onFocus={() => setFocused(true)}
+                onBlur={() => setTimeout(() => setFocused(false), 160)}
+                onKeyDown={e => { if (e.key === 'Enter') handleEnter() }}
+                style={{
+                  flex: 1,
+                  background: 'transparent',
+                  color: '#e8e8f0',
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: 14,
+                  outline: 'none',
+                  border: 'none',
+                }}
+                placeholder-style={{ color: '#2e2e42' }}
+              />
+              {query && (
+                <button onClick={() => { setQuery(''); inputRef.current?.focus() }} style={{ color: '#444455' }}>
+                  <X size={14} />
+                </button>
+              )}
+              <button
+                onClick={handleEnter}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
+                style={{
+                  background: 'rgba(0,230,118,0.12)',
+                  border: '1px solid rgba(0,230,118,0.3)',
+                  color: '#00e676',
+                  flexShrink: 0,
+                }}
+              >
+                Analyze
+                <ChevronRight size={11} />
+              </button>
+            </div>
+          </div>
+
+          {/* Dropdown */}
+          <AnimatePresence>
+            {showDropdown && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -4 }}
+                transition={{ duration: 0.12 }}
+                className="absolute left-0 right-0 top-full z-50 overflow-hidden"
+                style={{
+                  background: 'rgba(6,6,16,0.97)',
+                  backdropFilter: 'blur(24px)',
+                  borderLeft: '1px solid rgba(0,230,118,0.25)',
+                  borderRight: '1px solid rgba(0,230,118,0.25)',
+                  borderBottom: '1px solid rgba(0,230,118,0.25)',
+                  borderRadius: '0 0 16px 16px',
+                  boxShadow: '0 24px 48px rgba(0,0,0,0.7)',
+                }}
+              >
+                {parsedCoords && (
+                  <button
+                    onMouseDown={() => goToCoords(parsedCoords)}
+                    className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors"
+                    style={{ borderBottom: results.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
+                  >
+                    <Navigation size={13} style={{ color: '#00e676', flexShrink: 0 }} />
+                    <div className="flex-1">
+                      <span style={{ fontSize: 12, color: '#00e676' }}>Analyze this location</span>
+                      <p style={{ fontSize: 10, color: '#444455', marginTop: 2 }}>
+                        {parsedCoords[0].toFixed(4)}°N  {parsedCoords[1].toFixed(4)}°E · DNA score + growth story
+                      </p>
+                    </div>
+                    <ChevronRight size={12} style={{ color: '#00e676' }} />
+                  </button>
+                )}
+
+                {results.map((area, i) => {
+                  const color = getScoreColor(area.score)
+                  return (
+                    <button
+                      key={area.slug}
+                      onMouseDown={() => goToArea(area)}
+                      className="w-full flex items-center gap-3 px-5 py-3 text-left transition-colors"
+                      style={{ borderBottom: i < results.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
+                    >
+                      <div
+                        className="w-2 h-2 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: color, boxShadow: `0 0 5px ${color}80` }}
+                      />
+                      <span style={{ flex: 1, fontSize: 13, color: '#ccccdd' }}>{area.name}</span>
+                      <span style={{ fontSize: 10, color: '#555566', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+                        {area.citySlug}
+                      </span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color }}>{area.score}</span>
+                      <ChevronRight size={11} style={{ color: '#333344' }} />
+                    </button>
+                  )
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Hint text */}
+          {!query && (
+            <p style={{ fontSize: 10, color: '#2e2e42', marginTop: 10, textAlign: 'center' }}>
+              Try "Kokapet", "Financial District", or paste a coordinate like 17.4401, 78.3489
+            </p>
+          )}
+        </motion.div>
+
+        {/* ── City preview chips ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.35 }}
+          className="mt-10 w-full"
+          style={{ maxWidth: 640 }}
+        >
+          {/* City selector */}
+          <div className="flex items-center justify-center gap-2 mb-4">
+            {CITY_LIST.map(city => {
+              const active = activeCity === city.slug
+              return (
+                <button
+                  key={city.slug}
+                  onClick={() => setActiveCity(city.slug)}
+                  className="px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150"
+                  style={{
+                    background: active ? 'rgba(0,230,118,0.12)' : 'rgba(255,255,255,0.04)',
+                    border: active ? '1px solid rgba(0,230,118,0.4)' : '1px solid rgba(255,255,255,0.07)',
+                    color: active ? '#00e676' : '#555566',
+                    boxShadow: active ? '0 0 10px rgba(0,230,118,0.15)' : 'none',
+                  }}
+                >
+                  {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Top areas for selected city */}
+          <div className="flex items-center justify-center flex-wrap gap-2">
+            {previewAreas.map(area => {
+              const color = getScoreColor(area.score)
+              const areaWithCity = { ...area, citySlug: activeCity }
+              return (
+                <button
+                  key={area.slug}
+                  onClick={() => goToArea(areaWithCity)}
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-full text-[11px] font-mono transition-all"
+                  style={{
+                    background: `${color}12`,
+                    border: `1px solid ${color}28`,
+                    color,
+                  }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = `${color}22` }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = `${color}12` }}
+                >
+                  <span style={{ fontWeight: 700 }}>{area.score}</span>
+                  <span style={{ color: `${color}bb` }}>·</span>
+                  {area.name}
+                </button>
+              )
+            })}
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ── Feature grid ── */}
+      <section
+        className="px-5 py-14"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0,0,0,0.25)' }}
+      >
+        <div className="max-w-3xl mx-auto">
+          <p
+            className="text-center mb-8"
+            style={{ fontSize: 10, color: '#333344', letterSpacing: '0.16em', textTransform: 'uppercase' }}
+          >
+            What you get
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {FEATURES.map(({ icon: Icon, title, desc }) => (
+              <div
+                key={title}
+                className="rounded-xl p-4"
+                style={{
+                  background: 'rgba(255,255,255,0.025)',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                }}
+              >
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
+                  style={{ background: 'rgba(0,230,118,0.1)', border: '1px solid rgba(0,230,118,0.2)' }}
+                >
+                  <Icon size={14} style={{ color: '#00e676' }} />
+                </div>
+                <p style={{ fontSize: 12, fontWeight: 700, color: '#ccccdd', marginBottom: 6 }}>{title}</p>
+                <p style={{ fontSize: 10, color: '#444455', lineHeight: 1.6 }}>{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="py-14 flex flex-col items-center gap-5" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <p style={{ fontSize: 18, fontWeight: 700, color: '#e8e8f0', letterSpacing: '-0.02em' }}>
+          Ready to analyze a plot?
+        </p>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={goToMap}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl font-mono text-[13px] font-semibold transition-all"
+            style={{
+              background: 'linear-gradient(135deg, #00e676 0%, #00b36b 100%)',
+              color: '#000',
+              boxShadow: '0 0 24px rgba(0,230,118,0.35)',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 36px rgba(0,230,118,0.5)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 24px rgba(0,230,118,0.35)' }}
+          >
+            <Map size={14} />
+            Open Full Map
+          </button>
+          <button
+            onClick={() => { inputRef.current?.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl font-mono text-[13px] transition-all"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: '#888899',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#e8e8f0' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#888899' }}
+          >
+            <Search size={13} />
+            Search an Area
+          </button>
+        </div>
+      </section>
+
+      {/* ── Footer ── */}
+      <footer
+        className="px-6 py-5 flex items-center justify-between"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.04)', fontSize: 10, color: '#2e2e42' }}
+      >
+        <span>PlotDNA · Real Estate Intelligence</span>
+        <span>6 cities · {Object.values(CITIES).reduce((n, c) => n + c.areas.length, 0)} micro-markets</span>
+      </footer>
+    </div>
+  )
+}
