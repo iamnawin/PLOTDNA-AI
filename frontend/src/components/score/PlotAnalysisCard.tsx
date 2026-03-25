@@ -161,32 +161,21 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
               </div>
             </>
           ) : (
-            /* NOT COVERED */
-            <div className="flex items-start gap-2.5 px-3 py-3">
-              <SearchX size={13} style={{ color: '#ef4444', flexShrink: 0, marginTop: 1 }} />
-              <div>
-                <p className="text-[10px] font-mono text-[#ef4444] font-semibold mb-1">
-                  Area not yet covered
-                </p>
-                <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
-                  {geo?.locality
-                    ? `${geo.locality} is not in our current coverage.`
-                    : 'This location is not in our current coverage.'
-                  }
-                  {' '}Nearest supported area is {area.name} ({distKm} km away).
-                </p>
-                <p className="text-[9px] font-mono text-[#333344] mt-1.5">
-                  We are expanding coverage across more micro-markets soon.
-                </p>
-              </div>
+            /* NOT COVERED — one compact row */
+            <div className="flex items-center gap-2.5 px-3 py-3">
+              <SearchX size={11} style={{ color: '#ef4444', flexShrink: 0 }} />
+              <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
+                {geo?.locality ?? 'This location'} is not in our coverage yet.
+                Nearest: <span style={{ color: '#888899' }}>{area.name}</span> ({distKm} km away).
+              </p>
             </div>
           )}
         </div>
       </div>
 
-      {/* ── Not covered: single CTA, no repeated messaging ── */}
+      {/* ── Not covered body: just the CTA ── */}
       {!withinCoverage && (
-        <div className="flex-1 flex flex-col items-center justify-center gap-3 px-6 py-8 text-center">
+        <div className="flex-1 flex items-center justify-center px-6">
           <button
             onClick={() => navigate(`/area/${area.slug}`)}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[11px] font-mono transition-all"
