@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite } from 'lucide-react'
+import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import {
@@ -55,34 +55,74 @@ export default function PlotAnalysisCard({ coords, area, distKm, onClose }: Prop
     >
       {/* ── Header ── */}
       <div
-        className="flex items-start justify-between p-5 pb-4 flex-shrink-0"
+        className="flex-shrink-0"
         style={{
           borderBottom: '1px solid rgba(255,255,255,0.05)',
-          background: 'linear-gradient(180deg, rgba(0,230,118,0.05) 0%, transparent 100%)',
+          background: 'linear-gradient(180deg, rgba(0,230,118,0.04) 0%, transparent 100%)',
         }}
       >
-        <div>
-          <div className="flex items-center gap-1.5 mb-1">
-            <Navigation size={10} className="text-[#00e676]" />
-            <p className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.14em]">
-              Plot Decoded
+        {/* Top row: label + close */}
+        <div className="flex items-start justify-between px-5 pt-5 pb-3">
+          <div>
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <Navigation size={10} className="text-[#00e676]" />
+              <p className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.14em]">
+                Coordinate Detected
+              </p>
+            </div>
+            <p className="font-mono text-[12px] text-[#555566] leading-tight tracking-wide">
+              {coords[0].toFixed(5)}°N &nbsp; {coords[1].toFixed(5)}°E
             </p>
           </div>
-          <p className="font-mono text-[12px] text-[#555566] leading-tight tracking-wide">
-            {coords[0].toFixed(5)}°N &nbsp; {coords[1].toFixed(5)}°E
-          </p>
-          <div className="flex items-center gap-2 mt-2">
-            <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: color }} />
-            <span className="text-[12px] font-mono font-semibold text-[#ccccdd]">{area.name}</span>
-            <span className="text-[10px] font-mono text-[#444455]">· {distKm} km</span>
+          <button
+            onClick={onClose}
+            className="text-[#444455] hover:text-[#e8e8f0] transition-colors mt-0.5"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        {/* Transparency strip */}
+        <div
+          className="mx-5 mb-4 rounded-xl overflow-hidden"
+          style={{ border: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.025)' }}
+        >
+          {/* Resolved area row */}
+          <div
+            className="flex items-center gap-2.5 px-3 py-2.5"
+            style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+          >
+            <MapPin size={10} style={{ color, flexShrink: 0 }} />
+            <div className="flex-1 min-w-0">
+              <p className="text-[9px] font-mono text-[#333344] uppercase tracking-widest mb-0.5">
+                Resolved Area
+              </p>
+              <p className="text-[12px] font-mono font-semibold text-[#ccccdd] truncate">
+                {area.name}
+              </p>
+            </div>
+            <div
+              className="px-2 py-0.5 rounded-full text-[8px] font-mono flex-shrink-0"
+              style={{ background: `${color}14`, border: `1px solid ${color}28`, color }}
+            >
+              {distKm} km
+            </div>
+          </div>
+
+          {/* Analysis type + disclaimer */}
+          <div className="flex items-start gap-2 px-3 py-2.5">
+            <Info size={9} style={{ color: '#f59e0b', flexShrink: 0, marginTop: 1 }} />
+            <div>
+              <p className="text-[9px] font-mono text-[#f59e0b] mb-0.5">
+                Nearest supported micro-market
+              </p>
+              <p className="text-[9px] font-mono text-[#333344] leading-relaxed">
+                Exact coordinate-level DNA is not yet available.
+                Analysis is based on the nearest mapped zone.
+              </p>
+            </div>
           </div>
         </div>
-        <button
-          onClick={onClose}
-          className="text-[#444455] hover:text-[#e8e8f0] transition-colors mt-0.5"
-        >
-          <X size={16} />
-        </button>
       </div>
 
       {/* ── Scrollable body ── */}
@@ -294,17 +334,21 @@ export default function PlotAnalysisCard({ coords, area, distKm, onClose }: Prop
       >
         <button
           onClick={() => navigate(`/area/${area.slug}`)}
-          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-mono font-semibold transition-all"
+          className="w-full flex flex-col items-center justify-center gap-0.5 py-3 px-4 rounded-lg font-mono transition-all"
           style={{
             background: `linear-gradient(135deg, ${color}22, ${color}10)`,
             border: `1px solid ${color}40`,
-            color,
           }}
           onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
           onMouseLeave={(e) => { e.currentTarget.style.background = `linear-gradient(135deg, ${color}22, ${color}10)` }}
         >
-          Full DNA Analysis — {area.name}
-          <ArrowRight size={14} />
+          <span className="flex items-center gap-2 text-sm font-semibold" style={{ color }}>
+            View full analysis for this zone
+            <ArrowRight size={13} />
+          </span>
+          <span className="text-[9px] text-[#444455]">
+            Nearest micro-market: {area.name}
+          </span>
         </button>
       </div>
     </motion.div>

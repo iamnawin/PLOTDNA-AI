@@ -153,16 +153,16 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.08 }}
           style={{
-            fontSize: 'clamp(28px, 5vw, 52px)',
+            fontSize: 'clamp(26px, 5vw, 50px)',
             fontWeight: 800,
             letterSpacing: '-0.03em',
-            lineHeight: 1.1,
+            lineHeight: 1.15,
             maxWidth: 680,
             color: '#f0f0fa',
           }}
         >
-          Decode the DNA of<br />
-          <span style={{ color: '#00e676' }}>any plot</span> in India
+          Not sure whether a plot is<br />
+          <span style={{ color: '#00e676' }}>truly worth buying?</span>
         </motion.h1>
 
         {/* Sub */}
@@ -170,10 +170,10 @@ export default function Landing() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.18 }}
-          style={{ fontSize: 14, color: '#666680', maxWidth: 480, marginTop: 16, lineHeight: 1.65 }}
+          style={{ fontSize: 14, color: '#666680', maxWidth: 520, marginTop: 18, lineHeight: 1.75 }}
         >
-          Get a 0–100 DNA score for any land micro-market — built from infrastructure,
-          satellite imagery, RERA data, employment hubs, and growth signals.
+          PlotDNA decodes the past, present, and future of the location you are investing in —
+          from infrastructure and growth signals to satellite history and forward-looking trends.
         </motion.p>
 
         {/* ── Search box ── */}
