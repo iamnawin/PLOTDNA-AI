@@ -435,6 +435,7 @@ export default function Home() {
             coords={searchCoords}
             area={coordAnalysis.area}
             distKm={coordAnalysis.distKm}
+            withinCoverage={coordAnalysis.withinCoverage}
             onClose={() => { setSearchCoords(null); setSelectedArea(null) }}
           />
         ) : selectedArea ? (

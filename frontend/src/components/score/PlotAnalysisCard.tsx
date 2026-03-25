@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info } from 'lucide-react'
+import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import {
@@ -14,7 +15,14 @@ interface Props {
   coords: [number, number]
   area: MicroMarket
   distKm: number
+  withinCoverage: boolean
   onClose: () => void
+}
+
+interface ReverseGeoResult {
+  locality: string   // e.g. "Banjara Hills"
+  city: string       // e.g. "Hyderabad"
+  state: string      // e.g. "Telangana"
 }
 
 const PHASE_COLOR: Record<Milestone['phase'], string> = {
@@ -25,12 +33,37 @@ const PHASE_COLOR: Record<Milestone['phase'], string> = {
   now:      '#00e676',
 }
 
-export default function PlotAnalysisCard({ coords, area, distKm, onClose }: Props) {
+export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage, onClose }: Props) {
   const navigate = useNavigate()
   const color      = getScoreColor(area.score)
   const label      = getScoreLabel(area.score)
   const milestones = getGrowthMilestones(area)
   const outlook    = getOutlook(area)
+
+  const [geo, setGeo] = useState<ReverseGeoResult | null>(null)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    fetch(
+      `https://nominatim.openstreetmap.org/reverse?lat=${coords[0]}&lon=${coords[1]}&format=json`,
+      {
+        signal: controller.signal,
+        headers: { 'Accept-Language': 'en' },
+      }
+    )
+      .then(r => r.json())
+      .then(data => {
+        const addr = data.address ?? {}
+        const locality =
+          addr.suburb ?? addr.neighbourhood ?? addr.city_district ??
+          addr.county ?? addr.town ?? addr.village ?? ''
+        const city  = addr.city ?? addr.state_district ?? ''
+        const state = addr.state ?? ''
+        setGeo({ locality, city, state })
+      })
+      .catch(() => {/* nominatim unavailable — silently ignore */})
+    return () => controller.abort()
+  }, [coords[0], coords[1]])
 
   const r            = 40
   const circumference = 2 * Math.PI * r
@@ -73,6 +106,12 @@ export default function PlotAnalysisCard({ coords, area, distKm, onClose }: Prop
             <p className="font-mono text-[12px] text-[#555566] leading-tight tracking-wide">
               {coords[0].toFixed(5)}°N &nbsp; {coords[1].toFixed(5)}°E
             </p>
+            {/* Resolved locality from reverse geocode */}
+            {geo && (
+              <p className="text-[11px] font-mono text-[#aaaabc] mt-1.5">
+                {[geo.locality, geo.city, geo.state].filter(Boolean).join(', ')}
+              </p>
+            )}
           </div>
           <button
             onClick={onClose}
@@ -85,48 +124,103 @@ export default function PlotAnalysisCard({ coords, area, distKm, onClose }: Prop
         {/* Transparency strip */}
         <div
           className="mx-5 mb-4 rounded-xl overflow-hidden"
-          style={{ border: '1px solid rgba(255,255,255,0.07)', background: 'rgba(255,255,255,0.025)' }}
+          style={{
+            border: `1px solid ${withinCoverage ? 'rgba(255,255,255,0.07)' : 'rgba(239,68,68,0.2)'}`,
+            background: withinCoverage ? 'rgba(255,255,255,0.025)' : 'rgba(239,68,68,0.04)',
+          }}
         >
-          {/* Resolved area row */}
-          <div
-            className="flex items-center gap-2.5 px-3 py-2.5"
-            style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-          >
-            <MapPin size={10} style={{ color, flexShrink: 0 }} />
-            <div className="flex-1 min-w-0">
-              <p className="text-[9px] font-mono text-[#333344] uppercase tracking-widest mb-0.5">
-                Resolved Area
-              </p>
-              <p className="text-[12px] font-mono font-semibold text-[#ccccdd] truncate">
-                {area.name}
-              </p>
+          {withinCoverage ? (
+            <>
+              {/* Nearest area row */}
+              <div
+                className="flex items-center gap-2.5 px-3 py-2.5"
+                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+              >
+                <MapPin size={10} style={{ color, flexShrink: 0 }} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[9px] font-mono text-[#333344] uppercase tracking-widest mb-0.5">
+                    Nearest Supported Area
+                  </p>
+                  <p className="text-[12px] font-mono font-semibold text-[#ccccdd] truncate">
+                    {area.name}
+                  </p>
+                </div>
+                <div
+                  className="px-2 py-0.5 rounded-full text-[8px] font-mono flex-shrink-0"
+                  style={{ background: `${color}14`, border: `1px solid ${color}28`, color }}
+                >
+                  {distKm} km away
+                </div>
+              </div>
+              <div className="flex items-start gap-2 px-3 py-2.5">
+                <Info size={9} style={{ color: '#f59e0b', flexShrink: 0, marginTop: 1 }} />
+                <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
+                  Analysis is for the nearest mapped micro-market.
+                  Exact coordinate-level DNA is coming soon.
+                </p>
+              </div>
+            </>
+          ) : (
+            /* NOT COVERED */
+            <div className="flex items-start gap-2.5 px-3 py-3">
+              <SearchX size={13} style={{ color: '#ef4444', flexShrink: 0, marginTop: 1 }} />
+              <div>
+                <p className="text-[10px] font-mono text-[#ef4444] font-semibold mb-1">
+                  Area not yet covered
+                </p>
+                <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
+                  {geo?.locality
+                    ? `${geo.locality} is not in our current coverage.`
+                    : 'This location is not in our current coverage.'
+                  }
+                  {' '}Nearest supported area is {area.name} ({distKm} km away).
+                </p>
+                <p className="text-[9px] font-mono text-[#333344] mt-1.5">
+                  We are expanding coverage across more micro-markets soon.
+                </p>
+              </div>
             </div>
-            <div
-              className="px-2 py-0.5 rounded-full text-[8px] font-mono flex-shrink-0"
-              style={{ background: `${color}14`, border: `1px solid ${color}28`, color }}
-            >
-              {distKm} km
-            </div>
-          </div>
-
-          {/* Analysis type + disclaimer */}
-          <div className="flex items-start gap-2 px-3 py-2.5">
-            <Info size={9} style={{ color: '#f59e0b', flexShrink: 0, marginTop: 1 }} />
-            <div>
-              <p className="text-[9px] font-mono text-[#f59e0b] mb-0.5">
-                Nearest supported micro-market
-              </p>
-              <p className="text-[9px] font-mono text-[#333344] leading-relaxed">
-                Exact coordinate-level DNA is not yet available.
-                Analysis is based on the nearest mapped zone.
-              </p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* ── Scrollable body ── */}
-      <div className="flex-1 overflow-y-auto">
+      {/* ── Not covered: show explore nearby CTA instead of wrong analysis ── */}
+      {!withinCoverage && (
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 px-6 py-8 text-center">
+          <div
+            className="w-14 h-14 rounded-2xl flex items-center justify-center"
+            style={{ background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)' }}
+          >
+            <SearchX size={22} style={{ color: '#ef4444' }} />
+          </div>
+          <div>
+            <p className="text-[13px] font-mono font-semibold text-[#ccccdd] mb-2">
+              No coverage for this location yet
+            </p>
+            <p className="text-[10px] font-mono text-[#444455] leading-relaxed max-w-[240px]">
+              We currently support selected micro-markets across 6 cities.
+              Exact coordinate-level DNA analysis is coming in a future release.
+            </p>
+          </div>
+          <button
+            onClick={() => navigate(`/area/${area.slug}`)}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[11px] font-mono transition-all"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: '#888899',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#e8e8f0' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#888899' }}
+          >
+            Explore {area.name} (nearest area)
+            <ArrowRight size={11} />
+          </button>
+        </div>
+      )}
+
+      {/* ── Scrollable body — only shown when within coverage ── */}
+      {withinCoverage && <div className="flex-1 overflow-y-auto">
 
         {/* Score row */}
         <div
@@ -325,32 +419,34 @@ export default function PlotAnalysisCard({ coords, area, distKm, onClose }: Prop
           </div>
         </div>
 
-      </div>
+      </div>}
 
-      {/* ── CTA ── */}
-      <div
-        className="p-4 flex-shrink-0"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
-      >
-        <button
-          onClick={() => navigate(`/area/${area.slug}`)}
-          className="w-full flex flex-col items-center justify-center gap-0.5 py-3 px-4 rounded-lg font-mono transition-all"
-          style={{
-            background: `linear-gradient(135deg, ${color}22, ${color}10)`,
-            border: `1px solid ${color}40`,
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = `linear-gradient(135deg, ${color}22, ${color}10)` }}
+      {/* ── CTA (only when within coverage) ── */}
+      {withinCoverage && (
+        <div
+          className="p-4 flex-shrink-0"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
         >
-          <span className="flex items-center gap-2 text-sm font-semibold" style={{ color }}>
-            View full analysis for this zone
-            <ArrowRight size={13} />
-          </span>
-          <span className="text-[9px] text-[#444455]">
-            Nearest micro-market: {area.name}
-          </span>
-        </button>
-      </div>
+          <button
+            onClick={() => navigate(`/area/${area.slug}`)}
+            className="w-full flex flex-col items-center justify-center gap-0.5 py-3 px-4 rounded-lg font-mono transition-all"
+            style={{
+              background: `linear-gradient(135deg, ${color}22, ${color}10)`,
+              border: `1px solid ${color}40`,
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = `linear-gradient(135deg, ${color}22, ${color}10)` }}
+          >
+            <span className="flex items-center gap-2 text-sm font-semibold" style={{ color }}>
+              View full analysis for this zone
+              <ArrowRight size={13} />
+            </span>
+            <span className="text-[9px] text-[#444455]">
+              Nearest micro-market: {area.name}
+            </span>
+          </button>
+        </div>
+      )}
     </motion.div>
   )
 }

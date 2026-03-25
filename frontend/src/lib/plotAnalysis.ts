@@ -27,7 +27,12 @@ function distKm(lat1: number, lng1: number, lat2: number, lng2: number): number 
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
-export function findNearestArea(lat: number, lng: number): { area: MicroMarket; distKm: number } {
+const COVERAGE_RADIUS_KM = 5
+
+export function findNearestArea(
+  lat: number,
+  lng: number,
+): { area: MicroMarket; distKm: number; withinCoverage: boolean } {
   const allAreas = getAllAreas()
   let best = allAreas[0]
   let bestDist = Infinity
@@ -38,7 +43,8 @@ export function findNearestArea(lat: number, lng: number): { area: MicroMarket; 
       bestDist = d
     }
   }
-  return { area: best, distKm: Math.round(bestDist * 10) / 10 }
+  const rounded = Math.round(bestDist * 10) / 10
+  return { area: best, distKm: rounded, withinCoverage: rounded <= COVERAGE_RADIUS_KM }
 }
 
 // ── Growth timeline ───────────────────────────────────────────────────────────
