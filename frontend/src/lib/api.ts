@@ -43,7 +43,7 @@ export interface LiveDNAResult {
  *
  * Returns null if:
  *   - Backend is unreachable (local dev without backend running)
- *   - Request times out (>12s)
+ *   - Request times out (>45s — allows for Render cold-start)
  *   - Any server error
  *
  * Callers should fall back to static nearest-area data when null.
@@ -57,7 +57,7 @@ export async function analyzeCoordinate(
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ lat, lng }),
-      signal:  AbortSignal.timeout(12_000),
+      signal:  AbortSignal.timeout(45_000), // Render free tier cold-start can take 30-50s
     })
     if (!res.ok) return null
     return (await res.json()) as LiveDNAResult
