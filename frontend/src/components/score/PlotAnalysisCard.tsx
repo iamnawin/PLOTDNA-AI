@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
-import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX } from 'lucide-react'
+import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX, Activity } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import {
@@ -10,6 +10,7 @@ import {
   type Milestone,
 } from '@/lib/plotAnalysis'
 import ScoreBadge from '@/components/ui/ScoreBadge'
+import { analyzeCoordinate, type LiveDNAResult } from '@/lib/api'
 
 interface Props {
   coords: [number, number]
@@ -35,21 +36,17 @@ const PHASE_COLOR: Record<Milestone['phase'], string> = {
 
 export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage, onClose }: Props) {
   const navigate = useNavigate()
-  const color      = getScoreColor(area.score)
-  const label      = getScoreLabel(area.score)
-  const milestones = getGrowthMilestones(area)
-  const outlook    = getOutlook(area)
 
-  const [geo, setGeo] = useState<ReverseGeoResult | null>(null)
+  const [geo, setGeo]             = useState<ReverseGeoResult | null>(null)
+  const [liveData, setLiveData]   = useState<LiveDNAResult | null>(null)
+  const [liveLoading, setLiveLoading] = useState(true)
 
+  // Nominatim reverse geocode (locality name)
   useEffect(() => {
     const controller = new AbortController()
     fetch(
       `https://nominatim.openstreetmap.org/reverse?lat=${coords[0]}&lon=${coords[1]}&format=json`,
-      {
-        signal: controller.signal,
-        headers: { 'Accept-Language': 'en' },
-      }
+      { signal: controller.signal, headers: { 'Accept-Language': 'en' } }
     )
       .then(r => r.json())
       .then(data => {
@@ -61,17 +58,40 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
         const state = addr.state ?? ''
         setGeo({ locality, city, state })
       })
-      .catch(() => {/* nominatim unavailable — silently ignore */})
+      .catch(() => {/* nominatim unavailable — ignore */})
     return () => controller.abort()
   }, [coords[0], coords[1]])
 
-  const r            = 40
-  const circumference = 2 * Math.PI * r
-  const dashOffset    = circumference - (area.score / 100) * circumference
+  // Backend live scoring via Overpass / OSM pipeline
+  useEffect(() => {
+    setLiveLoading(true)
+    setLiveData(null)
+    analyzeCoordinate(coords[0], coords[1]).then(result => {
+      setLiveData(result)
+      setLiveLoading(false)
+    })
+  }, [coords[0], coords[1]])
 
+  // Live data takes priority over static nearest-area data
+  const isLive              = liveData !== null
+  const displayScore        = liveData?.score ?? area.score
+  const displayHighlights   = liveData?.highlights ?? area.highlights.slice(0, 3)
+  const isEffectivelyCovered = withinCoverage || isLive
+
+  const milestones = getGrowthMilestones(area) // historical narrative stays static
+  const outlook    = getOutlook(area)           // price forecast stays static (no live price data)
+
+  const color      = getScoreColor(displayScore)
+  const label      = getScoreLabel(displayScore)
+
+  const r             = 40
+  const circumference  = 2 * Math.PI * r
+  const dashOffset     = circumference - (displayScore / 100) * circumference
+
+  const displayConfidence = (liveData?.confidence ?? outlook.confidence) as 'High' | 'Medium' | 'Low'
   const confidenceColor =
-    outlook.confidence === 'High'   ? '#10b981' :
-    outlook.confidence === 'Medium' ? '#f59e0b' : '#ef4444'
+    displayConfidence === 'High'   ? '#10b981' :
+    displayConfidence === 'Medium' ? '#f59e0b' : '#ef4444'
 
   return (
     <motion.div
@@ -125,13 +145,52 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
         <div
           className="mx-5 mb-4 rounded-xl overflow-hidden"
           style={{
-            border: `1px solid ${withinCoverage ? 'rgba(255,255,255,0.07)' : 'rgba(239,68,68,0.2)'}`,
-            background: withinCoverage ? 'rgba(255,255,255,0.025)' : 'rgba(239,68,68,0.04)',
+            border: isLive
+              ? 'rgba(0,230,118,0.2) solid 1px'
+              : withinCoverage
+                ? '1px solid rgba(255,255,255,0.07)'
+                : '1px solid rgba(239,68,68,0.2)',
+            background: isLive
+              ? 'rgba(0,230,118,0.04)'
+              : withinCoverage
+                ? 'rgba(255,255,255,0.025)'
+                : 'rgba(239,68,68,0.04)',
           }}
         >
-          {withinCoverage ? (
+          {isLive ? (
+            /* LIVE DATA from backend pipeline */
             <>
-              {/* Nearest area row */}
+              <div
+                className="flex items-center gap-2.5 px-3 py-2.5"
+                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+              >
+                <Activity size={10} style={{ color: '#00e676', flexShrink: 0 }} />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[9px] font-mono text-[#333344] uppercase tracking-widest mb-0.5">
+                    Live Coordinate Analysis
+                  </p>
+                  <p className="text-[11px] font-mono font-semibold text-[#aaaabc]">
+                    OpenStreetMap signals
+                  </p>
+                </div>
+                <div
+                  className="px-2 py-0.5 rounded-full text-[8px] font-mono flex-shrink-0 uppercase tracking-wide"
+                  style={{ background: 'rgba(0,230,118,0.12)', border: '1px solid rgba(0,230,118,0.3)', color: '#00e676' }}
+                >
+                  {liveData.freshness}
+                </div>
+              </div>
+              <div className="flex items-start gap-2 px-3 py-2.5">
+                <Info size={9} style={{ color: '#555566', flexShrink: 0, marginTop: 1 }} />
+                <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
+                  Score derived from real transit, roads, offices &amp; amenities near this coordinate.
+                  Price velocity is a proxy — real data in Phase 3.
+                </p>
+              </div>
+            </>
+          ) : withinCoverage ? (
+            /* STATIC nearest-area fallback (backend unavailable) */
+            <>
               <div
                 className="flex items-center gap-2.5 px-3 py-2.5"
                 style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
@@ -155,13 +214,20 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
               <div className="flex items-start gap-2 px-3 py-2.5">
                 <Info size={9} style={{ color: '#f59e0b', flexShrink: 0, marginTop: 1 }} />
                 <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
-                  Analysis is for the nearest mapped micro-market.
-                  Exact coordinate-level DNA is coming soon.
+                  Showing nearest micro-market data. Start the backend to unlock live coordinate scoring.
                 </p>
               </div>
             </>
+          ) : liveLoading ? (
+            /* LOADING live data (not in static coverage yet) */
+            <div className="flex items-center gap-2.5 px-3 py-3">
+              <Activity size={11} style={{ color: '#00e676', flexShrink: 0 }} className="animate-pulse" />
+              <p className="text-[9px] font-mono text-[#555566] animate-pulse">
+                Analyzing coordinate via OpenStreetMap...
+              </p>
+            </div>
           ) : (
-            /* NOT COVERED — one compact row */
+            /* NOT COVERED — backend unavailable and outside static radius */
             <div className="flex items-center gap-2.5 px-3 py-3">
               <SearchX size={11} style={{ color: '#ef4444', flexShrink: 0 }} />
               <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
@@ -173,8 +239,8 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
         </div>
       </div>
 
-      {/* ── Not covered body: no analysis shown, no misleading fallback ── */}
-      {!withinCoverage && (
+      {/* ── Not covered: no analysis, no misleading fallback ── */}
+      {!isEffectivelyCovered && !liveLoading && (
         <div className="flex-1 flex items-center justify-center px-6">
           <p
             className="text-center font-mono"
@@ -186,8 +252,20 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
         </div>
       )}
 
-      {/* ── Scrollable body — only shown when within coverage ── */}
-      {withinCoverage && <div className="flex-1 overflow-y-auto">
+      {/* ── Loading state (not in static coverage, waiting for backend) ── */}
+      {!isEffectivelyCovered && liveLoading && (
+        <div className="flex-1 flex items-center justify-center px-6">
+          <p
+            className="text-center font-mono animate-pulse"
+            style={{ fontSize: 10, color: '#2e2e42', lineHeight: 1.7 }}
+          >
+            Fetching live signals...
+          </p>
+        </div>
+      )}
+
+      {/* ── Scrollable body — shown when covered (live or static) ── */}
+      {isEffectivelyCovered && <div className="flex-1 overflow-y-auto">
 
         {/* Score row */}
         <div
@@ -213,7 +291,7 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
               />
               <text x={45} y={42} textAnchor="middle" fill={color}
                 style={{ fontSize: 22, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700 }}>
-                {area.score}
+                {displayScore}
               </text>
               <text x={45} y={55} textAnchor="middle" fill="#555566"
                 style={{ fontSize: 8, fontFamily: 'IBM Plex Mono, monospace', letterSpacing: 1 }}>
@@ -224,12 +302,19 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
 
           {/* Meta */}
           <div>
-            <ScoreBadge score={area.score} />
+            <ScoreBadge score={displayScore} />
             <p className="text-base font-mono font-bold mt-1.5" style={{ color }}>{label}</p>
-            <div className="flex items-center gap-1.5 mt-1">
-              <TrendingUp size={12} style={{ color }} />
-              <span className="text-xs font-mono" style={{ color }}>+{area.yoy}% YoY</span>
-            </div>
+            {isLive ? (
+              <div className="flex items-center gap-1.5 mt-1">
+                <Activity size={11} style={{ color: '#00e676' }} />
+                <span className="text-[10px] font-mono text-[#00e676]">Live OSM score</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 mt-1">
+                <TrendingUp size={12} style={{ color }} />
+                <span className="text-xs font-mono" style={{ color }}>+{area.yoy}% YoY</span>
+              </div>
+            )}
             <p className="text-[11px] font-mono text-[#555566] mt-0.5">{area.priceRange}</p>
           </div>
         </div>
@@ -324,7 +409,7 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
             <div className="flex items-center justify-between">
               <span className="text-[10px] font-mono text-[#666680]">Signal confidence</span>
               <span className="text-[11px] font-mono font-semibold" style={{ color: confidenceColor }}>
-                {outlook.confidence}
+                {displayConfidence}
               </span>
             </div>
 
@@ -342,14 +427,14 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
             </div>
           </div>
 
-          {/* Key drivers */}
-          {outlook.drivers.length > 0 && (
+          {/* Key drivers / live highlights */}
+          {displayHighlights.length > 0 && (
             <div className="mt-3">
               <p className="text-[9px] font-mono text-[#333344] uppercase tracking-wider mb-2">
-                Key drivers
+                {isLive ? 'Live signal highlights' : 'Key drivers'}
               </p>
               <ul className="space-y-1.5">
-                {outlook.drivers.map((d, i) => (
+                {displayHighlights.map((d, i) => (
                   <li key={i} className="flex items-start gap-2 text-[11px] font-mono text-[#666680]">
                     <span
                       className="mt-1.5 flex-shrink-0 w-1 h-1 rounded-full"
@@ -388,8 +473,8 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
 
       </div>}
 
-      {/* ── CTA (only when within coverage) ── */}
-      {withinCoverage && (
+      {/* ── CTA (only when effectively covered — live or static) ── */}
+      {isEffectivelyCovered && (
         <div
           className="p-4 flex-shrink-0"
           style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
