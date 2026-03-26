@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from app.api.routes import areas, score, satellite, ai, news, verdict
+from app.api.routes import areas, score, satellite, ai, news, verdict, utils
 
 app = FastAPI(
     title="PlotDNA API",
@@ -43,6 +43,7 @@ app.include_router(satellite.router, prefix="/api/satellite", tags=["satellite"]
 app.include_router(ai.router,        prefix="/api/ai",        tags=["ai"])
 app.include_router(news.router,      prefix="/api/news",      tags=["news"])
 app.include_router(verdict.router,   prefix="/api/verdict",   tags=["verdict"])
+app.include_router(utils.router,     prefix="/api/utils",     tags=["utils"])
 
 
 # ── Health & root ────────────────────────────────────────────────────────────

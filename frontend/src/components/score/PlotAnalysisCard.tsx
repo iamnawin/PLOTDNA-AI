@@ -315,7 +315,13 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
                 <span className="text-xs font-mono" style={{ color }}>+{area.yoy}% YoY</span>
               </div>
             )}
-            <p className="text-[11px] font-mono text-[#555566] mt-0.5">{area.priceRange}</p>
+            {isLive ? (
+              <p className="text-[10px] font-mono mt-0.5" style={{ color: '#333344' }}>
+                Price data not available for live scores — check PropTiger or 99acres for current rates.
+              </p>
+            ) : (
+              <p className="text-[11px] font-mono text-[#555566] mt-0.5">{area.priceRange}</p>
+            )}
           </div>
         </div>
 

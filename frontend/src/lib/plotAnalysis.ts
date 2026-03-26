@@ -1,6 +1,43 @@
 import type { MicroMarket } from '@/types'
 import { getAllAreas } from '@/data/cities'
 
+// ── Map URL parsing ────────────────────────────────────────────────────────────
+// Extracts lat/lng from Google Maps, Apple Maps, and OpenStreetMap URLs.
+// Returns null for short links (maps.app.goo.gl) — those need backend resolution.
+export function parseMapUrl(input: string): [number, number] | null {
+  const s = input.trim()
+  const valid = (lat: number, lng: number): [number, number] | null =>
+    lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180 ? [lat, lng] : null
+
+  // Google Maps @lat,lng,zoom (most common share format)
+  const atMatch = s.match(/@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/)
+  if (atMatch) return valid(parseFloat(atMatch[1]), parseFloat(atMatch[2]))
+
+  // ?q=lat,lng or &q=lat,lng
+  const qMatch = s.match(/[?&]q=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/)
+  if (qMatch) return valid(parseFloat(qMatch[1]), parseFloat(qMatch[2]))
+
+  // Apple Maps: ?ll=lat,lng
+  const llMatch = s.match(/[?&]ll=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/)
+  if (llMatch) return valid(parseFloat(llMatch[1]), parseFloat(llMatch[2]))
+
+  // OpenStreetMap: #map=zoom/lat/lng
+  const osmMatch = s.match(/#map=\d+\/(-?\d{1,3}\.\d+)\/(-?\d{1,3}\.\d+)/)
+  if (osmMatch) return valid(parseFloat(osmMatch[1]), parseFloat(osmMatch[2]))
+
+  return null
+}
+
+// Returns true for short links that need backend redirect resolution
+export function isShortMapUrl(input: string): boolean {
+  return /maps\.app\.goo\.gl|goo\.gl\/maps/i.test(input.trim())
+}
+
+// Returns true for any URL input (map link or short link)
+export function isMapUrl(input: string): boolean {
+  return /^https?:\/\//i.test(input.trim())
+}
+
 // ── Coordinate parsing ────────────────────────────────────────────────────────
 // Accepts: "17.51, 78.29"  |  "17.51 78.29"  |  "17.513607429705296,  78.2920650662839"
 export function parseCoords(query: string): [number, number] | null {

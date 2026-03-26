@@ -4,13 +4,14 @@ import { AnimatePresence, motion } from 'framer-motion'
 import {
   Search, ChevronRight, Navigation, Zap, Map, TrendingUp,
   Shield, Activity, X, Clock, Satellite, Building2, AlertTriangle,
-  ArrowRight,
+  ArrowRight, Paperclip, Link2,
 } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { CITY_LIST, CITIES } from '@/data/cities'
 import type { MicroMarket } from '@/types'
 import { getScoreColor } from '@/lib/utils'
-import { parseCoords, findNearestArea } from '@/lib/plotAnalysis'
+import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
+import { resolveMapLink, analyzeBrochure } from '@/lib/api'
 
 const FEATURES = [
   {
@@ -39,21 +40,29 @@ export default function Landing() {
   const navigate  = useNavigate()
   const { setSelectedArea, setSearchCoords, setSelectedCitySlug } = useAppStore()
 
-  const [query, setQuery]           = useState('')
-  const [focused, setFocused]       = useState(false)
-  const [activeCity, setActiveCity] = useState('hyderabad')
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [query, setQuery]             = useState('')
+  const [focused, setFocused]         = useState(false)
+  const [activeCity, setActiveCity]   = useState('hyderabad')
+  const [resolving, setResolving]     = useState(false)  // resolving short map link
+  const [brochureLoading, setBrochureLoading] = useState(false)
+  const [inputError, setInputError]   = useState('')
+  const inputRef      = useRef<HTMLInputElement>(null)
+  const fileInputRef  = useRef<HTMLInputElement>(null)
 
   // Gather all areas across all cities for search
   const allAreas: (MicroMarket & { citySlug: string })[] = Object.entries(CITIES).flatMap(
     ([slug, { areas }]) => areas.map(a => ({ ...a, citySlug: slug }))
   )
 
-  const parsedCoords = parseCoords(query)
-  const results = query.trim() && !parsedCoords
+  const parsedCoords  = parseCoords(query)
+  const parsedMapUrl  = parseMapUrl(query)
+  const shortMapUrl   = isShortMapUrl(query)
+  const isUrl         = isMapUrl(query)
+
+  const results = query.trim() && !parsedCoords && !isUrl
     ? allAreas.filter(a => a.name.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
     : []
-  const showDropdown = focused && (results.length > 0 || parsedCoords !== null)
+  const showDropdown = focused && (results.length > 0 || parsedCoords !== null || parsedMapUrl !== null)
 
   function goToArea(area: MicroMarket & { citySlug: string }) {
     setSelectedCitySlug(area.citySlug)
@@ -68,9 +77,39 @@ export default function Landing() {
     navigate('/map')
   }
 
-  function handleEnter() {
+  async function handleEnter() {
+    setInputError('')
+    // Direct coords
     if (parsedCoords) { goToCoords(parsedCoords); return }
+    // Full map URL (parsed on frontend)
+    if (parsedMapUrl) { goToCoords(parsedMapUrl); return }
+    // Short map URL (needs backend resolution)
+    if (shortMapUrl) {
+      setResolving(true)
+      const coords = await resolveMapLink(query.trim())
+      setResolving(false)
+      if (coords) { goToCoords(coords); return }
+      setInputError('Could not resolve this link. Try copying the coordinates directly.')
+      return
+    }
+    // Area name search
     if (results.length > 0) { goToArea(results[0]); return }
+  }
+
+  async function handleBrochureUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setBrochureLoading(true)
+    setInputError('')
+    const result = await analyzeBrochure(file)
+    setBrochureLoading(false)
+    if (result) {
+      goToCoords([result.lat, result.lng])
+    } else {
+      setInputError('Could not extract location from this file. Try a clearer image or paste the address.')
+    }
+    // Reset file input so the same file can be re-uploaded
+    if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
   function goToMap() {
@@ -197,16 +236,25 @@ export default function Landing() {
             }}
           >
             <div className="flex items-center px-5 py-4 gap-3">
-              <Search
-                size={16}
-                style={{ color: focused ? '#00e676' : '#444455', transition: 'color 0.2s', flexShrink: 0 }}
-              />
+              {resolving || brochureLoading ? (
+                <Activity
+                  size={16}
+                  style={{ color: '#00e676', flexShrink: 0, animation: 'spin 1s linear infinite' }}
+                />
+              ) : isUrl ? (
+                <Link2 size={16} style={{ color: '#00e676', flexShrink: 0 }} />
+              ) : (
+                <Search
+                  size={16}
+                  style={{ color: focused ? '#00e676' : '#444455', transition: 'color 0.2s', flexShrink: 0 }}
+                />
+              )}
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Search area  or paste lat, lng..."
+                placeholder="Area name, lat/lng, or paste a map link..."
                 value={query}
-                onChange={e => setQuery(e.target.value)}
+                onChange={e => { setQuery(e.target.value); setInputError('') }}
                 onFocus={() => setFocused(true)}
                 onBlur={() => setTimeout(() => setFocused(false), 160)}
                 onKeyDown={e => { if (e.key === 'Enter') handleEnter() }}
@@ -219,24 +267,49 @@ export default function Landing() {
                   outline: 'none',
                   border: 'none',
                 }}
-                placeholder-style={{ color: '#2e2e42' }}
               />
               {query && (
-                <button onClick={() => { setQuery(''); inputRef.current?.focus() }} style={{ color: '#444455' }}>
+                <button onClick={() => { setQuery(''); setInputError(''); inputRef.current?.focus() }} style={{ color: '#444455' }}>
                   <X size={14} />
                 </button>
               )}
+
+              {/* Hidden file input for brochure */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".pdf,.jpg,.jpeg,.png,.webp"
+                style={{ display: 'none' }}
+                onChange={handleBrochureUpload}
+              />
+              {/* Brochure upload button */}
+              <button
+                title="Upload a property brochure (PDF or image)"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={brochureLoading}
+                className="flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0"
+                style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  color: brochureLoading ? '#00e676' : '#444455',
+                }}
+              >
+                <Paperclip size={12} />
+              </button>
+
               <button
                 onClick={handleEnter}
+                disabled={resolving || brochureLoading}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
                 style={{
                   background: 'rgba(0,230,118,0.12)',
                   border: '1px solid rgba(0,230,118,0.3)',
                   color: '#00e676',
                   flexShrink: 0,
+                  opacity: resolving || brochureLoading ? 0.5 : 1,
                 }}
               >
-                Analyze
+                {resolving ? 'Resolving…' : brochureLoading ? 'Reading…' : 'Analyze'}
                 <ChevronRight size={11} />
               </button>
             </div>
@@ -261,19 +334,42 @@ export default function Landing() {
                   boxShadow: '0 24px 48px rgba(0,0,0,0.7)',
                 }}
               >
-                {parsedCoords && (
+                {(parsedCoords || parsedMapUrl) && (() => {
+                  const coords = parsedCoords ?? parsedMapUrl!
+                  return (
+                    <button
+                      onMouseDown={() => goToCoords(coords)}
+                      className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors"
+                      style={{ borderBottom: results.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
+                    >
+                      {parsedMapUrl ? <Link2 size={13} style={{ color: '#00e676', flexShrink: 0 }} /> : <Navigation size={13} style={{ color: '#00e676', flexShrink: 0 }} />}
+                      <div className="flex-1">
+                        <span style={{ fontSize: 12, color: '#00e676' }}>Analyze this location</span>
+                        <p style={{ fontSize: 10, color: '#444455', marginTop: 2 }}>
+                          {coords[0].toFixed(4)}°N  {coords[1].toFixed(4)}°E · DNA score + growth story
+                        </p>
+                      </div>
+                      <ChevronRight size={12} style={{ color: '#00e676' }} />
+                    </button>
+                  )
+                })()}
+
+                {/* Short map link — show resolve option */}
+                {shortMapUrl && (
                   <button
-                    onMouseDown={() => goToCoords(parsedCoords)}
+                    onMouseDown={handleEnter}
                     className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors"
                     style={{ borderBottom: results.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                     onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
                     onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
                   >
-                    <Navigation size={13} style={{ color: '#00e676', flexShrink: 0 }} />
+                    <Link2 size={13} style={{ color: '#00e676', flexShrink: 0 }} />
                     <div className="flex-1">
-                      <span style={{ fontSize: 12, color: '#00e676' }}>Analyze this location</span>
+                      <span style={{ fontSize: 12, color: '#00e676' }}>Resolve map link</span>
                       <p style={{ fontSize: 10, color: '#444455', marginTop: 2 }}>
-                        {parsedCoords[0].toFixed(4)}°N  {parsedCoords[1].toFixed(4)}°E · DNA score + growth story
+                        Extract coordinates and analyze location
                       </p>
                     </div>
                     <ChevronRight size={12} style={{ color: '#00e676' }} />
@@ -308,10 +404,16 @@ export default function Landing() {
             )}
           </AnimatePresence>
 
+          {/* Error message */}
+          {inputError && (
+            <p style={{ fontSize: 10, color: '#ef4444', marginTop: 8, textAlign: 'center' }}>
+              {inputError}
+            </p>
+          )}
           {/* Hint text */}
-          {!query && (
+          {!query && !inputError && (
             <p style={{ fontSize: 10, color: '#2e2e42', marginTop: 10, textAlign: 'center' }}>
-              Try "Kokapet", "Financial District", or paste a coordinate like 17.4401, 78.3489
+              Try "Kokapet", paste coords like 17.44, 78.38, paste a Google Maps link, or upload a brochure
             </p>
           )}
         </motion.div>

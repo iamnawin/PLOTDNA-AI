@@ -35,6 +35,60 @@ export interface LiveDNAResult {
   scored_at:    string
 }
 
+// ── Map link resolution ───────────────────────────────────────────────────────
+
+/**
+ * Resolve a short map URL (maps.app.goo.gl, etc.) via the backend proxy.
+ * Returns [lat, lng] or null if resolution fails.
+ */
+export async function resolveMapLink(url: string): Promise<[number, number] | null> {
+  try {
+    const res = await fetch(
+      `${BASE_URL}/api/utils/resolve-map-link?url=${encodeURIComponent(url)}`,
+      { signal: AbortSignal.timeout(12_000) },
+    )
+    if (!res.ok) return null
+    const data = await res.json()
+    if (typeof data.lat === 'number' && typeof data.lng === 'number')
+      return [data.lat, data.lng]
+    return null
+  } catch {
+    return null
+  }
+}
+
+// ── Brochure analysis ─────────────────────────────────────────────────────────
+
+export interface BrochureResult {
+  lat:        number
+  lng:        number
+  address:    string
+  locality:   string
+  city:       string
+  confidence: string
+}
+
+/**
+ * Upload a real estate brochure (PDF or image) and extract the location.
+ * Backend uses Gemini Vision + Nominatim geocoding.
+ * Returns coordinates + address context, or null on failure.
+ */
+export async function analyzeBrochure(file: File): Promise<BrochureResult | null> {
+  try {
+    const form = new FormData()
+    form.append('file', file)
+    const res = await fetch(`${BASE_URL}/api/utils/analyze-brochure`, {
+      method: 'POST',
+      body:   form,
+      signal: AbortSignal.timeout(45_000),
+    })
+    if (!res.ok) return null
+    return (await res.json()) as BrochureResult
+  } catch {
+    return null
+  }
+}
+
 // ── Coordinate analysis ───────────────────────────────────────────────────────
 
 /**
