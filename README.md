@@ -26,6 +26,11 @@ AI-powered real estate investment intelligence for India — DNA scores, satelli
 
 ## What is PlotDNA?
 
+<img width="1055" height="1544" alt="image" src="https://github.com/user-attachments/assets/5c5b04b9-a1e5-4b65-b97d-ef7bf915e1be" />
+
+
+
+
 Most Indians make their biggest financial decision — buying land — based on gut feel, a broker's pitch, or a WhatsApp forward. PlotDNA fixes that.
 
 Enter any location in India. Get a **DNA Score (0–100)** backed by 7 real signals: infrastructure pipeline, satellite growth, RERA activity, employment hubs, population trends, price velocity, and government schemes. Every micro-market, decoded.
