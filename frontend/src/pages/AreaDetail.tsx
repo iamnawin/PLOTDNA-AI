@@ -521,7 +521,7 @@ export default function AreaDetail() {
           transition={{ duration: 0.5, delay: 0.12 }}
           className="mb-10"
         >
-          <NewsSection citySlug={citySlug} areaSlug={area.slug} accentColor={color} />
+          <NewsSection citySlug={citySlug} areaSlug={area.slug} areaName={area.name} accentColor={color} />
         </motion.div>
 
         {/* ── Phase 2: Market Pulse ── */}
