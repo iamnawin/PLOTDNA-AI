@@ -8,6 +8,7 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
+import { useAppStore } from '@/store'
 import { CITIES, getAllAreas, getCityForArea } from '@/data/cities'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
@@ -315,6 +316,7 @@ function generatePDF(area: MicroMarket) {
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
+  const { searchCoords } = useAppStore()
   const area = getAllAreas().find((a) => a.slug === slug)
 
   if (!area) {
@@ -678,7 +680,7 @@ export default function AreaDetail() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.25 }}
         >
-          <SatelliteCompare area={area} />
+          <SatelliteCompare area={area} coords={searchCoords ?? undefined} />
         </motion.section>
 
         {/* ── Key Highlights ── */}
