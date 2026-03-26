@@ -19,11 +19,6 @@ AI-powered real estate investment intelligence for India — DNA scores, satelli
 </div>
 
 ---
-
-<img width="1918" height="942" alt="PlotDNA — Map Intelligence Platform" src="https://github.com/user-attachments/assets/fa337221-b6c9-4f62-b839-810c00f24124" />
-
----
-
 ## What is PlotDNA?
 
 <img width="1055" height="1544" alt="image" src="https://github.com/user-attachments/assets/5c5b04b9-a1e5-4b65-b97d-ef7bf915e1be" />
