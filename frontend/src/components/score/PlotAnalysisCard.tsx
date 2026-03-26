@@ -173,23 +173,16 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
         </div>
       </div>
 
-      {/* ── Not covered body: just the CTA ── */}
+      {/* ── Not covered body: no analysis shown, no misleading fallback ── */}
       {!withinCoverage && (
         <div className="flex-1 flex items-center justify-center px-6">
-          <button
-            onClick={() => navigate(`/area/${area.slug}`)}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-[11px] font-mono transition-all"
-            style={{
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: '#888899',
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#e8e8f0' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#888899' }}
+          <p
+            className="text-center font-mono"
+            style={{ fontSize: 10, color: '#2e2e42', lineHeight: 1.7 }}
           >
-            Explore {area.name} (nearest area)
-            <ArrowRight size={11} />
-          </button>
+            Coverage for this area is coming soon.<br />
+            Try searching a supported micro-market from the map.
+          </p>
         </div>
       )}
 
