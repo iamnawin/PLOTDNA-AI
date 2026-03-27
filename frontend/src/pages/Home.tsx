@@ -4,9 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { getCityEntry, CITY_LIST } from '@/data/cities'
-import type { MicroMarket } from '@/types'
+import type { MicroMarket, RecommendationGoal } from '@/types'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
-import { parseCoords, findNearestArea } from '@/lib/plotAnalysis'
+import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
+import { getRecommendationGoalMeta, rankAreasForGoal } from '@/lib/recommendations'
+import { resolveMapLink } from '@/lib/api'
 import MapView from '@/components/map/MapView'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
@@ -20,27 +22,55 @@ const RISK_TIERS = [
 
 export default function Home() {
   const navigate = useNavigate()
-  const { selectedArea, highlightTier, searchCoords, is3D, mapStyleKey, selectedCitySlug, showConstruction, setSelectedArea, setHighlightTier, setSearchCoords, setIs3D, setMapStyleKey, setSelectedCitySlug, setShowConstruction } = useAppStore()
+  const {
+    selectedArea,
+    highlightTier,
+    searchCoords,
+    is3D,
+    mapStyleKey,
+    selectedCitySlug,
+    showConstruction,
+    recommendationGoal,
+    setSelectedArea,
+    setHighlightTier,
+    setSearchCoords,
+    setIs3D,
+    setMapStyleKey,
+    setSelectedCitySlug,
+    setShowConstruction,
+    setRecommendationGoal,
+  } = useAppStore()
   const [searchQuery, setSearchQuery]         = useState('')
   const [searchFocused, setSearchFocused]     = useState(false)
   const [showLayers, setShowLayers]           = useState(false)
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
+  const [searchError, setSearchError]         = useState('')
+  const [resolvingUrl, setResolvingUrl]       = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const { areas: cityAreas, meta: cityMeta } = getCityEntry(selectedCitySlug)
-  const sorted = [...cityAreas].sort((a, b) => b.score - a.score)
+  const recommendedAreas = rankAreasForGoal(cityAreas, recommendationGoal)
+  const sorted = recommendedAreas.map(({ area }) => area)
   const AVG_DNA = Math.round(cityAreas.reduce((s, a) => s + a.score, 0) / cityAreas.length)
+  const cityShortCode = cityMeta.name === 'Delhi NCR'
+    ? 'DEL'
+    : cityMeta.name.slice(0, 3).toUpperCase()
+  const goalMeta = getRecommendationGoalMeta(recommendationGoal)
+  const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
 
   const parsedCoords   = parseCoords(searchQuery)
-  const searchResults: MicroMarket[] = searchQuery.trim() && !parsedCoords
+  const parsedMapUrl   = parseMapUrl(searchQuery)
+  const shortMapUrl    = isShortMapUrl(searchQuery)
+  const isUrl          = isMapUrl(searchQuery)
+  const searchResults: MicroMarket[] = searchQuery.trim() && !parsedCoords && !isUrl
     ? sorted.filter(a => a.name.toLowerCase().includes(searchQuery.toLowerCase()))
     : []
-  const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null)
+  const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl)
   const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1]) : null
 
   const sidebarList = highlightTier
-    ? sorted.filter(a => getScoreLabel(a.score) === highlightTier)
-    : sorted
+    ? recommendedAreas.filter(({ area }) => getScoreLabel(area.score) === highlightTier)
+    : recommendedAreas
 
   function handleCityChange(slug: string) {
     setSelectedCitySlug(slug)
@@ -51,6 +81,7 @@ export default function Home() {
     setSelectedArea(area)
     setSearchQuery('')
     setSearchFocused(false)
+    setSearchError('')
   }
 
   function triggerCoordAnalysis(coords: [number, number]) {
@@ -59,6 +90,33 @@ export default function Home() {
     setSelectedArea(area)
     setSearchQuery('')
     setSearchFocused(false)
+    setSearchError('')
+  }
+
+  async function handleSearchSubmit() {
+    setSearchError('')
+    if (parsedCoords) {
+      triggerCoordAnalysis(parsedCoords)
+      return
+    }
+    if (parsedMapUrl) {
+      triggerCoordAnalysis(parsedMapUrl)
+      return
+    }
+    if (shortMapUrl) {
+      setResolvingUrl(true)
+      const coords = await resolveMapLink(searchQuery.trim())
+      setResolvingUrl(false)
+      if (coords) {
+        triggerCoordAnalysis(coords)
+        return
+      }
+      setSearchError('Could not resolve this map link. Try the full URL or raw coordinates.')
+      return
+    }
+    if (searchResults.length > 0) {
+      selectArea(searchResults[0])
+    }
   }
 
   function toggleTier(label: string) {
@@ -137,7 +195,7 @@ export default function Home() {
         <div className="w-px h-6 bg-[#1e1e2e]" />
         <div className="text-center">
           <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest">City</p>
-          <p className="text-[11px] font-mono font-semibold text-[#888899] leading-tight">HYD</p>
+          <p className="text-[11px] font-mono font-semibold text-[#888899] leading-tight">{cityShortCode}</p>
         </div>
       </div>
 
@@ -164,7 +222,7 @@ export default function Home() {
               <Search
                 size={14}
                 style={{
-                  color: searchFocused ? '#00e676' : '#555566',
+                  color: resolvingUrl ? '#00e676' : searchFocused ? '#00e676' : '#555566',
                   transition: 'color 0.2s',
                   flexShrink: 0,
                 }}
@@ -172,22 +230,17 @@ export default function Home() {
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Search area  or paste lat, lng..."
+                placeholder="Area, lat/lng, or paste a map URL..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => { setSearchQuery(e.target.value); setSearchError('') }}
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setTimeout(() => setSearchFocused(false), 160)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    if (parsedCoords) triggerCoordAnalysis(parsedCoords)
-                    else if (searchResults.length > 0) selectArea(searchResults[0])
-                  }
-                }}
+                onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit() }}
                 className="flex-1 bg-transparent text-[#e8e8f0] font-mono text-sm outline-none placeholder:text-[#3a3a52]"
               />
               {searchQuery && (
                 <button
-                  onClick={() => { setSearchQuery(''); inputRef.current?.focus() }}
+                  onClick={() => { setSearchQuery(''); setSearchError(''); inputRef.current?.focus() }}
                   className="text-[#555566] hover:text-[#e8e8f0] transition-colors"
                 >
                   <X size={14} />
@@ -216,9 +269,9 @@ export default function Home() {
                 }}
               >
                 {/* Coordinate analysis option */}
-                {parsedCoords && (
+                {(parsedCoords || parsedMapUrl) && (
                   <button
-                    onMouseDown={() => triggerCoordAnalysis(parsedCoords)}
+                    onMouseDown={() => triggerCoordAnalysis(parsedCoords ?? parsedMapUrl!)}
                     className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.03] transition-colors"
                     style={{ borderBottom: searchResults.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                   >
@@ -226,7 +279,26 @@ export default function Home() {
                     <div className="flex-1">
                       <span className="text-[12px] font-mono text-[#00e676]">Analyze this location</span>
                       <p className="text-[10px] font-mono text-[#444455] mt-0.5">
-                        {parsedCoords[0].toFixed(4)}°N  {parsedCoords[1].toFixed(4)}°E · DNA score + growth story
+                        {(parsedCoords ?? parsedMapUrl)![0].toFixed(4)}°N  {(parsedCoords ?? parsedMapUrl)![1].toFixed(4)}°E · DNA score + growth story
+                      </p>
+                    </div>
+                    <ChevronRight size={12} className="text-[#00e676]" />
+                  </button>
+                )}
+
+                {shortMapUrl && (
+                  <button
+                    onMouseDown={handleSearchSubmit}
+                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.03] transition-colors"
+                    style={{ borderBottom: searchResults.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
+                  >
+                    <Navigation size={13} className="text-[#00e676] flex-shrink-0" />
+                    <div className="flex-1">
+                      <span className="text-[12px] font-mono text-[#00e676]">
+                        {resolvingUrl ? 'Resolving map link…' : 'Resolve map link'}
+                      </span>
+                      <p className="text-[10px] font-mono text-[#444455] mt-0.5">
+                        Extract coordinates, then analyze the location
                       </p>
                     </div>
                     <ChevronRight size={12} className="text-[#00e676]" />
@@ -255,6 +327,12 @@ export default function Home() {
             )}
           </AnimatePresence>
         </div>
+
+        {searchError && (
+          <p className="text-center mt-2 text-[10px] font-mono text-[#ef4444]">
+            {searchError}
+          </p>
+        )}
 
         {/* City selector + top area chips */}
         <AnimatePresence>
@@ -290,7 +368,7 @@ export default function Home() {
               </div>
               {/* Top area chips */}
               <div className="flex items-center justify-center gap-2">
-                {sorted.slice(0, 4).map((area: MicroMarket) => {
+                {recommendedAreas.slice(0, 4).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
                   const color = getScoreColor(area.score)
                   return (
                     <button
@@ -300,9 +378,11 @@ export default function Home() {
                       style={{ background: `${color}16`, border: `1px solid ${color}28`, color }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = `${color}28`; e.currentTarget.style.boxShadow = `0 0 12px ${color}25` }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = `${color}16`; e.currentTarget.style.boxShadow = 'none' }}
+                      title={`${matchScore}/100 match`}
                     >
                       <Zap size={9} />
                       {area.name}
+                      <span className="text-[9px]" style={{ color: '#e8e8f0' }}>{matchScore}</span>
                     </button>
                   )
                 })}
@@ -350,8 +430,27 @@ export default function Home() {
               style={{ boxShadow: '0 0 8px #00e67680' }}
             />
             <p className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.14em]">
-              Ranked by DNA Score
+              Recommended for {goalMeta.shortLabel}
             </p>
+          </div>
+          <div className="flex flex-wrap gap-1.5 mt-3">
+            {GOAL_OPTIONS.map(goal => {
+              const active = goal === recommendationGoal
+              return (
+                <button
+                  key={goal}
+                  onClick={() => setRecommendationGoal(goal)}
+                  className="px-2 py-1 rounded-full text-[9px] font-mono transition-all"
+                  style={{
+                    background: active ? 'rgba(0,230,118,0.12)' : 'rgba(255,255,255,0.03)',
+                    border: active ? '1px solid rgba(0,230,118,0.3)' : '1px solid rgba(255,255,255,0.06)',
+                    color: active ? '#00e676' : '#666680',
+                  }}
+                >
+                  {getRecommendationGoalMeta(goal).shortLabel}
+                </button>
+              )
+            })}
           </div>
           {highlightTier && (
             <p className="text-[9px] font-mono text-[#555566] mt-1 pl-2.5">
@@ -369,10 +468,10 @@ export default function Home() {
               </p>
             </div>
           ) : (
-            sidebarList.map((area, idx) => {
+            sidebarList.map(({ area, matchScore, reasons }, idx) => {
               const color = getScoreColor(area.score)
               const isSelected = selectedArea?.slug === area.slug
-              const globalRank = sorted.findIndex(a => a.slug === area.slug) + 1
+              const globalRank = recommendedAreas.findIndex(({ area: rankedArea }) => rankedArea.slug === area.slug) + 1
               return (
                 <button
                   key={area.slug}
@@ -403,17 +502,17 @@ export default function Home() {
                         {area.name}
                       </p>
                       <p className="text-[9px] text-[#333344] font-mono uppercase tracking-wide mt-0.5">
-                        {area.category}
+                        {reasons[0]?.label}: {reasons[0]?.value}
                       </p>
                     </div>
                     <div className="flex-shrink-0 text-right">
                       <span className="text-[13px] font-mono font-bold" style={{ color }}>
-                        {area.score}
+                        {matchScore}
                       </span>
                       <div className="w-8 h-[2px] bg-[#161626] rounded-full mt-1 ml-auto">
                         <div
                           className="h-full rounded-full"
-                          style={{ width: `${area.score}%`, backgroundColor: color }}
+                          style={{ width: `${matchScore}%`, backgroundColor: color }}
                         />
                       </div>
                     </div>
