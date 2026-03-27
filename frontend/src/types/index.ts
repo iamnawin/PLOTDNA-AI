@@ -1,4 +1,5 @@
 export type Category = 'Established' | 'High Growth' | 'Emerging' | 'Industrial'
+export type RecommendationGoal = 'balanced' | 'growth' | 'affordable' | 'defensive' | 'livable'
 
 export type ProjectType =
   | 'metro' | 'highway' | 'flyover' | 'it_park' | 'residential'

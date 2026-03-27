@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX, Activity } from 'lucide-react'
 import type { MicroMarket } from '@/types'
-import { getScoreColor, getScoreLabel } from '@/lib/utils'
+import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import {
   getGrowthMilestones,
   getOutlook,
@@ -92,6 +92,7 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
   const confidenceColor =
     displayConfidence === 'High'   ? '#10b981' :
     displayConfidence === 'Medium' ? '#f59e0b' : '#ef4444'
+  const liveSignals = liveData ? (Object.entries(liveData.signals) as [keyof typeof liveData.signals, number][]) : []
 
   return (
     <motion.div
@@ -324,6 +325,53 @@ export default function PlotAnalysisCard({ coords, area, distKm, withinCoverage,
             )}
           </div>
         </div>
+
+        {isLive && !withinCoverage && (
+          <>
+            <div
+              className="px-5 py-4"
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+            >
+              <p className="text-[9px] font-mono text-[#444455] uppercase tracking-[0.14em] mb-3">
+                Live Signal Breakdown
+              </p>
+              <div className="space-y-3">
+                {liveSignals.map(([key, value]) => (
+                  <div key={key}>
+                    <div className="flex items-center justify-between gap-3 mb-1">
+                      <span className="text-[10px] font-mono text-[#888899]">{SIGNAL_LABELS[key] ?? key}</span>
+                      <span className="text-[10px] font-mono text-[#666680]">{SIGNAL_WEIGHTS[key] ?? 0}% wt Â· {value}</span>
+                    </div>
+                    <div className="h-1.5 rounded-full overflow-hidden" style={{ background: '#1a1a2e' }}>
+                      <div
+                        className="h-full rounded-full"
+                        style={{ width: `${value}%`, backgroundColor: getScoreColor(value) }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              className="px-5 py-4"
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+            >
+              <p className="text-[9px] font-mono text-[#444455] uppercase tracking-[0.14em] mb-3">
+                Nearest Market Context
+              </p>
+              <div
+                className="px-3 py-3 rounded-lg"
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+              >
+                <p className="text-[11px] font-mono text-[#e8e8f0]">{area.name}</p>
+                <p className="text-[10px] font-mono text-[#666680] mt-1 leading-relaxed">
+                  This point has a live OSM-based score. The timeline and forecast below are still area-level context from the nearest supported market, {area.name} ({distKm} km away).
+                </p>
+              </div>
+            </div>
+          </>
+        )}
 
         {/* ── 15-Year Growth Story ── */}
         <div

@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import type { MicroMarket } from '@/types'
+import type { MicroMarket, RecommendationGoal } from '@/types'
 
 export type MapStyleKey = 'dark' | 'satellite' | 'terrain' | 'light'
 
@@ -12,6 +12,7 @@ interface AppStore {
   mapStyleKey: MapStyleKey
   selectedCitySlug: string
   showConstruction: boolean
+  recommendationGoal: RecommendationGoal
   setSelectedArea: (area: MicroMarket | null) => void
   setHoveredSlug: (slug: string | null) => void
   setHighlightTier: (tier: string | null) => void
@@ -20,6 +21,7 @@ interface AppStore {
   setMapStyleKey: (key: MapStyleKey) => void
   setSelectedCitySlug: (slug: string) => void
   setShowConstruction: (v: boolean) => void
+  setRecommendationGoal: (goal: RecommendationGoal) => void
 }
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -31,6 +33,7 @@ export const useAppStore = create<AppStore>((set) => ({
   mapStyleKey: 'dark',
   selectedCitySlug: 'hyderabad',
   showConstruction: false,
+  recommendationGoal: 'balanced',
   setSelectedArea: (area) => set({ selectedArea: area }),
   setHoveredSlug: (slug) => set({ hoveredSlug: slug }),
   setHighlightTier: (tier) => set({ highlightTier: tier }),
@@ -39,4 +42,5 @@ export const useAppStore = create<AppStore>((set) => ({
   setMapStyleKey: (key) => set({ mapStyleKey: key }),
   setSelectedCitySlug: (slug) => set({ selectedCitySlug: slug, selectedArea: null, highlightTier: null, searchCoords: null }),
   setShowConstruction: (v) => set({ showConstruction: v }),
+  setRecommendationGoal: (goal) => set({ recommendationGoal: goal }),
 }))
