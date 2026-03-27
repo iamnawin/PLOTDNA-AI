@@ -17,7 +17,7 @@ export function parseMapUrl(input: string): [number, number] | null {
     /[?&](?:ll|sll)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/,           // Apple Maps ll/sll
     /[?&]mlat=(-?\d{1,3}\.\d+)[^#]*[?&]mlon=(-?\d{1,3}\.\d+)/,    // OSM mlat/mlon
     /#map=\d+\/(-?\d{1,3}\.\d+)\/(-?\d{1,3}\.\d+)/,               // OSM hash
-    /\/(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)(?:,|$)/,                 // fallback /lat,lng path segment
+    /\/(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)(?:,|[/?#&]|$)/,          // fallback /lat,lng path segment
   ]
 
   for (const pattern of patterns) {
