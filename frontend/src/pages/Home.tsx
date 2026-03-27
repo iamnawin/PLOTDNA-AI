@@ -111,13 +111,11 @@ export default function Home() {
         triggerCoordAnalysis(result.coords)
         return
       }
-      setSearchError(result.detail ?? (
+      setSearchError(
         result.reason === 'backend_unreachable'
           ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
-          : result.reason === 'timeout'
-            ? 'Timed out while expanding this short link. Try again in a few seconds or paste the full map URL.'
-            : 'Could not extract coordinates from this map link. Try the full URL or raw coordinates.'
-      ))
+          : 'Could not extract coordinates from this map link. Try the full URL or raw coordinates.',
+      )
       return
     }
     if (searchResults.length > 0) {
