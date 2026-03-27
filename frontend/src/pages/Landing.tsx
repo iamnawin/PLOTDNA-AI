@@ -93,10 +93,14 @@ export default function Landing() {
     // Short map URL (needs backend resolution)
     if (shortMapUrl) {
       setResolving(true)
-      const coords = await resolveMapLink(query.trim())
+      const result = await resolveMapLink(query.trim())
       setResolving(false)
-      if (coords) { goToCoords(coords); return }
-      setInputError('Could not resolve this link. Try copying the coordinates directly.')
+      if (result.coords) { goToCoords(result.coords); return }
+      setInputError(
+        result.reason === 'backend_unreachable'
+          ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
+          : 'Could not extract coordinates from this map link. Try a full Google Maps URL or copy the coordinates directly.',
+      )
       return
     }
     // Area name search

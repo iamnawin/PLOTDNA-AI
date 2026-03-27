@@ -105,13 +105,17 @@ export default function Home() {
     }
     if (shortMapUrl) {
       setResolvingUrl(true)
-      const coords = await resolveMapLink(searchQuery.trim())
+      const result = await resolveMapLink(searchQuery.trim())
       setResolvingUrl(false)
-      if (coords) {
-        triggerCoordAnalysis(coords)
+      if (result.coords) {
+        triggerCoordAnalysis(result.coords)
         return
       }
-      setSearchError('Could not resolve this map link. Try the full URL or raw coordinates.')
+      setSearchError(
+        result.reason === 'backend_unreachable'
+          ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
+          : 'Could not extract coordinates from this map link. Try the full URL or raw coordinates.',
+      )
       return
     }
     if (searchResults.length > 0) {
