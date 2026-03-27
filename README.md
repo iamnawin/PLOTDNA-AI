@@ -19,12 +19,12 @@ AI-powered real estate investment intelligence for India — DNA scores, satelli
 </div>
 
 ---
-
-<img width="1918" height="942" alt="PlotDNA — Map Intelligence Platform" src="https://github.com/user-attachments/assets/fa337221-b6c9-4f62-b839-810c00f24124" />
-
----
-
 ## What is PlotDNA?
+
+<img width="1055" height="1544" alt="image" src="https://github.com/user-attachments/assets/5c5b04b9-a1e5-4b65-b97d-ef7bf915e1be" />
+
+
+
 
 Most Indians make their biggest financial decision — buying land — based on gut feel, a broker's pitch, or a WhatsApp forward. PlotDNA fixes that.
 
@@ -250,6 +250,19 @@ git checkout -b feat/your-feature
 *Built for every Indian who deserves better data before making the biggest investment of their life.*
 
 <br/>
+TSX 58.9%
+
+TypeScript 24.5%
+
+Python 15.4%
+
+HTML 0.4%
+
+Shell 0.3%
+
+CSS 0.3%
+
+Other 0.1%
 
 [![GitHub Stars](https://img.shields.io/github/stars/iamnawin/PLOTDNA-AI?style=flat-square&labelColor=050508&color=00e676)](https://github.com/iamnawin/PLOTDNA-AI/stargazers)
 [![GitHub Issues](https://img.shields.io/github/issues/iamnawin/PLOTDNA-AI?style=flat-square&labelColor=050508&color=555566)](https://github.com/iamnawin/PLOTDNA-AI/issues)
