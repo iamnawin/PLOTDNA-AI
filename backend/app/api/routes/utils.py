@@ -18,18 +18,20 @@ router = APIRouter()
 
 def _coords_from_url(url: str) -> tuple[float, float] | None:
     """Parse lat/lng from a resolved Google Maps / OSM / Apple Maps URL."""
-    # Google Maps @lat,lng,zoom
-    m = re.search(r"@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)", url)
-    if m:
-        return float(m.group(1)), float(m.group(2))
-    # ?q=lat,lng or &q=lat,lng
-    m = re.search(r"[?&]q=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)", url)
-    if m:
-        return float(m.group(1)), float(m.group(2))
-    # Apple Maps ?ll=lat,lng
-    m = re.search(r"[?&]ll=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)", url)
-    if m:
-        return float(m.group(1)), float(m.group(2))
+    patterns = [
+        r"@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)",  # Google Maps @lat,lng
+        r"!3d(-?\d{1,3}\.\d+)!4d(-?\d{1,3}\.\d+)",  # Google Maps !3dlat!4dlng
+        r"[?&]q=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)",  # ?q=lat,lng
+        r"[?&](?:query|destination|center)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)",
+        r"[?&](?:ll|sll)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)",  # Apple Maps ll/sll
+        r"[?&]mlat=(-?\d{1,3}\.\d+).*?[?&]mlon=(-?\d{1,3}\.\d+)",  # OSM mlat/mlon
+        r"#map=\d+/(-?\d{1,3}\.\d+)/(-?\d{1,3}\.\d+)",  # OSM hash
+        r"/(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)(?:,|$)",  # fallback /lat,lng path segment
+    ]
+    for pattern in patterns:
+        m = re.search(pattern, url)
+        if m:
+            return float(m.group(1)), float(m.group(2))
     return None
 
 

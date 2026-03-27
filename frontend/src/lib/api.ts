@@ -35,25 +35,32 @@ export interface LiveDNAResult {
   scored_at:    string
 }
 
+export type MapLinkResolutionReason = 'ok' | 'backend_unreachable' | 'invalid_link'
+
+export interface MapLinkResolutionResult {
+  coords: [number, number] | null
+  reason: MapLinkResolutionReason
+}
+
 // ── Map link resolution ───────────────────────────────────────────────────────
 
 /**
  * Resolve a short map URL (maps.app.goo.gl, etc.) via the backend proxy.
  * Returns [lat, lng] or null if resolution fails.
  */
-export async function resolveMapLink(url: string): Promise<[number, number] | null> {
+export async function resolveMapLink(url: string): Promise<MapLinkResolutionResult> {
   try {
     const res = await fetch(
       `${BASE_URL}/api/utils/resolve-map-link?url=${encodeURIComponent(url)}`,
       { signal: AbortSignal.timeout(12_000) },
     )
-    if (!res.ok) return null
+    if (!res.ok) return { coords: null, reason: 'invalid_link' }
     const data = await res.json()
     if (typeof data.lat === 'number' && typeof data.lng === 'number')
-      return [data.lat, data.lng]
-    return null
+      return { coords: [data.lat, data.lng], reason: 'ok' }
+    return { coords: null, reason: 'invalid_link' }
   } catch {
-    return null
+    return { coords: null, reason: 'backend_unreachable' }
   }
 }
 
