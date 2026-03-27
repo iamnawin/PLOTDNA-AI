@@ -8,10 +8,11 @@ import {
 } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { CITY_LIST, CITIES } from '@/data/cities'
-import type { MicroMarket } from '@/types'
+import type { MicroMarket, RecommendationGoal } from '@/types'
 import { getScoreColor } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { resolveMapLink, analyzeBrochure } from '@/lib/api'
+import { getGoalTopAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 
 const FEATURES = [
   {
@@ -38,7 +39,13 @@ const FEATURES = [
 
 export default function Landing() {
   const navigate  = useNavigate()
-  const { setSelectedArea, setSearchCoords, setSelectedCitySlug } = useAppStore()
+  const {
+    recommendationGoal,
+    setRecommendationGoal,
+    setSelectedArea,
+    setSearchCoords,
+    setSelectedCitySlug,
+  } = useAppStore()
 
   const [query, setQuery]             = useState('')
   const [focused, setFocused]         = useState(false)
@@ -67,7 +74,7 @@ export default function Landing() {
   function goToArea(area: MicroMarket & { citySlug: string }) {
     setSelectedCitySlug(area.citySlug)
     setSelectedArea(area)
-    navigate('/map')
+    navigate(`/area/${area.slug}`)
   }
 
   function goToCoords(coords: [number, number]) {
@@ -86,10 +93,14 @@ export default function Landing() {
     // Short map URL (needs backend resolution)
     if (shortMapUrl) {
       setResolving(true)
-      const coords = await resolveMapLink(query.trim())
+      const result = await resolveMapLink(query.trim())
       setResolving(false)
-      if (coords) { goToCoords(coords); return }
-      setInputError('Could not resolve this link. Try copying the coordinates directly.')
+      if (result.coords) { goToCoords(result.coords); return }
+      setInputError(
+        result.reason === 'backend_unreachable'
+          ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
+          : 'Could not extract coordinates from this map link. Try a full Google Maps URL or copy the coordinates directly.',
+      )
       return
     }
     // Area name search
@@ -118,7 +129,9 @@ export default function Landing() {
   }
 
   // Top areas for the selected preview city
-  const previewAreas = [...(CITIES[activeCity]?.areas ?? [])].sort((a, b) => b.score - a.score).slice(0, 5)
+  const previewAreas = getGoalTopAreas(CITIES[activeCity]?.areas ?? [], recommendationGoal, 5)
+  const goalMeta = getRecommendationGoalMeta(recommendationGoal)
+  const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
 
   return (
     <div
@@ -448,9 +461,36 @@ export default function Landing() {
             })}
           </div>
 
+          <div className="flex items-center justify-center flex-wrap gap-2 mb-4">
+            {GOAL_OPTIONS.map(goal => {
+              const active = goal === recommendationGoal
+              return (
+                <button
+                  key={goal}
+                  onClick={() => setRecommendationGoal(goal)}
+                  className="px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150"
+                  style={{
+                    background: active ? 'rgba(0,230,118,0.12)' : 'rgba(255,255,255,0.03)',
+                    border: active ? '1px solid rgba(0,230,118,0.35)' : '1px solid rgba(255,255,255,0.07)',
+                    color: active ? '#00e676' : '#666680',
+                  }}
+                >
+                  {getRecommendationGoalMeta(goal).shortLabel}
+                </button>
+              )
+            })}
+          </div>
+
+          <p
+            className="text-center mb-3"
+            style={{ fontSize: 10, color: '#444455', letterSpacing: '0.1em', textTransform: 'uppercase' }}
+          >
+            Best matches in {CITIES[activeCity]?.meta.name} for {goalMeta.label}
+          </p>
+
           {/* Top areas for selected city */}
           <div className="flex items-center justify-center flex-wrap gap-2">
-            {previewAreas.map(area => {
+            {previewAreas.map(({ area, matchScore, reasons }) => {
               const color = getScoreColor(area.score)
               const areaWithCity = { ...area, citySlug: activeCity }
               return (
@@ -465,7 +505,10 @@ export default function Landing() {
                   }}
                   onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = `${color}22` }}
                   onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = `${color}12` }}
+                  title={`${matchScore}/100 match · ${reasons[0]?.value ?? ''}`}
                 >
+                  <span style={{ fontWeight: 700, color: '#e8e8f0' }}>{matchScore}</span>
+                  <span style={{ color: `${color}88` }}>match</span>
                   <span style={{ fontWeight: 700 }}>{area.score}</span>
                   <span style={{ color: `${color}bb` }}>·</span>
                   {area.name}

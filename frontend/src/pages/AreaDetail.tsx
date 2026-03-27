@@ -8,11 +8,13 @@ import {
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
+import { useAppStore } from '@/store'
 import { CITIES, getAllAreas, getCityForArea } from '@/data/cities'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
 import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/areaSources'
+import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SatelliteCompare from '@/components/ui/SatelliteCompare'
@@ -315,6 +317,7 @@ function generatePDF(area: MicroMarket) {
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
+  const { searchCoords, recommendationGoal } = useAppStore()
   const area = getAllAreas().find((a) => a.slug === slug)
 
   if (!area) {
@@ -322,7 +325,7 @@ export default function AreaDetail() {
       <div className="h-screen bg-[#050508] flex items-center justify-center">
         <div className="text-center">
           <p className="text-[#444455] font-mono text-sm">Area not found</p>
-          <button onClick={() => navigate('/')} className="mt-4 text-xs font-mono text-[#22c55e] underline">
+          <button onClick={() => navigate('/map')} className="mt-4 text-xs font-mono text-[#22c55e] underline">
             Back to map
           </button>
         </div>
@@ -347,9 +350,8 @@ export default function AreaDetail() {
   const sources = getAreaSources(area.slug, citySlug)
 
   // Nearby areas — same city only, ±15 DNA score range
-  const nearby = (cityEntry?.areas ?? [])
-    .filter((a: MicroMarket) => a.slug !== area.slug && Math.abs(a.score - area.score) <= 15)
-    .slice(0, 4)
+  const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
+  const goalMeta = getRecommendationGoalMeta(recommendationGoal)
 
   return (
     <div className="min-h-screen bg-[#050508] text-[#e8e8f0]">
@@ -360,7 +362,7 @@ export default function AreaDetail() {
         style={{ background: 'rgba(5,5,10,0.96)', borderBottom: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}
       >
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/map')}
           className="flex items-center gap-2 text-[#666680] hover:text-[#e8e8f0] transition-colors text-sm font-mono"
         >
           <ArrowLeft size={15} />
@@ -678,7 +680,7 @@ export default function AreaDetail() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.25 }}
         >
-          <SatelliteCompare area={area} />
+          <SatelliteCompare area={area} coords={searchCoords ?? undefined} />
         </motion.section>
 
         {/* ── Key Highlights ── */}
@@ -918,9 +920,18 @@ export default function AreaDetail() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest mb-5">Similar Zones to Compare</h2>
+            <div className="flex items-center justify-between gap-3 mb-5">
+              <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">Alternatives to Compare</h2>
+              <span
+                className="text-[8px] font-mono px-2 py-1 rounded"
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: '#666680' }}
+              >
+                Ranked for {goalMeta.label}
+              </span>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {nearby.map((a) => {
+              {nearby.map(({ area: altArea, matchScore, reasons, caution }) => {
+                const a = altArea
                 const c = getScoreColor(a.score)
                 return (
                   <button
@@ -935,6 +946,9 @@ export default function AreaDetail() {
                     <p className="text-xs font-mono text-[#aaaabc] truncate">{a.name}</p>
                     <p className="text-2xl font-mono font-bold mt-1" style={{ color: c }}>{a.score}</p>
                     <p className="text-[10px] font-mono" style={{ color: c }}>{getScoreLabel(a.score)}</p>
+                    <p className="text-[10px] font-mono text-[#e8e8f0] mt-3">{matchScore}/100 match</p>
+                    <p className="text-[9px] font-mono text-[#666680] mt-1 leading-relaxed">{reasons[0]?.label}: {reasons[0]?.value}</p>
+                    <p className="text-[8px] font-mono text-[#333344] mt-2 leading-relaxed">{caution}</p>
                   </button>
                 )
               })}
