@@ -96,11 +96,13 @@ export default function Landing() {
       const result = await resolveMapLink(query.trim())
       setResolving(false)
       if (result.coords) { goToCoords(result.coords); return }
-      setInputError(
+      setInputError(result.detail ?? (
         result.reason === 'backend_unreachable'
           ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
-          : 'Could not extract coordinates from this map link. Try a full Google Maps URL or copy the coordinates directly.',
-      )
+          : result.reason === 'timeout'
+            ? 'Timed out while expanding this short link. Try again in a few seconds or paste the full map URL.'
+            : 'Could not extract coordinates from this map link. Try a full Google Maps URL or copy the coordinates directly.'
+      ))
       return
     }
     // Area name search

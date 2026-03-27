@@ -50,17 +50,38 @@ async def resolve_map_link(url: str):
 
     # Follow redirect chain (needed for short links)
     try:
-        async with httpx.AsyncClient(follow_redirects=True, timeout=12) as client:
+        async with httpx.AsyncClient(follow_redirects=True, timeout=25) as client:
             resp = await client.get(
                 url,
                 headers={"User-Agent": "Mozilla/5.0 (compatible; PlotDNA/1.0)"},
             )
+            resp.raise_for_status()
             final_url = str(resp.url)
             coords = _coords_from_url(final_url)
             if coords:
                 return {"lat": coords[0], "lng": coords[1]}
-    except Exception:
-        pass
+
+            raise HTTPException(
+                status_code=422,
+                detail="Short link expanded, but coordinates were not found. Open it in Maps once and copy the full URL instead.",
+            )
+    except HTTPException:
+        raise
+    except httpx.TimeoutException as exc:
+        raise HTTPException(
+            status_code=504,
+            detail="Timed out while expanding this short map link. Try again in a few seconds or paste the full map URL.",
+        ) from exc
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Map provider returned {exc.response.status_code} while expanding this short link. Try the full map URL instead.",
+        ) from exc
+    except httpx.HTTPError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail="Could not reach the map provider to expand this short link. Try again or paste the full map URL.",
+        ) from exc
 
     raise HTTPException(
         status_code=422,

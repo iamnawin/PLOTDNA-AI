@@ -35,11 +35,12 @@ export interface LiveDNAResult {
   scored_at:    string
 }
 
-export type MapLinkResolutionReason = 'ok' | 'backend_unreachable' | 'invalid_link'
+export type MapLinkResolutionReason = 'ok' | 'backend_unreachable' | 'invalid_link' | 'timeout'
 
 export interface MapLinkResolutionResult {
   coords: [number, number] | null
   reason: MapLinkResolutionReason
+  detail?: string
 }
 
 // ── Map link resolution ───────────────────────────────────────────────────────
@@ -54,13 +55,30 @@ export async function resolveMapLink(url: string): Promise<MapLinkResolutionResu
       `${BASE_URL}/api/utils/resolve-map-link?url=${encodeURIComponent(url)}`,
       { signal: AbortSignal.timeout(12_000) },
     )
-    if (!res.ok) return { coords: null, reason: 'invalid_link' }
+    if (!res.ok) {
+      let detail: string | undefined
+      try {
+        const data = await res.json() as { detail?: string }
+        detail = typeof data.detail === 'string' ? data.detail : undefined
+      } catch {
+        detail = undefined
+      }
+      return {
+        coords: null,
+        reason: res.status === 504 ? 'timeout' : 'invalid_link',
+        detail,
+      }
+    }
     const data = await res.json()
     if (typeof data.lat === 'number' && typeof data.lng === 'number')
       return { coords: [data.lat, data.lng], reason: 'ok' }
-    return { coords: null, reason: 'invalid_link' }
+    return { coords: null, reason: 'invalid_link', detail: 'Coordinates were missing in the resolver response.' }
   } catch {
-    return { coords: null, reason: 'backend_unreachable' }
+    return {
+      coords: null,
+      reason: 'backend_unreachable',
+      detail: 'Could not reach the backend resolver. Check VITE_API_URL or backend availability.',
+    }
   }
 }
 
