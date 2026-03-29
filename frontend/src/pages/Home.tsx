@@ -1035,7 +1035,7 @@ export default function Home() {
           </AnimatePresence>
 
           <div
-            className="rounded-2xl px-3 py-2 grid gap-3 md:grid-cols-[minmax(0,260px)_1fr_minmax(0,290px)] md:items-center"
+            className="rounded-2xl px-3 py-3 grid gap-4 md:grid-cols-[minmax(0,300px)_minmax(0,1fr)_minmax(0,320px)] md:items-center"
             style={{
               background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.78))',
               backdropFilter: 'blur(24px)',
@@ -1043,33 +1043,42 @@ export default function Home() {
               boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
             }}
           >
-            <div className="hidden md:flex items-center gap-2 min-w-[220px]">
-              <span className="text-[8px] font-mono text-[#444455] uppercase tracking-[0.16em] mr-1">
+            <div
+              className="hidden md:flex items-center gap-2 min-w-[240px] rounded-xl px-3 py-2.5"
+              style={{
+                background: 'rgba(255,255,255,0.018)',
+                border: '1px solid rgba(255,255,255,0.045)',
+                boxShadow: 'inset 0 0 14px rgba(255,255,255,0.012)',
+              }}
+            >
+              <span className="text-[8px] font-mono text-[#444455] uppercase tracking-[0.16em] mr-1 shrink-0">
                 Supported
               </span>
-              {systemCities.map(city => {
-                const active = city.slug === selectedCitySlug
-                return (
-                  <span
-                    key={city.slug}
-                    className="px-2.5 py-1 rounded-full text-[9px] font-mono"
-                    style={{
-                      background: active ? 'rgba(0,230,118,0.14)' : 'rgba(255,255,255,0.03)',
-                      border: active ? '1px solid rgba(0,230,118,0.28)' : '1px solid rgba(255,255,255,0.05)',
-                      color: active ? '#00e676' : '#77778a',
-                    }}
-                  >
-                    {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
-                  </span>
-                )
-              })}
+              <div className="flex items-center gap-2 flex-wrap">
+                {systemCities.map(city => {
+                  const active = city.slug === selectedCitySlug
+                  return (
+                    <span
+                      key={city.slug}
+                      className="px-2.5 py-1 rounded-full text-[9px] font-mono"
+                      style={{
+                        background: active ? 'rgba(0,230,118,0.14)' : 'rgba(255,255,255,0.03)',
+                        border: active ? '1px solid rgba(0,230,118,0.28)' : '1px solid rgba(255,255,255,0.05)',
+                        color: active ? '#00e676' : '#77778a',
+                      }}
+                    >
+                      {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
+                    </span>
+                  )
+                })}
+              </div>
             </div>
 
             <div
-              className="flex items-center p-1 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center"
+              className="flex items-center p-1.5 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center md:px-3"
               style={{
-                background: 'rgba(255,255,255,0.01)',
-                border: '1px solid rgba(255,255,255,0.035)',
+                background: 'rgba(255,255,255,0.012)',
+                border: '1px solid rgba(255,255,255,0.03)',
                 WebkitOverflowScrolling: 'touch',
                 scrollbarWidth: 'none',
               } as React.CSSProperties}
@@ -1080,11 +1089,11 @@ export default function Home() {
                   <button
                     key={tier.label}
                     onClick={() => toggleTier(tier.label)}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-full transition-all duration-200"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-200"
                     style={{
-                      background: isActive ? `${tier.color}18` : 'transparent',
-                      border: isActive ? `1px solid ${tier.color}45` : '1px solid transparent',
-                      boxShadow: isActive ? `0 0 10px ${tier.color}18` : 'none',
+                      background: isActive ? `${tier.color}15` : 'transparent',
+                      border: isActive ? `1px solid ${tier.color}38` : '1px solid transparent',
+                      boxShadow: isActive ? `0 0 8px ${tier.color}14` : 'none',
                     }}
                   >
                     <div
@@ -1096,10 +1105,10 @@ export default function Home() {
                         transition: 'all 0.2s',
                       }}
                     />
-                    <span className="text-[10px] font-mono whitespace-nowrap transition-colors duration-200" style={{ color: isActive ? tier.color : '#5f5f74' }}>
+                    <span className="text-[9px] font-mono whitespace-nowrap transition-colors duration-200" style={{ color: isActive ? tier.color : '#5f5f74' }}>
                       {tier.label}
                     </span>
-                    <span className="text-[9px] font-mono transition-colors duration-200" style={{ color: isActive ? `${tier.color}7a` : '#28283b' }}>
+                    <span className="text-[8px] font-mono transition-colors duration-200" style={{ color: isActive ? `${tier.color}72` : '#28283b' }}>
                       {tier.range}
                     </span>
                   </button>
@@ -1120,7 +1129,14 @@ export default function Home() {
               </AnimatePresence>
             </div>
 
-            <div className="flex items-center gap-2 justify-end min-w-[270px]">
+            <div
+              className="flex items-center gap-2 justify-end min-w-[280px] rounded-xl px-3 py-2"
+              style={{
+                background: 'rgba(255,255,255,0.018)',
+                border: '1px solid rgba(255,255,255,0.045)',
+                boxShadow: 'inset 0 0 14px rgba(255,255,255,0.012)',
+              }}
+            >
               <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} variant="dock" />
               <button
                 onClick={() => setShowLayers(v => !v)}

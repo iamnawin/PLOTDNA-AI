@@ -107,7 +107,6 @@ function orientationForLocation([lat, lng]: [number, number]) {
 
 export default function GlobeView({ citySlug, cityName, cityCenter, fallback, coords }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
-  const stageRef = useRef<HTMLDivElement | null>(null)
   const pointerRef = useRef({
     phiOffset: 0,
     thetaOffset: 0,
@@ -243,25 +242,25 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
 
       time += 1 / 60
       const pointer = pointerRef.current
-      pointer.hoverMix += (pointer.targetHoverMix - pointer.hoverMix) * 0.08
-      pointer.phiOffset += (pointer.targetPhiOffset - pointer.phiOffset) * 0.045
-      pointer.thetaOffset += (pointer.targetThetaOffset - pointer.thetaOffset) * 0.05
-      pointer.scale += (pointer.targetScale - pointer.scale) * 0.08
+      pointer.hoverMix += (pointer.targetHoverMix - pointer.hoverMix) * 0.12
+      pointer.phiOffset += (pointer.targetPhiOffset - pointer.phiOffset) * 0.11
+      pointer.thetaOffset += (pointer.targetThetaOffset - pointer.thetaOffset) * 0.11
+      pointer.scale += (pointer.targetScale - pointer.scale) * 0.12
 
       const driftPhi =
         focusOrientation.phi
         + 0.18
-        + Math.sin(time * 0.72) * (0.18 + pointer.hoverMix * 0.07)
-        + Math.sin(time * 0.15) * 0.045
+        + Math.sin(time * 0.8) * (0.16 + pointer.hoverMix * 0.09)
+        + Math.sin(time * 0.18) * 0.05
         + pointer.phiOffset
       const driftTheta =
         focusOrientation.theta * 0.78
         - 0.05
-        + Math.cos(time * 0.42) * (0.08 + pointer.hoverMix * 0.03)
+        + Math.cos(time * 0.46) * (0.075 + pointer.hoverMix * 0.045)
         + pointer.thetaOffset
 
-      phi += (driftPhi - phi) * (0.055 + pointer.hoverMix * 0.025)
-      theta += (driftTheta - theta) * (0.075 + pointer.hoverMix * 0.025)
+      phi += (driftPhi - phi) * (0.075 + pointer.hoverMix * 0.035)
+      theta += (driftTheta - theta) * (0.085 + pointer.hoverMix * 0.035)
 
       globe.update({
         phi,
@@ -343,7 +342,7 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
         }}
       />
 
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="absolute inset-0 flex items-center justify-center">
         <div className="relative" style={{ width: 'min(80vw, 900px)', height: 'min(80vw, 900px)' }}>
           <div
             className="absolute left-1/2 top-[77%] -translate-x-1/2 rounded-full"
@@ -356,17 +355,16 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
           />
 
           <motion.div
-            ref={stageRef}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             animate={{ y: [0, -5, 0], scale: [1, 1.008, 1] }}
             transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ width: '90%', height: '90%' }}
+            style={{ width: '90%', height: '90%', cursor: 'grab', pointerEvents: 'auto' }}
             onMouseMove={(event) => {
               const rect = event.currentTarget.getBoundingClientRect()
               const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2
               const normalizedY = ((event.clientY - rect.top) / rect.height - 0.5) * 2
-              pointerRef.current.targetPhiOffset = normalizedX * 0.12
-              pointerRef.current.targetThetaOffset = normalizedY * 0.085
+              pointerRef.current.targetPhiOffset = normalizedX * 0.2
+              pointerRef.current.targetThetaOffset = normalizedY * 0.15
             }}
             onMouseEnter={() => {
               pointerRef.current.targetHoverMix = 1
@@ -378,13 +376,14 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
             }}
             onWheel={(event) => {
               event.preventDefault()
-              const delta = event.deltaY > 0 ? -0.045 : 0.045
-              pointerRef.current.targetScale = Math.max(0.9, Math.min(1.18, pointerRef.current.targetScale + delta))
+              const delta = event.deltaY > 0 ? -0.08 : 0.08
+              pointerRef.current.targetScale = Math.max(0.82, Math.min(1.24, pointerRef.current.targetScale + delta))
             }}
             onDoubleClick={() => {
               pointerRef.current.targetPhiOffset = 0
               pointerRef.current.targetThetaOffset = 0
-              pointerRef.current.targetScale = 1.08
+              pointerRef.current.targetHoverMix = 1
+              pointerRef.current.targetScale = 1.14
             }}
           >
             <div
