@@ -1,8 +1,8 @@
 /**
  * NewsSection — "What Changed Recently in {area}"
- * Shows 3 items per page. Filters by area name relevance first.
+ * Shows 3 items per page. Only displays stories relevant to the selected area.
  */
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Newspaper, ExternalLink, Clock, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -60,11 +60,14 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
   const [loading, setLoading]     = useState(true)
   const [error, setError]         = useState(false)
   const [refreshing, setRefreshing] = useState(false)
-  const [isFallback, setIsFallback] = useState(false)  // true = city-level fallback
   const [page, setPage]           = useState(0)
 
-  async function load(forceRefresh = false) {
-    forceRefresh ? setRefreshing(true) : setLoading(true)
+  const load = useCallback(async (forceRefresh = false) => {
+    if (forceRefresh) {
+      setRefreshing(true)
+    } else {
+      setLoading(true)
+    }
     setError(false)
     setPage(0)
     try {
@@ -73,26 +76,14 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
       const data = await res.json()
       const raw: NewsItem[] = data.items ?? []
       const filtered = filterByArea(raw, areaName)
-      if (filtered.length > 0) {
-        setAllItems(filtered)
-        setIsFallback(false)
-      } else {
-        // Nothing area-specific — fall back to city news, still filter
-        const cityRes = await fetch(`${API_BASE}/api/news/${citySlug}?limit=20`)
-        const cityData = await cityRes.json()
-        const cityItems: NewsItem[] = cityData.items ?? []
-        const cityFiltered = filterByArea(cityItems, areaName)
-        setAllItems(cityFiltered.length > 0 ? cityFiltered : cityItems.slice(0, 9))
-        setIsFallback(cityFiltered.length === 0)
-      }
+      setAllItems(filtered)
     } catch {
       try {
         const res = await fetch(`${API_BASE}/api/news/${citySlug}?limit=20`)
         const data = await res.json()
         const raw: NewsItem[] = data.items ?? []
         const filtered = filterByArea(raw, areaName)
-        setAllItems(filtered.length > 0 ? filtered : raw.slice(0, 9))
-        setIsFallback(filtered.length === 0)
+        setAllItems(filtered)
       } catch {
         setError(true)
       }
@@ -100,9 +91,9 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
       setLoading(false)
       setRefreshing(false)
     }
-  }
+  }, [areaName, areaSlug, citySlug])
 
-  useEffect(() => { load() }, [citySlug, areaSlug, areaName])
+  useEffect(() => { load() }, [load])
 
   const totalPages = Math.ceil(allItems.length / PAGE_SIZE)
   const pageItems  = allItems.slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
@@ -139,16 +130,6 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
         </button>
       </div>
 
-      {/* Fallback notice */}
-      {isFallback && !loading && !error && (
-        <div
-          className="mb-3 px-3 py-2 rounded-lg text-[9px] font-mono text-[#444455]"
-          style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
-        >
-          No area-specific news found — showing general real estate news for the region.
-        </div>
-      )}
-
       {loading ? (
         <div className="space-y-2">
           {[...Array(3)].map((_, i) => (
@@ -168,7 +149,10 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
           className="p-6 rounded-xl text-center"
           style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
         >
-          <p className="text-[#444455] font-mono text-xs">No recent news found for {areaName}.</p>
+          <p className="text-[#444455] font-mono text-xs">No recent area-specific news found for {areaName}.</p>
+          <p className="text-[#2a2a3e] font-mono text-[10px] mt-1">
+            Regional fallback headlines are hidden to avoid unrelated stories.
+          </p>
         </div>
       ) : (
         <>
