@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat } from 'lucide-react'
@@ -48,6 +48,7 @@ export default function Home() {
   const [searchError, setSearchError]         = useState('')
   const [resolvingUrl, setResolvingUrl]       = useState(false)
   const [viewMode, setViewMode]               = useState<ViewMode>('map')
+  const [globeSidebarExpanded, setGlobeSidebarExpanded] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   const { areas: cityAreas, meta: cityMeta } = getCityEntry(selectedCitySlug)
@@ -71,6 +72,13 @@ export default function Home() {
   const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1]) : null
   const isGlobeMode = viewMode === 'globe'
   const systemCities = CITY_LIST.slice(0, 6)
+
+  function handleViewModeChange(nextMode: ViewMode) {
+    if (nextMode === 'globe') {
+      setGlobeSidebarExpanded(false)
+    }
+    setViewMode(nextMode)
+  }
 
   const sidebarList = highlightTier
     ? recommendedAreas.filter(({ area }) => getScoreLabel(area.score) === highlightTier)
@@ -426,7 +434,7 @@ export default function Home() {
         className={`absolute left-5 z-[999] flex-col rounded-xl overflow-hidden ${showMobileSidebar ? 'flex' : 'hidden'} md:flex`}
         style={{
           top: isGlobeMode ? 106 : 78,
-          bottom: isGlobeMode ? 128 : 76,
+          bottom: isGlobeMode && !globeSidebarExpanded ? 'auto' : (isGlobeMode ? 128 : 76),
           width: isGlobeMode ? 204 : 220,
           background: isGlobeMode
             ? 'linear-gradient(180deg, rgba(8,12,18,0.76), rgba(5,5,10,0.68))'
@@ -444,14 +452,35 @@ export default function Home() {
             background: 'linear-gradient(180deg, rgba(0,230,118,0.05) 0%, transparent 100%)',
           }}
         >
-          <div className="flex items-center gap-2">
-            <div
-              className="w-0.5 h-3.5 rounded-full bg-[#00e676]"
-              style={{ boxShadow: '0 0 8px #00e67680' }}
-            />
-            <p className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.14em]">
-              Recommended for {goalMeta.shortLabel}
-            </p>
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <div
+                className="w-0.5 h-3.5 rounded-full bg-[#00e676]"
+                style={{ boxShadow: '0 0 8px #00e67680' }}
+              />
+              <p className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.14em]">
+                Recommended for {goalMeta.shortLabel}
+              </p>
+            </div>
+            {isGlobeMode && (
+              <button
+                onClick={() => setGlobeSidebarExpanded(v => !v)}
+                className="flex items-center justify-center w-7 h-7 rounded-lg transition-all"
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  color: globeSidebarExpanded ? '#00e676' : '#77778a',
+                }}
+              >
+                <ChevronUp
+                  size={12}
+                  style={{
+                    transform: globeSidebarExpanded ? 'rotate(0deg)' : 'rotate(180deg)',
+                    transition: 'transform 0.2s',
+                  }}
+                />
+              </button>
+            )}
           </div>
           <div className="flex flex-wrap gap-1.5 mt-3">
             {GOAL_OPTIONS.map(goal => {
@@ -472,6 +501,26 @@ export default function Home() {
               )
             })}
           </div>
+          {isGlobeMode && !globeSidebarExpanded && (
+            <div className="mt-3 space-y-2">
+              {recommendedAreas.slice(0, 2).map(({ area, matchScore }) => (
+                <div
+                  key={area.slug}
+                  className="flex items-center justify-between rounded-lg px-2.5 py-2"
+                  style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    border: '1px solid rgba(255,255,255,0.05)',
+                  }}
+                >
+                  <div>
+                    <p className="text-[10px] font-mono text-[#e8e8f0]">{area.name}</p>
+                    <p className="text-[8px] font-mono text-[#555566]">Top match</p>
+                  </div>
+                  <span className="text-[11px] font-mono font-bold text-[#00e676]">{matchScore}</span>
+                </div>
+              ))}
+            </div>
+          )}
           {highlightTier && (
             <p className="text-[9px] font-mono text-[#555566] mt-1 pl-2.5">
               {highlightTier} · {sidebarList.length} area{sidebarList.length !== 1 ? 's' : ''}
@@ -480,7 +529,8 @@ export default function Home() {
         </div>
 
         {/* Area list */}
-        <div className="flex-1 overflow-y-auto">
+        {(!isGlobeMode || globeSidebarExpanded) && (
+          <div className="flex-1 overflow-y-auto">
           {sidebarList.length === 0 ? (
             <div className="flex items-center justify-center h-full">
               <p className="text-[11px] font-mono text-[#333344] text-center px-4">
@@ -541,7 +591,8 @@ export default function Home() {
               )
             })
           )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* ═══════════════════════════════════════════════
@@ -579,7 +630,7 @@ export default function Home() {
           boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
         }}
       >
-        <ViewModeToggle mode={viewMode} onChange={setViewMode} />
+        <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} />
 
         {/* Trigger pill */}
         <button
@@ -984,7 +1035,7 @@ export default function Home() {
           </AnimatePresence>
 
           <div
-            className="rounded-2xl px-3 py-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
+            className="rounded-2xl px-3 py-2 grid gap-3 md:grid-cols-[minmax(0,260px)_1fr_minmax(0,290px)] md:items-center"
             style={{
               background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.78))',
               backdropFilter: 'blur(24px)',
@@ -992,7 +1043,7 @@ export default function Home() {
               boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
             }}
           >
-            <div className="hidden lg:flex items-center gap-2 min-w-[220px]">
+            <div className="hidden md:flex items-center gap-2 min-w-[220px]">
               <span className="text-[8px] font-mono text-[#444455] uppercase tracking-[0.16em] mr-1">
                 Supported
               </span>
@@ -1017,7 +1068,7 @@ export default function Home() {
             <div
               className="flex items-center p-1 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center"
               style={{
-                background: 'rgba(255,255,255,0.02)',
+                background: 'rgba(255,255,255,0.015)',
                 border: '1px solid rgba(255,255,255,0.05)',
                 WebkitOverflowScrolling: 'touch',
                 scrollbarWidth: 'none',
@@ -1070,7 +1121,7 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-2 justify-end min-w-[270px]">
-              <ViewModeToggle mode={viewMode} onChange={setViewMode} variant="dock" />
+              <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} variant="dock" />
               <button
                 onClick={() => setShowLayers(v => !v)}
                 className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-200"
