@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion'
-import { Activity, Globe, MapPin, Orbit } from 'lucide-react'
-import { CITY_LIST } from '@/data/cities'
+import { Activity, Globe, MapPin } from 'lucide-react'
 import type { LocalityFallbackResult } from '@/lib/plotAnalysis'
 
 interface Props {
@@ -83,8 +82,6 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
           ? 'Broad region'
           : 'City context'
   const tone = getFocusTone(fallback)
-  const cityChips = CITY_LIST.slice(0, 6)
-
   return (
     <div className="absolute inset-0 overflow-hidden">
       <div
@@ -108,7 +105,7 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
       />
 
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative" style={{ width: 'min(72vw, 760px)', height: 'min(72vw, 760px)' }}>
+        <div className="relative" style={{ width: 'min(66vw, 700px)', height: 'min(66vw, 700px)' }}>
           <div
             className="absolute left-1/2 top-[73%] -translate-x-1/2 rounded-full"
             style={{
@@ -295,50 +292,13 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
             </div>
           </motion.div>
 
-          <div className="absolute left-1/2 bottom-[8%] -translate-x-1/2 z-[2] w-[min(88vw,680px)]">
-            <div
-              className="rounded-2xl px-4 py-3"
-              style={{
-                background: 'linear-gradient(180deg, rgba(7,10,16,0.9), rgba(5,5,10,0.78))',
-                backdropFilter: 'blur(22px)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                boxShadow: '0 20px 44px rgba(0,0,0,0.36)',
-              }}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <Orbit size={12} style={{ color: tone.text }} />
-                <p className="text-[10px] font-mono uppercase tracking-[0.16em]" style={{ color: tone.text }}>
-                  Supported Intelligence Network
-                </p>
-              </div>
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                {cityChips.map(city => {
-                  const active = city.slug === citySlug
-                  return (
-                    <motion.div
-                      key={city.slug}
-                      animate={active ? { y: [0, -2, 0] } : undefined}
-                      transition={active ? { duration: 2.8, repeat: Infinity, ease: 'easeInOut' } : undefined}
-                      className="px-3 py-1.5 rounded-full"
-                      style={{
-                        background: active ? 'rgba(0,230,118,0.14)' : 'rgba(255,255,255,0.04)',
-                        border: active ? '1px solid rgba(0,230,118,0.34)' : '1px solid rgba(255,255,255,0.06)',
-                        boxShadow: active ? '0 0 18px rgba(0,230,118,0.14)' : 'none',
-                      }}
-                    >
-                      <span className="text-[10px] font-mono" style={{ color: active ? '#00e676' : '#888899' }}>
-                        {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
-                      </span>
-                    </motion.div>
-                  )
-                })}
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
-      <div className="absolute left-5 top-5 z-[2] max-w-[300px] rounded-2xl px-4 py-3" style={{
+      <div className="absolute z-[2] max-w-[280px] rounded-2xl px-4 py-3" style={{
+        left: 'max(28px, calc(50% - 520px))',
+        top: '50%',
+        transform: 'translateY(-50%)',
         background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.76))',
         backdropFilter: 'blur(20px)',
         border: '1px solid rgba(255,255,255,0.08)',
@@ -353,14 +313,14 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
         <p className="text-sm font-mono text-[#e8e8f0] leading-relaxed">
           Premium geospatial storytelling anchored to the active PlotDNA market context.
         </p>
-      </div>
-
-      <div className="absolute right-5 top-5 z-[2] max-w-[320px] rounded-2xl px-4 py-3" style={{
-        background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.76))',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
-      }}>
+        <div className="flex items-center gap-2 mb-2">
+          <MapPin size={12} style={{ color: tone.text }} />
+          <p className="text-[10px] font-mono text-[#444455] uppercase tracking-[0.16em]">
+            Focus Region
+          </p>
+        </div>
+        <p className="text-[13px] font-mono text-[#e8e8f0] mb-1">{focusLabel}</p>
+        <p className="text-[10px] font-mono text-[#666680] mb-3">{precisionLabel}</p>
         <div className="flex items-center gap-2 mb-2">
           <Activity size={12} style={{ color: tone.text }} />
           <p className="text-[10px] font-mono text-[#444455] uppercase tracking-[0.16em]">
@@ -375,22 +335,6 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
             Hyderabad is currently the strongest supported intelligence corridor.
           </p>
         )}
-      </div>
-
-      <div className="absolute left-5 bottom-5 z-[2] max-w-[320px] rounded-2xl px-4 py-3" style={{
-        background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.76))',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
-      }}>
-        <div className="flex items-center gap-2 mb-2">
-          <MapPin size={12} style={{ color: tone.text }} />
-          <p className="text-[10px] font-mono text-[#444455] uppercase tracking-[0.16em]">
-            Focus Region
-          </p>
-        </div>
-        <p className="text-[13px] font-mono text-[#e8e8f0] mb-1">{focusLabel}</p>
-        <p className="text-[10px] font-mono text-[#666680]">{precisionLabel}</p>
       </div>
     </div>
   )

@@ -69,6 +69,8 @@ export default function Home() {
     : []
   const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl)
   const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1]) : null
+  const isGlobeMode = viewMode === 'globe'
+  const systemCities = CITY_LIST.slice(0, 6)
 
   const sidebarList = highlightTier
     ? recommendedAreas.filter(({ area }) => getScoreLabel(area.score) === highlightTier)
@@ -423,13 +425,15 @@ export default function Home() {
       <div
         className={`absolute left-5 z-[999] flex-col rounded-xl overflow-hidden ${showMobileSidebar ? 'flex' : 'hidden'} md:flex`}
         style={{
-          top: 78,
-          bottom: 76,
-          width: 220,
-          background: 'rgba(5,5,10,0.82)',
+          top: isGlobeMode ? 106 : 78,
+          bottom: isGlobeMode ? 128 : 76,
+          width: isGlobeMode ? 204 : 220,
+          background: isGlobeMode
+            ? 'linear-gradient(180deg, rgba(8,12,18,0.76), rgba(5,5,10,0.68))'
+            : 'rgba(5,5,10,0.82)',
           backdropFilter: 'blur(22px)',
           border: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+          boxShadow: isGlobeMode ? '0 16px 30px rgba(0,0,0,0.28)' : '0 8px 32px rgba(0,0,0,0.5)',
         }}
       >
         {/* Panel header */}
@@ -564,7 +568,7 @@ export default function Home() {
           BOTTOM RIGHT: Layer / View switcher
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute z-[1001] flex flex-col gap-2 rounded-2xl p-2"
+        className={`absolute z-[1001] flex flex-col gap-2 rounded-2xl p-2 ${isGlobeMode ? 'hidden' : ''}`}
         style={{
           bottom: 88,
           right: 20,
@@ -768,7 +772,7 @@ export default function Home() {
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute bottom-5 left-3 right-3 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto"
+        className={`absolute bottom-5 left-3 right-3 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto ${isGlobeMode ? 'hidden' : ''}`}
         style={{
           background: 'rgba(5,5,10,0.88)',
           backdropFilter: 'blur(22px)',
@@ -831,6 +835,272 @@ export default function Home() {
           )}
         </AnimatePresence>
       </div>
+
+      {isGlobeMode && (
+        <div
+          className="absolute left-1/2 -translate-x-1/2 z-[1001] w-[min(96vw,1100px)]"
+          style={{ bottom: 18 }}
+        >
+          <AnimatePresence>
+            {showLayers && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 bottom-full mb-3 w-[228px] rounded-xl overflow-hidden"
+                style={{
+                  background: 'linear-gradient(180deg, rgba(8,12,18,0.96), rgba(5,5,10,0.9))',
+                  backdropFilter: 'blur(28px)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: '0 20px 48px rgba(0,0,0,0.7)',
+                }}
+              >
+                <div
+                  className="px-3.5 pt-3 pb-2"
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                >
+                  <p className="text-[8px] font-mono text-[#333344] uppercase tracking-[0.16em] mb-2">
+                    Basemap Style
+                  </p>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {([
+                      { key: 'dark', Icon: Map, label: 'Standard' },
+                      { key: 'satellite', Icon: Satellite, label: 'Satellite' },
+                      { key: 'terrain', Icon: Globe, label: 'Terrain' },
+                      { key: 'light', Icon: Sun, label: 'Light' },
+                    ] as const).map(({ key, Icon, label }) => {
+                      const active = mapStyleKey === key
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => setMapStyleKey(key)}
+                          className="flex flex-col items-center gap-1.5 py-2.5 rounded-lg transition-all duration-150"
+                          style={{
+                            background: active ? 'rgba(0,230,118,0.1)' : 'rgba(255,255,255,0.03)',
+                            border: active ? '1px solid rgba(0,230,118,0.3)' : '1px solid rgba(255,255,255,0.05)',
+                            boxShadow: active ? '0 0 10px rgba(0,230,118,0.12)' : 'none',
+                          }}
+                        >
+                          <Icon size={15} style={{ color: active ? '#00e676' : '#555566' }} />
+                          <span className="text-[9px] font-mono" style={{ color: active ? '#00e676' : '#555566' }}>
+                            {label}
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setIs3D(!is3D)}
+                  className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Box size={12} style={{ color: is3D ? '#00e676' : '#555566' }} />
+                    <span className="text-[11px] font-mono" style={{ color: is3D ? '#00e676' : '#888899' }}>
+                      3D Tilt View
+                    </span>
+                  </div>
+                  <div
+                    className="relative w-8 h-4.5 rounded-full transition-all duration-250"
+                    style={{
+                      width: 30, height: 16,
+                      background: is3D ? 'rgba(0,230,118,0.25)' : 'rgba(255,255,255,0.08)',
+                      border: is3D ? '1px solid rgba(0,230,118,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                    }}
+                  >
+                    <div
+                      className="absolute top-0.5 rounded-full transition-all duration-250"
+                      style={{
+                        width: 10, height: 10,
+                        top: 2,
+                        left: is3D ? 16 : 2,
+                        backgroundColor: is3D ? '#00e676' : '#555566',
+                        boxShadow: is3D ? '0 0 6px #00e67680' : 'none',
+                      }}
+                    />
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => setShowConstruction(!showConstruction)}
+                  className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <HardHat size={12} style={{ color: showConstruction ? '#f97316' : '#555566' }} />
+                    <div className="text-left">
+                      <span className="text-[11px] font-mono block" style={{ color: showConstruction ? '#f97316' : '#888899' }}>
+                        Construction Sites
+                      </span>
+                      <span className="text-[8px] font-mono text-[#333344]">Active projects &amp; pipeline</span>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      width: 30, height: 16,
+                      background: showConstruction ? 'rgba(249,115,22,0.25)' : 'rgba(255,255,255,0.08)',
+                      border: showConstruction ? '1px solid rgba(249,115,22,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: 9999,
+                      position: 'relative',
+                    }}
+                  >
+                    <div style={{
+                      width: 10, height: 10,
+                      position: 'absolute',
+                      top: 2, left: showConstruction ? 16 : 2,
+                      borderRadius: '50%',
+                      backgroundColor: showConstruction ? '#f97316' : '#555566',
+                      boxShadow: showConstruction ? '0 0 6px #f9731680' : 'none',
+                      transition: 'all 0.25s',
+                    }} />
+                  </div>
+                </button>
+
+                <div className="px-3.5 pt-2.5 pb-3">
+                  <p className="text-[8px] font-mono text-[#252535] uppercase tracking-[0.16em] mb-1.5">
+                    Phase 3 â€” Coming Soon
+                  </p>
+                  {([
+                    { Icon: Eye, label: 'Street View 360Â°' },
+                    { Icon: Car, label: 'Traffic Overlay' },
+                    { Icon: Clock, label: 'Historical Imagery' },
+                  ] as const).map(({ Icon, label }) => (
+                    <div key={label} className="flex items-center gap-2.5 py-1.5 opacity-35">
+                      <Icon size={11} className="text-[#444455]" />
+                      <span className="text-[10px] font-mono text-[#444455] flex-1">{label}</span>
+                      <Lock size={9} className="text-[#2a2a3e]" />
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <div
+            className="rounded-2xl px-3 py-2 flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
+            style={{
+              background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.78))',
+              backdropFilter: 'blur(24px)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
+            }}
+          >
+            <div className="hidden lg:flex items-center gap-2 min-w-[220px]">
+              <span className="text-[8px] font-mono text-[#444455] uppercase tracking-[0.16em] mr-1">
+                Supported
+              </span>
+              {systemCities.map(city => {
+                const active = city.slug === selectedCitySlug
+                return (
+                  <span
+                    key={city.slug}
+                    className="px-2.5 py-1 rounded-full text-[9px] font-mono"
+                    style={{
+                      background: active ? 'rgba(0,230,118,0.14)' : 'rgba(255,255,255,0.03)',
+                      border: active ? '1px solid rgba(0,230,118,0.28)' : '1px solid rgba(255,255,255,0.05)',
+                      color: active ? '#00e676' : '#77778a',
+                    }}
+                  >
+                    {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
+                  </span>
+                )
+              })}
+            </div>
+
+            <div
+              className="flex items-center p-1 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center"
+              style={{
+                background: 'rgba(255,255,255,0.02)',
+                border: '1px solid rgba(255,255,255,0.05)',
+                WebkitOverflowScrolling: 'touch',
+                scrollbarWidth: 'none',
+              } as React.CSSProperties}
+            >
+              {RISK_TIERS.map((tier) => {
+                const isActive = highlightTier === tier.label
+                return (
+                  <button
+                    key={tier.label}
+                    onClick={() => toggleTier(tier.label)}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-full transition-all duration-200"
+                    style={{
+                      background: isActive ? `${tier.color}1e` : 'transparent',
+                      border: isActive ? `1px solid ${tier.color}45` : '1px solid transparent',
+                      boxShadow: isActive ? `0 0 12px ${tier.color}20` : 'none',
+                    }}
+                  >
+                    <div
+                      className="w-2 h-2 rounded-sm flex-shrink-0"
+                      style={{
+                        background: isActive ? `${tier.color}cc` : `${tier.color}44`,
+                        border: `1.5px solid ${tier.color}`,
+                        boxShadow: isActive ? `0 0 7px ${tier.color}70` : 'none',
+                        transition: 'all 0.2s',
+                      }}
+                    />
+                    <span className="text-[10px] font-mono whitespace-nowrap transition-colors duration-200" style={{ color: isActive ? tier.color : '#666680' }}>
+                      {tier.label}
+                    </span>
+                    <span className="text-[9px] font-mono transition-colors duration-200" style={{ color: isActive ? `${tier.color}88` : '#2e2e42' }}>
+                      {tier.range}
+                    </span>
+                  </button>
+                )
+              })}
+              <AnimatePresence>
+                {highlightTier && (
+                  <motion.button
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: 'auto' }}
+                    exit={{ opacity: 0, width: 0 }}
+                    onClick={() => setHighlightTier(null)}
+                    className="flex items-center gap-1 px-2 py-2 text-[#555566] hover:text-[#e8e8f0] transition-colors overflow-hidden"
+                  >
+                    <X size={11} />
+                  </motion.button>
+                )}
+              </AnimatePresence>
+            </div>
+
+            <div className="flex items-center gap-2 justify-end min-w-[270px]">
+              <ViewModeToggle mode={viewMode} onChange={setViewMode} variant="dock" />
+              <button
+                onClick={() => setShowLayers(v => !v)}
+                className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-200"
+                style={{
+                  background: showLayers
+                    ? 'linear-gradient(180deg, rgba(0,230,118,0.18), rgba(0,230,118,0.08))'
+                    : 'rgba(255,255,255,0.03)',
+                  border: showLayers ? '1px solid rgba(0,230,118,0.34)' : '1px solid rgba(255,255,255,0.06)',
+                  boxShadow: showLayers
+                    ? '0 0 20px rgba(0,230,118,0.16), inset 0 0 16px rgba(0,230,118,0.06)'
+                    : 'inset 0 0 14px rgba(255,255,255,0.02)',
+                }}
+              >
+                <Layers size={12} style={{ color: showLayers ? '#00e676' : '#666680' }} />
+                <span className="text-[10px] font-mono uppercase tracking-[0.14em]" style={{ color: showLayers ? '#00e676' : '#888899' }}>
+                  Layers
+                </span>
+                <ChevronUp
+                  size={10}
+                  style={{
+                    color: showLayers ? '#00e676' : '#444455',
+                    transform: showLayers ? 'rotate(180deg)' : 'rotate(0deg)',
+                    transition: 'transform 0.2s',
+                  }}
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   )
