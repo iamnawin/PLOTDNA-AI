@@ -122,6 +122,42 @@ const HYDERABAD_CLUSTERS_BY_ZONE = new Map(
   HYDERABAD_CLUSTERS.map(cluster => [cluster.zone, cluster]),
 )
 
+function warnHyderabadDataMismatch(message: string, values: string[]): void {
+  if (import.meta.env.DEV && values.length > 0) {
+    console.warn(`[location] Hyderabad resolver data mismatch: ${message}: ${values.join(', ')}`)
+  }
+}
+
+function validateHyderabadResolverData(): void {
+  const localitySlugs = new Set(HYDERABAD_LOCALITIES.map(locality => locality.slug))
+  const marketSlugs = new Set(HYDERABAD_FULL_AREAS_BY_SLUG.keys())
+  const aliasSlugs = Object.keys(HYDERABAD_ALIASES)
+  const clusterSlugs = new Set(HYDERABAD_CLUSTERS.flatMap(cluster => cluster.localitySlugs))
+
+  warnHyderabadDataMismatch(
+    'missing localities for frontend market areas',
+    [...marketSlugs].filter(slug => !localitySlugs.has(slug)),
+  )
+  warnHyderabadDataMismatch(
+    'localities without frontend market data',
+    [...localitySlugs].filter(slug => !marketSlugs.has(slug)),
+  )
+  warnHyderabadDataMismatch(
+    'aliases referencing unknown localities',
+    aliasSlugs.filter(slug => !localitySlugs.has(slug)),
+  )
+  warnHyderabadDataMismatch(
+    'cluster members referencing unknown localities',
+    [...clusterSlugs].filter(slug => !localitySlugs.has(slug)),
+  )
+  warnHyderabadDataMismatch(
+    'localities missing cluster membership',
+    [...localitySlugs].filter(slug => !clusterSlugs.has(slug)),
+  )
+}
+
+validateHyderabadResolverData()
+
 const MATCHABLE_AREAS: MatchableArea[] = [
   ...HYDERABAD_LOCALITIES.flatMap(locality => {
     const area = HYDERABAD_FULL_AREAS_BY_SLUG.get(locality.slug)

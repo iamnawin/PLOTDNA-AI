@@ -11,6 +11,7 @@ import {
   type Milestone,
 } from '@/lib/plotAnalysis'
 import ScoreBadge from '@/components/ui/ScoreBadge'
+import VerdictCard from '@/components/ui/VerdictCard'
 import { analyzeCoordinate, type LiveDNAResult } from '@/lib/api'
 
 interface Props {
@@ -76,11 +77,17 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
     ? findNearestArea(coords[0], coords[1], { locality: geo.locality, city: geo.city })
     : fallback
   const staticArea = resolvedFallback.area
+  const verdictArea = resolvedFallback.area
+  const showFallbackVerdict =
+    verdictArea !== null &&
+    resolvedFallback.citySlug !== null &&
+    resolvedFallback.tier !== 'uncovered'
   const hasStaticAreaContext =
     staticArea !== null &&
     (resolvedFallback.tier === 'exact_locality' || resolvedFallback.tier === 'nearby_micro_market')
   const isLive = liveData !== null
   const showAnalysisBody = isLive || hasStaticAreaContext
+  const showScrollableBody = showAnalysisBody || showFallbackVerdict
 
   const displayScore = liveData?.score ?? (hasStaticAreaContext && staticArea ? staticArea.score : 0)
   const displayHighlights = liveData?.highlights ?? (hasStaticAreaContext && staticArea ? staticArea.highlights.slice(0, 3) : [])
@@ -104,10 +111,26 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
     resolvedFallback.tier === 'exact_locality'
       ? 'Exact Locality Match'
       : resolvedFallback.tier === 'nearby_micro_market'
-        ? 'Nearby Supported Area'
+        ? 'Nearby Locality Match'
         : resolvedFallback.tier === 'city_zone_cluster'
-          ? 'City Zone Cluster'
-          : 'Uncovered Location'
+          ? 'Broad Region Match'
+          : 'Coverage Not Available'
+
+  const fallbackDisplayLabel =
+    resolvedFallback.tier === 'nearby_micro_market'
+      ? `Nearby: ${resolvedFallback.displayLabel}`
+      : resolvedFallback.tier === 'uncovered'
+        ? 'Coverage not available'
+        : resolvedFallback.displayLabel
+
+  const fallbackPrecisionText =
+    resolvedFallback.precisionLabel === 'exact'
+      ? 'Exact locality'
+      : resolvedFallback.precisionLabel === 'approximate'
+        ? 'Approximate'
+        : resolvedFallback.precisionLabel === 'broad'
+          ? 'Broad region'
+          : 'No coverage'
 
   return (
     <motion.div
@@ -181,9 +204,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                     Live Coordinate Analysis
                   </p>
                   <p className="text-[11px] font-mono font-semibold text-[#aaaabc] truncate">
-                    {hasStaticAreaContext && staticArea
-                      ? staticArea.name
-                      : resolvedFallback.clusterLabel ?? 'OpenStreetMap signals'}
+                    {fallbackDisplayLabel}
                   </p>
                 </div>
                 <div
@@ -213,16 +234,14 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                     {fallbackTitle}
                   </p>
                   <p className="text-[12px] font-mono font-semibold text-[#ccccdd] truncate">
-                    {staticArea.name}
+                    {fallbackDisplayLabel}
                   </p>
                 </div>
                 <div
                   className="px-2 py-0.5 rounded-full text-[8px] font-mono flex-shrink-0"
                   style={{ background: `${color}14`, border: `1px solid ${color}28`, color }}
                 >
-                  {resolvedFallback.tier === 'exact_locality'
-                    ? 'exact'
-                    : `${resolvedFallback.distKm ?? 0} km away`}
+                  {fallbackPrecisionText}
                 </div>
               </div>
               <div className="flex items-start gap-2 px-3 py-2.5">
@@ -245,7 +264,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
             <div className="flex items-center gap-2.5 px-3 py-3">
               <Info size={11} style={{ color: '#f59e0b', flexShrink: 0 }} />
               <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
-                {resolvedFallback.clusterLabel} is the nearest supported city cluster.
+                {fallbackDisplayLabel} is available only as a broad region.
                 PlotDNA is intentionally not substituting one micro-market here.
               </p>
             </div>
@@ -253,22 +272,22 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
             <div className="flex items-center gap-2.5 px-3 py-3">
               <SearchX size={11} style={{ color: '#ef4444', flexShrink: 0 }} />
               <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
-                {geo?.locality ?? 'This location'} is outside PlotDNA&apos;s supported city clusters.
-                No fallback market is shown.
+                Coverage not available for this location.
+                PlotDNA is intentionally not showing a fallback market.
               </p>
             </div>
           )}
         </div>
       </div>
 
-      {!showAnalysisBody && !liveLoading && (
+      {!showScrollableBody && !liveLoading && (
         <div className="flex-1 flex items-center justify-center px-6">
           <p
             className="text-center font-mono"
             style={{ fontSize: 10, color: '#2e2e42', lineHeight: 1.7 }}
           >
             {resolvedFallback.tier === 'city_zone_cluster'
-              ? `${resolvedFallback.clusterLabel} is supported only at a broad city-zone level right now.`
+              ? `${fallbackDisplayLabel} is supported only at a broad region level right now.`
               : 'Coverage for this location is not available yet.'}
             <br />
             Start the backend for a live score or browse a supported micro-market on the map.
@@ -276,7 +295,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
         </div>
       )}
 
-      {!showAnalysisBody && liveLoading && (
+      {!showScrollableBody && liveLoading && (
         <div className="flex-1 flex items-center justify-center px-6">
           <p
             className="text-center font-mono animate-pulse"
@@ -287,62 +306,75 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
         </div>
       )}
 
-      {showAnalysisBody && (
+      {showScrollableBody && (
         <div className="flex-1 overflow-y-auto">
-          <div
-            className="flex items-center gap-4 px-5 py-4"
-            style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
-          >
-            <div className="relative flex-shrink-0">
-              <svg width={90} height={90} viewBox="0 0 90 90">
-                <circle cx={45} cy={45} r={r} fill="none" stroke="#1a1a2e" strokeWidth={6} />
-                <motion.circle
-                  cx={45} cy={45} r={r}
-                  fill="none"
-                  stroke={color}
-                  strokeWidth={6}
-                  strokeLinecap="round"
-                  strokeDasharray={`${circumference} ${circumference}`}
-                  initial={{ strokeDashoffset: circumference }}
-                  animate={{ strokeDashoffset: dashOffset }}
-                  transition={{ duration: 1.2, ease: 'easeOut' }}
-                  transform="rotate(-90 45 45)"
-                  style={{ filter: `drop-shadow(0 0 6px ${color}80)` }}
-                />
-                <text x={45} y={42} textAnchor="middle" fill={color}
-                  style={{ fontSize: 22, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700 }}>
-                  {displayScore}
-                </text>
-                <text x={45} y={55} textAnchor="middle" fill="#555566"
-                  style={{ fontSize: 8, fontFamily: 'IBM Plex Mono, monospace', letterSpacing: 1 }}>
-                  DNA
-                </text>
-              </svg>
-            </div>
+          {showAnalysisBody && (
+            <div
+              className="flex items-center gap-4 px-5 py-4"
+              style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+            >
+              <div className="relative flex-shrink-0">
+                <svg width={90} height={90} viewBox="0 0 90 90">
+                  <circle cx={45} cy={45} r={r} fill="none" stroke="#1a1a2e" strokeWidth={6} />
+                  <motion.circle
+                    cx={45} cy={45} r={r}
+                    fill="none"
+                    stroke={color}
+                    strokeWidth={6}
+                    strokeLinecap="round"
+                    strokeDasharray={`${circumference} ${circumference}`}
+                    initial={{ strokeDashoffset: circumference }}
+                    animate={{ strokeDashoffset: dashOffset }}
+                    transition={{ duration: 1.2, ease: 'easeOut' }}
+                    transform="rotate(-90 45 45)"
+                    style={{ filter: `drop-shadow(0 0 6px ${color}80)` }}
+                  />
+                  <text x={45} y={42} textAnchor="middle" fill={color}
+                    style={{ fontSize: 22, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700 }}>
+                    {displayScore}
+                  </text>
+                  <text x={45} y={55} textAnchor="middle" fill="#555566"
+                    style={{ fontSize: 8, fontFamily: 'IBM Plex Mono, monospace', letterSpacing: 1 }}>
+                    DNA
+                  </text>
+                </svg>
+              </div>
 
-            <div>
-              <ScoreBadge score={displayScore} />
-              <p className="text-base font-mono font-bold mt-1.5" style={{ color }}>{label}</p>
-              {isLive ? (
-                <div className="flex items-center gap-1.5 mt-1">
-                  <Activity size={11} style={{ color: '#00e676' }} />
-                  <span className="text-[10px] font-mono text-[#00e676]">Live OSM score</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-1.5 mt-1">
-                  <TrendingUp size={12} style={{ color }} />
-                  <span className="text-xs font-mono" style={{ color }}>+{staticArea?.yoy ?? 0}% YoY</span>
-                </div>
-              )}
-              {isLive ? (
-                <p className="text-[10px] font-mono mt-0.5" style={{ color: '#333344' }}>
-                  Coordinate-level score. Static locality narratives appear only when the fallback tier is exact or safely nearby.
-                </p>
-              ) : (
-                <p className="text-[11px] font-mono text-[#555566] mt-0.5">{staticArea?.priceRange}</p>
-              )}
+              <div>
+                <ScoreBadge score={displayScore} />
+                <p className="text-base font-mono font-bold mt-1.5" style={{ color }}>{label}</p>
+                {isLive ? (
+                  <div className="flex items-center gap-1.5 mt-1">
+                    <Activity size={11} style={{ color: '#00e676' }} />
+                    <span className="text-[10px] font-mono text-[#00e676]">Live OSM score</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1.5 mt-1">
+                    <TrendingUp size={12} style={{ color }} />
+                    <span className="text-xs font-mono" style={{ color }}>+{staticArea?.yoy ?? 0}% YoY</span>
+                  </div>
+                )}
+                {isLive ? (
+                  <p className="text-[10px] font-mono mt-0.5" style={{ color: '#333344' }}>
+                    Coordinate-level score. Static locality narratives appear only when the fallback tier is exact or safely nearby.
+                  </p>
+                ) : (
+                  <p className="text-[11px] font-mono text-[#555566] mt-0.5">{staticArea?.priceRange}</p>
+                )}
+              </div>
             </div>
-          </div>
+          )}
+
+          {showFallbackVerdict && verdictArea && resolvedFallback.citySlug && (
+            <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+              <VerdictCard
+                citySlug={resolvedFallback.citySlug}
+                areaSlug={verdictArea.slug}
+                resolutionTier={resolvedFallback.tier}
+                resolutionLabel={fallbackDisplayLabel}
+              />
+            </div>
+          )}
 
           {isLive && !hasStaticAreaContext && (
             <>
@@ -383,7 +415,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                   style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
                 >
                   <p className="text-[11px] font-mono text-[#e8e8f0]">
-                    {resolvedFallback.clusterLabel ?? 'Unsupported city cluster'}
+                    {fallbackDisplayLabel}
                   </p>
                   <p className="text-[10px] font-mono text-[#666680] mt-1 leading-relaxed">
                     {resolvedFallback.tier === 'city_zone_cluster'
@@ -550,7 +582,16 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
           style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
         >
           <button
-            onClick={() => navigate(`/area/${staticArea.slug}`)}
+            onClick={() => navigate(`/area/${staticArea.slug}`, {
+              state: {
+                fallbackContext: {
+                  tier: resolvedFallback.tier,
+                  displayLabel: fallbackDisplayLabel,
+                  precisionLabel: resolvedFallback.precisionLabel,
+                  coords,
+                },
+              },
+            })}
             className="w-full flex flex-col items-center justify-center gap-0.5 py-3 px-4 rounded-lg font-mono transition-all"
             style={{
               background: `linear-gradient(135deg, ${color}22, ${color}10)`,
@@ -558,16 +599,16 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
             onMouseLeave={(e) => { e.currentTarget.style.background = `linear-gradient(135deg, ${color}22, ${color}10)` }}
-          >
-            <span className="flex items-center gap-2 text-sm font-semibold" style={{ color }}>
-              View full analysis for this zone
-              <ArrowRight size={13} />
-            </span>
-            <span className="text-[9px] text-[#444455]">
-              {resolvedFallback.tier === 'exact_locality' ? 'Matched locality' : 'Nearby micro-market'}: {staticArea.name}
-            </span>
-          </button>
-        </div>
+            >
+              <span className="flex items-center gap-2 text-sm font-semibold" style={{ color }}>
+                View full analysis for this zone
+                <ArrowRight size={13} />
+              </span>
+              <span className="text-[9px] text-[#444455]">
+                {fallbackPrecisionText}: {fallbackDisplayLabel}
+              </span>
+            </button>
+          </div>
       )}
     </motion.div>
   )

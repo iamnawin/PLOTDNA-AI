@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
@@ -23,6 +23,15 @@ import NewsSection from '@/components/ui/NewsSection'
 import MarketPulseCard from '@/components/ui/MarketPulseCard'
 import AVMCard from '@/components/ui/AVMCard'
 import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
+
+interface AreaDetailLocationState {
+  fallbackContext?: {
+    tier: 'exact_locality' | 'nearby_micro_market' | 'city_zone_cluster' | 'uncovered'
+    displayLabel: string
+    precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
+    coords?: [number, number]
+  }
+}
 
 // ── Active project helpers ──────────────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
@@ -316,9 +325,11 @@ function generatePDF(area: MicroMarket) {
 
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
+  const location = useLocation()
   const navigate = useNavigate()
   const { searchCoords, recommendationGoal } = useAppStore()
   const area = getAllAreas().find((a) => a.slug === slug)
+  const fallbackContext = (location.state as AreaDetailLocationState | null)?.fallbackContext
 
   if (!area) {
     return (
@@ -513,7 +524,29 @@ export default function AreaDetail() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-10"
         >
-          <VerdictCard citySlug={citySlug} areaSlug={area.slug} />
+          {fallbackContext && fallbackContext.tier !== 'exact_locality' && (
+            <div
+              className="px-4 py-3 rounded-xl mb-4"
+              style={{
+                background: 'rgba(245,158,11,0.08)',
+                border: '1px solid rgba(245,158,11,0.18)',
+              }}
+            >
+              <p className="text-[10px] font-mono text-[#f59e0b] uppercase tracking-widest mb-1">
+                Opened From Fallback Match
+              </p>
+              <p className="text-[11px] font-mono text-[#aaaabc] leading-relaxed">
+                {fallbackContext.displayLabel} was used to open this supported area from your searched coordinate.
+                This page shows the exact micro-market analysis for {area.name}, not a plot-exact verdict for the original point.
+              </p>
+            </div>
+          )}
+          <VerdictCard
+            citySlug={citySlug}
+            areaSlug={area.slug}
+            resolutionTier="exact_locality"
+            resolutionLabel={area.name}
+          />
         </motion.div>
 
         {/* ── Live News ── */}
