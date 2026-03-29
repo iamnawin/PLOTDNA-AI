@@ -273,3 +273,78 @@ uvicorn app.main:app --reload
 |---|---|
 | 2026-03-01 | Project conceived, tech stack decided, Hyderabad chosen as first city |
 | 2026-03-01 | Full scaffold created: repo, frontend, backend, docs, CLAUDE.md, initial commit |
+
+---
+
+## 2026-03-29 Current State Override
+
+This section supersedes the older scaffold-era status above.
+
+### Product State
+- PlotDNA is no longer scaffold-only.
+- The frontend now has a working location-intelligence flow with deterministic locality fallback handling.
+- The product now also has a secondary premium `Globe` visualization mode, while `Map` remains the default.
+
+### Deterministic Locality Model
+- Frontend locality resolution is split into:
+  - `frontend/src/lib/location/contracts.ts`
+  - `frontend/src/lib/location/resolver.ts`
+  - `frontend/src/lib/location/classifier.ts`
+- Resolution tiers are deterministic:
+  - `exact`
+  - `nearby`
+  - `cluster`
+  - `uncovered`
+- `frontend/src/lib/plotAnalysis.ts` still serves as the compatibility wrapper used by existing UI flows.
+
+### Hyderabad Data Model
+- Resolver-facing Hyderabad data now lives under:
+  - `data/cities/hyderabad/city.json`
+  - `data/cities/hyderabad/localities.json`
+  - `data/cities/hyderabad/aliases.json`
+  - `data/cities/hyderabad/clusters.json`
+- `frontend/src/data/hyderabad.ts` still holds the richer market/detail dataset.
+- Its locality identity fields now derive from the resolver JSON-backed source so spatial duplication risk is lower than before.
+
+### Fallback / Verdict Rules
+- Coordinate-driven surfaces are the fallback-aware surfaces.
+- Exact area pages remain exact-only.
+- If the user reaches an area page from a fallback path, the area page shows entry-context disclosure instead of pretending the original searched point is an exact match.
+- Backend verdict route accepts explicit fallback context via:
+  - `resolution_tier`
+  - `resolution_label`
+
+### Globe Mode
+- Home page now supports two view modes:
+  - `Map`
+  - `Globe`
+- `Map` remains the default and the core operational surface.
+- `Globe` is a premium alternate visualization mode connected to current app context.
+- Globe mode currently includes:
+  - context-aware city/fallback focus
+  - bottom system bar for supported cities, legend, and controls
+  - collapsible recommendation rail (collapsed by default in globe mode)
+- Current globe is still a premium simulated placeholder surface, not full Cobe integration yet.
+
+### Repo / Workflow Notes
+- `.gitignore` now allows city JSON under `data/cities/**/*.json` and ignores `.sfdx/`.
+- `plugins/area-intelligence/` documents the smart locality fallback workflow.
+- Main branch already includes the location-fallback and globe-mode work. Do not treat `main` as scaffold-only anymore.
+
+### Current Main Branch Status
+- `main` includes:
+  - deterministic fallback architecture
+  - Hyderabad city-model split
+  - fallback-aware verdict path
+  - globe mode
+  - premium globe/layout iterations
+
+### Updated Session Log
+| Date | What Was Done |
+|---|---|
+| 2026-03-29 | Added deterministic frontend locality resolution tiers and compatibility wrapper in `plotAnalysis.ts` |
+| 2026-03-29 | Externalized Hyderabad resolver data into `data/cities/hyderabad/{city,localities,aliases,clusters}.json` |
+| 2026-03-29 | Reduced duplication by sourcing Hyderabad spatial identity from resolver-backed locality data |
+| 2026-03-29 | Added fallback-aware verdict contract and safer fallback messaging across coordinate and area flows |
+| 2026-03-29 | Added `Map` / `Globe` view switching on Home as an additive premium surface |
+| 2026-03-29 | Iterated Globe mode layout and control hierarchy, including a collapsible recommendation rail |
