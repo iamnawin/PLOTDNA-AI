@@ -24,6 +24,20 @@ interface FocusTone {
   arcColor: [number, number, number]
 }
 
+interface GlobeMarker {
+  location: [number, number]
+  size: number
+  color: [number, number, number]
+}
+
+interface GlobeArc {
+  from: [number, number]
+  to: [number, number]
+  color: [number, number, number]
+}
+
+const INDIA_CENTER: [number, number] = [20.5937, 78.9629]
+
 function getCoverageMessage(fallback: LocalityFallbackResult | null, cityName: string) {
   if (!fallback) return `Exploring ${cityName} through a premium intelligence surface.`
   if (fallback.tier === 'exact_locality') return `Exact locality context is available for ${fallback.displayLabel}.`
@@ -39,9 +53,9 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
       glowCss: 'rgba(0,230,118,0.34)',
       softCss: 'rgba(0,230,118,0.16)',
       text: '#00e676',
-      baseColor: [0.05, 0.16, 0.16],
+      baseColor: [0.015, 0.08, 0.075],
       markerColor: [0, 0.9, 0.46],
-      glowColor: [0.08, 0.72, 0.4],
+      glowColor: [0.03, 0.34, 0.2],
       arcColor: [0.34, 0.96, 0.62],
     }
   }
@@ -51,9 +65,9 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
       glowCss: 'rgba(124,255,176,0.3)',
       softCss: 'rgba(124,255,176,0.15)',
       text: '#7CFFB0',
-      baseColor: [0.06, 0.16, 0.17],
+      baseColor: [0.02, 0.085, 0.08],
       markerColor: [0.49, 1, 0.69],
-      glowColor: [0.16, 0.68, 0.48],
+      glowColor: [0.06, 0.3, 0.2],
       arcColor: [0.62, 1, 0.78],
     }
   }
@@ -63,9 +77,9 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
       glowCss: 'rgba(245,158,11,0.28)',
       softCss: 'rgba(245,158,11,0.14)',
       text: '#f5b84d',
-      baseColor: [0.09, 0.15, 0.16],
+      baseColor: [0.035, 0.08, 0.08],
       markerColor: [0.96, 0.62, 0.04],
-      glowColor: [0.64, 0.4, 0.08],
+      glowColor: [0.28, 0.16, 0.02],
       arcColor: [1, 0.78, 0.22],
     }
   }
@@ -74,9 +88,9 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
     glowCss: 'rgba(239,68,68,0.26)',
     softCss: 'rgba(239,68,68,0.12)',
     text: '#f87171',
-    baseColor: [0.1, 0.14, 0.16],
+    baseColor: [0.045, 0.075, 0.08],
     markerColor: [0.94, 0.27, 0.27],
-    glowColor: [0.52, 0.16, 0.16],
+    glowColor: [0.22, 0.08, 0.08],
     arcColor: [0.98, 0.48, 0.48],
   }
 }
@@ -86,7 +100,7 @@ function orientationForLocation([lat, lng]: [number, number]) {
   const lngRad = (lng * Math.PI) / 180
 
   return {
-    phi: Math.PI / 2 - lngRad,
+    phi: (3 * Math.PI) / 2 - lngRad,
     theta: latRad,
   }
 }
@@ -117,101 +131,147 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
     [],
   )
 
+  const activeCityCenter = useMemo(
+    () => networkPoints.find(point => point.slug === citySlug)?.center ?? cityCenter,
+    [cityCenter, citySlug, networkPoints],
+  )
+
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    let globe: { destroy: () => void } | null = null
-    let phi = focusOrientation.phi
-    let theta = focusOrientation.theta
+    let globe: ReturnType<typeof createGlobe> | null = null
+    let phi = focusOrientation.phi + 0.22
+    let theta = focusOrientation.theta - 0.05
     let time = 0
+    let frameId = 0
 
-    const buildArcs = () => {
-      const activeCity = networkPoints.find(point => point.slug === citySlug)?.center ?? cityCenter
-      return networkPoints
+    const buildArcs = (): GlobeArc[] =>
+      networkPoints
         .filter(point => point.slug !== citySlug)
         .slice(0, 4)
         .map(point => ({
-          from: activeCity,
+          from: activeCityCenter,
           to: point.center,
-          color: tone.arcColor,
+          color: point.slug === 'hyderabad' || citySlug === 'hyderabad'
+            ? tone.arcColor
+            : [0.42, 0.66, 0.58],
         }))
-    }
 
-    const buildMarkers = (focusPulse: number) => {
-      const networkMarkers = networkPoints.map(point => ({
+    const buildMarkers = (focusPulse: number): GlobeMarker[] => {
+      const networkMarkers: GlobeMarker[] = networkPoints.map(point => ({
         location: point.center,
-        size: point.slug === citySlug ? 0.11 : 0.045,
-        color: point.slug === citySlug ? tone.markerColor : [0.38, 0.48, 0.48] as [number, number, number],
+        size: point.slug === citySlug ? 0.11 : 0.034,
+        color: point.slug === citySlug ? tone.markerColor : [0.34, 0.45, 0.45],
       }))
 
-      return [
-        ...networkMarkers,
+      const contextualMarkers: GlobeMarker[] = [
         {
-          location: focusPoint,
-          size: focusPulse,
-          color: tone.markerColor,
+          location: INDIA_CENTER,
+          size: citySlug === 'hyderabad' ? 0.09 : 0.07,
+          color: [0.82, 0.9, 0.88],
+        },
+        {
+          location: activeCityCenter,
+          size: 0.13,
+          color: [0.84, 1, 0.92],
         },
       ]
+
+      if (coords) {
+        contextualMarkers.push({
+          location: focusPoint,
+          size: focusPulse,
+          color: [0.92, 1, 0.98],
+        })
+      }
+
+      return [...networkMarkers, ...contextualMarkers]
+    }
+
+    const getSize = () => Math.max(Math.min(canvas.offsetWidth, canvas.offsetHeight), 320)
+
+    const updateSize = () => {
+      if (!globe) return
+      const size = getSize()
+      const devicePixelRatio = Math.min(window.devicePixelRatio || 1, 2.5)
+      globe.update({
+        width: size * devicePixelRatio,
+        height: size * devicePixelRatio,
+      })
+    }
+
+    const animate = () => {
+      if (!globe) return
+
+      time += 1 / 60
+      const driftPhi =
+        focusOrientation.phi
+        + 0.18
+        + Math.sin(time * 0.62) * 0.19
+        + Math.sin(time * 0.15) * 0.04
+      const driftTheta =
+        focusOrientation.theta * 0.78
+        - 0.05
+        + Math.cos(time * 0.36) * 0.085
+
+      phi += (driftPhi - phi) * 0.055
+      theta += (driftTheta - theta) * 0.08
+
+      globe.update({
+        phi,
+        theta,
+        markers: buildMarkers(0.1 + (1 + Math.sin(time * 2.8)) * 0.018),
+        arcWidth: 0.72 + (1 + Math.sin(time * 1.4)) * 0.06,
+      })
+
+      frameId = window.requestAnimationFrame(animate)
     }
 
     const renderGlobe = () => {
-      const size = canvas.offsetWidth
-      const devicePixelRatio = Math.min(window.devicePixelRatio || 1, 2)
+      const size = Math.max(Math.min(canvas.offsetWidth, canvas.offsetHeight), 320)
+      const devicePixelRatio = Math.min(window.devicePixelRatio || 1, 2.5)
 
       globe?.destroy()
       globe = createGlobe(canvas, {
         devicePixelRatio,
         width: size * devicePixelRatio,
         height: size * devicePixelRatio,
-        phi: focusOrientation.phi,
-        theta: focusOrientation.theta,
+        phi,
+        theta,
         dark: 1,
-        diffuse: 1.45,
+        diffuse: 1.62,
         scale: 1,
-        mapSamples: 18000,
-        mapBrightness: 2.8,
-        mapBaseBrightness: 0.08,
+        mapSamples: 24000,
+        mapBrightness: 6.2,
+        mapBaseBrightness: 0.04,
         baseColor: tone.baseColor,
         markerColor: tone.markerColor,
         glowColor: tone.glowColor,
-        markers: buildMarkers(0.08),
+        offset: [0, 0.02],
+        markers: buildMarkers(0.1),
         arcs: buildArcs(),
         arcColor: tone.arcColor,
-        arcWidth: 0.55,
-        arcHeight: 0.18,
-        markerElevation: 0.12,
-        opacity: 0.98,
-        onRender: (state: {
-          phi: number
-          theta: number
-          markers: ReturnType<typeof buildMarkers>
-          arcWidth: number
-        }) => {
-          time += 1
-          const driftPhi = focusOrientation.phi + Math.sin(time * 0.004) * 0.12
-          const driftTheta = focusOrientation.theta + Math.cos(time * 0.0032) * 0.03
+        arcWidth: 0.78,
+        arcHeight: 0.24,
+        markerElevation: 0.2,
+        opacity: 1,
+      })
 
-          phi += (driftPhi - phi) * 0.06
-          theta += (driftTheta - theta) * 0.06
-
-          state.phi = phi
-          state.theta = theta
-          state.markers = buildMarkers(0.075 + (1 + Math.sin(time * 0.08)) * 0.018)
-          state.arcWidth = 0.48 + (1 + Math.sin(time * 0.045)) * 0.04
-        },
-      } as never)
+      window.cancelAnimationFrame(frameId)
+      frameId = window.requestAnimationFrame(animate)
     }
 
-    const resizeObserver = new ResizeObserver(renderGlobe)
+    const resizeObserver = new ResizeObserver(updateSize)
     resizeObserver.observe(canvas)
     renderGlobe()
 
     return () => {
       resizeObserver.disconnect()
+      window.cancelAnimationFrame(frameId)
       globe?.destroy()
     }
-  }, [cityCenter, citySlug, focusOrientation.phi, focusOrientation.theta, focusPoint, networkPoints, tone])
+  }, [activeCityCenter, citySlug, coords, focusOrientation.phi, focusOrientation.theta, focusPoint, networkPoints, tone])
 
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -228,47 +288,47 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
 
       <motion.div
         className="absolute inset-0"
-        animate={{ opacity: [0.9, 1, 0.94] }}
-        transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+        animate={{ opacity: [0.58, 0.74, 0.62] }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
         style={{
-          background: `radial-gradient(circle at 50% 50%, ${tone.softCss}, transparent 22%)`,
+          background: `radial-gradient(circle at 50% 50%, ${tone.softCss}, transparent 30%)`,
         }}
       />
 
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative" style={{ width: 'min(74vw, 820px)', height: 'min(74vw, 820px)' }}>
+        <div className="relative" style={{ width: 'min(80vw, 900px)', height: 'min(80vw, 900px)' }}>
           <div
             className="absolute left-1/2 top-[77%] -translate-x-1/2 rounded-full"
             style={{
-              width: '70%',
+              width: '72%',
               height: '12%',
-              background: 'radial-gradient(circle, rgba(0,0,0,0.52), rgba(0,0,0,0.04) 72%)',
-              filter: 'blur(22px)',
+              background: 'radial-gradient(circle, rgba(0,0,0,0.6), rgba(0,0,0,0.05) 72%)',
+              filter: 'blur(26px)',
             }}
           />
 
           <motion.div
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
-            animate={{ y: [0, -4, 0, 3, 0], rotate: [0, 0.6, 0, -0.5, 0] }}
-            transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ width: '84%', height: '84%' }}
+            animate={{ y: [0, -5, 0], scale: [1, 1.008, 1] }}
+            transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+            style={{ width: '90%', height: '90%' }}
           >
             <div
-              className="absolute inset-[-5%] rounded-full"
+              className="absolute inset-[-7%] rounded-full"
               style={{
-                background: `radial-gradient(circle, ${tone.glowCss} 0%, rgba(0,0,0,0) 62%)`,
-                filter: 'blur(28px)',
+                background: `radial-gradient(circle, ${tone.glowCss} 0%, rgba(0,0,0,0) 60%)`,
+                filter: 'blur(30px)',
               }}
             />
 
             <div
-              className="absolute inset-[-1.5%] rounded-full"
+              className="absolute inset-[-2%] rounded-full"
               style={{
                 border: '1px solid rgba(255,255,255,0.08)',
                 boxShadow: `
-                  inset 0 0 28px rgba(255,255,255,0.04),
-                  inset 0 -30px 90px rgba(0,0,0,0.42),
-                  0 24px 80px rgba(0,0,0,0.4)
+                  inset 0 0 38px rgba(255,255,255,0.05),
+                  inset -18px -38px 120px rgba(0,0,0,0.5),
+                  0 26px 92px rgba(0,0,0,0.42)
                 `,
               }}
             />
@@ -277,8 +337,9 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
               className="absolute inset-0 rounded-full overflow-hidden"
               style={{
                 background: `
-                  radial-gradient(circle at 28% 24%, rgba(255,255,255,0.18), rgba(255,255,255,0.02) 16%, rgba(0,0,0,0) 34%),
-                  radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 60%, ${tone.softCss} 70%, rgba(255,255,255,0.03) 74%, rgba(0,0,0,0) 78%)
+                  radial-gradient(circle at 28% 24%, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 16%, rgba(0,0,0,0) 34%),
+                  radial-gradient(circle at 82% 54%, rgba(0,0,0,0.28), rgba(0,0,0,0) 26%),
+                  radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 62%, rgba(255,255,255,0.02) 72%, rgba(0,0,0,0) 76%)
                 `,
               }}
             >
@@ -286,20 +347,21 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
             </div>
 
             <motion.div
-              className="absolute rounded-full"
+              className="absolute rounded-full pointer-events-none"
               style={{
-                left: '50%',
-                top: '50%',
-                width: '22%',
-                height: '22%',
-                marginLeft: '-11%',
-                marginTop: '-11%',
-                background: `radial-gradient(circle, ${tone.softCss}, rgba(0,0,0,0) 68%)`,
-                filter: 'blur(12px)',
+                left: '54%',
+                top: '44%',
+                width: '28%',
+                height: '28%',
+                marginLeft: '-14%',
+                marginTop: '-14%',
+                background: `radial-gradient(circle, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 26%, rgba(0,0,0,0) 72%)`,
+                filter: 'blur(10px)',
               }}
-              animate={{ opacity: [0.18, 0.3, 0.18], scale: [0.96, 1.05, 0.96] }}
-              transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
+              animate={{ opacity: [0.24, 0.36, 0.24], x: [-6, 10, -6], y: [-4, 6, -4] }}
+              transition={{ duration: 7.5, repeat: Infinity, ease: 'easeInOut' }}
             />
+
           </motion.div>
         </div>
       </div>
@@ -320,7 +382,7 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
           </p>
         </div>
         <p className="text-sm font-mono text-[#e8e8f0] leading-relaxed">
-          Premium geospatial storytelling anchored to the active PlotDNA market context.
+          Live geospatial surface tracking the current PlotDNA market context.
         </p>
         <div className="flex items-center gap-2 mb-2 mt-4">
           <MapPin size={12} style={{ color: tone.text }} />
