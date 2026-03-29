@@ -247,6 +247,27 @@ uvicorn app.main:app --reload
 
 ---
 
+## 2026-03-29 High-Level Update
+- PlotDNA is no longer just scaffolded. The location-intelligence flow now has real locality fallback behavior in the frontend.
+- Frontend locality resolution is split into clear layers under `frontend/src/lib/location/`: contracts, resolver, and classifier.
+- The fallback model is deterministic and tiered: `exact`, `nearby`, `cluster`, and `uncovered`.
+- `frontend/src/lib/plotAnalysis.ts` still acts as the compatibility wrapper, so older UI flows did not need a full rewrite.
+- Hyderabad resolver-facing matching data now lives in repo-local files under `data/cities/hyderabad/`:
+  - `city.json` for city thresholds and center metadata
+  - `localities.json` for locality polygons and centers
+  - `aliases.json` for explicit locality name matching
+  - `clusters.json` for broad-region membership
+- The richer market dataset in `frontend/src/data/hyderabad.ts` still exists for score cards and narrative content. Resolver JSON and frontend market data are separate for now, so they must stay aligned until a later consolidation pass.
+- The repo now includes `plugins/area-intelligence/` with a local skill documenting the smart locality fallback workflow and constraints.
+- Backend verdict plumbing has already started reflecting fallback precision, but frontend/backend locality contracts are not fully unified yet.
+- The latest local UI pass makes locality precision more honest in the plot analysis card:
+  - exact shows the locality directly
+  - nearby shows `Nearby: {locality}` and marks it approximate
+  - cluster shows the broad region label
+  - uncovered clearly says coverage is not available
+- The location fallback refactor was pushed to `hotfix/url-location-resolution` at commit `b1f66f0`.
+- The honest tier-label UI cleanup is currently a local working-tree change after that commit.
+
 ## Session Log
 | Date | What Was Done |
 |---|---|

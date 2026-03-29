@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 
 from app.services.news_aggregator import fetch_news_for_area
 from app.services.verdict_service import FallbackContext, get_verdict
@@ -39,15 +39,46 @@ AREA_DATA: dict[str, dict] = {
 
 router = APIRouter()
 
+VALID_RESOLUTION_TIERS = {
+    "exact_locality",
+    "nearby_micro_market",
+    "city_zone_cluster",
+    "uncovered",
+}
+
+
+def _build_fallback_context(
+    area_name: str,
+    resolution_tier: str | None,
+    resolution_label: str | None,
+) -> FallbackContext:
+    tier = resolution_tier or "exact_locality"
+    if tier not in VALID_RESOLUTION_TIERS:
+        raise HTTPException(status_code=400, detail=f"Unsupported resolution_tier '{tier}'")
+
+    label = (resolution_label or area_name).strip() or area_name
+    return FallbackContext(tier=tier, label=label)
+
 
 @router.get("/{city_slug}/{area_slug}")
-async def get_area_verdict(city_slug: str, area_slug: str):
+async def get_area_verdict(
+    city_slug: str,
+    area_slug: str,
+    resolution_tier: str | None = Query(default=None),
+    resolution_label: str | None = Query(default=None),
+):
     """AI-generated investment verdict for a supported area."""
     area = AREA_DATA.get(area_slug)
     if not area:
         raise HTTPException(status_code=404, detail=f"Area '{area_slug}' not found")
     if area["city"] != city_slug:
         raise HTTPException(status_code=404, detail=f"Area '{area_slug}' not in city '{city_slug}'")
+
+    fallback_context = _build_fallback_context(
+        area_name=area["name"],
+        resolution_tier=resolution_tier,
+        resolution_label=resolution_label,
+    )
 
     news_items = await fetch_news_for_area(city_slug, area_slug)
     recent_news = [item.title for item in news_items[:5]]
@@ -62,7 +93,7 @@ async def get_area_verdict(city_slug: str, area_slug: str):
         price_range=area["price_range"],
         yoy=area["yoy"],
         recent_news=recent_news,
-        fallback_context=FallbackContext(tier="exact_locality", label=area["name"]),
+        fallback_context=fallback_context,
     )
 
     return {
