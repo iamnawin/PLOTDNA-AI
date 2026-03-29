@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { Activity, Globe, MapPin } from 'lucide-react'
+import { Activity, Globe, MapPin, Orbit } from 'lucide-react'
+import { CITY_LIST } from '@/data/cities'
 import type { LocalityFallbackResult } from '@/lib/plotAnalysis'
 
 interface Props {
@@ -22,25 +23,50 @@ function projectIndiaFocus(lat: number, lng: number) {
   const latRatio = 1 - (lat - INDIA_BOUNDS.latMin) / (INDIA_BOUNDS.latMax - INDIA_BOUNDS.latMin)
 
   return {
-    left: `${24 + lngRatio * 48}%`,
-    top: `${22 + latRatio * 50}%`,
+    left: `${20 + lngRatio * 46}%`,
+    top: `${18 + latRatio * 52}%`,
   }
 }
 
 function getCoverageMessage(fallback: LocalityFallbackResult | null, cityName: string) {
-  if (!fallback) {
-    return `Exploring ${cityName} through a premium intelligence surface.`
-  }
-  if (fallback.tier === 'exact_locality') {
-    return `Exact locality context is available for ${fallback.displayLabel}.`
+  if (!fallback) return `Exploring ${cityName} through a premium intelligence surface.`
+  if (fallback.tier === 'exact_locality') return `Exact locality context is available for ${fallback.displayLabel}.`
+  if (fallback.tier === 'nearby_micro_market') return `${fallback.displayLabel} is being used as an approximate nearby market context.`
+  if (fallback.tier === 'city_zone_cluster') return `${fallback.displayLabel} is available as broad regional context only.`
+  return 'Coverage limited in this region.'
+}
+
+function getFocusTone(fallback: LocalityFallbackResult | null) {
+  if (!fallback || fallback.tier === 'exact_locality') {
+    return {
+      core: '#00e676',
+      glow: 'rgba(0,230,118,0.42)',
+      soft: 'rgba(0,230,118,0.18)',
+      text: '#00e676',
+    }
   }
   if (fallback.tier === 'nearby_micro_market') {
-    return `${fallback.displayLabel} is being used as an approximate nearby market context.`
+    return {
+      core: '#7CFFB0',
+      glow: 'rgba(124,255,176,0.34)',
+      soft: 'rgba(124,255,176,0.16)',
+      text: '#7CFFB0',
+    }
   }
   if (fallback.tier === 'city_zone_cluster') {
-    return `${fallback.displayLabel} is available as broad regional context only.`
+    return {
+      core: '#f59e0b',
+      glow: 'rgba(245,158,11,0.36)',
+      soft: 'rgba(245,158,11,0.14)',
+      text: '#f5b84d',
+    }
   }
-  return 'Coverage limited in this region.'
+  return {
+    core: '#ef4444',
+    glow: 'rgba(239,68,68,0.34)',
+    soft: 'rgba(239,68,68,0.14)',
+    text: '#f87171',
+  }
 }
 
 export default function GlobeView({ citySlug, cityName, cityCenter, fallback, coords }: Props) {
@@ -56,6 +82,8 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
         : fallback?.precisionLabel === 'broad'
           ? 'Broad region'
           : 'City context'
+  const tone = getFocusTone(fallback)
+  const cityChips = CITY_LIST.slice(0, 6)
 
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -63,111 +91,278 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
         className="absolute inset-0"
         style={{
           background: `
-            radial-gradient(circle at 50% 45%, rgba(0,230,118,0.12), transparent 28%),
-            radial-gradient(circle at 50% 50%, rgba(10,18,22,0.78), rgba(5,5,10,0.96) 66%),
-            linear-gradient(180deg, rgba(0,230,118,0.03), rgba(5,5,10,0.92))
+            radial-gradient(circle at 50% 44%, rgba(0,230,118,0.08), transparent 18%),
+            radial-gradient(circle at 52% 50%, rgba(13,22,30,0.9), rgba(5,5,10,0.96) 56%),
+            linear-gradient(180deg, rgba(0,230,118,0.035), rgba(5,5,10,0.94))
           `,
         }}
       />
 
-      <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{
-            width: 540,
-            height: 540,
-            background: 'radial-gradient(circle at 38% 32%, rgba(0,230,118,0.22), rgba(13,22,28,0.88) 42%, rgba(5,5,10,0.9) 72%)',
-            border: '1px solid rgba(255,255,255,0.08)',
-            boxShadow: '0 0 80px rgba(0,230,118,0.12), inset 0 0 48px rgba(255,255,255,0.04)',
-          }}
-        />
+      <motion.div
+        className="absolute inset-0"
+        animate={{ opacity: [0.9, 1, 0.92] }}
+        transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
+        style={{
+          background: `radial-gradient(circle at 52% 48%, ${tone.soft}, transparent 24%)`,
+        }}
+      />
 
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{
-            width: 620,
-            height: 620,
-            border: '1px solid rgba(255,255,255,0.04)',
-          }}
-        />
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="relative" style={{ width: 'min(72vw, 760px)', height: 'min(72vw, 760px)' }}>
+          <div
+            className="absolute left-1/2 top-[73%] -translate-x-1/2 rounded-full"
+            style={{
+              width: '72%',
+              height: '11%',
+              background: 'radial-gradient(circle, rgba(0,0,0,0.46), rgba(0,0,0,0.02) 72%)',
+              filter: 'blur(18px)',
+            }}
+          />
 
-        <motion.div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{
-            width: 700,
-            height: 700,
-            border: '1px solid rgba(0,230,118,0.08)',
-          }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
-        />
+          <motion.div
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            animate={{
+              rotate: [0, 1.2, 0, -1.1, 0],
+              y: [0, -4, 0, 3, 0],
+            }}
+            transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              width: '78%',
+              height: '78%',
+              transformStyle: 'preserve-3d',
+              perspective: 1600,
+            }}
+          >
+            <div
+              className="absolute inset-[-6%] rounded-full"
+              style={{
+                background: `radial-gradient(circle, ${tone.glow} 0%, rgba(0,0,0,0) 62%)`,
+                filter: 'blur(26px)',
+                opacity: 0.9,
+              }}
+            />
 
-        <motion.div
-          className="absolute rounded-full"
-          style={{
-            ...projected,
-            width: 12,
-            height: 12,
-            background: '#00e676',
-            boxShadow: '0 0 16px rgba(0,230,118,0.75)',
-          }}
-          animate={{ scale: [1, 1.3, 1] }}
-          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-        />
+            <div
+              className="absolute inset-0 rounded-full overflow-hidden"
+              style={{
+                background: `
+                  radial-gradient(circle at 34% 28%, rgba(210,255,233,0.2), rgba(44,78,68,0.16) 18%, rgba(11,23,31,0.1) 32%, rgba(7,10,16,0.92) 72%),
+                  radial-gradient(circle at 66% 76%, rgba(6,12,18,0.92), rgba(3,6,10,0.98) 58%),
+                  linear-gradient(145deg, rgba(10,20,26,0.96), rgba(5,5,10,0.98))
+                `,
+                border: '1px solid rgba(255,255,255,0.08)',
+                boxShadow: `
+                  inset -30px -40px 80px rgba(0,0,0,0.7),
+                  inset 18px 20px 36px rgba(255,255,255,0.05),
+                  0 22px 80px rgba(0,0,0,0.46)
+                `,
+              }}
+            >
+              <motion.div
+                className="absolute inset-0"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 90, repeat: Infinity, ease: 'linear' }}
+                style={{
+                  opacity: 0.26,
+                  background: `
+                    repeating-linear-gradient(0deg, transparent 0 24px, rgba(255,255,255,0.055) 24px 25px),
+                    repeating-linear-gradient(90deg, transparent 0 28px, rgba(255,255,255,0.03) 28px 29px)
+                  `,
+                  mixBlendMode: 'screen',
+                }}
+              />
 
-        <motion.div
-          className="absolute rounded-full"
-          style={{
-            ...projected,
-            width: 34,
-            height: 34,
-            marginLeft: -11,
-            marginTop: -11,
-            border: '1px solid rgba(0,230,118,0.42)',
-          }}
-          animate={{ scale: [0.9, 1.15, 0.9], opacity: [0.3, 0.75, 0.3] }}
-          transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
-        />
+              <motion.div
+                className="absolute inset-0"
+                animate={{ rotate: [0, 6, 0, -4, 0] }}
+                transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  background: `
+                    radial-gradient(ellipse at 58% 45%, rgba(44,88,76,0.58), transparent 18%),
+                    radial-gradient(ellipse at 48% 52%, rgba(18,44,38,0.82), transparent 16%),
+                    radial-gradient(ellipse at 62% 58%, rgba(14,34,30,0.66), transparent 14%)
+                  `,
+                  filter: 'blur(10px)',
+                }}
+              />
+
+              <motion.div
+                className="absolute rounded-[45%]"
+                animate={{ x: [0, 6, 0], y: [0, -4, 0], rotate: [18, 20, 18] }}
+                transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  left: '49%',
+                  top: '30%',
+                  width: '18%',
+                  height: '26%',
+                  background: 'linear-gradient(180deg, rgba(109,193,146,0.22), rgba(18,48,38,0.9))',
+                  boxShadow: `0 0 22px ${tone.soft}`,
+                  filter: 'blur(1px)',
+                  transformOrigin: '50% 50%',
+                }}
+              />
+
+              <motion.div
+                className="absolute rounded-[48%]"
+                animate={{ x: [0, -4, 0], y: [0, 3, 0], rotate: [-16, -18, -16] }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  left: '34%',
+                  top: '28%',
+                  width: '22%',
+                  height: '18%',
+                  background: 'linear-gradient(180deg, rgba(92,168,128,0.18), rgba(10,28,24,0.82))',
+                  filter: 'blur(2px)',
+                }}
+              />
+
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: `
+                    radial-gradient(circle at 28% 25%, rgba(255,255,255,0.16), transparent 14%),
+                    radial-gradient(circle at 52% 46%, ${tone.soft}, transparent 12%),
+                    radial-gradient(circle at 84% 18%, rgba(255,255,255,0.05), transparent 12%)
+                  `,
+                  mixBlendMode: 'screen',
+                }}
+              />
+
+              <motion.div
+                className="absolute rounded-full"
+                animate={{ x: [-12, 14, -12], y: [-8, 6, -8], opacity: [0.6, 0.9, 0.6] }}
+                transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
+                style={{
+                  left: '18%',
+                  top: '12%',
+                  width: '34%',
+                  height: '34%',
+                  background: 'radial-gradient(circle, rgba(255,255,255,0.18), rgba(255,255,255,0) 72%)',
+                  filter: 'blur(10px)',
+                }}
+              />
+
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: 'radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 56%, rgba(149,255,215,0.1) 68%, rgba(255,255,255,0.02) 73%, rgba(0,0,0,0) 78%)',
+                }}
+              />
+
+              <motion.div
+                className="absolute rounded-full"
+                style={{
+                  ...projected,
+                  width: 12,
+                  height: 12,
+                  marginLeft: -6,
+                  marginTop: -6,
+                  background: tone.core,
+                  boxShadow: `0 0 22px ${tone.core}`,
+                }}
+                animate={{ scale: [1, 1.36, 1], opacity: [0.9, 1, 0.9] }}
+                transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+              />
+
+              <motion.div
+                className="absolute rounded-full"
+                style={{
+                  ...projected,
+                  width: 42,
+                  height: 42,
+                  marginLeft: -21,
+                  marginTop: -21,
+                  border: `1px solid ${tone.glow}`,
+                }}
+                animate={{ scale: [0.92, 1.18, 0.92], opacity: [0.24, 0.72, 0.24] }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut' }}
+              />
+
+              <motion.div
+                className="absolute rounded-full"
+                style={{
+                  ...projected,
+                  width: 110,
+                  height: 110,
+                  marginLeft: -55,
+                  marginTop: -55,
+                  background: `radial-gradient(circle, ${tone.soft}, rgba(0,0,0,0) 68%)`,
+                  filter: 'blur(6px)',
+                }}
+                animate={{ opacity: [0.2, 0.42, 0.2] }}
+                transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
+              />
+            </div>
+          </motion.div>
+
+          <div className="absolute left-1/2 bottom-[8%] -translate-x-1/2 z-[2] w-[min(88vw,680px)]">
+            <div
+              className="rounded-2xl px-4 py-3"
+              style={{
+                background: 'linear-gradient(180deg, rgba(7,10,16,0.9), rgba(5,5,10,0.78))',
+                backdropFilter: 'blur(22px)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                boxShadow: '0 20px 44px rgba(0,0,0,0.36)',
+              }}
+            >
+              <div className="flex items-center gap-2 mb-3">
+                <Orbit size={12} style={{ color: tone.text }} />
+                <p className="text-[10px] font-mono uppercase tracking-[0.16em]" style={{ color: tone.text }}>
+                  Supported Intelligence Network
+                </p>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {cityChips.map(city => {
+                  const active = city.slug === citySlug
+                  return (
+                    <motion.div
+                      key={city.slug}
+                      animate={active ? { y: [0, -2, 0] } : undefined}
+                      transition={active ? { duration: 2.8, repeat: Infinity, ease: 'easeInOut' } : undefined}
+                      className="px-3 py-1.5 rounded-full"
+                      style={{
+                        background: active ? 'rgba(0,230,118,0.14)' : 'rgba(255,255,255,0.04)',
+                        border: active ? '1px solid rgba(0,230,118,0.34)' : '1px solid rgba(255,255,255,0.06)',
+                        boxShadow: active ? '0 0 18px rgba(0,230,118,0.14)' : 'none',
+                      }}
+                    >
+                      <span className="text-[10px] font-mono" style={{ color: active ? '#00e676' : '#888899' }}>
+                        {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
+                      </span>
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="absolute left-5 top-5 z-[2] max-w-[280px] rounded-2xl px-4 py-3" style={{
-        background: 'rgba(5,5,10,0.82)',
+      <div className="absolute left-5 top-5 z-[2] max-w-[300px] rounded-2xl px-4 py-3" style={{
+        background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.76))',
         backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.07)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
       }}>
         <div className="flex items-center gap-2 mb-2">
-          <Globe size={12} className="text-[#00e676]" />
-          <p className="text-[10px] font-mono text-[#00e676] uppercase tracking-[0.16em]">
+          <Globe size={12} style={{ color: tone.text }} />
+          <p className="text-[10px] font-mono uppercase tracking-[0.16em]" style={{ color: tone.text }}>
             Globe Intelligence View
           </p>
         </div>
         <p className="text-sm font-mono text-[#e8e8f0] leading-relaxed">
-          Premium regional storytelling for the current PlotDNA context.
+          Premium geospatial storytelling anchored to the active PlotDNA market context.
         </p>
       </div>
 
-      <div className="absolute left-5 bottom-5 z-[2] max-w-[320px] rounded-2xl px-4 py-3" style={{
-        background: 'rgba(5,5,10,0.82)',
+      <div className="absolute right-5 top-5 z-[2] max-w-[320px] rounded-2xl px-4 py-3" style={{
+        background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.76))',
         backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.07)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
       }}>
         <div className="flex items-center gap-2 mb-2">
-          <MapPin size={12} className="text-[#00e676]" />
-          <p className="text-[10px] font-mono text-[#444455] uppercase tracking-[0.16em]">
-            Focus Region
-          </p>
-        </div>
-        <p className="text-[13px] font-mono text-[#e8e8f0] mb-1">{focusLabel}</p>
-        <p className="text-[10px] font-mono text-[#666680]">{precisionLabel}</p>
-      </div>
-
-      <div className="absolute right-5 bottom-5 z-[2] max-w-[320px] rounded-2xl px-4 py-3" style={{
-        background: 'rgba(5,5,10,0.82)',
-        backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.07)',
-      }}>
-        <div className="flex items-center gap-2 mb-2">
-          <Activity size={12} className="text-[#00e676]" />
+          <Activity size={12} style={{ color: tone.text }} />
           <p className="text-[10px] font-mono text-[#444455] uppercase tracking-[0.16em]">
             Coverage Status
           </p>
@@ -176,10 +371,26 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
           {coverageMessage}
         </p>
         {citySlug === 'hyderabad' && (
-          <p className="text-[10px] font-mono text-[#00e676] mt-2">
-            Hyderabad remains the primary supported intelligence region.
+          <p className="text-[10px] font-mono mt-2" style={{ color: tone.text }}>
+            Hyderabad is currently the strongest supported intelligence corridor.
           </p>
         )}
+      </div>
+
+      <div className="absolute left-5 bottom-5 z-[2] max-w-[320px] rounded-2xl px-4 py-3" style={{
+        background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.76))',
+        backdropFilter: 'blur(20px)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
+      }}>
+        <div className="flex items-center gap-2 mb-2">
+          <MapPin size={12} style={{ color: tone.text }} />
+          <p className="text-[10px] font-mono text-[#444455] uppercase tracking-[0.16em]">
+            Focus Region
+          </p>
+        </div>
+        <p className="text-[13px] font-mono text-[#e8e8f0] mb-1">{focusLabel}</p>
+        <p className="text-[10px] font-mono text-[#666680]">{precisionLabel}</p>
       </div>
     </div>
   )
