@@ -563,26 +563,42 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════
           BOTTOM RIGHT: Layer / View switcher
       ════════════════════════════════════════════════ */}
-      <div className="absolute z-[1001] flex flex-col items-end gap-2" style={{ bottom: 88, right: 20 }}>
+      <div
+        className="absolute z-[1001] flex flex-col gap-2 rounded-2xl p-2"
+        style={{
+          bottom: 88,
+          right: 20,
+          width: 'min(232px, calc(100vw - 24px))',
+          background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.78))',
+          backdropFilter: 'blur(24px)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
+        }}
+      >
         <ViewModeToggle mode={viewMode} onChange={setViewMode} />
 
         {/* Trigger pill */}
         <button
           onClick={() => setShowLayers(v => !v)}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-200"
+          className="flex items-center gap-2 px-4 py-3 rounded-xl transition-all duration-200"
           style={{
-            background: showLayers ? 'rgba(0,230,118,0.12)' : 'rgba(5,5,10,0.92)',
+            background: showLayers
+              ? 'linear-gradient(180deg, rgba(0,230,118,0.18), rgba(0,230,118,0.08))'
+              : 'rgba(255,255,255,0.03)',
             backdropFilter: 'blur(22px)',
-            border: showLayers ? '1px solid rgba(0,230,118,0.4)' : '1px solid rgba(255,255,255,0.1)',
+            border: showLayers ? '1px solid rgba(0,230,118,0.34)' : '1px solid rgba(255,255,255,0.06)',
             boxShadow: showLayers
-              ? '0 0 20px rgba(0,230,118,0.18), 0 4px 24px rgba(0,0,0,0.55)'
-              : '0 4px 20px rgba(0,0,0,0.5)',
+              ? '0 0 20px rgba(0,230,118,0.16), inset 0 0 16px rgba(0,230,118,0.06)'
+              : 'inset 0 0 14px rgba(255,255,255,0.02)',
           }}
         >
           <Layers size={13} style={{ color: showLayers ? '#00e676' : '#666680' }} />
-          <span className="text-[11px] font-mono font-semibold" style={{ color: showLayers ? '#00e676' : '#aaaabc' }}>
-            Layers
-          </span>
+          <div className="flex-1 text-left">
+            <p className="text-[8px] font-mono text-[#444455] uppercase tracking-[0.16em] mb-0.5">Scene Controls</p>
+            <p className="text-[11px] font-mono font-semibold" style={{ color: showLayers ? '#00e676' : '#aaaabc' }}>
+              Layers
+            </p>
+          </div>
           <ChevronUp
             size={10}
             style={{
@@ -601,12 +617,11 @@ export default function Home() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              className="absolute right-0 bottom-full mb-2 rounded-xl overflow-hidden"
+              className="absolute left-0 right-0 bottom-full mb-2 rounded-xl overflow-hidden"
               style={{
-                width: 228,
-                background: 'rgba(6,6,16,0.97)',
+                background: 'linear-gradient(180deg, rgba(8,12,18,0.96), rgba(5,5,10,0.9))',
                 backdropFilter: 'blur(28px)',
-                border: '1px solid rgba(255,255,255,0.07)',
+                border: '1px solid rgba(255,255,255,0.08)',
                 boxShadow: '0 20px 48px rgba(0,0,0,0.7)',
               }}
             >
