@@ -15,6 +15,8 @@ interface VerdictData {
   suitable_for: 'investment' | 'end-use' | 'both'
   last_updated: string
   source: 'gemini' | 'fallback'
+  resolution_tier: 'exact_locality' | 'nearby_micro_market' | 'city_zone_cluster' | 'uncovered'
+  resolution_label: string
 }
 
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
@@ -45,22 +47,50 @@ function timeAgo(iso: string): string {
 interface Props {
   citySlug: string
   areaSlug: string
+  resolutionTier?: VerdictData['resolution_tier']
+  resolutionLabel?: string
 }
 
-export default function VerdictCard({ citySlug, areaSlug }: Props) {
+export default function VerdictCard({
+  citySlug,
+  areaSlug,
+  resolutionTier,
+  resolutionLabel,
+}: Props) {
   const [data, setData] = useState<VerdictData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
-    setError(false)
-    fetch(`${API_BASE}/api/verdict/${citySlug}/${areaSlug}`)
-      .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json() })
-      .then(setData)
-      .catch(() => setError(true))
-      .finally(() => setLoading(false))
-  }, [citySlug, areaSlug])
+    const params = new URLSearchParams()
+    if (resolutionTier) params.set('resolution_tier', resolutionTier)
+    if (resolutionLabel?.trim()) params.set('resolution_label', resolutionLabel.trim())
+    const query = params.toString()
+    const url = `${API_BASE}/api/verdict/${citySlug}/${areaSlug}${query ? `?${query}` : ''}`
+    let cancelled = false
+
+    const loadVerdict = async () => {
+      setLoading(true)
+      setError(false)
+
+      try {
+        const response = await fetch(url)
+        if (!response.ok) throw new Error(response.statusText)
+        const payload = await response.json() as VerdictData
+        if (!cancelled) setData(payload)
+      } catch {
+        if (!cancelled) setError(true)
+      } finally {
+        if (!cancelled) setLoading(false)
+      }
+    }
+
+    void loadVerdict()
+
+    return () => {
+      cancelled = true
+    }
+  }, [citySlug, areaSlug, resolutionLabel, resolutionTier])
 
   if (loading) {
     return (
@@ -160,6 +190,11 @@ export default function VerdictCard({ citySlug, areaSlug }: Props) {
           >
             Suitable for: {SUITABLE_LABELS[data.suitable_for]}
           </span>
+          {data.resolution_tier !== 'exact_locality' && (
+            <p className="text-[10px] font-mono text-[#555566] mt-2">
+              Resolution context: {data.resolution_label}
+            </p>
+          )}
         </div>
 
         {/* Reasons + Risks */}

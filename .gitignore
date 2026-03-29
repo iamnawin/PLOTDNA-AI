@@ -30,6 +30,7 @@ build/
 !package-lock.json
 !vercel.json
 !frontend/public/manifest.json
+!data/cities/**/*.json
 
 # IDE
 .vscode/
@@ -41,6 +42,7 @@ build/
 .DS_Store
 Thumbs.db
 desktop.ini
+.sfdx/
 
 # Logs
 *.log

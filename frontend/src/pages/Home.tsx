@@ -9,9 +9,10 @@ import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { getRecommendationGoalMeta, rankAreasForGoal } from '@/lib/recommendations'
 import { resolveMapLink } from '@/lib/api'
-import MapView from '@/components/map/MapView'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
+import SpatialView from '@/components/view/SpatialView'
+import ViewModeToggle, { type ViewMode } from '@/components/view/ViewModeToggle'
 
 const RISK_TIERS = [
   { color: '#ef4444', label: 'High Risk',    range: '0–40'   },
@@ -46,6 +47,7 @@ export default function Home() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
   const [searchError, setSearchError]         = useState('')
   const [resolvingUrl, setResolvingUrl]       = useState(false)
+  const [viewMode, setViewMode]               = useState<ViewMode>('map')
   const inputRef = useRef<HTMLInputElement>(null)
 
   const { areas: cityAreas, meta: cityMeta } = getCityEntry(selectedCitySlug)
@@ -85,9 +87,10 @@ export default function Home() {
   }
 
   function triggerCoordAnalysis(coords: [number, number]) {
-    const { area } = findNearestArea(coords[0], coords[1])
+    const analysis = findNearestArea(coords[0], coords[1])
+    if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
     setSearchCoords(coords)
-    setSelectedArea(area)
+    setSelectedArea(analysis.shouldSelectArea ? analysis.area : null)
     setSearchQuery('')
     setSearchFocused(false)
     setSearchError('')
@@ -111,11 +114,13 @@ export default function Home() {
         triggerCoordAnalysis(result.coords)
         return
       }
-      setSearchError(
+      setSearchError(result.detail ?? (
         result.reason === 'backend_unreachable'
           ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
-          : 'Could not extract coordinates from this map link. Try the full URL or raw coordinates.',
-      )
+          : result.reason === 'timeout'
+            ? 'Timed out while expanding this short link. Try again in a few seconds or paste the full map URL.'
+            : 'Could not extract coordinates from this map link. Try the full URL or raw coordinates.'
+      ))
       return
     }
     if (searchResults.length > 0) {
@@ -132,7 +137,14 @@ export default function Home() {
 
       {/* ── Map fills 100% of screen ── */}
       <div className="absolute inset-0 z-0">
-        <MapView />
+        <SpatialView
+          mode={viewMode}
+          citySlug={selectedCitySlug}
+          cityName={cityMeta.name}
+          cityCenter={cityMeta.center}
+          fallback={coordAnalysis}
+          coords={searchCoords}
+        />
       </div>
 
       {/* ── Edge vignette for depth ── */}
@@ -534,11 +546,9 @@ export default function Home() {
       <AnimatePresence mode="wait">
         {searchCoords && coordAnalysis ? (
           <PlotAnalysisCard
-            key="plot-analysis"
+            key={`plot-analysis-${searchCoords[0]}-${searchCoords[1]}`}
             coords={searchCoords}
-            area={coordAnalysis.area}
-            distKm={coordAnalysis.distKm}
-            withinCoverage={coordAnalysis.withinCoverage}
+            fallback={coordAnalysis}
             onClose={() => { setSearchCoords(null); setSelectedArea(null) }}
           />
         ) : selectedArea ? (
@@ -553,7 +563,8 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════
           BOTTOM RIGHT: Layer / View switcher
       ════════════════════════════════════════════════ */}
-      <div className="absolute z-[1001]" style={{ bottom: 88, right: 20 }}>
+      <div className="absolute z-[1001] flex flex-col items-end gap-2" style={{ bottom: 88, right: 20 }}>
+        <ViewModeToggle mode={viewMode} onChange={setViewMode} />
 
         {/* Trigger pill */}
         <button

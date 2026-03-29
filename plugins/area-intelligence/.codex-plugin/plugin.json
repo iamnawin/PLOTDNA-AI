@@ -1,0 +1,37 @@
+{
+  "name": "area-intelligence",
+  "version": "0.1.0",
+  "description": "Repo-local PlotDNA plugin for locality resolution and fallback workflow guidance.",
+  "author": {
+    "name": "Naveen",
+    "url": "https://github.com/iamnawin"
+  },
+  "homepage": "https://github.com/iamnawin/PLOTDNA-AI/tree/main/plugins/area-intelligence",
+  "repository": "https://github.com/iamnawin/PLOTDNA-AI",
+  "license": "UNLICENSED",
+  "keywords": [
+    "plotdna",
+    "locality",
+    "fallback",
+    "maps"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Area Intelligence",
+    "shortDescription": "PlotDNA locality and map-link fallback workflows.",
+    "longDescription": "Keeps PlotDNA's locality parsing, short-link resolution, reverse geocoding, and nearest-area fallback behavior consistent across frontend and backend changes.",
+    "developerName": "PlotDNA",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/iamnawin/PLOTDNA-AI",
+    "defaultPrompt": [
+      "Improve PlotDNA map-link fallback without breaking graceful degradation.",
+      "Audit locality resolution across the frontend and backend.",
+      "Refine nearest-area fallback for uncovered coordinates."
+    ],
+    "brandColor": "#00E676"
+  }
+}

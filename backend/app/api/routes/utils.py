@@ -6,6 +6,8 @@ Utility routes:
 import base64
 import json
 import re
+from html import unescape
+from urllib.parse import parse_qs, unquote, urlparse
 
 import httpx
 from fastapi import APIRouter, File, HTTPException, UploadFile
@@ -13,6 +15,11 @@ from fastapi import APIRouter, File, HTTPException, UploadFile
 from app.core.config import settings
 
 router = APIRouter()
+
+_GENERIC_LOCATION_TEXT = {
+    "google maps",
+    "find local businesses, view maps and get driving directions in google maps.",
+}
 
 # ── Shared helper ─────────────────────────────────────────────────────────────
 
@@ -26,13 +33,88 @@ def _coords_from_url(url: str) -> tuple[float, float] | None:
         r"[?&](?:ll|sll)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)",  # Apple Maps ll/sll
         r"[?&]mlat=(-?\d{1,3}\.\d+).*?[?&]mlon=(-?\d{1,3}\.\d+)",  # OSM mlat/mlon
         r"#map=\d+/(-?\d{1,3}\.\d+)/(-?\d{1,3}\.\d+)",  # OSM hash
-        r"/(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)(?:,|$)",  # fallback /lat,lng path segment
+        r"/(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)(?:,|[/?#&]|$)",  # fallback /lat,lng path segment
     ]
     for pattern in patterns:
         m = re.search(pattern, url)
         if m:
             return float(m.group(1)), float(m.group(2))
     return None
+
+
+def _coords_from_text(text: str) -> tuple[float, float] | None:
+    m = re.search(r"(-?\d{1,3}(?:\.\d+)?)\s*,\s*(-?\d{1,3}(?:\.\d+)?)", text)
+    if not m:
+        return None
+    lat = float(m.group(1))
+    lng = float(m.group(2))
+    if -90 <= lat <= 90 and -180 <= lng <= 180:
+        return lat, lng
+    return None
+
+
+def _clean_location_candidate(text: str) -> str | None:
+    cleaned = unescape(unquote(text)).replace("+", " ").strip()
+    cleaned = re.sub(r"\s+", " ", cleaned)
+    cleaned = re.sub(r"\s*[-|]\s*Google Maps\s*$", "", cleaned, flags=re.I)
+    cleaned = cleaned.strip(" ,")
+    if not cleaned or cleaned.lower() in _GENERIC_LOCATION_TEXT:
+        return None
+    return cleaned
+
+
+def _location_candidates_from_url(url: str) -> list[str]:
+    parsed = urlparse(url)
+    params = parse_qs(parsed.query)
+    candidates: list[str] = []
+
+    for key in ("q", "query", "destination", "center", "ll", "sll"):
+        for value in params.get(key, []):
+            cleaned = _clean_location_candidate(value)
+            if cleaned:
+                candidates.append(cleaned)
+
+    path = unquote(parsed.path)
+    for marker in ("/maps/place/", "/maps/search/"):
+        if marker in path:
+            tail = path.split(marker, 1)[1].split("/", 1)[0]
+            cleaned = _clean_location_candidate(tail)
+            if cleaned:
+                candidates.append(cleaned)
+
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for candidate in candidates:
+        key = candidate.lower()
+        if key not in seen:
+            seen.add(key)
+            deduped.append(candidate)
+    return deduped
+
+
+def _location_candidates_from_html(html: str) -> list[str]:
+    candidates: list[str] = []
+    patterns = [
+        r'<meta[^>]+property="og:title"[^>]+content="([^"]+)"',
+        r'<meta[^>]+itemprop="name"[^>]+content="([^"]+)"',
+        r'<meta[^>]+name="title"[^>]+content="([^"]+)"',
+        r"<title>\s*([^<]+?)\s*</title>",
+    ]
+
+    for pattern in patterns:
+        for match in re.findall(pattern, html, flags=re.I):
+            cleaned = _clean_location_candidate(match)
+            if cleaned:
+                candidates.append(cleaned)
+
+    deduped: list[str] = []
+    seen: set[str] = set()
+    for candidate in candidates:
+        key = candidate.lower()
+        if key not in seen:
+            seen.add(key)
+            deduped.append(candidate)
+    return deduped
 
 
 # ── Resolve map link ──────────────────────────────────────────────────────────
@@ -50,17 +132,49 @@ async def resolve_map_link(url: str):
 
     # Follow redirect chain (needed for short links)
     try:
-        async with httpx.AsyncClient(follow_redirects=True, timeout=12) as client:
+        async with httpx.AsyncClient(follow_redirects=True, timeout=25) as client:
             resp = await client.get(
                 url,
                 headers={"User-Agent": "Mozilla/5.0 (compatible; PlotDNA/1.0)"},
             )
+            resp.raise_for_status()
             final_url = str(resp.url)
             coords = _coords_from_url(final_url)
             if coords:
                 return {"lat": coords[0], "lng": coords[1]}
-    except Exception:
-        pass
+
+            candidates = _location_candidates_from_url(final_url)
+            candidates.extend(_location_candidates_from_html(resp.text))
+
+            for candidate in candidates:
+                coords = _coords_from_text(candidate)
+                if coords:
+                    return {"lat": coords[0], "lng": coords[1], "resolved_query": candidate}
+                geocoded = await _geocode_address(candidate)
+                if geocoded:
+                    return {"lat": geocoded[0], "lng": geocoded[1], "resolved_query": candidate}
+
+            raise HTTPException(
+                status_code=422,
+                detail="Short link expanded, but no usable coordinates or geocodable location were found. Open it in Maps once and copy the full URL instead.",
+            )
+    except HTTPException:
+        raise
+    except httpx.TimeoutException as exc:
+        raise HTTPException(
+            status_code=504,
+            detail="Timed out while expanding this short map link. Try again in a few seconds or paste the full map URL.",
+        ) from exc
+    except httpx.HTTPStatusError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Map provider returned {exc.response.status_code} while expanding this short link. Try the full map URL instead.",
+        ) from exc
+    except httpx.HTTPError as exc:
+        raise HTTPException(
+            status_code=502,
+            detail="Could not reach the map provider to expand this short link. Try again or paste the full map URL.",
+        ) from exc
 
     raise HTTPException(
         status_code=422,
