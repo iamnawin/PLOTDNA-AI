@@ -107,11 +107,16 @@ function orientationForLocation([lat, lng]: [number, number]) {
 
 export default function GlobeView({ citySlug, cityName, cityCenter, fallback, coords }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const stageRef = useRef<HTMLDivElement | null>(null)
   const pointerRef = useRef({
     phiOffset: 0,
     thetaOffset: 0,
     targetPhiOffset: 0,
     targetThetaOffset: 0,
+    hoverMix: 0,
+    targetHoverMix: 0,
+    scale: 1,
+    targetScale: 1,
   })
 
   const focusPoint = coords ?? cityCenter
@@ -142,6 +147,15 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
     [cityCenter, citySlug, networkPoints],
   )
 
+  const clusterPoints = useMemo<[number, number][]>(
+    () => [
+      [activeCityCenter[0] + 0.6, activeCityCenter[1] - 0.45],
+      [activeCityCenter[0] - 0.42, activeCityCenter[1] + 0.52],
+      [activeCityCenter[0] + 0.24, activeCityCenter[1] + 0.72],
+    ],
+    [activeCityCenter],
+  )
+
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -164,35 +178,47 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
             : [0.42, 0.66, 0.58],
         }))
 
+    const getFocusInfluence = (location: [number, number]) => {
+      const latDistance = location[0] - activeCityCenter[0]
+      const lngDistance = (location[1] - activeCityCenter[1]) * Math.cos((activeCityCenter[0] * Math.PI) / 180)
+      const radialDistance = Math.sqrt(latDistance * latDistance + lngDistance * lngDistance)
+      return Math.max(0, 1 - radialDistance / 7.5)
+    }
+
     const buildMarkers = (focusPulse: number): GlobeMarker[] => {
       const networkMarkers: GlobeMarker[] = networkPoints.map(point => ({
         location: point.center,
-        size: point.slug === citySlug ? 0.048 : 0.028,
+        size: point.slug === citySlug ? 0.042 : 0.025 + getFocusInfluence(point.center) * 0.008,
         color: point.slug === citySlug ? tone.markerColor : [0.34, 0.45, 0.45],
       }))
 
       const contextualMarkers: GlobeMarker[] = [
         {
           location: INDIA_CENTER,
-          size: citySlug === 'hyderabad' ? 0.042 : 0.034,
+          size: citySlug === 'hyderabad' ? 0.034 : 0.028,
           color: [0.6, 0.78, 0.74],
         },
         {
           location: activeCityCenter,
           size: focusPulse,
-          color: [0.18, 0.92, 0.62],
+          color: [0.24, 0.88, 0.64],
         },
         {
           location: activeCityCenter,
-          size: 0.052,
+          size: 0.022,
           color: [0.84, 1, 0.92],
         },
+        ...clusterPoints.map(location => ({
+          location,
+          size: 0.016 + getFocusInfluence(location) * 0.008,
+          color: [0.42, 0.9, 0.72] as [number, number, number],
+        })),
       ]
 
       if (coords) {
         contextualMarkers.push({
           location: focusPoint,
-          size: 0.042,
+          size: 0.024,
           color: [0.92, 1, 0.98],
         })
       }
@@ -217,28 +243,31 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
 
       time += 1 / 60
       const pointer = pointerRef.current
+      pointer.hoverMix += (pointer.targetHoverMix - pointer.hoverMix) * 0.08
       pointer.phiOffset += (pointer.targetPhiOffset - pointer.phiOffset) * 0.045
       pointer.thetaOffset += (pointer.targetThetaOffset - pointer.thetaOffset) * 0.05
+      pointer.scale += (pointer.targetScale - pointer.scale) * 0.08
 
       const driftPhi =
         focusOrientation.phi
         + 0.18
-        + Math.sin(time * 0.68) * 0.22
+        + Math.sin(time * 0.72) * (0.18 + pointer.hoverMix * 0.07)
         + Math.sin(time * 0.15) * 0.045
         + pointer.phiOffset
       const driftTheta =
         focusOrientation.theta * 0.78
         - 0.05
-        + Math.cos(time * 0.38) * 0.09
+        + Math.cos(time * 0.42) * (0.08 + pointer.hoverMix * 0.03)
         + pointer.thetaOffset
 
-      phi += (driftPhi - phi) * 0.06
-      theta += (driftTheta - theta) * 0.085
+      phi += (driftPhi - phi) * (0.055 + pointer.hoverMix * 0.025)
+      theta += (driftTheta - theta) * (0.075 + pointer.hoverMix * 0.025)
 
       globe.update({
         phi,
         theta,
-        markers: buildMarkers(0.072 + (1 + Math.sin(time * 2.4)) * 0.01),
+        scale: pointer.scale,
+        markers: buildMarkers(0.038 + (1 + Math.sin(time * 2.7)) * 0.008),
         arcWidth: 0.72 + (1 + Math.sin(time * 1.4)) * 0.06,
       })
 
@@ -288,22 +317,11 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
       window.cancelAnimationFrame(frameId)
       globe?.destroy()
     }
-  }, [activeCityCenter, citySlug, coords, focusOrientation.phi, focusOrientation.theta, focusPoint, networkPoints, tone])
+  }, [activeCityCenter, citySlug, clusterPoints, coords, focusOrientation.phi, focusOrientation.theta, focusPoint, networkPoints, tone])
 
   return (
     <div
       className="absolute inset-0 overflow-hidden"
-      onMouseMove={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect()
-        const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2
-        const normalizedY = ((event.clientY - rect.top) / rect.height - 0.5) * 2
-        pointerRef.current.targetPhiOffset = normalizedX * 0.05
-        pointerRef.current.targetThetaOffset = normalizedY * 0.035
-      }}
-      onMouseLeave={() => {
-        pointerRef.current.targetPhiOffset = 0
-        pointerRef.current.targetThetaOffset = 0
-      }}
     >
       <div
         className="absolute inset-0"
@@ -338,10 +356,36 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
           />
 
           <motion.div
+            ref={stageRef}
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             animate={{ y: [0, -5, 0], scale: [1, 1.008, 1] }}
             transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
             style={{ width: '90%', height: '90%' }}
+            onMouseMove={(event) => {
+              const rect = event.currentTarget.getBoundingClientRect()
+              const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2
+              const normalizedY = ((event.clientY - rect.top) / rect.height - 0.5) * 2
+              pointerRef.current.targetPhiOffset = normalizedX * 0.12
+              pointerRef.current.targetThetaOffset = normalizedY * 0.085
+            }}
+            onMouseEnter={() => {
+              pointerRef.current.targetHoverMix = 1
+            }}
+            onMouseLeave={() => {
+              pointerRef.current.targetPhiOffset = 0
+              pointerRef.current.targetThetaOffset = 0
+              pointerRef.current.targetHoverMix = 0
+            }}
+            onWheel={(event) => {
+              event.preventDefault()
+              const delta = event.deltaY > 0 ? -0.045 : 0.045
+              pointerRef.current.targetScale = Math.max(0.9, Math.min(1.18, pointerRef.current.targetScale + delta))
+            }}
+            onDoubleClick={() => {
+              pointerRef.current.targetPhiOffset = 0
+              pointerRef.current.targetThetaOffset = 0
+              pointerRef.current.targetScale = 1.08
+            }}
           >
             <div
               className="absolute inset-[-5%] rounded-full"
