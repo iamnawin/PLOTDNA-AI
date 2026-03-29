@@ -21,11 +21,11 @@ export default function ViewModeToggle({ mode, onChange, variant = 'panel' }: Pr
       className={isDock ? 'rounded-xl p-1.5' : 'w-full rounded-2xl p-2'}
       style={{
         background: isDock
-          ? 'rgba(255,255,255,0.03)'
+          ? 'rgba(255,255,255,0.02)'
           : 'linear-gradient(180deg, rgba(8,12,18,0.9), rgba(5,5,10,0.82))',
         backdropFilter: 'blur(24px)',
         border: isDock ? '1px solid rgba(255,255,255,0.06)' : '1px solid rgba(255,255,255,0.08)',
-        boxShadow: isDock ? 'inset 0 0 14px rgba(255,255,255,0.02)' : '0 16px 38px rgba(0,0,0,0.34)',
+        boxShadow: isDock ? 'inset 0 0 12px rgba(255,255,255,0.015)' : '0 16px 38px rgba(0,0,0,0.34)',
       }}
     >
       {!isDock && (
@@ -44,14 +44,14 @@ export default function ViewModeToggle({ mode, onChange, variant = 'panel' }: Pr
               style={{
                 padding: isDock ? '9px 12px' : '10px 14px',
                 background: active
-                  ? 'linear-gradient(180deg, rgba(0,230,118,0.2), rgba(0,230,118,0.08))'
-                  : 'rgba(255,255,255,0.03)',
+                  ? 'linear-gradient(180deg, rgba(0,230,118,0.24), rgba(0,230,118,0.1))'
+                  : 'rgba(255,255,255,0.022)',
                 border: active
-                  ? '1px solid rgba(0,230,118,0.34)'
+                  ? '1px solid rgba(0,230,118,0.38)'
                   : '1px solid rgba(255,255,255,0.05)',
                 boxShadow: active
-                  ? '0 0 18px rgba(0,230,118,0.18), inset 0 0 18px rgba(0,230,118,0.06)'
-                  : 'inset 0 0 14px rgba(255,255,255,0.02)',
+                  ? '0 0 22px rgba(0,230,118,0.2), inset 0 0 22px rgba(0,230,118,0.08)'
+                  : 'inset 0 0 12px rgba(255,255,255,0.015)',
               }}
             >
               <Icon size={12} style={{ color: active ? '#00e676' : '#666680' }} />

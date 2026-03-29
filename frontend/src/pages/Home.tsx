@@ -1068,8 +1068,8 @@ export default function Home() {
             <div
               className="flex items-center p-1 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center"
               style={{
-                background: 'rgba(255,255,255,0.015)',
-                border: '1px solid rgba(255,255,255,0.05)',
+                background: 'rgba(255,255,255,0.01)',
+                border: '1px solid rgba(255,255,255,0.035)',
                 WebkitOverflowScrolling: 'touch',
                 scrollbarWidth: 'none',
               } as React.CSSProperties}
@@ -1082,9 +1082,9 @@ export default function Home() {
                     onClick={() => toggleTier(tier.label)}
                     className="flex items-center gap-2 px-3.5 py-2 rounded-full transition-all duration-200"
                     style={{
-                      background: isActive ? `${tier.color}1e` : 'transparent',
+                      background: isActive ? `${tier.color}18` : 'transparent',
                       border: isActive ? `1px solid ${tier.color}45` : '1px solid transparent',
-                      boxShadow: isActive ? `0 0 12px ${tier.color}20` : 'none',
+                      boxShadow: isActive ? `0 0 10px ${tier.color}18` : 'none',
                     }}
                   >
                     <div
@@ -1096,10 +1096,10 @@ export default function Home() {
                         transition: 'all 0.2s',
                       }}
                     />
-                    <span className="text-[10px] font-mono whitespace-nowrap transition-colors duration-200" style={{ color: isActive ? tier.color : '#666680' }}>
+                    <span className="text-[10px] font-mono whitespace-nowrap transition-colors duration-200" style={{ color: isActive ? tier.color : '#5f5f74' }}>
                       {tier.label}
                     </span>
-                    <span className="text-[9px] font-mono transition-colors duration-200" style={{ color: isActive ? `${tier.color}88` : '#2e2e42' }}>
+                    <span className="text-[9px] font-mono transition-colors duration-200" style={{ color: isActive ? `${tier.color}7a` : '#28283b' }}>
                       {tier.range}
                     </span>
                   </button>
@@ -1128,11 +1128,11 @@ export default function Home() {
                 style={{
                   background: showLayers
                     ? 'linear-gradient(180deg, rgba(0,230,118,0.18), rgba(0,230,118,0.08))'
-                    : 'rgba(255,255,255,0.03)',
+                    : 'rgba(255,255,255,0.022)',
                   border: showLayers ? '1px solid rgba(0,230,118,0.34)' : '1px solid rgba(255,255,255,0.06)',
                   boxShadow: showLayers
                     ? '0 0 20px rgba(0,230,118,0.16), inset 0 0 16px rgba(0,230,118,0.06)'
-                    : 'inset 0 0 14px rgba(255,255,255,0.02)',
+                    : 'inset 0 0 12px rgba(255,255,255,0.015)',
                 }}
               >
                 <Layers size={12} style={{ color: showLayers ? '#00e676' : '#666680' }} />

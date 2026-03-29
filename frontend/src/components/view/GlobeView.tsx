@@ -55,7 +55,7 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
       text: '#00e676',
       baseColor: [0.015, 0.08, 0.075],
       markerColor: [0, 0.9, 0.46],
-      glowColor: [0.03, 0.34, 0.2],
+      glowColor: [0.018, 0.22, 0.13],
       arcColor: [0.34, 0.96, 0.62],
     }
   }
@@ -67,7 +67,7 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
       text: '#7CFFB0',
       baseColor: [0.02, 0.085, 0.08],
       markerColor: [0.49, 1, 0.69],
-      glowColor: [0.06, 0.3, 0.2],
+      glowColor: [0.035, 0.2, 0.14],
       arcColor: [0.62, 1, 0.78],
     }
   }
@@ -79,7 +79,7 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
       text: '#f5b84d',
       baseColor: [0.035, 0.08, 0.08],
       markerColor: [0.96, 0.62, 0.04],
-      glowColor: [0.28, 0.16, 0.02],
+      glowColor: [0.16, 0.08, 0.015],
       arcColor: [1, 0.78, 0.22],
     }
   }
@@ -90,7 +90,7 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
     text: '#f87171',
     baseColor: [0.045, 0.075, 0.08],
     markerColor: [0.94, 0.27, 0.27],
-    glowColor: [0.22, 0.08, 0.08],
+    glowColor: [0.12, 0.05, 0.05],
     arcColor: [0.98, 0.48, 0.48],
   }
 }
@@ -107,6 +107,12 @@ function orientationForLocation([lat, lng]: [number, number]) {
 
 export default function GlobeView({ citySlug, cityName, cityCenter, fallback, coords }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const pointerRef = useRef({
+    phiOffset: 0,
+    thetaOffset: 0,
+    targetPhiOffset: 0,
+    targetThetaOffset: 0,
+  })
 
   const focusPoint = coords ?? cityCenter
   const coverageMessage = getCoverageMessage(fallback, cityName)
@@ -161,19 +167,24 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
     const buildMarkers = (focusPulse: number): GlobeMarker[] => {
       const networkMarkers: GlobeMarker[] = networkPoints.map(point => ({
         location: point.center,
-        size: point.slug === citySlug ? 0.11 : 0.034,
+        size: point.slug === citySlug ? 0.048 : 0.028,
         color: point.slug === citySlug ? tone.markerColor : [0.34, 0.45, 0.45],
       }))
 
       const contextualMarkers: GlobeMarker[] = [
         {
           location: INDIA_CENTER,
-          size: citySlug === 'hyderabad' ? 0.09 : 0.07,
-          color: [0.82, 0.9, 0.88],
+          size: citySlug === 'hyderabad' ? 0.042 : 0.034,
+          color: [0.6, 0.78, 0.74],
         },
         {
           location: activeCityCenter,
-          size: 0.13,
+          size: focusPulse,
+          color: [0.18, 0.92, 0.62],
+        },
+        {
+          location: activeCityCenter,
+          size: 0.052,
           color: [0.84, 1, 0.92],
         },
       ]
@@ -181,7 +192,7 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
       if (coords) {
         contextualMarkers.push({
           location: focusPoint,
-          size: focusPulse,
+          size: 0.042,
           color: [0.92, 1, 0.98],
         })
       }
@@ -205,23 +216,29 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
       if (!globe) return
 
       time += 1 / 60
+      const pointer = pointerRef.current
+      pointer.phiOffset += (pointer.targetPhiOffset - pointer.phiOffset) * 0.045
+      pointer.thetaOffset += (pointer.targetThetaOffset - pointer.thetaOffset) * 0.05
+
       const driftPhi =
         focusOrientation.phi
         + 0.18
-        + Math.sin(time * 0.62) * 0.19
-        + Math.sin(time * 0.15) * 0.04
+        + Math.sin(time * 0.68) * 0.22
+        + Math.sin(time * 0.15) * 0.045
+        + pointer.phiOffset
       const driftTheta =
         focusOrientation.theta * 0.78
         - 0.05
-        + Math.cos(time * 0.36) * 0.085
+        + Math.cos(time * 0.38) * 0.09
+        + pointer.thetaOffset
 
-      phi += (driftPhi - phi) * 0.055
-      theta += (driftTheta - theta) * 0.08
+      phi += (driftPhi - phi) * 0.06
+      theta += (driftTheta - theta) * 0.085
 
       globe.update({
         phi,
         theta,
-        markers: buildMarkers(0.1 + (1 + Math.sin(time * 2.8)) * 0.018),
+        markers: buildMarkers(0.072 + (1 + Math.sin(time * 2.4)) * 0.01),
         arcWidth: 0.72 + (1 + Math.sin(time * 1.4)) * 0.06,
       })
 
@@ -239,8 +256,8 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
         height: size * devicePixelRatio,
         phi,
         theta,
-        dark: 1,
-        diffuse: 1.62,
+        dark: 1.08,
+        diffuse: 1.78,
         scale: 1,
         mapSamples: 24000,
         mapBrightness: 6.2,
@@ -274,7 +291,20 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
   }, [activeCityCenter, citySlug, coords, focusOrientation.phi, focusOrientation.theta, focusPoint, networkPoints, tone])
 
   return (
-    <div className="absolute inset-0 overflow-hidden">
+    <div
+      className="absolute inset-0 overflow-hidden"
+      onMouseMove={(event) => {
+        const rect = event.currentTarget.getBoundingClientRect()
+        const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2
+        const normalizedY = ((event.clientY - rect.top) / rect.height - 0.5) * 2
+        pointerRef.current.targetPhiOffset = normalizedX * 0.05
+        pointerRef.current.targetThetaOffset = normalizedY * 0.035
+      }}
+      onMouseLeave={() => {
+        pointerRef.current.targetPhiOffset = 0
+        pointerRef.current.targetThetaOffset = 0
+      }}
+    >
       <div
         className="absolute inset-0"
         style={{
@@ -314,10 +344,10 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
             style={{ width: '90%', height: '90%' }}
           >
             <div
-              className="absolute inset-[-7%] rounded-full"
+              className="absolute inset-[-5%] rounded-full"
               style={{
                 background: `radial-gradient(circle, ${tone.glowCss} 0%, rgba(0,0,0,0) 60%)`,
-                filter: 'blur(30px)',
+                filter: 'blur(24px)',
               }}
             />
 
@@ -326,8 +356,8 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
               style={{
                 border: '1px solid rgba(255,255,255,0.08)',
                 boxShadow: `
-                  inset 0 0 38px rgba(255,255,255,0.05),
-                  inset -18px -38px 120px rgba(0,0,0,0.5),
+                  inset 0 0 28px rgba(255,255,255,0.04),
+                  inset -28px -48px 148px rgba(0,0,0,0.62),
                   0 26px 92px rgba(0,0,0,0.42)
                 `,
               }}
@@ -338,7 +368,7 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
               style={{
                 background: `
                   radial-gradient(circle at 28% 24%, rgba(255,255,255,0.12), rgba(255,255,255,0.02) 16%, rgba(0,0,0,0) 34%),
-                  radial-gradient(circle at 82% 54%, rgba(0,0,0,0.28), rgba(0,0,0,0) 26%),
+                  radial-gradient(circle at 82% 54%, rgba(0,0,0,0.42), rgba(0,0,0,0) 28%),
                   radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 62%, rgba(255,255,255,0.02) 72%, rgba(0,0,0,0) 76%)
                 `,
               }}
@@ -351,29 +381,29 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
               style={{
                 left: '54%',
                 top: '44%',
-                width: '28%',
-                height: '28%',
-                marginLeft: '-14%',
-                marginTop: '-14%',
-                background: `radial-gradient(circle, rgba(255,255,255,0.09), rgba(255,255,255,0.02) 26%, rgba(0,0,0,0) 72%)`,
-                filter: 'blur(10px)',
+                width: '24%',
+                height: '24%',
+                marginLeft: '-12%',
+                marginTop: '-12%',
+                background: `radial-gradient(circle, rgba(255,255,255,0.075), rgba(255,255,255,0.015) 24%, rgba(0,0,0,0) 72%)`,
+                filter: 'blur(8px)',
               }}
-              animate={{ opacity: [0.24, 0.36, 0.24], x: [-6, 10, -6], y: [-4, 6, -4] }}
-              transition={{ duration: 7.5, repeat: Infinity, ease: 'easeInOut' }}
+              animate={{ opacity: [0.18, 0.28, 0.18], x: [-4, 7, -4], y: [-3, 4, -3] }}
+              transition={{ duration: 8.4, repeat: Infinity, ease: 'easeInOut' }}
             />
 
           </motion.div>
         </div>
       </div>
 
-      <div className="absolute z-[2] max-w-[280px] rounded-2xl px-4 py-3" style={{
-        left: 'max(28px, calc(50% - 520px))',
+      <div className="absolute z-[2] max-w-[256px] rounded-2xl px-4 py-3" style={{
+        left: 'max(16px, calc(50% - 548px))',
         top: '50%',
         transform: 'translateY(-50%)',
-        background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.76))',
+        background: 'linear-gradient(180deg, rgba(8,12,18,0.84), rgba(5,5,10,0.7))',
         backdropFilter: 'blur(20px)',
         border: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
+        boxShadow: '0 16px 32px rgba(0,0,0,0.28)',
       }}>
         <div className="flex items-center gap-2 mb-2">
           <Globe size={12} style={{ color: tone.text }} />
