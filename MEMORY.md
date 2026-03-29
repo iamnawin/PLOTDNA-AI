@@ -348,3 +348,53 @@ This section supersedes the older scaffold-era status above.
 | 2026-03-29 | Added fallback-aware verdict contract and safer fallback messaging across coordinate and area flows |
 | 2026-03-29 | Added `Map` / `Globe` view switching on Home as an additive premium surface |
 | 2026-03-29 | Iterated Globe mode layout and control hierarchy, including a collapsible recommendation rail |
+
+## 2026-03-29 Latest State Addendum
+
+This addendum extends the current-state override above and reflects the latest pushed `main` branch state.
+
+### Globe Mode — Current Reality
+- Globe mode is no longer a fake styled sphere.
+- `frontend/src/components/view/GlobeView.tsx` now uses a real `cobe` canvas globe.
+- The earlier static look came from wiring an old `onRender` mutation pattern into `cobe@2`, which expects an explicit `globe.update(...)` animation loop.
+- Globe mode now includes:
+  - real animated globe rendering
+  - corrected Hyderabad / India orientation
+  - visible passive motion
+  - mouse-steerable interaction
+  - wheel zoom
+  - hover-responsive easing
+  - refined Hyderabad signal marker and small local cluster
+
+### Globe Layout / UX
+- Globe mode layout has been iterated several times to reduce collisions and improve hierarchy.
+- Current Globe mode includes:
+  - collapsible recommendation rail on the left
+  - a separate Globe info card with reserved left-lane spacing
+  - a three-zone bottom system bar:
+    - left: supported cities
+    - center: legend
+    - right: `Map / Globe` toggle plus `Layers`
+- The Globe info card is now lane-aware and adapts when the recommendation rail is expanded, instead of overlapping it.
+
+### Area News Relevance
+- The full DNA analysis page news section was previously misleading.
+- `frontend/src/components/ui/NewsSection.tsx` used to fall back to generic city headlines when area filtering returned nothing, which could show unrelated stories for the selected area.
+- That fallback has been removed.
+- Current rule:
+  - show only area-relevant news
+  - if no relevant items exist, show an honest empty state instead of generic regional news
+
+### Recent Main Branch Commit Trail
+- `4929950` — Keep area news honest instead of falling back to unrelated regional headlines
+- `0c6d884` — Separate the Globe info card from the left ranking rail
+- `31a52cf` — Separate the Globe bar into real zones and make interaction obvious
+- `ed3cdac` — Make Globe mode user-steerable without breaking the render loop
+- `2e11ddf` — Tune the globe into a calmer, more physical intelligence object
+- `81d3068` — Make the globe visibly alive instead of silently static
+- `e22e60c` — Replace the fake globe with a real animated globe surface
+
+### Current Risks / Follow-ups
+- Globe interaction is mouse-first; touch still relies mainly on passive motion.
+- Globe mode is now credible and interactive, but still intentionally stylized rather than photoreal.
+- Area-news relevance is still keyword-based from area name matching in title/summary, so relevant stories that omit the area name may still be missed.
