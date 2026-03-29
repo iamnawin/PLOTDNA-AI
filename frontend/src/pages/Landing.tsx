@@ -78,9 +78,10 @@ export default function Landing() {
   }
 
   function goToCoords(coords: [number, number]) {
-    const { area } = findNearestArea(coords[0], coords[1])
+    const analysis = findNearestArea(coords[0], coords[1])
+    if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
     setSearchCoords(coords)
-    setSelectedArea(area)
+    setSelectedArea(analysis.shouldSelectArea ? analysis.area : null)
     navigate('/map')
   }
 

@@ -1,23 +1,30 @@
 import type { MicroMarket } from '@/types'
-import { getAllAreas } from '@/data/cities'
+import type { ResolutionTier } from '@/lib/location/contracts'
+import { resolveLocalityResolution } from '@/lib/location/classifier'
+import {
+  getAreaReferenceBySlug,
+  getCityName,
+  getClusterLabel,
+  getClusterRepresentative,
+  type ResolverOptions,
+} from '@/lib/location/resolver'
 
-// ── Map URL parsing ────────────────────────────────────────────────────────────
 // Extracts lat/lng from Google Maps, Apple Maps, and OpenStreetMap URLs.
-// Returns null for short links (maps.app.goo.gl) — those need backend resolution.
+// Returns null for short links (maps.app.goo.gl) because those need backend resolution.
 export function parseMapUrl(input: string): [number, number] | null {
   const s = input.trim()
   const valid = (lat: number, lng: number): [number, number] | null =>
     lat >= -90 && lat <= 90 && lng >= -180 && lng <= 180 ? [lat, lng] : null
 
   const patterns = [
-    /@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/,                         // Google Maps @lat,lng
-    /!3d(-?\d{1,3}\.\d+)!4d(-?\d{1,3}\.\d+)/,                     // Google Maps !3dlat!4dlng
-    /[?&]q=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/,                    // ?q=lat,lng
-    /[?&](?:query|destination|center)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/, // query/destination/center
-    /[?&](?:ll|sll)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/,           // Apple Maps ll/sll
-    /[?&]mlat=(-?\d{1,3}\.\d+)[^#]*[?&]mlon=(-?\d{1,3}\.\d+)/,    // OSM mlat/mlon
-    /#map=\d+\/(-?\d{1,3}\.\d+)\/(-?\d{1,3}\.\d+)/,               // OSM hash
-    /\/(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)(?:,|[/?#&]|$)/,          // fallback /lat,lng path segment
+    /@(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/,
+    /!3d(-?\d{1,3}\.\d+)!4d(-?\d{1,3}\.\d+)/,
+    /[?&]q=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/,
+    /[?&](?:query|destination|center)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/,
+    /[?&](?:ll|sll)=(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)/,
+    /[?&]mlat=(-?\d{1,3}\.\d+)[^#]*[?&]mlon=(-?\d{1,3}\.\d+)/,
+    /#map=\d+\/(-?\d{1,3}\.\d+)\/(-?\d{1,3}\.\d+)/,
+    /\/(-?\d{1,3}\.\d+),(-?\d{1,3}\.\d+)(?:,|[/?#&]|$)/,
   ]
 
   for (const pattern of patterns) {
@@ -28,18 +35,16 @@ export function parseMapUrl(input: string): [number, number] | null {
   return null
 }
 
-// Returns true for short links that need backend redirect resolution
 export function isShortMapUrl(input: string): boolean {
   return /maps\.app\.goo\.gl|goo\.gl\/maps/i.test(input.trim())
 }
 
-// Returns true for any URL input (map link or short link)
 export function isMapUrl(input: string): boolean {
   return /^https?:\/\//i.test(input.trim())
 }
 
-// ── Coordinate parsing ────────────────────────────────────────────────────────
-// Accepts: "17.51, 78.29"  |  "17.51 78.29"  |  "17.513607429705296,  78.2920650662839"
+// Accepts:
+// "17.51, 78.29" | "17.51 78.29" | "17.513607429705296, 78.2920650662839"
 export function parseCoords(query: string): [number, number] | null {
   const clean = query.trim()
   const match = clean.match(/^(-?\d{1,3}(?:\.\d+)?)\s*[,\s]+\s*(-?\d{1,3}(?:\.\d+)?)$/)
@@ -48,43 +53,105 @@ export function parseCoords(query: string): [number, number] | null {
   const lng = parseFloat(match[2])
   if (isNaN(lat) || isNaN(lng)) return null
   if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null
-  // Bias: Hyderabad is ~17°N 78°E — reject obviously wrong coords
   return [lat, lng]
 }
 
-// ── Haversine distance ────────────────────────────────────────────────────────
-function distKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 6371
-  const toRad = (d: number) => (d * Math.PI) / 180
-  const dLat = toRad(lat2 - lat1)
-  const dLng = toRad(lng2 - lng1)
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+export type LocalityFallbackTier =
+  | 'exact_locality'
+  | 'nearby_micro_market'
+  | 'city_zone_cluster'
+  | 'uncovered'
+
+export type LocalityFallbackOptions = ResolverOptions
+
+export interface LocalityFallbackResult {
+  tier: LocalityFallbackTier
+  area: MicroMarket | null
+  distKm: number | null
+  withinCoverage: boolean
+  citySlug: string | null
+  cityName: string | null
+  clusterLabel: string | null
+  matchedLocality: string | null
+  displayLabel: string
+  precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
+  shouldSelectArea: boolean
 }
 
-const COVERAGE_RADIUS_KM = 5
+function mapTier(tier: ResolutionTier): LocalityFallbackTier {
+  if (tier === 'exact') return 'exact_locality'
+  if (tier === 'nearby') return 'nearby_micro_market'
+  if (tier === 'cluster') return 'city_zone_cluster'
+  return 'uncovered'
+}
+
+export function resolveLocalityFallback(
+  lat: number,
+  lng: number,
+  options: LocalityFallbackOptions = {},
+): LocalityFallbackResult {
+  const resolution = resolveLocalityResolution(lat, lng, options)
+  const tier = mapTier(resolution.tier)
+  const areaRef = getAreaReferenceBySlug(resolution.citySlug, resolution.localitySlug)
+  const clusterRepresentative = getClusterRepresentative(resolution.citySlug, resolution.clusterId, lat, lng)
+  const cityName = getCityName(resolution.citySlug)
+  const clusterLabel = getClusterLabel(resolution.clusterId)
+
+  if (resolution.tier === 'exact' || resolution.tier === 'nearby') {
+    return {
+      tier,
+      area: areaRef?.area ?? null,
+      distKm: resolution.distanceKm,
+      withinCoverage: true,
+      citySlug: resolution.citySlug,
+      cityName,
+      clusterLabel: null,
+      matchedLocality: options.locality ?? resolution.localityName,
+      displayLabel: resolution.localityName ?? 'Supported locality',
+      precisionLabel: resolution.tier === 'exact' ? 'exact' : 'approximate',
+      shouldSelectArea: true,
+    }
+  }
+
+  if (resolution.tier === 'cluster') {
+    return {
+      tier,
+      area: clusterRepresentative?.area ?? null,
+      distKm: resolution.distanceKm,
+      withinCoverage: false,
+      citySlug: resolution.citySlug,
+      cityName,
+      clusterLabel,
+      matchedLocality: options.locality ?? null,
+      displayLabel: clusterLabel ?? 'Supported city cluster',
+      precisionLabel: 'broad',
+      shouldSelectArea: false,
+    }
+  }
+
+  return {
+    tier,
+    area: null,
+    distKm: null,
+    withinCoverage: false,
+    citySlug: null,
+    cityName: null,
+    clusterLabel: null,
+    matchedLocality: options.locality ?? null,
+    displayLabel: options.locality?.trim() || 'Unsupported location',
+    precisionLabel: 'none',
+    shouldSelectArea: false,
+  }
+}
 
 export function findNearestArea(
   lat: number,
   lng: number,
-): { area: MicroMarket; distKm: number; withinCoverage: boolean } {
-  const allAreas = getAllAreas()
-  let best = allAreas[0]
-  let bestDist = Infinity
-  for (const area of allAreas) {
-    const d = distKm(lat, lng, area.center[0], area.center[1])
-    if (d < bestDist) {
-      best = area
-      bestDist = d
-    }
-  }
-  const rounded = Math.round(bestDist * 10) / 10
-  return { area: best, distKm: rounded, withinCoverage: rounded <= COVERAGE_RADIUS_KM }
+  options: LocalityFallbackOptions = {},
+): LocalityFallbackResult {
+  return resolveLocalityFallback(lat, lng, options)
 }
 
-// ── Growth timeline ───────────────────────────────────────────────────────────
 export type MilestonePhase = 'baseline' | 'early' | 'growth' | 'boom' | 'now'
 
 export interface Milestone {
@@ -127,7 +194,6 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
   ]
 }
 
-// ── 5-year outlook ────────────────────────────────────────────────────────────
 export interface Outlook {
   range: string
   confidence: 'High' | 'Medium' | 'Low'
@@ -145,10 +211,10 @@ export function getOutlook(area: MicroMarket): Outlook {
   const headline =
     area.score >= 86 ? 'Strong multi-year appreciation likely' :
     area.score >= 66 ? 'Steady growth with infra catalyst' :
-    area.score >= 41 ? 'Moderate gains — monitor closely' :
-    'High risk — insufficient market data'
+    area.score >= 41 ? 'Moderate gains - monitor closely' :
+    'High risk - insufficient market data'
   return {
-    range: `+${low}–${high}%`,
+    range: `+${low}-${high}%`,
     confidence,
     headline,
     drivers: area.highlights.slice(0, 2),

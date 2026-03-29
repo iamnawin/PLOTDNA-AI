@@ -1,0 +1,48 @@
+[
+  {
+    "id": "hyderabad:central",
+    "label": "Hyderabad Central Zone",
+    "zone": "Central",
+    "localitySlugs": ["lb-nagar", "banjara-hills", "somajiguda", "begumpet", "secunderabad"]
+  },
+  {
+    "id": "hyderabad:north",
+    "label": "Hyderabad North Zone",
+    "zone": "North",
+    "localitySlugs": ["medchal", "kompally", "kukatpally"]
+  },
+  {
+    "id": "hyderabad:east",
+    "label": "Hyderabad East Zone",
+    "zone": "East",
+    "localitySlugs": ["bibinagar", "ghatkesar", "peerzadiguda", "uppal"]
+  },
+  {
+    "id": "hyderabad:south",
+    "label": "Hyderabad South Zone",
+    "zone": "South",
+    "localitySlugs": ["adibatla", "tukkuguda", "yacharam", "shamshabad", "shadnagar"]
+  },
+  {
+    "id": "hyderabad:west",
+    "label": "Hyderabad West Zone",
+    "zone": "West",
+    "localitySlugs": [
+      "kokapet",
+      "shankarpally",
+      "narsingi",
+      "ameenpur",
+      "mokila",
+      "tellapur",
+      "financial-district",
+      "patancheru",
+      "rajendra-nagar",
+      "gachibowli",
+      "madhapur",
+      "kondapur",
+      "miyapur",
+      "jubilee-hills",
+      "manikonda"
+    ]
+  }
+]
