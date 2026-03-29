@@ -11,6 +11,7 @@ interface Props {
   cityCenter: [number, number]
   fallback: LocalityFallbackResult | null
   coords: [number, number] | null
+  sidebarExpanded?: boolean
 }
 
 interface FocusTone {
@@ -105,7 +106,7 @@ function orientationForLocation([lat, lng]: [number, number]) {
   }
 }
 
-export default function GlobeView({ citySlug, cityName, cityCenter, fallback, coords }: Props) {
+export default function GlobeView({ citySlug, cityName, cityCenter, fallback, coords, sidebarExpanded = false }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const pointerRef = useRef({
     phiOffset: 0,
@@ -145,6 +146,28 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
     () => networkPoints.find(point => point.slug === citySlug)?.center ?? cityCenter,
     [cityCenter, citySlug, networkPoints],
   )
+
+  const infoCardStyle = useMemo(() => {
+    const leftRailWidth = 204
+    const leftRailInset = 20
+    const horizontalGap = sidebarExpanded ? 52 : 34
+    const reservedLeft = leftRailInset + leftRailWidth + horizontalGap
+
+    return {
+      left: reservedLeft,
+      top: sidebarExpanded ? '54%' : '50%',
+      width: sidebarExpanded
+        ? 'min(220px, calc(100vw - 360px))'
+        : 'min(248px, calc(100vw - 328px))',
+      opacity: sidebarExpanded ? 0.86 : 1,
+      background: sidebarExpanded
+        ? 'linear-gradient(180deg, rgba(8,12,18,0.78), rgba(5,5,10,0.64))'
+        : 'linear-gradient(180deg, rgba(8,12,18,0.84), rgba(5,5,10,0.7))',
+      boxShadow: sidebarExpanded
+        ? '0 14px 26px rgba(0,0,0,0.24)'
+        : '0 16px 32px rgba(0,0,0,0.28)',
+    }
+  }, [sidebarExpanded])
 
   const clusterPoints = useMemo<[number, number][]>(
     () => [
@@ -439,14 +462,11 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
         </div>
       </div>
 
-      <div className="absolute z-[2] max-w-[256px] rounded-2xl px-4 py-3" style={{
-        left: 'max(16px, calc(50% - 548px))',
-        top: '50%',
+      <div className="absolute z-[2] rounded-2xl px-4 py-3 hidden md:block" style={{
+        ...infoCardStyle,
         transform: 'translateY(-50%)',
-        background: 'linear-gradient(180deg, rgba(8,12,18,0.84), rgba(5,5,10,0.7))',
         backdropFilter: 'blur(20px)',
         border: '1px solid rgba(255,255,255,0.08)',
-        boxShadow: '0 16px 32px rgba(0,0,0,0.28)',
       }}>
         <div className="flex items-center gap-2 mb-2">
           <Globe size={12} style={{ color: tone.text }} />

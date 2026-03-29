@@ -154,6 +154,7 @@ export default function Home() {
           cityCenter={cityMeta.center}
           fallback={coordAnalysis}
           coords={searchCoords}
+          globeSidebarExpanded={globeSidebarExpanded}
         />
       </div>
 

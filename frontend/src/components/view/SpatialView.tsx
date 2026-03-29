@@ -10,9 +10,10 @@ interface Props {
   cityCenter: [number, number]
   fallback: LocalityFallbackResult | null
   coords: [number, number] | null
+  globeSidebarExpanded?: boolean
 }
 
-export default function SpatialView({ mode, citySlug, cityName, cityCenter, fallback, coords }: Props) {
+export default function SpatialView({ mode, citySlug, cityName, cityCenter, fallback, coords, globeSidebarExpanded = false }: Props) {
   if (mode === 'globe') {
     return (
       <GlobeView
@@ -21,6 +22,7 @@ export default function SpatialView({ mode, citySlug, cityName, cityCenter, fall
         cityCenter={cityCenter}
         fallback={fallback}
         coords={coords}
+        sidebarExpanded={globeSidebarExpanded}
       />
     )
   }
