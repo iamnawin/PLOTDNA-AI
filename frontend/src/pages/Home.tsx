@@ -85,9 +85,10 @@ export default function Home() {
   }
 
   function triggerCoordAnalysis(coords: [number, number]) {
-    const { area } = findNearestArea(coords[0], coords[1])
+    const analysis = findNearestArea(coords[0], coords[1])
+    if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
     setSearchCoords(coords)
-    setSelectedArea(area)
+    setSelectedArea(analysis.shouldSelectArea ? analysis.area : null)
     setSearchQuery('')
     setSearchFocused(false)
     setSearchError('')
@@ -536,11 +537,9 @@ export default function Home() {
       <AnimatePresence mode="wait">
         {searchCoords && coordAnalysis ? (
           <PlotAnalysisCard
-            key="plot-analysis"
+            key={`plot-analysis-${searchCoords[0]}-${searchCoords[1]}`}
             coords={searchCoords}
-            area={coordAnalysis.area}
-            distKm={coordAnalysis.distKm}
-            withinCoverage={coordAnalysis.withinCoverage}
+            fallback={coordAnalysis}
             onClose={() => { setSearchCoords(null); setSelectedArea(null) }}
           />
         ) : selectedArea ? (
