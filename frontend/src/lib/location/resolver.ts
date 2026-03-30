@@ -8,6 +8,10 @@ import hydAliasesJson from '../../../../data/cities/hyderabad/aliases.json'
 import hydCityJson from '../../../../data/cities/hyderabad/city.json'
 import hydClustersJson from '../../../../data/cities/hyderabad/clusters.json'
 import hydLocalitiesJson from '../../../../data/cities/hyderabad/localities.json'
+import mumAliasesJson from '../../../../data/cities/mumbai/aliases.json'
+import mumCityJson from '../../../../data/cities/mumbai/city.json'
+import mumClustersJson from '../../../../data/cities/mumbai/clusters.json'
+import mumLocalitiesJson from '../../../../data/cities/mumbai/localities.json'
 
 export interface ResolverOptions {
   locality?: string | null
@@ -147,6 +151,12 @@ const SPECIAL_CITY_DATASETS: Record<string, SpecialResolverDataset> = {
     bangLocalitiesJson as ResolverLocalityData[],
     bangAliasesJson as ResolverAliasData,
     bangClustersJson as ResolverClusterData[],
+  ),
+  mumbai: buildSpecialResolverDataset(
+    mumCityJson as ResolverCityData,
+    mumLocalitiesJson as ResolverLocalityData[],
+    mumAliasesJson as ResolverAliasData,
+    mumClustersJson as ResolverClusterData[],
   ),
 }
 

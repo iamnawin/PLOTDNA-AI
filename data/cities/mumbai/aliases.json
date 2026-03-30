@@ -1,0 +1,22 @@
+{
+  "panvel": ["panvel"],
+  "kharghar": ["kharghar"],
+  "badlapur": ["badlapur"],
+  "powai": ["powai"],
+  "thane-west": ["thane west", "thane"],
+  "goregaon-east": ["goregaon east"],
+  "airoli": ["airoli"],
+  "vashi": ["vashi"],
+  "seawoods": ["seawoods", "seawoods darave"],
+  "nerul": ["nerul"],
+  "ulwe": ["ulwe"],
+  "dombivli-east": ["dombivli east", "dombivli"],
+  "kalyan-west": ["kalyan west", "kalyan"],
+  "mira-road": ["mira road", "miraroad"],
+  "andheri-east": ["andheri east"],
+  "bandra-kurla-complex": ["bandra kurla complex", "bkc"],
+  "worli": ["worli"],
+  "chembur": ["chembur"],
+  "kandivali-east": ["kandivali east"],
+  "borivali-west": ["borivali west", "borivali"]
+}

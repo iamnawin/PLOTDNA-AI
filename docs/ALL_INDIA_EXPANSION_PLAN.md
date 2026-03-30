@@ -2,12 +2,14 @@
 
 ## Purpose
 
-PlotDNA currently works best in Hyderabad and Bangalore because those are now the two resolver-grade locality layers in the repo:
+PlotDNA currently works best in Hyderabad, Bangalore, and Mumbai because those are now the three resolver-grade locality layers in the repo:
 
 - `data/cities/hyderabad/*`
 - `data/cities/bangalore/*`
+- `data/cities/mumbai/*`
 - `frontend/src/data/hyderabad.ts`
 - `frontend/src/data/bangalore.ts`
+- `frontend/src/data/mumbai.ts`
 
 The goal of this plan is to move PlotDNA from a Hyderabad-first, partly hardcoded setup to a scalable all-India micro-market intelligence platform.
 
@@ -24,7 +26,7 @@ PlotDNA already has two different systems:
 2. `Stored micro-market intelligence`
    - Frontend city registry: `frontend/src/data/cities.ts`
    - Per-city datasets: `frontend/src/data/*.ts`
-   - Hyderabad and Bangalore resolver data: `data/cities/<city>/*`
+   - Hyderabad, Bangalore, and Mumbai resolver data: `data/cities/<city>/*`
    - Backend fallback verdict data: `backend/app/api/routes/verdict.py`
    - Provides locality name, polygons, price range, YoY, highlights, projects, and source links.
 
@@ -114,15 +116,15 @@ The same market intelligence currently exists in multiple places:
 
 This will not scale across India.
 
-### 2. Only Hyderabad and Bangalore are resolver-grade cities today
+### 2. Only Hyderabad, Bangalore, and Mumbai are resolver-grade cities today
 
-Only Hyderabad and Bangalore currently have:
+Only Hyderabad, Bangalore, and Mumbai currently have:
 
 - locality polygons
 - alias mapping
 - cluster mapping
 
-Mumbai, Chennai, Pune, and Delhi still have area datasets, but not the same resolver structure.
+Chennai, Pune, and Delhi still have area datasets, but not the same resolver structure.
 
 ### 3. Backend area APIs are not yet the real source of truth
 
@@ -130,15 +132,15 @@ Mumbai, Chennai, Pune, and Delhi still have area datasets, but not the same reso
 
 ## Recommended Migration Direction
 
-### Phase 1: Normalize Hyderabad and Bangalore as the reference implementation
+### Phase 1: Normalize Hyderabad, Bangalore, and Mumbai as the reference implementation
 
-Use Hyderabad and Bangalore as the current template for the final system.
+Use Hyderabad, Bangalore, and Mumbai as the current template for the final system.
 
 Goals:
 
-- move Hyderabad and Bangalore market records into one canonical backend-owned dataset
+- move Hyderabad, Bangalore, and Mumbai market records into one canonical backend-owned dataset
 - keep polygons, aliases, and clusters together with the market records
-- stop duplicating Hyderabad and Bangalore values across frontend and backend
+- stop duplicating Hyderabad, Bangalore, and Mumbai values across frontend and backend
 - make frontend fetch resolver-grade city data instead of bundling all of it locally
 
 ### Phase 2: Define one canonical catalog format
@@ -290,7 +292,7 @@ Recommended implementation order:
 3. Replace duplicated Hyderabad backend/frontend values with one source
 4. Update frontend to fetch market data from backend
 5. Generalize resolver loading for all cities
-6. Port Mumbai to the same structure
+6. Port Chennai to the same structure
 7. Repeat for remaining metros
 
 ## Non-Goals
@@ -314,7 +316,7 @@ PlotDNA is ready for real all-India expansion when:
 
 ## Immediate Next Step
 
-Use Hyderabad and Bangalore as the migration template and refactor the app so:
+Use Hyderabad, Bangalore, and Mumbai as the migration template and refactor the app so:
 
 - one canonical dataset powers resolver, area detail, sources, and verdicts
 - frontend consumes that dataset through backend APIs

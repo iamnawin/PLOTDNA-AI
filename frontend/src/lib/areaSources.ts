@@ -255,6 +255,66 @@ const CITY_DEFAULT_SOURCES: Record<string, AreaSource[]> = {
   ],
 }
 
+const MUMBAI_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
+  'airoli': [
+    { title: 'Airoli Node Development - CIDCO / NMMC', url: 'https://cidco.maharashtra.gov.in/', type: 'gov' },
+    { title: 'Airoli Commercial Growth - ET Realty', url: 'https://realty.economictimes.indiatimes.com/', type: 'news' },
+    { title: 'Airoli Property Market - 99acres', url: 'https://www.99acres.com/property-in-airoli-mumbai-ffid', type: 'data' },
+  ],
+  'vashi': [
+    { title: 'Vashi Node Planning - CIDCO', url: 'https://cidco.maharashtra.gov.in/', type: 'gov' },
+    { title: 'Vashi Market Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Vashi/residential-real-estate-Vashi', type: 'data' },
+  ],
+  'seawoods': [
+    { title: 'Seawoods Station Area - CIDCO', url: 'https://cidco.maharashtra.gov.in/', type: 'gov' },
+    { title: 'Seawoods Property Market - 99acres', url: 'https://www.99acres.com/property-in-seawoods-mumbai-ffid', type: 'data' },
+  ],
+  'nerul': [
+    { title: 'Nerul Node Planning - CIDCO', url: 'https://cidco.maharashtra.gov.in/', type: 'gov' },
+    { title: 'Nerul Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Nerul/residential-real-estate-Nerul', type: 'data' },
+  ],
+  'ulwe': [
+    { title: 'Ulwe Airport Influence Zone - CIDCO', url: 'https://cidco.maharashtra.gov.in/', type: 'gov' },
+    { title: 'Ulwe Property Market - 99acres', url: 'https://www.99acres.com/property-in-ulwe-mumbai-ffid', type: 'data' },
+  ],
+  'dombivli-east': [
+    { title: 'Dombivli East Regional Planning - MMRDA', url: 'https://mmrda.maharashtra.gov.in/', type: 'gov' },
+    { title: 'Dombivli East Property Market - 99acres', url: 'https://www.99acres.com/property-in-dombivli-east-mumbai-ffid', type: 'data' },
+  ],
+  'kalyan-west': [
+    { title: 'Kalyan Regional Planning - MMRDA', url: 'https://mmrda.maharashtra.gov.in/', type: 'gov' },
+    { title: 'Kalyan West Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Kalyan-West/residential-real-estate-Kalyan-West', type: 'data' },
+  ],
+  'mira-road': [
+    { title: 'Mira Bhayandar Planning - MBMC', url: 'https://www.mbmc.gov.in/', type: 'gov' },
+    { title: 'Mira Road Property Market - 99acres', url: 'https://www.99acres.com/property-in-mira-road-mumbai-ffid', type: 'data' },
+  ],
+  'andheri-east': [
+    { title: 'Andheri East Civic Zone - BMC', url: 'https://portal.mcgm.gov.in/', type: 'gov' },
+    { title: 'Andheri East Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Andheri-East/residential-real-estate-Andheri-East', type: 'data' },
+  ],
+  'bandra-kurla-complex': [
+    { title: 'BKC Planning Updates - MMRDA', url: 'https://mmrda.maharashtra.gov.in/', type: 'gov' },
+    { title: 'BKC Office Market - Knight Frank', url: 'https://www.knightfrank.co.in/research', type: 'research' },
+  ],
+  'worli': [
+    { title: 'Worli Coastal Road and Connector Updates - MMRDA', url: 'https://mmrda.maharashtra.gov.in/', type: 'gov' },
+    { title: 'Worli Luxury Market - 99acres', url: 'https://www.99acres.com/property-in-worli-mumbai-ffid', type: 'data' },
+  ],
+  'chembur': [
+    { title: 'Chembur Transit and Planning - MMRDA', url: 'https://mmrda.maharashtra.gov.in/', type: 'gov' },
+    { title: 'Chembur Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Chembur/residential-real-estate-Chembur', type: 'data' },
+  ],
+  'kandivali-east': [
+    { title: 'Kandivali East Civic Zone - BMC', url: 'https://portal.mcgm.gov.in/', type: 'gov' },
+    { title: 'Kandivali East Property Market - 99acres', url: 'https://www.99acres.com/property-in-kandivali-east-mumbai-ffid', type: 'data' },
+  ],
+  'borivali-west': [
+    { title: 'Borivali West Civic Zone - BMC', url: 'https://portal.mcgm.gov.in/', type: 'gov' },
+    { title: 'Borivali West Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Borivali-West/residential-real-estate-Borivali-West', type: 'data' },
+  ],
+}
+
 const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
   ameenpur: [
     { title: 'Ameenpur HMDA Master Plan References', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
@@ -380,7 +440,8 @@ const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
  * Always pass citySlug so Delhi areas show RERA Delhi instead of RERA Telangana.
  */
 export function getAreaSources(slug: string, citySlug = 'hyderabad'): AreaSource[] {
-  const specific     = HYDERABAD_SOURCE_OVERRIDES[slug] ?? AREA_SOURCES[slug] ?? []
+  const overrideSpecific = HYDERABAD_SOURCE_OVERRIDES[slug] ?? MUMBAI_SOURCE_OVERRIDES[slug]
+  const specific     = overrideSpecific ?? AREA_SOURCES[slug] ?? []
   const cityDefaults = CITY_DEFAULT_SOURCES[citySlug] ?? CITY_DEFAULT_SOURCES.hyderabad
   return [...specific, ...cityDefaults]
 }

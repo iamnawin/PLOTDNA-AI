@@ -78,8 +78,8 @@ Smart City / Govt Scheme      5%      Smart Cities Mission
 
 Current production uses a hybrid model:
 
-- curated stored market scores for Hyderabad and Bangalore
-- smaller starter datasets for Mumbai, Chennai, Pune, and Delhi NCR
+- curated stored market scores for Hyderabad, Bangalore, and Mumbai
+- smaller starter datasets for Chennai, Pune, and Delhi NCR
 - live coordinate scoring from the backend analyzer
 
 As the canonical city catalog grows, these inputs should move toward computed

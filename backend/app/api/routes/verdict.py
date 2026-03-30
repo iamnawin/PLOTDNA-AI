@@ -95,8 +95,32 @@ BANGALORE_AREA_OVERRIDES: dict[str, dict] = {
     "mysore-road": {"name": "Mysore Road", "city": "bangalore", "city_name": "Bangalore", "score": 70, "price_range": "Rs5,000-8,000/sqft", "yoy": 11.0, "signals": {"infrastructure": 74, "population": 72, "satellite": 64, "rera": 66, "employment": 68, "priceVelocity": 64, "govtScheme": 64}},
 }
 
+MUMBAI_AREA_OVERRIDES: dict[str, dict] = {
+    "panvel": {"name": "Panvel", "city": "mumbai", "city_name": "Mumbai", "score": 82, "price_range": "Rs6,500-9,500/sqft", "yoy": 22.0, "signals": {"infrastructure": 82, "population": 72, "satellite": 80, "rera": 78, "employment": 72, "priceVelocity": 82, "govtScheme": 88}},
+    "kharghar": {"name": "Kharghar", "city": "mumbai", "city_name": "Mumbai", "score": 77, "price_range": "Rs9,000-13,000/sqft", "yoy": 15.0, "signals": {"infrastructure": 80, "population": 75, "satellite": 72, "rera": 80, "employment": 70, "priceVelocity": 75, "govtScheme": 82}},
+    "badlapur": {"name": "Badlapur", "city": "mumbai", "city_name": "Mumbai", "score": 74, "price_range": "Rs4,000-6,500/sqft", "yoy": 20.0, "signals": {"infrastructure": 68, "population": 65, "satellite": 72, "rera": 70, "employment": 60, "priceVelocity": 78, "govtScheme": 72}},
+    "powai": {"name": "Powai", "city": "mumbai", "city_name": "Mumbai", "score": 73, "price_range": "Rs18,000-25,000/sqft", "yoy": 10.0, "signals": {"infrastructure": 80, "population": 70, "satellite": 62, "rera": 72, "employment": 82, "priceVelocity": 68, "govtScheme": 65}},
+    "thane-west": {"name": "Thane West", "city": "mumbai", "city_name": "Mumbai", "score": 71, "price_range": "Rs12,000-17,000/sqft", "yoy": 12.0, "signals": {"infrastructure": 75, "population": 80, "satellite": 60, "rera": 78, "employment": 68, "priceVelocity": 65, "govtScheme": 70}},
+    "goregaon-east": {"name": "Goregaon East", "city": "mumbai", "city_name": "Mumbai", "score": 68, "price_range": "Rs16,000-22,000/sqft", "yoy": 8.0, "signals": {"infrastructure": 72, "population": 72, "satellite": 60, "rera": 70, "employment": 70, "priceVelocity": 62, "govtScheme": 62}},
+    "airoli": {"name": "Airoli", "city": "mumbai", "city_name": "Mumbai", "score": 76, "price_range": "Rs10,000-15,000/sqft", "yoy": 14.0, "signals": {"infrastructure": 78, "population": 74, "satellite": 72, "rera": 74, "employment": 82, "priceVelocity": 72, "govtScheme": 70}},
+    "vashi": {"name": "Vashi", "city": "mumbai", "city_name": "Mumbai", "score": 75, "price_range": "Rs12,000-18,000/sqft", "yoy": 11.0, "signals": {"infrastructure": 80, "population": 74, "satellite": 64, "rera": 72, "employment": 78, "priceVelocity": 68, "govtScheme": 70}},
+    "seawoods": {"name": "Seawoods", "city": "mumbai", "city_name": "Mumbai", "score": 78, "price_range": "Rs13,000-19,000/sqft", "yoy": 15.0, "signals": {"infrastructure": 80, "population": 72, "satellite": 74, "rera": 76, "employment": 72, "priceVelocity": 74, "govtScheme": 72}},
+    "nerul": {"name": "Nerul", "city": "mumbai", "city_name": "Mumbai", "score": 77, "price_range": "Rs12,000-18,000/sqft", "yoy": 14.0, "signals": {"infrastructure": 80, "population": 74, "satellite": 72, "rera": 76, "employment": 72, "priceVelocity": 72, "govtScheme": 72}},
+    "ulwe": {"name": "Ulwe", "city": "mumbai", "city_name": "Mumbai", "score": 81, "price_range": "Rs8,000-12,500/sqft", "yoy": 21.0, "signals": {"infrastructure": 84, "population": 70, "satellite": 82, "rera": 78, "employment": 68, "priceVelocity": 80, "govtScheme": 86}},
+    "dombivli-east": {"name": "Dombivli East", "city": "mumbai", "city_name": "Mumbai", "score": 70, "price_range": "Rs5,000-8,000/sqft", "yoy": 12.0, "signals": {"infrastructure": 72, "population": 74, "satellite": 66, "rera": 68, "employment": 64, "priceVelocity": 66, "govtScheme": 64}},
+    "kalyan-west": {"name": "Kalyan West", "city": "mumbai", "city_name": "Mumbai", "score": 69, "price_range": "Rs5,500-8,500/sqft", "yoy": 11.0, "signals": {"infrastructure": 72, "population": 74, "satellite": 64, "rera": 66, "employment": 62, "priceVelocity": 64, "govtScheme": 64}},
+    "mira-road": {"name": "Mira Road", "city": "mumbai", "city_name": "Mumbai", "score": 72, "price_range": "Rs9,000-13,500/sqft", "yoy": 11.0, "signals": {"infrastructure": 74, "population": 78, "satellite": 62, "rera": 70, "employment": 64, "priceVelocity": 66, "govtScheme": 64}},
+    "andheri-east": {"name": "Andheri East", "city": "mumbai", "city_name": "Mumbai", "score": 74, "price_range": "Rs16,000-24,000/sqft", "yoy": 9.0, "signals": {"infrastructure": 82, "population": 74, "satellite": 60, "rera": 70, "employment": 86, "priceVelocity": 64, "govtScheme": 60}},
+    "bandra-kurla-complex": {"name": "Bandra Kurla Complex", "city": "mumbai", "city_name": "Mumbai", "score": 85, "price_range": "Rs25,000-45,000/sqft", "yoy": 12.0, "signals": {"infrastructure": 90, "population": 70, "satellite": 72, "rera": 76, "employment": 95, "priceVelocity": 70, "govtScheme": 68}},
+    "worli": {"name": "Worli", "city": "mumbai", "city_name": "Mumbai", "score": 79, "price_range": "Rs35,000-60,000/sqft", "yoy": 8.0, "signals": {"infrastructure": 86, "population": 68, "satellite": 60, "rera": 70, "employment": 82, "priceVelocity": 66, "govtScheme": 62}},
+    "chembur": {"name": "Chembur", "city": "mumbai", "city_name": "Mumbai", "score": 74, "price_range": "Rs18,000-28,000/sqft", "yoy": 10.0, "signals": {"infrastructure": 80, "population": 74, "satellite": 62, "rera": 70, "employment": 76, "priceVelocity": 66, "govtScheme": 62}},
+    "kandivali-east": {"name": "Kandivali East", "city": "mumbai", "city_name": "Mumbai", "score": 71, "price_range": "Rs14,000-21,000/sqft", "yoy": 10.0, "signals": {"infrastructure": 76, "population": 76, "satellite": 62, "rera": 70, "employment": 66, "priceVelocity": 64, "govtScheme": 62}},
+    "borivali-west": {"name": "Borivali West", "city": "mumbai", "city_name": "Mumbai", "score": 70, "price_range": "Rs15,000-22,000/sqft", "yoy": 9.0, "signals": {"infrastructure": 76, "population": 78, "satellite": 58, "rera": 68, "employment": 62, "priceVelocity": 62, "govtScheme": 60}}
+}
+
 AREA_DATA.update(HYDERABAD_AREA_OVERRIDES)
 AREA_DATA.update(BANGALORE_AREA_OVERRIDES)
+AREA_DATA.update(MUMBAI_AREA_OVERRIDES)
 
 router = APIRouter()
 
