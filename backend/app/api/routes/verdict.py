@@ -72,7 +72,19 @@ HYDERABAD_AREA_OVERRIDES: dict[str, dict] = {
     "uppal": {"name": "Uppal", "city": "hyderabad", "city_name": "Hyderabad", "score": 68, "price_range": "Rs4,000-6,500/sqft", "yoy": 10.0, "signals": {"infrastructure": 72, "population": 78, "satellite": 68, "rera": 65, "employment": 65, "priceVelocity": 60, "govtScheme": 62}},
 }
 
+BANGALORE_AREA_OVERRIDES: dict[str, dict] = {
+    "devanahalli": {"name": "Devanahalli", "city": "bangalore", "city_name": "Bangalore", "score": 87, "price_range": "Rs4,500-7,500/sqft", "yoy": 28.0, "signals": {"infrastructure": 88, "population": 65, "satellite": 88, "rera": 80, "employment": 82, "priceVelocity": 90, "govtScheme": 92}},
+    "sarjapur-road": {"name": "Sarjapur Road", "city": "bangalore", "city_name": "Bangalore", "score": 84, "price_range": "Rs7,000-10,000/sqft", "yoy": 22.0, "signals": {"infrastructure": 85, "population": 82, "satellite": 78, "rera": 85, "employment": 88, "priceVelocity": 85, "govtScheme": 82}},
+    "whitefield": {"name": "Whitefield", "city": "bangalore", "city_name": "Bangalore", "score": 79, "price_range": "Rs7,500-10,500/sqft", "yoy": 18.0, "signals": {"infrastructure": 82, "population": 75, "satellite": 70, "rera": 78, "employment": 92, "priceVelocity": 72, "govtScheme": 68}},
+    "electronic-city": {"name": "Electronic City", "city": "bangalore", "city_name": "Bangalore", "score": 76, "price_range": "Rs6,500-9,000/sqft", "yoy": 15.0, "signals": {"infrastructure": 78, "population": 72, "satellite": 68, "rera": 75, "employment": 90, "priceVelocity": 70, "govtScheme": 65}},
+    "hebbal": {"name": "Hebbal", "city": "bangalore", "city_name": "Bangalore", "score": 75, "price_range": "Rs8,000-12,000/sqft", "yoy": 16.0, "signals": {"infrastructure": 80, "population": 75, "satellite": 72, "rera": 76, "employment": 80, "priceVelocity": 74, "govtScheme": 72}},
+    "hsr-layout": {"name": "HSR Layout", "city": "bangalore", "city_name": "Bangalore", "score": 74, "price_range": "Rs10,000-15,000/sqft", "yoy": 14.0, "signals": {"infrastructure": 78, "population": 72, "satellite": 62, "rera": 75, "employment": 80, "priceVelocity": 70, "govtScheme": 65}},
+    "koramangala": {"name": "Koramangala", "city": "bangalore", "city_name": "Bangalore", "score": 72, "price_range": "Rs12,000-18,000/sqft", "yoy": 12.0, "signals": {"infrastructure": 80, "population": 70, "satellite": 60, "rera": 72, "employment": 85, "priceVelocity": 68, "govtScheme": 62}},
+    "yelahanka": {"name": "Yelahanka", "city": "bangalore", "city_name": "Bangalore", "score": 71, "price_range": "Rs6,000-9,000/sqft", "yoy": 20.0, "signals": {"infrastructure": 72, "population": 68, "satellite": 75, "rera": 68, "employment": 70, "priceVelocity": 72, "govtScheme": 75}},
+}
+
 AREA_DATA.update(HYDERABAD_AREA_OVERRIDES)
+AREA_DATA.update(BANGALORE_AREA_OVERRIDES)
 
 router = APIRouter()
 
