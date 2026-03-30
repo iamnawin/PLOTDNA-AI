@@ -19,6 +19,29 @@
 
 ---
 
+## 2026 Status Update
+
+This section supersedes the older high-level summary above where they conflict.
+
+### What is complete
+
+- PlotDNA is now a hybrid system, not a static-only one
+- Live coordinate scoring exists through `backend/app/api/routes/score.py`
+- AI verdict and live news flows exist in the product
+- Hyderabad is the strongest city in the system with resolver-grade locality support
+- Hyderabad currently has stored localities, aliases, clusters, projects, sources, and verdict coverage
+
+### What is next
+
+- Move market truth into one canonical backend-owned market catalog
+- Remove duplication across frontend data files, source maps, and backend verdict fallbacks
+- Generalize the Hyderabad resolver model for Bangalore, Mumbai, Pune, Chennai, and Delhi NCR
+- Add explicit coverage tiers so fully supported micro-markets are distinct from dynamic-coordinate-only coverage
+
+### Expansion reference
+
+- See `docs/ALL_INDIA_EXPANSION_PLAN.md` for the all-India architecture and rollout plan
+
 ## Intelligence Architecture (WorldMonitor-Inspired)
 
 PlotDNA borrows proven patterns from [WorldMonitor](https://github.com/koala73/worldmonitor) — a 34k-star production global intelligence platform — adapted for India real estate:
