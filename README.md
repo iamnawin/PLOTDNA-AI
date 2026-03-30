@@ -6,7 +6,7 @@
 
 **Decode any plot before you buy.**
 
-AI-powered real estate investment intelligence for India — DNA scores, satellite growth, infrastructure pipeline, and live construction activity for 120+ micro-markets across 6 cities.
+AI-powered real estate investment intelligence for India - DNA scores, satellite growth, infrastructure pipeline, and live construction activity for 76 micro-markets across 6 cities.
 
 <br/>
 
@@ -26,24 +26,24 @@ AI-powered real estate investment intelligence for India — DNA scores, satelli
 
 
 
-Most Indians make their biggest financial decision — buying land — based on gut feel, a broker's pitch, or a WhatsApp forward. PlotDNA fixes that.
+Most Indians make their biggest financial decision - buying land - based on gut feel, a broker's pitch, or a WhatsApp forward. PlotDNA fixes that.
 
-Enter any location in India. Get a **DNA Score (0–100)** backed by 7 real signals: infrastructure pipeline, satellite growth, RERA activity, employment hubs, population trends, price velocity, and government schemes. Every micro-market, decoded.
+Enter any location in India. Get a **DNA Score (0-100)** backed by 7 real signals: infrastructure pipeline, satellite growth, RERA activity, employment hubs, population trends, price velocity, and government schemes. PlotDNA is currently deepest in Hyderabad and Bangalore, with starter coverage across Mumbai, Chennai, Pune, and Delhi NCR.
 
 ---
 
 ## Features
 
-### 🗺️ Interactive Intelligence Map
-- Polygon overlays for 120+ micro-markets across 6 cities
-- Color-coded DNA tiers: **Goldzone** · **Good Growth** · **Moderate** · **High Risk**
+### Interactive Intelligence Map
+- Polygon overlays for 76 micro-markets across 6 cities
+- Color-coded DNA tiers: **Goldzone** Ãƒâ€šÃ‚Â· **Good Growth** Ãƒâ€šÃ‚Â· **Moderate** Ãƒâ€šÃ‚Â· **High Risk**
 - Hover tooltip with 7-signal fingerprint, YoY growth, and price range
-- 4 basemap styles — Standard · Satellite · Terrain · Light (no API key needed)
+- 4 basemap styles ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Standard Ãƒâ€šÃ‚Â· Satellite Ãƒâ€šÃ‚Â· Terrain Ãƒâ€šÃ‚Â· Light (no API key needed)
 - 3D tilt view for depth and spatial context
 - City switcher with smooth fly-to animation
 
-### 🧬 DNA Score System
-A single 0–100 integer that captures investment potential across 7 weighted signals:
+### DNA Score System
+A single 0-100 integer that captures investment potential across 7 weighted signals:
 
 | Signal | Weight | What it measures |
 |--------|--------|-----------------|
@@ -56,43 +56,43 @@ A single 0–100 integer that captures investment potential across 7 weighted si
 | Govt Schemes | 5% | HMDA layouts, smart city, infrastructure spend |
 
 **Score tiers:**
-- `86–100` → 🟢 **Goldzone** — exceptional growth potential
-- `66–85` → 🟩 **Good Growth** — strong fundamentals
-- `41–65` → 🟡 **Moderate** — balanced risk/reward
-- `0–40`  → 🔴 **High Risk** — caution advised
+- `86-100` -> Goldzone - exceptional growth potential
+- `66-85` -> Good Growth - strong fundamentals
+- `41-65` -> Moderate - balanced risk/reward
+- `0-40`  -> High Risk - caution advised
 
-### 🏗️ Active Construction Layer *(new)*
+### Active Construction Layer *(new)*
 Toggle live construction markers on the map to see:
 - Active projects (pulsing) vs approved vs planning
-- Type-coded colors: Metro · IT Park · Highway · Residential · Commercial · Airport
-- Hover tooltip: investment ₹Cr, ETA, developer, impact level
+- Type-coded colors: Metro ? IT Park ? Highway ? Residential ? Commercial ? Airport
+- Hover tooltip: investment Rs Cr, ETA, developer, impact level
 
-Currently live for **Hyderabad** (50 tracked projects across core and growth corridors):
+Currently live for **Hyderabad** (50 tracked projects across core and growth corridors) and **Bangalore** (28 tracked projects across the current 20-area support set):
 
 | Area | Key Projects |
 |------|-------------|
-| Adibatla | Fab City Phase 2 (₹3,500 Cr), Aerospace SEZ (₹1,200 Cr) |
-| Kokapet | Metro Phase IV (₹4,200 Cr), Radiance 15M Township |
-| Shamshabad | RGIA Terminal 2 (₹5,500 Cr), Aerotropolis (₹12,000 Cr) |
-| Tukkuguda | NIMZ Phase 1 (₹2,800 Cr), Hyperscale Data Centre |
+| Adibatla | Fab City Phase 2 (ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¹3,500 Cr), Aerospace SEZ (ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¹1,200 Cr) |
+| Kokapet | Metro Phase IV (ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¹4,200 Cr), Radiance 15M Township |
+| Shamshabad | RGIA Terminal 2 (ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¹5,500 Cr), Aerotropolis (ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¹12,000 Cr) |
+| Tukkuguda | NIMZ Phase 1 (ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¹2,800 Cr), Hyperscale Data Centre |
 | Narsingi | Prestige Somerville, Lodha Belmondo |
 | Financial District | Metro Phase IV Station, Prestige South City |
 
-### 📍 Plot Coordinate Analysis
-Drop any lat/lng — get the nearest micro-market's DNA score, growth story, 5-year outlook, and confidence level. Works for any plot in India.
+### Plot Coordinate Analysis
+Drop any lat/lng - get the nearest micro-market's DNA score, growth story, 5-year outlook, and confidence level. Works for any plot in India.
 
-### 📄 Area Deep Dive
+### Area Deep Dive
 Every micro-market gets a full analysis page:
 - Animated DNA score ring with weighted signal breakdown
 - Livability Index (connectivity, amenities, green spaces, entertainment)
 - Satellite growth before/after comparison
 - Active development pipeline with investment totals
-- Growth timeline (2009 → present) and 5-year outlook
+- Growth timeline (2009 -> present) and 5-year outlook
 - Source links (RERA, HMDA, news, research reports)
 - One-click **PDF report** download
 
-### 📱 PWA — Install as App
-PlotDNA is a Progressive Web App. On mobile, tap **"Add to Home Screen"** to install it as a native-feeling app — no App Store needed.
+### PWA - Install as App
+PlotDNA is a Progressive Web App. On mobile, tap **"Add to Home Screen"** to install it as a native-feeling app - no App Store needed.
 
 ---
 
@@ -100,12 +100,12 @@ PlotDNA is a Progressive Web App. On mobile, tap **"Add to Home Screen"** to ins
 
 | City | Micro-markets | Status |
 |------|:---:|--------|
-| 🟢 Hyderabad | 32 | Live — expanding construction data |
-| 🟢 Bangalore | 20 | Live |
-| 🟢 Mumbai | 20 | Live |
-| 🟢 Chennai | 20 | Live |
-| 🟢 Pune | 20 | Live |
-| 🟢 Delhi NCR | 20 | Live |
+| Hyderabad | 32 | Live - resolver-grade coverage |
+| Bangalore | 20 | Live - resolver-grade coverage |
+| Mumbai | 6 | Live - starter coverage |
+| Chennai | 6 | Live - starter coverage |
+| Pune | 6 | Live - starter coverage |
+| Delhi NCR | 6 | Live - starter coverage |
 
 ---
 
@@ -115,7 +115,7 @@ PlotDNA is a Progressive Web App. On mobile, tap **"Add to Home Screen"** to ins
 |-------|-----------|
 | **Frontend** | React 19 + TypeScript + Vite 7 + Tailwind CSS v4 |
 | **Maps** | MapLibre GL via `react-map-gl` (free, no API key) |
-| **Basemaps** | CartoCDN · ArcGIS Satellite · OpenTopoMap |
+| **Basemaps** | CartoCDN Ãƒâ€šÃ‚Â· ArcGIS Satellite Ãƒâ€šÃ‚Â· OpenTopoMap |
 | **Animations** | Framer Motion |
 | **State** | Zustand |
 | **Icons** | Lucide React |
@@ -142,12 +142,12 @@ cd PLOTDNA-AI/frontend
 
 npm install
 npm run dev
-# → http://localhost:5173
+# ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ http://localhost:5173
 ```
 
-No API keys needed. All data is static TypeScript files — the map works fully offline.
+No API keys needed. All data is static TypeScript files ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â the map works fully offline.
 
-### Backend (optional — stubs only in Phase 1)
+### Backend (optional ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â stubs only in Phase 1)
 
 ```bash
 cd backend
@@ -160,7 +160,7 @@ pip install -r requirements.txt
 cp ../.env.example ../.env
 
 uvicorn app.main:app --reload
-# → http://localhost:8000
+# ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ http://localhost:8000
 ```
 
 ### Environment Variables (backend)
@@ -183,27 +183,27 @@ Place `.env` at the project root (`PlotDNA/.env`).
 
 ```
 PlotDNA/
-├── frontend/                   React app (Vite + TypeScript)
-│   └── src/
-│       ├── components/
-│       │   ├── map/            MapLibre GL map, construction markers
-│       │   ├── score/          ScoreCard, PlotAnalysisCard
-│       │   └── ui/             Shared components (badges, charts, AI cards)
-│       ├── pages/              Home (map), AreaDetail, BrochurePage
-│       ├── data/               Static city data (TypeScript)
-│       ├── store/              Zustand global state
-│       ├── lib/                Utilities, plot analysis, area sources
-│       └── types/              TypeScript interfaces
-│
-├── backend/                    FastAPI app (Python)
-│   └── app/
-│       ├── api/routes/         REST endpoints (stubs in Phase 1)
-│       ├── models/             Pydantic + SQLAlchemy models
-│       ├── services/           GEE, Gemini, scoring logic
-│       └── core/               Config, DB connection
-│
-├── data/                       Static GeoJSON datasets
-└── docs/                       Architecture & planning docs
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ frontend/                   React app (Vite + TypeScript)
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ src/
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ components/
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ map/            MapLibre GL map, construction markers
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ score/          ScoreCard, PlotAnalysisCard
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ ui/             Shared components (badges, charts, AI cards)
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ pages/              Home (map), AreaDetail, BrochurePage
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ data/               Static city data (TypeScript)
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ store/              Zustand global state
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ lib/                Utilities, plot analysis, area sources
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ types/              TypeScript interfaces
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ backend/                    FastAPI app (Python)
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡   ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ app/
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ api/routes/         REST endpoints (stubs in Phase 1)
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ models/             Pydantic + SQLAlchemy models
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ services/           GEE, Gemini, scoring logic
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡       ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ core/               Config, DB connection
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬Å¡
+ÃƒÂ¢Ã¢â‚¬ÂÃ…â€œÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ data/                       Static GeoJSON datasets
+ÃƒÂ¢Ã¢â‚¬ÂÃ¢â‚¬ÂÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ docs/                       Architecture & planning docs
 ```
 
 ---
@@ -212,34 +212,34 @@ PlotDNA/
 
 | Phase | Status | Description |
 |-------|--------|-------------|
-| **Phase 1** | ✅ Done | 6 cities, static DNA scores, interactive map, PDF export |
-| **Phase 2** | 🔄 In Progress | RERA scraper, AI verdict, live news, AVM valuation, brochure analyzer |
-| **Phase 3** | 📋 Planned | GEE satellite timelapse, street view, traffic overlay, historical imagery |
-| **Phase 4** | 📋 Planned | Pan-India expansion — Tier 2 cities (Ahmedabad, Coimbatore, Indore, Kochi) |
-| **Phase 5** | 📋 Planned | Monetization — free / pro tiers, API access, portfolio tracker |
+| **Phase 1** | ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Done | 6 cities, static DNA scores, interactive map, PDF export |
+| **Phase 2** | ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ In Progress | RERA scraper, AI verdict, live news, AVM valuation, brochure analyzer |
+| **Phase 3** | ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ Planned | GEE satellite timelapse, street view, traffic overlay, historical imagery |
+| **Phase 4** | ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ Planned | Pan-India expansion ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Tier 2 cities (Ahmedabad, Coimbatore, Indore, Kochi) |
+| **Phase 5** | ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ Planned | Monetization ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â free / pro tiers, API access, portfolio tracker |
 
 ---
 
 ## Data Sources
 
-- **Satellite imagery** — Google Earth Engine (Landsat 8, Sentinel-2)
-- **Population** — WorldPop open dataset
-- **RERA** — TSRERA, MahaRERA, RERA Karnataka, RERA TN, HRERA, UP-RERA
-- **Infrastructure** — NHAI, HMDA, BDA, MMRDA, CMDA, DDA
-- **Property prices** — 99acres, MagicBricks, NoBroker (scraped + cached)
-- **Boundaries** — OpenStreetMap, GADM administrative boundaries
+- **Satellite imagery** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Google Earth Engine (Landsat 8, Sentinel-2)
+- **Population** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â WorldPop open dataset
+- **RERA** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â TSRERA, MahaRERA, RERA Karnataka, RERA TN, HRERA, UP-RERA
+- **Infrastructure** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â NHAI, HMDA, BDA, MMRDA, CMDA, DDA
+- **Property prices** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â 99acres, MagicBricks, NoBroker (scraped + cached)
+- **Boundaries** ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â OpenStreetMap, GADM administrative boundaries
 
 ---
 
 ## Contributing
 
-Contributions are welcome — especially for:
+Contributions are welcome ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â especially for:
 - Adding construction/pipeline data for more cities
 - Improving signal data accuracy for existing areas
 - UI/UX improvements
 
 ```bash
-# Fork → create feature branch → PR against main
+# Fork ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ create feature branch ÃƒÂ¢Ã¢â‚¬Â Ã¢â‚¬â„¢ PR against main
 git checkout -b feat/your-feature
 ```
 

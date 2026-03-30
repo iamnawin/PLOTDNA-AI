@@ -14,9 +14,9 @@
 - AreaDetail page: score breakdown, signal bars, growth timeline, 5-year outlook
 - Source links, AI verdict card, live news integration, and coordinate-based plot analysis
 - City switcher, multiple basemap styles, 3D tilt, mobile responsive
-- Hyderabad expanded to resolver-grade coverage with stored localities, aliases, clusters, projects, sources, and verdict support
+- Hyderabad and Bangalore expanded to resolver-grade coverage with stored localities, aliases, clusters, projects, sources, and verdict support
 
-**Current gap:** PlotDNA is now a hybrid system, but market truth is still duplicated across frontend and backend. Hyderabad has the strongest locality-resolution support, while the other cities still need the same resolver-grade data structure to scale cleanly.
+**Current gap:** PlotDNA is now a hybrid system, but market truth is still duplicated across frontend and backend. Hyderabad and Bangalore now have resolver-grade locality support, while Mumbai, Chennai, Pune, and Delhi NCR still need the same structure.
 
 ---
 
@@ -27,15 +27,15 @@
 - PlotDNA is no longer static-only
 - Live coordinate scoring exists through `backend/app/api/routes/score.py`
 - AI verdict and live news flows exist in the product
-- Hyderabad is the strongest city in the system and acts as the reference market
-- Hyderabad currently has stored localities, aliases, clusters, projects, sources, and verdict coverage
+- Hyderabad is the strongest city in the system and Bangalore is now the second resolver-grade market
+- Hyderabad and Bangalore currently have stored localities, aliases, clusters, projects, and full verdict coverage
 
 ### What is next
 
 - Move market truth into one canonical backend-owned market catalog
 - Remove duplication across frontend data files, source maps, and backend verdict fallbacks
-- Generalize the Hyderabad resolver model for Bangalore, Mumbai, Pune, Chennai, and Delhi NCR
-- Add explicit coverage tiers so fully supported micro-markets are distinct from dynamic-coordinate-only coverage
+- Port the resolver-grade city model next to Mumbai, then Chennai, Pune, and Delhi NCR
+- Add explicit coverage tiers so fully supported micro-markets are distinct from starter or dynamic-coordinate-only coverage
 
 ### Expansion reference
 

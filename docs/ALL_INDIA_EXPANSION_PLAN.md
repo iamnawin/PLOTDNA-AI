@@ -2,12 +2,12 @@
 
 ## Purpose
 
-PlotDNA currently works best in Hyderabad because Hyderabad has the most complete locality-resolution layer:
+PlotDNA currently works best in Hyderabad and Bangalore because those are now the two resolver-grade locality layers in the repo:
 
-- `data/cities/hyderabad/localities.json`
-- `data/cities/hyderabad/aliases.json`
-- `data/cities/hyderabad/clusters.json`
+- `data/cities/hyderabad/*`
+- `data/cities/bangalore/*`
 - `frontend/src/data/hyderabad.ts`
+- `frontend/src/data/bangalore.ts`
 
 The goal of this plan is to move PlotDNA from a Hyderabad-first, partly hardcoded setup to a scalable all-India micro-market intelligence platform.
 
@@ -24,7 +24,7 @@ PlotDNA already has two different systems:
 2. `Stored micro-market intelligence`
    - Frontend city registry: `frontend/src/data/cities.ts`
    - Per-city datasets: `frontend/src/data/*.ts`
-   - Hyderabad resolver data: `data/cities/hyderabad/*`
+   - Hyderabad and Bangalore resolver data: `data/cities/<city>/*`
    - Backend fallback verdict data: `backend/app/api/routes/verdict.py`
    - Provides locality name, polygons, price range, YoY, highlights, projects, and source links.
 
@@ -114,15 +114,15 @@ The same market intelligence currently exists in multiple places:
 
 This will not scale across India.
 
-### 2. Hyderabad is the only resolver-grade city
+### 2. Only Hyderabad and Bangalore are resolver-grade cities today
 
-Only Hyderabad currently has:
+Only Hyderabad and Bangalore currently have:
 
 - locality polygons
 - alias mapping
 - cluster mapping
 
-Other cities have area datasets, but not the same resolver structure.
+Mumbai, Chennai, Pune, and Delhi still have area datasets, but not the same resolver structure.
 
 ### 3. Backend area APIs are not yet the real source of truth
 
@@ -130,16 +130,16 @@ Other cities have area datasets, but not the same resolver structure.
 
 ## Recommended Migration Direction
 
-### Phase 1: Normalize Hyderabad as the reference implementation
+### Phase 1: Normalize Hyderabad and Bangalore as the reference implementation
 
-Use Hyderabad as the template for the final system.
+Use Hyderabad and Bangalore as the current template for the final system.
 
 Goals:
 
-- move Hyderabad market records into one canonical backend-owned dataset
+- move Hyderabad and Bangalore market records into one canonical backend-owned dataset
 - keep polygons, aliases, and clusters together with the market records
-- stop duplicating Hyderabad values across frontend and backend
-- make frontend fetch Hyderabad data instead of bundling all of it locally
+- stop duplicating Hyderabad and Bangalore values across frontend and backend
+- make frontend fetch resolver-grade city data instead of bundling all of it locally
 
 ### Phase 2: Define one canonical catalog format
 
@@ -220,12 +220,11 @@ PlotDNA is a micro-market product, so the unit of expansion is:
 
 Recommended rollout order:
 
-1. Hyderabad normalization
-2. Bangalore
-3. Mumbai
+1. Hyderabad and Bangalore normalization
+2. Mumbai
+3. Chennai
 4. Pune
-5. Chennai
-6. Delhi NCR
+5. Delhi NCR
 7. Tier-2 metros after the main model is stable
 
 ## Minimum Requirements For Adding A New Metro
@@ -291,7 +290,7 @@ Recommended implementation order:
 3. Replace duplicated Hyderabad backend/frontend values with one source
 4. Update frontend to fetch market data from backend
 5. Generalize resolver loading for all cities
-6. Port Bangalore to the same structure
+6. Port Mumbai to the same structure
 7. Repeat for remaining metros
 
 ## Non-Goals
@@ -315,8 +314,8 @@ PlotDNA is ready for real all-India expansion when:
 
 ## Immediate Next Step
 
-Use Hyderabad as the migration template and refactor the app so:
+Use Hyderabad and Bangalore as the migration template and refactor the app so:
 
 - one canonical dataset powers resolver, area detail, sources, and verdicts
 - frontend consumes that dataset through backend APIs
-- future metros can be added without repeating the current Hyderabad-specific hardcoding pattern
+- future metros can be added without repeating the earlier Hyderabad-only hardcoding pattern
