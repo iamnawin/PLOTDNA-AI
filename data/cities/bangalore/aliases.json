@@ -6,5 +6,17 @@
   "hebbal": ["hebbal"],
   "hsr-layout": ["hsr layout", "hsr", "hosur sarjapur road layout"],
   "koramangala": ["koramangala", "kormangala"],
-  "yelahanka": ["yelahanka", "new yelahanka", "yelahanka new town"]
+  "yelahanka": ["yelahanka", "new yelahanka", "yelahanka new town"],
+  "bellandur": ["bellandur", "bellanduru"],
+  "marathahalli": ["marathahalli", "marathalli"],
+  "indiranagar": ["indiranagar", "indirangar", "indra nagar"],
+  "jayanagar": ["jayanagar", "jaya nagar"],
+  "jp-nagar": ["jp nagar", "j p nagar", "jpnagar"],
+  "bannerghatta-road": ["bannerghatta road", "bg road", "bannerghatta"],
+  "kanakapura-road": ["kanakapura road", "kanakapura", "kanakpura road"],
+  "kr-puram": ["kr puram", "k r puram", "krpuram"],
+  "thanisandra": ["thanisandra", "thanisandra road"],
+  "rr-nagar": ["rr nagar", "r r nagar", "rajarajeshwari nagar"],
+  "peenya": ["peenya", "peenya industrial area"],
+  "mysore-road": ["mysore road", "mysuru road"]
 }

@@ -3,30 +3,30 @@
     "id": "bangalore:central",
     "label": "Bangalore Central Zone",
     "zone": "Central",
-    "localitySlugs": ["koramangala", "hsr-layout"]
+    "localitySlugs": ["koramangala", "hsr-layout", "indiranagar", "jayanagar", "jp-nagar"]
   },
   {
     "id": "bangalore:north",
     "label": "Bangalore North Zone",
     "zone": "North",
-    "localitySlugs": ["hebbal", "yelahanka", "devanahalli"]
+    "localitySlugs": ["hebbal", "yelahanka", "devanahalli", "thanisandra", "peenya"]
   },
   {
     "id": "bangalore:east",
     "label": "Bangalore East Zone",
     "zone": "East",
-    "localitySlugs": ["whitefield", "sarjapur-road"]
+    "localitySlugs": ["whitefield", "sarjapur-road", "bellandur", "marathahalli", "kr-puram"]
   },
   {
     "id": "bangalore:south",
     "label": "Bangalore South Zone",
     "zone": "South",
-    "localitySlugs": ["electronic-city"]
+    "localitySlugs": ["electronic-city", "bannerghatta-road", "kanakapura-road", "mysore-road"]
   },
   {
     "id": "bangalore:west",
     "label": "Bangalore West Zone",
     "zone": "West",
-    "localitySlugs": []
+    "localitySlugs": ["rr-nagar"]
   }
 ]
