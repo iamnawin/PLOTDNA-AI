@@ -69,6 +69,11 @@ const AREA_SOURCES: Record<string, AreaSource[]> = {
     { title: 'Whitefield Metro Phase 2 Update — Deccan Herald',  url: 'https://www.deccanherald.com/',                                               type: 'news'     },
     { title: 'Whitefield Property Market — 99acres',             url: 'https://www.99acres.com/property-in-whitefield-bangalore-ffid',               type: 'data'     },
   ],
+  'electronic-city': [
+    { title: 'Electronics City Industrial Township — KEONICS',   url: 'https://www.keonics.in/',                                                     type: 'gov'      },
+    { title: 'Electronic City Metro & Access Updates — Deccan Herald', url: 'https://www.deccanherald.com/',                                        type: 'news'     },
+    { title: 'Electronic City Property Market — 99acres',        url: 'https://www.99acres.com/property-in-electronic-city-bangalore-ffid',         type: 'data'     },
+  ],
   'hebbal': [
     { title: 'BBMP Hebbal Zone Regulations',                     url: 'https://bbmp.gov.in/',                                                        type: 'gov'      },
     { title: 'Hebbal Lake & North Bangalore Development — BDA',  url: 'https://bda.kar.nic.in/',                                                     type: 'gov'      },

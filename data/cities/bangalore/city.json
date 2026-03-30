@@ -1,0 +1,11 @@
+{
+  "slug": "bangalore",
+  "name": "Bangalore",
+  "state": "Karnataka",
+  "center": [12.9716, 77.5946],
+  "zoom": 11,
+  "coverageRadiusKm": 43.6,
+  "centralRadiusKm": 8,
+  "exactLocalityBufferKm": 6,
+  "nearbyMicroMarketRadiusKm": 5
+}

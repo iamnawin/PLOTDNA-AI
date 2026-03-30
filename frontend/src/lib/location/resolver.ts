@@ -1,5 +1,9 @@
 import type { CityMeta, MicroMarket } from '@/types'
 import { CITIES, CITY_LIST } from '@/data/cities'
+import bangAliasesJson from '../../../../data/cities/bangalore/aliases.json'
+import bangCityJson from '../../../../data/cities/bangalore/city.json'
+import bangClustersJson from '../../../../data/cities/bangalore/clusters.json'
+import bangLocalitiesJson from '../../../../data/cities/bangalore/localities.json'
 import hydAliasesJson from '../../../../data/cities/hyderabad/aliases.json'
 import hydCityJson from '../../../../data/cities/hyderabad/city.json'
 import hydClustersJson from '../../../../data/cities/hyderabad/clusters.json'
@@ -61,7 +65,7 @@ interface MatchableArea {
   aliases: string[]
 }
 
-interface HyderabadCityData {
+interface ResolverCityData {
   slug: string
   name: string
   state: string
@@ -73,14 +77,14 @@ interface HyderabadCityData {
   nearbyMicroMarketRadiusKm: number
 }
 
-interface HyderabadLocalityData {
+interface ResolverLocalityData {
   slug: string
   name: string
   center: [number, number]
   polygon: [number, number][]
 }
 
-interface HyderabadClusterData {
+interface ResolverClusterData {
   id: string
   label: string
   zone: CityZone
@@ -88,90 +92,127 @@ interface HyderabadClusterData {
 }
 
 type CityZone = 'Central' | 'North' | 'East' | 'South' | 'West'
-type HyderabadAliasData = Record<string, string[]>
+type ResolverAliasData = Record<string, string[]>
+
+interface SpecialResolverDataset {
+  city: ResolverCityData
+  localities: ResolverLocalityData[]
+  aliases: ResolverAliasData
+  clusters: ResolverClusterData[]
+  cityMeta: CityMeta
+  areasBySlug: Map<string, MicroMarket>
+  clustersById: Map<string, ResolverClusterData>
+  clustersByZone: Map<CityZone, ResolverClusterData>
+}
 
 const DEFAULT_EXACT_LOCALITY_BUFFER_KM = 6
 const DEFAULT_NEARBY_MICRO_MARKET_RADIUS_KM = 5
 const CITY_CATCHMENT_PADDING_KM = 10
 
-const HYDERABAD_CITY = hydCityJson as HyderabadCityData
-const HYDERABAD_LOCALITIES = hydLocalitiesJson as HyderabadLocalityData[]
-const HYDERABAD_ALIASES = hydAliasesJson as HyderabadAliasData
-const HYDERABAD_CLUSTERS = hydClustersJson as HyderabadClusterData[]
+function buildSpecialResolverDataset(
+  cityJson: ResolverCityData,
+  localitiesJson: ResolverLocalityData[],
+  aliasesJson: ResolverAliasData,
+  clustersJson: ResolverClusterData[],
+): SpecialResolverDataset {
+  const cityEntry = CITIES[cityJson.slug]
+  const areasBySlug = new Map(cityEntry.areas.map(area => [area.slug, area]))
 
-const HYDERABAD_CITY_META: CityMeta = {
-  slug: HYDERABAD_CITY.slug,
-  name: HYDERABAD_CITY.name,
-  center: HYDERABAD_CITY.center,
-  zoom: HYDERABAD_CITY.zoom,
+  return {
+    city: cityJson,
+    localities: localitiesJson,
+    aliases: aliasesJson,
+    clusters: clustersJson,
+    cityMeta: {
+      slug: cityJson.slug,
+      name: cityJson.name,
+      center: cityJson.center,
+      zoom: cityJson.zoom,
+    },
+    areasBySlug,
+    clustersById: new Map(clustersJson.map(cluster => [cluster.id, cluster])),
+    clustersByZone: new Map(clustersJson.map(cluster => [cluster.zone, cluster])),
+  }
 }
+
+const SPECIAL_CITY_DATASETS: Record<string, SpecialResolverDataset> = {
+  hyderabad: buildSpecialResolverDataset(
+    hydCityJson as ResolverCityData,
+    hydLocalitiesJson as ResolverLocalityData[],
+    hydAliasesJson as ResolverAliasData,
+    hydClustersJson as ResolverClusterData[],
+  ),
+  bangalore: buildSpecialResolverDataset(
+    bangCityJson as ResolverCityData,
+    bangLocalitiesJson as ResolverLocalityData[],
+    bangAliasesJson as ResolverAliasData,
+    bangClustersJson as ResolverClusterData[],
+  ),
+}
+
+const SPECIAL_CITY_SLUGS = new Set(Object.keys(SPECIAL_CITY_DATASETS))
 
 const AREA_REFERENCES: AreaReference[] = Object.entries(CITIES).flatMap(([citySlug, entry]) =>
   entry.areas.map(area => ({ area, citySlug, cityName: entry.meta.name })),
 )
 
-const HYDERABAD_FULL_AREAS_BY_SLUG = new Map(
-  CITIES.hyderabad.areas.map(area => [area.slug, area]),
-)
-
-const HYDERABAD_CLUSTERS_BY_ID = new Map(
-  HYDERABAD_CLUSTERS.map(cluster => [cluster.id, cluster]),
-)
-
-const HYDERABAD_CLUSTERS_BY_ZONE = new Map(
-  HYDERABAD_CLUSTERS.map(cluster => [cluster.zone, cluster]),
-)
-
-function warnHyderabadDataMismatch(message: string, values: string[]): void {
+function warnResolverDataMismatch(citySlug: string, message: string, values: string[]): void {
   if (import.meta.env.DEV && values.length > 0) {
-    console.warn(`[location] Hyderabad resolver data mismatch: ${message}: ${values.join(', ')}`)
+    console.warn(`[location] ${citySlug} resolver data mismatch: ${message}: ${values.join(', ')}`)
   }
 }
 
-function validateHyderabadResolverData(): void {
-  const localitySlugs = new Set(HYDERABAD_LOCALITIES.map(locality => locality.slug))
-  const marketSlugs = new Set(HYDERABAD_FULL_AREAS_BY_SLUG.keys())
-  const aliasSlugs = Object.keys(HYDERABAD_ALIASES)
-  const clusterSlugs = new Set(HYDERABAD_CLUSTERS.flatMap(cluster => cluster.localitySlugs))
+function validateSpecialResolverDataset(dataset: SpecialResolverDataset): void {
+  const localitySlugs = new Set(dataset.localities.map(locality => locality.slug))
+  const marketSlugs = new Set(dataset.areasBySlug.keys())
+  const aliasSlugs = Object.keys(dataset.aliases)
+  const clusterSlugs = new Set(dataset.clusters.flatMap(cluster => cluster.localitySlugs))
 
-  warnHyderabadDataMismatch(
+  warnResolverDataMismatch(
+    dataset.city.slug,
     'missing localities for frontend market areas',
     [...marketSlugs].filter(slug => !localitySlugs.has(slug)),
   )
-  warnHyderabadDataMismatch(
+  warnResolverDataMismatch(
+    dataset.city.slug,
     'localities without frontend market data',
     [...localitySlugs].filter(slug => !marketSlugs.has(slug)),
   )
-  warnHyderabadDataMismatch(
+  warnResolverDataMismatch(
+    dataset.city.slug,
     'aliases referencing unknown localities',
     aliasSlugs.filter(slug => !localitySlugs.has(slug)),
   )
-  warnHyderabadDataMismatch(
+  warnResolverDataMismatch(
+    dataset.city.slug,
     'cluster members referencing unknown localities',
     [...clusterSlugs].filter(slug => !localitySlugs.has(slug)),
   )
-  warnHyderabadDataMismatch(
+  warnResolverDataMismatch(
+    dataset.city.slug,
     'localities missing cluster membership',
     [...localitySlugs].filter(slug => !clusterSlugs.has(slug)),
   )
 }
 
-validateHyderabadResolverData()
+Object.values(SPECIAL_CITY_DATASETS).forEach(validateSpecialResolverDataset)
 
 const MATCHABLE_AREAS: MatchableArea[] = [
-  ...HYDERABAD_LOCALITIES.flatMap(locality => {
-    const area = HYDERABAD_FULL_AREAS_BY_SLUG.get(locality.slug)
-    if (!area) return []
+  ...Object.values(SPECIAL_CITY_DATASETS).flatMap(dataset =>
+    dataset.localities.flatMap(locality => {
+      const area = dataset.areasBySlug.get(locality.slug)
+      if (!area) return []
 
-    return [{
-      ref: { area, citySlug: HYDERABAD_CITY.slug, cityName: HYDERABAD_CITY.name },
-      center: locality.center,
-      polygon: locality.polygon,
-      aliases: (HYDERABAD_ALIASES[locality.slug] ?? []).map(normalizePlaceName),
-    }]
-  }),
+      return [{
+        ref: { area, citySlug: dataset.city.slug, cityName: dataset.city.name },
+        center: locality.center,
+        polygon: locality.polygon,
+        aliases: (dataset.aliases[locality.slug] ?? []).map(normalizePlaceName),
+      }]
+    }),
+  ),
   ...AREA_REFERENCES
-    .filter(ref => ref.citySlug !== HYDERABAD_CITY.slug)
+    .filter(ref => !SPECIAL_CITY_SLUGS.has(ref.citySlug))
     .map(ref => ({
       ref,
       center: ref.area.center,
@@ -236,14 +277,16 @@ export function distKm(lat1: number, lng1: number, lat2: number, lng2: number): 
   return r * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 }
 
+function getSpecialDataset(citySlug: string): SpecialResolverDataset | null {
+  return SPECIAL_CITY_DATASETS[citySlug] ?? null
+}
+
 function getExactLocalityBufferKm(citySlug: string): number {
-  if (citySlug === HYDERABAD_CITY.slug) return HYDERABAD_CITY.exactLocalityBufferKm
-  return DEFAULT_EXACT_LOCALITY_BUFFER_KM
+  return getSpecialDataset(citySlug)?.city.exactLocalityBufferKm ?? DEFAULT_EXACT_LOCALITY_BUFFER_KM
 }
 
 function getNearbyMicroMarketRadiusKm(citySlug: string): number {
-  if (citySlug === HYDERABAD_CITY.slug) return HYDERABAD_CITY.nearbyMicroMarketRadiusKm
-  return DEFAULT_NEARBY_MICRO_MARKET_RADIUS_KM
+  return getSpecialDataset(citySlug)?.city.nearbyMicroMarketRadiusKm ?? DEFAULT_NEARBY_MICRO_MARKET_RADIUS_KM
 }
 
 function getNearestAreaReference(
@@ -267,17 +310,15 @@ function cityCatchmentRadiusKm(meta: CityMeta, areas: MicroMarket[]): number {
 }
 
 function getCityMeta(citySlug: string, fallback: CityMeta): CityMeta {
-  return citySlug === HYDERABAD_CITY.slug ? HYDERABAD_CITY_META : fallback
+  return getSpecialDataset(citySlug)?.cityMeta ?? fallback
 }
 
 function getCityCoverageRadiusKm(citySlug: string, meta: CityMeta, areas: MicroMarket[]): number {
-  if (citySlug === HYDERABAD_CITY.slug) return HYDERABAD_CITY.coverageRadiusKm
-  return cityCatchmentRadiusKm(meta, areas)
+  return getSpecialDataset(citySlug)?.city.coverageRadiusKm ?? cityCatchmentRadiusKm(meta, areas)
 }
 
 function getCityCentralRadiusKm(citySlug: string, coverageRadiusKm: number): number {
-  if (citySlug === HYDERABAD_CITY.slug) return HYDERABAD_CITY.centralRadiusKm
-  return Math.max(4, Math.min(8, coverageRadiusKm * 0.22))
+  return getSpecialDataset(citySlug)?.city.centralRadiusKm ?? Math.max(4, Math.min(8, coverageRadiusKm * 0.22))
 }
 
 function resolveCityCandidate(lat: number, lng: number, cityHint?: string | null): CityCandidate | null {
@@ -330,15 +371,16 @@ function clusterIdFor(citySlug: string, zone: CityZone): string {
 
 export function getCityName(citySlug: string | null): string | null {
   if (!citySlug) return null
-  if (citySlug === HYDERABAD_CITY.slug) return HYDERABAD_CITY.name
-  return CITIES[citySlug]?.meta.name ?? null
+  return getSpecialDataset(citySlug)?.city.name ?? CITIES[citySlug]?.meta.name ?? null
 }
 
 export function getClusterLabel(clusterId: string | null): string | null {
   if (!clusterId) return null
 
-  const hydCluster = HYDERABAD_CLUSTERS_BY_ID.get(clusterId)
-  if (hydCluster) return hydCluster.label
+  for (const dataset of Object.values(SPECIAL_CITY_DATASETS)) {
+    const cluster = dataset.clustersById.get(clusterId)
+    if (cluster) return cluster.label
+  }
 
   const [citySlug, zoneSlug] = clusterId.split(':')
   const cityName = getCityName(citySlug)
@@ -362,16 +404,17 @@ export function getClusterRepresentative(
   const entry = CITIES[citySlug]
   if (!entry) return null
 
-  if (citySlug === HYDERABAD_CITY.slug) {
-    const cluster = HYDERABAD_CLUSTERS_BY_ID.get(clusterId)
-    if (!cluster) return null
+  const dataset = getSpecialDataset(citySlug)
+  if (dataset) {
+    const cluster = dataset.clustersById.get(clusterId)
+    if (cluster) {
+      const refs = cluster.localitySlugs
+        .map(localitySlug => getAreaReferenceBySlug(citySlug, localitySlug))
+        .filter((ref): ref is AreaReference => Boolean(ref))
 
-    const refs = cluster.localitySlugs
-      .map(localitySlug => getAreaReferenceBySlug(citySlug, localitySlug))
-      .filter((ref): ref is AreaReference => Boolean(ref))
-
-    const best = getNearestAreaReference(lat, lng, refs)
-    return best ? { area: best.area, citySlug: best.citySlug, cityName: best.cityName } : null
+      const best = getNearestAreaReference(lat, lng, refs)
+      return best ? { area: best.area, citySlug: best.citySlug, cityName: best.cityName } : null
+    }
   }
 
   const [, zoneSlug] = clusterId.split(':')
@@ -447,9 +490,7 @@ export function resolveLocalityCandidates(
   const cluster = city
     ? (() => {
         const zone = zoneForPoint(city.meta, lat, lng, city.centralRadiusKm)
-        const cityCluster = city.slug === HYDERABAD_CITY.slug
-          ? HYDERABAD_CLUSTERS_BY_ZONE.get(zone)
-          : null
+        const cityCluster = getSpecialDataset(city.slug)?.clustersByZone.get(zone)
 
         return {
           citySlug: city.slug,

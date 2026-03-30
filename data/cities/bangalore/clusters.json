@@ -1,0 +1,32 @@
+[
+  {
+    "id": "bangalore:central",
+    "label": "Bangalore Central Zone",
+    "zone": "Central",
+    "localitySlugs": ["koramangala", "hsr-layout"]
+  },
+  {
+    "id": "bangalore:north",
+    "label": "Bangalore North Zone",
+    "zone": "North",
+    "localitySlugs": ["hebbal", "yelahanka", "devanahalli"]
+  },
+  {
+    "id": "bangalore:east",
+    "label": "Bangalore East Zone",
+    "zone": "East",
+    "localitySlugs": ["whitefield", "sarjapur-road"]
+  },
+  {
+    "id": "bangalore:south",
+    "label": "Bangalore South Zone",
+    "zone": "South",
+    "localitySlugs": ["electronic-city"]
+  },
+  {
+    "id": "bangalore:west",
+    "label": "Bangalore West Zone",
+    "zone": "West",
+    "localitySlugs": []
+  }
+]
