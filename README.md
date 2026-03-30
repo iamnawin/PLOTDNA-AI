@@ -67,7 +67,7 @@ Toggle live construction markers on the map to see:
 - Type-coded colors: Metro · IT Park · Highway · Residential · Commercial · Airport
 - Hover tooltip: investment ₹Cr, ETA, developer, impact level
 
-Currently live for **Hyderabad** (14 projects, ₹35,800+ Cr in pipeline):
+Currently live for **Hyderabad** (50 tracked projects across core and growth corridors):
 
 | Area | Key Projects |
 |------|-------------|
@@ -100,7 +100,7 @@ PlotDNA is a Progressive Web App. On mobile, tap **"Add to Home Screen"** to ins
 
 | City | Micro-markets | Status |
 |------|:---:|--------|
-| 🟢 Hyderabad | 21 | Live — full construction data |
+| 🟢 Hyderabad | 32 | Live — expanding construction data |
 | 🟢 Bangalore | 20 | Live |
 | 🟢 Mumbai | 20 | Live |
 | 🟢 Chennai | 20 | Live |

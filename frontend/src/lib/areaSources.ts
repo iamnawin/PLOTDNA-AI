@@ -35,11 +35,6 @@ const AREA_SOURCES: Record<string, AreaSource[]> = {
     { title: 'Gachibowli Infrastructure Investment',             url: 'https://www.deccanchronicle.com/',                                            type: 'news'     },
     { title: 'Gachibowli Residential Price Trends — MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Gachibowli/residential-real-estate-Gachibowli', type: 'data' },
   ],
-  'hitec-city': [
-    { title: 'HITEC City Hyderabad — TSIIC',                     url: 'https://www.tsiic.telangana.gov.in/',                                         type: 'gov'      },
-    { title: 'HITEC City Employment Report — NASSCOM',           url: 'https://nasscom.in/knowledge-center/publications',                            type: 'research' },
-    { title: 'HITEC City Office Rentals — JLL India',            url: 'https://www.jll.co.in/en/research',                                           type: 'research' },
-  ],
   'kondapur': [
     { title: 'Kondapur Residential Growth — MagicBricks',        url: 'https://www.magicbricks.com/property-for-sale-rent-in-Kondapur/residential-real-estate-Kondapur', type: 'data' },
     { title: 'Kondapur Infrastructure Update — ToI',             url: 'https://timesofindia.com/city/hyderabad',                                     type: 'news'     },
@@ -255,6 +250,124 @@ const CITY_DEFAULT_SOURCES: Record<string, AreaSource[]> = {
   ],
 }
 
+const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
+  ameenpur: [
+    { title: 'Ameenpur HMDA Master Plan References', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Ameenpur Residential Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Ameenpur/residential-real-estate-Ameenpur', type: 'data' },
+    { title: 'Ameenpur Growth Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  mokila: [
+    { title: 'Mokila HMDA Layout Zone', url: 'https://hmda.telangana.gov.in/', type: 'gov' },
+    { title: 'Mokila Plots and Villas - 99acres', url: 'https://www.99acres.com/property-in-mokila-hyderabad-ffid', type: 'data' },
+    { title: 'Mokila West Corridor Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  bibinagar: [
+    { title: 'Bibinagar East Corridor Planning - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Bibinagar Property Trends - 99acres', url: 'https://www.99acres.com/property-in-bibinagar-hyderabad-ffid', type: 'data' },
+    { title: 'Bibinagar Corridor Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  tellapur: [
+    { title: 'Tellapur HMDA Growth Corridor', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Tellapur Residential Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Tellapur/residential-real-estate-Tellapur', type: 'data' },
+    { title: 'Tellapur Infrastructure Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  ghatkesar: [
+    { title: 'Ghatkesar East Growth Belt - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Ghatkesar Property Market - 99acres', url: 'https://www.99acres.com/property-in-ghatkesar-hyderabad-ffid', type: 'data' },
+    { title: 'Ghatkesar NH-163 Corridor Updates', url: 'https://www.deccanchronicle.com/nation/current-affairs', type: 'news' },
+  ],
+  yacharam: [
+    { title: 'Yacharam Industrial Corridor - TSIIC', url: 'https://www.tsiic.telangana.gov.in/', type: 'gov' },
+    { title: 'Yacharam Property Listings - 99acres', url: 'https://www.99acres.com/property-in-yacharam-hyderabad-ffid', type: 'data' },
+    { title: 'Yacharam South Corridor Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  medchal: [
+    { title: 'Medchal North Growth Corridor - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Medchal Property Trends - 99acres', url: 'https://www.99acres.com/property-in-medchal-hyderabad-ffid', type: 'data' },
+    { title: 'Medchal Logistics and Industrial Updates', url: 'https://www.thehansindia.com/telangana', type: 'news' },
+  ],
+  shamshabad: [
+    { title: 'RGIA Airport Corridor - Official', url: 'https://www.hyderabad.aero/', type: 'gov' },
+    { title: 'Shamshabad Property Market - 99acres', url: 'https://www.99acres.com/property-in-shamshabad-hyderabad-ffid', type: 'data' },
+    { title: 'Shamshabad Airport Corridor Updates', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  patancheru: [
+    { title: 'Patancheru Industrial Area - TSIIC', url: 'https://www.tsiic.telangana.gov.in/', type: 'gov' },
+    { title: 'Patancheru Residential Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Patancheru/residential-real-estate-Patancheru', type: 'data' },
+    { title: 'Patancheru Industrial Belt Updates', url: 'https://www.deccanchronicle.com/nation/current-affairs', type: 'news' },
+  ],
+  peerzadiguda: [
+    { title: 'Peerzadiguda East Zone Planning - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Peerzadiguda Property Market - 99acres', url: 'https://www.99acres.com/property-in-peerzadiguda-hyderabad-ffid', type: 'data' },
+    { title: 'Peerzadiguda Metro and East Zone Updates', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  'rajendra-nagar': [
+    { title: 'Rajendra Nagar Growth Zone - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Rajendra Nagar Residential Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Rajendra-Nagar/residential-real-estate-Rajendra-Nagar', type: 'data' },
+    { title: 'Rajendra Nagar Corridor Updates', url: 'https://www.thehansindia.com/telangana', type: 'news' },
+  ],
+  kompally: [
+    { title: 'Kompally North Corridor - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Kompally Property Trends - 99acres', url: 'https://www.99acres.com/property-in-kompally-hyderabad-ffid', type: 'data' },
+    { title: 'Kompally Residential Growth - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  'lb-nagar': [
+    { title: 'LB Nagar Metro Corridor - HMRL', url: 'https://hmrl.telangana.gov.in/', type: 'gov' },
+    { title: 'LB Nagar Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-LB-Nagar/residential-real-estate-LB-Nagar', type: 'data' },
+    { title: 'LB Nagar East Hyderabad Updates', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  madhapur: [
+    { title: 'Madhapur Metro and Civic Corridor - HMRL', url: 'https://hmrl.telangana.gov.in/', type: 'gov' },
+    { title: 'Madhapur Residential Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Madhapur/residential-real-estate-Madhapur', type: 'data' },
+    { title: 'Madhapur IT Corridor Updates', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  kukatpally: [
+    { title: 'Kukatpally Metro Connectivity - HMRL', url: 'https://hmrl.telangana.gov.in/', type: 'gov' },
+    { title: 'Kukatpally Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Kukatpally/residential-real-estate-Kukatpally', type: 'data' },
+    { title: 'Kukatpally Township and Retail Updates', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  miyapur: [
+    { title: 'Miyapur Metro and West Corridor - HMRL', url: 'https://hmrl.telangana.gov.in/', type: 'gov' },
+    { title: 'Miyapur Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Miyapur/residential-real-estate-Miyapur', type: 'data' },
+    { title: 'Miyapur Residential Growth - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  'banjara-hills': [
+    { title: 'Banjara Hills Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Banjara Hills Luxury Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Banjara-Hills/residential-real-estate-Banjara-Hills', type: 'data' },
+    { title: 'Banjara Hills Premium Market Updates', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  'jubilee-hills': [
+    { title: 'Jubilee Hills Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Jubilee Hills Luxury Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Jubilee-Hills/residential-real-estate-Jubilee-Hills', type: 'data' },
+    { title: 'Jubilee Hills Premium Market Updates', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  manikonda: [
+    { title: 'Manikonda West IT Corridor - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Manikonda Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Manikonda/residential-real-estate-Manikonda', type: 'data' },
+    { title: 'Manikonda Residential Growth - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  somajiguda: [
+    { title: 'Somajiguda Central Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Somajiguda Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Somajiguda/residential-real-estate-Somajiguda', type: 'data' },
+    { title: 'Somajiguda Central Business District Updates', url: 'https://www.thehansindia.com/telangana', type: 'news' },
+  ],
+  begumpet: [
+    { title: 'Begumpet Metro and Civic Zone - HMRL', url: 'https://hmrl.telangana.gov.in/', type: 'gov' },
+    { title: 'Begumpet Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Begumpet/residential-real-estate-Begumpet', type: 'data' },
+    { title: 'Begumpet Central Hyderabad Updates', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  secunderabad: [
+    { title: 'Secunderabad Transit and Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Secunderabad Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Secunderabad/residential-real-estate-Secunderabad', type: 'data' },
+    { title: 'Secunderabad Rail and Metro Updates', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  uppal: [
+    { title: 'Uppal Metro Corridor - HMRL', url: 'https://hmrl.telangana.gov.in/', type: 'gov' },
+    { title: 'Uppal Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Uppal/residential-real-estate-Uppal', type: 'data' },
+    { title: 'Uppal East Corridor Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+}
+
 // ── Exports ───────────────────────────────────────────────────────────────────
 
 /**
@@ -262,7 +375,7 @@ const CITY_DEFAULT_SOURCES: Record<string, AreaSource[]> = {
  * Always pass citySlug so Delhi areas show RERA Delhi instead of RERA Telangana.
  */
 export function getAreaSources(slug: string, citySlug = 'hyderabad'): AreaSource[] {
-  const specific     = AREA_SOURCES[slug] ?? []
+  const specific     = HYDERABAD_SOURCE_OVERRIDES[slug] ?? AREA_SOURCES[slug] ?? []
   const cityDefaults = CITY_DEFAULT_SOURCES[citySlug] ?? CITY_DEFAULT_SOURCES.hyderabad
   return [...specific, ...cityDefaults]
 }
