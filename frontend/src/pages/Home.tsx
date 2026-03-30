@@ -47,7 +47,7 @@ export default function Home() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
   const [searchError, setSearchError]         = useState('')
   const [resolvingUrl, setResolvingUrl]       = useState(false)
-  const [viewMode, setViewMode]               = useState<ViewMode>('map')
+  const [viewMode, setViewMode]               = useState<ViewMode>('globe')
   const [globeSidebarExpanded, setGlobeSidebarExpanded] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -104,6 +104,14 @@ export default function Home() {
     setSearchQuery('')
     setSearchFocused(false)
     setSearchError('')
+    setViewMode('globe')
+  }
+
+  function handleGlobeMarkerClick(slug: string) {
+    setSelectedCitySlug(slug)
+    setSearchCoords(null)
+    setSelectedArea(null)
+    setViewMode('map')
   }
 
   async function handleSearchSubmit() {
@@ -155,6 +163,7 @@ export default function Home() {
           fallback={coordAnalysis}
           coords={searchCoords}
           globeSidebarExpanded={globeSidebarExpanded}
+          onCityClick={handleGlobeMarkerClick}
         />
       </div>
 

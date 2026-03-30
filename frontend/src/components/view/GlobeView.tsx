@@ -12,6 +12,7 @@ interface Props {
   fallback: LocalityFallbackResult | null
   coords: [number, number] | null
   sidebarExpanded?: boolean
+  onCityClick?: (slug: string, center: [number, number]) => void
 }
 
 interface FocusTone {
@@ -106,8 +107,47 @@ function orientationForLocation([lat, lng]: [number, number]) {
   }
 }
 
-export default function GlobeView({ citySlug, cityName, cityCenter, fallback, coords, sidebarExpanded = false }: Props) {
+// Project a geographic (lat, lng) point to canvas screen coordinates given
+// the current cobe globe orientation (phi, theta, scale).
+// Uses cobe's planet-frame convention: wx=cos(lat)*cos(lng), wy=sin(lat), wz=-cos(lat)*sin(lng)
+// then applies inverse globe rotation (Ry(-phi) * Rx(-theta)).
+function projectToScreen(
+  lat: number,
+  lng: number,
+  phi: number,
+  theta: number,
+  scale: number,
+  cx: number,
+  cy: number,
+  canvasShortSide: number,
+): { sx: number; sy: number; visible: boolean } {
+  const latR = (lat * Math.PI) / 180
+  const lngR = (lng * Math.PI) / 180
+
+  const wx = Math.cos(latR) * Math.cos(lngR)
+  const wy = Math.sin(latR)
+  const wz = -Math.cos(latR) * Math.sin(lngR)
+
+  const cosPhi = Math.cos(phi)
+  const sinPhi = Math.sin(phi)
+  const v1x = cosPhi * wx + sinPhi * wz
+  const v1y = wy
+  const v1z = -sinPhi * wx + cosPhi * wz
+
+  const cosT = Math.cos(theta)
+  const sinT = Math.sin(theta)
+  const v2x = v1x
+  const v2y = cosT * v1y - sinT * v1z
+  const v2z = sinT * v1y + cosT * v1z
+
+  const R = (canvasShortSide / 2) * scale
+  return { sx: cx + v2x * R, sy: cy - v2y * R, visible: v2z > 0 }
+}
+
+export default function GlobeView({ citySlug, cityName, cityCenter, fallback, coords, sidebarExpanded = false, onCityClick }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const currentOrientationRef = useRef({ phi: 0, theta: 0, scale: 1 })
+  const mouseDownPosRef = useRef<{ x: number; y: number } | null>(null)
   const pointerRef = useRef({
     phiOffset: 0,
     thetaOffset: 0,
@@ -285,6 +325,10 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
       phi += (driftPhi - phi) * (0.075 + pointer.hoverMix * 0.035)
       theta += (driftTheta - theta) * (0.085 + pointer.hoverMix * 0.035)
 
+      currentOrientationRef.current.phi = phi
+      currentOrientationRef.current.theta = theta
+      currentOrientationRef.current.scale = pointer.scale
+
       globe.update({
         phi,
         theta,
@@ -382,6 +426,9 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
             animate={{ y: [0, -5, 0], scale: [1, 1.008, 1] }}
             transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
             style={{ width: '90%', height: '90%', cursor: 'grab', pointerEvents: 'auto' }}
+            onMouseDown={(event) => {
+              mouseDownPosRef.current = { x: event.clientX, y: event.clientY }
+            }}
             onMouseMove={(event) => {
               const rect = event.currentTarget.getBoundingClientRect()
               const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2
@@ -407,6 +454,39 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
               pointerRef.current.targetThetaOffset = 0
               pointerRef.current.targetHoverMix = 1
               pointerRef.current.targetScale = 1.14
+            }}
+            onClick={(event) => {
+              if (!onCityClick || !canvasRef.current) return
+              const down = mouseDownPosRef.current
+              if (down && Math.hypot(event.clientX - down.x, event.clientY - down.y) > 6) return
+
+              const rect = canvasRef.current.getBoundingClientRect()
+              const clickX = event.clientX - rect.left
+              const clickY = event.clientY - rect.top
+              const cx = rect.width / 2
+              const cy = rect.height / 2
+              const shortSide = Math.min(rect.width, rect.height)
+              const { phi, theta, scale } = currentOrientationRef.current
+
+              const HIT_RADIUS = 52
+              let bestCity: (typeof CITY_LIST)[0] | null = null
+              let bestDist = Infinity
+
+              for (const city of CITY_LIST.slice(0, 6)) {
+                const { sx, sy, visible } = projectToScreen(
+                  city.center[0], city.center[1],
+                  phi, theta, scale,
+                  cx, cy, shortSide,
+                )
+                if (!visible) continue
+                const dist = Math.hypot(clickX - sx, clickY - sy)
+                if (dist < HIT_RADIUS && dist < bestDist) {
+                  bestDist = dist
+                  bestCity = city
+                }
+              }
+
+              if (bestCity) onCityClick(bestCity.slug, bestCity.center)
             }}
           >
             <div
