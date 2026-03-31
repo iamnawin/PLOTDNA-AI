@@ -162,7 +162,7 @@ export default function Landing() {
               className="w-1.5 h-1.5 rounded-full bg-[#00e676]"
               style={{ boxShadow: '0 0 4px #00e676', animation: 'pulse 2s infinite' }}
             />
-            Live · 6 Cities
+            Live · {CITY_LIST.length} Cities
           </span>
         </div>
         <button
@@ -842,7 +842,7 @@ export default function Landing() {
         style={{ borderTop: '1px solid rgba(255,255,255,0.04)', fontSize: 10, color: '#2e2e42' }}
       >
         <span>PlotDNA · Real Estate Intelligence</span>
-        <span>6 cities · {Object.values(CITIES).reduce((n, c) => n + c.areas.length, 0)} micro-markets</span>
+        <span>{CITY_LIST.length} cities · {Object.values(CITIES).reduce((n, c) => n + c.areas.length, 0)} micro-markets</span>
       </footer>
     </div>
   )

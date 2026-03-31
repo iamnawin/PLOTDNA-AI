@@ -40,6 +40,7 @@ function buildReraUrl(state: string | undefined, rera: string): string {
   if (s.includes('karnataka') || s.includes('ka')) return `https://rera.karnataka.gov.in/searchProjects?reraNumber=${rera}`
   if (s.includes('maharashtra') || s.includes('mh')) return `https://maharera.mahaonline.gov.in/Registrations/SearchForProjectorAgent?searchText=${rera}`
   if (s.includes('delhi') || s.includes('dl')) return `https://rera.delhi.gov.in/rera/SearchProject?regNo=${rera}`
+  if (s.includes('andhra') || s.includes('ap')) return `https://rera.ap.gov.in/RERA/Views/index.html`
   return `https://www.google.com/search?q=RERA+${rera}`
 }
 

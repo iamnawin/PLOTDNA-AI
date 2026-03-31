@@ -8,15 +8,15 @@
 
 ## Current State
 
-- 6 cities live: Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi NCR
+- 8 cities live: Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi NCR, Vijayawada Capital Region, Visakhapatnam
 - MapLibre GL map with polygon overlays, hover tooltips, tier filtering
 - DNA Score with both stored market data and live coordinate scoring
 - AreaDetail page: score breakdown, signal bars, growth timeline, 5-year outlook
 - Source links, AI verdict card, live news integration, and coordinate-based plot analysis
 - City switcher, multiple basemap styles, 3D tilt, mobile responsive
-- Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR expanded to resolver-grade coverage with stored localities, aliases, clusters, projects, sources, and verdict support
+- Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi NCR, Vijayawada Capital Region, and Visakhapatnam expanded to resolver-grade coverage with stored localities, aliases, clusters, projects, sources, and verdict support
 
-**Current gap:** PlotDNA is now a hybrid system, but market truth is still duplicated across frontend and backend. All 6 live cities now have resolver-grade locality support, but the canonical market catalog still lives in too many places.
+**Current gap:** PlotDNA is now a hybrid system, but market truth is still duplicated across frontend and backend. All 8 live cities now have resolver-grade locality support, but the canonical market catalog still lives in too many places.
 
 ---
 
@@ -27,14 +27,14 @@
 - PlotDNA is no longer static-only
 - Live coordinate scoring exists through `backend/app/api/routes/score.py`
 - AI verdict and live news flows exist in the product
-- Hyderabad remains the deepest city in the system, with Bangalore, Mumbai, Chennai, Pune, and Delhi NCR now following as resolver-grade markets
-- Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR currently have stored localities, aliases, clusters, projects, and full verdict coverage
+- Hyderabad remains the deepest city in the system, with Bangalore, Mumbai, Chennai, Pune, Delhi NCR, Vijayawada Capital Region, and Visakhapatnam now following as resolver-grade markets
+- Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi NCR, Vijayawada Capital Region, and Visakhapatnam currently have stored localities, aliases, clusters, projects, and full verdict coverage
 
 ### What is next
 
 - Move market truth into one canonical backend-owned market catalog
 - Remove duplication across frontend data files, source maps, and backend verdict fallbacks
-- Move all 6 resolver-grade city datasets into one canonical backend-owned market catalog
+- Move all 8 resolver-grade city datasets into one canonical backend-owned market catalog
 - Add explicit coverage tiers so fully supported micro-markets are distinct from starter or dynamic-coordinate-only coverage
 
 ### Expansion reference
@@ -134,7 +134,7 @@ POST /api/v1/verdict/{city_slug}/{area_slug}
 ### 1e. Frontend: Cmd+K Search
 
 - Global keyboard shortcut: `Cmd+K` / `Ctrl+K`
-- Fuzzy search across all 6 cities and all supported areas
+- Fuzzy search across all 8 cities and all supported areas
 - Navigate directly to area or city page
 
 ### Phase 1 Success Criteria

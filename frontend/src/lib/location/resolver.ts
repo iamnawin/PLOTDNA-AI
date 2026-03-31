@@ -24,6 +24,14 @@ import delAliasesJson from '../../../../data/cities/delhi/aliases.json'
 import delCityJson from '../../../../data/cities/delhi/city.json'
 import delClustersJson from '../../../../data/cities/delhi/clusters.json'
 import delLocalitiesJson from '../../../../data/cities/delhi/localities.json'
+import vjaAliasesJson from '../../../../data/cities/vijayawada/aliases.json'
+import vjaCityJson from '../../../../data/cities/vijayawada/city.json'
+import vjaClustersJson from '../../../../data/cities/vijayawada/clusters.json'
+import vjaLocalitiesJson from '../../../../data/cities/vijayawada/localities.json'
+import vzgAliasesJson from '../../../../data/cities/vizag/aliases.json'
+import vzgCityJson from '../../../../data/cities/vizag/city.json'
+import vzgClustersJson from '../../../../data/cities/vizag/clusters.json'
+import vzgLocalitiesJson from '../../../../data/cities/vizag/localities.json'
 
 export interface ResolverOptions {
   locality?: string | null
@@ -187,6 +195,18 @@ const SPECIAL_CITY_DATASETS: Record<string, SpecialResolverDataset> = {
     delLocalitiesJson as ResolverLocalityData[],
     delAliasesJson as ResolverAliasData,
     delClustersJson as ResolverClusterData[],
+  ),
+  vijayawada: buildSpecialResolverDataset(
+    vjaCityJson as ResolverCityData,
+    vjaLocalitiesJson as ResolverLocalityData[],
+    vjaAliasesJson as ResolverAliasData,
+    vjaClustersJson as ResolverClusterData[],
+  ),
+  vizag: buildSpecialResolverDataset(
+    vzgCityJson as ResolverCityData,
+    vzgLocalitiesJson as ResolverLocalityData[],
+    vzgAliasesJson as ResolverAliasData,
+    vzgClustersJson as ResolverClusterData[],
   ),
 }
 

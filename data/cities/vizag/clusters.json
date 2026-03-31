@@ -1,0 +1,7 @@
+[
+  { "id": "vizag:east", "label": "North-Coast Growth Belt", "zone": "East", "localitySlugs": ["madhurawada", "rushikonda", "pm-palem", "gambheeram"] },
+  { "id": "vizag:central", "label": "Core Vizag Urban Belt", "zone": "Central", "localitySlugs": ["seethammadhara", "mvp-colony", "maddilapalem"] },
+  { "id": "vizag:west", "label": "Industrial West Belt", "zone": "West", "localitySlugs": ["atchutapuram"] },
+  { "id": "vizag:north", "label": "Airport and Bheemili Belt", "zone": "North", "localitySlugs": ["anandapuram", "bheemunipatnam", "tagarapuvalasa"] },
+  { "id": "vizag:south", "label": "South Vizag Support Belt", "zone": "South", "localitySlugs": ["gajuwaka"] }
+]

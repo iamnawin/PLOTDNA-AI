@@ -178,7 +178,7 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
   )
 
   const networkPoints = useMemo(
-    () => CITY_LIST.slice(0, 6).map(city => ({ slug: city.slug, center: city.center })),
+    () => CITY_LIST.map(city => ({ slug: city.slug, center: city.center })),
     [],
   )
 
@@ -472,7 +472,7 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
               let bestCity: (typeof CITY_LIST)[0] | null = null
               let bestDist = Infinity
 
-              for (const city of CITY_LIST.slice(0, 6)) {
+              for (const city of CITY_LIST) {
                 const { sx, sy, visible } = projectToScreen(
                   city.center[0], city.center[1],
                   phi, theta, scale,

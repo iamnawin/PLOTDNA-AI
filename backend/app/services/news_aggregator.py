@@ -72,7 +72,7 @@ FEEDS: list[FeedConfig] = [
     FeedConfig("Housing.com Blog",   "https://housing.com/news/feed/",                                           [], 3),
     # Hyderabad / Telangana
     FeedConfig("Telangana Today",    "https://telanganatoday.com/feed",                          ["hyderabad"],  2),
-    FeedConfig("Hans India",         "https://www.thehansindia.com/feeds/news.rss",              ["hyderabad"],  3),
+    FeedConfig("Hans India",         "https://www.thehansindia.com/feeds/news.rss",              ["hyderabad", "vijayawada", "vizag"],  3),
     FeedConfig("Deccan Chronicle HYD","https://www.deccanchronicle.com/rss_feed/topnews.xml",   ["hyderabad"],  2),
     # Bangalore / Karnataka
     FeedConfig("Deccan Herald",      "https://www.deccanherald.com/rss-feed/story",              ["bangalore"],  2),

@@ -71,7 +71,7 @@ export default function Home() {
   const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl)
   const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1]) : null
   const isGlobeMode = viewMode === 'globe'
-  const systemCities = CITY_LIST.slice(0, 6)
+  const systemCities = CITY_LIST
 
   function handleViewModeChange(nextMode: ViewMode) {
     if (nextMode === 'globe') {

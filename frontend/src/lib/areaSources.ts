@@ -253,6 +253,16 @@ const CITY_DEFAULT_SOURCES: Record<string, AreaSource[]> = {
     { title: 'Delhi NCR Market Report — CREDAI NCR',      url: 'https://www.credaincr.com/',                        type: 'research' },
     { title: 'RBI House Price Index — Delhi NCR',         url: 'https://www.rbi.org.in/',                           type: 'research' },
   ],
+  vijayawada: [
+    { title: 'Amaravati / Capital Region Updates',        url: 'https://assccl.ap.gov.in/',                         type: 'gov'      },
+    { title: 'Andhra Pradesh Government Portals',         url: 'https://www.ap.gov.in/',                            type: 'gov'      },
+    { title: 'Vijayawada Capital Region Market - 99acres', url: 'https://www.99acres.com/property-in-vijayawada-ffid', type: 'data' },
+  ],
+  vizag: [
+    { title: 'VMRDA Planning and Development',            url: 'https://vmrda.gov.in/contactus.aspx',               type: 'gov'      },
+    { title: 'GVMC Urban Services and Building Portal',   url: 'https://www.gvmc.gov.in/thirdlevel.htm',            type: 'gov'      },
+    { title: 'Visakhapatnam Market - 99acres',            url: 'https://www.99acres.com/property-in-visakhapatnam-ffid', type: 'data' },
+  ],
 }
 
 const MUMBAI_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
@@ -546,6 +556,108 @@ const DELHI_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
   ],
 }
 
+const VIJAYAWADA_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
+  amaravati: [
+    { title: 'Amaravati Smart and Sustainable City', url: 'https://assccl.ap.gov.in/', type: 'gov' },
+    { title: 'Amaravati Property Market - 99acres', url: 'https://www.99acres.com/property-in-amaravati-vijayawada-ffid', type: 'data' },
+  ],
+  mangalagiri: [
+    { title: 'Mangalagiri Capital Region Growth', url: 'https://assccl.ap.gov.in/', type: 'gov' },
+    { title: 'Mangalagiri Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Mangalagiri/residential-real-estate-Mangalagiri', type: 'data' },
+  ],
+  tadepalli: [
+    { title: 'Tadepalli River Corridor Planning', url: 'https://www.ap.gov.in/', type: 'gov' },
+    { title: 'Tadepalli Property Market - 99acres', url: 'https://www.99acres.com/property-in-tadepalli-vijayawada-ffid', type: 'data' },
+  ],
+  gannavaram: [
+    { title: 'Vijayawada Airport - AAI', url: 'https://www.aai.aero/en/airports/vijayawada', type: 'gov' },
+    { title: 'Gannavaram Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Gannavaram/residential-real-estate-Gannavaram', type: 'data' },
+  ],
+  poranki: [
+    { title: 'East Vijayawada Urban Works', url: 'https://www.ap.gov.in/', type: 'gov' },
+    { title: 'Poranki Property Market - 99acres', url: 'https://www.99acres.com/property-in-poranki-vijayawada-ffid', type: 'data' },
+  ],
+  penamaluru: [
+    { title: 'Penamaluru Urban Planning Surface', url: 'https://www.ap.gov.in/', type: 'gov' },
+    { title: 'Penamaluru Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Penamaluru/residential-real-estate-Penamaluru', type: 'data' },
+  ],
+  kanuru: [
+    { title: 'Kanuru Urban Zone Context', url: 'https://www.ap.gov.in/', type: 'gov' },
+    { title: 'Kanuru Property Market - 99acres', url: 'https://www.99acres.com/property-in-kanuru-vijayawada-ffid', type: 'data' },
+  ],
+  'benz-circle': [
+    { title: 'Vijayawada Central Mobility Context', url: 'https://www.ap.gov.in/', type: 'gov' },
+    { title: 'Benz Circle Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Benz-Circle/residential-real-estate-Benz-Circle', type: 'data' },
+  ],
+  nidamanuru: [
+    { title: 'Airport Access Corridor Context', url: 'https://www.aai.aero/en/airports/vijayawada', type: 'gov' },
+    { title: 'Nidamanuru Property Market - 99acres', url: 'https://www.99acres.com/property-in-nidamanuru-vijayawada-ffid', type: 'data' },
+  ],
+  'guntur-central': [
+    { title: 'Guntur Municipal Corporation', url: 'https://gmcguntur.ap.gov.in/', type: 'gov' },
+    { title: 'Guntur Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Guntur/residential-real-estate-Guntur', type: 'data' },
+  ],
+  tadikonda: [
+    { title: 'Tadikonda Capital Region Context', url: 'https://assccl.ap.gov.in/', type: 'gov' },
+    { title: 'Tadikonda Property Market - 99acres', url: 'https://www.99acres.com/property-in-tadikonda-vijayawada-ffid', type: 'data' },
+  ],
+  undavalli: [
+    { title: 'Undavalli Capital Region Context', url: 'https://assccl.ap.gov.in/', type: 'gov' },
+    { title: 'Undavalli Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Undavalli/residential-real-estate-Undavalli', type: 'data' },
+  ],
+}
+
+const VIZAG_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
+  madhurawada: [
+    { title: 'Madhurawada Growth Belt - VMRDA', url: 'https://vmrda.gov.in/contactus.aspx', type: 'gov' },
+    { title: 'Madhurawada Property Market - 99acres', url: 'https://www.99acres.com/property-in-madhurawada-visakhapatnam-ffid', type: 'data' },
+  ],
+  rushikonda: [
+    { title: 'Rushikonda Coastal Context - GVMC', url: 'https://www.gvmc.gov.in/thirdlevel.htm', type: 'gov' },
+    { title: 'Rushikonda Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Rushikonda/residential-real-estate-Rushikonda', type: 'data' },
+  ],
+  'pm-palem': [
+    { title: 'PM Palem Urban Context - GVMC', url: 'https://www.gvmc.gov.in/thirdlevel.htm', type: 'gov' },
+    { title: 'PM Palem Property Market - 99acres', url: 'https://www.99acres.com/property-in-pm-palem-visakhapatnam-ffid', type: 'data' },
+  ],
+  seethammadhara: [
+    { title: 'Seethammadhara Urban Context - GVMC', url: 'https://www.gvmc.gov.in/thirdlevel.htm', type: 'gov' },
+    { title: 'Seethammadhara Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Seethammadhara/residential-real-estate-Seethammadhara', type: 'data' },
+  ],
+  'mvp-colony': [
+    { title: 'MVP Colony Urban Context - GVMC', url: 'https://www.gvmc.gov.in/thirdlevel.htm', type: 'gov' },
+    { title: 'MVP Colony Property Market - 99acres', url: 'https://www.99acres.com/property-in-mvp-colony-visakhapatnam-ffid', type: 'data' },
+  ],
+  maddilapalem: [
+    { title: 'Maddilapalem Mobility Context - GVMC', url: 'https://www.gvmc.gov.in/thirdlevel.htm', type: 'gov' },
+    { title: 'Maddilapalem Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Maddilapalem/residential-real-estate-Maddilapalem', type: 'data' },
+  ],
+  gajuwaka: [
+    { title: 'Gajuwaka Industrial Context - GVMC', url: 'https://www.gvmc.gov.in/thirdlevel.htm', type: 'gov' },
+    { title: 'Gajuwaka Property Market - 99acres', url: 'https://www.99acres.com/property-in-gajuwaka-visakhapatnam-ffid', type: 'data' },
+  ],
+  atchutapuram: [
+    { title: 'Atchutapuram Industrial Corridor - APIIC', url: 'https://apiic.in/', type: 'gov' },
+    { title: 'Atchutapuram Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Atchutapuram/residential-real-estate-Atchutapuram', type: 'data' },
+  ],
+  anandapuram: [
+    { title: 'Anandapuram Growth Belt - VMRDA', url: 'https://vmrda.gov.in/contactus.aspx', type: 'gov' },
+    { title: 'Anandapuram Property Market - 99acres', url: 'https://www.99acres.com/property-in-anandapuram-visakhapatnam-ffid', type: 'data' },
+  ],
+  bheemunipatnam: [
+    { title: 'Bheemunipatnam Coastal Context - VMRDA', url: 'https://vmrda.gov.in/contactus.aspx', type: 'gov' },
+    { title: 'Bheemunipatnam Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Bheemunipatnam/residential-real-estate-Bheemunipatnam', type: 'data' },
+  ],
+  gambheeram: [
+    { title: 'Gambheeram North Growth Corridor - VMRDA', url: 'https://vmrda.gov.in/contactus.aspx', type: 'gov' },
+    { title: 'Gambheeram Property Market - 99acres', url: 'https://www.99acres.com/property-in-gambheeram-visakhapatnam-ffid', type: 'data' },
+  ],
+  tagarapuvalasa: [
+    { title: 'Tagarapuvalasa Airport Corridor - VMRDA', url: 'https://vmrda.gov.in/contactus.aspx', type: 'gov' },
+    { title: 'Tagarapuvalasa Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Tagarapuvalasa/residential-real-estate-Tagarapuvalasa', type: 'data' },
+  ],
+}
+
 const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
   ameenpur: [
     { title: 'Ameenpur HMDA Master Plan References', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
@@ -671,7 +783,7 @@ const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
  * Always pass citySlug so Delhi areas show RERA Delhi instead of RERA Telangana.
  */
 export function getAreaSources(slug: string, citySlug = 'hyderabad'): AreaSource[] {
-  const overrideSpecific = HYDERABAD_SOURCE_OVERRIDES[slug] ?? MUMBAI_SOURCE_OVERRIDES[slug] ?? CHENNAI_SOURCE_OVERRIDES[slug] ?? PUNE_SOURCE_OVERRIDES[slug] ?? DELHI_SOURCE_OVERRIDES[slug]
+  const overrideSpecific = HYDERABAD_SOURCE_OVERRIDES[slug] ?? MUMBAI_SOURCE_OVERRIDES[slug] ?? CHENNAI_SOURCE_OVERRIDES[slug] ?? PUNE_SOURCE_OVERRIDES[slug] ?? DELHI_SOURCE_OVERRIDES[slug] ?? VIJAYAWADA_SOURCE_OVERRIDES[slug] ?? VIZAG_SOURCE_OVERRIDES[slug]
   const specific     = overrideSpecific ?? AREA_SOURCES[slug] ?? []
   const cityDefaults = CITY_DEFAULT_SOURCES[citySlug] ?? CITY_DEFAULT_SOURCES.hyderabad
   return [...specific, ...cityDefaults]

@@ -1,0 +1,11 @@
+{
+  "slug": "vizag",
+  "name": "Visakhapatnam",
+  "state": "Andhra Pradesh",
+  "center": [17.6868, 83.2185],
+  "zoom": 10,
+  "coverageRadiusKm": 44,
+  "centralRadiusKm": 8,
+  "exactLocalityBufferKm": 6,
+  "nearbyMicroMarketRadiusKm": 5
+}

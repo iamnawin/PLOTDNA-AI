@@ -188,12 +188,44 @@ DELHI_AREA_OVERRIDES: dict[str, dict] = {
     "faridabad-neharpar": {"name": "Faridabad Neharpar", "city": "delhi", "city_name": "Delhi NCR", "score": 74, "price_range": "Rs4,200-6,800/sqft", "yoy": 15.0, "signals": {"infrastructure": 74, "population": 70, "satellite": 76, "rera": 70, "employment": 64, "priceVelocity": 72, "govtScheme": 74}}
 }
 
+VIJAYAWADA_AREA_OVERRIDES: dict[str, dict] = {
+    "amaravati": {"name": "Amaravati", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 83, "price_range": "Rs5,500-9,500/sqft", "yoy": 22.0, "signals": {"infrastructure": 84, "population": 66, "satellite": 82, "rera": 74, "employment": 70, "priceVelocity": 84, "govtScheme": 92}},
+    "mangalagiri": {"name": "Mangalagiri", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 80, "price_range": "Rs5,000-8,000/sqft", "yoy": 18.0, "signals": {"infrastructure": 80, "population": 72, "satellite": 78, "rera": 74, "employment": 68, "priceVelocity": 78, "govtScheme": 84}},
+    "tadepalli": {"name": "Tadepalli", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 78, "price_range": "Rs6,000-9,500/sqft", "yoy": 16.0, "signals": {"infrastructure": 78, "population": 74, "satellite": 70, "rera": 72, "employment": 70, "priceVelocity": 72, "govtScheme": 76}},
+    "gannavaram": {"name": "Gannavaram", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 82, "price_range": "Rs4,800-7,800/sqft", "yoy": 21.0, "signals": {"infrastructure": 84, "population": 68, "satellite": 82, "rera": 72, "employment": 78, "priceVelocity": 80, "govtScheme": 82}},
+    "poranki": {"name": "Poranki", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 74, "price_range": "Rs5,000-7,800/sqft", "yoy": 14.0, "signals": {"infrastructure": 74, "population": 74, "satellite": 66, "rera": 70, "employment": 66, "priceVelocity": 68, "govtScheme": 70}},
+    "penamaluru": {"name": "Penamaluru", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 75, "price_range": "Rs4,800-7,500/sqft", "yoy": 15.0, "signals": {"infrastructure": 76, "population": 72, "satellite": 70, "rera": 70, "employment": 68, "priceVelocity": 70, "govtScheme": 72}},
+    "kanuru": {"name": "Kanuru", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 73, "price_range": "Rs5,500-8,200/sqft", "yoy": 13.0, "signals": {"infrastructure": 74, "population": 74, "satellite": 64, "rera": 68, "employment": 66, "priceVelocity": 66, "govtScheme": 68}},
+    "benz-circle": {"name": "Benz Circle", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 72, "price_range": "Rs7,500-12,000/sqft", "yoy": 10.0, "signals": {"infrastructure": 80, "population": 76, "satellite": 58, "rera": 66, "employment": 70, "priceVelocity": 60, "govtScheme": 64}},
+    "nidamanuru": {"name": "Nidamanuru", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 76, "price_range": "Rs4,500-7,200/sqft", "yoy": 17.0, "signals": {"infrastructure": 78, "population": 70, "satellite": 74, "rera": 70, "employment": 70, "priceVelocity": 74, "govtScheme": 76}},
+    "guntur-central": {"name": "Guntur Central", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 74, "price_range": "Rs6,000-9,000/sqft", "yoy": 12.0, "signals": {"infrastructure": 76, "population": 78, "satellite": 58, "rera": 66, "employment": 70, "priceVelocity": 62, "govtScheme": 66}},
+    "tadikonda": {"name": "Tadikonda", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 79, "price_range": "Rs4,200-6,800/sqft", "yoy": 19.0, "signals": {"infrastructure": 80, "population": 68, "satellite": 80, "rera": 70, "employment": 66, "priceVelocity": 80, "govtScheme": 84}},
+    "undavalli": {"name": "Undavalli", "city": "vijayawada", "city_name": "Vijayawada Capital Region", "score": 77, "price_range": "Rs5,500-8,500/sqft", "yoy": 16.0, "signals": {"infrastructure": 76, "population": 70, "satellite": 68, "rera": 72, "employment": 68, "priceVelocity": 70, "govtScheme": 74}}
+}
+
+VIZAG_AREA_OVERRIDES: dict[str, dict] = {
+    "madhurawada": {"name": "Madhurawada", "city": "vizag", "city_name": "Visakhapatnam", "score": 82, "price_range": "Rs6,500-10,500/sqft", "yoy": 18.0, "signals": {"infrastructure": 82, "population": 74, "satellite": 80, "rera": 78, "employment": 78, "priceVelocity": 78, "govtScheme": 80}},
+    "rushikonda": {"name": "Rushikonda", "city": "vizag", "city_name": "Visakhapatnam", "score": 80, "price_range": "Rs8,000-13,000/sqft", "yoy": 17.0, "signals": {"infrastructure": 80, "population": 70, "satellite": 76, "rera": 76, "employment": 80, "priceVelocity": 74, "govtScheme": 76}},
+    "pm-palem": {"name": "PM Palem", "city": "vizag", "city_name": "Visakhapatnam", "score": 78, "price_range": "Rs6,000-9,500/sqft", "yoy": 15.0, "signals": {"infrastructure": 78, "population": 74, "satellite": 76, "rera": 74, "employment": 74, "priceVelocity": 74, "govtScheme": 74}},
+    "seethammadhara": {"name": "Seethammadhara", "city": "vizag", "city_name": "Visakhapatnam", "score": 74, "price_range": "Rs7,500-12,000/sqft", "yoy": 11.0, "signals": {"infrastructure": 76, "population": 78, "satellite": 60, "rera": 68, "employment": 70, "priceVelocity": 64, "govtScheme": 66}},
+    "mvp-colony": {"name": "MVP Colony", "city": "vizag", "city_name": "Visakhapatnam", "score": 73, "price_range": "Rs8,000-12,500/sqft", "yoy": 10.0, "signals": {"infrastructure": 74, "population": 76, "satellite": 58, "rera": 66, "employment": 68, "priceVelocity": 62, "govtScheme": 64}},
+    "maddilapalem": {"name": "Maddilapalem", "city": "vizag", "city_name": "Visakhapatnam", "score": 76, "price_range": "Rs7,000-11,500/sqft", "yoy": 12.0, "signals": {"infrastructure": 80, "population": 74, "satellite": 62, "rera": 68, "employment": 74, "priceVelocity": 66, "govtScheme": 68}},
+    "gajuwaka": {"name": "Gajuwaka", "city": "vizag", "city_name": "Visakhapatnam", "score": 77, "price_range": "Rs5,500-8,500/sqft", "yoy": 14.0, "signals": {"infrastructure": 80, "population": 74, "satellite": 72, "rera": 70, "employment": 86, "priceVelocity": 68, "govtScheme": 74}},
+    "atchutapuram": {"name": "Atchutapuram", "city": "vizag", "city_name": "Visakhapatnam", "score": 83, "price_range": "Rs4,500-7,200/sqft", "yoy": 20.0, "signals": {"infrastructure": 84, "population": 66, "satellite": 84, "rera": 68, "employment": 90, "priceVelocity": 78, "govtScheme": 86}},
+    "anandapuram": {"name": "Anandapuram", "city": "vizag", "city_name": "Visakhapatnam", "score": 79, "price_range": "Rs4,800-7,800/sqft", "yoy": 18.0, "signals": {"infrastructure": 80, "population": 66, "satellite": 80, "rera": 72, "employment": 72, "priceVelocity": 78, "govtScheme": 82}},
+    "bheemunipatnam": {"name": "Bheemunipatnam", "city": "vizag", "city_name": "Visakhapatnam", "score": 78, "price_range": "Rs6,500-10,500/sqft", "yoy": 16.0, "signals": {"infrastructure": 78, "population": 62, "satellite": 78, "rera": 72, "employment": 68, "priceVelocity": 76, "govtScheme": 80}},
+    "gambheeram": {"name": "Gambheeram", "city": "vizag", "city_name": "Visakhapatnam", "score": 80, "price_range": "Rs5,500-8,800/sqft", "yoy": 19.0, "signals": {"infrastructure": 80, "population": 68, "satellite": 82, "rera": 74, "employment": 74, "priceVelocity": 80, "govtScheme": 80}},
+    "tagarapuvalasa": {"name": "Tagarapuvalasa", "city": "vizag", "city_name": "Visakhapatnam", "score": 76, "price_range": "Rs4,500-7,000/sqft", "yoy": 17.0, "signals": {"infrastructure": 78, "population": 64, "satellite": 76, "rera": 70, "employment": 68, "priceVelocity": 76, "govtScheme": 80}}
+}
+
 AREA_DATA.update(HYDERABAD_AREA_OVERRIDES)
 AREA_DATA.update(BANGALORE_AREA_OVERRIDES)
 AREA_DATA.update(MUMBAI_AREA_OVERRIDES)
 AREA_DATA.update(CHENNAI_AREA_OVERRIDES)
 AREA_DATA.update(PUNE_AREA_OVERRIDES)
 AREA_DATA.update(DELHI_AREA_OVERRIDES)
+AREA_DATA.update(VIJAYAWADA_AREA_OVERRIDES)
+AREA_DATA.update(VIZAG_AREA_OVERRIDES)
 
 router = APIRouter()
 
