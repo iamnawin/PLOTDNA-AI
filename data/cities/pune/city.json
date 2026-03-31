@@ -1,0 +1,11 @@
+{
+  "slug": "pune",
+  "name": "Pune",
+  "state": "Maharashtra",
+  "center": [18.5204, 73.8567],
+  "zoom": 11,
+  "coverageRadiusKm": 38,
+  "centralRadiusKm": 7,
+  "exactLocalityBufferKm": 6,
+  "nearbyMicroMarketRadiusKm": 5
+}

@@ -379,6 +379,89 @@ const CHENNAI_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
   ],
 }
 
+const PUNE_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
+  hinjewadi: [
+    { title: 'Hinjewadi Metro and Planning - PMRDA', url: 'https://www.pmrda.gov.in/', type: 'gov' },
+    { title: 'Hinjewadi Property Market - 99acres', url: 'https://www.99acres.com/property-in-hinjewadi-pune-ffid', type: 'data' },
+  ],
+  kharadi: [
+    { title: 'Kharadi East Pune Planning - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Kharadi Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Kharadi/residential-real-estate-Kharadi', type: 'data' },
+  ],
+  undri: [
+    { title: 'Undri South Pune Planning - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Undri Property Market - 99acres', url: 'https://www.99acres.com/property-in-undri-pune-ffid', type: 'data' },
+  ],
+  wakad: [
+    { title: 'Wakad Corridor Planning - PCMC', url: 'https://www.pcmcindia.gov.in/', type: 'gov' },
+    { title: 'Wakad Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Wakad/residential-real-estate-Wakad', type: 'data' },
+  ],
+  baner: [
+    { title: 'Baner-Balewadi Urban Works - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Baner Property Market - 99acres', url: 'https://www.99acres.com/property-in-baner-pune-ffid', type: 'data' },
+  ],
+  hadapsar: [
+    { title: 'Hadapsar Planning and Roads - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Hadapsar Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Hadapsar/residential-real-estate-Hadapsar', type: 'data' },
+  ],
+  balewadi: [
+    { title: 'Balewadi High Street and Urban Works - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Balewadi Property Market - 99acres', url: 'https://www.99acres.com/property-in-balewadi-pune-ffid', type: 'data' },
+  ],
+  tathawade: [
+    { title: 'Tathawade Growth Corridor - PMRDA', url: 'https://www.pmrda.gov.in/', type: 'gov' },
+    { title: 'Tathawade Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Tathawade/residential-real-estate-Tathawade', type: 'data' },
+  ],
+  ravet: [
+    { title: 'Ravet PCMC Growth Belt - PCMC', url: 'https://www.pcmcindia.gov.in/', type: 'gov' },
+    { title: 'Ravet Property Market - 99acres', url: 'https://www.99acres.com/property-in-ravet-pune-ffid', type: 'data' },
+  ],
+  pimpri: [
+    { title: 'Pimpri Metro and Civic Zone - PCMC', url: 'https://www.pcmcindia.gov.in/', type: 'gov' },
+    { title: 'Pimpri Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Pimpri/residential-real-estate-Pimpri', type: 'data' },
+  ],
+  'viman-nagar': [
+    { title: 'Viman Nagar Airport Corridor - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Viman Nagar Property Market - 99acres', url: 'https://www.99acres.com/property-in-viman-nagar-pune-ffid', type: 'data' },
+  ],
+  wagholi: [
+    { title: 'Wagholi Nagar Road Growth Belt - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Wagholi Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Wagholi/residential-real-estate-Wagholi', type: 'data' },
+  ],
+  magarpatta: [
+    { title: 'Magarpatta Township Zone - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Magarpatta Property Market - 99acres', url: 'https://www.99acres.com/property-in-magarpatta-pune-ffid', type: 'data' },
+  ],
+  'nibm-road': [
+    { title: 'NIBM Road South Pune Planning - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'NIBM Road Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-NIBM-Road/residential-real-estate-NIBM-Road', type: 'data' },
+  ],
+  aundh: [
+    { title: 'Aundh Core Urban Zone - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Aundh Property Market - 99acres', url: 'https://www.99acres.com/property-in-aundh-pune-ffid', type: 'data' },
+  ],
+  mahalunge: [
+    { title: 'Mahalunge Town Planning - PMRDA', url: 'https://www.pmrda.gov.in/', type: 'gov' },
+    { title: 'Mahalunge Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Mahalunge/residential-real-estate-Mahalunge', type: 'data' },
+  ],
+  moshi: [
+    { title: 'Moshi North PCMC Planning - PCMC', url: 'https://www.pcmcindia.gov.in/', type: 'gov' },
+    { title: 'Moshi Property Market - 99acres', url: 'https://www.99acres.com/property-in-moshi-pune-ffid', type: 'data' },
+  ],
+  chakan: [
+    { title: 'Chakan MIDC Industrial Corridor - MIDC', url: 'https://www.midcindia.org/', type: 'gov' },
+    { title: 'Chakan Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Chakan/residential-real-estate-Chakan', type: 'data' },
+  ],
+  'talegaon-dabhade': [
+    { title: 'Talegaon Industrial and Logistics Belt - MIDC', url: 'https://www.midcindia.org/', type: 'gov' },
+    { title: 'Talegaon Dabhade Property Market - 99acres', url: 'https://www.99acres.com/property-in-talegaon-dabhade-pune-ffid', type: 'data' },
+  ],
+  bavdhan: [
+    { title: 'Bavdhan West Pune Planning - PMC', url: 'https://www.pmc.gov.in/', type: 'gov' },
+    { title: 'Bavdhan Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Bavdhan/residential-real-estate-Bavdhan', type: 'data' },
+  ],
+}
+
 const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
   ameenpur: [
     { title: 'Ameenpur HMDA Master Plan References', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
@@ -504,7 +587,7 @@ const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
  * Always pass citySlug so Delhi areas show RERA Delhi instead of RERA Telangana.
  */
 export function getAreaSources(slug: string, citySlug = 'hyderabad'): AreaSource[] {
-  const overrideSpecific = HYDERABAD_SOURCE_OVERRIDES[slug] ?? MUMBAI_SOURCE_OVERRIDES[slug] ?? CHENNAI_SOURCE_OVERRIDES[slug]
+  const overrideSpecific = HYDERABAD_SOURCE_OVERRIDES[slug] ?? MUMBAI_SOURCE_OVERRIDES[slug] ?? CHENNAI_SOURCE_OVERRIDES[slug] ?? PUNE_SOURCE_OVERRIDES[slug]
   const specific     = overrideSpecific ?? AREA_SOURCES[slug] ?? []
   const cityDefaults = CITY_DEFAULT_SOURCES[citySlug] ?? CITY_DEFAULT_SOURCES.hyderabad
   return [...specific, ...cityDefaults]

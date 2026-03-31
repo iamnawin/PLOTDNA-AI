@@ -142,10 +142,34 @@ CHENNAI_AREA_OVERRIDES: dict[str, dict] = {
     "egattur": {"name": "Egattur", "city": "chennai", "city_name": "Chennai", "score": 78, "price_range": "Rs6,000-9,500/sqft", "yoy": 17.0, "signals": {"infrastructure": 78, "population": 70, "satellite": 78, "rera": 76, "employment": 82, "priceVelocity": 74, "govtScheme": 74}}
 }
 
+PUNE_AREA_OVERRIDES: dict[str, dict] = {
+    "hinjewadi": {"name": "Hinjewadi", "city": "pune", "city_name": "Pune", "score": 84, "price_range": "Rs7,500-11,500/sqft", "yoy": 19.0, "signals": {"infrastructure": 86, "population": 78, "satellite": 80, "rera": 82, "employment": 94, "priceVelocity": 80, "govtScheme": 78}},
+    "kharadi": {"name": "Kharadi", "city": "pune", "city_name": "Pune", "score": 82, "price_range": "Rs8,500-13,000/sqft", "yoy": 18.0, "signals": {"infrastructure": 82, "population": 76, "satellite": 78, "rera": 80, "employment": 88, "priceVelocity": 78, "govtScheme": 74}},
+    "undri": {"name": "Undri", "city": "pune", "city_name": "Pune", "score": 78, "price_range": "Rs5,500-8,500/sqft", "yoy": 20.0, "signals": {"infrastructure": 74, "population": 70, "satellite": 78, "rera": 74, "employment": 68, "priceVelocity": 82, "govtScheme": 76}},
+    "wakad": {"name": "Wakad", "city": "pune", "city_name": "Pune", "score": 79, "price_range": "Rs8,000-12,500/sqft", "yoy": 17.0, "signals": {"infrastructure": 80, "population": 78, "satellite": 74, "rera": 78, "employment": 84, "priceVelocity": 76, "govtScheme": 74}},
+    "baner": {"name": "Baner", "city": "pune", "city_name": "Pune", "score": 77, "price_range": "Rs10,000-15,000/sqft", "yoy": 13.0, "signals": {"infrastructure": 78, "population": 74, "satellite": 66, "rera": 76, "employment": 82, "priceVelocity": 72, "govtScheme": 68}},
+    "hadapsar": {"name": "Hadapsar", "city": "pune", "city_name": "Pune", "score": 75, "price_range": "Rs7,000-11,000/sqft", "yoy": 14.0, "signals": {"infrastructure": 76, "population": 74, "satellite": 68, "rera": 74, "employment": 78, "priceVelocity": 70, "govtScheme": 70}},
+    "balewadi": {"name": "Balewadi", "city": "pune", "city_name": "Pune", "score": 80, "price_range": "Rs9,500-14,500/sqft", "yoy": 16.0, "signals": {"infrastructure": 82, "population": 74, "satellite": 74, "rera": 78, "employment": 84, "priceVelocity": 76, "govtScheme": 72}},
+    "tathawade": {"name": "Tathawade", "city": "pune", "city_name": "Pune", "score": 79, "price_range": "Rs7,500-11,500/sqft", "yoy": 18.0, "signals": {"infrastructure": 80, "population": 74, "satellite": 78, "rera": 76, "employment": 80, "priceVelocity": 78, "govtScheme": 74}},
+    "ravet": {"name": "Ravet", "city": "pune", "city_name": "Pune", "score": 76, "price_range": "Rs6,500-9,500/sqft", "yoy": 16.0, "signals": {"infrastructure": 78, "population": 72, "satellite": 76, "rera": 74, "employment": 72, "priceVelocity": 76, "govtScheme": 74}},
+    "pimpri": {"name": "Pimpri", "city": "pune", "city_name": "Pune", "score": 72, "price_range": "Rs6,500-10,000/sqft", "yoy": 11.0, "signals": {"infrastructure": 76, "population": 76, "satellite": 62, "rera": 68, "employment": 74, "priceVelocity": 64, "govtScheme": 70}},
+    "viman-nagar": {"name": "Viman Nagar", "city": "pune", "city_name": "Pune", "score": 76, "price_range": "Rs9,000-14,000/sqft", "yoy": 12.0, "signals": {"infrastructure": 80, "population": 72, "satellite": 62, "rera": 70, "employment": 80, "priceVelocity": 68, "govtScheme": 70}},
+    "wagholi": {"name": "Wagholi", "city": "pune", "city_name": "Pune", "score": 78, "price_range": "Rs6,000-9,000/sqft", "yoy": 19.0, "signals": {"infrastructure": 76, "population": 74, "satellite": 82, "rera": 74, "employment": 70, "priceVelocity": 82, "govtScheme": 76}},
+    "magarpatta": {"name": "Magarpatta", "city": "pune", "city_name": "Pune", "score": 79, "price_range": "Rs9,000-13,500/sqft", "yoy": 13.0, "signals": {"infrastructure": 78, "population": 72, "satellite": 60, "rera": 74, "employment": 86, "priceVelocity": 70, "govtScheme": 68}},
+    "nibm-road": {"name": "NIBM Road", "city": "pune", "city_name": "Pune", "score": 74, "price_range": "Rs7,500-11,500/sqft", "yoy": 12.0, "signals": {"infrastructure": 72, "population": 70, "satellite": 62, "rera": 72, "employment": 70, "priceVelocity": 68, "govtScheme": 66}},
+    "aundh": {"name": "Aundh", "city": "pune", "city_name": "Pune", "score": 74, "price_range": "Rs9,000-14,000/sqft", "yoy": 11.0, "signals": {"infrastructure": 78, "population": 72, "satellite": 58, "rera": 68, "employment": 76, "priceVelocity": 64, "govtScheme": 64}},
+    "mahalunge": {"name": "Mahalunge", "city": "pune", "city_name": "Pune", "score": 80, "price_range": "Rs7,000-11,000/sqft", "yoy": 20.0, "signals": {"infrastructure": 82, "population": 70, "satellite": 82, "rera": 76, "employment": 80, "priceVelocity": 80, "govtScheme": 80}},
+    "moshi": {"name": "Moshi", "city": "pune", "city_name": "Pune", "score": 75, "price_range": "Rs5,500-8,500/sqft", "yoy": 16.0, "signals": {"infrastructure": 76, "population": 72, "satellite": 78, "rera": 72, "employment": 70, "priceVelocity": 74, "govtScheme": 76}},
+    "chakan": {"name": "Chakan", "city": "pune", "city_name": "Pune", "score": 81, "price_range": "Rs4,500-7,500/sqft", "yoy": 18.0, "signals": {"infrastructure": 84, "population": 70, "satellite": 84, "rera": 72, "employment": 90, "priceVelocity": 76, "govtScheme": 84}},
+    "talegaon-dabhade": {"name": "Talegaon Dabhade", "city": "pune", "city_name": "Pune", "score": 77, "price_range": "Rs4,800-7,800/sqft", "yoy": 17.0, "signals": {"infrastructure": 78, "population": 68, "satellite": 80, "rera": 70, "employment": 78, "priceVelocity": 76, "govtScheme": 80}},
+    "bavdhan": {"name": "Bavdhan", "city": "pune", "city_name": "Pune", "score": 75, "price_range": "Rs7,500-11,500/sqft", "yoy": 12.0, "signals": {"infrastructure": 76, "population": 72, "satellite": 66, "rera": 72, "employment": 72, "priceVelocity": 68, "govtScheme": 68}}
+}
+
 AREA_DATA.update(HYDERABAD_AREA_OVERRIDES)
 AREA_DATA.update(BANGALORE_AREA_OVERRIDES)
 AREA_DATA.update(MUMBAI_AREA_OVERRIDES)
 AREA_DATA.update(CHENNAI_AREA_OVERRIDES)
+AREA_DATA.update(PUNE_AREA_OVERRIDES)
 
 router = APIRouter()
 
