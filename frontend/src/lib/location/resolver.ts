@@ -20,6 +20,10 @@ import punAliasesJson from '../../../../data/cities/pune/aliases.json'
 import punCityJson from '../../../../data/cities/pune/city.json'
 import punClustersJson from '../../../../data/cities/pune/clusters.json'
 import punLocalitiesJson from '../../../../data/cities/pune/localities.json'
+import delAliasesJson from '../../../../data/cities/delhi/aliases.json'
+import delCityJson from '../../../../data/cities/delhi/city.json'
+import delClustersJson from '../../../../data/cities/delhi/clusters.json'
+import delLocalitiesJson from '../../../../data/cities/delhi/localities.json'
 
 export interface ResolverOptions {
   locality?: string | null
@@ -177,6 +181,12 @@ const SPECIAL_CITY_DATASETS: Record<string, SpecialResolverDataset> = {
     punLocalitiesJson as ResolverLocalityData[],
     punAliasesJson as ResolverAliasData,
     punClustersJson as ResolverClusterData[],
+  ),
+  delhi: buildSpecialResolverDataset(
+    delCityJson as ResolverCityData,
+    delLocalitiesJson as ResolverLocalityData[],
+    delAliasesJson as ResolverAliasData,
+    delClustersJson as ResolverClusterData[],
   ),
 }
 

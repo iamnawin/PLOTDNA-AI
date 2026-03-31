@@ -2,18 +2,20 @@
 
 ## Purpose
 
-PlotDNA currently works best in Hyderabad, Bangalore, Mumbai, Chennai, and Pune because those are now the resolver-grade locality layers in the repo:
+PlotDNA currently works best in Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR because those are now the resolver-grade locality layers in the repo:
 
 - `data/cities/hyderabad/*`
 - `data/cities/bangalore/*`
 - `data/cities/mumbai/*`
 - `data/cities/chennai/*`
 - `data/cities/pune/*`
+ - `data/cities/delhi/*`
 - `frontend/src/data/hyderabad.ts`
 - `frontend/src/data/bangalore.ts`
 - `frontend/src/data/mumbai.ts`
 - `frontend/src/data/chennai.ts`
 - `frontend/src/data/pune.ts`
+ - `frontend/src/data/delhi.ts`
 
 The goal of this plan is to move PlotDNA from a Hyderabad-first, partly hardcoded setup to a scalable all-India micro-market intelligence platform.
 
@@ -30,7 +32,7 @@ PlotDNA already has two different systems:
 2. `Stored micro-market intelligence`
    - Frontend city registry: `frontend/src/data/cities.ts`
    - Per-city datasets: `frontend/src/data/*.ts`
-   - Hyderabad, Bangalore, Mumbai, Chennai, and Pune resolver data: `data/cities/<city>/*`
+   - Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR resolver data: `data/cities/<city>/*`
    - Backend fallback verdict data: `backend/app/api/routes/verdict.py`
    - Provides locality name, polygons, price range, YoY, highlights, projects, and source links.
 
@@ -120,15 +122,15 @@ The same market intelligence currently exists in multiple places:
 
 This will not scale across India.
 
-### 2. Delhi NCR is now the only starter city still missing resolver-grade structure
+### 2. All 6 live cities are now resolver-grade, but the product still duplicates market truth
 
-Hyderabad, Bangalore, Mumbai, Chennai, and Pune currently have:
+Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR currently have:
 
 - locality polygons
 - alias mapping
 - cluster mapping
 
-Delhi NCR still has area datasets, but not the same resolver structure.
+The structural issue is no longer missing resolver layers. The issue is that locality truth is still duplicated across frontend city files, source maps, and backend verdict fallbacks.
 
 ### 3. Backend area APIs are not yet the real source of truth
 
@@ -136,15 +138,15 @@ Delhi NCR still has area datasets, but not the same resolver structure.
 
 ## Recommended Migration Direction
 
-### Phase 1: Normalize Hyderabad, Bangalore, Mumbai, Chennai, and Pune as the reference implementation
+### Phase 1: Normalize Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR as the reference implementation
 
-Use Hyderabad, Bangalore, Mumbai, Chennai, and Pune as the current template for the final system.
+Use Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR as the current template for the final system.
 
 Goals:
 
-- move Hyderabad, Bangalore, Mumbai, Chennai, and Pune market records into one canonical backend-owned dataset
+- move Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR market records into one canonical backend-owned dataset
 - keep polygons, aliases, and clusters together with the market records
-- stop duplicating Hyderabad, Bangalore, Mumbai, Chennai, and Pune values across frontend and backend
+- stop duplicating Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR values across frontend and backend
 - make frontend fetch resolver-grade city data instead of bundling all of it locally
 
 ### Phase 2: Define one canonical catalog format
@@ -296,7 +298,7 @@ Recommended implementation order:
 3. Replace duplicated Hyderabad backend/frontend values with one source
 4. Update frontend to fetch market data from backend
 5. Generalize resolver loading for all cities
-6. Port Delhi NCR to the same structure
+6. Start the next tier-2 metro only after the canonical backend-owned catalog exists
 7. Repeat for remaining metros
 
 ## Non-Goals
@@ -320,7 +322,7 @@ PlotDNA is ready for real all-India expansion when:
 
 ## Immediate Next Step
 
-Use Hyderabad, Bangalore, Mumbai, Chennai, and Pune as the migration template and refactor the app so:
+Use Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR as the migration template and refactor the app so:
 
 - one canonical dataset powers resolver, area detail, sources, and verdicts
 - frontend consumes that dataset through backend APIs

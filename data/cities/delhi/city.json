@@ -1,0 +1,11 @@
+{
+  "slug": "delhi",
+  "name": "Delhi NCR",
+  "state": "NCR",
+  "center": [28.535, 77.280],
+  "zoom": 10,
+  "coverageRadiusKm": 72,
+  "centralRadiusKm": 12,
+  "exactLocalityBufferKm": 8,
+  "nearbyMicroMarketRadiusKm": 6
+}

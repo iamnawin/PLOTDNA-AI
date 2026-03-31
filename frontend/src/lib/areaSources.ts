@@ -462,6 +462,90 @@ const PUNE_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
   ],
 }
 
+const DELHI_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
+  'noida-sector-150': [
+    { title: 'Noida Authority Sector 150 Planning', url: 'https://noidaauthorityonline.in/', type: 'gov' },
+    { title: 'Noida Sector 150 Property Market - 99acres', url: 'https://www.99acres.com/property-in-sector-150-noida-ffid', type: 'data' },
+  ],
+  'greater-noida-west': [
+    { title: 'Greater Noida Authority Planning', url: 'https://www.greaternoidaauthority.in/', type: 'gov' },
+    { title: 'Greater Noida West Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Greater-Noida-West/residential-real-estate-Greater-Noida-West', type: 'data' },
+  ],
+  'dwarka-expressway': [
+    { title: 'Dwarka Expressway Project - NHAI', url: 'https://nhai.gov.in/', type: 'gov' },
+    { title: 'Dwarka Expressway Projects - HRERA', url: 'https://haryanarera.gov.in/', type: 'gov' },
+    { title: 'Dwarka Expressway Property Market - 99acres', url: 'https://www.99acres.com/property-in-dwarka-expressway-gurgaon-ffid', type: 'data' },
+  ],
+  'yamuna-expressway': [
+    { title: 'YEIDA Planning and Allotment', url: 'https://www.yamunaexpresswayauthority.com/', type: 'gov' },
+    { title: 'Yamuna Expressway Property Trends - 99acres', url: 'https://www.99acres.com/property-in-yamuna-expressway-ffid', type: 'data' },
+  ],
+  'sohna-road': [
+    { title: 'Sohna Road and SPR Upgrades - GMDA', url: 'https://gmda.gov.in/', type: 'gov' },
+    { title: 'Sohna Road Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale/residential-real-estate/sohna-road-gurgaon', type: 'data' },
+  ],
+  'faridabad-new-town': [
+    { title: 'Faridabad Planning - HSVP', url: 'https://hsvphry.org.in/', type: 'gov' },
+    { title: 'Faridabad New Town Property Market - 99acres', url: 'https://www.99acres.com/property-in-greater-faridabad-faridabad-ffid', type: 'data' },
+  ],
+  'golf-course-extension-road': [
+    { title: 'Golf Course Extension Road Planning - GMDA', url: 'https://gmda.gov.in/', type: 'gov' },
+    { title: 'Golf Course Extension Road Property Market - 99acres', url: 'https://www.99acres.com/property-in-golf-course-extension-road-gurgaon-ffid', type: 'data' },
+  ],
+  'new-gurgaon': [
+    { title: 'New Gurgaon Sector Planning - HSVP', url: 'https://hsvphry.org.in/', type: 'gov' },
+    { title: 'New Gurgaon Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-New-Gurgaon/residential-real-estate-New-Gurgaon', type: 'data' },
+  ],
+  'cyber-city': [
+    { title: 'Cyber City Transit and Commercial District - GMDA', url: 'https://gmda.gov.in/', type: 'gov' },
+    { title: 'Cyber City Office Market - Knight Frank India', url: 'https://www.knightfrank.co.in/research', type: 'research' },
+  ],
+  'noida-expressway': [
+    { title: 'Noida Expressway Corridor Planning - Noida Authority', url: 'https://noidaauthorityonline.in/', type: 'gov' },
+    { title: 'Noida Expressway Property Market - 99acres', url: 'https://www.99acres.com/property-in-noida-expressway-noida-ffid', type: 'data' },
+  ],
+  'noida-sector-79': [
+    { title: 'Noida Sector 79 Planning - Noida Authority', url: 'https://noidaauthorityonline.in/', type: 'gov' },
+    { title: 'Noida Sector 79 Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Sector-79-Noida/residential-real-estate-Sector-79-Noida', type: 'data' },
+  ],
+  'greater-noida': [
+    { title: 'Greater Noida City Planning - GNIDA', url: 'https://www.greaternoidaauthority.in/', type: 'gov' },
+    { title: 'Greater Noida Property Market - 99acres', url: 'https://www.99acres.com/property-in-greater-noida-ffid', type: 'data' },
+  ],
+  indirapuram: [
+    { title: 'Indirapuram Area Planning - Ghaziabad Development Authority', url: 'https://gdaghaziabad.in/', type: 'gov' },
+    { title: 'Indirapuram Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Indirapuram/residential-real-estate-Indirapuram', type: 'data' },
+  ],
+  'raj-nagar-extension': [
+    { title: 'Raj Nagar Extension Planning - Ghaziabad Development Authority', url: 'https://gdaghaziabad.in/', type: 'gov' },
+    { title: 'Raj Nagar Extension Property Market - 99acres', url: 'https://www.99acres.com/property-in-raj-nagar-extension-ghaziabad-ffid', type: 'data' },
+  ],
+  vaishali: [
+    { title: 'Vaishali Station Area and Urban Planning - GDA', url: 'https://gdaghaziabad.in/', type: 'gov' },
+    { title: 'Vaishali Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Vaishali/residential-real-estate-Vaishali', type: 'data' },
+  ],
+  vasundhara: [
+    { title: 'Vasundhara Urban Planning - GDA', url: 'https://gdaghaziabad.in/', type: 'gov' },
+    { title: 'Vasundhara Property Market - 99acres', url: 'https://www.99acres.com/property-in-vasundhara-ghaziabad-ffid', type: 'data' },
+  ],
+  kundli: [
+    { title: 'Kundli Industrial and Logistics Planning - HSIIDC', url: 'https://hsiidc.org.in/', type: 'gov' },
+    { title: 'Kundli Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Kundli/residential-real-estate-Kundli', type: 'data' },
+  ],
+  rohini: [
+    { title: 'Rohini Planning and Sector Development - DDA', url: 'https://dda.gov.in/', type: 'gov' },
+    { title: 'Rohini Property Market - 99acres', url: 'https://www.99acres.com/property-in-rohini-delhi-ffid', type: 'data' },
+  ],
+  aerocity: [
+    { title: 'Delhi Aerocity District Expansion - DIAL', url: 'https://www.newdelhiairport.in/', type: 'gov' },
+    { title: 'Aerocity Commercial District Research - CBRE India', url: 'https://www.cbre.co.in/insights', type: 'research' },
+  ],
+  'faridabad-neharpar': [
+    { title: 'Greater Faridabad Planning - HSVP', url: 'https://hsvphry.org.in/', type: 'gov' },
+    { title: 'Greater Faridabad Property Trends - 99acres', url: 'https://www.99acres.com/property-in-greater-faridabad-faridabad-ffid', type: 'data' },
+  ],
+}
+
 const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
   ameenpur: [
     { title: 'Ameenpur HMDA Master Plan References', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
@@ -587,7 +671,7 @@ const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
  * Always pass citySlug so Delhi areas show RERA Delhi instead of RERA Telangana.
  */
 export function getAreaSources(slug: string, citySlug = 'hyderabad'): AreaSource[] {
-  const overrideSpecific = HYDERABAD_SOURCE_OVERRIDES[slug] ?? MUMBAI_SOURCE_OVERRIDES[slug] ?? CHENNAI_SOURCE_OVERRIDES[slug] ?? PUNE_SOURCE_OVERRIDES[slug]
+  const overrideSpecific = HYDERABAD_SOURCE_OVERRIDES[slug] ?? MUMBAI_SOURCE_OVERRIDES[slug] ?? CHENNAI_SOURCE_OVERRIDES[slug] ?? PUNE_SOURCE_OVERRIDES[slug] ?? DELHI_SOURCE_OVERRIDES[slug]
   const specific     = overrideSpecific ?? AREA_SOURCES[slug] ?? []
   const cityDefaults = CITY_DEFAULT_SOURCES[citySlug] ?? CITY_DEFAULT_SOURCES.hyderabad
   return [...specific, ...cityDefaults]

@@ -6,7 +6,7 @@
 
 **Decode any plot before you buy.**
 
-AI-powered real estate investment intelligence for India - DNA scores, satellite growth, infrastructure pipeline, and live construction activity for 125 micro-markets across 6 cities.
+AI-powered real estate investment intelligence for India - DNA scores, satellite growth, infrastructure pipeline, and live construction activity for 133 micro-markets across 6 cities.
 
 <br/>
 
@@ -28,14 +28,14 @@ AI-powered real estate investment intelligence for India - DNA scores, satellite
 
 Most Indians make their biggest financial decision - buying land - based on gut feel, a broker's pitch, or a WhatsApp forward. PlotDNA fixes that.
 
-Enter any location in India. Get a **DNA Score (0-100)** backed by 7 real signals: infrastructure pipeline, satellite growth, RERA activity, employment hubs, population trends, price velocity, and government schemes. PlotDNA is currently deepest in Hyderabad, Bangalore, Mumbai, Chennai, and Pune, with starter coverage across Delhi NCR.
+Enter any location in India. Get a **DNA Score (0-100)** backed by 7 real signals: infrastructure pipeline, satellite growth, RERA activity, employment hubs, population trends, price velocity, and government schemes. PlotDNA is now resolver-grade across Hyderabad, Bangalore, Mumbai, Chennai, Pune, and Delhi NCR.
 
 ---
 
 ## Features
 
 ### Interactive Intelligence Map
-- Polygon overlays for 125 micro-markets across 6 cities
+- Polygon overlays for 133 micro-markets across 6 cities
 - Color-coded DNA tiers: **Goldzone** ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· **Good Growth** ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· **Moderate** ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· **High Risk**
 - Hover tooltip with 7-signal fingerprint, YoY growth, and price range
 - 4 basemap styles ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â Standard ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Satellite ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Terrain ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Light (no API key needed)
@@ -67,7 +67,7 @@ Toggle live construction markers on the map to see:
 - Type-coded colors: Metro ? IT Park ? Highway ? Residential ? Commercial ? Airport
 - Hover tooltip: investment Rs Cr, ETA, developer, impact level
 
-Currently live for **Hyderabad** (50 tracked projects), **Bangalore** (28 tracked projects), **Mumbai** (20 tracked projects), **Chennai** (21 tracked projects), and **Pune** (20 tracked projects across the current support set):
+Currently live for **Hyderabad** (50 tracked projects), **Bangalore** (28 tracked projects), **Mumbai** (20 tracked projects), **Chennai** (21 tracked projects), **Pune** (20 tracked projects), and **Delhi NCR** (20 tracked projects across the current support set):
 
 | Area | Key Projects |
 |------|-------------|
@@ -105,7 +105,7 @@ PlotDNA is a Progressive Web App. On mobile, tap **"Add to Home Screen"** to ins
 | Mumbai | 20 | Live - resolver-grade coverage |
 | Chennai | 21 | Live - resolver-grade coverage |
 | Pune | 20 | Live - resolver-grade coverage |
-| Delhi NCR | 6 | Live - starter coverage |
+| Delhi NCR | 20 | Live - resolver-grade coverage |
 
 ---
 

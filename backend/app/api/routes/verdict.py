@@ -165,11 +165,35 @@ PUNE_AREA_OVERRIDES: dict[str, dict] = {
     "bavdhan": {"name": "Bavdhan", "city": "pune", "city_name": "Pune", "score": 75, "price_range": "Rs7,500-11,500/sqft", "yoy": 12.0, "signals": {"infrastructure": 76, "population": 72, "satellite": 66, "rera": 72, "employment": 72, "priceVelocity": 68, "govtScheme": 68}}
 }
 
+DELHI_AREA_OVERRIDES: dict[str, dict] = {
+    "noida-sector-150": {"name": "Noida Sector 150", "city": "delhi", "city_name": "Delhi NCR", "score": 85, "price_range": "Rs6,500-10,000/sqft", "yoy": 28.0, "signals": {"infrastructure": 88, "population": 72, "satellite": 85, "rera": 82, "employment": 80, "priceVelocity": 88, "govtScheme": 88}},
+    "greater-noida-west": {"name": "Greater Noida West", "city": "delhi", "city_name": "Delhi NCR", "score": 82, "price_range": "Rs4,500-7,500/sqft", "yoy": 22.0, "signals": {"infrastructure": 82, "population": 78, "satellite": 82, "rera": 80, "employment": 72, "priceVelocity": 82, "govtScheme": 85}},
+    "dwarka-expressway": {"name": "Dwarka Expressway", "city": "delhi", "city_name": "Delhi NCR", "score": 81, "price_range": "Rs7,500-12,500/sqft", "yoy": 18.0, "signals": {"infrastructure": 85, "population": 75, "satellite": 78, "rera": 80, "employment": 82, "priceVelocity": 78, "govtScheme": 80}},
+    "yamuna-expressway": {"name": "Yamuna Expressway", "city": "delhi", "city_name": "Delhi NCR", "score": 79, "price_range": "Rs3,500-5,800/sqft", "yoy": 20.0, "signals": {"infrastructure": 80, "population": 60, "satellite": 85, "rera": 70, "employment": 70, "priceVelocity": 82, "govtScheme": 88}},
+    "sohna-road": {"name": "Sohna Road", "city": "delhi", "city_name": "Delhi NCR", "score": 75, "price_range": "Rs6,000-9,800/sqft", "yoy": 15.0, "signals": {"infrastructure": 74, "population": 68, "satellite": 75, "rera": 72, "employment": 72, "priceVelocity": 72, "govtScheme": 75}},
+    "faridabad-new-town": {"name": "Faridabad New Town", "city": "delhi", "city_name": "Delhi NCR", "score": 72, "price_range": "Rs4,500-7,200/sqft", "yoy": 13.0, "signals": {"infrastructure": 72, "population": 70, "satellite": 70, "rera": 68, "employment": 66, "priceVelocity": 68, "govtScheme": 72}},
+    "golf-course-extension-road": {"name": "Golf Course Extension Road", "city": "delhi", "city_name": "Delhi NCR", "score": 83, "price_range": "Rs10,000-17,000/sqft", "yoy": 19.0, "signals": {"infrastructure": 84, "population": 72, "satellite": 78, "rera": 82, "employment": 84, "priceVelocity": 80, "govtScheme": 78}},
+    "new-gurgaon": {"name": "New Gurgaon", "city": "delhi", "city_name": "Delhi NCR", "score": 79, "price_range": "Rs7,000-11,000/sqft", "yoy": 18.0, "signals": {"infrastructure": 80, "population": 70, "satellite": 80, "rera": 78, "employment": 74, "priceVelocity": 78, "govtScheme": 80}},
+    "cyber-city": {"name": "Cyber City", "city": "delhi", "city_name": "Delhi NCR", "score": 82, "price_range": "Rs16,000-26,000/sqft", "yoy": 12.0, "signals": {"infrastructure": 86, "population": 66, "satellite": 68, "rera": 74, "employment": 96, "priceVelocity": 72, "govtScheme": 66}},
+    "noida-expressway": {"name": "Noida Expressway", "city": "delhi", "city_name": "Delhi NCR", "score": 81, "price_range": "Rs8,000-13,000/sqft", "yoy": 16.0, "signals": {"infrastructure": 84, "population": 74, "satellite": 78, "rera": 80, "employment": 84, "priceVelocity": 76, "govtScheme": 80}},
+    "noida-sector-79": {"name": "Noida Sector 79", "city": "delhi", "city_name": "Delhi NCR", "score": 77, "price_range": "Rs6,500-10,000/sqft", "yoy": 17.0, "signals": {"infrastructure": 78, "population": 72, "satellite": 76, "rera": 76, "employment": 74, "priceVelocity": 76, "govtScheme": 76}},
+    "greater-noida": {"name": "Greater Noida", "city": "delhi", "city_name": "Delhi NCR", "score": 76, "price_range": "Rs4,500-7,500/sqft", "yoy": 14.0, "signals": {"infrastructure": 78, "population": 70, "satellite": 78, "rera": 74, "employment": 70, "priceVelocity": 74, "govtScheme": 80}},
+    "indirapuram": {"name": "Indirapuram", "city": "delhi", "city_name": "Delhi NCR", "score": 73, "price_range": "Rs6,000-9,500/sqft", "yoy": 11.0, "signals": {"infrastructure": 74, "population": 78, "satellite": 60, "rera": 66, "employment": 68, "priceVelocity": 64, "govtScheme": 64}},
+    "raj-nagar-extension": {"name": "Raj Nagar Extension", "city": "delhi", "city_name": "Delhi NCR", "score": 75, "price_range": "Rs4,500-7,200/sqft", "yoy": 16.0, "signals": {"infrastructure": 74, "population": 72, "satellite": 78, "rera": 72, "employment": 64, "priceVelocity": 76, "govtScheme": 72}},
+    "vaishali": {"name": "Vaishali", "city": "delhi", "city_name": "Delhi NCR", "score": 72, "price_range": "Rs5,800-9,000/sqft", "yoy": 10.0, "signals": {"infrastructure": 76, "population": 78, "satellite": 58, "rera": 64, "employment": 66, "priceVelocity": 62, "govtScheme": 62}},
+    "vasundhara": {"name": "Vasundhara", "city": "delhi", "city_name": "Delhi NCR", "score": 71, "price_range": "Rs5,500-8,800/sqft", "yoy": 9.0, "signals": {"infrastructure": 74, "population": 76, "satellite": 56, "rera": 64, "employment": 64, "priceVelocity": 60, "govtScheme": 62}},
+    "kundli": {"name": "Kundli", "city": "delhi", "city_name": "Delhi NCR", "score": 77, "price_range": "Rs4,200-6,800/sqft", "yoy": 15.0, "signals": {"infrastructure": 80, "population": 64, "satellite": 80, "rera": 70, "employment": 76, "priceVelocity": 74, "govtScheme": 82}},
+    "rohini": {"name": "Rohini", "city": "delhi", "city_name": "Delhi NCR", "score": 73, "price_range": "Rs7,500-12,000/sqft", "yoy": 10.0, "signals": {"infrastructure": 80, "population": 78, "satellite": 56, "rera": 64, "employment": 66, "priceVelocity": 60, "govtScheme": 64}},
+    "aerocity": {"name": "Aerocity", "city": "delhi", "city_name": "Delhi NCR", "score": 80, "price_range": "Rs18,000-30,000/sqft", "yoy": 11.0, "signals": {"infrastructure": 88, "population": 62, "satellite": 66, "rera": 68, "employment": 88, "priceVelocity": 70, "govtScheme": 72}},
+    "faridabad-neharpar": {"name": "Faridabad Neharpar", "city": "delhi", "city_name": "Delhi NCR", "score": 74, "price_range": "Rs4,200-6,800/sqft", "yoy": 15.0, "signals": {"infrastructure": 74, "population": 70, "satellite": 76, "rera": 70, "employment": 64, "priceVelocity": 72, "govtScheme": 74}}
+}
+
 AREA_DATA.update(HYDERABAD_AREA_OVERRIDES)
 AREA_DATA.update(BANGALORE_AREA_OVERRIDES)
 AREA_DATA.update(MUMBAI_AREA_OVERRIDES)
 AREA_DATA.update(CHENNAI_AREA_OVERRIDES)
 AREA_DATA.update(PUNE_AREA_OVERRIDES)
+AREA_DATA.update(DELHI_AREA_OVERRIDES)
 
 router = APIRouter()
 
