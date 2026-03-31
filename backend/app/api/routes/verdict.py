@@ -118,9 +118,34 @@ MUMBAI_AREA_OVERRIDES: dict[str, dict] = {
     "borivali-west": {"name": "Borivali West", "city": "mumbai", "city_name": "Mumbai", "score": 70, "price_range": "Rs15,000-22,000/sqft", "yoy": 9.0, "signals": {"infrastructure": 76, "population": 78, "satellite": 58, "rera": 68, "employment": 62, "priceVelocity": 62, "govtScheme": 60}}
 }
 
+CHENNAI_AREA_OVERRIDES: dict[str, dict] = {
+    "kelambakkam": {"name": "Kelambakkam", "city": "chennai", "city_name": "Chennai", "score": 84, "price_range": "Rs4,500-7,500/sqft", "yoy": 25.0, "signals": {"infrastructure": 80, "population": 72, "satellite": 82, "rera": 75, "employment": 78, "priceVelocity": 88, "govtScheme": 85}},
+    "guduvanchery": {"name": "Guduvanchery", "city": "chennai", "city_name": "Chennai", "score": 81, "price_range": "Rs3,800-6,000/sqft", "yoy": 24.0, "signals": {"infrastructure": 72, "population": 65, "satellite": 85, "rera": 68, "employment": 65, "priceVelocity": 88, "govtScheme": 82}},
+    "sholinganallur": {"name": "Sholinganallur", "city": "chennai", "city_name": "Chennai", "score": 80, "price_range": "Rs8,000-12,000/sqft", "yoy": 18.0, "signals": {"infrastructure": 82, "population": 78, "satellite": 72, "rera": 80, "employment": 88, "priceVelocity": 76, "govtScheme": 78}},
+    "perumbakkam": {"name": "Perumbakkam", "city": "chennai", "city_name": "Chennai", "score": 77, "price_range": "Rs5,500-8,000/sqft", "yoy": 20.0, "signals": {"infrastructure": 78, "population": 75, "satellite": 75, "rera": 78, "employment": 72, "priceVelocity": 78, "govtScheme": 80}},
+    "porur": {"name": "Porur", "city": "chennai", "city_name": "Chennai", "score": 73, "price_range": "Rs7,500-11,000/sqft", "yoy": 14.0, "signals": {"infrastructure": 75, "population": 72, "satellite": 68, "rera": 72, "employment": 75, "priceVelocity": 70, "govtScheme": 70}},
+    "ambattur": {"name": "Ambattur", "city": "chennai", "city_name": "Chennai", "score": 70, "price_range": "Rs6,000-9,000/sqft", "yoy": 12.0, "signals": {"infrastructure": 70, "population": 70, "satellite": 65, "rera": 68, "employment": 72, "priceVelocity": 65, "govtScheme": 68}},
+    "omr": {"name": "OMR", "city": "chennai", "city_name": "Chennai", "score": 82, "price_range": "Rs7,500-12,000/sqft", "yoy": 18.0, "signals": {"infrastructure": 84, "population": 78, "satellite": 78, "rera": 80, "employment": 90, "priceVelocity": 78, "govtScheme": 80}},
+    "siruseri": {"name": "Siruseri", "city": "chennai", "city_name": "Chennai", "score": 79, "price_range": "Rs5,500-9,000/sqft", "yoy": 18.0, "signals": {"infrastructure": 78, "population": 70, "satellite": 80, "rera": 76, "employment": 86, "priceVelocity": 76, "govtScheme": 76}},
+    "navalur": {"name": "Navalur", "city": "chennai", "city_name": "Chennai", "score": 78, "price_range": "Rs6,000-9,500/sqft", "yoy": 17.0, "signals": {"infrastructure": 78, "population": 72, "satellite": 78, "rera": 76, "employment": 84, "priceVelocity": 74, "govtScheme": 74}},
+    "thoraipakkam": {"name": "Thoraipakkam", "city": "chennai", "city_name": "Chennai", "score": 77, "price_range": "Rs7,500-11,500/sqft", "yoy": 15.0, "signals": {"infrastructure": 80, "population": 74, "satellite": 72, "rera": 76, "employment": 84, "priceVelocity": 72, "govtScheme": 72}},
+    "medavakkam": {"name": "Medavakkam", "city": "chennai", "city_name": "Chennai", "score": 76, "price_range": "Rs6,500-10,000/sqft", "yoy": 16.0, "signals": {"infrastructure": 76, "population": 78, "satellite": 74, "rera": 74, "employment": 70, "priceVelocity": 74, "govtScheme": 72}},
+    "tambaram": {"name": "Tambaram", "city": "chennai", "city_name": "Chennai", "score": 74, "price_range": "Rs6,500-10,500/sqft", "yoy": 13.0, "signals": {"infrastructure": 78, "population": 78, "satellite": 66, "rera": 70, "employment": 68, "priceVelocity": 68, "govtScheme": 70}},
+    "sriperumbudur": {"name": "Sriperumbudur", "city": "chennai", "city_name": "Chennai", "score": 82, "price_range": "Rs4,500-7,500/sqft", "yoy": 21.0, "signals": {"infrastructure": 84, "population": 70, "satellite": 82, "rera": 74, "employment": 88, "priceVelocity": 82, "govtScheme": 86}},
+    "anna-nagar": {"name": "Anna Nagar", "city": "chennai", "city_name": "Chennai", "score": 72, "price_range": "Rs12,000-18,000/sqft", "yoy": 10.0, "signals": {"infrastructure": 80, "population": 76, "satellite": 56, "rera": 68, "employment": 72, "priceVelocity": 64, "govtScheme": 62}},
+    "velachery": {"name": "Velachery", "city": "chennai", "city_name": "Chennai", "score": 74, "price_range": "Rs9,500-14,500/sqft", "yoy": 12.0, "signals": {"infrastructure": 78, "population": 76, "satellite": 64, "rera": 70, "employment": 78, "priceVelocity": 68, "govtScheme": 66}},
+    "tambaram-east": {"name": "Tambaram East", "city": "chennai", "city_name": "Chennai", "score": 72, "price_range": "Rs6,000-9,500/sqft", "yoy": 11.0, "signals": {"infrastructure": 76, "population": 76, "satellite": 62, "rera": 68, "employment": 66, "priceVelocity": 66, "govtScheme": 68}},
+    "chromepet": {"name": "Chromepet", "city": "chennai", "city_name": "Chennai", "score": 71, "price_range": "Rs6,500-10,000/sqft", "yoy": 11.0, "signals": {"infrastructure": 76, "population": 74, "satellite": 60, "rera": 68, "employment": 66, "priceVelocity": 64, "govtScheme": 66}},
+    "mogappair": {"name": "Mogappair", "city": "chennai", "city_name": "Chennai", "score": 70, "price_range": "Rs7,000-11,000/sqft", "yoy": 10.0, "signals": {"infrastructure": 74, "population": 74, "satellite": 58, "rera": 66, "employment": 68, "priceVelocity": 62, "govtScheme": 62}},
+    "nungambakkam": {"name": "Nungambakkam", "city": "chennai", "city_name": "Chennai", "score": 72, "price_range": "Rs14,000-22,000/sqft", "yoy": 9.0, "signals": {"infrastructure": 82, "population": 72, "satellite": 54, "rera": 66, "employment": 78, "priceVelocity": 60, "govtScheme": 58}},
+    "madhavaram": {"name": "Madhavaram", "city": "chennai", "city_name": "Chennai", "score": 73, "price_range": "Rs6,000-9,500/sqft", "yoy": 13.0, "signals": {"infrastructure": 76, "population": 72, "satellite": 70, "rera": 68, "employment": 68, "priceVelocity": 70, "govtScheme": 72}},
+    "egattur": {"name": "Egattur", "city": "chennai", "city_name": "Chennai", "score": 78, "price_range": "Rs6,000-9,500/sqft", "yoy": 17.0, "signals": {"infrastructure": 78, "population": 70, "satellite": 78, "rera": 76, "employment": 82, "priceVelocity": 74, "govtScheme": 74}}
+}
+
 AREA_DATA.update(HYDERABAD_AREA_OVERRIDES)
 AREA_DATA.update(BANGALORE_AREA_OVERRIDES)
 AREA_DATA.update(MUMBAI_AREA_OVERRIDES)
+AREA_DATA.update(CHENNAI_AREA_OVERRIDES)
 
 router = APIRouter()
 

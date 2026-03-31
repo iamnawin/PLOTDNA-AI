@@ -315,6 +315,70 @@ const MUMBAI_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
   ],
 }
 
+const CHENNAI_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
+  omr: [
+    { title: 'OMR Corridor Planning - CMDA', url: 'https://www.cmdachennai.gov.in/', type: 'gov' },
+    { title: 'OMR Tech Corridor Updates - The Hindu BusinessLine', url: 'https://www.thehindubusinessline.com/', type: 'news' },
+    { title: 'OMR Property Market - 99acres', url: 'https://www.99acres.com/property-in-omr-chennai-ffid', type: 'data' },
+  ],
+  siruseri: [
+    { title: 'Siruseri SIPCOT IT Park - SIPCOT', url: 'https://sipcot.tn.gov.in/', type: 'gov' },
+    { title: 'Siruseri Property Trends - 99acres', url: 'https://www.99acres.com/property-in-siruseri-chennai-ffid', type: 'data' },
+  ],
+  navalur: [
+    { title: 'Navalur OMR Growth Belt - CMDA', url: 'https://www.cmdachennai.gov.in/', type: 'gov' },
+    { title: 'Navalur Property Market - 99acres', url: 'https://www.99acres.com/property-in-navalur-chennai-ffid', type: 'data' },
+  ],
+  thoraipakkam: [
+    { title: 'Thoraipakkam Urban Corridor - CMDA', url: 'https://www.cmdachennai.gov.in/', type: 'gov' },
+    { title: 'Thoraipakkam Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Thoraipakkam/residential-real-estate-Thoraipakkam', type: 'data' },
+  ],
+  medavakkam: [
+    { title: 'Medavakkam South Suburban Planning - CMDA', url: 'https://www.cmdachennai.gov.in/', type: 'gov' },
+    { title: 'Medavakkam Property Market - 99acres', url: 'https://www.99acres.com/property-in-medavakkam-chennai-ffid', type: 'data' },
+  ],
+  tambaram: [
+    { title: 'Tambaram Transit and Planning - CMDA', url: 'https://www.cmdachennai.gov.in/', type: 'gov' },
+    { title: 'Tambaram Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Tambaram/residential-real-estate-Tambaram', type: 'data' },
+  ],
+  sriperumbudur: [
+    { title: 'Sriperumbudur Industrial Corridor - SIPCOT', url: 'https://sipcot.tn.gov.in/', type: 'gov' },
+    { title: 'Sriperumbudur Property Market - 99acres', url: 'https://www.99acres.com/property-in-sriperumbudur-chennai-ffid', type: 'data' },
+  ],
+  'anna-nagar': [
+    { title: 'Anna Nagar Central Zone - GCC', url: 'https://chennaicorporation.gov.in/', type: 'gov' },
+    { title: 'Anna Nagar Property Market - 99acres', url: 'https://www.99acres.com/property-in-anna-nagar-chennai-ffid', type: 'data' },
+  ],
+  velachery: [
+    { title: 'Velachery South Chennai Zone - GCC', url: 'https://chennaicorporation.gov.in/', type: 'gov' },
+    { title: 'Velachery Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Velachery/residential-real-estate-Velachery', type: 'data' },
+  ],
+  'tambaram-east': [
+    { title: 'Tambaram East Suburban Planning - CMDA', url: 'https://www.cmdachennai.gov.in/', type: 'gov' },
+    { title: 'Tambaram East Property Market - 99acres', url: 'https://www.99acres.com/property-in-tambaram-east-chennai-ffid', type: 'data' },
+  ],
+  chromepet: [
+    { title: 'Chromepet GST Corridor - CMDA', url: 'https://www.cmdachennai.gov.in/', type: 'gov' },
+    { title: 'Chromepet Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Chromepet/residential-real-estate-Chromepet', type: 'data' },
+  ],
+  mogappair: [
+    { title: 'Mogappair West-Central Zone - GCC', url: 'https://chennaicorporation.gov.in/', type: 'gov' },
+    { title: 'Mogappair Property Market - 99acres', url: 'https://www.99acres.com/property-in-mogappair-chennai-ffid', type: 'data' },
+  ],
+  nungambakkam: [
+    { title: 'Nungambakkam Core City Zone - GCC', url: 'https://chennaicorporation.gov.in/', type: 'gov' },
+    { title: 'Nungambakkam Property Trends - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Nungambakkam/residential-real-estate-Nungambakkam', type: 'data' },
+  ],
+  madhavaram: [
+    { title: 'Madhavaram North Chennai Planning - CMDA', url: 'https://www.cmdachennai.gov.in/', type: 'gov' },
+    { title: 'Madhavaram Property Market - 99acres', url: 'https://www.99acres.com/property-in-madhavaram-chennai-ffid', type: 'data' },
+  ],
+  egattur: [
+    { title: 'Egattur OMR Growth Belt - CMDA', url: 'https://www.cmdachennai.gov.in/', type: 'gov' },
+    { title: 'Egattur Property Trends - 99acres', url: 'https://www.99acres.com/property-in-egattur-chennai-ffid', type: 'data' },
+  ],
+}
+
 const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
   ameenpur: [
     { title: 'Ameenpur HMDA Master Plan References', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
@@ -440,7 +504,7 @@ const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
  * Always pass citySlug so Delhi areas show RERA Delhi instead of RERA Telangana.
  */
 export function getAreaSources(slug: string, citySlug = 'hyderabad'): AreaSource[] {
-  const overrideSpecific = HYDERABAD_SOURCE_OVERRIDES[slug] ?? MUMBAI_SOURCE_OVERRIDES[slug]
+  const overrideSpecific = HYDERABAD_SOURCE_OVERRIDES[slug] ?? MUMBAI_SOURCE_OVERRIDES[slug] ?? CHENNAI_SOURCE_OVERRIDES[slug]
   const specific     = overrideSpecific ?? AREA_SOURCES[slug] ?? []
   const cityDefaults = CITY_DEFAULT_SOURCES[citySlug] ?? CITY_DEFAULT_SOURCES.hyderabad
   return [...specific, ...cityDefaults]

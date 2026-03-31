@@ -12,6 +12,10 @@ import mumAliasesJson from '../../../../data/cities/mumbai/aliases.json'
 import mumCityJson from '../../../../data/cities/mumbai/city.json'
 import mumClustersJson from '../../../../data/cities/mumbai/clusters.json'
 import mumLocalitiesJson from '../../../../data/cities/mumbai/localities.json'
+import chnAliasesJson from '../../../../data/cities/chennai/aliases.json'
+import chnCityJson from '../../../../data/cities/chennai/city.json'
+import chnClustersJson from '../../../../data/cities/chennai/clusters.json'
+import chnLocalitiesJson from '../../../../data/cities/chennai/localities.json'
 
 export interface ResolverOptions {
   locality?: string | null
@@ -157,6 +161,12 @@ const SPECIAL_CITY_DATASETS: Record<string, SpecialResolverDataset> = {
     mumLocalitiesJson as ResolverLocalityData[],
     mumAliasesJson as ResolverAliasData,
     mumClustersJson as ResolverClusterData[],
+  ),
+  chennai: buildSpecialResolverDataset(
+    chnCityJson as ResolverCityData,
+    chnLocalitiesJson as ResolverLocalityData[],
+    chnAliasesJson as ResolverAliasData,
+    chnClustersJson as ResolverClusterData[],
   ),
 }
 

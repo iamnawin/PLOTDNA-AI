@@ -1,0 +1,11 @@
+{
+  "slug": "chennai",
+  "name": "Chennai",
+  "state": "Tamil Nadu",
+  "center": [13.0827, 80.2707],
+  "zoom": 11,
+  "coverageRadiusKm": 46,
+  "centralRadiusKm": 8,
+  "exactLocalityBufferKm": 6,
+  "nearbyMicroMarketRadiusKm": 5
+}
