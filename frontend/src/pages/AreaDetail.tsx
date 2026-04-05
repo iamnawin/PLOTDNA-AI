@@ -22,7 +22,6 @@ import VerdictCard from '@/components/ui/VerdictCard'
 import NewsSection from '@/components/ui/NewsSection'
 import MarketPulseCard from '@/components/ui/MarketPulseCard'
 import AVMCard from '@/components/ui/AVMCard'
-import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
 
 interface AreaDetailLocationState {
   fallbackContext?: {
@@ -549,24 +548,15 @@ export default function AreaDetail() {
           />
         </motion.div>
 
-        {/* ── Live News ── */}
-        <motion.div
+        {/* ── Satellite Growth ── */}
+        <motion.section
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.12 }}
           className="mb-10"
         >
-          <NewsSection citySlug={citySlug} areaSlug={area.slug} areaName={area.name} accentColor={color} />
-        </motion.div>
-
-        {/* ── Phase 2: Market Pulse ── */}
-        <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
-
-        {/* ── Phase 2: Automated Valuation ── */}
-        <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
-
-        {/* ── Phase 2: Brochure Analyzer ── */}
-        <BrochureUploadCard />
+          <SatelliteCompare area={area} coords={searchCoords ?? undefined} />
+        </motion.section>
 
         {/* ── Signal breakdown ── */}
         <motion.section
@@ -706,15 +696,6 @@ export default function AreaDetail() {
             </div>
           </motion.section>
         )}
-
-        {/* ── Satellite Growth ── */}
-        <motion.section
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-        >
-          <SatelliteCompare area={area} coords={searchCoords ?? undefined} />
-        </motion.section>
 
         {/* ── Key Highlights ── */}
         <motion.section
@@ -886,6 +867,22 @@ export default function AreaDetail() {
             </motion.section>
           )
         })()}
+
+        {/* ── What Changed Recently (Live News) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.38 }}
+          className="mb-10"
+        >
+          <NewsSection citySlug={citySlug} areaSlug={area.slug} areaName={area.name} accentColor={color} />
+        </motion.div>
+
+        {/* ── Market Pulse ── */}
+        <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
+
+        {/* ── Automated Valuation (AVM) ── */}
+        <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
 
         {/* ── Sources & Citations ── */}
         <motion.section

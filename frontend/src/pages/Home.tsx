@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat } from 'lucide-react'
+import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { getCityEntry, CITY_LIST } from '@/data/cities'
 import type { MicroMarket, RecommendationGoal } from '@/types'
@@ -11,6 +11,7 @@ import { getRecommendationGoalMeta, rankAreasForGoal } from '@/lib/recommendatio
 import { resolveMapLink } from '@/lib/api'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
+import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
 import SpatialView from '@/components/view/SpatialView'
 import ViewModeToggle, { type ViewMode } from '@/components/view/ViewModeToggle'
 
@@ -44,6 +45,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery]         = useState('')
   const [searchFocused, setSearchFocused]     = useState(false)
   const [showLayers, setShowLayers]           = useState(false)
+  const [showBrochure, setShowBrochure]       = useState(false)
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
   const [searchError, setSearchError]         = useState('')
   const [resolvingUrl, setResolvingUrl]       = useState(false)
@@ -403,7 +405,7 @@ export default function Home() {
                 })}
               </div>
               {/* Top area chips */}
-              <div className="flex items-center justify-center gap-2">
+              <div className="flex items-center justify-center gap-2 flex-wrap">
                 {recommendedAreas.slice(0, 4).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
                   const color = getScoreColor(area.score)
                   return (
@@ -422,6 +424,20 @@ export default function Home() {
                     </button>
                   )
                 })}
+                {/* Brochure AI chip */}
+                <button
+                  onClick={() => { setShowBrochure(v => !v); setSearchCoords(null); setSelectedArea(null) }}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all"
+                  style={{
+                    background: showBrochure ? '#6366f122' : '#6366f10e',
+                    border: showBrochure ? '1px solid #6366f150' : '1px solid #6366f122',
+                    color: '#818cf8',
+                    boxShadow: showBrochure ? '0 0 12px #6366f128' : 'none',
+                  }}
+                >
+                  <FileText size={9} />
+                  Brochure AI
+                </button>
               </div>
             </motion.div>
           )}
@@ -609,7 +625,34 @@ export default function Home() {
           RIGHT: Plot analysis (coords) or Score card (click)
       ════════════════════════════════════════════════ */}
       <AnimatePresence mode="wait">
-        {searchCoords && coordAnalysis ? (
+        {showBrochure ? (
+          <motion.div
+            key="brochure-panel"
+            initial={{ opacity: 0, x: 32 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 32 }}
+            transition={{ duration: 0.25 }}
+            className="absolute top-0 right-0 h-full z-[1000] overflow-y-auto"
+            style={{ width: 'min(380px, 100vw)' }}
+          >
+            <div className="p-4 pt-16 min-h-full"
+              style={{ background: 'rgba(5,5,10,0.94)', backdropFilter: 'blur(24px)', borderLeft: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <FileText size={13} style={{ color: '#818cf8' }} />
+                  <p className="text-xs font-mono font-semibold text-[#818cf8]">Brochure Analyzer</p>
+                </div>
+                <button
+                  onClick={() => setShowBrochure(false)}
+                  className="text-[#555566] hover:text-[#e8e8f0] transition-colors"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+              <BrochureUploadCard />
+            </div>
+          </motion.div>
+        ) : searchCoords && coordAnalysis ? (
           <PlotAnalysisCard
             key={`plot-analysis-${searchCoords[0]}-${searchCoords[1]}`}
             coords={searchCoords}
