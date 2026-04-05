@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-PlotDNA is a real estate investment intelligence platform for India. It shows a "DNA score" (0–100) for land micro-markets across 6 cities, with polygon map overlays, signal breakdowns, and coordinate-based plot analysis. All data is currently static (TypeScript files in the frontend).
+PlotDNA is a real estate investment intelligence platform for India. It shows a "DNA score" (0–100) for land micro-markets across 8 cities, with polygon map overlays, signal breakdowns, and coordinate-based plot analysis. All data is currently static (TypeScript files in the frontend).
 
 ## Commands
 
@@ -34,6 +34,7 @@ All real data lives in `frontend/src/data/` as TypeScript files. The FastAPI bac
 ### Data flow
 ```
 frontend/src/data/{city}.ts   →  cities.ts registry  →  Zustand store  →  MapView + UI
+data/cities/{city}/*.json     →  location/resolver.ts  (coordinate → locality resolution)
                                   (CITIES, getCityEntry,  (useAppStore)
                                    getAllAreas, etc.)
 ```
@@ -43,11 +44,14 @@ frontend/src/data/{city}.ts   →  cities.ts registry  →  Zustand store  →  
 | File | Purpose |
 |------|---------|
 | `frontend/src/data/cities.ts` | City registry — `CITIES`, `getCityEntry()`, `getAllAreas()`, `getCityForArea()` |
-| `frontend/src/store/index.ts` | Single Zustand store — `selectedArea`, `selectedCitySlug`, `mapStyleKey`, `is3D`, `searchCoords`, etc. |
-| `frontend/src/types/index.ts` | Core types: `MicroMarket`, `Signals`, `Livability`, `CityMeta`, `Category` |
+| `frontend/src/store/index.ts` | Single Zustand store — `selectedArea`, `selectedCitySlug`, `mapStyleKey`, `is3D`, `searchCoords`, `showConstruction`, `recommendationGoal`, etc. |
+| `frontend/src/types/index.ts` | Core types: `MicroMarket`, `Signals`, `Livability`, `CityMeta`, `Category`, `ActiveProject`, `RecommendationGoal` |
 | `frontend/src/lib/utils.ts` | Score → color/label/bg helpers + `SIGNAL_LABELS` + `SIGNAL_WEIGHTS` |
 | `frontend/src/lib/plotAnalysis.ts` | `parseCoords()`, `findNearestArea()`, `getGrowthMilestones()`, `getOutlook()` |
 | `frontend/src/lib/areaSources.ts` | Per-area research source links shown in AreaDetail |
+| `frontend/src/lib/location/resolver.ts` | Coordinate → locality resolution (4-tier: exact → nearby → cluster → uncovered) |
+| `frontend/src/lib/location/classifier.ts` | Converts `ResolutionCandidates` → `LocalityResolution` with tier + reason |
+| `frontend/src/lib/location/contracts.ts` | `LocalityResolution` and `ResolutionTier` types |
 | `frontend/src/components/map/MapView.tsx` | MapLibre GL map with polygon layers, hover tooltip, coordinate pin |
 
 ### Map library
@@ -76,13 +80,34 @@ Score tiers (used for color-coding and filtering):
 - 41–65 → Moderate (`#f59e0b` amber)
 - 0–40 → High Risk (`#ef4444` red)
 
+### Location resolution system
+`frontend/src/lib/location/resolver.ts` resolves a (lat, lng) coordinate to a locality through four tiers:
+1. **exact** — name alias matches AND coordinate is inside the polygon (or within `exactLocalityBufferKm`)
+2. **nearby** — within `nearbyMicroMarketRadiusKm` of a known micro-market centroid
+3. **cluster** — inside a city's coverage radius; returns a zone cluster (e.g. `hyderabad:south`)
+4. **uncovered** — outside all city catchment areas
+
+Each city with resolver-grade coverage has four JSON files under `data/cities/{city}/`:
+- `city.json` — center, zoom, coverage/central radii, buffer distances
+- `localities.json` — per-locality center + polygon (used for exact matching)
+- `aliases.json` — `{ localitySlug: [aliasStrings] }` for name normalization
+- `clusters.json` — zone-based cluster definitions (Central/North/South/East/West)
+
+In dev mode the resolver logs mismatches between `localities.json` slugs and the frontend `MicroMarket` slugs to the console.
+
 ### Adding a new city
 1. Create `frontend/src/data/{city}.ts` — export `cityMeta: CityMeta` and `{city}Areas: MicroMarket[]`
 2. Register it in `frontend/src/data/cities.ts` — add to `CITIES` and `CITY_LIST`
-3. Optionally add area-specific sources to `frontend/src/lib/areaSources.ts`
+3. Create `data/cities/{city}/` with `city.json`, `localities.json`, `aliases.json`, `clusters.json`
+4. Import and register the four JSON files in `frontend/src/lib/location/resolver.ts` (`SPECIAL_CITY_DATASETS`)
+5. Optionally add area-specific sources to `frontend/src/lib/areaSources.ts`
 
 ### Routing
-Two routes: `/` (Home — full map + sidebar) and `/area/:slug` (AreaDetail — full analysis page). Slug must match `MicroMarket.slug` across all cities.
+Four routes:
+- `/` — Landing page
+- `/map` — Home (full map + sidebar)
+- `/area/:slug` — AreaDetail (full analysis page); slug must match `MicroMarket.slug`
+- `/brochure` — BrochurePage (brochure upload/analysis)
 
 ## Conventions
 
@@ -107,10 +132,12 @@ REDIS_URL=redis://localhost:6379
 
 Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env` relative to `backend/`.
 
-## Current State (Phase 1 complete + pan-India added)
+## Current State
 
-- 6 cities live with static data: Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi
+- 8 cities live with static data: Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi, Vijayawada, Vizag
+- All 8 cities have resolver-grade JSON data under `data/cities/`
 - Map: polygon overlays, hover tooltips, tier filtering, 3D tilt, 4 basemap styles, city switcher
 - AreaDetail: full score breakdown, signal bars, growth timeline, 5-year outlook, source links, PDF export
+- Location resolver: 4-tier coordinate → locality resolution (exact/nearby/cluster/uncovered)
 - Backend routes: all stubs — not used by frontend yet
 - No test suite
