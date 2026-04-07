@@ -151,7 +151,7 @@ export default function MarketPulseCard({ citySlug, areaSlug, country = 'india' 
             style={{ background: `${cfg.color}06`, borderRight: '1px solid rgba(255,255,255,0.05)' }}
           >
             {/* SVG arc gauge */}
-            <svg width={160} height={90} viewBox="0 0 160 90" className="overflow-visible">
+            <svg width={160} height={90} viewBox="0 0 160 90" className="overflow-visible" style={{ maxWidth: '100%' }}>
               {/* Background arc */}
               <path d={describeArc(80, 85, 60, -180, 0)} fill="none" stroke="#1a1a2e" strokeWidth={10} strokeLinecap="round" />
               {/* Danger zone (0–30) */}
@@ -253,7 +253,7 @@ export default function MarketPulseCard({ citySlug, areaSlug, country = 'india' 
                   initial={{ opacity: 0, x: -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.1 * i }}
-                  className="flex items-center gap-3 px-5 py-3 group transition-all duration-150"
+                  className="flex items-center gap-3 px-4 py-3 group transition-all duration-150"
                   style={{ background: 'rgba(255,255,255,0.01)', textDecoration: 'none', display: 'flex' }}
                   onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.03)' }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.01)' }}

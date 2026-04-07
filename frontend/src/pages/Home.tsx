@@ -153,7 +153,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-[#050508]">
+    <div className="relative w-screen h-[100dvh] overflow-hidden bg-[#050508]">
 
       {/* ── Map fills 100% of screen ── */}
       <div className="absolute inset-0 z-0">

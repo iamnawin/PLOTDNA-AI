@@ -106,37 +106,37 @@ export default function BrochurePage() {
 
       {/* Nav */}
       <nav
-        className="sticky top-0 z-50 flex items-center justify-between px-6 h-13"
+        className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 h-13"
         style={{ background: 'rgba(5,5,10,0.96)', borderBottom: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}
       >
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-[#666680] hover:text-[#e8e8f0] transition-colors text-sm font-mono"
+          className="flex items-center gap-2 text-[#666680] hover:text-[#e8e8f0] transition-colors text-sm font-mono flex-shrink-0"
         >
           <ArrowLeft size={15} />
-          Back to Map
+          <span className="hidden sm:inline">Back to Map</span>
         </button>
 
         <div className="flex items-center gap-2.5">
           <div
-            className="w-6 h-6 rounded flex items-center justify-center"
+            className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
             style={{ background: 'linear-gradient(135deg, #00e676, #00b36b)' }}
           >
             <span className="text-black font-black text-[10px]">P</span>
           </div>
           <span className="font-display font-bold text-[#e8e8f0] text-sm">PlotDNA</span>
           <span
-            className="text-[8px] font-mono px-1.5 py-0.5 rounded"
+            className="hidden sm:inline text-[8px] font-mono px-1.5 py-0.5 rounded"
             style={{ background: '#6366f115', color: '#6366f1', border: '1px solid #6366f125' }}
           >
             Brochure AI
           </span>
         </div>
 
-        <div className="w-28" /> {/* spacer */}
+        <div className="w-8 sm:w-28" /> {/* spacer */}
       </nav>
 
-      <div className="max-w-3xl mx-auto px-6 py-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
 
         {/* Hero */}
         <motion.div
@@ -153,7 +153,7 @@ export default function BrochurePage() {
             <span className="text-[10px] font-mono text-[#6366f1]">Powered by Gemini 2.0 Flash · Phase 2</span>
           </div>
 
-          <h1 className="font-display text-4xl font-black text-[#e8e8f0] leading-tight mb-4">
+          <h1 className="font-display text-2xl sm:text-4xl font-black text-[#e8e8f0] leading-tight mb-4">
             Decode any property brochure<br />
             <span style={{ color: '#6366f1' }}>in seconds</span>
           </h1>
@@ -173,7 +173,7 @@ export default function BrochurePage() {
             onDragLeave={() => setDragging(false)}
             onDrop={onDrop}
             onClick={() => inputRef.current?.click()}
-            className="rounded-2xl flex flex-col items-center justify-center gap-5 py-20 px-8 cursor-pointer transition-all duration-200 mb-8"
+            className="rounded-2xl flex flex-col items-center justify-center gap-5 py-12 px-4 sm:py-20 sm:px-8 cursor-pointer transition-all duration-200 mb-8"
             style={{
               background: dragging ? 'rgba(99,102,241,0.08)' : 'rgba(255,255,255,0.02)',
               border: `2px dashed ${dragging ? '#6366f160' : 'rgba(255,255,255,0.08)'}`,

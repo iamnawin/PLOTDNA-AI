@@ -332,7 +332,7 @@ export default function AreaDetail() {
 
   if (!area) {
     return (
-      <div className="h-screen bg-[#050508] flex items-center justify-center">
+      <div className="h-[100dvh] bg-[#050508] flex items-center justify-center">
         <div className="text-center">
           <p className="text-[#444455] font-mono text-sm">Area not found</p>
           <button onClick={() => navigate('/map')} className="mt-4 text-xs font-mono text-[#22c55e] underline">
@@ -368,20 +368,20 @@ export default function AreaDetail() {
 
       {/* ── Nav bar ── */}
       <nav
-        className="sticky top-0 z-50 flex items-center justify-between px-6 h-13"
+        className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 h-13"
         style={{ background: 'rgba(5,5,10,0.96)', borderBottom: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}
       >
         <button
           onClick={() => navigate('/map')}
-          className="flex items-center gap-2 text-[#666680] hover:text-[#e8e8f0] transition-colors text-sm font-mono"
+          className="flex items-center gap-2 text-[#666680] hover:text-[#e8e8f0] transition-colors text-sm font-mono flex-shrink-0"
         >
           <ArrowLeft size={15} />
-          Back to Map
+          <span className="hidden sm:inline">Back to Map</span>
         </button>
 
         <div className="flex items-center gap-2.5">
           <div
-            className="w-6 h-6 rounded flex items-center justify-center"
+            className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
             style={{ background: 'linear-gradient(135deg, #00e676, #00b36b)' }}
           >
             <span className="text-black font-black text-[10px]">P</span>
@@ -389,40 +389,42 @@ export default function AreaDetail() {
           <span className="font-display font-bold text-[#e8e8f0] text-sm">PlotDNA</span>
         </div>
 
-        {/* Brochure AI link */}
-        <button
-          onClick={() => navigate('/brochure')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all mr-2"
-          style={{
-            background: '#6366f112',
-            border: '1px solid #6366f128',
-            color: '#6366f1',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = '#6366f122' }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = '#6366f112' }}
-        >
-          <Sparkles size={11} />
-          Brochure AI
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Brochure AI link — hidden on small mobile */}
+          <button
+            onClick={() => navigate('/brochure')}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all"
+            style={{
+              background: '#6366f112',
+              border: '1px solid #6366f128',
+              color: '#6366f1',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = '#6366f122' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = '#6366f112' }}
+          >
+            <Sparkles size={11} />
+            Brochure AI
+          </button>
 
-        {/* Download PDF button */}
-        <button
-          onClick={() => generatePDF(area)}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all"
-          style={{
-            background: `${color}12`,
-            border: `1px solid ${color}30`,
-            color,
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = `${color}12` }}
-        >
-          <Download size={12} />
-          Download PDF Report
-        </button>
+          {/* Download PDF button */}
+          <button
+            onClick={() => generatePDF(area)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all"
+            style={{
+              background: `${color}12`,
+              border: `1px solid ${color}30`,
+              color,
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = `${color}12` }}
+          >
+            <Download size={12} />
+            <span className="hidden sm:inline">Download PDF</span>
+          </button>
+        </div>
       </nav>
 
-      <div className="max-w-4xl mx-auto px-6 py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
 
         {/* ── Hero ── */}
         <motion.div
@@ -464,7 +466,7 @@ export default function AreaDetail() {
           {/* Info */}
           <div className="flex-1">
             <ScoreBadge score={area.score} size="lg" />
-            <h1 className="font-display text-4xl font-black text-[#e8e8f0] mt-3 leading-tight">
+            <h1 className="font-display text-2xl sm:text-4xl font-black text-[#e8e8f0] mt-3 leading-tight">
               {area.name}
             </h1>
             <p className="text-[#555566] font-mono text-sm mt-1">{area.category} · {cityName}</p>
@@ -478,7 +480,7 @@ export default function AreaDetail() {
             </div>
 
             {/* Stats row */}
-            <div className="grid grid-cols-3 gap-3 mt-4">
+            <div className="grid grid-cols-3 gap-2 mt-4">
               <div
                 className="p-3 rounded-lg text-center"
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}

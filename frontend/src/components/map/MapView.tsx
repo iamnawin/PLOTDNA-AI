@@ -458,10 +458,10 @@ export default function MapView() {
       {tooltipArea && hoverInfo && (() => {
         const c    = getScoreColor(tooltipArea.score)
         const lbl  = getScoreLabel(tooltipArea.score)
-        const TW   = 224  // tooltip width px
+        const TW   = Math.min(224, window.innerWidth - 16)  // tooltip width px
         const left = (hoverInfo.x + TW + 20) > window.innerWidth
-          ? hoverInfo.x - TW - 12
-          : hoverInfo.x + 16
+          ? Math.max(8, hoverInfo.x - TW - 12)
+          : Math.min(hoverInfo.x + 16, window.innerWidth - TW - 8)
         const top  = Math.max(10, Math.min(hoverInfo.y - 24, window.innerHeight - 260))
         const signalEntries = Object.entries(tooltipArea.signals)
 

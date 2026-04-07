@@ -119,7 +119,7 @@ export default function SatelliteCompare({ area, coords }: Props) {
   return (
     <div>
       {/* ── Section header ── */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-2 mb-6">
         <div className="flex items-center gap-3">
           <div
             className="w-8 h-8 rounded-lg flex items-center justify-center"
@@ -190,12 +190,12 @@ export default function SatelliteCompare({ area, coords }: Props) {
       </div>
 
       {/* ── Map comparison panels ── */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
         {/* BEFORE panel */}
         <div className="flex flex-col">
           <div className="relative rounded-2xl overflow-hidden"
-            style={{ height: 300, border: '1px solid rgba(255,255,255,0.08)' }}>
+            style={{ height: 220, border: '1px solid rgba(255,255,255,0.08)' }}>
             {/* Desaturated historical view */}
             <div key={`before-${activeIdx}`} style={{ position: 'absolute', inset: 0, filter: phaseConfig.filter }}>
               <div style={{ pointerEvents: 'none', width: '100%', height: '100%' }}>
@@ -256,7 +256,7 @@ export default function SatelliteCompare({ area, coords }: Props) {
         {/* NOW panel */}
         <div className="flex flex-col">
           <div className="relative rounded-2xl overflow-hidden"
-            style={{ height: 300, border: `1px solid ${color}40`, boxShadow: `0 0 32px ${color}18, 0 0 0 1px ${color}18` }}>
+            style={{ height: 220, border: `1px solid ${color}40`, boxShadow: `0 0 32px ${color}18, 0 0 0 1px ${color}18` }}>
 
             <Map
               mapStyle={SATELLITE_STYLE}

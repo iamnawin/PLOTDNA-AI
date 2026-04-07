@@ -251,9 +251,9 @@ function SectionHeader() {
 
 function KpiCell({ label, value, color }: { label: string; value: string; color: string }) {
   return (
-    <div className="flex flex-col items-center py-4 px-3" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+    <div className="flex flex-col items-center py-3 px-2" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
       <p className="text-[8px] font-mono text-[#444455] uppercase tracking-widest mb-1">{label}</p>
-      <p className="text-xl font-mono font-bold" style={{ color }}>{value}</p>
+      <p className="text-base sm:text-xl font-mono font-bold" style={{ color }}>{value}</p>
     </div>
   )
 }

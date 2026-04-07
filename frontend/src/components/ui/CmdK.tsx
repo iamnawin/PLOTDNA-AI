@@ -131,7 +131,7 @@ export default function CmdK() {
         </div>
 
         {/* Results */}
-        <div ref={listRef} className="max-h-80 overflow-y-auto py-1.5">
+        <div ref={listRef} className="max-h-[55vh] md:max-h-80 overflow-y-auto py-1.5">
           {results.length === 0 ? (
             <p className="text-center text-[#333344] font-mono text-xs py-8">No results for "{query}"</p>
           ) : (
