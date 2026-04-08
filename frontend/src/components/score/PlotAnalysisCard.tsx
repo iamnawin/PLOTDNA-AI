@@ -138,7 +138,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: '100%', opacity: 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="absolute top-0 right-0 h-full w-screen sm:w-[360px] z-[1000] flex flex-col overflow-hidden"
+      className="absolute top-0 right-0 h-full w-screen sm:w-[360px] z-[1010] flex flex-col overflow-hidden"
       style={{
         background: 'rgba(4, 4, 10, 0.95)',
         backdropFilter: 'blur(28px)',

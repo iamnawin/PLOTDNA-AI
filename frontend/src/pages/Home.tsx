@@ -383,14 +383,17 @@ export default function Home() {
               className="mt-2"
             >
               {/* City pills row */}
-              <div className="flex items-center justify-center gap-1.5 mb-2">
+              <div
+                className="flex items-center gap-1.5 mb-2 overflow-x-auto md:justify-center"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
                 {CITY_LIST.map(city => {
                   const isActive = selectedCitySlug === city.slug
                   return (
                     <button
                       key={city.slug}
                       onClick={() => handleCityChange(city.slug)}
-                      className="px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150"
+                      className="px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150 flex-shrink-0"
                       style={{
                         background: isActive ? 'rgba(0,230,118,0.12)' : 'rgba(5,5,10,0.82)',
                         border: isActive ? '1px solid rgba(0,230,118,0.4)' : '1px solid rgba(255,255,255,0.07)',
@@ -405,14 +408,17 @@ export default function Home() {
                 })}
               </div>
               {/* Top area chips */}
-              <div className="flex items-center justify-center gap-2 flex-wrap">
+              <div
+                className="flex items-center gap-2 overflow-x-auto md:justify-center"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
                 {recommendedAreas.slice(0, 4).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
                   const color = getScoreColor(area.score)
                   return (
                     <button
                       key={area.slug}
                       onClick={() => navigate(`/area/${area.slug}`)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all flex-shrink-0"
                       style={{ background: `${color}16`, border: `1px solid ${color}28`, color }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = `${color}28`; e.currentTarget.style.boxShadow = `0 0 12px ${color}25` }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = `${color}16`; e.currentTarget.style.boxShadow = 'none' }}
@@ -427,7 +433,7 @@ export default function Home() {
                 {/* Brochure AI chip */}
                 <button
                   onClick={() => { setShowBrochure(v => !v); setSearchCoords(null); setSelectedArea(null) }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all flex-shrink-0"
                   style={{
                     background: showBrochure ? '#6366f122' : '#6366f10e',
                     border: showBrochure ? '1px solid #6366f150' : '1px solid #6366f122',
@@ -632,7 +638,7 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 32 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-0 right-0 h-full z-[1000] overflow-y-auto"
+            className="absolute top-0 right-0 h-full z-[1010] overflow-y-auto"
             style={{ width: 'min(380px, 100vw)' }}
           >
             <div className="p-4 pt-16 min-h-full"

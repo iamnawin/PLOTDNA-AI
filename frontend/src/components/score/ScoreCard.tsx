@@ -29,7 +29,7 @@ export default function ScoreCard({ area, onClose }: Props) {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: '100%', opacity: 0 }}
       transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-      className="absolute top-0 right-0 h-full w-screen sm:w-[340px] z-[1000] flex flex-col"
+      className="absolute top-0 right-0 h-full w-screen sm:w-[340px] z-[1010] flex flex-col"
       style={{
         background: 'rgba(5, 5, 10, 0.92)',
         backdropFilter: 'blur(24px)',
