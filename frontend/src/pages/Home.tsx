@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
@@ -51,7 +51,24 @@ export default function Home() {
   const [resolvingUrl, setResolvingUrl]       = useState(false)
   const [viewMode, setViewMode]               = useState<ViewMode>('globe')
   const [globeSidebarExpanded, setGlobeSidebarExpanded] = useState(false)
+  const [analyzingCoords, setAnalyzingCoords] = useState<[number, number] | null>(null)
+  const [pendingCoords, setPendingCoords]     = useState<[number, number] | null>(null)
+  const [analyzeStep, setAnalyzeStep]         = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
+
+  const ANALYZE_STEPS = [
+    'Reading satellite signals…',
+    'Cross-referencing infrastructure data…',
+    'Calculating DNA score…',
+    'Mapping growth trajectory…',
+  ]
+
+  useEffect(() => {
+    if (!analyzingCoords) return
+    setAnalyzeStep(0)
+    const interval = setInterval(() => setAnalyzeStep(s => (s + 1) % ANALYZE_STEPS.length), 520)
+    return () => clearInterval(interval)
+  }, [analyzingCoords])
 
   const { areas: cityAreas, meta: cityMeta } = getCityEntry(selectedCitySlug)
   const recommendedAreas = rankAreasForGoal(cityAreas, recommendationGoal)
@@ -101,12 +118,19 @@ export default function Home() {
   function triggerCoordAnalysis(coords: [number, number]) {
     const analysis = findNearestArea(coords[0], coords[1])
     if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
-    setSearchCoords(coords)
-    setSelectedArea(analysis.shouldSelectArea ? analysis.area : null)
     setSearchQuery('')
     setSearchFocused(false)
     setSearchError('')
-    setViewMode('globe')
+    setSearchCoords(null)
+    setSelectedArea(null)
+    setPendingCoords(null)
+    setAnalyzingCoords(coords)
+
+    setTimeout(() => {
+      setAnalyzingCoords(null)
+      setViewMode('globe')
+      setPendingCoords(coords)
+    }, 2200)
   }
 
   function handleGlobeMarkerClick(slug: string) {
@@ -1227,6 +1251,163 @@ export default function Home() {
           </div>
         </div>
       )}
+
+      {/* ═══════════════════════════════════════════════
+          TAP-TO-REVEAL: after analyze loader, before panel opens
+      ════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {pendingCoords && !searchCoords && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="absolute inset-0 z-[1001] cursor-pointer"
+            onClick={() => {
+              setSearchCoords(pendingCoords)
+              setPendingCoords(null)
+            }}
+          >
+            {/* Subtle vignette pulse to signal interactivity */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,230,118,0.06) 100%)' }}
+            />
+            {/* Hint pill */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.4 }}
+              className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+              style={{ bottom: 112 }}
+            >
+              <div
+                className="flex items-center gap-2.5 px-5 py-3 rounded-full"
+                style={{
+                  background: 'rgba(0,230,118,0.10)',
+                  border: '1px solid rgba(0,230,118,0.32)',
+                  backdropFilter: 'blur(18px)',
+                  boxShadow: '0 0 28px rgba(0,230,118,0.14)',
+                }}
+              >
+                <div
+                  className="w-2 h-2 rounded-full bg-[#00e676]"
+                  style={{ boxShadow: '0 0 8px #00e676', animation: 'pulse 1.4s infinite' }}
+                />
+                <span className="text-[12px] font-mono font-semibold text-[#00e676]">
+                  Tap anywhere to view DNA analysis
+                </span>
+              </div>
+              <p className="text-[9px] font-mono text-[#444455]">
+                {pendingCoords[0].toFixed(4)}°N &nbsp; {pendingCoords[1].toFixed(4)}°E
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ═══════════════════════════════════════════════
+          DNA LOADING OVERLAY: shown while analyzing coords
+      ════════════════════════════════════════════════ */}
+      <AnimatePresence>
+        {analyzingCoords && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="absolute inset-0 z-[2000] flex flex-col items-center justify-center"
+            style={{ background: 'rgba(4,4,10,0.97)', backdropFilter: 'blur(28px)' }}
+          >
+            {/* Spinning rings */}
+            <div className="relative w-36 h-36 mb-7">
+              {/* Outer ring slow */}
+              <svg
+                className="absolute inset-0 animate-spin"
+                style={{ animationDuration: '3.5s' }}
+                viewBox="0 0 144 144"
+              >
+                <circle cx={72} cy={72} r={66} fill="none" stroke="rgba(0,230,118,0.08)" strokeWidth={1.5} />
+                <circle
+                  cx={72} cy={72} r={66}
+                  fill="none" stroke="#00e676" strokeWidth={2.5}
+                  strokeDasharray="44 370" strokeLinecap="round"
+                  style={{ filter: 'drop-shadow(0 0 6px #00e67670)' }}
+                />
+              </svg>
+              {/* Middle ring reverse */}
+              <svg
+                className="absolute inset-0 animate-spin"
+                style={{ animationDuration: '2.2s', animationDirection: 'reverse' }}
+                viewBox="0 0 144 144"
+              >
+                <circle cx={72} cy={72} r={50} fill="none" stroke="rgba(0,230,118,0.05)" strokeWidth={1} />
+                <circle
+                  cx={72} cy={72} r={50}
+                  fill="none" stroke="rgba(0,230,118,0.45)" strokeWidth={1.5}
+                  strokeDasharray="22 292" strokeLinecap="round"
+                />
+              </svg>
+              {/* Inner dot ring */}
+              <svg
+                className="absolute inset-0 animate-spin"
+                style={{ animationDuration: '1.6s' }}
+                viewBox="0 0 144 144"
+              >
+                <circle cx={72} cy={72} r={34} fill="none" stroke="rgba(0,230,118,0.04)" strokeWidth={1} />
+                <circle
+                  cx={72} cy={72} r={34}
+                  fill="none" stroke="rgba(0,230,118,0.3)" strokeWidth={1}
+                  strokeDasharray="12 201" strokeLinecap="round"
+                />
+              </svg>
+              {/* Center label */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                  <p
+                    className="font-mono font-black text-[#00e676] leading-none"
+                    style={{ fontSize: 20, textShadow: '0 0 20px #00e67660' }}
+                  >
+                    DNA
+                  </p>
+                  <p className="font-mono text-[8px] text-[#2a2a3e] tracking-[0.2em] mt-0.5 uppercase">
+                    scan
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Status message */}
+            <motion.p
+              key={analyzeStep}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25 }}
+              className="text-[13px] font-mono font-semibold text-[#ccccdd] mb-2 text-center px-8"
+            >
+              {ANALYZE_STEPS[analyzeStep]}
+            </motion.p>
+            <p className="text-[10px] font-mono text-[#3a3a52]">
+              {analyzingCoords[0].toFixed(5)}°N &nbsp; {analyzingCoords[1].toFixed(5)}°E
+            </p>
+
+            {/* Progress bar */}
+            <div
+              className="mt-6 h-px rounded-full overflow-hidden"
+              style={{ width: 160, background: 'rgba(255,255,255,0.05)' }}
+            >
+              <motion.div
+                className="h-full rounded-full"
+                style={{ background: 'linear-gradient(90deg, #00e676, #00b36b)' }}
+                initial={{ width: '0%' }}
+                animate={{ width: '100%' }}
+                transition={{ duration: 2.2, ease: 'linear' }}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   )
