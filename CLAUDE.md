@@ -167,3 +167,4 @@ Backend MVP endpoints added:
 - `GET /api/v1/entitlements` → remaining free runs + subscription status
 - `POST /api/v1/entitlements/consume` → consume a run (returns 402 when quota is exhausted)
 - `POST /api/v1/entitlements/dev/activate` → dev-only helper to simulate an active subscription
+- `POST /api/v1/entitlements/email` → attach an email to unlock beyond the free quota (temporary MVP replacement for subscriptions)
