@@ -9,9 +9,11 @@ import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { getRecommendationGoalMeta, rankAreasForGoal } from '@/lib/recommendations'
 import { resolveMapLink } from '@/lib/api'
+import { consumeSearchAccess, type EntitlementsResponse } from '@/lib/entitlements'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
 import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
+import EmailGateModal from '@/components/ui/EmailGateModal'
 import SpatialView from '@/components/view/SpatialView'
 import ViewModeToggle, { type ViewMode } from '@/components/view/ViewModeToggle'
 
@@ -61,7 +63,10 @@ export default function Home() {
   const [analyzingCoords, setAnalyzingCoords] = useState<[number, number] | null>(null)
   const [pendingCoords, setPendingCoords]     = useState<[number, number] | null>(null)
   const [analyzeStep, setAnalyzeStep]         = useState(0)
+  const [emailGateOpen, setEmailGateOpen]     = useState(false)
+  const [entitlements, setEntitlements]       = useState<EntitlementsResponse | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const pendingSearchActionRef = useRef<null | (() => void)>(null)
 
   useEffect(() => {
     if (!analyzingCoords) return
@@ -140,14 +145,39 @@ export default function Home() {
     setViewMode('map')
   }
 
+  async function requireSearchAccess(action: () => void) {
+    setSearchError('')
+    const result = await consumeSearchAccess()
+    if (result.status === 'ok') {
+      setEntitlements(result.entitlements)
+      action()
+      return
+    }
+    if (result.status === 'email_required') {
+      pendingSearchActionRef.current = action
+      setEntitlements(result.entitlements)
+      setEmailGateOpen(true)
+      return
+    }
+    setSearchError(result.message)
+  }
+
+  function handleEmailUnlocked(nextEntitlements: EntitlementsResponse) {
+    setEntitlements(nextEntitlements)
+    setEmailGateOpen(false)
+    const pending = pendingSearchActionRef.current
+    pendingSearchActionRef.current = null
+    pending?.()
+  }
+
   async function handleSearchSubmit() {
     setSearchError('')
     if (parsedCoords) {
-      triggerCoordAnalysis(parsedCoords)
+      await requireSearchAccess(() => triggerCoordAnalysis(parsedCoords))
       return
     }
     if (parsedMapUrl) {
-      triggerCoordAnalysis(parsedMapUrl)
+      await requireSearchAccess(() => triggerCoordAnalysis(parsedMapUrl))
       return
     }
     if (shortMapUrl) {
@@ -155,7 +185,7 @@ export default function Home() {
       const result = await resolveMapLink(searchQuery.trim())
       setResolvingUrl(false)
       if (result.coords) {
-        triggerCoordAnalysis(result.coords)
+        await requireSearchAccess(() => triggerCoordAnalysis(result.coords!))
         return
       }
       setSearchError(result.detail ?? (
@@ -168,7 +198,7 @@ export default function Home() {
       return
     }
     if (searchResults.length > 0) {
-      selectArea(searchResults[0])
+      await requireSearchAccess(() => selectArea(searchResults[0]))
     }
   }
 
@@ -341,7 +371,7 @@ export default function Home() {
                 {/* Coordinate analysis option */}
                 {(parsedCoords || parsedMapUrl) && (
                   <button
-                    onMouseDown={() => triggerCoordAnalysis(parsedCoords ?? parsedMapUrl!)}
+                    onMouseDown={() => { void requireSearchAccess(() => triggerCoordAnalysis(parsedCoords ?? parsedMapUrl!)) }}
                     className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.03] transition-colors"
                     style={{ borderBottom: searchResults.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                   >
@@ -381,7 +411,7 @@ export default function Home() {
                   return (
                     <button
                       key={area.slug}
-                      onMouseDown={() => selectArea(area)}
+                      onMouseDown={() => { void requireSearchAccess(() => selectArea(area)) }}
                       className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-white/[0.03] transition-colors"
                       style={{ borderBottom: i < Math.min(searchResults.length, 5) - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}
                     >
@@ -1419,6 +1449,16 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <EmailGateModal
+        open={emailGateOpen}
+        entitlements={entitlements}
+        onClose={() => {
+          setEmailGateOpen(false)
+          pendingSearchActionRef.current = null
+        }}
+        onUnlocked={handleEmailUnlocked}
+      />
 
     </div>
   )

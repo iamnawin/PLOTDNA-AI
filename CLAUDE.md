@@ -170,4 +170,5 @@ Backend MVP endpoints added:
 - `POST /api/v1/entitlements/email` → attach an email to unlock beyond the free quota (temporary MVP replacement for subscriptions)
 - Auth note: the MVP bearer token is an HMAC-signed payload implemented with Python stdlib; it is intentionally lightweight and not a full JWT/OAuth system.
 - Render note: FastAPI file-upload routes in `backend/app/api/routes/utils.py` require `python-multipart` to be present in both backend requirements files or app startup will fail.
+- Frontend gating: landing and home search flows now call the backend anonymous-auth + entitlements endpoints, consume one free search per search-led analysis/open action, and show an email capture modal after the free quota is exhausted.
 

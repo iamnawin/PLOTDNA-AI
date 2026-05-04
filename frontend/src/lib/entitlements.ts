@@ -1,0 +1,131 @@
+const BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000').replace(/\/$/, '')
+const TOKEN_KEY = 'plotdna_access_token'
+
+interface AnonymousAuthResponse {
+  user_id: string
+  access_token: string
+  token_type: string
+}
+
+export interface EntitlementsResponse {
+  free_remaining: number
+  free_limit: number
+  subscription_active: boolean
+  subscription_expires_at: string | null
+  email: string | null
+}
+
+export type ConsumeResult =
+  | { status: 'ok'; entitlements: EntitlementsResponse }
+  | { status: 'email_required'; entitlements: EntitlementsResponse | null }
+  | { status: 'error'; message: string }
+
+export type AttachEmailResult =
+  | { status: 'ok'; entitlements: EntitlementsResponse }
+  | { status: 'error'; message: string }
+
+function getStoredToken(): string | null {
+  try {
+    return window.localStorage.getItem(TOKEN_KEY)
+  } catch {
+    return null
+  }
+}
+
+function setStoredToken(token: string) {
+  try {
+    window.localStorage.setItem(TOKEN_KEY, token)
+  } catch {
+    // ignore storage failures in privacy modes
+  }
+}
+
+async function createAnonymousSession(): Promise<string> {
+  const res = await fetch(`${BASE_URL}/api/v1/auth/anonymous`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  if (!res.ok) {
+    throw new Error('Could not start your PlotDNA session.')
+  }
+  const payload = await res.json() as AnonymousAuthResponse
+  if (!payload.access_token) {
+    throw new Error('PlotDNA session token missing.')
+  }
+  setStoredToken(payload.access_token)
+  return payload.access_token
+}
+
+async function getAccessToken(): Promise<string> {
+  const existing = getStoredToken()
+  if (existing) return existing
+  return createAnonymousSession()
+}
+
+async function authedFetch(path: string, init?: RequestInit): Promise<Response> {
+  let token = await getAccessToken()
+
+  const doFetch = (bearer: string) =>
+    fetch(`${BASE_URL}${path}`, {
+      ...init,
+      headers: {
+        ...(init?.headers ?? {}),
+        Authorization: `Bearer ${bearer}`,
+      },
+    })
+
+  let res = await doFetch(token)
+  if (res.status === 401) {
+    token = await createAnonymousSession()
+    res = await doFetch(token)
+  }
+  return res
+}
+
+async function readEntitlementsOrNull(): Promise<EntitlementsResponse | null> {
+  try {
+    const res = await authedFetch('/api/v1/entitlements')
+    if (!res.ok) return null
+    return await res.json() as EntitlementsResponse
+  } catch {
+    return null
+  }
+}
+
+export async function consumeSearchAccess(): Promise<ConsumeResult> {
+  try {
+    const res = await authedFetch('/api/v1/entitlements/consume', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    if (res.ok) {
+      return { status: 'ok', entitlements: await res.json() as EntitlementsResponse }
+    }
+
+    if (res.status === 403) {
+      return { status: 'email_required', entitlements: await readEntitlementsOrNull() }
+    }
+
+    return { status: 'error', message: 'Could not verify your search access right now.' }
+  } catch {
+    return { status: 'error', message: 'Could not reach PlotDNA access service.' }
+  }
+}
+
+export async function attachEmail(email: string): Promise<AttachEmailResult> {
+  try {
+    const res = await authedFetch('/api/v1/entitlements/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+    if (!res.ok) {
+      const payload = await res.json().catch(() => null) as { detail?: string } | null
+      return { status: 'error', message: payload?.detail ?? 'Could not save your email.' }
+    }
+    return { status: 'ok', entitlements: await res.json() as EntitlementsResponse }
+  } catch {
+    return { status: 'error', message: 'Could not reach PlotDNA access service.' }
+  }
+}

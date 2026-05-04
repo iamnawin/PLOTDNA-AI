@@ -12,7 +12,9 @@ import type { MicroMarket, RecommendationGoal } from '@/types'
 import { getScoreColor } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { resolveMapLink, analyzeBrochure } from '@/lib/api'
+import { consumeSearchAccess, type EntitlementsResponse } from '@/lib/entitlements'
 import { getGoalTopAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
+import EmailGateModal from '@/components/ui/EmailGateModal'
 
 const FEATURES = [
   {
@@ -53,8 +55,11 @@ export default function Landing() {
   const [resolving, setResolving]     = useState(false)  // resolving short map link
   const [brochureLoading, setBrochureLoading] = useState(false)
   const [inputError, setInputError]   = useState('')
+  const [emailGateOpen, setEmailGateOpen] = useState(false)
+  const [entitlements, setEntitlements] = useState<EntitlementsResponse | null>(null)
   const inputRef      = useRef<HTMLInputElement>(null)
   const fileInputRef  = useRef<HTMLInputElement>(null)
+  const pendingSearchActionRef = useRef<null | (() => void)>(null)
 
   // Gather all areas across all cities for search
   const allAreas: (MicroMarket & { citySlug: string })[] = Object.entries(CITIES).flatMap(
@@ -85,18 +90,43 @@ export default function Landing() {
     navigate('/map')
   }
 
+  async function requireSearchAccess(action: () => void) {
+    setInputError('')
+    const result = await consumeSearchAccess()
+    if (result.status === 'ok') {
+      setEntitlements(result.entitlements)
+      action()
+      return
+    }
+    if (result.status === 'email_required') {
+      pendingSearchActionRef.current = action
+      setEntitlements(result.entitlements)
+      setEmailGateOpen(true)
+      return
+    }
+    setInputError(result.message)
+  }
+
+  function handleEmailUnlocked(nextEntitlements: EntitlementsResponse) {
+    setEntitlements(nextEntitlements)
+    setEmailGateOpen(false)
+    const pending = pendingSearchActionRef.current
+    pendingSearchActionRef.current = null
+    pending?.()
+  }
+
   async function handleEnter() {
     setInputError('')
     // Direct coords
-    if (parsedCoords) { goToCoords(parsedCoords); return }
+    if (parsedCoords) { await requireSearchAccess(() => goToCoords(parsedCoords)); return }
     // Full map URL (parsed on frontend)
-    if (parsedMapUrl) { goToCoords(parsedMapUrl); return }
+    if (parsedMapUrl) { await requireSearchAccess(() => goToCoords(parsedMapUrl)); return }
     // Short map URL (needs backend resolution)
     if (shortMapUrl) {
       setResolving(true)
       const result = await resolveMapLink(query.trim())
       setResolving(false)
-      if (result.coords) { goToCoords(result.coords); return }
+      if (result.coords) { await requireSearchAccess(() => goToCoords(result.coords!)); return }
       setInputError(result.detail ?? (
         result.reason === 'backend_unreachable'
           ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
@@ -107,7 +137,7 @@ export default function Landing() {
       return
     }
     // Area name search
-    if (results.length > 0) { goToArea(results[0]); return }
+    if (results.length > 0) { await requireSearchAccess(() => goToArea(results[0])); return }
   }
 
   async function handleBrochureUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -118,7 +148,7 @@ export default function Landing() {
     const result = await analyzeBrochure(file)
     setBrochureLoading(false)
     if (result) {
-      goToCoords([result.lat, result.lng])
+      await requireSearchAccess(() => goToCoords([result.lat, result.lng]))
     } else {
       setInputError('Could not extract location from this file. Try a clearer image or paste the address.')
     }
@@ -354,7 +384,7 @@ export default function Landing() {
                   const coords = parsedCoords ?? parsedMapUrl!
                   return (
                     <button
-                      onMouseDown={() => goToCoords(coords)}
+                      onMouseDown={() => { void requireSearchAccess(() => goToCoords(coords)) }}
                       className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors"
                       style={{ borderBottom: results.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
@@ -397,7 +427,7 @@ export default function Landing() {
                   return (
                     <button
                       key={area.slug}
-                      onMouseDown={() => goToArea(area)}
+                      onMouseDown={() => { void requireSearchAccess(() => goToArea(area)) }}
                       className="w-full flex items-center gap-3 px-5 py-3 text-left transition-colors"
                       style={{ borderBottom: i < results.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
@@ -844,6 +874,17 @@ export default function Landing() {
         <span>PlotDNA · Real Estate Intelligence</span>
         <span>{CITY_LIST.length} cities · {Object.values(CITIES).reduce((n, c) => n + c.areas.length, 0)} micro-markets</span>
       </footer>
+      <EmailGateModal
+        open={emailGateOpen}
+        entitlements={entitlements}
+        onClose={() => {
+          setEmailGateOpen(false)
+          pendingSearchActionRef.current = null
+        }}
+        onUnlocked={handleEmailUnlocked}
+      />
     </div>
   )
 }
+
+
