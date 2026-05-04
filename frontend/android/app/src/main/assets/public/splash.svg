@@ -1,0 +1,20 @@
+<svg width="1536" height="1024" viewBox="0 0 1536 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1536" height="1024" fill="#050508"/>
+  <circle cx="768" cy="512" r="320" fill="url(#paint0_radial)" fill-opacity="0.18"/>
+  <rect x="608" y="292" width="320" height="320" rx="88" fill="url(#paint1_linear)"/>
+  <path d="M680 374H788C850.961 374 902 425.039 902 488C902 550.961 850.961 602 788 602H736V528H790C812.091 528 830 510.091 830 488C830 465.909 812.091 448 790 448H754V602H680V374Z" fill="#050508"/>
+  <path d="M680 374H764V448H680V374Z" fill="#050508"/>
+  <circle cx="952" cy="632" r="18" fill="#00E676"/>
+  <text x="768" y="694" text-anchor="middle" fill="#E8E8F0" font-family="IBM Plex Mono, monospace" font-size="56" font-weight="700">PlotDNA</text>
+  <text x="768" y="752" text-anchor="middle" fill="#00E676" font-family="IBM Plex Mono, monospace" font-size="22" letter-spacing="8">DECODE ANY PLOT</text>
+  <defs>
+    <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(768 512) rotate(90) scale(320)">
+      <stop stop-color="#00E676"/>
+      <stop offset="1" stop-color="#00E676" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="paint1_linear" x1="608" y1="292" x2="928" y2="612" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00E676"/>
+      <stop offset="1" stop-color="#00B36B"/>
+    </linearGradient>
+  </defs>
+</svg>

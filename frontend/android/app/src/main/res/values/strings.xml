@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">PlotDNA</string>
+    <string name="title_activity_main">PlotDNA</string>
+    <string name="package_name">com.plotdna.app</string>
+    <string name="custom_url_scheme">com.plotdna.app</string>
+</resources>

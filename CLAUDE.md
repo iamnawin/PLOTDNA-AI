@@ -174,4 +174,5 @@ Backend MVP endpoints added:
 - Mobile runtime note: native Capacitor builds default to https://plotdna-api.onrender.com when VITE_API_URL is not supplied, while web dev still defaults to http://localhost:8000.
 - App identity assets: shared icon and splash SVG sources now live in `frontend/public/icon.svg` and `frontend/public/splash.svg`, with follow-up native Android wiring documented in `docs/android-release-checklist.md`.
 - What-if roadmap: the next MVP order is documented in `docs/next-roadmap.md` with `POST /api/v1/what-if`, an `AreaDetail` panel, deterministic rules first, and LLM summary second.
+- Android native baseline: `frontend/android/` is now generated and tracked, with brand colors in `android/app/src/main/res/values/colors.xml`, dark launcher background, and a modern SplashScreen theme using the launcher icon.
 

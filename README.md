@@ -168,6 +168,13 @@ Capacitor lets this existing React/Vite app run as a native Android/iOS app shel
 - Android checklist: `docs/android-release-checklist.md`
 - Next roadmap incl. What-if MVP: `docs/next-roadmap.md`
 
+### Android native baseline
+
+- Native project now lives in `frontend/android`
+- App label and package are `PlotDNA` / `com.plotdna.app`
+- Brand colors are wired in `frontend/android/app/src/main/res/values/colors.xml`
+- Splash now uses Android's SplashScreen theme with a dark background and launcher icon
+
 ### Android setup
 
 ```bash
@@ -269,5 +276,6 @@ The same gate applies to:
 - richer Dubai / UAE coverage
 - cleaner mobile release setup
 - internal market research memo pipeline
+
 
 
