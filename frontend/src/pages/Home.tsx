@@ -94,7 +94,6 @@ export default function Home() {
   const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl)
   const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1]) : null
   const isGlobeMode = viewMode === 'globe'
-  const systemCities = CITY_LIST
 
   function handleViewModeChange(nextMode: ViewMode) {
     if (nextMode === 'globe') {
@@ -447,7 +446,13 @@ export default function Home() {
               {/* City pills row */}
               <div
                 className="flex items-center gap-1.5 mb-2 overflow-x-auto md:justify-center"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  WebkitOverflowScrolling: 'touch',
+                  touchAction: 'pan-x',
+                  paddingBottom: 2,
+                }}
               >
                 {CITY_LIST.map(city => {
                   const isActive = selectedCitySlug === city.slug
@@ -472,7 +477,13 @@ export default function Home() {
               {/* Top area chips */}
               <div
                 className="flex items-center gap-2 overflow-x-auto md:justify-center"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  WebkitOverflowScrolling: 'touch',
+                  touchAction: 'pan-x',
+                  paddingBottom: 2,
+                }}
               >
                 {recommendedAreas.slice(0, 4).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
                   const color = getScoreColor(area.score)
@@ -1159,7 +1170,7 @@ export default function Home() {
           </AnimatePresence>
 
           <div
-            className="rounded-2xl px-3 py-3 grid gap-4 md:grid-cols-[minmax(0,300px)_minmax(0,1fr)_minmax(0,320px)] md:items-center"
+            className="rounded-2xl px-3 py-3 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,320px)] md:items-center"
             style={{
               background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.78))',
               backdropFilter: 'blur(24px)',
@@ -1167,37 +1178,6 @@ export default function Home() {
               boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
             }}
           >
-            <div
-              className="hidden md:flex items-center gap-2 min-w-[240px] rounded-xl px-3 py-2.5"
-              style={{
-                background: 'rgba(255,255,255,0.018)',
-                border: '1px solid rgba(255,255,255,0.045)',
-                boxShadow: 'inset 0 0 14px rgba(255,255,255,0.012)',
-              }}
-            >
-              <span className="text-[8px] font-mono text-[#444455] uppercase tracking-[0.16em] mr-1 shrink-0">
-                Supported
-              </span>
-              <div className="flex items-center gap-2 flex-wrap">
-                {systemCities.map(city => {
-                  const active = city.slug === selectedCitySlug
-                  return (
-                    <span
-                      key={city.slug}
-                      className="px-2.5 py-1 rounded-full text-[9px] font-mono"
-                      style={{
-                        background: active ? 'rgba(0,230,118,0.14)' : 'rgba(255,255,255,0.03)',
-                        border: active ? '1px solid rgba(0,230,118,0.28)' : '1px solid rgba(255,255,255,0.05)',
-                        color: active ? '#00e676' : '#77778a',
-                      }}
-                    >
-                      {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
-                    </span>
-                  )
-                })}
-              </div>
-            </div>
-
             <div
               className="flex items-center p-1.5 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center md:px-3"
               style={{

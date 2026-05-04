@@ -1,8 +1,11 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { X, ArrowRight, TrendingUp } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
+import { consumeSearchAccess, type EntitlementsResponse } from '@/lib/entitlements'
+import EmailGateModal from '@/components/ui/EmailGateModal'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SignalBar from '@/components/ui/SignalBar'
 
@@ -15,6 +18,8 @@ export default function ScoreCard({ area, onClose }: Props) {
   const navigate = useNavigate()
   const color = getScoreColor(area.score)
   const label = getScoreLabel(area.score)
+  const [emailGateOpen, setEmailGateOpen] = useState(false)
+  const [entitlements, setEntitlements] = useState<EntitlementsResponse | null>(null)
 
   // SVG ring
   const r = 42
@@ -23,19 +28,33 @@ export default function ScoreCard({ area, onClose }: Props) {
 
   const signals = Object.entries(area.signals) as [keyof typeof area.signals, number][]
 
+  async function handleFullAnalysis() {
+    const result = await consumeSearchAccess()
+    if (result.status === 'ok') {
+      setEntitlements(result.entitlements)
+      navigate(`/area/${area.slug}`)
+      return
+    }
+    if (result.status === 'email_required') {
+      setEntitlements(result.entitlements)
+      setEmailGateOpen(true)
+    }
+  }
+
   return (
-    <motion.div
-      initial={{ x: '100%', opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
-      exit={{ x: '100%', opacity: 0 }}
-      transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-      className="absolute top-0 right-0 h-full w-[100dvw] max-w-full sm:w-[340px] z-[1010] flex flex-col"
-      style={{
-        background: 'rgba(5, 5, 10, 0.92)',
-        backdropFilter: 'blur(24px)',
-        borderLeft: '1px solid rgba(255,255,255,0.06)',
-      }}
-    >
+    <>
+      <motion.div
+        initial={{ x: '100%', opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ x: '100%', opacity: 0 }}
+        transition={{ type: 'spring', stiffness: 320, damping: 30 }}
+        className="absolute top-0 right-0 h-full w-[100dvw] max-w-full sm:w-[340px] z-[1010] flex flex-col"
+        style={{
+          background: 'rgba(5, 5, 10, 0.92)',
+          backdropFilter: 'blur(24px)',
+          borderLeft: '1px solid rgba(255,255,255,0.06)',
+        }}
+      >
       {/* Header */}
       <div className="flex items-start justify-between p-5 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div>
@@ -129,7 +148,7 @@ export default function ScoreCard({ area, onClose }: Props) {
       {/* CTA */}
       <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <button
-          onClick={() => navigate(`/area/${area.slug}`)}
+          onClick={() => { void handleFullAnalysis() }}
           className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-mono font-semibold transition-all"
           style={{
             background: `linear-gradient(135deg, ${color}22, ${color}11)`,
@@ -147,6 +166,17 @@ export default function ScoreCard({ area, onClose }: Props) {
           <ArrowRight size={15} />
         </button>
       </div>
-    </motion.div>
+      </motion.div>
+      <EmailGateModal
+        open={emailGateOpen}
+        entitlements={entitlements}
+        onClose={() => setEmailGateOpen(false)}
+        onUnlocked={(nextEntitlements) => {
+          setEntitlements(nextEntitlements)
+          setEmailGateOpen(false)
+          navigate(`/area/${area.slug}`)
+        }}
+      />
+    </>
   )
 }
