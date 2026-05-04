@@ -9,7 +9,7 @@
  * so the frontend degrades gracefully to static data.
  */
 
-const BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000').replace(/\/$/, '')
+import { API_BASE_URL } from '@/lib/runtime'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -52,7 +52,7 @@ export interface MapLinkResolutionResult {
 export async function resolveMapLink(url: string): Promise<MapLinkResolutionResult> {
   try {
     const res = await fetch(
-      `${BASE_URL}/api/utils/resolve-map-link?url=${encodeURIComponent(url)}`,
+      `${API_BASE_URL}/api/utils/resolve-map-link?url=${encodeURIComponent(url)}`,
       { signal: AbortSignal.timeout(30_000) },
     )
     if (!res.ok) {
@@ -113,7 +113,7 @@ export async function analyzeBrochure(file: File): Promise<BrochureResult | null
   try {
     const form = new FormData()
     form.append('file', file)
-    const res = await fetch(`${BASE_URL}/api/utils/analyze-brochure`, {
+    const res = await fetch(`${API_BASE_URL}/api/utils/analyze-brochure`, {
       method: 'POST',
       body:   form,
       signal: AbortSignal.timeout(45_000),
@@ -143,7 +143,7 @@ export async function analyzeCoordinate(
   lng: number,
 ): Promise<LiveDNAResult | null> {
   try {
-    const res = await fetch(`${BASE_URL}/api/score/analyze`, {
+    const res = await fetch(`${API_BASE_URL}/api/score/analyze`, {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ lat, lng }),

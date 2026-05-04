@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Activity, TrendingUp, TrendingDown, Minus, RefreshCw, ExternalLink, Clock } from 'lucide-react'
+import { API_BASE_URL } from '@/lib/runtime'
 
 interface SentimentArticle {
   title: string
@@ -30,7 +31,7 @@ interface MarketPulseData {
   last_updated?: string
 }
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+const API_BASE = API_BASE_URL
 
 const SENTIMENT_CONFIG = {
   positive: { color: '#10b981', label: 'Positive',  Icon: TrendingUp  },

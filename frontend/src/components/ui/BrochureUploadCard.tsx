@@ -11,6 +11,7 @@ import {
   MapPin, Shield, Calendar, IndianRupee, Percent, Loader2,
   X, ExternalLink, ChevronDown, ChevronUp,
 } from 'lucide-react'
+import { API_BASE_URL } from '@/lib/runtime'
 
 interface BrochureResult {
   project_name?: string
@@ -30,7 +31,7 @@ interface BrochureResult {
   source?: string
 }
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+const API_BASE = API_BASE_URL
 
 const ACCEPTED_TYPES = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp']
 const MAX_MB = 10

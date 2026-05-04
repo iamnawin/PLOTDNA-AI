@@ -1,4 +1,4 @@
-const BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000').replace(/\/$/, '')
+import { API_BASE_URL } from '@/lib/runtime'
 const TOKEN_KEY = 'plotdna_access_token'
 
 interface AnonymousAuthResponse {
@@ -41,7 +41,7 @@ function setStoredToken(token: string) {
 }
 
 async function createAnonymousSession(): Promise<string> {
-  const res = await fetch(`${BASE_URL}/api/v1/auth/anonymous`, {
+  const res = await fetch(`${API_BASE_URL}/api/v1/auth/anonymous`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
   })
@@ -66,7 +66,7 @@ async function authedFetch(path: string, init?: RequestInit): Promise<Response> 
   let token = await getAccessToken()
 
   const doFetch = (bearer: string) =>
-    fetch(`${BASE_URL}${path}`, {
+    fetch(`${API_BASE_URL}${path}`, {
       ...init,
       headers: {
         ...(init?.headers ?? {}),

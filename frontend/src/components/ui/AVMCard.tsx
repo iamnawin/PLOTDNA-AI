@@ -7,6 +7,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { BarChart2, Info } from 'lucide-react'
+import { API_BASE_URL } from '@/lib/runtime'
 
 interface YearProjection {
   year: number
@@ -25,7 +26,7 @@ interface AVMData {
   model?: string
 }
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
+const API_BASE = API_BASE_URL
 
 function fmt(n: number, currency = '₹') {
   if (n >= 10000000) return `${currency}${(n / 10000000).toFixed(2)}Cr`

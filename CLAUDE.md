@@ -20,9 +20,8 @@ npm run lint         # eslint .
 # 1) Build web assets
 # 2) Add platform once, then sync on changes
 cd frontend
-npm run build
+npm run cap:prepare
 npm run cap:add:android
-npm run cap:sync
 npm run cap:open:android
 
 # Backend (http://localhost:8000) — stubs only, not required for frontend dev
@@ -172,4 +171,5 @@ Backend MVP endpoints added:
 - Render note: FastAPI file-upload routes in `backend/app/api/routes/utils.py` require `python-multipart` to be present in both backend requirements files or app startup will fail.
 - Frontend gating: landing and home search flows now call the backend anonymous-auth + entitlements endpoints, consume one free search per search-led analysis/open action, and show an email capture modal after the free quota is exhausted.
 - Mobile search refinement: the city and recommendation chip rows under the search bar are touch-scroll friendly on mobile, the duplicate supported-cities strip above the bottom dock is removed, and full-analysis CTA clicks now consume search access just like direct coordinate analysis.
+- Mobile runtime note: native Capacitor builds default to https://plotdna-api.onrender.com when VITE_API_URL is not supplied, while web dev still defaults to http://localhost:8000.
 
