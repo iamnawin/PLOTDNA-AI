@@ -35,6 +35,13 @@ class Settings(BaseSettings):
     # Redis — Phase 2 (replaced by in-memory cache for Phase 1)
     REDIS_URL: str = "redis://localhost:6379"
 
+    # Auth / entitlements (Phase 2+)
+    JWT_SECRET: str = "dev-secret-change-me"
+    JWT_ALG: str = "HS256"
+
+    # Monetization: 3 free searches, then subscription
+    FREE_SEARCH_LIMIT: int = 3
+
     model_config = {
         "env_file": _find_env(),
         "extra": "ignore",
