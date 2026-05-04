@@ -172,4 +172,6 @@ Backend MVP endpoints added:
 - Frontend gating: landing and home search flows now call the backend anonymous-auth + entitlements endpoints, consume one free search per search-led analysis/open action, and show an email capture modal after the free quota is exhausted.
 - Mobile search refinement: the city and recommendation chip rows under the search bar are touch-scroll friendly on mobile, the duplicate supported-cities strip above the bottom dock is removed, and full-analysis CTA clicks now consume search access just like direct coordinate analysis.
 - Mobile runtime note: native Capacitor builds default to https://plotdna-api.onrender.com when VITE_API_URL is not supplied, while web dev still defaults to http://localhost:8000.
+- App identity assets: shared icon and splash SVG sources now live in `frontend/public/icon.svg` and `frontend/public/splash.svg`, with follow-up native Android wiring documented in `docs/android-release-checklist.md`.
+- What-if roadmap: the next MVP order is documented in `docs/next-roadmap.md` with `POST /api/v1/what-if`, an `AreaDetail` panel, deterministic rules first, and LLM summary second.
 

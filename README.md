@@ -163,6 +163,11 @@ Capacitor lets this existing React/Vite app run as a native Android/iOS app shel
 - Web dev still defaults to `http://localhost:8000`
 - Runtime resolution lives in `frontend/src/lib/runtime.ts`
 
+### Release notes
+
+- Android checklist: `docs/android-release-checklist.md`
+- Next roadmap incl. What-if MVP: `docs/next-roadmap.md`
+
 ### Android setup
 
 ```bash
@@ -264,4 +269,5 @@ The same gate applies to:
 - richer Dubai / UAE coverage
 - cleaner mobile release setup
 - internal market research memo pipeline
+
 
