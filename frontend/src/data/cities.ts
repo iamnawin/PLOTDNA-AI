@@ -7,6 +7,7 @@ import { puneAreas, cityMeta as pneMeta } from './pune'
 import { delhiAreas, cityMeta as delMeta } from './delhi'
 import { vijayawadaAreas, cityMeta as vjaMeta } from './vijayawada'
 import { vizagAreas, cityMeta as vzgMeta } from './vizag'
+import { dubaiAreas, cityMeta as dxbMeta } from './dubai'
 
 export interface CityEntry {
   meta: CityMeta
@@ -22,10 +23,11 @@ export const CITIES: Record<string, CityEntry> = {
   delhi:     { meta: delMeta, areas: delhiAreas },
   vijayawada:{ meta: vjaMeta, areas: vijayawadaAreas },
   vizag:     { meta: vzgMeta, areas: vizagAreas },
+  dubai:     { meta: dxbMeta, areas: dubaiAreas },
 }
 
 export const CITY_LIST: CityMeta[] = [
-  hydMeta, blrMeta, mumMeta, chnMeta, pneMeta, delMeta, vjaMeta, vzgMeta,
+  hydMeta, blrMeta, mumMeta, chnMeta, pneMeta, delMeta, vjaMeta, vzgMeta, dxbMeta,
 ]
 
 export function getCityEntry(slug: string): CityEntry {
