@@ -168,5 +168,6 @@ Backend MVP endpoints added:
 - `POST /api/v1/entitlements/consume` → consume a run (returns 402 when quota is exhausted)
 - `POST /api/v1/entitlements/dev/activate` → dev-only helper to simulate an active subscription
 - `POST /api/v1/entitlements/email` → attach an email to unlock beyond the free quota (temporary MVP replacement for subscriptions)
-- Render note: render.yaml installs backend/requirements-render.txt, so Render-only startup dependencies must be listed there in addition to backend/requirements.txt
+- Auth note: the MVP bearer token is an HMAC-signed payload implemented with Python stdlib; it is intentionally lightweight and not a full JWT/OAuth system.
+
 
