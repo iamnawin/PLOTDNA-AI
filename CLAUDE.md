@@ -134,10 +134,21 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 
 ## Current State
 
-- 8 cities live with static data: Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi, Vijayawada, Vizag
+- 9 cities live with static data: Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi, Vijayawada, Vizag, Dubai (starter pack)
 - All 8 cities have resolver-grade JSON data under `data/cities/`
 - Map: polygon overlays, hover tooltips, tier filtering, 3D tilt, 4 basemap styles, city switcher
 - AreaDetail: full score breakdown, signal bars, growth timeline, 5-year outlook, source links, PDF export
 - Location resolver: 4-tier coordinate → locality resolution (exact/nearby/cluster/uncovered)
 - Backend routes: all stubs — not used by frontend yet
 - No test suite
+
+## Recent Changes (May 2026)
+
+- Mobile layout stability: switched full-screen containers/panels to `100dvw` and applied `env(safe-area-inset-*)` offsets to reduce overflow + alignment issues on notched devices.
+- Dubai starter dataset: added `frontend/src/data/dubai.ts` and registered it in `frontend/src/data/cities.ts`.
+
+## Roadmap Notes (Capacitor + Monetization)
+
+Target: ship PlotDNA as a device-friendly app via Capacitor, with **3 free searches** per user then a **subscription** unlock.
+
+Implementation principle: all metering/entitlements must be enforced server-side (backend), with App Store / Play Store receipt verification.
