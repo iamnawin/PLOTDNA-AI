@@ -166,7 +166,7 @@ def dev_activate_subscription(user_id: str, *, days: int = 30) -> Entitlements:
     finally:
         conn.close()
 
-  return get_entitlements(user_id)
+    return get_entitlements(user_id)
 
 
 def set_email(user_id: str, email: str) -> Entitlements:
