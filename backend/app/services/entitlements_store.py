@@ -34,6 +34,7 @@ def _init(conn: sqlite3.Connection) -> None:
         """
         CREATE TABLE IF NOT EXISTS users (
           id TEXT PRIMARY KEY,
+          email TEXT,
           created_at TEXT NOT NULL
         )
         """
@@ -67,6 +68,7 @@ class Entitlements:
     free_remaining: int
     subscription_active: bool
     subscription_expires_at: str | None
+    email: str | None
 
 
 def ensure_user(user_id: str) -> None:
@@ -92,6 +94,7 @@ def get_entitlements(user_id: str) -> Entitlements:
     conn = _connect()
     try:
         _init(conn)
+        user = conn.execute("SELECT email FROM users WHERE id = ?", (user_id,)).fetchone()
         usage = conn.execute("SELECT free_used FROM usage WHERE user_id = ?", (user_id,)).fetchone()
         ent = conn.execute("SELECT is_active, expires_at FROM entitlements WHERE user_id = ?", (user_id,)).fetchone()
         free_used = int(usage["free_used"]) if usage else 0
@@ -114,6 +117,7 @@ def get_entitlements(user_id: str) -> Entitlements:
             free_remaining=free_remaining,
             subscription_active=active,
             subscription_expires_at=expires_at,
+            email=(user["email"] if user else None),
         )
     finally:
         conn.close()
@@ -121,11 +125,11 @@ def get_entitlements(user_id: str) -> Entitlements:
 
 def consume_search(user_id: str) -> Entitlements:
     """
-    Enforces: FREE_SEARCH_LIMIT searches, then subscription required.
+    Enforces: FREE_SEARCH_LIMIT searches, then email (or subscription) required.
     """
     ensure_user(user_id)
     current = get_entitlements(user_id)
-    if current.subscription_active:
+    if current.subscription_active or current.email:
         return current
 
     if current.free_remaining <= 0:
@@ -157,6 +161,22 @@ def dev_activate_subscription(user_id: str, *, days: int = 30) -> Entitlements:
         conn.execute(
             "UPDATE entitlements SET is_active = 1, expires_at = ?, updated_at = ? WHERE user_id = ?",
             (expires_at, _now_iso(), user_id),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+  return get_entitlements(user_id)
+
+
+def set_email(user_id: str, email: str) -> Entitlements:
+    ensure_user(user_id)
+    conn = _connect()
+    try:
+        _init(conn)
+        conn.execute(
+            "UPDATE users SET email = ? WHERE id = ?",
+            (email.strip().lower(), user_id),
         )
         conn.commit()
     finally:
