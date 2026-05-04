@@ -22,6 +22,13 @@ const RISK_TIERS = [
   { color: '#10b981', label: 'Goldzone',     range: '86–100' },
 ]
 
+const ANALYZE_STEPS = [
+  'Reading satellite signals...',
+  'Cross-referencing infrastructure data...',
+  'Calculating DNA score...',
+  'Mapping growth trajectory...',
+]
+
 export default function Home() {
   const navigate = useNavigate()
   const {
@@ -56,16 +63,8 @@ export default function Home() {
   const [analyzeStep, setAnalyzeStep]         = useState(0)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const ANALYZE_STEPS = [
-    'Reading satellite signals…',
-    'Cross-referencing infrastructure data…',
-    'Calculating DNA score…',
-    'Mapping growth trajectory…',
-  ]
-
   useEffect(() => {
     if (!analyzingCoords) return
-    setAnalyzeStep(0)
     const interval = setInterval(() => setAnalyzeStep(s => (s + 1) % ANALYZE_STEPS.length), 520)
     return () => clearInterval(interval)
   }, [analyzingCoords])
@@ -124,6 +123,7 @@ export default function Home() {
     setSearchCoords(null)
     setSelectedArea(null)
     setPendingCoords(null)
+    setAnalyzeStep(0)
     setAnalyzingCoords(coords)
 
     setTimeout(() => {
@@ -177,7 +177,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative w-screen h-[100dvh] overflow-hidden bg-[#050508]">
+    <div className="relative w-[100dvw] h-[100dvh] overflow-hidden bg-[#050508]">
 
       {/* ── Map fills 100% of screen ── */}
       <div className="absolute inset-0 z-0">
@@ -202,7 +202,13 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════
           TOP-LEFT: Logo watermark + mobile hamburger
       ════════════════════════════════════════════════ */}
-      <div className="absolute top-5 left-5 z-[1000] flex items-center gap-2.5">
+      <div
+        className="absolute z-[1000] flex items-center gap-2.5"
+        style={{
+          top: 'calc(1.25rem + env(safe-area-inset-top))',
+          left: 'calc(1.25rem + env(safe-area-inset-left))',
+        }}
+      >
         <div
           className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
           style={{
@@ -237,8 +243,10 @@ export default function Home() {
           TOP-RIGHT: Stats pill (hidden on mobile)
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute top-5 right-5 z-[1000] hidden md:flex items-center gap-4 px-4 py-2.5 rounded-xl"
+        className="absolute z-[1000] hidden md:flex items-center gap-4 px-4 py-2.5 rounded-xl"
         style={{
+          top: 'calc(1.25rem + env(safe-area-inset-top))',
+          right: 'calc(1.25rem + env(safe-area-inset-right))',
           background: 'rgba(5,5,10,0.78)',
           backdropFilter: 'blur(20px)',
           border: '1px solid rgba(255,255,255,0.06)',
@@ -264,7 +272,7 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════
           CENTER TOP: Search + Suggestions
       ════════════════════════════════════════════════ */}
-      <div className="absolute top-14 md:top-5 left-3 right-3 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[1002] md:w-[460px]">
+      <div className="absolute top-[calc(3.5rem+env(safe-area-inset-top))] md:top-[calc(1.25rem+env(safe-area-inset-top))] left-[calc(0.75rem+env(safe-area-inset-left))] right-[calc(0.75rem+env(safe-area-inset-right))] md:left-1/2 md:right-auto md:-translate-x-1/2 z-[1002] md:w-[460px]">
 
         {/* Search bar */}
         <div className="relative">
@@ -487,10 +495,13 @@ export default function Home() {
       )}
 
       <div
-        className={`absolute left-5 z-[999] flex-col rounded-xl overflow-hidden ${showMobileSidebar ? 'flex' : 'hidden'} md:flex`}
+        className={`absolute z-[999] flex-col rounded-xl overflow-hidden ${showMobileSidebar ? 'flex' : 'hidden'} md:flex`}
         style={{
-          top: isGlobeMode ? 106 : 78,
-          bottom: isGlobeMode && !globeSidebarExpanded ? 'auto' : (isGlobeMode ? 128 : 76),
+          left: 'calc(1.25rem + env(safe-area-inset-left))',
+          top: `calc(${isGlobeMode ? 106 : 78}px + env(safe-area-inset-top))`,
+          bottom: isGlobeMode && !globeSidebarExpanded
+            ? 'auto'
+            : `calc(${isGlobeMode ? 128 : 76}px + env(safe-area-inset-bottom))`,
           width: isGlobeMode ? 204 : 220,
           background: isGlobeMode
             ? 'linear-gradient(180deg, rgba(8,12,18,0.76), rgba(5,5,10,0.68))'
@@ -906,7 +917,7 @@ export default function Home() {
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className={`absolute bottom-5 left-3 right-3 md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto ${isGlobeMode ? 'hidden' : ''}`}
+        className={`absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-[calc(0.75rem+env(safe-area-inset-left))] right-[calc(0.75rem+env(safe-area-inset-right))] md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto ${isGlobeMode ? 'hidden' : ''}`}
         style={{
           background: 'rgba(5,5,10,0.88)',
           backdropFilter: 'blur(22px)',
@@ -973,7 +984,7 @@ export default function Home() {
       {isGlobeMode && (
         <div
           className="absolute left-1/2 -translate-x-1/2 z-[1001] w-[min(96vw,1100px)]"
-          style={{ bottom: 18 }}
+          style={{ bottom: 'calc(18px + env(safe-area-inset-bottom))' }}
         >
           <AnimatePresence>
             {showLayers && (
@@ -1099,10 +1110,10 @@ export default function Home() {
 
                 <div className="px-3.5 pt-2.5 pb-3">
                   <p className="text-[8px] font-mono text-[#252535] uppercase tracking-[0.16em] mb-1.5">
-                    Phase 3 â€” Coming Soon
+                    Phase 3 - Coming Soon
                   </p>
                   {([
-                    { Icon: Eye, label: 'Street View 360Â°' },
+                    { Icon: Eye, label: 'Street View 360\u00B0' },
                     { Icon: Car, label: 'Traffic Overlay' },
                     { Icon: Clock, label: 'Historical Imagery' },
                   ] as const).map(({ Icon, label }) => (
@@ -1279,7 +1290,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
               className="absolute left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-              style={{ bottom: 112 }}
+              style={{ bottom: 'calc(112px + env(safe-area-inset-bottom))' }}
             >
               <div
                 className="flex items-center gap-2.5 px-5 py-3 rounded-full"
