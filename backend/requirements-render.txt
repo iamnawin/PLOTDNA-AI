@@ -16,6 +16,7 @@ pydantic-settings==2.7.0
 
 # Environment
 python-dotenv==1.0.1
+python-multipart==0.0.20
 
 # AI — Gemini Flash (verdict service)
 google-generativeai==0.8.3

@@ -26,6 +26,7 @@ pydantic-settings==2.7.0
 
 # Utilities
 python-dotenv==1.0.1
+python-multipart==0.0.20
 redis==5.2.1
 celery==5.4.0
 
