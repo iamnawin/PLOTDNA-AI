@@ -16,6 +16,15 @@ npm run dev
 npm run build        # tsc -b && vite build
 npm run lint         # eslint .
 
+# Mobile (Capacitor)
+# 1) Build web assets
+# 2) Add platform once, then sync on changes
+cd frontend
+npm run build
+npm run cap:add:android
+npm run cap:sync
+npm run cap:open:android
+
 # Backend (http://localhost:8000) — stubs only, not required for frontend dev
 cd backend
 python -m venv venv
@@ -152,3 +161,9 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 Target: ship PlotDNA as a device-friendly app via Capacitor, with **3 free searches** per user then a **subscription** unlock.
 
 Implementation principle: all metering/entitlements must be enforced server-side (backend), with App Store / Play Store receipt verification.
+
+Backend MVP endpoints added:
+- `POST /api/v1/auth/anonymous` → `{ user_id, access_token }`
+- `GET /api/v1/entitlements` → remaining free runs + subscription status
+- `POST /api/v1/entitlements/consume` → consume a run (returns 402 when quota is exhausted)
+- `POST /api/v1/entitlements/dev/activate` → dev-only helper to simulate an active subscription
