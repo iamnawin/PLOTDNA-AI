@@ -83,7 +83,7 @@ See [docs/COVERAGE_TIERS.md](docs/COVERAGE_TIERS.md).
 
 ---
 
-## Current supported cities
+## Current supported markets
 
 Resolver-grade support currently exists for:
 
@@ -95,6 +95,10 @@ Resolver-grade support currently exists for:
 - Delhi NCR
 - Vijayawada Capital Region
 - Visakhapatnam
+
+Starter coverage also exists for:
+
+- Dubai
 
 These cities have resolver datasets under `data/cities/` and bundled market datasets in
 `frontend/src/data/`.
