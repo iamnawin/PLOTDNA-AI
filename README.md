@@ -1,6 +1,8 @@
 # <img width="300" height="300" alt="plotDNA logo" src="https://github.com/user-attachments/assets/de6c81ed-4922-49a7-aeb3-9ae52cea8af9" /> PlotDNA 
 <div align="center">
 
+<img src="frontend/public/plotdna-logo.png" alt="PlotDNA logo" width="120" />
+
 **Decode any plot before you buy.**
 
 PlotDNA is a hybrid real-estate intelligence product for selected Indian micro-markets.
@@ -207,4 +209,3 @@ The highest-value technical next step is:
 
 That migration direction is already outlined in
 [docs/ALL_INDIA_EXPANSION_PLAN.md](docs/ALL_INDIA_EXPANSION_PLAN.md).
-
