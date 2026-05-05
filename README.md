@@ -1,5 +1,4 @@
-# <img width="1016" height="1012" alt="plotDNA logo" src="https://github.com/user-attachments/assets/de6c81ed-4922-49a7-aeb3-9ae52cea8af9" />  <img width="1016" height="1012" alt="plotDNA logo" 
-
+# <img width="300" height="300" alt="plotDNA logo" src="https://github.com/user-attachments/assets/de6c81ed-4922-49a7-aeb3-9ae52cea8af9" /> PlotDNA 
 <div align="center">
 
 **Decode any plot before you buy.**
