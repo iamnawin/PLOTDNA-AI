@@ -1,7 +1,8 @@
-# PlotDNA
+#
 <div align="center">
 
-<img src="frontend/public/plotdna-logo.png" alt="PlotDNA logo" width="104" />
+<img width="104" height="104" alt="plotDNA logo2" src="https://github.com/user-attachments/assets/512d1ef5-4b11-46f1-bf8f-1a27e0650900" />
+
 
 **PlotDNA - Decode any plot before you buy.**
 
