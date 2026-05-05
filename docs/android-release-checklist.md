@@ -25,6 +25,26 @@ Before packaging:
   - package id
   - icon
   - splash
+- confirm canonical branding assets:
+  - web/native source logo: `frontend/public/plotdna-logo.png`
+  - adaptive icon config: `frontend/android/app/src/main/res/mipmap-anydpi-v26/`
+  - generated launcher PNGs: `frontend/android/app/src/main/res/mipmap-*/`
+
+## Current repo state
+
+Already done in-repo:
+
+- app id is `com.plotdna.app`
+- app name is `PlotDNA`
+- launcher PNGs in `mipmap-mdpi` through `mipmap-xxxhdpi` now use the supplied PlotDNA logo
+- web favicon and manifest icon also point at the same logo source
+
+Still requires manual validation:
+
+- visual check of launcher icon on emulator
+- visual check of round icon crop on supported Android launchers
+- splash quality check on a real device
+- signed release build generation in Android Studio
 
 ## Android build path
 
@@ -42,6 +62,8 @@ Confirm:
 
 - app launches on emulator
 - app launches on physical device
+- launcher icon looks correct in app drawer and home screen
+- round icon crop does not clip the logo awkwardly
 - internet permission exists
 - map renders
 - search works
@@ -78,7 +100,7 @@ Test:
 
 1. Android emulator smoke test
 2. Physical device smoke test
-3. Internal testing track
-4. Closed testing
-5. Public release
-
+3. Signed `.aab` generation
+4. Play internal testing track
+5. Closed testing
+6. Public release
