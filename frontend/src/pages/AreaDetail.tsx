@@ -380,12 +380,11 @@ export default function AreaDetail() {
         </button>
 
         <div className="flex items-center gap-2.5">
-          <div
-            className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #00e676, #00b36b)' }}
-          >
-            <span className="text-black font-black text-[10px]">P</span>
-          </div>
+          <img
+            src="/plotdna-logo.png"
+            alt="PlotDNA"
+            className="w-6 h-6 rounded object-cover flex-shrink-0"
+          />
           <span className="font-display font-bold text-[#e8e8f0] text-sm">PlotDNA</span>
         </div>
 

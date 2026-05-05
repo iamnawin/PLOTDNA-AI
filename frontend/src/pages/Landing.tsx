@@ -174,15 +174,12 @@ export default function Landing() {
       {/* ── Nav ── */}
       <nav className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="flex items-center gap-2.5">
-          <div
-            className="w-8 h-8 rounded-xl flex items-center justify-center"
-            style={{
-              background: 'linear-gradient(135deg, #00e676 0%, #00b36b 100%)',
-              boxShadow: '0 0 20px #00e67640',
-            }}
-          >
-            <span style={{ fontWeight: 900, color: '#000', fontSize: 13 }}>P</span>
-          </div>
+          <img
+            src="/plotdna-logo.png"
+            alt="PlotDNA"
+            className="w-8 h-8 rounded-xl object-cover"
+            style={{ boxShadow: '0 0 20px #00e67640' }}
+          />
           <span style={{ fontWeight: 700, fontSize: 15, letterSpacing: '-0.02em', color: '#e8e8f0' }}>PlotDNA</span>
           <span
             className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px]"

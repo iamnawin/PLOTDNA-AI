@@ -238,15 +238,12 @@ export default function Home() {
           left: 'calc(1.25rem + env(safe-area-inset-left))',
         }}
       >
-        <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{
-            background: 'linear-gradient(135deg, #00e676 0%, #00b36b 100%)',
-            boxShadow: '0 0 24px #00e67650, 0 2px 8px #00000060',
-          }}
-        >
-          <span className="font-display font-black text-black text-sm leading-none">P</span>
-        </div>
+        <img
+          src="/plotdna-logo.png"
+          alt="PlotDNA"
+          className="w-9 h-9 rounded-xl object-cover flex-shrink-0"
+          style={{ boxShadow: '0 0 24px #00e67640, 0 2px 8px #00000060' }}
+        />
         <div>
           <p className="font-display font-bold text-[#e8e8f0] text-[15px] leading-tight tracking-tight">PlotDNA</p>
           <div className="flex items-center gap-1.5 mt-0.5">
