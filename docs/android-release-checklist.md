@@ -1,76 +1,84 @@
 # Android Release Checklist
 
-## Identity
+## Purpose
 
-- App name: `PlotDNA`
-- Package id: `com.plotdna.app`
-- Primary icon source: `frontend/public/icon.svg`
-- Splash source: `frontend/public/splash.svg`
-- Theme color: `#00e676`
-- Background color: `#050508`
+This checklist is for the Android release path for the current Capacitor-enabled repo state.
+Release readiness still depends on honest product copy, backend verification, and native testing.
 
-## Before creating the native project
+## Product truth before release
 
-- Confirm `frontend/capacitor.config.ts`
-- Confirm `frontend/src/lib/runtime.ts` points native builds to Render
-- Run:
+Before Play Store submission, confirm public copy does not overclaim:
+
+- supported cities are listed explicitly
+- supported-zone behavior is described honestly
+- approximate or cluster matches are labeled as such
+- "works for any plot in India" is not used as an exact-intelligence claim
+
+## Pre-release prerequisites
+
+Before packaging:
+
+- confirm `frontend/capacitor.config.ts`
+- confirm backend production URL
+- confirm app identity decisions:
+  - app name
+  - package id
+  - icon
+  - splash
+
+## Android build path
 
 ```bash
 cd frontend
 npm install
 npm run cap:add:android
 npm run cap:prepare
-```
-
-## After `android/` exists
-
-- Open Android Studio with:
-
-```bash
-cd frontend
 npm run cap:open:android
 ```
 
-- Set app icon from `frontend/public/icon.svg`
-- Set splash screen from `frontend/public/splash.svg`
-- Confirm app label is `PlotDNA`
-- Confirm package id is `com.plotdna.app`
-- Confirm internet permission exists
-- Confirm launch on:
-  - small Android phone
-  - large Android phone
-  - tablet
+## Native validation
 
-## Environment
+Confirm:
 
-- Backend URL must resolve to:
-  - `https://plotdna-api.onrender.com`
-- Test:
-  - search by area
-  - lat/lng analysis
-  - full analysis CTA
-  - 3 free searches -> email gate
+- app launches on emulator
+- app launches on physical device
+- internet permission exists
+- map renders
+- search works
+- supported-area detail pages load
+- coordinate analysis works against production backend
+- unsupported areas are labeled honestly
 
-## Play Store prep
+## Release validation
 
-- Generate signed `.aab`
-- Create Play Console app
-- Add:
-  - app icon
-  - feature graphic
-  - screenshots
-  - privacy policy URL
-  - short description
-  - full description
-- Complete:
-  - Data safety form
-  - Content rating
-  - App access section if gated areas exist
+Test:
+
+- area search
+- map-link search
+- lat/lng input
+- fallback disclosure messaging
+- verdict flow
+- PDF/report flow if exposed
+- auth or quota flow if enabled
+
+## Play Console prep
+
+- create Play Console app
+- generate signed `.aab`
+- add icon
+- add feature graphic
+- add phone screenshots
+- add tablet screenshots if tablet support is claimed
+- add privacy policy URL
+- complete data safety form
+- complete content rating
+- complete app access section for gated flows if needed
 
 ## Recommended release order
 
-1. Android identity polish
+1. Android emulator smoke test
 2. Physical device smoke test
-3. Play Store internal testing
-4. What-if scenario MVP
-5. Subscription / in-app purchase flow
+3. Internal testing track
+4. Closed testing
+5. Public release
+

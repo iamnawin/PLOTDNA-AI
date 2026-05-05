@@ -2,31 +2,89 @@
 
 <div align="center">
 
-[![Web](https://img.shields.io/badge/Web-plotdna--ai.vercel.app-00e676?style=for-the-badge&labelColor=050508)](https://plotdna-ai.vercel.app/)
-[![API](https://img.shields.io/badge/API-Render-22c55e?style=for-the-badge&labelColor=050508)](https://plotdna-api.onrender.com/health)
-[![Frontend](https://img.shields.io/badge/Frontend-React%2019%20%2B%20Vite-61dafb?style=for-the-badge&labelColor=050508)](https://react.dev/)
-[![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&labelColor=050508)](https://fastapi.tiangolo.com/)
-[![Mobile](https://img.shields.io/badge/Mobile-Capacitor-119eff?style=for-the-badge&labelColor=050508)](https://capacitorjs.com/)
-
 **Decode any plot before you buy.**
 
-PlotDNA is a real estate intelligence app for land and micro-markets. It combines static market coverage, live coordinate analysis, AI verdicts, resolver-grade locality matching, and mobile-ready packaging.
+PlotDNA is a hybrid real-estate intelligence product for selected Indian micro-markets.
+It combines curated locality data, resolver-based coordinate matching, and a growing backend
+for dynamic analysis.
 
 </div>
 
 ---
 
-## What it does
+## What PlotDNA is today
 
-- Scores supported micro-markets with a `0-100` DNA score
-- Resolves raw coordinates into exact, nearby, cluster, or uncovered locality context
-- Lets users search by area name, coordinates, full map URL, or short map link
-- Shows live coordinate analysis through the backend pipeline
-- Generates AI verdicts, news context, brochure analysis, and market pulse cards
-- Supports a mobile app path through Capacitor
-- Enforces `3 free searches`, then asks for email through backend entitlements
+PlotDNA is strongest as a **supported-zones intelligence product**, not yet as a
+fully dynamic "any plot in India" engine.
 
-## Current coverage
+Current product model:
+
+- curated micro-market coverage across selected cities
+- coordinate and map-link input that resolves into supported locality context
+- stored market profiles for supported areas
+- some backend-driven dynamic analysis and verdict flows
+
+The current system is best described as:
+
+`user input -> resolver -> supported locality or cluster -> stored market profile -> optional dynamic enrichment`
+
+If a searched point is outside supported coverage, the product should be treated as
+approximate or unsupported rather than exact.
+
+---
+
+## Architectural reality
+
+PlotDNA currently has two layers:
+
+### 1. Curated market intelligence
+
+This is the stronger part of the product today.
+
+- city datasets and market narratives live in `frontend/src/data/*.ts`
+- resolver-grade city geometry and aliases live in `data/cities/<city>/`
+- supported areas can show score, narrative, projects, sources, and area detail UI
+
+### 2. Dynamic analysis
+
+This exists, but it is not yet the sole source of truth.
+
+- backend scoring routes can analyze coordinates
+- resolver logic can map coordinates to exact, nearby, cluster, or uncovered context
+- some verdict and live-analysis flows use backend services
+
+What is **not** true yet:
+
+- all of market truth comes from one backend-owned canonical catalog
+- every searched point in India gets equally reliable locality intelligence
+- pricing, RERA, infra, and satellite freshness are fully automated for all supported cities
+
+---
+
+## Coverage model
+
+PlotDNA should be read through explicit support tiers:
+
+- **Tier A: Full micro-market support**
+  - polygon-defined locality
+  - stored market profile
+  - area detail experience
+  - sources / projects / verdict support
+- **Tier B: Resolver or cluster support**
+  - approximate supported-market context
+  - partial confidence
+  - not exact point-level locality truth
+- **Tier C: Dynamic coordinate-only support**
+  - coordinate analysis without curated locality intelligence
+  - should not be presented as equal to Tier A
+
+See [docs/COVERAGE_TIERS.md](docs/COVERAGE_TIERS.md).
+
+---
+
+## Current supported cities
+
+Resolver-grade support currently exists for:
 
 - Hyderabad
 - Bangalore
@@ -36,62 +94,62 @@ PlotDNA is a real estate intelligence app for land and micro-markets. It combine
 - Delhi NCR
 - Vijayawada Capital Region
 - Visakhapatnam
-- Dubai (starter dataset)
 
-## Product status
-
-### Live now
-
-- Vercel web frontend
-- Render backend
-- Search gating with anonymous auth + email unlock after free quota
-- Mobile-friendly search chips and streamlined Home layout
-- Dubai wired into the city registry
-
-### In progress
-
-- Capacitor packaging for Play Store / App Store release
-- Subscription / in-app purchase flow
-- What-if scenario engine
-- Internal-only research workflow for market memos
+These cities have resolver datasets under `data/cities/` and bundled market datasets in
+`frontend/src/data/`.
 
 ---
 
-## Stack
+## What the repo does well now
 
-| Layer | Tech |
-|---|---|
-| Frontend | React 19, TypeScript, Vite |
-| Styling | Tailwind CSS v4 |
-| State | Zustand |
-| Maps | MapLibre GL via `react-map-gl` |
-| Animation | Framer Motion |
-| Backend | FastAPI |
-| AI | Gemini |
-| Mobile shell | Capacitor |
-| Hosting | Vercel + Render |
+- strong demoable product vision
+- polished map and area-detail UI
+- curated city storytelling
+- resolver-based locality matching for supported cities
+- hybrid coordinate-to-market flow
+- investor-style presentation of score, outlook, and narrative
+
+---
+
+## What is still incomplete
+
+The repo is not yet a fully accurate nationwide intelligence engine.
+
+Key gaps:
+
+- market truth is still duplicated across frontend and backend paths
+- backend area/catalog APIs are not yet the canonical source of truth
+- fresh data pipelines are incomplete
+- exact-location intelligence outside supported zones is limited
+- support tiers are stronger than nationwide claims
+
+The main architecture plan for fixing that lives in
+[docs/ALL_INDIA_EXPANSION_PLAN.md](docs/ALL_INDIA_EXPANSION_PLAN.md).
 
 ---
 
 ## Repository layout
 
 ```text
-frontend/                   React app
+frontend/
   src/
-    components/             UI, map, score, brochure, verdict cards
-    data/                   Static city and area datasets
-    lib/                    API, runtime, resolver, plot analysis helpers
-    pages/                  Landing, Home, AreaDetail, BrochurePage
-    store/                  Zustand store
+    components/             UI components
+    data/                   bundled city and market datasets
+    lib/                    API helpers, resolver, analysis helpers
+    pages/                  landing, home, area detail, brochure flows
 
-backend/                    FastAPI app
+backend/
   app/
-    api/routes/             REST endpoints
-    core/                   Config and auth
-    services/               Entitlements, scoring, verdict, news, utilities
+    api/routes/             FastAPI routes
+    services/               scoring, verdict, routing, and helpers
 
-data/                       Resolver-grade city JSON datasets
-docs/                       Plans and architecture notes
+data/
+  cities/                   resolver-grade city geometry, aliases, clusters
+
+docs/
+  ROADMAP.md
+  ALL_INDIA_EXPANSION_PLAN.md
+  COVERAGE_TIERS.md
 ```
 
 ---
@@ -101,13 +159,12 @@ docs/                       Plans and architecture notes
 ### Frontend
 
 ```bash
-git clone https://github.com/iamnawin/PLOTDNA-AI.git
-cd PLOTDNA-AI/frontend
+cd frontend
 npm install
 npm run dev
 ```
 
-Frontend runs at `http://localhost:5173`.
+Runs at `http://localhost:5173`.
 
 ### Backend
 
@@ -119,163 +176,36 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-Backend runs at `http://localhost:8000`.
+Runs at `http://localhost:8000`.
 
-### Production envs
+### Important truth about local dev
 
-#### Vercel
-
-```env
-VITE_API_URL=https://plotdna-api.onrender.com
-```
-
-#### Render
-
-```env
-APP_ENV=production
-JWT_SECRET=<long-random-secret>
-ALLOWED_ORIGINS=https://plotdna-ai.vercel.app
-GEMINI_API_KEY=<optional-for-ai-features>
-SUPABASE_URL=<optional>
-SUPABASE_KEY=<optional>
-```
+- the frontend can run by itself because much of the current product is still bundled static data
+- the backend is needed for the dynamic flows that do exist
+- this mixed setup is part of the current transition state, not the desired end architecture
 
 ---
 
-## Mobile app path with Capacitor
+## Mobile release status
 
-Capacitor lets this existing React/Vite app run as a native Android/iOS app shell without rewriting the frontend.
+Capacitor work exists here as an implementation path, but release readiness still depends on
+honest product copy, backend verification, and native smoke testing.
 
-### What Capacitor is used for
+Release prep docs:
 
-- wraps the web app in a native container
-- opens native Android Studio / Xcode projects
-- gives access to native APIs later:
-  - in-app purchases
-  - share sheet
-  - deep links
-  - push notifications
-  - splash screen and app icons
-
-### Current mobile behavior
-
-- Native builds use `https://plotdna-api.onrender.com` by default if `VITE_API_URL` is not set
-- Web dev still defaults to `http://localhost:8000`
-- Runtime resolution lives in `frontend/src/lib/runtime.ts`
-
-### Release notes
-
-- Android checklist: `docs/android-release-checklist.md`
-- Next roadmap incl. What-if MVP: `docs/next-roadmap.md`
-
-### Android native baseline
-
-- Native project now lives in `frontend/android`
-- App label and package are `PlotDNA` / `com.plotdna.app`
-- Brand colors are wired in `frontend/android/app/src/main/res/values/colors.xml`
-- Splash now uses Android's SplashScreen theme with a dark background and launcher icon
-
-### Android setup
-
-```bash
-cd frontend
-npm install
-npm run cap:add:android    # one time
-npm run cap:prepare        # build + sync
-npm run cap:open:android
-```
-
-Then:
-
-- open Android Studio
-- choose emulator or connected device
-- press `Run`
-
-### iOS setup
-
-```bash
-cd frontend
-npm run cap:add:ios        # one time
-npm run cap:prepare
-npm run cap:open:ios
-```
-
-Then:
-
-- open Xcode
-- choose simulator or device
-- press `Run`
+- [docs/android-release-checklist.md](docs/android-release-checklist.md)
+- [docs/ios-release-checklist.md](docs/ios-release-checklist.md)
 
 ---
 
-## Search gating flow
+## Recommended next engineering move
 
-The current public flow is:
+The highest-value technical next step is:
 
-1. User starts a search-led analysis action
-2. Frontend creates or reuses an anonymous session
-3. Frontend calls backend entitlements consume endpoint
-4. First `3` analysis actions are free
-5. After quota is exhausted, an email modal is shown
-6. Email unlocks continued search access
+1. move market truth into one canonical backend-owned catalog
+2. make frontend consume that catalog through backend APIs
+3. keep support tiers explicit while dynamic coverage matures
 
-The same gate applies to:
-
-- direct lat/lng analysis
-- full map URL analysis
-- short map link analysis
-- opening full analysis from result CTAs
-
----
-
-## Key files
-
-| File | Purpose |
-|---|---|
-| `frontend/src/lib/runtime.ts` | Central API base resolution for web vs native |
-| `frontend/src/lib/entitlements.ts` | Anonymous auth and quota/email client |
-| `frontend/src/pages/Home.tsx` | Main map + search UI |
-| `frontend/src/pages/Landing.tsx` | Landing page search flow |
-| `frontend/src/components/ui/EmailGateModal.tsx` | Email unlock modal |
-| `frontend/src/components/score/ScoreCard.tsx` | Area score panel |
-| `frontend/src/components/score/PlotAnalysisCard.tsx` | Coordinate analysis panel |
-| `backend/app/api/routes/auth.py` | Anonymous auth endpoint |
-| `backend/app/api/routes/entitlements.py` | Entitlement and email endpoints |
-| `backend/app/services/entitlements_store.py` | SQLite-backed MVP usage store |
-
----
-
-## Deployment
-
-### Web
-
-- Frontend: Vercel
-- Backend: Render
-
-### Mobile
-
-- Build native projects with Capacitor
-- Generate signed Android `.aab` in Android Studio for Play Store
-- Generate signed iOS archive in Xcode for App Store
-
----
-
-## Notes
-
-- `backend/requirements-render.txt` must include every dependency needed by routes loaded at startup
-- FastAPI file upload routes require `python-multipart`
-- Coordinate data in app datasets is stored as `[lat, lng]`
-- MapLibre expects `[lng, lat]`
-
----
-
-## Roadmap
-
-- subscription and in-app purchase verification
-- what-if scenario engine per micro-market
-- richer Dubai / UAE coverage
-- cleaner mobile release setup
-- internal market research memo pipeline
-
-
+That migration direction is already outlined in
+[docs/ALL_INDIA_EXPANSION_PLAN.md](docs/ALL_INDIA_EXPANSION_PLAN.md).
 
