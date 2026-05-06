@@ -1,5 +1,6 @@
 import { API_BASE_URL } from '@/lib/runtime'
 const TOKEN_KEY = 'plotdna_access_token'
+const ENTITLEMENTS_CACHE_KEY = 'plotdna_entitlements'
 
 interface AnonymousAuthResponse {
   user_id: string
@@ -37,6 +38,24 @@ function setStoredToken(token: string) {
     window.localStorage.setItem(TOKEN_KEY, token)
   } catch {
     // ignore storage failures in privacy modes
+  }
+}
+
+function rememberEntitlements(entitlements: EntitlementsResponse) {
+  try {
+    window.localStorage.setItem(ENTITLEMENTS_CACHE_KEY, JSON.stringify(entitlements))
+  } catch {
+    // ignore storage failures in privacy modes
+  }
+}
+
+export function getCachedEntitlements(): EntitlementsResponse | null {
+  try {
+    const raw = window.localStorage.getItem(ENTITLEMENTS_CACHE_KEY)
+    if (!raw) return null
+    return JSON.parse(raw) as EntitlementsResponse
+  } catch {
+    return null
   }
 }
 
@@ -86,7 +105,9 @@ export async function getEntitlements(): Promise<EntitlementsResponse | null> {
   try {
     const res = await authedFetch('/api/v1/entitlements')
     if (!res.ok) return null
-    return await res.json() as EntitlementsResponse
+    const entitlements = await res.json() as EntitlementsResponse
+    rememberEntitlements(entitlements)
+    return entitlements
   } catch {
     return null
   }
@@ -100,7 +121,9 @@ export async function consumeSearchAccess(): Promise<ConsumeResult> {
     })
 
     if (res.ok) {
-      return { status: 'ok', entitlements: await res.json() as EntitlementsResponse }
+      const entitlements = await res.json() as EntitlementsResponse
+      rememberEntitlements(entitlements)
+      return { status: 'ok', entitlements }
     }
 
     if (res.status === 403) {
@@ -124,7 +147,9 @@ export async function attachEmail(email: string): Promise<AttachEmailResult> {
       const payload = await res.json().catch(() => null) as { detail?: string } | null
       return { status: 'error', message: payload?.detail ?? 'Could not save your email.' }
     }
-    return { status: 'ok', entitlements: await res.json() as EntitlementsResponse }
+    const entitlements = await res.json() as EntitlementsResponse
+    rememberEntitlements(entitlements)
+    return { status: 'ok', entitlements }
   } catch {
     return { status: 'error', message: 'Could not reach PlotDNA access service.' }
   }
