@@ -400,14 +400,14 @@ export default function Landing() {
 
               <button
                 onClick={handleEnter}
-                disabled={resolving || brochureLoading || locating}
+                disabled={resolving || brochureLoading}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
                 style={{
                   background: 'rgba(0,230,118,0.12)',
                   border: '1px solid rgba(0,230,118,0.3)',
                   color: '#00e676',
                   flexShrink: 0,
-                  opacity: resolving || brochureLoading || locating ? 0.5 : 1,
+                  opacity: resolving || brochureLoading ? 0.5 : 1,
                 }}
               >
                 {resolving ? 'Resolving…' : brochureLoading ? 'Reading…' : 'Analyze'}
