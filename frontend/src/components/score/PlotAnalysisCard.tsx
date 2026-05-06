@@ -43,6 +43,14 @@ const FULL_ANALYSIS_STEPS = [
 
 const FULL_ANALYSIS_DELAY_MS = 4_000
 
+function sumCounts(counts: Record<string, number> | undefined) {
+  return Object.values(counts ?? {}).reduce((sum, value) => sum + value, 0)
+}
+
+function activeBucketCount(counts: Record<string, number> | undefined) {
+  return Object.values(counts ?? {}).filter((value) => value > 0).length
+}
+
 export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
   const navigate = useNavigate()
 
@@ -122,7 +130,12 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
     liveData !== null &&
     hasStaticAreaContext &&
     staticArea !== null &&
-    (liveData.confidence === 'Low' || liveData.score <= Math.max(25, staticArea.score - 30))
+    (
+      liveData.confidence === 'Low' ||
+      sumCounts(liveData.osm_counts) < 10 ||
+      activeBucketCount(liveData.osm_counts) < 3 ||
+      liveData.score <= Math.max(25, staticArea.score - 30)
+    )
   const displayScore = liveScoreIsSparse && staticArea
     ? staticArea.score
     : liveData?.score ?? (hasStaticAreaContext && staticArea ? staticArea.score : 0)
@@ -141,7 +154,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
 
   const displayConfidence = (
     liveScoreIsSparse
-      ? (outlook?.confidence ?? 'Low')
+      ? 'Low'
       : (liveData?.confidence ?? outlook?.confidence ?? 'Low')
   ) as 'High' | 'Medium' | 'Low'
   const confidenceColor =
@@ -149,7 +162,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
     displayConfidence === 'Medium' ? '#f59e0b' : '#ef4444'
   const liveSignals = liveData ? (Object.entries(liveData.signals) as [keyof typeof liveData.signals, number][]) : []
   const scoreSourceLabel = liveScoreIsSparse
-    ? 'Nearby market reference'
+    ? 'Approximate nearby proxy'
     : isLive
       ? 'Live OSM score'
       : 'Static market score'
@@ -425,7 +438,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 {isLive ? (
                   <p className="text-[10px] font-mono mt-0.5" style={{ color: '#333344' }}>
                     {liveScoreIsSparse
-                      ? `Raw live OSM score: ${liveData?.score ?? 0}/100. Nearby market score is shown because this coordinate has low live coverage.`
+                      ? `Sparse OSM coverage (${activeBucketCount(liveData?.osm_counts)} buckets, ${sumCounts(liveData?.osm_counts)} raw hits) means PlotDNA is using the nearby market as an approximate proxy.`
                       : 'Coordinate-level score. Static locality narratives appear only when the fallback tier is exact or safely nearby.'}
                   </p>
                 ) : (
@@ -490,7 +503,9 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                   <p className="text-[10px] font-mono text-[#666680] mt-1 leading-relaxed">
                     {resolvedFallback.tier === 'city_zone_cluster'
                       ? 'The live score is valid for this coordinate, but PlotDNA only has broad city-zone context here. Area-level history and forecast sections are intentionally hidden.'
-                      : 'The live score is valid for this coordinate, but PlotDNA does not have a reliable supported micro-market match for this location yet.'}
+                      : liveScoreIsSparse
+                        ? 'The live score is thin enough that PlotDNA is treating the nearby market as a proxy, not an exact read.'
+                        : 'The live score is valid for this coordinate, but PlotDNA does not have a reliable supported micro-market match for this location yet.'}
                   </p>
                 </div>
               </div>
