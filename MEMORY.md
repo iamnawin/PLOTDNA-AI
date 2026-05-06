@@ -420,7 +420,19 @@ This addendum reflects the latest pushed `main` branch state after the locate-me
 - After five seconds on an area page, the UI highlights the `Download PDF` action and shows a small report-download prompt.
 - Once the email is captured, the PDF downloads immediately.
 
+### Full Analysis Gate
+- Clicking `View full analysis for this zone` no longer waits before navigation. The area page opens immediately and shows a route-level loader for coordinate-originated opens.
+- The loader stays up long enough for backend-backed sections to fetch: AI verdict, market pulse, and AVM.
+- Direct `/area/:slug` navigation should stay immediate; the loading gate is only for the coordinate-result handoff.
+
+### Sparse Coverage Rule
+- Live coordinate reads now look at raw OSM signal counts before deciding whether the result is a reliable local read or an approximate nearby proxy.
+- If coverage is thin, the UI should say `approximate` / `nearby market reference` and not present the score as exact.
+- This is a display and confidence rule; it does not fix the underlying data sparsity.
+
 ### Recent Main Branch Commit Trail
+- `0b49215` - Let backend analysis load behind the full area gate
+- `b355ea5` - Make sparse coordinate coverage read as sparse
 - `f2d2a65` - Gate PDF reports behind email capture
 - `3b59349` - Make coordinate analysis feel responsive
 - `67c8f48` - Keep sparse coordinate analysis honest
