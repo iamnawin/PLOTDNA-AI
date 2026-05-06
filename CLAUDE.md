@@ -154,6 +154,10 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 
 - Mobile layout stability: switched full-screen containers/panels to `100dvw` and applied `env(safe-area-inset-*)` offsets to reduce overflow + alignment issues on notched devices.
 - Dubai starter dataset: added `frontend/src/data/dubai.ts` and registered it in `frontend/src/data/cities.ts`.
+- Landing geolocation flow: the search bar now includes a `Locate me` action that requests browser geolocation, fills the detected coordinates, and enables coordinate-led analysis.
+- Coordinate analysis UX: detected-coordinate analysis opens with a PlotDNA-branded loading state, then routes to the nearest/fallback analysis without quota-gating the full-analysis page.
+- Coordinate honesty rule: when a detected coordinate only maps to a nearby or fallback locality, UI must label it as approximate instead of presenting the matched micro-market as exact.
+- PDF report lead capture: the full analysis page remains browsable, but `Download PDF` now requires an email unless the user already has email/subscription entitlement. After five seconds on the page, the PDF CTA is highlighted with a report-download prompt.
 
 ## Roadmap Notes (Capacitor + Monetization)
 
@@ -170,6 +174,7 @@ Backend MVP endpoints added:
 - Auth note: the MVP bearer token is an HMAC-signed payload implemented with Python stdlib; it is intentionally lightweight and not a full JWT/OAuth system.
 - Render note: FastAPI file-upload routes in `backend/app/api/routes/utils.py` require `python-multipart` to be present in both backend requirements files or app startup will fail.
 - Frontend gating: landing and home search flows now call the backend anonymous-auth + entitlements endpoints, consume one free search per search-led analysis/open action, and show an email capture modal after the free quota is exhausted.
+- Report gating: do not gate `/area/:slug` navigation for coordinate fallback flows. Use email capture at PDF export time instead.
 - Mobile search refinement: the city and recommendation chip rows under the search bar are touch-scroll friendly on mobile, the duplicate supported-cities strip above the bottom dock is removed, and full-analysis CTA clicks now consume search access just like direct coordinate analysis.
 - Mobile runtime note: native Capacitor builds default to https://plotdna-api.onrender.com when VITE_API_URL is not supplied, while web dev still defaults to http://localhost:8000.
 - App identity assets: shared icon and splash SVG sources now live in `frontend/public/icon.svg` and `frontend/public/splash.svg`, with follow-up native Android wiring documented in `docs/android-release-checklist.md`.

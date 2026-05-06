@@ -398,3 +398,36 @@ This addendum extends the current-state override above and reflects the latest p
 - Globe interaction is mouse-first; touch still relies mainly on passive motion.
 - Globe mode is now credible and interactive, but still intentionally stylized rather than photoreal.
 - Area-news relevance is still keyword-based from area name matching in title/summary, so relevant stories that omit the area name may still be missed.
+
+## 2026-05-06 Location + Report Gate Addendum
+
+This addendum reflects the latest pushed `main` branch state after the locate-me and report-download iterations.
+
+### Locate Me / Coordinate Analysis
+- The landing search now has a `Locate me` button that requests browser geolocation permission, writes the detected coordinates into search state, and keeps the `Analyze` button enabled once coordinates are available.
+- Coordinate analysis now shows a branded loading state while resolving and routing, because geolocation/search users otherwise saw a long silent delay.
+- Coordinate-led full-analysis navigation should stay ungated. The earlier quota gate on the coordinate result CTA created confusing "unlock more searches" friction after the user had already reached a fallback result.
+- The current UX rule is: gate search consumption, not reading a resolved analysis page.
+
+### Locality Accuracy Rule
+- Detected coordinates can resolve to an exact locality, a nearby micro-market, a broader cluster, or uncovered coverage.
+- If the coordinate is only near a supported micro-market, the UI must say `Nearby` / `Approximate` and not imply exact plot-level truth.
+- The current analysis is still static/deterministic and can be wrong for fast-growing pockets. Accurate live growth claims require better data sources, not just copy changes.
+
+### PDF / Email Capture
+- Full analysis pages remain browsable without email.
+- PDF export is the lead-capture moment: `Download PDF` checks entitlements and opens the email modal when email/subscription is missing.
+- After five seconds on an area page, the UI highlights the `Download PDF` action and shows a small report-download prompt.
+- Once the email is captured, the PDF downloads immediately.
+
+### Recent Main Branch Commit Trail
+- `f2d2a65` - Gate PDF reports behind email capture
+- `3b59349` - Make coordinate analysis feel responsive
+- `67c8f48` - Keep sparse coordinate analysis honest
+- `105431b` - Keep analyze enabled after locate-me coordinates
+- `a19e596` - Let landing users analyze their current location
+
+### Current Risks / Follow-ups
+- Browser geolocation can timeout or return low-accuracy coordinates; the manual lat/lng path remains required.
+- The coordinate loading state improves perceived responsiveness, but resolver/data quality still controls answer quality.
+- Lint still has unrelated existing failures in `AVMCard.tsx` and `MarketPulseCard.tsx`; build passes.
