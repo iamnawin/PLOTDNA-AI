@@ -93,8 +93,17 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
   const showAnalysisBody = isLive || hasStaticAreaContext
   const showScrollableBody = showAnalysisBody || showFallbackVerdict
 
-  const displayScore = liveData?.score ?? (hasStaticAreaContext && staticArea ? staticArea.score : 0)
-  const displayHighlights = liveData?.highlights ?? (hasStaticAreaContext && staticArea ? staticArea.highlights.slice(0, 3) : [])
+  const liveScoreIsSparse =
+    liveData !== null &&
+    hasStaticAreaContext &&
+    staticArea !== null &&
+    (liveData.confidence === 'Low' || liveData.score <= Math.max(25, staticArea.score - 30))
+  const displayScore = liveScoreIsSparse && staticArea
+    ? staticArea.score
+    : liveData?.score ?? (hasStaticAreaContext && staticArea ? staticArea.score : 0)
+  const displayHighlights = liveScoreIsSparse && staticArea
+    ? staticArea.highlights.slice(0, 3)
+    : liveData?.highlights ?? (hasStaticAreaContext && staticArea ? staticArea.highlights.slice(0, 3) : [])
   const milestones = hasStaticAreaContext && staticArea ? getGrowthMilestones(staticArea) : []
   const outlook = hasStaticAreaContext && staticArea ? getOutlook(staticArea) : null
 
@@ -105,11 +114,20 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
   const circumference = 2 * Math.PI * r
   const dashOffset = circumference - (displayScore / 100) * circumference
 
-  const displayConfidence = (liveData?.confidence ?? outlook?.confidence ?? 'Low') as 'High' | 'Medium' | 'Low'
+  const displayConfidence = (
+    liveScoreIsSparse
+      ? (outlook?.confidence ?? 'Low')
+      : (liveData?.confidence ?? outlook?.confidence ?? 'Low')
+  ) as 'High' | 'Medium' | 'Low'
   const confidenceColor =
     displayConfidence === 'High' ? '#10b981' :
     displayConfidence === 'Medium' ? '#f59e0b' : '#ef4444'
   const liveSignals = liveData ? (Object.entries(liveData.signals) as [keyof typeof liveData.signals, number][]) : []
+  const scoreSourceLabel = liveScoreIsSparse
+    ? 'Nearby market reference'
+    : isLive
+      ? 'Live OSM score'
+      : 'Static market score'
 
   const fallbackTitle =
     resolvedFallback.tier === 'exact_locality'
@@ -244,8 +262,9 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
               <div className="flex items-start gap-2 px-3 py-2.5">
                 <Info size={9} style={{ color: '#555566', flexShrink: 0, marginTop: 1 }} />
                 <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
-                  Score derived from real transit, roads, offices and amenities near this coordinate.
-                  Price velocity is a proxy and static micro-market context is shown only when the fallback tier is exact or safely nearby.
+                  {liveScoreIsSparse
+                    ? `Live OSM coverage at this exact pin is sparse, so PlotDNA is using the ${fallbackDisplayLabel} reference score while still showing live coordinate context.`
+                    : 'Score derived from real transit, roads, offices and amenities near this coordinate. Price velocity is a proxy and static micro-market context is shown only when the fallback tier is exact or safely nearby.'}
                 </p>
               </div>
             </>
@@ -373,7 +392,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 {isLive ? (
                   <div className="flex items-center gap-1.5 mt-1">
                     <Activity size={11} style={{ color: '#00e676' }} />
-                    <span className="text-[10px] font-mono text-[#00e676]">Live OSM score</span>
+                    <span className="text-[10px] font-mono text-[#00e676]">{scoreSourceLabel}</span>
                   </div>
                 ) : (
                   <div className="flex items-center gap-1.5 mt-1">
@@ -383,7 +402,9 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 )}
                 {isLive ? (
                   <p className="text-[10px] font-mono mt-0.5" style={{ color: '#333344' }}>
-                    Coordinate-level score. Static locality narratives appear only when the fallback tier is exact or safely nearby.
+                    {liveScoreIsSparse
+                      ? `Raw live OSM score: ${liveData?.score ?? 0}/100. Nearby market score is shown because this coordinate has low live coverage.`
+                      : 'Coordinate-level score. Static locality narratives appear only when the fallback tier is exact or safely nearby.'}
                   </p>
                 ) : (
                   <p className="text-[11px] font-mono text-[#555566] mt-0.5">{staticArea?.priceRange}</p>
