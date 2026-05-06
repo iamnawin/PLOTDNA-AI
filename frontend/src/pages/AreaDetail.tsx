@@ -27,6 +27,9 @@ import EmailGateModal from '@/components/ui/EmailGateModal'
 import { getCachedEntitlements, getEntitlements, type EntitlementsResponse } from '@/lib/entitlements'
 
 interface AreaDetailLocationState {
+  analysisTransition?: {
+    minHoldMs?: number
+  }
   fallbackContext?: {
     tier: 'exact_locality' | 'nearby_micro_market' | 'city_zone_cluster' | 'uncovered'
     displayLabel: string
@@ -34,6 +37,13 @@ interface AreaDetailLocationState {
     coords?: [number, number]
   }
 }
+
+const ANALYSIS_GATE_STEPS = [
+  'Loading AI verdict...',
+  'Reading market pulse...',
+  'Loading valuation model...',
+  'Preparing full area analysis...',
+]
 
 // ── Active project helpers ──────────────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
@@ -336,7 +346,15 @@ export default function AreaDetail() {
   const [reportPromptDismissedSlug, setReportPromptDismissedSlug] = useState<string | null>(null)
   const [reportDownloadBusy, setReportDownloadBusy] = useState(false)
   const area = getAllAreas().find((a) => a.slug === slug)
-  const fallbackContext = (location.state as AreaDetailLocationState | null)?.fallbackContext
+  const locationState = location.state as AreaDetailLocationState | null
+  const fallbackContext = locationState?.fallbackContext
+  const analysisTransition = locationState?.analysisTransition
+  const showAnalysisGate = Boolean(analysisTransition)
+  const analysisMinHoldMs = analysisTransition?.minHoldMs ?? 4_000
+  const [analysisGateElapsed, setAnalysisGateElapsed] = useState(!showAnalysisGate)
+  const [verdictReady, setVerdictReady] = useState(!showAnalysisGate)
+  const [marketPulseReady, setMarketPulseReady] = useState(!showAnalysisGate)
+  const [avmReady, setAvmReady] = useState(!showAnalysisGate)
   const showReportPrompt = reportPromptReadySlug === slug && reportPromptDismissedSlug !== slug
 
   useEffect(() => {
@@ -345,6 +363,18 @@ export default function AreaDetail() {
     }, 5_000)
     return () => window.clearTimeout(timer)
   }, [slug])
+
+  useEffect(() => {
+    if (!showAnalysisGate) return
+    setAnalysisGateElapsed(false)
+    setVerdictReady(false)
+    setMarketPulseReady(false)
+    setAvmReady(false)
+    const timer = window.setTimeout(() => {
+      setAnalysisGateElapsed(true)
+    }, analysisMinHoldMs)
+    return () => window.clearTimeout(timer)
+  }, [analysisMinHoldMs, showAnalysisGate, slug])
 
   if (!area) {
     return (
@@ -378,6 +408,7 @@ export default function AreaDetail() {
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
+  const showAnalysisOverlay = showAnalysisGate && !(analysisGateElapsed && verdictReady && marketPulseReady && avmReady)
 
   async function prepareAndSaveReport() {
     if (!area) return
@@ -607,6 +638,7 @@ export default function AreaDetail() {
             areaSlug={area.slug}
             resolutionTier="exact_locality"
             resolutionLabel={area.name}
+            onReady={() => setVerdictReady(true)}
           />
         </motion.div>
 
@@ -941,10 +973,20 @@ export default function AreaDetail() {
         </motion.div>
 
         {/* ── Market Pulse ── */}
-        <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
+        <MarketPulseCard
+          citySlug={citySlug}
+          areaSlug={area.slug}
+          country="india"
+          onReady={() => setMarketPulseReady(true)}
+        />
 
         {/* ── Automated Valuation (AVM) ── */}
-        <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
+        <AVMCard
+          areaSlug={area.slug}
+          country="india"
+          accentColor={color}
+          onReady={() => setAvmReady(true)}
+        />
 
         {/* ── Sources & Citations ── */}
         <motion.section
@@ -1095,6 +1137,74 @@ export default function AreaDetail() {
                 </button>
               </div>
             </div>
+          </div>
+        </motion.div>
+      )}
+      {showAnalysisOverlay && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[2200] flex flex-col items-center justify-center px-6"
+          style={{ background: 'rgba(4,4,10,0.96)', backdropFilter: 'blur(24px)' }}
+        >
+          <div className="relative mb-6 h-28 w-28">
+            <svg className="absolute inset-0 animate-spin" style={{ animationDuration: '3.2s' }} viewBox="0 0 112 112">
+              <circle cx={56} cy={56} r={50} fill="none" stroke="rgba(0,230,118,0.08)" strokeWidth={1.5} />
+              <circle
+                cx={56}
+                cy={56}
+                r={50}
+                fill="none"
+                stroke="#00e676"
+                strokeDasharray="34 280"
+                strokeLinecap="round"
+                strokeWidth={2.5}
+                style={{ filter: 'drop-shadow(0 0 8px #00e67680)' }}
+              />
+            </svg>
+            <svg className="absolute inset-0 animate-spin" style={{ animationDuration: '1.8s', animationDirection: 'reverse' }} viewBox="0 0 112 112">
+              <circle cx={56} cy={56} r={35} fill="none" stroke="rgba(0,230,118,0.22)" strokeDasharray="18 200" strokeLinecap="round" strokeWidth={1.5} />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center text-center">
+              <div>
+                <p className="font-mono text-xl font-black leading-none text-[#00e676]" style={{ textShadow: '0 0 18px #00e67670' }}>
+                  DNA
+                </p>
+                <p className="mt-1 font-mono text-[8px] uppercase tracking-[0.2em] text-[#2a2a3e]">
+                  report
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <motion.p
+            key={`${analysisGateElapsed}-${verdictReady}-${marketPulseReady}-${avmReady}`}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.22 }}
+            className="text-center font-mono text-[13px] font-semibold text-[#ccccdd]"
+          >
+            {analysisGateElapsed && !(verdictReady && marketPulseReady && avmReady)
+              ? 'Waiting on backend sections...'
+              : !verdictReady
+                ? ANALYSIS_GATE_STEPS[0]
+                : !marketPulseReady
+                  ? ANALYSIS_GATE_STEPS[1]
+                  : ANALYSIS_GATE_STEPS[2]}
+          </motion.p>
+          <p className="mt-2 text-center font-mono text-[10px] leading-relaxed text-[#555566]">
+            Showing the page while AI verdict, market pulse, and valuation sections finish loading.
+          </p>
+          <div className="mt-6 h-px w-52 overflow-hidden rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <motion.div
+              className="h-full rounded-full"
+              style={{ background: 'linear-gradient(90deg, #00e676, #00b36b)' }}
+              initial={{ width: '0%' }}
+              animate={{ width: '100%' }}
+              transition={{ duration: Math.max(analysisMinHoldMs / 1000, 3.2), ease: 'linear' }}
+            />
           </div>
         </motion.div>
       )}

@@ -64,9 +64,10 @@ interface Props {
   citySlug: string
   areaSlug: string
   country?: string
+  onReady?: () => void
 }
 
-export default function MarketPulseCard({ citySlug, areaSlug, country = 'india' }: Props) {
+export default function MarketPulseCard({ citySlug, areaSlug, country = 'india', onReady }: Props) {
   const [data, setData] = useState<MarketPulseData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -84,6 +85,7 @@ export default function MarketPulseCard({ citySlug, areaSlug, country = 'india' 
     } finally {
       setLoading(false)
       setRefreshing(false)
+      onReady?.()
     }
   }
 

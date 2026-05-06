@@ -50,6 +50,7 @@ interface Props {
   areaSlug: string
   resolutionTier?: VerdictData['resolution_tier']
   resolutionLabel?: string
+  onReady?: () => void
 }
 
 export default function VerdictCard({
@@ -57,6 +58,7 @@ export default function VerdictCard({
   areaSlug,
   resolutionTier,
   resolutionLabel,
+  onReady,
 }: Props) {
   const [data, setData] = useState<VerdictData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -83,6 +85,7 @@ export default function VerdictCard({
         if (!cancelled) setError(true)
       } finally {
         if (!cancelled) setLoading(false)
+        if (!cancelled) onReady?.()
       }
     }
 

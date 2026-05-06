@@ -38,9 +38,10 @@ interface Props {
   areaSlug: string
   country?: string
   accentColor?: string
+  onReady?: () => void
 }
 
-export default function AVMCard({ areaSlug, country = 'india', accentColor = '#10b981' }: Props) {
+export default function AVMCard({ areaSlug, country = 'india', accentColor = '#10b981', onReady }: Props) {
   const [data, setData] = useState<AVMData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -52,7 +53,10 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
       .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json() })
       .then(setData)
       .catch(() => setError(true))
-      .finally(() => setLoading(false))
+      .finally(() => {
+        setLoading(false)
+        onReady?.()
+      })
   }, [areaSlug, country])
 
   if (loading) {
