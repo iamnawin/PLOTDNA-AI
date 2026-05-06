@@ -13,8 +13,6 @@ import {
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import VerdictCard from '@/components/ui/VerdictCard'
 import { analyzeCoordinate, type LiveDNAResult } from '@/lib/api'
-import { consumeSearchAccess, type EntitlementsResponse } from '@/lib/entitlements'
-import EmailGateModal from '@/components/ui/EmailGateModal'
 
 interface Props {
   coords: [number, number]
@@ -42,8 +40,6 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
   const [geo, setGeo] = useState<ReverseGeoResult | null>(null)
   const [liveData, setLiveData] = useState<LiveDNAResult | null>(null)
   const [liveLoading, setLiveLoading] = useState(true)
-  const [emailGateOpen, setEmailGateOpen] = useState(false)
-  const [entitlements, setEntitlements] = useState<EntitlementsResponse | null>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -154,27 +150,18 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
           ? 'Broad region'
           : 'No coverage'
 
-  async function handleFullAnalysis() {
+  function handleFullAnalysis() {
     if (!staticArea) return
-    const result = await consumeSearchAccess()
-    if (result.status === 'ok') {
-      setEntitlements(result.entitlements)
-      navigate(`/area/${staticArea.slug}`, {
-        state: {
-          fallbackContext: {
-            tier: resolvedFallback.tier,
-            displayLabel: fallbackDisplayLabel,
-            precisionLabel: resolvedFallback.precisionLabel,
-            coords,
-          },
+    navigate(`/area/${staticArea.slug}`, {
+      state: {
+        fallbackContext: {
+          tier: resolvedFallback.tier,
+          displayLabel: fallbackDisplayLabel,
+          precisionLabel: resolvedFallback.precisionLabel,
+          coords,
         },
-      })
-      return
-    }
-    if (result.status === 'email_required') {
-      setEntitlements(result.entitlements)
-      setEmailGateOpen(true)
-    }
+      },
+    })
   }
 
   return (
@@ -630,7 +617,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
           style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
         >
           <button
-            onClick={() => { void handleFullAnalysis() }}
+            onClick={handleFullAnalysis}
             className="w-full flex flex-col items-center justify-center gap-0.5 py-3 px-4 rounded-lg font-mono transition-all"
             style={{
               background: `linear-gradient(135deg, ${color}22, ${color}10)`,
@@ -649,26 +636,6 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
             </button>
           </div>
       )}
-      <EmailGateModal
-        open={emailGateOpen}
-        entitlements={entitlements}
-        onClose={() => setEmailGateOpen(false)}
-        onUnlocked={(nextEntitlements) => {
-          if (!staticArea) return
-          setEntitlements(nextEntitlements)
-          setEmailGateOpen(false)
-          navigate(`/area/${staticArea.slug}`, {
-            state: {
-              fallbackContext: {
-                tier: resolvedFallback.tier,
-                displayLabel: fallbackDisplayLabel,
-                precisionLabel: resolvedFallback.precisionLabel,
-                coords,
-              },
-            },
-          })
-        }}
-      />
     </motion.div>
   )
 }
