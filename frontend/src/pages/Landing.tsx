@@ -185,12 +185,12 @@ export default function Landing() {
           setInputError('Could not detect your location right now. Check device location services and try again.')
           return
         }
-        setInputError('Location request timed out. Try again or enter latitude and longitude manually.')
+        setInputError('Could not get your location in time. Check location services, then try Locate me again.')
       },
       {
-        enableHighAccuracy: true,
-        timeout: 12_000,
-        maximumAge: 60_000,
+        enableHighAccuracy: false,
+        timeout: 25_000,
+        maximumAge: 300_000,
       },
     )
   }
@@ -303,7 +303,7 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
           className="relative w-full mt-10"
-          style={{ maxWidth: 540 }}
+          style={{ maxWidth: 680 }}
         >
           <div
             style={{
@@ -317,7 +317,7 @@ export default function Landing() {
               transition: 'border-color 0.2s, box-shadow 0.2s, border-radius 0.15s',
             }}
           >
-            <div className="flex items-center px-5 py-4 gap-3">
+            <div className="flex flex-wrap items-center px-5 py-4 gap-3">
               {resolving || brochureLoading || locating ? (
                 <Activity
                   size={16}
@@ -341,7 +341,8 @@ export default function Landing() {
                 onBlur={() => setTimeout(() => setFocused(false), 160)}
                 onKeyDown={e => { if (e.key === 'Enter') handleEnter() }}
                 style={{
-                  flex: 1,
+                  flex: '1 1 260px',
+                  minWidth: 0,
                   background: 'transparent',
                   color: '#e8e8f0',
                   fontFamily: "'IBM Plex Mono', monospace",
