@@ -54,6 +54,7 @@ export default function Landing() {
   const [activeCity, setActiveCity]   = useState('hyderabad')
   const [resolving, setResolving]     = useState(false)  // resolving short map link
   const [brochureLoading, setBrochureLoading] = useState(false)
+  const [locating, setLocating]       = useState(false)
   const [inputError, setInputError]   = useState('')
   const [emailGateOpen, setEmailGateOpen] = useState(false)
   const [entitlements, setEntitlements] = useState<EntitlementsResponse | null>(null)
@@ -154,6 +155,44 @@ export default function Landing() {
     }
     // Reset file input so the same file can be re-uploaded
     if (fileInputRef.current) fileInputRef.current.value = ''
+  }
+
+  function handleLocateMe() {
+    setInputError('')
+    if (!navigator.geolocation) {
+      setInputError('Location permission is not available in this browser. Enter latitude and longitude manually.')
+      return
+    }
+
+    setLocating(true)
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const coords: [number, number] = [
+          position.coords.latitude,
+          position.coords.longitude,
+        ]
+        setLocating(false)
+        setQuery(`${coords[0].toFixed(6)}, ${coords[1].toFixed(6)}`)
+        void requireSearchAccess(() => goToCoords(coords))
+      },
+      error => {
+        setLocating(false)
+        if (error.code === error.PERMISSION_DENIED) {
+          setInputError('Location permission was denied. Allow location access or enter latitude and longitude manually.')
+          return
+        }
+        if (error.code === error.POSITION_UNAVAILABLE) {
+          setInputError('Could not detect your location right now. Check device location services and try again.')
+          return
+        }
+        setInputError('Location request timed out. Try again or enter latitude and longitude manually.')
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 12_000,
+        maximumAge: 60_000,
+      },
+    )
   }
 
   function goToMap() {
@@ -279,7 +318,7 @@ export default function Landing() {
             }}
           >
             <div className="flex items-center px-5 py-4 gap-3">
-              {resolving || brochureLoading ? (
+              {resolving || brochureLoading || locating ? (
                 <Activity
                   size={16}
                   style={{ color: '#00e676', flexShrink: 0, animation: 'spin 1s linear infinite' }}
@@ -329,27 +368,45 @@ export default function Landing() {
               <button
                 title="Upload a property brochure (PDF or image)"
                 onClick={() => fileInputRef.current?.click()}
-                disabled={brochureLoading}
+                disabled={brochureLoading || locating}
                 className="flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   color: brochureLoading ? '#00e676' : '#444455',
+                  opacity: brochureLoading || locating ? 0.5 : 1,
                 }}
               >
                 <Paperclip size={12} />
               </button>
 
               <button
+                title="Allow location permission and analyze your current coordinates"
+                onClick={handleLocateMe}
+                disabled={resolving || brochureLoading || locating}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
+                style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  color: locating ? '#00e676' : '#8a8a9a',
+                  flexShrink: 0,
+                  opacity: resolving || brochureLoading || locating ? 0.55 : 1,
+                }}
+              >
+                <Navigation size={11} />
+                {locating ? 'Locating...' : 'Locate me'}
+              </button>
+
+              <button
                 onClick={handleEnter}
-                disabled={resolving || brochureLoading}
+                disabled={resolving || brochureLoading || locating}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
                 style={{
                   background: 'rgba(0,230,118,0.12)',
                   border: '1px solid rgba(0,230,118,0.3)',
                   color: '#00e676',
                   flexShrink: 0,
-                  opacity: resolving || brochureLoading ? 0.5 : 1,
+                  opacity: resolving || brochureLoading || locating ? 0.5 : 1,
                 }}
               >
                 {resolving ? 'Resolving…' : brochureLoading ? 'Reading…' : 'Analyze'}
