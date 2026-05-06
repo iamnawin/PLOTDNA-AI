@@ -55,6 +55,8 @@ export default function Landing() {
   const [resolving, setResolving]     = useState(false)  // resolving short map link
   const [brochureLoading, setBrochureLoading] = useState(false)
   const [locating, setLocating]       = useState(false)
+  const [analysisLoading, setAnalysisLoading] = useState(false)
+  const [analysisMessage, setAnalysisMessage] = useState('Decoding location DNA...')
   const [inputError, setInputError]   = useState('')
   const [emailGateOpen, setEmailGateOpen] = useState(false)
   const [entitlements, setEntitlements] = useState<EntitlementsResponse | null>(null)
@@ -83,12 +85,16 @@ export default function Landing() {
     navigate(`/area/${area.slug}`)
   }
 
-  function goToCoords(coords: [number, number]) {
+  function analyzeCoords(coords: [number, number], message = 'Decoding location DNA...') {
+    setAnalysisMessage(message)
+    setAnalysisLoading(true)
     const analysis = findNearestArea(coords[0], coords[1])
     if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
     setSearchCoords(coords)
     setSelectedArea(analysis.shouldSelectArea ? analysis.area : null)
-    navigate('/map')
+    window.setTimeout(() => {
+      navigate('/map')
+    }, 650)
   }
 
   async function requireSearchAccess(action: () => void) {
@@ -119,15 +125,15 @@ export default function Landing() {
   async function handleEnter() {
     setInputError('')
     // Direct coords
-    if (parsedCoords) { await requireSearchAccess(() => goToCoords(parsedCoords)); return }
+    if (parsedCoords) { analyzeCoords(parsedCoords); return }
     // Full map URL (parsed on frontend)
-    if (parsedMapUrl) { await requireSearchAccess(() => goToCoords(parsedMapUrl)); return }
+    if (parsedMapUrl) { analyzeCoords(parsedMapUrl, 'Extracting map coordinates...'); return }
     // Short map URL (needs backend resolution)
     if (shortMapUrl) {
       setResolving(true)
       const result = await resolveMapLink(query.trim())
       setResolving(false)
-      if (result.coords) { await requireSearchAccess(() => goToCoords(result.coords!)); return }
+      if (result.coords) { analyzeCoords(result.coords, 'Resolved map link. Opening analysis...'); return }
       setInputError(result.detail ?? (
         result.reason === 'backend_unreachable'
           ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
@@ -149,7 +155,7 @@ export default function Landing() {
     const result = await analyzeBrochure(file)
     setBrochureLoading(false)
     if (result) {
-      await requireSearchAccess(() => goToCoords([result.lat, result.lng]))
+      analyzeCoords([result.lat, result.lng], 'Brochure location found. Opening analysis...')
     } else {
       setInputError('Could not extract location from this file. Try a clearer image or paste the address.')
     }
@@ -173,7 +179,7 @@ export default function Landing() {
         ]
         setLocating(false)
         setQuery(`${coords[0].toFixed(6)}, ${coords[1].toFixed(6)}`)
-        void requireSearchAccess(() => goToCoords(coords))
+        analyzeCoords(coords, 'Location found. Opening analysis...')
       },
       error => {
         setLocating(false)
@@ -206,6 +212,56 @@ export default function Landing() {
   const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
 
   return (
+    <>
+    <AnimatePresence>
+      {analysisLoading && (
+        <motion.div
+          key="analysis-loader"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center"
+          style={{
+            background: 'radial-gradient(circle at 50% 35%, rgba(0,230,118,0.14), transparent 34%), #050508',
+            fontFamily: "'IBM Plex Mono', monospace",
+          }}
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
+            className="relative mb-6 h-20 w-20 rounded-full"
+            style={{
+              border: '1px solid rgba(0,230,118,0.18)',
+              boxShadow: '0 0 50px rgba(0,230,118,0.18)',
+            }}
+          >
+            <div
+              className="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 rounded-full"
+              style={{ background: '#00e676', boxShadow: '0 0 18px #00e676' }}
+            />
+            <div
+              className="absolute inset-3 rounded-full"
+              style={{ border: '1px solid rgba(0,188,212,0.18)' }}
+            />
+          </motion.div>
+          <div className="mb-3 flex items-center gap-2">
+            <img
+              src="/plotdna-logo.png"
+              alt="PlotDNA"
+              className="h-8 w-8 rounded-xl object-cover"
+              style={{ boxShadow: '0 0 22px rgba(0,230,118,0.35)' }}
+            />
+            <span className="text-sm font-bold tracking-[-0.02em] text-[#e8e8f0]">PlotDNA</span>
+          </div>
+          <p className="text-center text-[12px] font-mono text-[#00e676]">{analysisMessage}</p>
+          <p className="mt-2 text-center text-[9px] font-mono uppercase tracking-[0.18em] text-[#333344]">
+            Preparing coordinate analysis
+          </p>
+        </motion.div>
+      )}
+    </AnimatePresence>
+
     <div
       className="min-h-screen w-full flex flex-col"
       style={{ background: '#050508', color: '#e8e8f0', fontFamily: "'IBM Plex Mono', monospace" }}
@@ -318,7 +374,7 @@ export default function Landing() {
             }}
           >
             <div className="flex flex-wrap items-center px-5 py-4 gap-3">
-              {resolving || brochureLoading || locating ? (
+              {resolving || brochureLoading || locating || analysisLoading ? (
                 <Activity
                   size={16}
                   style={{ color: '#00e676', flexShrink: 0, animation: 'spin 1s linear infinite' }}
@@ -369,13 +425,13 @@ export default function Landing() {
               <button
                 title="Upload a property brochure (PDF or image)"
                 onClick={() => fileInputRef.current?.click()}
-                disabled={brochureLoading || locating}
+                disabled={brochureLoading || locating || analysisLoading}
                 className="flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   color: brochureLoading ? '#00e676' : '#444455',
-                  opacity: brochureLoading || locating ? 0.5 : 1,
+                  opacity: brochureLoading || locating || analysisLoading ? 0.5 : 1,
                 }}
               >
                 <Paperclip size={12} />
@@ -384,14 +440,14 @@ export default function Landing() {
               <button
                 title="Allow location permission and analyze your current coordinates"
                 onClick={handleLocateMe}
-                disabled={resolving || brochureLoading || locating}
+                disabled={resolving || brochureLoading || locating || analysisLoading}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
                   color: locating ? '#00e676' : '#8a8a9a',
                   flexShrink: 0,
-                  opacity: resolving || brochureLoading || locating ? 0.55 : 1,
+                  opacity: resolving || brochureLoading || locating || analysisLoading ? 0.55 : 1,
                 }}
               >
                 <Navigation size={11} />
@@ -400,17 +456,17 @@ export default function Landing() {
 
               <button
                 onClick={handleEnter}
-                disabled={resolving || brochureLoading}
+                disabled={resolving || brochureLoading || analysisLoading}
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
                 style={{
                   background: 'rgba(0,230,118,0.12)',
                   border: '1px solid rgba(0,230,118,0.3)',
                   color: '#00e676',
                   flexShrink: 0,
-                  opacity: resolving || brochureLoading ? 0.5 : 1,
+                  opacity: resolving || brochureLoading || analysisLoading ? 0.5 : 1,
                 }}
               >
-                {resolving ? 'Resolving…' : brochureLoading ? 'Reading…' : 'Analyze'}
+                {resolving ? 'Resolving…' : brochureLoading ? 'Reading…' : analysisLoading ? 'Opening...' : 'Analyze'}
                 <ChevronRight size={11} />
               </button>
             </div>
@@ -439,7 +495,7 @@ export default function Landing() {
                   const coords = parsedCoords ?? parsedMapUrl!
                   return (
                     <button
-                      onMouseDown={() => { void requireSearchAccess(() => goToCoords(coords)) }}
+                      onMouseDown={() => { analyzeCoords(coords) }}
                       className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors"
                       style={{ borderBottom: results.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
@@ -939,6 +995,7 @@ export default function Landing() {
         onUnlocked={handleEmailUnlocked}
       />
     </div>
+    </>
   )
 }
 
