@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX, Activity } from 'lucide-react'
@@ -34,12 +34,24 @@ const PHASE_COLOR: Record<Milestone['phase'], string> = {
   now: '#00e676',
 }
 
+const FULL_ANALYSIS_STEPS = [
+  'Loading AI verdict...',
+  'Reading market pulse...',
+  'Syncing area comparables...',
+  'Preparing full PlotDNA report...',
+]
+
+const FULL_ANALYSIS_DELAY_MS = 4_000
+
 export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
   const navigate = useNavigate()
 
   const [geo, setGeo] = useState<ReverseGeoResult | null>(null)
   const [liveData, setLiveData] = useState<LiveDNAResult | null>(null)
   const [liveLoading, setLiveLoading] = useState(true)
+  const [openingFullAnalysis, setOpeningFullAnalysis] = useState(false)
+  const [fullAnalysisStep, setFullAnalysisStep] = useState(0)
+  const fullAnalysisTimerRef = useRef<number | null>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -72,6 +84,23 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
       cancelled = true
     }
   }, [coords])
+
+  useEffect(() => {
+    if (!openingFullAnalysis) return
+    const interval = window.setInterval(
+      () => setFullAnalysisStep((step) => (step + 1) % FULL_ANALYSIS_STEPS.length),
+      900,
+    )
+    return () => window.clearInterval(interval)
+  }, [openingFullAnalysis])
+
+  useEffect(() => {
+    return () => {
+      if (fullAnalysisTimerRef.current !== null) {
+        window.clearTimeout(fullAnalysisTimerRef.current)
+      }
+    }
+  }, [])
 
   const resolvedFallback = geo
     ? findNearestArea(coords[0], coords[1], { locality: geo.locality, city: geo.city })
@@ -151,17 +180,23 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
           : 'No coverage'
 
   function handleFullAnalysis() {
-    if (!staticArea) return
-    navigate(`/area/${staticArea.slug}`, {
-      state: {
-        fallbackContext: {
-          tier: resolvedFallback.tier,
-          displayLabel: fallbackDisplayLabel,
-          precisionLabel: resolvedFallback.precisionLabel,
-          coords,
+    if (!staticArea || openingFullAnalysis) return
+    setOpeningFullAnalysis(true)
+    setFullAnalysisStep(0)
+
+    fullAnalysisTimerRef.current = window.setTimeout(() => {
+      navigate(`/area/${staticArea.slug}`, {
+        state: {
+          fallbackContext: {
+            tier: resolvedFallback.tier,
+            displayLabel: fallbackDisplayLabel,
+            precisionLabel: resolvedFallback.precisionLabel,
+            coords,
+          },
         },
-      },
-    })
+      })
+      fullAnalysisTimerRef.current = null
+    }, FULL_ANALYSIS_DELAY_MS)
   }
 
   return (
@@ -618,23 +653,93 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
         >
           <button
             onClick={handleFullAnalysis}
+            disabled={openingFullAnalysis}
             className="w-full flex flex-col items-center justify-center gap-0.5 py-3 px-4 rounded-lg font-mono transition-all"
             style={{
               background: `linear-gradient(135deg, ${color}22, ${color}10)`,
               border: `1px solid ${color}40`,
+              opacity: openingFullAnalysis ? 0.82 : 1,
+              cursor: openingFullAnalysis ? 'wait' : 'pointer',
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
             onMouseLeave={(e) => { e.currentTarget.style.background = `linear-gradient(135deg, ${color}22, ${color}10)` }}
             >
               <span className="flex items-center gap-2 text-sm font-semibold" style={{ color }}>
-                View full analysis for this zone
-                <ArrowRight size={13} />
+                {openingFullAnalysis ? 'Preparing full analysis...' : 'View full analysis for this zone'}
+                {openingFullAnalysis ? (
+                  <Activity size={13} className="animate-pulse" />
+                ) : (
+                  <ArrowRight size={13} />
+                )}
               </span>
               <span className="text-[9px] text-[#444455]">
                 {fallbackPrecisionText}: {fallbackDisplayLabel}
               </span>
             </button>
           </div>
+      )}
+
+      {openingFullAnalysis && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 z-[20] flex flex-col items-center justify-center px-8"
+          style={{ background: 'rgba(4,4,10,0.96)', backdropFilter: 'blur(22px)' }}
+        >
+          <div className="relative mb-6 h-28 w-28">
+            <svg className="absolute inset-0 animate-spin" style={{ animationDuration: '3.2s' }} viewBox="0 0 112 112">
+              <circle cx={56} cy={56} r={50} fill="none" stroke="rgba(0,230,118,0.08)" strokeWidth={1.5} />
+              <circle
+                cx={56}
+                cy={56}
+                r={50}
+                fill="none"
+                stroke="#00e676"
+                strokeDasharray="34 280"
+                strokeLinecap="round"
+                strokeWidth={2.5}
+                style={{ filter: 'drop-shadow(0 0 8px #00e67680)' }}
+              />
+            </svg>
+            <svg className="absolute inset-0 animate-spin" style={{ animationDuration: '1.8s', animationDirection: 'reverse' }} viewBox="0 0 112 112">
+              <circle cx={56} cy={56} r={35} fill="none" stroke="rgba(0,230,118,0.22)" strokeDasharray="18 200" strokeLinecap="round" strokeWidth={1.5} />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center text-center">
+              <div>
+                <p className="font-mono text-xl font-black leading-none text-[#00e676]" style={{ textShadow: '0 0 18px #00e67670' }}>
+                  DNA
+                </p>
+                <p className="mt-1 font-mono text-[8px] uppercase tracking-[0.2em] text-[#2a2a3e]">
+                  report
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <motion.p
+            key={fullAnalysisStep}
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -5 }}
+            transition={{ duration: 0.22 }}
+            className="text-center font-mono text-[13px] font-semibold text-[#ccccdd]"
+          >
+            {FULL_ANALYSIS_STEPS[fullAnalysisStep]}
+          </motion.p>
+          <p className="mt-2 text-center font-mono text-[10px] leading-relaxed text-[#555566]">
+            Holding the page while AI verdict and market signals finish loading.
+          </p>
+          <div className="mt-6 h-px w-44 overflow-hidden rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+            <motion.div
+              className="h-full rounded-full"
+              style={{ background: 'linear-gradient(90deg, #00e676, #00b36b)' }}
+              initial={{ width: '0%' }}
+              animate={{ width: '100%' }}
+              transition={{ duration: FULL_ANALYSIS_DELAY_MS / 1000, ease: 'linear' }}
+            />
+          </div>
+        </motion.div>
       )}
     </motion.div>
   )
