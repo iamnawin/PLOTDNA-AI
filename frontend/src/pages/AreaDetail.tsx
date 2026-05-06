@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -22,6 +23,8 @@ import VerdictCard from '@/components/ui/VerdictCard'
 import NewsSection from '@/components/ui/NewsSection'
 import MarketPulseCard from '@/components/ui/MarketPulseCard'
 import AVMCard from '@/components/ui/AVMCard'
+import EmailGateModal from '@/components/ui/EmailGateModal'
+import { getEntitlements, type EntitlementsResponse } from '@/lib/entitlements'
 
 interface AreaDetailLocationState {
   fallbackContext?: {
@@ -327,8 +330,20 @@ export default function AreaDetail() {
   const location = useLocation()
   const navigate = useNavigate()
   const { searchCoords, recommendationGoal } = useAppStore()
+  const [reportGateOpen, setReportGateOpen] = useState(false)
+  const [reportEntitlements, setReportEntitlements] = useState<EntitlementsResponse | null>(null)
+  const [reportPromptReadySlug, setReportPromptReadySlug] = useState<string | null>(null)
+  const [reportPromptDismissedSlug, setReportPromptDismissedSlug] = useState<string | null>(null)
   const area = getAllAreas().find((a) => a.slug === slug)
   const fallbackContext = (location.state as AreaDetailLocationState | null)?.fallbackContext
+  const showReportPrompt = reportPromptReadySlug === slug && reportPromptDismissedSlug !== slug
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setReportPromptReadySlug(slug ?? null)
+    }, 5_000)
+    return () => window.clearTimeout(timer)
+  }, [slug])
 
   if (!area) {
     return (
@@ -362,6 +377,26 @@ export default function AreaDetail() {
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
+
+  async function handleDownloadReport() {
+    if (!area) return
+    const entitlements = await getEntitlements()
+    setReportEntitlements(entitlements)
+    if (entitlements?.email || entitlements?.subscription_active) {
+      generatePDF(area)
+      setReportPromptDismissedSlug(slug ?? null)
+      return
+    }
+    setReportGateOpen(true)
+  }
+
+  function handleReportUnlocked(nextEntitlements: EntitlementsResponse) {
+    if (!area) return
+    setReportEntitlements(nextEntitlements)
+    setReportGateOpen(false)
+    generatePDF(area)
+    setReportPromptDismissedSlug(slug ?? null)
+  }
 
   return (
     <div className="min-h-screen bg-[#050508] text-[#e8e8f0]">
@@ -407,15 +442,22 @@ export default function AreaDetail() {
 
           {/* Download PDF button */}
           <button
-            onClick={() => generatePDF(area)}
+            onClick={() => void handleDownloadReport()}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all"
             style={{
-              background: `${color}12`,
-              border: `1px solid ${color}30`,
+              background: showReportPrompt
+                ? `linear-gradient(135deg, ${color}32, ${color}16)`
+                : `${color}12`,
+              border: `1px solid ${showReportPrompt ? color : `${color}30`}`,
               color,
+              boxShadow: showReportPrompt ? `0 0 26px ${color}45` : 'none',
             }}
             onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = `${color}12` }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = showReportPrompt
+                ? `linear-gradient(135deg, ${color}32, ${color}16)`
+                : `${color}12`
+            }}
           >
             <Download size={12} />
             <span className="hidden sm:inline">Download PDF</span>
@@ -987,6 +1029,60 @@ export default function AreaDetail() {
           </motion.section>
         )}
       </div>
+      {showReportPrompt && (
+        <motion.div
+          initial={{ opacity: 0, y: 18, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 18, scale: 0.98 }}
+          className="fixed bottom-5 left-4 right-4 z-[80] mx-auto max-w-md rounded-3xl p-4"
+          style={{
+            background: 'linear-gradient(180deg, rgba(10,10,22,0.98), rgba(6,6,14,0.98))',
+            border: `1px solid ${color}55`,
+            boxShadow: `0 20px 70px rgba(0,0,0,0.55), 0 0 34px ${color}22`,
+          }}
+        >
+          <div className="flex items-start gap-3">
+            <div
+              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ background: `${color}18`, border: `1px solid ${color}35` }}
+            >
+              <FileText size={16} style={{ color }} />
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="font-mono text-sm font-semibold text-[#e8e8f0]">Download the full analysis report</p>
+              <p className="mt-1 text-[11px] font-mono leading-relaxed text-[#77778c]">
+                Get the PlotDNA PDF for {area.name}. Email is required before report download.
+              </p>
+              <div className="mt-3 flex gap-2">
+                <button
+                  onClick={() => void handleDownloadReport()}
+                  className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-mono font-semibold text-black"
+                  style={{ background: `linear-gradient(135deg, ${color}, #00e676)` }}
+                >
+                  <Download size={12} />
+                  Download report
+                </button>
+                <button
+                  onClick={() => setReportPromptDismissedSlug(slug ?? null)}
+                  className="rounded-xl px-3 py-2 text-[11px] font-mono text-[#888899]"
+                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                >
+                  Later
+                </button>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
+      <EmailGateModal
+        open={reportGateOpen}
+        entitlements={reportEntitlements}
+        title="Email required for PDF report"
+        description={`Add your email to download the full PlotDNA analysis report for ${area.name}.`}
+        primaryLabel="Download report"
+        onClose={() => setReportGateOpen(false)}
+        onUnlocked={handleReportUnlocked}
+      />
     </div>
   )
 }

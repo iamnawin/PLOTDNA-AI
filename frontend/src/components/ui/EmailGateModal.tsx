@@ -8,9 +8,20 @@ interface Props {
   entitlements: EntitlementsResponse | null
   onClose: () => void
   onUnlocked: (entitlements: EntitlementsResponse) => void
+  title?: string
+  description?: string
+  primaryLabel?: string
 }
 
-export default function EmailGateModal({ open, entitlements, onClose, onUnlocked }: Props) {
+export default function EmailGateModal({
+  open,
+  entitlements,
+  onClose,
+  onUnlocked,
+  title = 'Unlock more searches',
+  description,
+  primaryLabel = 'Continue',
+}: Props) {
   const [email, setEmail] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
@@ -68,9 +79,9 @@ export default function EmailGateModal({ open, entitlements, onClose, onUnlocked
                 >
                   <Mail size={16} className="text-[#00e676]" />
                 </div>
-                <h2 className="font-display text-lg font-bold text-[#f4f4fb]">Unlock more searches</h2>
+                <h2 className="font-display text-lg font-bold text-[#f4f4fb]">{title}</h2>
                 <p className="mt-2 text-sm font-mono text-[#7d7d92]">
-                  You’ve used {searchesLabel}. Add your email to keep searching in PlotDNA.
+                  {description ?? `You've used ${searchesLabel}. Add your email to keep searching in PlotDNA.`}
                 </p>
               </div>
               <button
@@ -119,7 +130,7 @@ export default function EmailGateModal({ open, entitlements, onClose, onUnlocked
                   boxShadow: '0 0 24px rgba(0,230,118,0.18)',
                 }}
               >
-                {submitting ? 'Saving…' : 'Continue'}
+                {submitting ? 'Saving...' : primaryLabel}
               </button>
             </div>
           </motion.div>

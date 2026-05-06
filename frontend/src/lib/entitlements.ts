@@ -82,7 +82,7 @@ async function authedFetch(path: string, init?: RequestInit): Promise<Response> 
   return res
 }
 
-async function readEntitlementsOrNull(): Promise<EntitlementsResponse | null> {
+export async function getEntitlements(): Promise<EntitlementsResponse | null> {
   try {
     const res = await authedFetch('/api/v1/entitlements')
     if (!res.ok) return null
@@ -104,7 +104,7 @@ export async function consumeSearchAccess(): Promise<ConsumeResult> {
     }
 
     if (res.status === 403) {
-      return { status: 'email_required', entitlements: await readEntitlementsOrNull() }
+      return { status: 'email_required', entitlements: await getEntitlements() }
     }
 
     return { status: 'error', message: 'Could not verify your search access right now.' }
