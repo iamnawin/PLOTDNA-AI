@@ -38,3 +38,16 @@ export const SIGNAL_WEIGHTS: Record<string, number> = {
   priceVelocity: 5,
   govtScheme: 5,
 }
+
+export function computeDNAScore(signals: Record<string, number | null>): number {
+  let weightedSum = 0
+  let totalWeight = 0
+  for (const [key, weight] of Object.entries(SIGNAL_WEIGHTS)) {
+    const value = signals[key]
+    if (value !== null && value !== undefined) {
+      weightedSum += value * weight
+      totalWeight += weight
+    }
+  }
+  return totalWeight === 0 ? 0 : Math.round(weightedSum / totalWeight)
+}

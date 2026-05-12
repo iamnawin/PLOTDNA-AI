@@ -29,6 +29,9 @@ build/
 !package.json
 !package-lock.json
 !vercel.json
+!frontend/public/manifest.json
+!data/cities/**/*.json
+!data/telangana/**/*.json
 
 # IDE
 .vscode/

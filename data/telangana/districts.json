@@ -1,0 +1,233 @@
+[
+  {
+    "slug": "hyderabad-district",
+    "name": "Hyderabad",
+    "state": "telangana",
+    "center": [17.385, 78.487],
+    "polygon": [[17.52, 78.35], [17.52, 78.62], [17.26, 78.62], [17.26, 78.35]]
+  },
+  {
+    "slug": "rangareddy",
+    "name": "Ranga Reddy",
+    "state": "telangana",
+    "center": [17.30, 78.30],
+    "polygon": [[17.50, 77.90], [17.50, 78.50], [16.90, 78.50], [16.90, 77.90]]
+  },
+  {
+    "slug": "medchal-malkajgiri",
+    "name": "Medchal-Malkajgiri",
+    "state": "telangana",
+    "center": [17.62, 78.50],
+    "polygon": [[17.80, 78.25], [17.80, 78.72], [17.50, 78.72], [17.50, 78.25]]
+  },
+  {
+    "slug": "sangareddy",
+    "name": "Sangareddy",
+    "state": "telangana",
+    "center": [17.63, 78.09],
+    "polygon": [[17.90, 77.75], [17.90, 78.45], [17.30, 78.45], [17.30, 77.75]]
+  },
+  {
+    "slug": "medak",
+    "name": "Medak",
+    "state": "telangana",
+    "center": [18.05, 78.26],
+    "polygon": [[18.35, 77.85], [18.35, 78.70], [17.65, 78.70], [17.65, 77.85]]
+  },
+  {
+    "slug": "siddipet",
+    "name": "Siddipet",
+    "state": "telangana",
+    "center": [18.10, 78.85],
+    "polygon": [[18.45, 78.40], [18.45, 79.25], [17.70, 79.25], [17.70, 78.40]]
+  },
+  {
+    "slug": "kamareddy",
+    "name": "Kamareddy",
+    "state": "telangana",
+    "center": [18.32, 78.34],
+    "polygon": [[18.65, 77.80], [18.65, 78.90], [17.85, 78.90], [17.85, 77.80]]
+  },
+  {
+    "slug": "nizamabad",
+    "name": "Nizamabad",
+    "state": "telangana",
+    "center": [18.67, 78.09],
+    "polygon": [[19.00, 77.55], [19.00, 78.65], [18.25, 78.65], [18.25, 77.55]]
+  },
+  {
+    "slug": "jagtial",
+    "name": "Jagtial",
+    "state": "telangana",
+    "center": [18.80, 78.92],
+    "polygon": [[19.10, 78.45], [19.10, 79.40], [18.45, 79.40], [18.45, 78.45]]
+  },
+  {
+    "slug": "karimnagar",
+    "name": "Karimnagar",
+    "state": "telangana",
+    "center": [18.44, 79.13],
+    "polygon": [[18.80, 78.70], [18.80, 79.60], [18.00, 79.60], [18.00, 78.70]]
+  },
+  {
+    "slug": "rajanna-sircilla",
+    "name": "Rajanna Sircilla",
+    "state": "telangana",
+    "center": [18.38, 78.83],
+    "polygon": [[18.70, 78.45], [18.70, 79.25], [18.00, 79.25], [18.00, 78.45]]
+  },
+  {
+    "slug": "peddapalli",
+    "name": "Peddapalli",
+    "state": "telangana",
+    "center": [18.62, 79.37],
+    "polygon": [[18.95, 78.90], [18.95, 79.85], [18.25, 79.85], [18.25, 78.90]]
+  },
+  {
+    "slug": "jayashankar-bhupalpally",
+    "name": "Jayashankar Bhupalpally",
+    "state": "telangana",
+    "center": [18.44, 79.97],
+    "polygon": [[18.75, 79.45], [18.75, 80.55], [18.00, 80.55], [18.00, 79.45]]
+  },
+  {
+    "slug": "mulugu",
+    "name": "Mulugu",
+    "state": "telangana",
+    "center": [18.20, 80.07],
+    "polygon": [[18.55, 79.60], [18.55, 80.55], [17.80, 80.55], [17.80, 79.60]]
+  },
+  {
+    "slug": "bhadradri-kothagudem",
+    "name": "Bhadradri Kothagudem",
+    "state": "telangana",
+    "center": [17.56, 80.62],
+    "polygon": [[18.00, 80.15], [18.00, 81.10], [17.15, 81.10], [17.15, 80.15]]
+  },
+  {
+    "slug": "khammam",
+    "name": "Khammam",
+    "state": "telangana",
+    "center": [17.25, 80.15],
+    "polygon": [[17.75, 79.65], [17.75, 80.65], [16.65, 80.65], [16.65, 79.65]]
+  },
+  {
+    "slug": "mahabubabad",
+    "name": "Mahabubabad",
+    "state": "telangana",
+    "center": [17.60, 80.00],
+    "polygon": [[18.00, 79.55], [18.00, 80.45], [17.20, 80.45], [17.20, 79.55]]
+  },
+  {
+    "slug": "warangal",
+    "name": "Warangal",
+    "state": "telangana",
+    "center": [17.97, 79.59],
+    "polygon": [[18.25, 79.15], [18.25, 80.05], [17.60, 80.05], [17.60, 79.15]]
+  },
+  {
+    "slug": "hanumakonda",
+    "name": "Hanumakonda",
+    "state": "telangana",
+    "center": [18.00, 79.57],
+    "polygon": [[18.20, 79.30], [18.20, 79.85], [17.80, 79.85], [17.80, 79.30]]
+  },
+  {
+    "slug": "jangaon",
+    "name": "Jangaon",
+    "state": "telangana",
+    "center": [17.72, 79.15],
+    "polygon": [[18.10, 78.80], [18.10, 79.55], [17.35, 79.55], [17.35, 78.80]]
+  },
+  {
+    "slug": "yadadri-bhuvanagiri",
+    "name": "Yadadri Bhuvanagiri",
+    "state": "telangana",
+    "center": [17.50, 79.08],
+    "polygon": [[17.80, 78.70], [17.80, 79.45], [17.20, 79.45], [17.20, 78.70]]
+  },
+  {
+    "slug": "nalgonda",
+    "name": "Nalgonda",
+    "state": "telangana",
+    "center": [17.05, 79.27],
+    "polygon": [[17.45, 78.85], [17.45, 79.75], [16.60, 79.75], [16.60, 78.85]]
+  },
+  {
+    "slug": "suryapet",
+    "name": "Suryapet",
+    "state": "telangana",
+    "center": [17.14, 79.62],
+    "polygon": [[17.55, 79.20], [17.55, 80.10], [16.70, 80.10], [16.70, 79.20]]
+  },
+  {
+    "slug": "mahabubnagar",
+    "name": "Mahabubnagar",
+    "state": "telangana",
+    "center": [16.74, 77.98],
+    "polygon": [[17.20, 77.50], [17.20, 78.45], [16.30, 78.45], [16.30, 77.50]]
+  },
+  {
+    "slug": "nagarkurnool",
+    "name": "Nagarkurnool",
+    "state": "telangana",
+    "center": [16.48, 78.33],
+    "polygon": [[16.90, 77.85], [16.90, 78.80], [16.00, 78.80], [16.00, 77.85]]
+  },
+  {
+    "slug": "wanaparthy",
+    "name": "Wanaparthy",
+    "state": "telangana",
+    "center": [16.36, 78.06],
+    "polygon": [[16.80, 77.60], [16.80, 78.55], [15.90, 78.55], [15.90, 77.60]]
+  },
+  {
+    "slug": "narayanpet",
+    "name": "Narayanpet",
+    "state": "telangana",
+    "center": [16.74, 77.49],
+    "polygon": [[17.10, 77.00], [17.10, 77.95], [16.30, 77.95], [16.30, 77.00]]
+  },
+  {
+    "slug": "jogulamba-gadwal",
+    "name": "Jogulamba Gadwal",
+    "state": "telangana",
+    "center": [16.24, 77.80],
+    "polygon": [[16.65, 77.40], [16.65, 78.25], [15.80, 78.25], [15.80, 77.40]]
+  },
+  {
+    "slug": "vikarabad",
+    "name": "Vikarabad",
+    "state": "telangana",
+    "center": [17.34, 77.90],
+    "polygon": [[17.70, 77.45], [17.70, 78.35], [16.90, 78.35], [16.90, 77.45]]
+  },
+  {
+    "slug": "adilabad",
+    "name": "Adilabad",
+    "state": "telangana",
+    "center": [19.66, 78.53],
+    "polygon": [[19.95, 78.00], [19.95, 79.10], [19.20, 79.10], [19.20, 78.00]]
+  },
+  {
+    "slug": "komaram-bheem",
+    "name": "Komaram Bheem Asifabad",
+    "state": "telangana",
+    "center": [19.40, 79.30],
+    "polygon": [[19.80, 78.85], [19.80, 79.80], [18.95, 79.80], [18.95, 78.85]]
+  },
+  {
+    "slug": "mancherial",
+    "name": "Mancherial",
+    "state": "telangana",
+    "center": [18.87, 79.46],
+    "polygon": [[19.25, 78.95], [19.25, 79.95], [18.45, 79.95], [18.45, 78.95]]
+  },
+  {
+    "slug": "nirmal",
+    "name": "Nirmal",
+    "state": "telangana",
+    "center": [19.10, 78.35],
+    "polygon": [[19.50, 77.80], [19.50, 78.85], [18.60, 78.85], [18.60, 77.80]]
+  }
+]

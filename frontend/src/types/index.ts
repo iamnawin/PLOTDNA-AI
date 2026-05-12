@@ -1,4 +1,25 @@
 export type Category = 'Established' | 'High Growth' | 'Emerging' | 'Industrial'
+export type RecommendationGoal = 'balanced' | 'growth' | 'affordable' | 'defensive' | 'livable'
+export type DataConfidence = 'verified' | 'partial' | 'estimated' | 'uncovered'
+
+export type ProjectType =
+  | 'metro' | 'highway' | 'flyover' | 'it_park' | 'residential'
+  | 'commercial' | 'hospital' | 'airport' | 'industrial' | 'infrastructure'
+
+export type ProjectStatus = 'planning' | 'approved' | 'under_construction' | 'near_completion'
+
+export interface ActiveProject {
+  id: string
+  name: string
+  type: ProjectType
+  status: ProjectStatus
+  developer?: string
+  investment?: string          // e.g. "₹3,500 Cr"
+  expectedCompletion?: string  // e.g. "2026 Q3"
+  coordinates: [number, number]  // [lat, lng]
+  impact: 'high' | 'medium' | 'low'
+  description?: string
+}
 
 export interface CityMeta {
   slug: string
@@ -8,13 +29,13 @@ export interface CityMeta {
 }
 
 export interface Signals {
-  infrastructure: number
-  population: number
-  satellite: number
-  rera: number
-  employment: number
-  priceVelocity: number
-  govtScheme: number
+  infrastructure: number | null
+  population: number | null
+  satellite: number | null
+  rera: number | null
+  employment: number | null
+  priceVelocity: number | null
+  govtScheme: number | null
 }
 
 export interface Livability {
@@ -30,11 +51,15 @@ export interface MicroMarket {
   name: string
   score: number
   category: Category
-  center: [number, number]     // [lat, lng]
-  polygon: [number, number][]  // [lat, lng] pairs for Leaflet
+  center: [number, number]
+  polygon: [number, number][]
   signals: Signals
   livability?: Livability
   highlights: string[]
   priceRange: string
-  yoy: number                  // year-over-year % growth
+  yoy: number
+  activeProjects?: ActiveProject[]
+  dataConfidence?: DataConfidence
+  dataAsOf?: string
+  signalsAvailable?: number
 }

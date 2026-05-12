@@ -1,17 +1,20 @@
-import { useParams, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
   Hammer, Users, Globe, Shield, Briefcase, Landmark,
   Navigation, ShoppingBag, Package, Film, Leaf, Sparkles,
+  HardHat, Train, Car, Home, Building, Plane, Factory, Wifi,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
+import { useAppStore } from '@/store'
 import { CITIES, getAllAreas, getCityForArea } from '@/data/cities'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
 import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/areaSources'
+import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SatelliteCompare from '@/components/ui/SatelliteCompare'
@@ -19,7 +22,41 @@ import VerdictCard from '@/components/ui/VerdictCard'
 import NewsSection from '@/components/ui/NewsSection'
 import MarketPulseCard from '@/components/ui/MarketPulseCard'
 import AVMCard from '@/components/ui/AVMCard'
-import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
+
+interface AreaDetailLocationState {
+  fallbackContext?: {
+    tier: 'exact_locality' | 'nearby_micro_market' | 'city_zone_cluster' | 'uncovered'
+    displayLabel: string
+    precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
+    coords?: [number, number]
+  }
+}
+
+// ── Active project helpers ──────────────────────────────────────────────────────
+const PROJECT_TYPE_COLOR: Record<string, string> = {
+  metro: '#3b82f6', highway: '#f97316', flyover: '#fb923c',
+  it_park: '#8b5cf6', residential: '#14b8a6', commercial: '#a855f7',
+  hospital: '#ef4444', airport: '#0ea5e9', industrial: '#eab308',
+  infrastructure: '#64748b',
+}
+const PROJECT_TYPE_ICON: Record<string, LucideIcon> = {
+  metro: Train, highway: Car, flyover: Car, it_park: Wifi,
+  residential: Home, commercial: Building, hospital: Building2,
+  airport: Plane, industrial: Factory, infrastructure: HardHat,
+}
+const PROJECT_TYPE_LABEL: Record<string, string> = {
+  metro: 'Metro', highway: 'Highway', flyover: 'Flyover', it_park: 'IT Park',
+  residential: 'Residential', commercial: 'Commercial', hospital: 'Hospital',
+  airport: 'Airport', industrial: 'Industrial', infrastructure: 'Infrastructure',
+}
+const STATUS_COLOR: Record<string, string> = {
+  planning: '#64748b', approved: '#f59e0b',
+  under_construction: '#3b82f6', near_completion: '#10b981',
+}
+const STATUS_LABEL: Record<string, string> = {
+  planning: 'Planning', approved: 'Approved',
+  under_construction: 'Under Construction', near_completion: 'Near Completion',
+}
 
 // ── Signal tier helper ─────────────────────────────────────────────────────────
 function getSignalTier(v: number) {
@@ -287,15 +324,18 @@ function generatePDF(area: MicroMarket) {
 
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
+  const location = useLocation()
   const navigate = useNavigate()
+  const { searchCoords, recommendationGoal } = useAppStore()
   const area = getAllAreas().find((a) => a.slug === slug)
+  const fallbackContext = (location.state as AreaDetailLocationState | null)?.fallbackContext
 
   if (!area) {
     return (
-      <div className="h-screen bg-[#050508] flex items-center justify-center">
+      <div className="h-[100dvh] bg-[#050508] flex items-center justify-center">
         <div className="text-center">
           <p className="text-[#444455] font-mono text-sm">Area not found</p>
-          <button onClick={() => navigate('/')} className="mt-4 text-xs font-mono text-[#22c55e] underline">
+          <button onClick={() => navigate('/map')} className="mt-4 text-xs font-mono text-[#22c55e] underline">
             Back to map
           </button>
         </div>
@@ -320,29 +360,28 @@ export default function AreaDetail() {
   const sources = getAreaSources(area.slug, citySlug)
 
   // Nearby areas — same city only, ±15 DNA score range
-  const nearby = (cityEntry?.areas ?? [])
-    .filter((a: MicroMarket) => a.slug !== area.slug && Math.abs(a.score - area.score) <= 15)
-    .slice(0, 4)
+  const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
+  const goalMeta = getRecommendationGoalMeta(recommendationGoal)
 
   return (
     <div className="min-h-screen bg-[#050508] text-[#e8e8f0]">
 
       {/* ── Nav bar ── */}
       <nav
-        className="sticky top-0 z-50 flex items-center justify-between px-6 h-13"
+        className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 h-13"
         style={{ background: 'rgba(5,5,10,0.96)', borderBottom: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}
       >
         <button
-          onClick={() => navigate('/')}
-          className="flex items-center gap-2 text-[#666680] hover:text-[#e8e8f0] transition-colors text-sm font-mono"
+          onClick={() => navigate('/map')}
+          className="flex items-center gap-2 text-[#666680] hover:text-[#e8e8f0] transition-colors text-sm font-mono flex-shrink-0"
         >
           <ArrowLeft size={15} />
-          Back to Map
+          <span className="hidden sm:inline">Back to Map</span>
         </button>
 
         <div className="flex items-center gap-2.5">
           <div
-            className="w-6 h-6 rounded flex items-center justify-center"
+            className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
             style={{ background: 'linear-gradient(135deg, #00e676, #00b36b)' }}
           >
             <span className="text-black font-black text-[10px]">P</span>
@@ -350,40 +389,42 @@ export default function AreaDetail() {
           <span className="font-display font-bold text-[#e8e8f0] text-sm">PlotDNA</span>
         </div>
 
-        {/* Brochure AI link */}
-        <button
-          onClick={() => navigate('/brochure')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all mr-2"
-          style={{
-            background: '#6366f112',
-            border: '1px solid #6366f128',
-            color: '#6366f1',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = '#6366f122' }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = '#6366f112' }}
-        >
-          <Sparkles size={11} />
-          Brochure AI
-        </button>
+        <div className="flex items-center gap-2">
+          {/* Brochure AI link — hidden on small mobile */}
+          <button
+            onClick={() => navigate('/brochure')}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all"
+            style={{
+              background: '#6366f112',
+              border: '1px solid #6366f128',
+              color: '#6366f1',
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = '#6366f122' }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = '#6366f112' }}
+          >
+            <Sparkles size={11} />
+            Brochure AI
+          </button>
 
-        {/* Download PDF button */}
-        <button
-          onClick={() => generatePDF(area)}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-mono transition-all"
-          style={{
-            background: `${color}12`,
-            border: `1px solid ${color}30`,
-            color,
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
-          onMouseLeave={(e) => { e.currentTarget.style.background = `${color}12` }}
-        >
-          <Download size={12} />
-          Download PDF Report
-        </button>
+          {/* Download PDF button */}
+          <button
+            onClick={() => generatePDF(area)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all"
+            style={{
+              background: `${color}12`,
+              border: `1px solid ${color}30`,
+              color,
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
+            onMouseLeave={(e) => { e.currentTarget.style.background = `${color}12` }}
+          >
+            <Download size={12} />
+            <span className="hidden sm:inline">Download PDF</span>
+          </button>
+        </div>
       </nav>
 
-      <div className="max-w-4xl mx-auto px-6 py-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
 
         {/* ── Hero ── */}
         <motion.div
@@ -425,7 +466,7 @@ export default function AreaDetail() {
           {/* Info */}
           <div className="flex-1">
             <ScoreBadge score={area.score} size="lg" />
-            <h1 className="font-display text-4xl font-black text-[#e8e8f0] mt-3 leading-tight">
+            <h1 className="font-display text-2xl sm:text-4xl font-black text-[#e8e8f0] mt-3 leading-tight">
               {area.name}
             </h1>
             <p className="text-[#555566] font-mono text-sm mt-1">{area.category} · {cityName}</p>
@@ -439,7 +480,7 @@ export default function AreaDetail() {
             </div>
 
             {/* Stats row */}
-            <div className="grid grid-cols-3 gap-3 mt-4">
+            <div className="grid grid-cols-3 gap-2 mt-4">
               <div
                 className="p-3 rounded-lg text-center"
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
@@ -484,27 +525,40 @@ export default function AreaDetail() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mb-10"
         >
-          <VerdictCard citySlug={citySlug} areaSlug={area.slug} />
+          {fallbackContext && fallbackContext.tier !== 'exact_locality' && (
+            <div
+              className="px-4 py-3 rounded-xl mb-4"
+              style={{
+                background: 'rgba(245,158,11,0.08)',
+                border: '1px solid rgba(245,158,11,0.18)',
+              }}
+            >
+              <p className="text-[10px] font-mono text-[#f59e0b] uppercase tracking-widest mb-1">
+                Opened From Fallback Match
+              </p>
+              <p className="text-[11px] font-mono text-[#aaaabc] leading-relaxed">
+                {fallbackContext.displayLabel} was used to open this supported area from your searched coordinate.
+                This page shows the exact micro-market analysis for {area.name}, not a plot-exact verdict for the original point.
+              </p>
+            </div>
+          )}
+          <VerdictCard
+            citySlug={citySlug}
+            areaSlug={area.slug}
+            resolutionTier="exact_locality"
+            resolutionLabel={area.name}
+          />
         </motion.div>
 
-        {/* ── Live News ── */}
-        <motion.div
+        {/* ── Satellite Growth ── */}
+        <motion.section
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.12 }}
           className="mb-10"
         >
-          <NewsSection citySlug={citySlug} areaSlug={area.slug} accentColor={color} />
-        </motion.div>
-
-        {/* ── Phase 2: Market Pulse ── */}
-        <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
-
-        {/* ── Phase 2: Automated Valuation ── */}
-        <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
-
-        {/* ── Phase 2: Brochure Analyzer ── */}
-        <BrochureUploadCard />
+          <SatelliteCompare area={area} coords={searchCoords ?? undefined} />
+        </motion.section>
 
         {/* ── Signal breakdown ── */}
         <motion.section
@@ -530,7 +584,7 @@ export default function AreaDetail() {
             {SIGNAL_CONFIG.map(({ key, icon: Icon, label }, i) => {
               const val = area.signals[key]
               const weight = SIGNAL_WEIGHTS[key] ?? 0
-              const tier = getSignalTier(val)
+              const tier = getSignalTier(val ?? 0)
               return (
                 <motion.div
                   key={key}
@@ -645,15 +699,6 @@ export default function AreaDetail() {
           </motion.section>
         )}
 
-        {/* ── Satellite Growth ── */}
-        <motion.section
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.25 }}
-        >
-          <SatelliteCompare area={area} />
-        </motion.section>
-
         {/* ── Key Highlights ── */}
         <motion.section
           initial={{ opacity: 0, y: 24 }}
@@ -679,6 +724,168 @@ export default function AreaDetail() {
           </div>
         </motion.section>
 
+        {/* ── Active Development Pipeline ── */}
+        {area.activeProjects && area.activeProjects.length > 0 && (() => {
+          const totalInvestment = area.activeProjects
+            .filter(p => p.investment)
+            .map(p => {
+              const match = p.investment!.replace(/[₹,]/g, '').match(/[\d.]+/)
+              return match ? parseFloat(match[0]) : 0
+            })
+            .reduce((a, b) => a + b, 0)
+          const activeCount = area.activeProjects.filter(
+            p => p.status === 'under_construction' || p.status === 'near_completion'
+          ).length
+          return (
+            <motion.section
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.38 }}
+              className="mb-10"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-2.5">
+                  <HardHat size={12} className="text-[#f97316]" />
+                  <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+                    Active Development Pipeline
+                  </h2>
+                </div>
+                <div className="flex items-center gap-2">
+                  {activeCount > 0 && (
+                    <span
+                      className="text-[8px] font-mono font-bold px-2 py-1 rounded"
+                      style={{ background: '#3b82f618', color: '#3b82f6', border: '1px solid #3b82f630' }}
+                    >
+                      {activeCount} ACTIVE
+                    </span>
+                  )}
+                  {totalInvestment > 0 && (
+                    <span
+                      className="text-[8px] font-mono text-[#888899] px-2 py-1 rounded"
+                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                    >
+                      ₹{totalInvestment.toLocaleString('en-IN')} Cr pipeline
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Project cards */}
+              <div className="space-y-3">
+                {area.activeProjects.map((proj, i) => {
+                  const tc   = PROJECT_TYPE_COLOR[proj.type]   ?? '#64748b'
+                  const sc   = STATUS_COLOR[proj.status]        ?? '#64748b'
+                  const sl   = STATUS_LABEL[proj.status]        ?? proj.status
+                  const tl   = PROJECT_TYPE_LABEL[proj.type]   ?? proj.type
+                  const Icon = PROJECT_TYPE_ICON[proj.type]    ?? HardHat
+                  const isPulsing = proj.status === 'under_construction' || proj.status === 'near_completion'
+                  return (
+                    <motion.div
+                      key={proj.id}
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.42 + i * 0.07 }}
+                      className="flex items-start gap-4 p-4 rounded-xl"
+                      style={{
+                        background: `${tc}06`,
+                        border: `1px solid ${tc}20`,
+                      }}
+                    >
+                      {/* Type icon */}
+                      <div
+                        className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                        style={{ background: `${tc}18` }}
+                      >
+                        <Icon size={15} style={{ color: tc }} />
+                      </div>
+
+                      {/* Content */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between gap-2 mb-1.5">
+                          <p className="text-sm font-mono font-semibold text-[#e8e8f0] leading-snug">
+                            {proj.name}
+                          </p>
+                          <div className="flex items-center gap-1.5 flex-shrink-0">
+                            {isPulsing && (
+                              <span className="relative flex items-center">
+                                <span
+                                  className="inline-block w-1.5 h-1.5 rounded-full"
+                                  style={{ backgroundColor: sc, boxShadow: `0 0 6px ${sc}` }}
+                                />
+                              </span>
+                            )}
+                            <span
+                              className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded"
+                              style={{ background: `${sc}15`, color: sc, border: `1px solid ${sc}30` }}
+                            >
+                              {sl}
+                            </span>
+                          </div>
+                        </div>
+
+                        {proj.description && (
+                          <p className="text-[11px] font-mono text-[#666680] leading-relaxed mb-2.5">
+                            {proj.description}
+                          </p>
+                        )}
+
+                        <div className="flex flex-wrap items-center gap-3">
+                          <span
+                            className="text-[8px] font-mono px-1.5 py-0.5 rounded"
+                            style={{ background: `${tc}12`, color: tc, border: `1px solid ${tc}25` }}
+                          >
+                            {tl}
+                          </span>
+                          {proj.investment && (
+                            <span className="text-[11px] font-mono font-bold text-[#e8e8f0]">
+                              {proj.investment}
+                            </span>
+                          )}
+                          {proj.expectedCompletion && (
+                            <span className="text-[10px] font-mono text-[#666680]">
+                              ETA {proj.expectedCompletion}
+                            </span>
+                          )}
+                          {proj.developer && (
+                            <span className="text-[10px] font-mono text-[#555566]">
+                              · {proj.developer}
+                            </span>
+                          )}
+                          {proj.impact === 'high' && (
+                            <span
+                              className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded"
+                              style={{ background: '#f59e0b12', color: '#f59e0b', border: '1px solid #f59e0b25' }}
+                            >
+                              HIGH IMPACT
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </motion.section>
+          )
+        })()}
+
+        {/* ── What Changed Recently (Live News) ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.38 }}
+          className="mb-10"
+        >
+          <NewsSection citySlug={citySlug} areaSlug={area.slug} areaName={area.name} accentColor={color} />
+        </motion.div>
+
+        {/* ── Market Pulse ── */}
+        <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
+
+        {/* ── Automated Valuation (AVM) ── */}
+        <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
+
         {/* ── Sources & Citations ── */}
         <motion.section
           initial={{ opacity: 0, y: 24 }}
@@ -697,13 +904,17 @@ export default function AreaDetail() {
               const tc = SOURCE_TYPE_COLOR[s.type]
               const tl = SOURCE_TYPE_LABEL[s.type]
               return (
-                <button
+                <a
                   key={i}
-                  onClick={() => window.open(s.url, '_blank', 'noopener,noreferrer')}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full flex items-center gap-3 px-4 py-3 rounded-xl group transition-all duration-150 text-left cursor-pointer"
                   style={{
+                    display: 'flex',
                     background: 'rgba(255,255,255,0.02)',
                     border: '1px solid rgba(255,255,255,0.05)',
+                    textDecoration: 'none',
                   }}
                   onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = `${tc}25` }}
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)' }}
@@ -725,7 +936,7 @@ export default function AreaDetail() {
                     className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
                     style={{ color: tc }}
                   />
-                </button>
+                </a>
               )
             })}
           </div>
@@ -741,9 +952,18 @@ export default function AreaDetail() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest mb-5">Similar Zones to Compare</h2>
+            <div className="flex items-center justify-between gap-3 mb-5">
+              <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">Alternatives to Compare</h2>
+              <span
+                className="text-[8px] font-mono px-2 py-1 rounded"
+                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: '#666680' }}
+              >
+                Ranked for {goalMeta.label}
+              </span>
+            </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {nearby.map((a) => {
+              {nearby.map(({ area: altArea, matchScore, reasons, caution }) => {
+                const a = altArea
                 const c = getScoreColor(a.score)
                 return (
                   <button
@@ -758,6 +978,9 @@ export default function AreaDetail() {
                     <p className="text-xs font-mono text-[#aaaabc] truncate">{a.name}</p>
                     <p className="text-2xl font-mono font-bold mt-1" style={{ color: c }}>{a.score}</p>
                     <p className="text-[10px] font-mono" style={{ color: c }}>{getScoreLabel(a.score)}</p>
+                    <p className="text-[10px] font-mono text-[#e8e8f0] mt-3">{matchScore}/100 match</p>
+                    <p className="text-[9px] font-mono text-[#666680] mt-1 leading-relaxed">{reasons[0]?.label}: {reasons[0]?.value}</p>
+                    <p className="text-[8px] font-mono text-[#333344] mt-2 leading-relaxed">{caution}</p>
                   </button>
                 )
               })}
