@@ -1,4 +1,4 @@
-export type ResolutionTier = 'exact' | 'nearby' | 'cluster' | 'uncovered'
+export type ResolutionTier = 'exact' | 'nearby' | 'cluster' | 'regional' | 'uncovered'
 
 export interface LocalityResolution {
   tier: ResolutionTier
@@ -6,7 +6,10 @@ export interface LocalityResolution {
   localitySlug: string | null
   localityName: string | null
   clusterId: string | null
+  districtSlug: string | null
+  districtName: string | null
+  stateSlug: string | null
   distanceKm: number | null
-  matchedBy: 'polygon' | 'alias' | 'radius' | 'cluster' | 'none'
+  matchedBy: 'polygon' | 'alias' | 'radius' | 'cluster' | 'district' | 'none'
   reason: string
 }

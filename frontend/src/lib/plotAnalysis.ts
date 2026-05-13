@@ -207,7 +207,7 @@ export function getOutlook(area: MicroMarket): Outlook {
   const low = Math.round(area.yoy * 3.5)
   const high = Math.round(area.yoy * 5.5)
   const confidence: 'High' | 'Medium' | 'Low' =
-    infra > 80 && satellite > 75 ? 'High' : infra > 60 ? 'Medium' : 'Low'
+    (infra ?? 0) > 80 && (satellite ?? 0) > 75 ? 'High' : (infra ?? 0) > 60 ? 'Medium' : 'Low'
   const headline =
     area.score >= 86 ? 'Strong multi-year appreciation likely' :
     area.score >= 66 ? 'Steady growth with infra catalyst' :

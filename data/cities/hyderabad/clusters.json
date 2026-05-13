@@ -3,46 +3,36 @@
     "id": "hyderabad:central",
     "label": "Hyderabad Central Zone",
     "zone": "Central",
-    "localitySlugs": ["lb-nagar", "banjara-hills", "somajiguda", "begumpet", "secunderabad"]
+    "localitySlugs": ["lb-nagar", "banjara-hills", "somajiguda", "begumpet", "secunderabad", "bowenpally", "balanagar"]
   },
   {
     "id": "hyderabad:north",
     "label": "Hyderabad North Zone",
     "zone": "North",
-    "localitySlugs": ["medchal", "kompally", "kukatpally"]
+    "localitySlugs": ["medchal", "kompally", "kukatpally", "bachupally", "nizampet", "dundigal", "alwal"]
   },
   {
     "id": "hyderabad:east",
     "label": "Hyderabad East Zone",
     "zone": "East",
-    "localitySlugs": ["bibinagar", "ghatkesar", "peerzadiguda", "uppal"]
+    "localitySlugs": ["bibinagar", "ghatkesar", "peerzadiguda", "uppal", "dilsukhnagar", "kothapet", "vanasthalipuram", "nacharam", "malkajgiri", "hayathnagar"]
   },
   {
     "id": "hyderabad:south",
     "label": "Hyderabad South Zone",
     "zone": "South",
-    "localitySlugs": ["adibatla", "tukkuguda", "yacharam", "shamshabad", "shadnagar"]
+    "localitySlugs": ["adibatla", "tukkuguda", "yacharam", "shamshabad", "shadnagar", "attapur"]
   },
   {
     "id": "hyderabad:west",
     "label": "Hyderabad West Zone",
     "zone": "West",
     "localitySlugs": [
-      "kokapet",
-      "shankarpally",
-      "narsingi",
-      "ameenpur",
-      "mokila",
-      "tellapur",
-      "financial-district",
-      "patancheru",
-      "rajendra-nagar",
-      "gachibowli",
-      "madhapur",
-      "kondapur",
-      "miyapur",
-      "jubilee-hills",
-      "manikonda"
+      "kokapet", "shankarpally", "narsingi", "ameenpur", "mokila", "tellapur",
+      "financial-district", "patancheru", "rajendra-nagar", "gachibowli",
+      "madhapur", "kondapur", "miyapur", "jubilee-hills", "manikonda",
+      "hitec-city", "chandanagar", "hafeezpet", "nanakramguda", "tolichowki",
+      "mehdipatnam", "jntu-kphb"
     ]
   }
 ]

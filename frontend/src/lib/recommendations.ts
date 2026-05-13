@@ -68,19 +68,19 @@ function computeLivability(area: MicroMarket) {
   }
 
   return Math.round(
-    area.signals.infrastructure * 0.40 +
-    area.signals.population * 0.35 +
-    area.signals.rera * 0.25,
+    (area.signals.infrastructure ?? 0) * 0.40 +
+    (area.signals.population ?? 0) * 0.35 +
+    (area.signals.rera ?? 0) * 0.25,
   )
 }
 
 function computeUpside(area: MicroMarket) {
   const yoyMomentum = clamp(area.yoy * 4.5)
   return Math.round(
-    area.signals.infrastructure * 0.26 +
-    area.signals.satellite * 0.28 +
-    area.signals.employment * 0.18 +
-    area.signals.priceVelocity * 0.12 +
+    (area.signals.infrastructure ?? 0) * 0.26 +
+    (area.signals.satellite ?? 0) * 0.28 +
+    (area.signals.employment ?? 0) * 0.18 +
+    (area.signals.priceVelocity ?? 0) * 0.12 +
     yoyMomentum * 0.16,
   )
 }
@@ -88,8 +88,8 @@ function computeUpside(area: MicroMarket) {
 function computeStability(area: MicroMarket, livability: number) {
   return Math.round(
     area.score * 0.36 +
-    area.signals.infrastructure * 0.24 +
-    area.signals.rera * 0.18 +
+    (area.signals.infrastructure ?? 0) * 0.24 +
+    (area.signals.rera ?? 0) * 0.18 +
     livability * 0.14 +
     clamp(100 - area.yoy * 1.8) * 0.08,
   )
@@ -168,7 +168,7 @@ function buildCaution(goal: RecommendationGoal, rankedArea: RankedArea) {
   if (goal === 'growth' && stability < 70) {
     return 'Higher upside comes with a thinner stability cushion.'
   }
-  if (goal === 'affordable' && area.signals.infrastructure < 72) {
+  if (goal === 'affordable' && (area.signals.infrastructure ?? 0) < 72) {
     return 'Cheaper entry point, but infrastructure is still catching up.'
   }
   if (goal === 'defensive' && affordability < 40) {

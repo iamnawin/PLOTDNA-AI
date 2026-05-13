@@ -1,4 +1,4 @@
-import type { MicroMarket } from '@/types'
+﻿import type { MicroMarket } from '@/types'
 import hydCityJson from '../../../data/cities/hyderabad/city.json'
 import hydLocalitiesJson from '../../../data/cities/hyderabad/localities.json'
 
@@ -107,7 +107,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Outer Ring Road Node 13 grade separator and service road widening"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -169,7 +172,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "100MW data centre with Tier 4 certification, 400 direct jobs"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -245,7 +251,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Grade-A office and retail complex at Outer Ring Road junction"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -292,7 +301,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Connector road and junction improvements serving new villa communities emerging around the Shankarpally belt"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -354,7 +366,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Low-density luxury villa community with 18-hole golf course"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -401,7 +416,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Mid-rise residential township planned to capture west-corridor spillover near the Ameenpur lake belt"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -448,7 +466,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Large villa-cluster expansion aimed at second-home and premium end-user demand along the Mokila corridor"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -495,7 +516,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Institutional cluster supporting long-term demand around the east-corridor growth belt near Bibinagar"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -557,7 +581,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Neighborhood office, retail, and medical-services cluster aimed at capturing west-corridor spillover demand"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -604,7 +631,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Warehouse and light-industrial cluster reinforcing NH-163 connectivity and east-corridor employment demand"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -651,7 +681,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Land aggregation and trunk infrastructure for logistics and pharma-linked industrial demand in south Hyderabad"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -698,7 +731,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Integrated warehousing and truck-terminal project leveraging Medchal's industrial and ORR adjacency"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -775,7 +811,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "National highway widening from 4 to 6 lanes with grade separators"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -837,7 +876,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "40-floor Grade-A office tower with ground-level retail, 3M sqft"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -899,7 +941,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Service road, junction, and drainage upgrades along the Patancheru stretch of NH-65"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -946,7 +991,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Link-road and drainage upgrade improving approach access toward the eastern residential growth belt"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -993,7 +1041,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Road strengthening, service-lane, and junction work supporting residential movement around Rajendra Nagar"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1055,7 +1106,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Organized retail and office block planned along the north residential belt to improve local amenities"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1117,7 +1171,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Integrated bus terminal and passenger concourse upgrade supporting commuter demand in east Hyderabad"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1164,7 +1221,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Utility and road connectivity package strengthening the Shadnagar approach to the broader pharma-industrial corridor"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1211,7 +1271,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Phase 2 metro extension connecting Gachibowli to Raidurg and Financial District"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1258,7 +1321,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Widening of cable bridge improving connectivity between Madhapur and Jubilee Hills"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1305,7 +1371,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Flyover and junction improvements across the Kondapur civic spine to ease movement toward HITEC City"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1367,7 +1436,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "New office and retail block extending the established commercial spine around KPHB and Forum Mall"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1429,7 +1501,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Large-format mid-income township adding residential supply along the west metro corridor"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1476,7 +1551,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "low",
           "description": "Public realm, parking, and pedestrian improvements along the premium commercial-residential spine"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1523,7 +1601,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Traffic-circulation improvement around the Jubilee Hills Checkpost and lakefront access corridors"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1585,7 +1666,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "New office campus aimed at capturing overflow demand from the Financial District and Gachibowli corridors"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1632,7 +1716,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Older office stock retrofit and retail refresh project reinforcing Somajiguda's central business relevance"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1679,7 +1766,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Transit-linked retail and office redevelopment planned around the Begumpet metro influence zone"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1741,7 +1831,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Traffic segregation and deck-style junction improvement targeting movement across the Paradise corridor"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1803,7 +1896,390 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "New east-corridor office campus targeting workforce demand spilling over from Uppal and Pocharam"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("hitec-city"),
+    "score": 85,
+    "category": "High Growth",
+    "signals": { "infrastructure": 90, "population": 75, "satellite": 88, "rera": 80, "employment": 98, "priceVelocity": 82, "govtScheme": 78 },
+    "livability": { "connectivity": 90, "amenities": 82, "ecommerce": 90, "entertainment": 80, "greenSpaces": 45 },
+    "highlights": [
+      "NASSCOM HQ and 600+ tech companies in walkable radius",
+      "Cyber Towers, iLabs Centre, T-Hub innovation ecosystem",
+      "Metro Line 1: HITEC City station — direct Ameerpet connectivity",
+      "Highest office absorption rate in Hyderabad"
+    ],
+    "priceRange": "Rs9,500-14,000/sqft",
+    "yoy": 18,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("nanakramguda"),
+    "score": 77,
+    "category": "High Growth",
+    "signals": { "infrastructure": 82, "population": 70, "satellite": 78, "rera": 72, "employment": 85, "priceVelocity": 80, "govtScheme": 72 },
+    "livability": { "connectivity": 78, "amenities": 68, "ecommerce": 82, "entertainment": 62, "greenSpaces": 55 },
+    "highlights": [
+      "Adjacent to Financial District — premium office spillover zone",
+      "DLF Cybercity, Lanco Hills, and US Consulate precinct",
+      "Outer Ring Road direct access at Node 7",
+      "Fastest appreciating residential corridor in West Hyderabad"
+    ],
+    "priceRange": "Rs7,500-11,000/sqft",
+    "yoy": 22,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("mehdipatnam"),
+    "score": 73,
+    "category": "Established",
+    "signals": { "infrastructure": 78, "population": 78, "satellite": 70, "rera": 68, "employment": 72, "priceVelocity": 65, "govtScheme": 65 },
+    "livability": { "connectivity": 85, "amenities": 80, "ecommerce": 82, "entertainment": 72, "greenSpaces": 38 },
+    "highlights": [
+      "Major bus terminus — connectivity to all parts of Hyderabad",
+      "Metro Line 2 (Nagole-Raidurg): Mehdipatnam interchange",
+      "Dense commercial hub — retail, F&B, healthcare cluster",
+      "Affordable residential base for IT workforce commuting to FD"
+    ],
+    "priceRange": "Rs5,500-8,000/sqft",
+    "yoy": 12,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("dilsukhnagar"),
+    "score": 72,
+    "category": "Established",
+    "signals": { "infrastructure": 75, "population": 80, "satellite": 68, "rera": 70, "employment": 65, "priceVelocity": 65, "govtScheme": 62 },
+    "livability": { "connectivity": 82, "amenities": 78, "ecommerce": 80, "entertainment": 70, "greenSpaces": 40 },
+    "highlights": [
+      "Metro Line 1 terminus — Dilsukhnagar station direct access",
+      "One of Hyderabad's densest self-contained commercial pockets",
+      "Strong rental yield for residential — workforce housing demand",
+      "APSRTC depot and arterial road connectivity to ORR east"
+    ],
+    "priceRange": "Rs4,800-7,000/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("tolichowki"),
+    "score": 70,
+    "category": "Established",
+    "signals": { "infrastructure": 75, "population": 72, "satellite": 68, "rera": 65, "employment": 70, "priceVelocity": 68, "govtScheme": 62 },
+    "livability": { "connectivity": 80, "amenities": 75, "ecommerce": 80, "entertainment": 65, "greenSpaces": 42 },
+    "highlights": [
+      "Strategic mid-point between Financial District and old city",
+      "Growing demand from Madhapur and Gachibowli IT workforce",
+      "Metro Phase 2 proposed station — price discovery upside",
+      "Film Nagar adjacency drives entertainment and hospitality supply"
+    ],
+    "priceRange": "Rs5,500-8,500/sqft",
+    "yoy": 14,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("bachupally"),
+    "score": 69,
+    "category": "Emerging",
+    "signals": { "infrastructure": 68, "population": 72, "satellite": 75, "rera": 65, "employment": 60, "priceVelocity": 70, "govtScheme": 62 },
+    "livability": { "connectivity": 62, "amenities": 60, "ecommerce": 68, "entertainment": 40, "greenSpaces": 55 },
+    "highlights": [
+      "NH65 (Pune Highway) direct frontage — logistics advantage",
+      "ICRISAT campus precinct drives knowledge economy cluster",
+      "Affordable residential alternative to Miyapur and Chandanagar",
+      "PVNR Expressway proposed extension to connect ORR north"
+    ],
+    "priceRange": "Rs4,200-6,200/sqft",
+    "yoy": 16,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("hafeezpet"),
+    "score": 69,
+    "category": "Emerging",
+    "signals": { "infrastructure": 70, "population": 68, "satellite": 72, "rera": 65, "employment": 68, "priceVelocity": 72, "govtScheme": 62 },
+    "livability": { "connectivity": 68, "amenities": 65, "ecommerce": 72, "entertainment": 52, "greenSpaces": 50 },
+    "highlights": [
+      "Positioned between Miyapur metro and Kondapur IT corridor",
+      "High appreciation potential from HITEC City employment spill",
+      "Quiet residential character with improving social infrastructure",
+      "Budget-friendly gateway to West Hyderabad growth corridor"
+    ],
+    "priceRange": "Rs5,000-7,500/sqft",
+    "yoy": 15,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("malkajgiri"),
+    "score": 67,
+    "category": "Emerging",
+    "signals": { "infrastructure": 70, "population": 72, "satellite": 68, "rera": 62, "employment": 60, "priceVelocity": 65, "govtScheme": 58 },
+    "livability": { "connectivity": 72, "amenities": 68, "ecommerce": 72, "entertainment": 55, "greenSpaces": 42 },
+    "highlights": [
+      "Secunderabad outgrowth — dense established residential zone",
+      "NH65 and Medchal Road connectivity to north growth corridors",
+      "Municipal limits expansion driving plot regularisation activity",
+      "Affordable entry point for Secunderabad employment proximity"
+    ],
+    "priceRange": "Rs4,000-6,000/sqft",
+    "yoy": 11,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("balanagar"),
+    "score": 66,
+    "category": "Industrial",
+    "signals": { "infrastructure": 72, "population": 65, "satellite": 68, "rera": 55, "employment": 75, "priceVelocity": 58, "govtScheme": 60 },
+    "livability": { "connectivity": 70, "amenities": 58, "ecommerce": 65, "entertainment": 38, "greenSpaces": 40 },
+    "highlights": [
+      "APIIC Balanagar Industrial Area — 300+ manufacturing units",
+      "BEL, ECIL, BHEL residential townships cluster",
+      "Rail connectivity via Balanagar railway station",
+      "Stable rental demand from blue-collar industrial workforce"
+    ],
+    "priceRange": "Rs3,500-5,500/sqft",
+    "yoy": 8,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("bowenpally"),
+    "score": 66,
+    "category": "Established",
+    "signals": { "infrastructure": 70, "population": 68, "satellite": 65, "rera": 62, "employment": 60, "priceVelocity": 65, "govtScheme": 58 },
+    "livability": { "connectivity": 72, "amenities": 68, "ecommerce": 72, "entertainment": 55, "greenSpaces": 40 },
+    "highlights": [
+      "Secunderabad-Kompally arterial — high vehicular throughput",
+      "Institutional cluster: TSPA, NIN, government offices",
+      "Wholesale vegetable market — strong commercial footfall",
+      "Undervalued residential corridor with metro Phase 2 upside"
+    ],
+    "priceRange": "Rs4,200-6,200/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("nizampet",),
+    "score": 65,
+    "category": "Emerging",
+    "signals": { "infrastructure": 65, "population": 68, "satellite": 70, "rera": 60, "employment": 55, "priceVelocity": 65, "govtScheme": 58 },
+    "livability": { "connectivity": 62, "amenities": 60, "ecommerce": 65, "entertainment": 42, "greenSpaces": 52 },
+    "highlights": [
+      "Affordable alternative to Kukatpally — 30% lower prices",
+      "JNTU Kukatpally campus precinct drives student demand",
+      "Ring Road connectivity improving last-mile access to IT hubs",
+      "Rapid plot conversion activity from GHMC regularisation"
+    ],
+    "priceRange": "Rs3,800-5,800/sqft",
+    "yoy": 13,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("kothapet"),
+    "score": 65,
+    "category": "Emerging",
+    "signals": { "infrastructure": 68, "population": 72, "satellite": 65, "rera": 62, "employment": 58, "priceVelocity": 62, "govtScheme": 55 },
+    "livability": { "connectivity": 68, "amenities": 65, "ecommerce": 70, "entertainment": 52, "greenSpaces": 42 },
+    "highlights": [
+      "East Hyderabad residential hub — affordable family housing",
+      "Proximity to Dilsukhnagar commercial and LB Nagar metro",
+      "Growing RERA project pipeline — mid-range apartment supply",
+      "Inner Ring Road access to Nagole IT cluster"
+    ],
+    "priceRange": "Rs3,800-5,800/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("hayathnagar"),
+    "score": 65,
+    "category": "Emerging",
+    "signals": { "infrastructure": 72, "population": 55, "satellite": 75, "rera": 60, "employment": 55, "priceVelocity": 70, "govtScheme": 65 },
+    "livability": { "connectivity": 62, "amenities": 52, "ecommerce": 60, "entertainment": 35, "greenSpaces": 65 },
+    "highlights": [
+      "ORR east node — land appreciation play ahead of urbanisation",
+      "Pharma city proximity (Genome Valley south extension corridor)",
+      "Low density now, high land banking potential",
+      "NH163 (Hyderabad-Vijayawada) direct access for logistics"
+    ],
+    "priceRange": "Rs2,800-4,500/sqft",
+    "yoy": 20,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("jntu-kphb"),
+    "score": 65,
+    "category": "Established",
+    "signals": { "infrastructure": 65, "population": 70, "satellite": 65, "rera": 60, "employment": 65, "priceVelocity": 62, "govtScheme": 58 },
+    "livability": { "connectivity": 70, "amenities": 65, "ecommerce": 72, "entertainment": 52, "greenSpaces": 42 },
+    "highlights": [
+      "JNTU campus precinct — consistent student and faculty demand",
+      "Metro Line 1: JNTU College station on Ameerpet-Miyapur corridor",
+      "KPHB Colony established residential character, strong resale market",
+      "Affordable Kukatpally adjacency — 15% discount to prime KPHB"
+    ],
+    "priceRange": "Rs4,500-6,800/sqft",
+    "yoy": 11,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("chandanagar"),
+    "score": 64,
+    "category": "Emerging",
+    "signals": { "infrastructure": 65, "population": 65, "satellite": 68, "rera": 60, "employment": 55, "priceVelocity": 68, "govtScheme": 55 },
+    "livability": { "connectivity": 60, "amenities": 58, "ecommerce": 62, "entertainment": 40, "greenSpaces": 58 },
+    "highlights": [
+      "Emerging western residential corridor beyond Miyapur",
+      "NH65 expressway proximity for Pune and Nagpur connectivity",
+      "Low-density plotted development — large plot sizes still available",
+      "Growing FD and HITEC City workforce residential demand"
+    ],
+    "priceRange": "Rs3,500-5,500/sqft",
+    "yoy": 15,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("alwal"),
+    "score": 64,
+    "category": "Emerging",
+    "signals": { "infrastructure": 68, "population": 70, "satellite": 65, "rera": 58, "employment": 55, "priceVelocity": 62, "govtScheme": 55 },
+    "livability": { "connectivity": 68, "amenities": 62, "ecommerce": 68, "entertainment": 48, "greenSpaces": 45 },
+    "highlights": [
+      "Secunderabad outgrowth — affordable northeast residential pocket",
+      "Railway station connectivity to Secunderabad junction",
+      "Cantonment proximity driving quality infrastructure maintenance",
+      "Price upside from Medchal Road development spill"
+    ],
+    "priceRange": "Rs3,800-5,800/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("nacharam"),
+    "score": 62,
+    "category": "Emerging",
+    "signals": { "infrastructure": 65, "population": 65, "satellite": 62, "rera": 58, "employment": 62, "priceVelocity": 60, "govtScheme": 55 },
+    "livability": { "connectivity": 65, "amenities": 60, "ecommerce": 65, "entertainment": 45, "greenSpaces": 48 },
+    "highlights": [
+      "Industrial-to-residential transition zone near Uppal",
+      "IDA Nacharam — legacy pharma and light engineering units",
+      "Affordable apartments attracting mid-income IT workforce",
+      "Metro Phase 2 proposed alignment through Nacharam corridor"
+    ],
+    "priceRange": "Rs3,500-5,500/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("attapur"),
+    "score": 61,
+    "category": "Emerging",
+    "signals": { "infrastructure": 65, "population": 65, "satellite": 62, "rera": 55, "employment": 58, "priceVelocity": 60, "govtScheme": 55 },
+    "livability": { "connectivity": 65, "amenities": 62, "ecommerce": 65, "entertainment": 50, "greenSpaces": 42 },
+    "highlights": [
+      "Outer Ring Road south access at Node 4 — Shamshabad direction",
+      "Rajendra Nagar and Attapur forming a mid-south residential cluster",
+      "Affordable family housing with improving social infrastructure",
+      "Price discovery underway from FD and Mehdipatnam demand spill"
+    ],
+    "priceRange": "Rs3,800-5,500/sqft",
+    "yoy": 11,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("vanasthalipuram"),
+    "score": 60,
+    "category": "Emerging",
+    "signals": { "infrastructure": 62, "population": 68, "satellite": 60, "rera": 55, "employment": 52, "priceVelocity": 58, "govtScheme": 52 },
+    "livability": { "connectivity": 62, "amenities": 60, "ecommerce": 65, "entertainment": 45, "greenSpaces": 42 },
+    "highlights": [
+      "Densely populated affordable east Hyderabad locality",
+      "Strong rental market serving LB Nagar and Dilsukhnagar workforce",
+      "Ongoing GHMC road widening improving internal connectivity",
+      "Entry-level plotted development for first-time buyers"
+    ],
+    "priceRange": "Rs3,200-5,000/sqft",
+    "yoy": 9,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+
+  {
+    ...locality("dundigal"),
+    "score": 51,
+    "category": "Emerging",
+    "signals": { "infrastructure": 55, "population": 45, "satellite": 60, "rera": 40, "employment": 45, "priceVelocity": 55, "govtScheme": 58 },
+    "livability": { "connectivity": 48, "amenities": 40, "ecommerce": 48, "entertainment": 22, "greenSpaces": 70 },
+    "highlights": [
+      "IAF Dundigal Air Force Academy — strategic land constraint",
+      "Long-range investment opportunity: north Hyderabad urbanisation front",
+      "NH44 (Hyderabad-Delhi) direct access for logistics and connectivity",
+      "Very low prices — highest risk-reward ratio in the metro region"
+    ],
+    "priceRange": "Rs1,800-3,000/sqft",
+    "yoy": 18,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
 ]

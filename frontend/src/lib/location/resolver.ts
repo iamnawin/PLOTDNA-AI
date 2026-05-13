@@ -1,5 +1,6 @@
 import type { CityMeta, MicroMarket } from '@/types'
 import { CITIES, CITY_LIST } from '@/data/cities'
+import telanganaDistrictsJson from '../../../../data/telangana/districts.json'
 import bangAliasesJson from '../../../../data/cities/bangalore/aliases.json'
 import bangCityJson from '../../../../data/cities/bangalore/city.json'
 import bangClustersJson from '../../../../data/cities/bangalore/clusters.json'
@@ -67,11 +68,30 @@ export interface ClusterCandidate {
   distanceKm: number
 }
 
+export interface DistrictCandidate {
+  districtSlug: string
+  districtName: string
+  stateSlug: string
+  distanceKm: number
+}
+
 export interface ResolutionCandidates {
   exact: ExactMatchCandidate | null
   nearby: NearbyMatchCandidate | null
   cluster: ClusterCandidate | null
+  district: DistrictCandidate | null
 }
+
+interface ResolverDistrictData {
+  slug: string
+  name: string
+  state: string
+  center: [number, number]
+  polygon: [number, number][]
+}
+
+const TELANGANA_BOUNDS = { latMin: 15.8, latMax: 19.95, lngMin: 77.0, lngMax: 81.4 }
+const TELANGANA_DISTRICTS = telanganaDistrictsJson as ResolverDistrictData[]
 
 interface CityCandidate {
   slug: string
@@ -561,5 +581,37 @@ export function resolveLocalityCandidates(
       })()
     : null
 
-  return { exact, nearby, cluster }
+  let district: DistrictCandidate | null = null
+  const inTelangana =
+    lat >= TELANGANA_BOUNDS.latMin && lat <= TELANGANA_BOUNDS.latMax &&
+    lng >= TELANGANA_BOUNDS.lngMin && lng <= TELANGANA_BOUNDS.lngMax
+
+  if (inTelangana) {
+    let bestDistrict: ResolverDistrictData | null = null
+    let bestDistrictDist = Infinity
+
+    for (const d of TELANGANA_DISTRICTS) {
+      if (pointInPolygon(lat, lng, d.polygon)) {
+        bestDistrict = d
+        bestDistrictDist = distKm(lat, lng, d.center[0], d.center[1])
+        break
+      }
+      const d2 = distKm(lat, lng, d.center[0], d.center[1])
+      if (d2 < bestDistrictDist) {
+        bestDistrictDist = d2
+        bestDistrict = d
+      }
+    }
+
+    if (bestDistrict) {
+      district = {
+        districtSlug: bestDistrict.slug,
+        districtName: bestDistrict.name,
+        stateSlug: bestDistrict.state,
+        distanceKm: roundKm(bestDistrictDist),
+      }
+    }
+  }
+
+  return { exact, nearby, cluster, district }
 }

@@ -10,6 +10,9 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
       localitySlug: candidates.exact.localitySlug,
       localityName: candidates.exact.localityName,
       clusterId: null,
+      districtSlug: null,
+      districtName: null,
+      stateSlug: null,
       distanceKm: candidates.exact.distanceKm,
       matchedBy: candidates.exact.matchedBy,
       reason: candidates.exact.matchedBy === 'polygon'
@@ -25,6 +28,9 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
       localitySlug: candidates.nearby.localitySlug,
       localityName: candidates.nearby.localityName,
       clusterId: null,
+      districtSlug: null,
+      districtName: null,
+      stateSlug: null,
       distanceKm: candidates.nearby.distanceKm,
       matchedBy: 'radius',
       reason: 'Coordinate is within the safe nearby radius of a supported micro-market.',
@@ -38,9 +44,28 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
       localitySlug: null,
       localityName: null,
       clusterId: candidates.cluster.clusterId,
+      districtSlug: null,
+      districtName: null,
+      stateSlug: null,
       distanceKm: candidates.cluster.distanceKm,
       matchedBy: 'cluster',
       reason: 'Coordinate is inside a supported city catchment, but only broad cluster context is available.',
+    }
+  }
+
+  if (candidates.district) {
+    return {
+      tier: 'regional',
+      citySlug: null,
+      localitySlug: null,
+      localityName: null,
+      clusterId: null,
+      districtSlug: candidates.district.districtSlug,
+      districtName: candidates.district.districtName,
+      stateSlug: candidates.district.stateSlug,
+      distanceKm: candidates.district.distanceKm,
+      matchedBy: 'district',
+      reason: `Coordinate is inside ${candidates.district.districtName} district — no micro-market data yet for this area.`,
     }
   }
 
@@ -50,9 +75,12 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
     localitySlug: null,
     localityName: null,
     clusterId: null,
+    districtSlug: null,
+    districtName: null,
+    stateSlug: null,
     distanceKm: null,
     matchedBy: 'none',
-    reason: 'Coordinate does not map to a supported locality or city cluster.',
+    reason: 'Coordinate does not map to a supported locality or district.',
   }
 }
 
