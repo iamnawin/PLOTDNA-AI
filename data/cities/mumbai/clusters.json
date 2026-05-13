@@ -1,0 +1,32 @@
+[
+  {
+    "id": "mumbai:central",
+    "label": "Mumbai Central Zone",
+    "zone": "Central",
+    "localitySlugs": ["bandra-kurla-complex", "worli", "chembur"]
+  },
+  {
+    "id": "mumbai:north",
+    "label": "Mumbai North Zone",
+    "zone": "North",
+    "localitySlugs": ["goregaon-east", "kandivali-east", "borivali-west", "mira-road"]
+  },
+  {
+    "id": "mumbai:east",
+    "label": "Mumbai East Zone",
+    "zone": "East",
+    "localitySlugs": ["thane-west", "airoli", "dombivli-east", "kalyan-west", "badlapur"]
+  },
+  {
+    "id": "mumbai:south",
+    "label": "Mumbai South Zone",
+    "zone": "South",
+    "localitySlugs": ["panvel", "kharghar", "nerul", "seawoods", "ulwe", "vashi"]
+  },
+  {
+    "id": "mumbai:west",
+    "label": "Mumbai West Zone",
+    "zone": "West",
+    "localitySlugs": ["powai", "andheri-east"]
+  }
+]

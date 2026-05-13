@@ -429,7 +429,7 @@ export default function Home() {
           RIGHT: Plot analysis (coords) or Score card (click)
       ════════════════════════════════════════════════ */}
       <AnimatePresence mode="wait">
-        {searchCoords && coordAnalysis ? (
+        {searchCoords && coordAnalysis && coordAnalysis.area !== null && coordAnalysis.distKm !== null ? (
           <PlotAnalysisCard
             key="plot-analysis"
             coords={searchCoords}

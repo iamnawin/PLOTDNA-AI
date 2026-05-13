@@ -1,0 +1,7 @@
+[
+  { "id": "delhi:east", "label": "Noida and Ghaziabad Growth Belt", "zone": "East", "localitySlugs": ["noida-sector-150", "greater-noida-west", "yamuna-expressway", "noida-expressway", "noida-sector-79", "greater-noida", "indirapuram", "raj-nagar-extension", "vaishali", "vasundhara"] },
+  { "id": "delhi:south", "label": "Gurgaon and Faridabad South Belt", "zone": "South", "localitySlugs": ["sohna-road", "faridabad-new-town", "golf-course-extension-road", "new-gurgaon", "faridabad-neharpar"] },
+  { "id": "delhi:west", "label": "Airport and West NCR Corridor", "zone": "West", "localitySlugs": ["dwarka-expressway", "aerocity"] },
+  { "id": "delhi:central", "label": "Core Employment and Urban Nodes", "zone": "Central", "localitySlugs": ["cyber-city"] },
+  { "id": "delhi:north", "label": "North Delhi and Kundli Belt", "zone": "North", "localitySlugs": ["kundli", "rohini"] }
+]

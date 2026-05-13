@@ -545,8 +545,6 @@ export default function AreaDetail() {
           <VerdictCard
             citySlug={citySlug}
             areaSlug={area.slug}
-            resolutionTier="exact_locality"
-            resolutionLabel={area.name}
           />
         </motion.div>
 
@@ -877,7 +875,7 @@ export default function AreaDetail() {
           transition={{ duration: 0.5, delay: 0.38 }}
           className="mb-10"
         >
-          <NewsSection citySlug={citySlug} areaSlug={area.slug} areaName={area.name} accentColor={color} />
+          <NewsSection citySlug={citySlug} areaSlug={area.slug} accentColor={color} />
         </motion.div>
 
         {/* ── Market Pulse ── */}

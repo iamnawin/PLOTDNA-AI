@@ -1,0 +1,7 @@
+[
+  { "id": "vijayawada:west", "label": "Amaravati West Belt", "zone": "West", "localitySlugs": ["amaravati", "tadikonda"] },
+  { "id": "vijayawada:south", "label": "Krishna South Residential Belt", "zone": "South", "localitySlugs": ["mangalagiri", "tadepalli", "undavalli"] },
+  { "id": "vijayawada:east", "label": "East Vijayawada Growth Belt", "zone": "East", "localitySlugs": ["poranki", "penamaluru", "nidamanuru", "gannavaram"] },
+  { "id": "vijayawada:central", "label": "Vijayawada Urban Core", "zone": "Central", "localitySlugs": ["benz-circle", "kanuru"] },
+  { "id": "vijayawada:north", "label": "Guntur Capital Link Belt", "zone": "North", "localitySlugs": ["guntur-central"] }
+]

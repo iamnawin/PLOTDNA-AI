@@ -1,0 +1,11 @@
+{
+  "slug": "mumbai",
+  "name": "Mumbai",
+  "state": "Maharashtra",
+  "center": [19.076, 72.877],
+  "zoom": 11,
+  "coverageRadiusKm": 55,
+  "centralRadiusKm": 8,
+  "exactLocalityBufferKm": 6,
+  "nearbyMicroMarketRadiusKm": 5
+}

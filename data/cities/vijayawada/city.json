@@ -1,0 +1,11 @@
+{
+  "slug": "vijayawada",
+  "name": "Vijayawada Capital Region",
+  "state": "Andhra Pradesh",
+  "center": [16.5062, 80.648],
+  "zoom": 10,
+  "coverageRadiusKm": 42,
+  "centralRadiusKm": 7,
+  "exactLocalityBufferKm": 6,
+  "nearbyMicroMarketRadiusKm": 5
+}

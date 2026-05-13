@@ -1,4 +1,4 @@
-import type { MicroMarket } from '@/types'
+﻿import type { MicroMarket } from '@/types'
 import hydCityJson from '../../../data/cities/hyderabad/city.json'
 import hydLocalitiesJson from '../../../data/cities/hyderabad/localities.json'
 
@@ -107,7 +107,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Outer Ring Road Node 13 grade separator and service road widening"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -169,7 +172,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "100MW data centre with Tier 4 certification, 400 direct jobs"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -245,7 +251,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Grade-A office and retail complex at Outer Ring Road junction"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -292,7 +301,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Connector road and junction improvements serving new villa communities emerging around the Shankarpally belt"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -354,7 +366,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Low-density luxury villa community with 18-hole golf course"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -401,7 +416,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Mid-rise residential township planned to capture west-corridor spillover near the Ameenpur lake belt"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -448,7 +466,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Large villa-cluster expansion aimed at second-home and premium end-user demand along the Mokila corridor"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -495,7 +516,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Institutional cluster supporting long-term demand around the east-corridor growth belt near Bibinagar"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -557,7 +581,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Neighborhood office, retail, and medical-services cluster aimed at capturing west-corridor spillover demand"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -604,7 +631,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Warehouse and light-industrial cluster reinforcing NH-163 connectivity and east-corridor employment demand"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -651,7 +681,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Land aggregation and trunk infrastructure for logistics and pharma-linked industrial demand in south Hyderabad"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -698,7 +731,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Integrated warehousing and truck-terminal project leveraging Medchal's industrial and ORR adjacency"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -775,7 +811,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "National highway widening from 4 to 6 lanes with grade separators"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -837,7 +876,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "40-floor Grade-A office tower with ground-level retail, 3M sqft"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -899,7 +941,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Service road, junction, and drainage upgrades along the Patancheru stretch of NH-65"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -946,7 +991,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Link-road and drainage upgrade improving approach access toward the eastern residential growth belt"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -993,7 +1041,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Road strengthening, service-lane, and junction work supporting residential movement around Rajendra Nagar"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1055,7 +1106,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Organized retail and office block planned along the north residential belt to improve local amenities"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1117,7 +1171,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Integrated bus terminal and passenger concourse upgrade supporting commuter demand in east Hyderabad"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1164,7 +1221,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Utility and road connectivity package strengthening the Shadnagar approach to the broader pharma-industrial corridor"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1211,7 +1271,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "Phase 2 metro extension connecting Gachibowli to Raidurg and Financial District"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1258,7 +1321,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Widening of cable bridge improving connectivity between Madhapur and Jubilee Hills"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1305,7 +1371,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Flyover and junction improvements across the Kondapur civic spine to ease movement toward HITEC City"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1367,7 +1436,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "New office and retail block extending the established commercial spine around KPHB and Forum Mall"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1429,7 +1501,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Large-format mid-income township adding residential supply along the west metro corridor"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1476,7 +1551,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "low",
           "description": "Public realm, parking, and pedestrian improvements along the premium commercial-residential spine"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1523,7 +1601,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Traffic-circulation improvement around the Jubilee Hills Checkpost and lakefront access corridors"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1585,7 +1666,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "New office campus aimed at capturing overflow demand from the Financial District and Gachibowli corridors"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1632,7 +1716,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Older office stock retrofit and retail refresh project reinforcing Somajiguda's central business relevance"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1679,7 +1766,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Transit-linked retail and office redevelopment planned around the Begumpet metro influence zone"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1741,7 +1831,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "medium",
           "description": "Traffic segregation and deck-style junction improvement targeting movement across the Paradise corridor"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {
@@ -1803,7 +1896,10 @@ export const hyderabadAreas: MicroMarket[] = [
           "impact": "high",
           "description": "New east-corridor office campus targeting workforce demand spilling over from Uppal and Pocharam"
         }
-      ]
+      ],
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
   },
 
   {

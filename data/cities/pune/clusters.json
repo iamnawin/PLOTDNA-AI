@@ -1,0 +1,7 @@
+[
+  { "id": "pune:west", "label": "Pune West Tech Corridor", "zone": "West", "localitySlugs": ["hinjewadi", "wakad", "baner", "balewadi", "tathawade", "ravet", "mahalunge", "bavdhan"] },
+  { "id": "pune:east", "label": "Pune East Growth Belt", "zone": "East", "localitySlugs": ["kharadi", "hadapsar", "viman-nagar", "wagholi", "magarpatta"] },
+  { "id": "pune:south", "label": "Pune South Residential Belt", "zone": "South", "localitySlugs": ["undri", "nibm-road"] },
+  { "id": "pune:north", "label": "Pune North Industrial Belt", "zone": "North", "localitySlugs": ["pimpri", "moshi", "chakan", "talegaon-dabhade"] },
+  { "id": "pune:central", "label": "Pune Central Established Core", "zone": "Central", "localitySlugs": ["aundh"] }
+]

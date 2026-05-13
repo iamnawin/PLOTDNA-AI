@@ -1,0 +1,22 @@
+{
+  "noida-sector-150": ["noida sector 150", "sector 150 noida", "noida sec 150"],
+  "greater-noida-west": ["greater noida west", "gnw", "noida extension"],
+  "dwarka-expressway": ["dwarka expressway", "northern peripheral road", "npr gurgaon"],
+  "yamuna-expressway": ["yamuna expressway", "yeida corridor", "jewar expressway"],
+  "sohna-road": ["sohna road", "sohna road gurgaon", "south gurgaon sohna road"],
+  "faridabad-new-town": ["faridabad new town", "new faridabad", "faridabad sectors"],
+  "golf-course-extension-road": ["golf course extension road", "gcre", "golf course ext road"],
+  "new-gurgaon": ["new gurgaon", "new gurugram", "sectors 82 to 95 gurgaon"],
+  "cyber-city": ["cyber city", "cybercity", "gurgaon cyber city", "gurugram cyber city"],
+  "noida-expressway": ["noida expressway", "sector 137 noida expressway", "expressway noida"],
+  "noida-sector-79": ["noida sector 79", "sector 79 noida"],
+  "greater-noida": ["greater noida", "alpha beta greater noida", "greater noida city"],
+  "indirapuram": ["indirapuram", "indirapuram ghaziabad"],
+  "raj-nagar-extension": ["raj nagar extension", "rajnagar extension"],
+  "vaishali": ["vaishali", "vaishali ghaziabad"],
+  "vasundhara": ["vasundhara", "vasundhara ghaziabad"],
+  "kundli": ["kundli", "kundli sonipat", "kundli haryana"],
+  "rohini": ["rohini", "rohini delhi", "rohini north delhi"],
+  "aerocity": ["aerocity", "delhi aerocity", "igi aerocity"],
+  "faridabad-neharpar": ["faridabad neharpar", "neharpar", "greater faridabad"]
+}

@@ -1,0 +1,11 @@
+{
+  "slug": "hyderabad",
+  "name": "Hyderabad",
+  "state": "Telangana",
+  "center": [17.385, 78.487],
+  "zoom": 10,
+  "coverageRadiusKm": 55.8,
+  "centralRadiusKm": 8,
+  "exactLocalityBufferKm": 6,
+  "nearbyMicroMarketRadiusKm": 5
+}

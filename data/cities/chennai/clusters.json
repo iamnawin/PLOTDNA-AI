@@ -1,0 +1,32 @@
+[
+  {
+    "id": "chennai:central",
+    "label": "Chennai Central Zone",
+    "zone": "Central",
+    "localitySlugs": ["anna-nagar", "nungambakkam", "velachery", "mogappair"]
+  },
+  {
+    "id": "chennai:north",
+    "label": "Chennai North Zone",
+    "zone": "North",
+    "localitySlugs": ["ambattur", "madhavaram"]
+  },
+  {
+    "id": "chennai:east",
+    "label": "Chennai East Zone",
+    "zone": "East",
+    "localitySlugs": ["sholinganallur", "thoraipakkam", "omr", "navalur", "siruseri", "egattur", "kelambakkam"]
+  },
+  {
+    "id": "chennai:south",
+    "label": "Chennai South Zone",
+    "zone": "South",
+    "localitySlugs": ["perumbakkam", "medavakkam", "tambaram", "tambaram-east", "chromepet", "guduvanchery"]
+  },
+  {
+    "id": "chennai:west",
+    "label": "Chennai West Zone",
+    "zone": "West",
+    "localitySlugs": ["porur", "sriperumbudur"]
+  }
+]
