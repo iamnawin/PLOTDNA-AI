@@ -114,7 +114,8 @@ export default function SatelliteCompare({ area, coords }: Props) {
     }],
   }
 
-  const coveragePct = Math.round(area.signals.satellite * 0.42)
+  const satelliteSignal = area.signals.satellite ?? 0
+  const coveragePct = Math.round(satelliteSignal * 0.42)
 
   return (
     <div>

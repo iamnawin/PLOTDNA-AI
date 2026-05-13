@@ -72,7 +72,8 @@ const STATUS_LABEL: Record<string, string> = {
 }
 
 // ── Signal tier helper ─────────────────────────────────────────────────────────
-function getSignalTier(v: number) {
+function getSignalTier(v: number | null) {
+  if (v === null) return { label: 'Uncovered', color: '#64748b' }
   if (v >= 85) return { label: 'Excellent', color: '#10b981' }
   if (v >= 65) return { label: 'Good',      color: '#22c55e' }
   if (v >= 45) return { label: 'Moderate',  color: '#f59e0b' }
@@ -694,7 +695,7 @@ export default function AreaDetail() {
                       <Icon size={14} style={{ color: tier.color }} />
                     </div>
                     <span className="text-2xl font-mono font-bold" style={{ color: tier.color }}>
-                      {val}
+                      {val ?? 'N/A'}
                     </span>
                   </div>
 
