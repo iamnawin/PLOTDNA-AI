@@ -1,46 +1,62 @@
 from pathlib import Path
+
 from pydantic_settings import BaseSettings
 
 
 def _find_env() -> list[str]:
-    """Locate .env — works from backend/ (local) or project root (Render)."""
+    """Locate .env from backend/, project root, or nested execution contexts."""
     candidates = [
-        Path(".env"),          # Render: cwd is backend/
-        Path("../.env"),       # Local: cwd is project root
-        Path("../../.env"),    # Edge case
+        Path(".env"),
+        Path("../.env"),
+        Path("../../.env"),
     ]
     return [str(p) for p in candidates if p.exists()]
 
 
 class Settings(BaseSettings):
     # App
-    APP_ENV:  str  = "development"
-    DEBUG:    bool = True
+    APP_ENV: str = "development"
+    DEBUG: bool = True
 
-    # CORS (set "*" for public APIs, or comma-separated origins for production)
+    # CORS
     ALLOWED_ORIGINS: str = "*"
 
-    # AI — required for live verdicts
+    # AI
     GEMINI_API_KEY: str = ""
 
-    # Database (Supabase) — Phase 2
-    DATABASE_URL:  str = ""
-    SUPABASE_URL:  str = ""
-    SUPABASE_KEY:  str = ""
+    # Database / Supabase
+    DATABASE_URL: str = ""
+    SUPABASE_URL: str = ""
+    SUPABASE_KEY: str = ""
 
-    # Google Earth Engine — Phase 3
+    # Google Earth Engine
     GEE_SERVICE_ACCOUNT: str = ""
-    GEE_KEY_FILE:        str = ""
+    GEE_KEY_FILE: str = ""
 
-    # Redis — Phase 2 (replaced by in-memory cache for Phase 1)
+    # Redis
     REDIS_URL: str = "redis://localhost:6379"
 
-    # Auth / entitlements (Phase 2+)
+    # Auth / entitlements
     JWT_SECRET: str = "dev-secret-change-me"
     JWT_ALG: str = "HS256"
-
-    # Monetization: 3 free searches, then subscription
     FREE_SEARCH_LIMIT: int = 3
+
+    # News intelligence
+    NEWS_API_KEY: str = ""
+
+    # UAE / Dubai Land Department
+    DLD_API_KEY: str = ""
+
+    # India / API Setu
+    API_SETU_KEY: str = ""
+
+    # Brochure parsing
+    MAX_BROCHURE_SIZE_MB: int = 10
+    UPLOAD_TEMP_DIR: str = ""
+
+    # Multi-country
+    DEFAULT_COUNTRY: str = "India"
+    SUPPORTED_COUNTRIES: str = "India,UAE"
 
     model_config = {
         "env_file": _find_env(),

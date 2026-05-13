@@ -1,106 +1,244 @@
-"""
-MarketPulse route — GET /api/v1/market-pulse/{country}/{area_slug}
+"""Live market-pulse routes for India and UAE areas."""
 
-Derives a sentiment score from the area's DNA score + YoY growth,
-then classifies live news articles (from the existing news pipeline)
-as positive / neutral / negative using keyword scoring.
-"""
-from datetime import datetime, timezone
-from fastapi import APIRouter
+import asyncio
+import logging
+from typing import Optional
 
-from app.api.routes.verdict import AREA_DATA
-from app.services.news_aggregator import fetch_news_for_area
+from fastapi import APIRouter, HTTPException, Query, status
+
+from app.services.advanced_scorer import compute_phase2_score, format_score_breakdown
+from app.services.dld_client import get_area_transactions
+from app.services.news_intel import get_market_news
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-# Keywords that shift sentiment positive or negative
-_POS = {"launch", "growth", "develop", "invest", "appreciat", "surge", "boom",
-        "expand", "infra", "project", "approval", "connect", "metro", "highway",
-        "demand", "record", "award", "fund", "inaugurat", "complete", "open"}
-_NEG = {"delay", "stall", "fraud", "decline", "fall", "flood", "demolish",
-        "court", "notice", "illegal", "cancel", "evict", "protest", "dispute",
-        "scam", "encroach", "cheat", "demotion", "abandon"}
 
+@router.get(
+    "/market-pulse/{country}/{area_slug}",
+    summary="Live market pulse: news sentiment and Phase 2 DNA score",
+    tags=["market-pulse"],
+)
+async def market_pulse(
+    country: str,
+    area_slug: str,
+    area_name: Optional[str] = Query(None, description="Human-readable area name"),
+    city: Optional[str] = Query(None, description="City name for news filtering"),
+    phase1_score: int = Query(70, ge=0, le=100),
+    phase1_infra: int = Query(70, ge=0, le=100),
+    phase1_rera: int = Query(70, ge=0, le=100),
+    yoy_growth: float = Query(8.0, description="Year-over-year price growth %"),
+):
+    """Return news sentiment, Phase 2 scoring, and UAE transaction context."""
+    if country not in ("India", "UAE"):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid country '{country}'. Use 'India' or 'UAE'",
+        )
 
-def _classify_article(title: str) -> tuple[str, int]:
-    lower = title.lower()
-    pos = sum(1 for k in _POS if k in lower)
-    neg = sum(1 for k in _NEG if k in lower)
-    if pos > neg:
-        return "positive", min(60 + pos * 8, 95)
-    if neg > pos:
-        return "negative", max(40 - neg * 8, 5)
-    return "neutral", 50
+    resolved_area_name = area_name or area_slug.replace("-", " ").title()
+    resolved_city = city or ("Dubai" if country == "UAE" else "India")
 
+    news_result = await get_market_news(
+        area_slug=area_slug,
+        area_name=resolved_area_name,
+        city=resolved_city,
+        country=country,
+    )
 
-def _derive_sentiment(score: int, yoy: float) -> tuple[int, str]:
-    """Map DNA score + YoY% to a 0-100 market sentiment integer."""
-    yoy_boost = min(int(yoy / 35 * 20), 20)
-    raw = max(0, min(score + yoy_boost - 10, 100))
-    label = "positive" if raw >= 65 else ("neutral" if raw >= 40 else "negative")
-    return raw, label
+    dld_data = None
+    price_trend = None
+    if country == "UAE":
+        dld_data = await get_area_transactions(resolved_area_name)
+        price_trend = dld_data.price_trend_3m
 
+    phase2 = compute_phase2_score(
+        phase1_score=phase1_score,
+        phase1_infra_signal=phase1_infra,
+        phase1_rera_signal=phase1_rera,
+        yoy_growth_pct=yoy_growth,
+        sentiment_score=news_result.sentiment_score,
+        price_trend_signal=price_trend,
+    )
 
-@router.get("/{country}/{area_slug}")
-async def get_market_pulse(country: str, area_slug: str):
-    area = AREA_DATA.get(area_slug) or {
-        "name": area_slug.replace("-", " ").title(),
-        "city": "india",
-        "score": 50,
-        "yoy": 10.0,
+    response = {
+        "area_slug": area_slug,
+        "area_name": resolved_area_name,
+        "city": resolved_city,
+        "country": country,
+        "news": {
+            "articles": [
+                {
+                    "title": article.title,
+                    "url": article.url,
+                    "source": article.source,
+                    "published_at": article.published_at,
+                    "summary": article.summary,
+                    "relevance_score": article.relevance_score,
+                }
+                for article in news_result.articles
+            ],
+            "sentiment": news_result.sentiment,
+            "sentiment_score": news_result.sentiment_score,
+            "sentiment_reason": news_result.sentiment_reason,
+            "total_articles_found": news_result.total_found,
+        },
+        "phase2_score": format_score_breakdown(phase2),
+        "last_updated": news_result.last_updated,
     }
 
-    score: int = area["score"]
-    yoy: float = area.get("yoy", 10.0)
-    city: str = area.get("city", "india")
+    if dld_data:
+        response["dld_transactions"] = {
+            "median_price_aed_sqft": dld_data.median_price_aed_sqft,
+            "total_transactions_30d": dld_data.total_transactions_30d,
+            "price_trend_3m": dld_data.price_trend_3m,
+            "recent": [
+                {
+                    "date": transaction.date,
+                    "price_per_sqft_aed": transaction.price_per_sqft_aed,
+                    "property_type": transaction.property_type,
+                    "area_sqft": transaction.area_sqft,
+                }
+                for transaction in dld_data.transactions[:5]
+            ],
+        }
 
-    sentiment_score, sentiment_label = _derive_sentiment(score, yoy)
+    return response
 
-    # City average across all known areas in the same city
-    city_areas = [v for v in AREA_DATA.values() if v.get("city") == city]
-    city_sent_scores = [_derive_sentiment(a["score"], a.get("yoy", 10.0))[0] for a in city_areas]
-    city_sentiment_score = round(sum(city_sent_scores) / len(city_sent_scores)) if city_sent_scores else None
 
-    # Live news → per-article sentiment
-    try:
-        news_items = await fetch_news_for_area(city, area_slug)
-    except Exception:
-        news_items = []
+@router.get(
+    "/dld/transactions/{area_name}",
+    summary="Dubai Land Department transaction prices for a UAE area",
+    tags=["market-pulse"],
+)
+async def dld_transactions(area_name: str):
+    data = await get_area_transactions(area_name)
+    if data.error:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=f"DLD data unavailable: {data.error}",
+        )
+    return data.to_dict()
 
-    articles = []
-    for item in news_items[:10]:
-        sentiment, sent_score = _classify_article(item.title)
-        articles.append({
-            "title": item.title,
-            "url": item.url,
-            "source": item.source,
-            "published_at": item.published_at,
-            "sentiment": sentiment,
-            "sentiment_score": sent_score,
-        })
 
-    positive_count = sum(1 for a in articles if a["sentiment"] == "positive")
-    neutral_count  = sum(1 for a in articles if a["sentiment"] == "neutral")
-    negative_count = sum(1 for a in articles if a["sentiment"] == "negative")
+@router.get(
+    "/compare",
+    summary="Compare two plots or areas cross-border",
+    tags=["market-pulse"],
+)
+async def compare_areas(
+    area_a: str = Query(..., description="India area slug, e.g. 'kokapet'"),
+    city_a: str = Query(..., description="India city, e.g. 'Hyderabad'"),
+    score_a: int = Query(..., ge=0, le=100, description="Phase 1 DNA score for area A"),
+    yoy_a: float = Query(8.0, description="YoY growth % for area A"),
+    area_b: str = Query(..., description="UAE area slug, e.g. 'jvc-dubai'"),
+    city_b: str = Query("Dubai", description="UAE city"),
+    score_b: int = Query(..., ge=0, le=100, description="Phase 1 DNA score for area B"),
+    yoy_b: float = Query(6.0, description="YoY growth % for area B"),
+    budget_inr: Optional[float] = Query(None, description="Budget in INR"),
+    budget_aed: Optional[float] = Query(None, description="Budget in AED"),
+):
+    """Return a side-by-side ROI comparison between India and UAE areas."""
+    news_a_task = get_market_news(area_a, area_a.replace("-", " ").title(), city_a, "India")
+    news_b_task = get_market_news(area_b, area_b.replace("-", " ").title(), city_b, "UAE")
+    dld_task = get_area_transactions(area_b.replace("-", " ").title())
 
-    # No articles yet — synthesise counts from the derived sentiment
-    if not articles:
-        if sentiment_label == "positive":
-            positive_count, neutral_count, negative_count = 6, 3, 1
-        elif sentiment_label == "neutral":
-            positive_count, neutral_count, negative_count = 3, 5, 2
-        else:
-            positive_count, neutral_count, negative_count = 2, 3, 5
+    news_a, news_b, dld = await asyncio.gather(news_a_task, news_b_task, dld_task)
+
+    score_a_v2 = compute_phase2_score(
+        phase1_score=score_a,
+        phase1_infra_signal=70,
+        phase1_rera_signal=70,
+        yoy_growth_pct=yoy_a,
+        sentiment_score=news_a.sentiment_score,
+    )
+    score_b_v2 = compute_phase2_score(
+        phase1_score=score_b,
+        phase1_infra_signal=70,
+        phase1_rera_signal=70,
+        yoy_growth_pct=yoy_b,
+        sentiment_score=news_b.sentiment_score,
+        price_trend_signal=dld.price_trend_3m,
+    )
 
     return {
-        "area_slug": area_slug,
-        "country": country,
-        "sentiment_score": sentiment_score,
-        "sentiment_label": sentiment_label,
-        "city_sentiment_score": city_sentiment_score,
-        "positive_count": positive_count,
-        "neutral_count": neutral_count,
-        "negative_count": negative_count,
-        "articles": articles,
-        "last_updated": datetime.now(timezone.utc).isoformat(),
+        "area_a": {
+            "slug": area_a,
+            "city": city_a,
+            "country": "India",
+            "phase1_score": score_a,
+            "phase2_score": score_a_v2.phase2_score,
+            "sentiment": news_a.sentiment,
+            "sentiment_score": news_a.sentiment_score,
+            "yoy_growth_pct": yoy_a,
+            "roi_estimate": _estimate_roi_inr(score_a_v2.phase2_score, yoy_a, budget_inr),
+            "verdict": _quick_verdict(score_a_v2.phase2_score),
+        },
+        "area_b": {
+            "slug": area_b,
+            "city": city_b,
+            "country": "UAE",
+            "phase1_score": score_b,
+            "phase2_score": score_b_v2.phase2_score,
+            "sentiment": news_b.sentiment,
+            "sentiment_score": news_b.sentiment_score,
+            "yoy_growth_pct": yoy_b,
+            "median_price_aed_sqft": dld.median_price_aed_sqft,
+            "roi_estimate": _estimate_roi_aed(
+                score_b_v2.phase2_score,
+                yoy_b,
+                budget_aed,
+                dld.median_price_aed_sqft,
+            ),
+            "verdict": _quick_verdict(score_b_v2.phase2_score),
+        },
+        "winner": area_a if score_a_v2.phase2_score >= score_b_v2.phase2_score else area_b,
+        "comparison_note": _comparison_note(score_a_v2, score_b_v2),
     }
+
+
+def _estimate_roi_inr(phase2_score: int, yoy: float, budget_inr: Optional[float]) -> dict:
+    projected_5y = round(yoy * (phase2_score / 70), 1)
+    result = {"projected_5yr_appreciation_pct": projected_5y, "currency": "INR"}
+    if budget_inr:
+        result["projected_value_5yr_inr"] = round(budget_inr * ((1 + projected_5y / 100) ** 5))
+    return result
+
+
+def _estimate_roi_aed(
+    phase2_score: int,
+    yoy: float,
+    budget_aed: Optional[float],
+    median_ppsf: Optional[float],
+) -> dict:
+    projected_5y = round(yoy * (phase2_score / 70), 1)
+    result = {
+        "projected_5yr_appreciation_pct": projected_5y,
+        "currency": "AED",
+        "median_price_per_sqft_aed": median_ppsf,
+    }
+    if budget_aed and median_ppsf:
+        sqft = budget_aed / median_ppsf
+        result["estimated_sqft_for_budget"] = round(sqft, 1)
+        result["projected_value_5yr_aed"] = round(budget_aed * ((1 + projected_5y / 100) ** 5))
+    return result
+
+
+def _quick_verdict(score: int) -> str:
+    if score >= 80:
+        return "Strong Buy"
+    if score >= 65:
+        return "Buy"
+    if score >= 50:
+        return "Hold"
+    return "Wait"
+
+
+def _comparison_note(area_a_score, area_b_score) -> str:
+    diff = area_a_score.phase2_score - area_b_score.phase2_score
+    if diff > 10:
+        return f"India market shows stronger fundamentals (+{diff} pts). Higher growth trajectory."
+    if diff < -10:
+        return f"UAE market scores higher (+{abs(diff)} pts). Better transaction transparency via DLD."
+    return "Both markets are competitive. India offers higher growth upside; UAE offers better liquidity and DLD-verified data."
