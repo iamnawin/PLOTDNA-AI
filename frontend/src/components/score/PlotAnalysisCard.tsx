@@ -146,7 +146,9 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
         ? 'Nearby Locality Match'
         : resolvedFallback.tier === 'city_zone_cluster'
           ? 'Broad Region Match'
-          : 'Coverage Not Available'
+          : resolvedFallback.tier === 'regional_market'
+            ? 'Regional Coverage'
+            : 'Coverage Not Available'
 
   const fallbackDisplayLabel =
     resolvedFallback.tier === 'nearby_micro_market'
@@ -311,7 +313,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 Analyzing coordinate via OpenStreetMap...
               </p>
             </div>
-          ) : resolvedFallback.tier === 'city_zone_cluster' ? (
+          ) : resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional_market' ? (
             <div className="flex items-center gap-2.5 px-3 py-3">
               <Info size={11} style={{ color: '#f59e0b', flexShrink: 0 }} />
               <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
@@ -337,7 +339,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
             className="text-center font-mono"
             style={{ fontSize: 10, color: '#2e2e42', lineHeight: 1.7 }}
           >
-            {resolvedFallback.tier === 'city_zone_cluster'
+            {resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional_market'
               ? `${fallbackDisplayLabel} is supported only at a broad region level right now.`
               : 'Coverage for this location is not available yet.'}
             <br />
@@ -423,7 +425,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
               <VerdictCard
                 citySlug={resolvedFallback.citySlug}
                 areaSlug={verdictArea.slug}
-                resolutionTier={resolvedFallback.tier}
+                resolutionTier={resolvedFallback.tier === 'regional_market' ? 'uncovered' : resolvedFallback.tier}
                 resolutionLabel={fallbackDisplayLabel}
               />
             </div>
@@ -471,8 +473,8 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                     {fallbackDisplayLabel}
                   </p>
                   <p className="text-[10px] font-mono text-[#666680] mt-1 leading-relaxed">
-                    {resolvedFallback.tier === 'city_zone_cluster'
-                      ? 'The live score is valid for this coordinate, but PlotDNA only has broad city-zone context here. Area-level history and forecast sections are intentionally hidden.'
+                    {resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional_market'
+                      ? 'The live score is valid for this coordinate, but PlotDNA only has broad regional context here. Area-level history and forecast sections are intentionally hidden.'
                       : liveScoreIsSparse
                         ? 'The live score is thin enough that PlotDNA is treating the nearby market as a proxy, not an exact read.'
                         : 'The live score is valid for this coordinate, but PlotDNA does not have a reliable supported micro-market match for this location yet.'}

@@ -31,6 +31,7 @@ build/
 !vercel.json
 !frontend/public/manifest.json
 !data/cities/**/*.json
+!data/india/regional-markets.json
 
 # IDE
 .vscode/

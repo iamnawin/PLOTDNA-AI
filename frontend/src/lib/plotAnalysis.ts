@@ -60,6 +60,7 @@ export type LocalityFallbackTier =
   | 'exact_locality'
   | 'nearby_micro_market'
   | 'city_zone_cluster'
+  | 'regional_market'
   | 'uncovered'
 
 export type LocalityFallbackOptions = ResolverOptions
@@ -72,6 +73,7 @@ export interface LocalityFallbackResult {
   citySlug: string | null
   cityName: string | null
   clusterLabel: string | null
+  regionalLabel: string | null
   matchedLocality: string | null
   displayLabel: string
   precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
@@ -82,6 +84,7 @@ function mapTier(tier: ResolutionTier): LocalityFallbackTier {
   if (tier === 'exact') return 'exact_locality'
   if (tier === 'nearby') return 'nearby_micro_market'
   if (tier === 'cluster') return 'city_zone_cluster'
+  if (tier === 'regional') return 'regional_market'
   return 'uncovered'
 }
 
@@ -106,6 +109,7 @@ export function resolveLocalityFallback(
       citySlug: resolution.citySlug,
       cityName,
       clusterLabel: null,
+      regionalLabel: null,
       matchedLocality: options.locality ?? resolution.localityName,
       displayLabel: resolution.localityName ?? 'Supported locality',
       precisionLabel: resolution.tier === 'exact' ? 'exact' : 'approximate',
@@ -122,8 +126,32 @@ export function resolveLocalityFallback(
       citySlug: resolution.citySlug,
       cityName,
       clusterLabel,
+      regionalLabel: null,
       matchedLocality: options.locality ?? null,
       displayLabel: clusterLabel ?? 'Supported city cluster',
+      precisionLabel: 'broad',
+      shouldSelectArea: false,
+    }
+  }
+
+  if (resolution.tier === 'regional') {
+    const regionalLabel =
+      resolution.regionalName ??
+      resolution.districtName ??
+      'Regional coverage area'
+    const tierLabel = resolution.marketTier ? resolution.marketTier.toUpperCase() : 'Tier C'
+
+    return {
+      tier,
+      area: null,
+      distKm: resolution.distanceKm,
+      withinCoverage: false,
+      citySlug: null,
+      cityName: null,
+      clusterLabel: null,
+      regionalLabel,
+      matchedLocality: options.locality ?? null,
+      displayLabel: `${regionalLabel} (${tierLabel} regional)`,
       precisionLabel: 'broad',
       shouldSelectArea: false,
     }
@@ -137,6 +165,7 @@ export function resolveLocalityFallback(
     citySlug: null,
     cityName: null,
     clusterLabel: null,
+    regionalLabel: null,
     matchedLocality: options.locality ?? null,
     displayLabel: options.locality?.trim() || 'Unsupported location',
     precisionLabel: 'none',

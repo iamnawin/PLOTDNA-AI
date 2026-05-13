@@ -44,7 +44,7 @@ function getCoverageMessage(fallback: LocalityFallbackResult | null, cityName: s
   if (!fallback) return `Exploring ${cityName} through a premium intelligence surface.`
   if (fallback.tier === 'exact_locality') return `Exact locality context is available for ${fallback.displayLabel}.`
   if (fallback.tier === 'nearby_micro_market') return `${fallback.displayLabel} is being used as an approximate nearby market context.`
-  if (fallback.tier === 'city_zone_cluster') return `${fallback.displayLabel} is available as broad regional context only.`
+  if (fallback.tier === 'city_zone_cluster' || fallback.tier === 'regional_market') return `${fallback.displayLabel} is available as broad regional context only.`
   return 'Coverage limited in this region.'
 }
 
@@ -73,7 +73,7 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
       arcColor: [0.62, 1, 0.78],
     }
   }
-  if (fallback.tier === 'city_zone_cluster') {
+  if (fallback.tier === 'city_zone_cluster' || fallback.tier === 'regional_market') {
     return {
       coreHex: '#f59e0b',
       glowCss: 'rgba(245,158,11,0.28)',

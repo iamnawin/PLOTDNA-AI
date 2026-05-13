@@ -1,5 +1,6 @@
 import type { CityMeta, MicroMarket } from '@/types'
 import { CITIES, CITY_LIST } from '@/data/cities'
+import regionalMarketsJson from '../../../../data/india/regional-markets.json'
 import telanganaDistrictsJson from '../../../../data/telangana/districts.json'
 import bangAliasesJson from '../../../../data/cities/bangalore/aliases.json'
 import bangCityJson from '../../../../data/cities/bangalore/city.json'
@@ -75,11 +76,20 @@ export interface DistrictCandidate {
   distanceKm: number
 }
 
+export interface RegionalCandidate {
+  regionalSlug: string
+  regionalName: string
+  stateSlug: string
+  marketTier: 'tier2' | 'tier3'
+  distanceKm: number
+}
+
 export interface ResolutionCandidates {
   exact: ExactMatchCandidate | null
   nearby: NearbyMatchCandidate | null
   cluster: ClusterCandidate | null
   district: DistrictCandidate | null
+  regional: RegionalCandidate | null
 }
 
 interface ResolverDistrictData {
@@ -90,8 +100,19 @@ interface ResolverDistrictData {
   polygon: [number, number][]
 }
 
+interface ResolverRegionalData {
+  slug: string
+  name: string
+  state: string
+  marketTier: 'tier2' | 'tier3'
+  center: [number, number]
+  radiusKm: number
+  aliases: string[]
+}
+
 const TELANGANA_BOUNDS = { latMin: 15.8, latMax: 19.95, lngMin: 77.0, lngMax: 81.4 }
 const TELANGANA_DISTRICTS = telanganaDistrictsJson as ResolverDistrictData[]
+const REGIONAL_MARKETS = regionalMarketsJson as ResolverRegionalData[]
 
 interface CityCandidate {
   slug: string
@@ -429,6 +450,36 @@ function resolveCityCandidate(lat: number, lng: number, cityHint?: string | null
   return inCatchment[0] ?? null
 }
 
+function resolveRegionalCandidate(lat: number, lng: number, cityHint?: string | null): RegionalCandidate | null {
+  const normalizedHint = normalizePlaceName(cityHint ?? '')
+  const ranked = REGIONAL_MARKETS
+    .map(market => {
+      const distance = distKm(lat, lng, market.center[0], market.center[1])
+      const aliases = [market.name, market.slug, ...market.aliases].map(normalizePlaceName)
+      const hintMatches = normalizedHint !== '' && aliases.includes(normalizedHint)
+      return { market, distance, hintMatches }
+    })
+    .filter(({ market, distance, hintMatches }) => {
+      if (distance <= market.radiusKm) return true
+      return hintMatches && distance <= market.radiusKm * 1.5
+    })
+    .sort((a, b) => {
+      if (a.hintMatches !== b.hintMatches) return a.hintMatches ? -1 : 1
+      return a.distance - b.distance
+    })
+
+  const best = ranked[0]
+  if (!best) return null
+
+  return {
+    regionalSlug: best.market.slug,
+    regionalName: best.market.name,
+    stateSlug: best.market.state,
+    marketTier: best.market.marketTier,
+    distanceKm: roundKm(best.distance),
+  }
+}
+
 function zoneForPoint(city: CityMeta, lat: number, lng: number, centralRadiusKm: number): CityZone {
   const distanceFromCenter = distKm(lat, lng, city.center[0], city.center[1])
   if (distanceFromCenter <= centralRadiusKm) return 'Central'
@@ -582,6 +633,7 @@ export function resolveLocalityCandidates(
     : null
 
   let district: DistrictCandidate | null = null
+  const regional = resolveRegionalCandidate(lat, lng, cityHint)
   const inTelangana =
     lat >= TELANGANA_BOUNDS.latMin && lat <= TELANGANA_BOUNDS.latMax &&
     lng >= TELANGANA_BOUNDS.lngMin && lng <= TELANGANA_BOUNDS.lngMax
@@ -613,5 +665,5 @@ export function resolveLocalityCandidates(
     }
   }
 
-  return { exact, nearby, cluster, district }
+  return { exact, nearby, cluster, district, regional }
 }
