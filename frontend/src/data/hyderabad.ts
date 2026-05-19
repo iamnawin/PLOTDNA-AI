@@ -2093,7 +2093,7 @@ export const hyderabadAreas: MicroMarket[] = [
   },
 
   {
-    ...locality("nizampet",),
+    ...locality("nizampet"),
     "score": 65,
     "category": "Emerging",
     "signals": { "infrastructure": 65, "population": 68, "satellite": 70, "rera": 60, "employment": 55, "priceVelocity": 65, "govtScheme": 58 },
@@ -3937,6 +3937,979 @@ export const hyderabadAreas: MicroMarket[] = [
     "dataAsOf": "2026-05-01",
     "signalsAvailable": 5
   }
+,
+  {
+    ...locality("charminar"),
+    "score": 52,
+    "category": "Established",
+    "signals": { "infrastructure": 58, "population": 75, "satellite": 35, "rera": 25, "employment": 60, "priceVelocity": 45, "govtScheme": 62 },
+    "livability": { "connectivity": 60, "amenities": 72, "ecommerce": 68, "entertainment": 65, "greenSpaces": 28 },
+    "highlights": [
+      "Historic Charminar  -  UNESCO-nominated monument anchors old city tourism and commerce",
+      "GHMC Smart City upgrades on Laad Bazaar corridor underway through 2027",
+      "Dense heritage residential with strong artisan economy: bangles, pearls, fabric",
+      "Heritage zone restrictions limit new vertical supply  -  prices floor above old city average"
+    ],
+    "priceRange": "Rs3,500-6,500/sqft",
+    "yoy": 8,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("afzalgunj"),
+    "score": 55,
+    "category": "Established",
+    "signals": { "infrastructure": 60, "population": 72, "satellite": 38, "rera": 30, "employment": 65, "priceVelocity": 50, "govtScheme": 60 },
+    "livability": { "connectivity": 65, "amenities": 68, "ecommerce": 70, "entertainment": 62, "greenSpaces": 25 },
+    "highlights": [
+      "Major wholesale market hub  -  hardware, textiles, chemicals on Afzalgunj Bridge corridor",
+      "Musi River front development plan includes park and walkway by 2027",
+      "Excellent TSRTC bus connectivity to all city zones from central depot",
+      "Old city commercial backbone with stable long-term rental demand"
+    ],
+    "priceRange": "Rs3,200-6,000/sqft",
+    "yoy": 7,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("sultan-bazaar"),
+    "score": 58,
+    "category": "Established",
+    "signals": { "infrastructure": 62, "population": 70, "satellite": 40, "rera": 32, "employment": 68, "priceVelocity": 52, "govtScheme": 58 },
+    "livability": { "connectivity": 68, "amenities": 70, "ecommerce": 72, "entertainment": 65, "greenSpaces": 22 },
+    "highlights": [
+      "Central commercial district  -  books, hardware, electronics wholesale cluster",
+      "Metro Blue Line Nampally station 800m  -  strong walk-to-transit score",
+      "Koti women's college vicinity drives consistent retail footfall",
+      "Office and showroom demand stable despite e-commerce pressure"
+    ],
+    "priceRange": "Rs4,000-7,000/sqft",
+    "yoy": 9,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("hussaini-alam"),
+    "score": 48,
+    "category": "Emerging",
+    "signals": { "infrastructure": 50, "population": 68, "satellite": 35, "rera": 28, "employment": 55, "priceVelocity": 42, "govtScheme": 55 },
+    "livability": { "connectivity": 55, "amenities": 62, "ecommerce": 62, "entertainment": 55, "greenSpaces": 25 },
+    "highlights": [
+      "Dense old city residential  -  high occupancy, low vacancy near Charminar",
+      "Aga Khan Trust conservation projects improving heritage streetscape",
+      "Pearl and bangle trade within walking distance supports local employment",
+      "Road widening under Musi Riverfront Development Plan to improve access"
+    ],
+    "priceRange": "Rs2,800-5,200/sqft",
+    "yoy": 7,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("yakutpura"),
+    "score": 47,
+    "category": "Emerging",
+    "signals": { "infrastructure": 48, "population": 65, "satellite": 33, "rera": 25, "employment": 52, "priceVelocity": 40, "govtScheme": 52 },
+    "livability": { "connectivity": 52, "amenities": 60, "ecommerce": 60, "entertainment": 50, "greenSpaces": 30 },
+    "highlights": [
+      "Old city south zone  -  rapidly densifying with new housing demand",
+      "GHMC road improvement connecting to Dilsukhnagar flyover in progress",
+      "Large Muslim population drives demand for ground-floor commercial units",
+      "Close to Charminar heritage zone  -  tourist spill-over benefits commerce"
+    ],
+    "priceRange": "Rs2,500-4,800/sqft",
+    "yoy": 7,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("chaderghat"),
+    "score": 50,
+    "category": "Established",
+    "signals": { "infrastructure": 55, "population": 62, "satellite": 38, "rera": 30, "employment": 58, "priceVelocity": 45, "govtScheme": 55 },
+    "livability": { "connectivity": 60, "amenities": 65, "ecommerce": 65, "entertainment": 58, "greenSpaces": 32 },
+    "highlights": [
+      "Musi River bridge area  -  strategic link between old and new city",
+      "Osmania General Hospital proximity creates sustained medical economy",
+      "TSRTC depot ensures strong bus connectivity to Secunderabad and suburbs",
+      "Heritage residential demand rising as old city regeneration gains momentum"
+    ],
+    "priceRange": "Rs3,000-5,500/sqft",
+    "yoy": 8,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("moghalpura"),
+    "score": 44,
+    "category": "Industrial",
+    "signals": { "infrastructure": 48, "population": 58, "satellite": 32, "rera": 20, "employment": 65, "priceVelocity": 38, "govtScheme": 50 },
+    "livability": { "connectivity": 55, "amenities": 55, "ecommerce": 60, "entertainment": 40, "greenSpaces": 28 },
+    "highlights": [
+      "Industrial cluster: workshops, fabrication, auto ancillary  -  high employment density",
+      "Proximity to Secunderabad Railway Yard historically drove manufacturing base",
+      "Emerging mixed-use redevelopment as industrial plots repurpose to commercial",
+      "Below-average green cover  -  livability constraint on residential premiums"
+    ],
+    "priceRange": "Rs2,500-4,500/sqft",
+    "yoy": 6,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("bahadurpura"),
+    "score": 46,
+    "category": "Emerging",
+    "signals": { "infrastructure": 50, "population": 64, "satellite": 32, "rera": 25, "employment": 55, "priceVelocity": 40, "govtScheme": 52 },
+    "livability": { "connectivity": 54, "amenities": 60, "ecommerce": 62, "entertainment": 48, "greenSpaces": 28 },
+    "highlights": [
+      "South old city corridor  -  growing residential demand from young professionals",
+      "Close to Falaknuma Palace and Nizam heritage tourism zone",
+      "GHMC water supply improvements under Musi Riverfront project",
+      "Affordable price point attracting first-time buyers priced out of Falaknuma"
+    ],
+    "priceRange": "Rs2,600-5,000/sqft",
+    "yoy": 7,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("rein-bazaar"),
+    "score": 54,
+    "category": "Established",
+    "signals": { "infrastructure": 58, "population": 68, "satellite": 38, "rera": 30, "employment": 62, "priceVelocity": 48, "govtScheme": 56 },
+    "livability": { "connectivity": 65, "amenities": 66, "ecommerce": 70, "entertainment": 60, "greenSpaces": 22 },
+    "highlights": [
+      "Central commercial node  -  electrical goods, wholesale trade and retail",
+      "Adjacent to Nampally Exhibition Grounds  -  event-driven rental premium",
+      "Well-connected via MMTS Nampally Station within walking distance",
+      "Stable commercial demand supported by government offices nearby"
+    ],
+    "priceRange": "Rs3,200-6,000/sqft",
+    "yoy": 8,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("dabirpura"),
+    "score": 48,
+    "category": "Emerging",
+    "signals": { "infrastructure": 50, "population": 62, "satellite": 32, "rera": 22, "employment": 55, "priceVelocity": 42, "govtScheme": 52 },
+    "livability": { "connectivity": 55, "amenities": 60, "ecommerce": 62, "entertainment": 48, "greenSpaces": 28 },
+    "highlights": [
+      "Old city east  -  dense Muslim residential with strong community fabric",
+      "Musi River development master plan includes greening of Dabirpura bank",
+      "Small workshops and cottage industry provide stable local employment",
+      "Rising demand for mid-range housing from old city service workers"
+    ],
+    "priceRange": "Rs2,800-5,000/sqft",
+    "yoy": 7,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("aghapura"),
+    "score": 55,
+    "category": "Emerging",
+    "signals": { "infrastructure": 58, "population": 60, "satellite": 45, "rera": 38, "employment": 55, "priceVelocity": 50, "govtScheme": 58 },
+    "livability": { "connectivity": 62, "amenities": 62, "ecommerce": 65, "entertainment": 55, "greenSpaces": 30 },
+    "highlights": [
+      "Transition zone between Secunderabad and old city  -  rapidly upgrading",
+      "Metro station Musheerabad within 1.2km improves transit connectivity",
+      "Growing commercial strip along Aghapura Road: restaurants, clinics, retail",
+      "Investor interest rising as nearby Malkajgiri corridor appreciates"
+    ],
+    "priceRange": "Rs3,000-5,500/sqft",
+    "yoy": 8,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("warasiguda"),
+    "score": 67,
+    "category": "Established",
+    "signals": { "infrastructure": 70, "population": 72, "satellite": 65, "rera": 62, "employment": 68, "priceVelocity": 65, "govtScheme": 65 },
+    "livability": { "connectivity": 72, "amenities": 70, "ecommerce": 75, "entertainment": 65, "greenSpaces": 38 },
+    "highlights": [
+      "Secunderabad residential belt  -  consistent demand from defense and govt employees",
+      "Excellent MMTS connectivity: Malkajgiri and Secunderabad stations within 2km",
+      "Mature social infrastructure: 5 hospitals, 12 schools within 3km",
+      "Limited land availability creates steady price appreciation above city average"
+    ],
+    "priceRange": "Rs4,500-7,500/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("tirumalagiri"),
+    "score": 70,
+    "category": "Established",
+    "signals": { "infrastructure": 72, "population": 70, "satellite": 68, "rera": 55, "employment": 75, "priceVelocity": 62, "govtScheme": 70 },
+    "livability": { "connectivity": 70, "amenities": 72, "ecommerce": 74, "entertainment": 65, "greenSpaces": 45 },
+    "highlights": [
+      "Defense colony  -  Army Service Corps HQ ensures stable high-income resident base",
+      "Premium residential enclave with wide roads and well-maintained infrastructure",
+      "CRPF and Army establishments drive consistent demand for rental housing",
+      "Low crime, high greenery  -  top-tier livability in North Hyderabad"
+    ],
+    "priceRange": "Rs5,000-8,500/sqft",
+    "yoy": 11,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("mettuguda"),
+    "score": 66,
+    "category": "Established",
+    "signals": { "infrastructure": 68, "population": 70, "satellite": 62, "rera": 58, "employment": 65, "priceVelocity": 62, "govtScheme": 65 },
+    "livability": { "connectivity": 70, "amenities": 68, "ecommerce": 72, "entertainment": 62, "greenSpaces": 38 },
+    "highlights": [
+      "Railway colony residential area  -  stable demand from SCR employees",
+      "Mettuguda MMTS station provides direct Secunderabad connection in 8 minutes",
+      "Well-planned colony layout with parks and community halls",
+      "Redevelopment potential as old SCR quarters transition to private housing"
+    ],
+    "priceRange": "Rs4,500-7,500/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("karkhana"),
+    "score": 62,
+    "category": "Industrial",
+    "signals": { "infrastructure": 65, "population": 60, "satellite": 60, "rera": 50, "employment": 80, "priceVelocity": 55, "govtScheme": 60 },
+    "livability": { "connectivity": 68, "amenities": 60, "ecommerce": 68, "entertainment": 52, "greenSpaces": 30 },
+    "highlights": [
+      "Mixed industrial-residential: workshops, auto parts, food processing cluster",
+      "South Central Railway workshop (largest railway workshop in India) anchors employment",
+      "Ongoing transition to commercial: warehousing and light manufacturing exiting",
+      "Affordable compared to Secunderabad  -  attracting transit-oriented residential"
+    ],
+    "priceRange": "Rs3,800-6,500/sqft",
+    "yoy": 9,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("west-marredpally"),
+    "score": 69,
+    "category": "Established",
+    "signals": { "infrastructure": 70, "population": 72, "satellite": 65, "rera": 62, "employment": 68, "priceVelocity": 68, "govtScheme": 65 },
+    "livability": { "connectivity": 72, "amenities": 72, "ecommerce": 76, "entertainment": 68, "greenSpaces": 40 },
+    "highlights": [
+      "Premium Secunderabad residential  -  proximity to Cantonment drives demand",
+      "Multiple private schools and colleges keep family occupancy high",
+      "Well-connected by TSRTC to IT corridors  -  dual-income family preferred address",
+      "Limited new supply in this zone pushes prices above Secunderabad baseline"
+    ],
+    "priceRange": "Rs5,000-8,000/sqft",
+    "yoy": 11,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("mahendra-hills"),
+    "score": 72,
+    "category": "Established",
+    "signals": { "infrastructure": 72, "population": 68, "satellite": 68, "rera": 60, "employment": 70, "priceVelocity": 72, "govtScheme": 68 },
+    "livability": { "connectivity": 68, "amenities": 70, "ecommerce": 72, "entertainment": 68, "greenSpaces": 55 },
+    "highlights": [
+      "Elevated terrain with Secunderabad Cantonment views  -  premium lifestyle address",
+      "Low density, wide roads, heritage bungalows on large plots",
+      "Favored by defense officers and senior corporate professionals",
+      "Rocky terrain limits densification  -  natural supply constraint preserves value"
+    ],
+    "priceRange": "Rs5,500-9,000/sqft",
+    "yoy": 12,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("shamirpet"),
+    "score": 58,
+    "category": "Emerging",
+    "signals": { "infrastructure": 62, "population": 45, "satellite": 68, "rera": 55, "employment": 42, "priceVelocity": 65, "govtScheme": 72 },
+    "livability": { "connectivity": 48, "amenities": 42, "ecommerce": 52, "entertainment": 38, "greenSpaces": 75 },
+    "highlights": [
+      "Eco resort and film studio belt  -  Ramoji Film City adjacent drives tourism economy",
+      "HMDA approved layouts gaining traction as north Hyderabad expands",
+      "Hyderabad Deer Park and Lake create strong weekend tourism footfall",
+      "Fastest appreciating micro-zone in north Hyderabad outer ring at 18% YoY"
+    ],
+    "priceRange": "Rs1,800-3,500/sqft",
+    "yoy": 18,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("gundlapochampally"),
+    "score": 74,
+    "category": "High Growth",
+    "signals": { "infrastructure": 78, "population": 55, "satellite": 80, "rera": 70, "employment": 82, "priceVelocity": 75, "govtScheme": 78 },
+    "livability": { "connectivity": 65, "amenities": 55, "ecommerce": 65, "entertainment": 48, "greenSpaces": 55 },
+    "highlights": [
+      "Amazon, Capgemini, TCS offices within 3km  -  strong IT employment anchor",
+      "Outer Ring Road access at Medchal junction, 18 minutes to RGIA",
+      "HMDA master plan designates zone for IT and knowledge sector expansion",
+      "Fastest growing north corridor: 20% YoY driven by tech park absorption"
+    ],
+    "priceRange": "Rs3,500-6,500/sqft",
+    "yoy": 20,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("bonthapally"),
+    "score": 56,
+    "category": "Emerging",
+    "signals": { "infrastructure": 62, "population": 48, "satellite": 65, "rera": 58, "employment": 45, "priceVelocity": 62, "govtScheme": 68 },
+    "livability": { "connectivity": 45, "amenities": 40, "ecommerce": 50, "entertainment": 30, "greenSpaces": 65 },
+    "highlights": [
+      "HMDA satellite township  -  1,200-acre integrated development under construction",
+      "ORR access and proposed MMTS extension make this a long-horizon land play",
+      "Educational institutions and pharma SEZ land use notified in master plan",
+      "Lowest price point in north Hyderabad with HMDA-backed infrastructure"
+    ],
+    "priceRange": "Rs1,500-3,200/sqft",
+    "yoy": 16,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("turkapally"),
+    "score": 48,
+    "category": "Emerging",
+    "signals": { "infrastructure": 50, "population": 40, "satellite": 55, "rera": 42, "employment": 38, "priceVelocity": 55, "govtScheme": 60 },
+    "livability": { "connectivity": 42, "amenities": 35, "ecommerce": 45, "entertainment": 25, "greenSpaces": 68 },
+    "highlights": [
+      "Rural north  -  transitioning to peri-urban as Medchal spreads outward",
+      "ORR Patancheru-Kompally corridor development drives land speculation",
+      "Proposed pharma cluster expansion from nearby Turkapally IDA zone",
+      "High risk-return ratio for long-horizon (5+ year) land banking"
+    ],
+    "priceRange": "Rs1,200-2,500/sqft",
+    "yoy": 15,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("keesaragutta"),
+    "score": 52,
+    "category": "Emerging",
+    "signals": { "infrastructure": 55, "population": 42, "satellite": 58, "rera": 45, "employment": 40, "priceVelocity": 58, "govtScheme": 62 },
+    "livability": { "connectivity": 45, "amenities": 38, "ecommerce": 50, "entertainment": 35, "greenSpaces": 65 },
+    "highlights": [
+      "Keesaragutta Shiva temple drives 1M+ pilgrims annually  -  religious tourism base",
+      "Medchal-Malkajgiri district HQ nearby  -  government employment anchor",
+      "Connectivity improving via NH 44 and proposed ORR spur road",
+      "Tourism economy limits heavy industrial pressure  -  livable outer periphery"
+    ],
+    "priceRange": "Rs1,500-3,000/sqft",
+    "yoy": 14,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("pashamylaram"),
+    "score": 62,
+    "category": "High Growth",
+    "signals": { "infrastructure": 65, "population": 50, "satellite": 68, "rera": 58, "employment": 72, "priceVelocity": 62, "govtScheme": 68 },
+    "livability": { "connectivity": 55, "amenities": 45, "ecommerce": 58, "entertainment": 35, "greenSpaces": 50 },
+    "highlights": [
+      "IDA Pashamylaram industrial cluster  -  pharma, chemicals, auto-ancillary hub",
+      "ORR junction at Patancheru ensures logistics connectivity to all city zones",
+      "HMDA approved residential layouts absorbing pharma workforce housing demand",
+      "Industrial zone boundary creates clear commercial anchor  -  17% appreciation YoY"
+    ],
+    "priceRange": "Rs2,200-4,500/sqft",
+    "yoy": 17,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("nagole"),
+    "score": 71,
+    "category": "Established",
+    "signals": { "infrastructure": 72, "population": 68, "satellite": 68, "rera": 65, "employment": 65, "priceVelocity": 68, "govtScheme": 68 },
+    "livability": { "connectivity": 80, "amenities": 68, "ecommerce": 75, "entertainment": 65, "greenSpaces": 38 },
+    "highlights": [
+      "Metro Line 1 terminal  -  direct connectivity to Miyapur in 45 minutes",
+      "Nagole depot and IT corridor junction drive mid-segment residential demand",
+      "Multiple office parks within 5km absorb software professional housing",
+      "Transit-oriented appreciation: 12% YoY anchored by Metro end-station premium"
+    ],
+    "priceRange": "Rs4,500-7,500/sqft",
+    "yoy": 12,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("jawaharnagar"),
+    "score": 52,
+    "category": "Emerging",
+    "signals": { "infrastructure": 55, "population": 48, "satellite": 58, "rera": 45, "employment": 48, "priceVelocity": 55, "govtScheme": 60 },
+    "livability": { "connectivity": 48, "amenities": 42, "ecommerce": 52, "entertainment": 35, "greenSpaces": 55 },
+    "highlights": [
+      "TSPCB garbage dumping zone transition to eco-park under Telangana green mandate",
+      "ORR access and Outer East corridor industrial demand driving land value recovery",
+      "Budget residential demand from LB Nagar IT workers seeking affordable options",
+      "Long-term land banking play: environmental remediation adds 4-5 year horizon"
+    ],
+    "priceRange": "Rs1,800-3,500/sqft",
+    "yoy": 13,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("rampally"),
+    "score": 55,
+    "category": "Emerging",
+    "signals": { "infrastructure": 58, "population": 52, "satellite": 62, "rera": 48, "employment": 50, "priceVelocity": 58, "govtScheme": 62 },
+    "livability": { "connectivity": 50, "amenities": 45, "ecommerce": 55, "entertainment": 38, "greenSpaces": 60 },
+    "highlights": [
+      "Emerging east satellite  -  Keesara municipality growth front absorbing Medchal overflow",
+      "Close to proposed Rampally industrial park in Telangana industrial policy",
+      "Affordable plotted development attracting end-users from Kapra and Ghatkesar",
+      "15% YoY makes this one of fastest-growing east peripheral corridors"
+    ],
+    "priceRange": "Rs1,800-3,800/sqft",
+    "yoy": 15,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("safilguda"),
+    "score": 65,
+    "category": "Established",
+    "signals": { "infrastructure": 67, "population": 68, "satellite": 62, "rera": 58, "employment": 62, "priceVelocity": 62, "govtScheme": 62 },
+    "livability": { "connectivity": 70, "amenities": 68, "ecommerce": 72, "entertainment": 60, "greenSpaces": 38 },
+    "highlights": [
+      "Mid-segment residential between Malkajgiri and Secunderabad  -  consistent demand",
+      "Good TSRTC connectivity to ECIL and IT clusters at Uppal",
+      "New apartment supply absorbed within 6 months  -  low vacancy market",
+      "Mature colony with schools, hospitals within 2km ensures family retention"
+    ],
+    "priceRange": "Rs4,000-6,500/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("pochampally"),
+    "score": 59,
+    "category": "Established",
+    "signals": { "infrastructure": 60, "population": 55, "satellite": 62, "rera": 48, "employment": 62, "priceVelocity": 58, "govtScheme": 65 },
+    "livability": { "connectivity": 52, "amenities": 48, "ecommerce": 55, "entertainment": 42, "greenSpaces": 55 },
+    "highlights": [
+      "Pochampally Ikat  -  GI-tagged handloom heritage, UNESCO Intangible Cultural Heritage",
+      "Telangana Handloom Village tourism project driving homestay and retail economy",
+      "Pharma corridor proximity along Hyderabad-Warangal highway creating employment",
+      "Heritage brand premium supports sustainable commercial value independent of IT cycle"
+    ],
+    "priceRange": "Rs1,800-3,500/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("medipally"),
+    "score": 68,
+    "category": "High Growth",
+    "signals": { "infrastructure": 70, "population": 60, "satellite": 72, "rera": 65, "employment": 75, "priceVelocity": 68, "govtScheme": 70 },
+    "livability": { "connectivity": 62, "amenities": 55, "ecommerce": 65, "entertainment": 48, "greenSpaces": 50 },
+    "highlights": [
+      "Pharma City anchor: Aurobindo, Dr Reddy adjacent Medipally industrial cluster",
+      "TS Pharma City project (19,000 acres) within 8km  -  largest pharma cluster in India",
+      "HMDA residential layouts fast-tracking to house 40,000+ pharma workers",
+      "16% YoY driven by Pharma City construction phase absorbing all supply"
+    ],
+    "priceRange": "Rs3,000-5,500/sqft",
+    "yoy": 16,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("raviryala"),
+    "score": 54,
+    "category": "Emerging",
+    "signals": { "infrastructure": 58, "population": 48, "satellite": 62, "rera": 48, "employment": 58, "priceVelocity": 52, "govtScheme": 60 },
+    "livability": { "connectivity": 50, "amenities": 42, "ecommerce": 52, "entertainment": 35, "greenSpaces": 55 },
+    "highlights": [
+      "South-east industrial: warehousing and FMCG distribution facilities cluster here",
+      "TSSIDC special economic zone land acquisition complete for food processing",
+      "ORR proximity at Hayathnagar interchange enables logistics tenant demand",
+      "Affordable south-east option attracting plotted development from Hayathnagar buyers"
+    ],
+    "priceRange": "Rs1,500-3,200/sqft",
+    "yoy": 12,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("annojiguda"),
+    "score": 63,
+    "category": "Established",
+    "signals": { "infrastructure": 65, "population": 62, "satellite": 60, "rera": 55, "employment": 60, "priceVelocity": 60, "govtScheme": 62 },
+    "livability": { "connectivity": 68, "amenities": 65, "ecommerce": 70, "entertainment": 58, "greenSpaces": 38 },
+    "highlights": [
+      "ECIL and Secunderabad tech belt residential  -  stable government-private mix demand",
+      "Close to DRDO and DRDL establishments  -  defense research community housing",
+      "Well-established colony with complete civic infrastructure and amenities",
+      "Steady 10% appreciation driven by proximity to Secunderabad and ECIL corridors"
+    ],
+    "priceRange": "Rs3,800-6,500/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("thumkunta"),
+    "score": 62,
+    "category": "High Growth",
+    "signals": { "infrastructure": 65, "population": 52, "satellite": 68, "rera": 60, "employment": 65, "priceVelocity": 65, "govtScheme": 68 },
+    "livability": { "connectivity": 55, "amenities": 48, "ecommerce": 60, "entertainment": 38, "greenSpaces": 55 },
+    "highlights": [
+      "North-east logistics hub: cold chain, pharma distribution, FMCG warehousing",
+      "ORR junction at Kompally and Medchal access within 12 minutes",
+      "HMDA master plan notified industrial and residential zones both active",
+      "Dual demand: industrial land and workforce housing  -  16% YoY appreciation"
+    ],
+    "priceRange": "Rs2,200-4,200/sqft",
+    "yoy": 16,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("mailardevpally"),
+    "score": 49,
+    "category": "Emerging",
+    "signals": { "infrastructure": 52, "population": 45, "satellite": 55, "rera": 40, "employment": 48, "priceVelocity": 50, "govtScheme": 55 },
+    "livability": { "connectivity": 48, "amenities": 40, "ecommerce": 52, "entertainment": 35, "greenSpaces": 48 },
+    "highlights": [
+      "South-east emerging zone: plotted development absorbing LB Nagar overflow",
+      "Close to Rajiv Gandhi International Airport via Hayathnagar-Shamshabad link",
+      "Budget segment demand consistent  -  first home buyers from IT outer ring",
+      "Infrastructure lag versus Hayathnagar keeps prices at 40% discount  -  catch-up play"
+    ],
+    "priceRange": "Rs1,600-3,200/sqft",
+    "yoy": 12,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("abdullapurmet"),
+    "score": 51,
+    "category": "Emerging",
+    "signals": { "infrastructure": 55, "population": 46, "satellite": 58, "rera": 42, "employment": 48, "priceVelocity": 52, "govtScheme": 60 },
+    "livability": { "connectivity": 48, "amenities": 40, "ecommerce": 50, "entertainment": 30, "greenSpaces": 60 },
+    "highlights": [
+      "Beyond Uppal  -  emerging east frontier of GHMC limits, plotted layouts active",
+      "Proposed Hyderabad Metro Phase 3 east extension through Abdullapurmet corridor",
+      "Telangana industrial policy notified 200-acre MSME cluster for this zone",
+      "Early-mover advantage: 13% YoY with full infrastructure still 3-4 years out"
+    ],
+    "priceRange": "Rs1,500-3,000/sqft",
+    "yoy": 13,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("chevella"),
+    "score": 44,
+    "category": "Emerging",
+    "signals": { "infrastructure": 48, "population": 40, "satellite": 50, "rera": 35, "employment": 38, "priceVelocity": 45, "govtScheme": 52 },
+    "livability": { "connectivity": 40, "amenities": 35, "ecommerce": 42, "entertainment": 25, "greenSpaces": 70 },
+    "highlights": [
+      "Ranga Reddy district taluk center  -  administrative services hub for SW region",
+      "Ananthagiri Hills eco-zone creates tourism and weekend home demand",
+      "Very low base price: affordable agricultural-to-residential conversion plays active",
+      "45km from Hyderabad center  -  strictly long-horizon land banking, not end-use"
+    ],
+    "priceRange": "Rs800-1,800/sqft",
+    "yoy": 12,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("moinabad"),
+    "score": 55,
+    "category": "Emerging",
+    "signals": { "infrastructure": 58, "population": 42, "satellite": 62, "rera": 50, "employment": 42, "priceVelocity": 62, "govtScheme": 65 },
+    "livability": { "connectivity": 45, "amenities": 40, "ecommerce": 48, "entertainment": 42, "greenSpaces": 72 },
+    "highlights": [
+      "Resort and villa corridor 25km SW of Hyderabad  -  weekend home demand high",
+      "Ananthagiri Forest Reserve creates strict eco-zone buffer  -  supply-capped land",
+      "Luxury farmhouse and gated resort development active along NH 65 belt",
+      "15% YoY premium over rural south average driven by HNI weekend retreat demand"
+    ],
+    "priceRange": "Rs1,800-4,500/sqft",
+    "yoy": 15,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("manchirevula"),
+    "score": 61,
+    "category": "High Growth",
+    "signals": { "infrastructure": 65, "population": 50, "satellite": 68, "rera": 58, "employment": 52, "priceVelocity": 68, "govtScheme": 65 },
+    "livability": { "connectivity": 58, "amenities": 48, "ecommerce": 60, "entertainment": 45, "greenSpaces": 58 },
+    "highlights": [
+      "Narsingi adjacent  -  HMDA master plan catchment for Outer Ring Road residential growth",
+      "Major IT parks at Nanakramguda within 5km drive workforce housing demand",
+      "Gated community launches: 4 major projects launched 2024-26 on Manchirevula Road",
+      "18% YoY  -  fastest south corridor outside Financial District and Narsingi"
+    ],
+    "priceRange": "Rs3,200-6,500/sqft",
+    "yoy": 18,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("kismatpur"),
+    "score": 58,
+    "category": "Emerging",
+    "signals": { "infrastructure": 62, "population": 48, "satellite": 65, "rera": 52, "employment": 50, "priceVelocity": 62, "govtScheme": 65 },
+    "livability": { "connectivity": 52, "amenities": 42, "ecommerce": 55, "entertainment": 38, "greenSpaces": 55 },
+    "highlights": [
+      "South corridor near RGIA  -  airport-adjacent real estate benefiting from aviation demand",
+      "Hyderabad Pharma City ring road passes through Kismatpur corridor",
+      "HMDA expansion zone: residential and warehousing layouts being approved",
+      "Strong 15% appreciation momentum as airport proximity premium spreads southward"
+    ],
+    "priceRange": "Rs1,800-4,000/sqft",
+    "yoy": 15,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("peerancheru"),
+    "score": 47,
+    "category": "Emerging",
+    "signals": { "infrastructure": 50, "population": 42, "satellite": 52, "rera": 38, "employment": 42, "priceVelocity": 45, "govtScheme": 55 },
+    "livability": { "connectivity": 48, "amenities": 38, "ecommerce": 50, "entertainment": 32, "greenSpaces": 52 },
+    "highlights": [
+      "South of Falaknuma  -  old city south expansion into peri-urban zone",
+      "Decent road access via Falaknuma-Kishanbagh Road to city center",
+      "Budget plotted development active  -  first-home buyers from Falaknuma area",
+      "Infrastructure investment needed before mass residential absorption"
+    ],
+    "priceRange": "Rs1,500-3,200/sqft",
+    "yoy": 10,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("shabad"),
+    "score": 48,
+    "category": "Emerging",
+    "signals": { "infrastructure": 52, "population": 42, "satellite": 55, "rera": 38, "employment": 42, "priceVelocity": 48, "govtScheme": 55 },
+    "livability": { "connectivity": 42, "amenities": 38, "ecommerce": 48, "entertainment": 28, "greenSpaces": 60 },
+    "highlights": [
+      "South Ranga Reddy satellite town  -  NH 44 (Hyderabad-Bangalore highway) access",
+      "TSSIDC industrial zone land parcels in Shabad Mandal attracting manufacturing",
+      "Budget land banking destination: 40% discount to Shamshabad prices",
+      "Shadnagar growth momentum spreading northward through this corridor"
+    ],
+    "priceRange": "Rs900-2,200/sqft",
+    "yoy": 11,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("farooknagar"),
+    "score": 51,
+    "category": "Emerging",
+    "signals": { "infrastructure": 55, "population": 45, "satellite": 58, "rera": 42, "employment": 55, "priceVelocity": 50, "govtScheme": 60 },
+    "livability": { "connectivity": 45, "amenities": 40, "ecommerce": 50, "entertainment": 32, "greenSpaces": 62 },
+    "highlights": [
+      "Defense Research and Development Organization (DRDO) missile testing range nearby",
+      "NH 65 (Hyderabad-Pune) access supports light industrial and logistics use",
+      "Historical saltpan lakes  -  Farooknagar Lake an ecological tourism asset",
+      "Low prices and strategic NH access attract industrial land buyers over residential"
+    ],
+    "priceRange": "Rs900-2,000/sqft",
+    "yoy": 12,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("sultanpur-jagir"),
+    "score": 42,
+    "category": "Emerging",
+    "signals": { "infrastructure": 45, "population": 38, "satellite": 48, "rera": 32, "employment": 35, "priceVelocity": 40, "govtScheme": 50 },
+    "livability": { "connectivity": 38, "amenities": 32, "ecommerce": 42, "entertainment": 22, "greenSpaces": 65 },
+    "highlights": [
+      "Deep south Ranga Reddy  -  agricultural land transitioning under HMDA expansion",
+      "50km from city center  -  strictly 7-10 year investment horizon",
+      "Proposed TSRTC bus route extension will improve access from Shadnagar",
+      "Lowest price point in Hyderabad metro region  -  pure land speculation play"
+    ],
+    "priceRange": "Rs600-1,500/sqft",
+    "yoy": 10,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("kandukur-rr"),
+    "score": 41,
+    "category": "Emerging",
+    "signals": { "infrastructure": 44, "population": 36, "satellite": 46, "rera": 30, "employment": 34, "priceVelocity": 38, "govtScheme": 48 },
+    "livability": { "connectivity": 35, "amenities": 30, "ecommerce": 40, "entertainment": 20, "greenSpaces": 68 },
+    "highlights": [
+      "Ranga Reddy district boundary  -  very early stage peri-urban land",
+      "Proposed NH expansion through Kandukur Mandal under NHAI Phase 4",
+      "Agricultural land dominant  -  JDA and HMDA layout approvals sparse",
+      "Extreme long-horizon play: 10+ years to meaningful residential absorption"
+    ],
+    "priceRange": "Rs500-1,200/sqft",
+    "yoy": 9,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("rajapally"),
+    "score": 44,
+    "category": "Emerging",
+    "signals": { "infrastructure": 46, "population": 40, "satellite": 50, "rera": 34, "employment": 38, "priceVelocity": 42, "govtScheme": 52 },
+    "livability": { "connectivity": 42, "amenities": 35, "ecommerce": 46, "entertainment": 25, "greenSpaces": 62 },
+    "highlights": [
+      "South of Shamshabad  -  airport corridor halo spreading price inflation southward",
+      "HMDA master plan designates corridor for warehousing and cold chain logistics",
+      "Proposed Hyderabad Metro Airport Express spur feasibility study includes area",
+      "Budget entry into airport-adjacent south corridor with 5-7 year return horizon"
+    ],
+    "priceRange": "Rs800-2,000/sqft",
+    "yoy": 11,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("shivrampally"),
+    "score": 56,
+    "category": "Emerging",
+    "signals": { "infrastructure": 60, "population": 52, "satellite": 62, "rera": 50, "employment": 50, "priceVelocity": 58, "govtScheme": 60 },
+    "livability": { "connectivity": 55, "amenities": 48, "ecommerce": 58, "entertainment": 45, "greenSpaces": 52 },
+    "highlights": [
+      "South of Tolichowki  -  HMDA layout demand from Mehdipatnam IT workers",
+      "Proposed ORR spur connecting Shivrampally to outer ring improving accessibility",
+      "Multiple RERA-registered projects completed 2023-25 absorbing mid-segment demand",
+      "Affordable alternative to Attapur and Manikonda with 13% YoY momentum"
+    ],
+    "priceRange": "Rs2,500-5,000/sqft",
+    "yoy": 13,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("pedda-golconda"),
+    "score": 50,
+    "category": "Emerging",
+    "signals": { "infrastructure": 52, "population": 42, "satellite": 55, "rera": 42, "employment": 45, "priceVelocity": 52, "govtScheme": 58 },
+    "livability": { "connectivity": 48, "amenities": 40, "ecommerce": 52, "entertainment": 35, "greenSpaces": 55 },
+    "highlights": [
+      "SW of Shamshabad near airport  -  early-mover residential layouts active",
+      "Hyderabad Pharma City ring road passes 4km east creating land value uplift",
+      "NH 44 frontage plots attracting commercial and truck logistics operators",
+      "Airport proximity premium expected to increase as RGIA capacity doubles by 2028"
+    ],
+    "priceRange": "Rs1,200-2,800/sqft",
+    "yoy": 12,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("ramachandrapuram"),
+    "score": 60,
+    "category": "Established",
+    "signals": { "infrastructure": 63, "population": 55, "satellite": 65, "rera": 55, "employment": 62, "priceVelocity": 58, "govtScheme": 62 },
+    "livability": { "connectivity": 58, "amenities": 52, "ecommerce": 62, "entertainment": 45, "greenSpaces": 48 },
+    "highlights": [
+      "West industrial township: IDA Patancheru overflow and APIIC industrial estates",
+      "ORR junction at Patancheru provides fast access to Hitech City in 25 minutes",
+      "Working population housing: consistent demand from Patancheru IIE workers",
+      "12% YoY driven by IT west corridor expansion toward Ramachandrapuram"
+    ],
+    "priceRange": "Rs2,500-5,000/sqft",
+    "yoy": 12,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("muthangi"),
+    "score": 58,
+    "category": "Emerging",
+    "signals": { "infrastructure": 60, "population": 50, "satellite": 65, "rera": 52, "employment": 62, "priceVelocity": 58, "govtScheme": 62 },
+    "livability": { "connectivity": 55, "amenities": 45, "ecommerce": 58, "entertainment": 38, "greenSpaces": 52 },
+    "highlights": [
+      "West of Patancheru  -  HMDA township expansion absorbing IIE workforce",
+      "Muthangi Phase 2 HMDA layout approvals issued 2024  -  2,500 plots live",
+      "Close to APIIC Patancheru Industrial Estate and Special Economic Zone",
+      "14% YoY with strong RERA registration activity confirms end-user demand"
+    ],
+    "priceRange": "Rs2,000-4,500/sqft",
+    "yoy": 14,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("narsapur-ts"),
+    "score": 52,
+    "category": "Emerging",
+    "signals": { "infrastructure": 55, "population": 45, "satellite": 58, "rera": 45, "employment": 48, "priceVelocity": 52, "govtScheme": 60 },
+    "livability": { "connectivity": 48, "amenities": 40, "ecommerce": 50, "entertainment": 30, "greenSpaces": 58 },
+    "highlights": [
+      "Western frontier town  -  NH 65 access and Medak district fringe land banking",
+      "Proposed Hyderabad-Pune Expressway alignment passes through Narsapur Mandal",
+      "HMDA master plan recently extended to cover Narsapur jurisdiction",
+      "Agricultural land conversion ongoing  -  3-5 year horizon for residential absorption"
+    ],
+    "priceRange": "Rs1,200-2,800/sqft",
+    "yoy": 13,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("vikarabad"),
+    "score": 45,
+    "category": "Emerging",
+    "signals": { "infrastructure": 48, "population": 42, "satellite": 52, "rera": 38, "employment": 40, "priceVelocity": 45, "govtScheme": 55 },
+    "livability": { "connectivity": 40, "amenities": 38, "ecommerce": 44, "entertainment": 30, "greenSpaces": 72 },
+    "highlights": [
+      "Ranga Reddy district western HQ  -  administrative and judicial center",
+      "Ananthagiri Hills and Vikarabad Deer Park create eco-tourism economy",
+      "55km from Hyderabad via NH 65  -  emerging as weekend home and nature retreat zone",
+      "Extremely low base price: farmhouse and plotted development under Rs1,500/sqft"
+    ],
+    "priceRange": "Rs600-1,500/sqft",
+    "yoy": 10,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("koheda"),
+    "score": 56,
+    "category": "Emerging",
+    "signals": { "infrastructure": 60, "population": 48, "satellite": 62, "rera": 52, "employment": 52, "priceVelocity": 58, "govtScheme": 62 },
+    "livability": { "connectivity": 52, "amenities": 42, "ecommerce": 55, "entertainment": 32, "greenSpaces": 55 },
+    "highlights": [
+      "NW Hyderabad: ORR access and Ameenpur growth front spreading into Koheda",
+      "Close to IDA Pashamylaram industrial cluster  -  workforce housing demand rising",
+      "HMDA layout activity accelerating with 3 registered projects in 2024-25",
+      "14% YoY supported by industrial employment base and improving road access"
+    ],
+    "priceRange": "Rs1,800-3,800/sqft",
+    "yoy": 14,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("sanath-nagar"),
+    "score": 64,
+    "category": "Established",
+    "signals": { "infrastructure": 67, "population": 62, "satellite": 62, "rera": 58, "employment": 70, "priceVelocity": 60, "govtScheme": 62 },
+    "livability": { "connectivity": 70, "amenities": 62, "ecommerce": 72, "entertainment": 58, "greenSpaces": 38 },
+    "highlights": [
+      "West Hyderabad industrial-residential: BHEL, Alstom and Siemens plant workers base",
+      "Good connectivity to Hitech City (12km) and old Hyderabad center (8km)",
+      "Mature colony: hospitals, schools, markets fully developed",
+      "Stable blue-collar and mid-segment demand from manufacturing sector employees"
+    ],
+    "priceRange": "Rs3,500-6,000/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("srinagar-colony"),
+    "score": 68,
+    "category": "Established",
+    "signals": { "infrastructure": 70, "population": 68, "satellite": 65, "rera": 62, "employment": 65, "priceVelocity": 68, "govtScheme": 65 },
+    "livability": { "connectivity": 72, "amenities": 70, "ecommerce": 76, "entertainment": 68, "greenSpaces": 42 },
+    "highlights": [
+      "Central-west premium residential: 500m from Ameerpet Metro, walkability score high",
+      "Dense F&B and retail corridor on Srinagar Colony Main Road  -  lifestyle hub",
+      "Strong NRI and returning diaspora demand for resale apartments",
+      "11% YoY driven by Ameerpet junction central location premium"
+    ],
+    "priceRange": "Rs5,000-8,500/sqft",
+    "yoy": 11,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("pedda-shankarampet"),
+    "score": 54,
+    "category": "Emerging",
+    "signals": { "infrastructure": 55, "population": 42, "satellite": 60, "rera": 45, "employment": 45, "priceVelocity": 55, "govtScheme": 62 },
+    "livability": { "connectivity": 48, "amenities": 38, "ecommerce": 50, "entertainment": 28, "greenSpaces": 60 },
+    "highlights": [
+      "Far west residential township fringe: HMDA expansion plots under Rs3,000/sqft",
+      "Drinking water supply pipeline from Manjira extended to this mandal in 2024",
+      "Agricultural land conversion underway  -  layout approvals increasing year on year",
+      "Long-horizon play adjacent to Patancheru industrial corridor growth vector"
+    ],
+    "priceRange": "Rs1,200-2,800/sqft",
+    "yoy": 13,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  }
 ]
 
 export const cityMeta = {
@@ -3947,3 +4920,4 @@ export const cityMeta = {
   state: hydCity.state,
   totalAreas: hyderabadAreas.length,
 }
+
