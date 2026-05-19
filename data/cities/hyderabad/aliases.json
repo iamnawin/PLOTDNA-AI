@@ -57,6 +57,9 @@
                        "rajiv gandhi airport area",
                        "rgia"
                    ],
+    "rajapally":  [
+                      "rajapally"
+                  ],
     "narsingi":  [
                      "narsingi"
                  ],
@@ -76,6 +79,9 @@
     "khajaguda":  [
                       "khajaguda"
                   ],
+    "raviryala":  [
+                      "raviryala"
+                  ],
     "isnapur":  [
                     "isnapur"
                 ],
@@ -85,9 +91,9 @@
     "ramachandrapuram":  [
                              "ramachandrapuram"
                          ],
-    "ramanthapur":  [
-                        "ramanthapur"
-                    ],
+    "medipally":  [
+                      "medipally"
+                  ],
     "moula-ali":  [
                       "moula ali"
                   ],
@@ -100,9 +106,6 @@
     "pedda-shankarampet":  [
                                "pedda shankarampet"
                            ],
-    "azamabad":  [
-                     "azamabad"
-                 ],
     "chilukur":  [
                      "chilukur"
                  ],
@@ -135,9 +138,6 @@
                        "kukatpally",
                        "kphb colony"
                    ],
-    "bandlaguda":  [
-                       "bandlaguda"
-                   ],
     "yousufguda":  [
                        "yousufguda"
                    ],
@@ -147,9 +147,9 @@
     "bahadurpally":  [
                          "bahadurpally"
                      ],
-    "secunderabad":  [
-                         "secunderabad"
-                     ],
+    "tarnaka":  [
+                    "tarnaka"
+                ],
     "nallagandla":  [
                         "nallagandla"
                     ],
@@ -161,6 +161,9 @@
                   ],
     "puppalaguda":  [
                         "puppalaguda"
+                    ],
+    "tilak-nagar":  [
+                        "tilak nagar"
                     ],
     "yacharam":  [
                      "yacharam"
@@ -207,10 +210,9 @@
     "yakutpura":  [
                       "yakutpura"
                   ],
-    "mehdipatnam":  [
-                        "mehdipatnam",
-                        "mehdi patnam"
-                    ],
+    "secunderabad":  [
+                         "secunderabad"
+                     ],
     "nagaram":  [
                     "nagaram"
                 ],
@@ -251,9 +253,6 @@
     "upparpally":  [
                        "upparpally"
                    ],
-    "trimulgherry":  [
-                         "trimulgherry"
-                     ],
     "mettuguda":  [
                       "mettuguda"
                   ],
@@ -279,6 +278,9 @@
                       "balanagar",
                       "bal anagar industrial area"
                   ],
+    "parsigutta":  [
+                       "parsigutta"
+                   ],
     "hafeezpet":  [
                       "hafeezpet",
                       "hafeez pet"
@@ -289,6 +291,9 @@
     "golconda":  [
                      "golconda"
                  ],
+    "film-nagar":  [
+                       "film nagar"
+                   ],
     "turkapally":  [
                        "turkapally"
                    ],
@@ -307,9 +312,9 @@
     "dullapally":  [
                        "dullapally"
                    ],
-    "chaderghat":  [
-                       "chaderghat"
-                   ],
+    "muthangi":  [
+                     "muthangi"
+                 ],
     "dammaiguda":  [
                        "dammaiguda"
                    ],
@@ -334,9 +339,6 @@
     "peerancheru":  [
                         "peerancheru"
                     ],
-    "tarnaka":  [
-                    "tarnaka"
-                ],
     "manikonda":  [
                       "manikonda"
                   ],
@@ -356,13 +358,6 @@
     "sainikpuri":  [
                        "sainikpuri"
                    ],
-    "hitec-city":  [
-                       "hitec city",
-                       "hitech city",
-                       "cyberabad",
-                       "cyber towers",
-                       "nasscom"
-                   ],
     "kismatpur":  [
                       "kismatpur"
                   ],
@@ -381,16 +376,20 @@
     "mailardevpally":  [
                            "mailardevpally"
                        ],
-    "jubilee-hills":  [
-                          "jubilee hills",
-                          "jubilee"
-                      ],
+    "nanakramguda":  [
+                         "nanakramguda",
+                         "nanakaramguda",
+                         "nanakram guda"
+                     ],
     "mokila":  [
                    "mokila"
                ],
     "pochampally":  [
                         "pochampally"
                     ],
+    "medchal":  [
+                    "medchal"
+                ],
     "ameenpur":  [
                      "ameenpur"
                  ],
@@ -400,6 +399,9 @@
     "bollaram":  [
                      "bollaram"
                  ],
+    "farooknagar":  [
+                        "farooknagar"
+                    ],
     "gandipet":  [
                      "gandipet"
                  ],
@@ -415,15 +417,12 @@
     "ameerpet":  [
                      "ameerpet"
                  ],
-    "muthangi":  [
-                     "muthangi"
-                 ],
+    "lal-darwaza":  [
+                        "lal darwaza"
+                    ],
     "amberpet":  [
                      "amberpet"
                  ],
-    "kavadiguda":  [
-                       "kavadiguda"
-                   ],
     "somajiguda":  [
                        "somajiguda"
                    ],
@@ -436,6 +435,9 @@
     "humayun-nagar":  [
                           "humayun nagar"
                       ],
+    "peerzadiguda":  [
+                         "peerzadiguda"
+                     ],
     "begumpet":  [
                      "begumpet"
                  ],
@@ -460,15 +462,13 @@
     "kompally":  [
                      "kompally"
                  ],
-    "khairatabad":  [
-                        "khairatabad"
-                    ],
     "barkatpura":  [
                        "barkatpura"
                    ],
-    "medipally":  [
-                      "medipally"
-                  ],
+    "mehdipatnam":  [
+                        "mehdipatnam",
+                        "mehdi patnam"
+                    ],
     "madinaguda":  [
                        "madinaguda"
                    ],
@@ -494,12 +494,12 @@
                         "chandanagar",
                         "chanda nagar"
                     ],
-    "farooknagar":  [
-                        "farooknagar"
+    "khairatabad":  [
+                        "khairatabad"
                     ],
-    "keesara":  [
-                    "keesara"
-                ],
+    "trimulgherry":  [
+                         "trimulgherry"
+                     ],
     "musheerabad":  [
                         "musheerabad"
                     ],
@@ -566,9 +566,9 @@
                        "malka jgiri",
                        "malkajiri"
                    ],
-    "medchal":  [
-                    "medchal"
-                ],
+    "kavadiguda":  [
+                       "kavadiguda"
+                   ],
     "saidabad":  [
                      "saidabad"
                  ],
@@ -592,41 +592,47 @@
     "moosapet":  [
                      "moosapet"
                  ],
-    "film-nagar":  [
-                       "film nagar"
+    "bandlaguda":  [
+                       "bandlaguda"
                    ],
-    "raviryala":  [
-                      "raviryala"
-                  ],
+    "hitec-city":  [
+                       "hitec city",
+                       "hitech city",
+                       "cyberabad",
+                       "cyber towers",
+                       "nasscom"
+                   ],
     "gundlapochampally":  [
                               "gundlapochampally"
                           ],
-    "peerzadiguda":  [
-                         "peerzadiguda"
-                     ],
+    "ramanthapur":  [
+                        "ramanthapur"
+                    ],
     "vikarabad":  [
                       "vikarabad"
                   ],
-    "rajapally":  [
-                      "rajapally"
-                  ],
-    "parsigutta":  [
-                       "parsigutta"
-                   ],
+    "azamabad":  [
+                     "azamabad"
+                 ],
+    "jubilee-hills":  [
+                          "jubilee hills",
+                          "jubilee"
+                      ],
     "vanasthalipuram":  [
                             "vanasthalipuram",
                             "vanasthali puram",
                             "vanastahlipuram"
                         ],
+    "chaderghat":  [
+                       "chaderghat"
+                   ],
     "santosh-nagar":  [
                           "santosh nagar"
                       ],
     "rethibowli":  [
                        "rethibowli"
                    ],
-    "nanakramguda":  [
-                         "nanakramguda",
-                         "nanakaramguda",
-                         "nanakram guda"
-                     ]
+    "keesara":  [
+                    "keesara"
+                ]
 }

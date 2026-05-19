@@ -4910,6 +4910,43 @@ export const hyderabadAreas: MicroMarket[] = [
     "dataAsOf": "2026-05-01",
     "signalsAvailable": 5
   }
+,
+  {
+    ...locality("tilak-nagar"),
+    "score": 65,
+    "category": "Established",
+    "signals": { "infrastructure": 67, "population": 65, "satellite": 63, "rera": 58, "employment": 68, "priceVelocity": 62, "govtScheme": 63 },
+    "livability": { "connectivity": 70, "amenities": 65, "ecommerce": 72, "entertainment": 60, "greenSpaces": 40 },
+    "highlights": [
+      "Mid-west established colony bordering Sanath Nagar and Ameerpet - strong mid-segment demand",
+      "Close to BHEL township - stable blue-collar and government employee resident base",
+      "Well-developed local market, hospitals and schools within 2km",
+      "Proximity to Ameerpet Metro keeps rental demand consistently above city average"
+    ],
+    "priceRange": "Rs3,800-6,500/sqft",
+    "yoy": 10,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 7
+  },
+  {
+    ...locality("lal-darwaza"),
+    "score": 51,
+    "category": "Established",
+    "signals": { "infrastructure": 55, "population": 68, "satellite": 35, "rera": 28, "employment": 58, "priceVelocity": 44, "govtScheme": 54 },
+    "livability": { "connectivity": 62, "amenities": 65, "ecommerce": 68, "entertainment": 60, "greenSpaces": 22 },
+    "highlights": [
+      "Historic old city gateway - commercial spine connecting Nampally to Charminar",
+      "High footfall retail: garments, hardware, electronics on the main bazaar corridor",
+      "TSRTC bus terminus proximity ensures strong daily transit-dependent retail economy",
+      "Musi Riverfront Development Plan will directly improve streetscape and access"
+    ],
+    "priceRange": "Rs3,000-5,500/sqft",
+    "yoy": 8,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 6
+  }
 ]
 
 export const cityMeta = {
@@ -4920,4 +4957,5 @@ export const cityMeta = {
   state: hydCity.state,
   totalAreas: hyderabadAreas.length,
 }
+
 
