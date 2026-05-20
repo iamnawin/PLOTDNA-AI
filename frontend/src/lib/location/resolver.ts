@@ -2,6 +2,7 @@ import type { CityMeta, MicroMarket } from '@/types'
 import { CITIES, CITY_LIST } from '@/data/cities'
 import regionalMarketsJson from '../../../../data/india/regional-markets.json'
 import telanganaDistrictsJson from '../../../../data/telangana/districts.json'
+import apDistrictsJson from '../../../../data/ap/districts.json'
 import bangAliasesJson from '../../../../data/cities/bangalore/aliases.json'
 import bangCityJson from '../../../../data/cities/bangalore/city.json'
 import bangClustersJson from '../../../../data/cities/bangalore/clusters.json'
@@ -112,6 +113,8 @@ interface ResolverRegionalData {
 
 const TELANGANA_BOUNDS = { latMin: 15.8, latMax: 19.95, lngMin: 77.0, lngMax: 81.4 }
 const TELANGANA_DISTRICTS = telanganaDistrictsJson as ResolverDistrictData[]
+const AP_BOUNDS = { latMin: 12.0, latMax: 19.5, lngMin: 76.5, lngMax: 84.5 }
+const AP_DISTRICTS = apDistrictsJson as ResolverDistrictData[]
 const REGIONAL_MARKETS = regionalMarketsJson as ResolverRegionalData[]
 
 interface CityCandidate {
@@ -643,6 +646,38 @@ export function resolveLocalityCandidates(
     let bestDistrictDist = Infinity
 
     for (const d of TELANGANA_DISTRICTS) {
+      if (pointInPolygon(lat, lng, d.polygon)) {
+        bestDistrict = d
+        bestDistrictDist = distKm(lat, lng, d.center[0], d.center[1])
+        break
+      }
+      const d2 = distKm(lat, lng, d.center[0], d.center[1])
+      if (d2 < bestDistrictDist) {
+        bestDistrictDist = d2
+        bestDistrict = d
+      }
+    }
+
+    if (bestDistrict) {
+      district = {
+        districtSlug: bestDistrict.slug,
+        districtName: bestDistrict.name,
+        stateSlug: bestDistrict.state,
+        distanceKm: roundKm(bestDistrictDist),
+      }
+    }
+  }
+
+  const inAP =
+    !inTelangana &&
+    lat >= AP_BOUNDS.latMin && lat <= AP_BOUNDS.latMax &&
+    lng >= AP_BOUNDS.lngMin && lng <= AP_BOUNDS.lngMax
+
+  if (inAP && !district) {
+    let bestDistrict: ResolverDistrictData | null = null
+    let bestDistrictDist = Infinity
+
+    for (const d of AP_DISTRICTS) {
       if (pointInPolygon(lat, lng, d.polygon)) {
         bestDistrict = d
         bestDistrictDist = distKm(lat, lng, d.center[0], d.center[1])

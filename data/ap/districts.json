@@ -1,0 +1,184 @@
+[
+  {
+    "slug": "srikakulam",
+    "name": "Srikakulam",
+    "state": "andhra-pradesh",
+    "center": [18.30, 83.90],
+    "polygon": [[18.65, 83.60], [18.65, 84.20], [17.95, 84.20], [17.95, 83.60]]
+  },
+  {
+    "slug": "vizianagaram",
+    "name": "Vizianagaram",
+    "state": "andhra-pradesh",
+    "center": [18.12, 83.40],
+    "polygon": [[18.40, 83.10], [18.40, 83.70], [17.85, 83.70], [17.85, 83.10]]
+  },
+  {
+    "slug": "parvathipuram-manyam",
+    "name": "Parvathipuram Manyam",
+    "state": "andhra-pradesh",
+    "center": [18.78, 83.42],
+    "polygon": [[19.10, 83.10], [19.10, 83.75], [18.45, 83.75], [18.45, 83.10]]
+  },
+  {
+    "slug": "visakhapatnam",
+    "name": "Visakhapatnam",
+    "state": "andhra-pradesh",
+    "center": [17.69, 83.22],
+    "polygon": [[17.95, 82.95], [17.95, 83.55], [17.40, 83.55], [17.40, 82.95]]
+  },
+  {
+    "slug": "anakapalli",
+    "name": "Anakapalli",
+    "state": "andhra-pradesh",
+    "center": [17.69, 82.99],
+    "polygon": [[17.95, 82.70], [17.95, 83.25], [17.40, 83.25], [17.40, 82.70]]
+  },
+  {
+    "slug": "alluri-sitharama-raju",
+    "name": "Alluri Sitharama Raju",
+    "state": "andhra-pradesh",
+    "center": [18.00, 82.60],
+    "polygon": [[18.50, 82.15], [18.50, 83.10], [17.45, 83.10], [17.45, 82.15]]
+  },
+  {
+    "slug": "kakinada",
+    "name": "Kakinada",
+    "state": "andhra-pradesh",
+    "center": [16.98, 82.24],
+    "polygon": [[17.30, 81.95], [17.30, 82.55], [16.65, 82.55], [16.65, 81.95]]
+  },
+  {
+    "slug": "east-godavari",
+    "name": "East Godavari",
+    "state": "andhra-pradesh",
+    "center": [17.00, 81.78],
+    "polygon": [[17.40, 81.40], [17.40, 82.15], [16.55, 82.15], [16.55, 81.40]]
+  },
+  {
+    "slug": "dr-br-ambedkar-konaseema",
+    "name": "Dr. B.R. Ambedkar Konaseema",
+    "state": "andhra-pradesh",
+    "center": [16.55, 82.00],
+    "polygon": [[16.85, 81.70], [16.85, 82.35], [16.22, 82.35], [16.22, 81.70]]
+  },
+  {
+    "slug": "eluru",
+    "name": "Eluru",
+    "state": "andhra-pradesh",
+    "center": [16.71, 81.10],
+    "polygon": [[17.05, 80.75], [17.05, 81.45], [16.35, 81.45], [16.35, 80.75]]
+  },
+  {
+    "slug": "west-godavari",
+    "name": "West Godavari",
+    "state": "andhra-pradesh",
+    "center": [16.54, 81.52],
+    "polygon": [[16.85, 81.20], [16.85, 81.85], [16.20, 81.85], [16.20, 81.20]]
+  },
+  {
+    "slug": "ntr",
+    "name": "NTR",
+    "state": "andhra-pradesh",
+    "center": [16.51, 80.62],
+    "polygon": [[16.75, 80.35], [16.75, 80.90], [16.25, 80.90], [16.25, 80.35]]
+  },
+  {
+    "slug": "krishna",
+    "name": "Krishna",
+    "state": "andhra-pradesh",
+    "center": [16.17, 81.13],
+    "polygon": [[16.50, 80.75], [16.50, 81.50], [15.85, 81.50], [15.85, 80.75]]
+  },
+  {
+    "slug": "guntur",
+    "name": "Guntur",
+    "state": "andhra-pradesh",
+    "center": [16.30, 80.44],
+    "polygon": [[16.60, 80.10], [16.60, 80.80], [15.95, 80.80], [15.95, 80.10]]
+  },
+  {
+    "slug": "bapatla",
+    "name": "Bapatla",
+    "state": "andhra-pradesh",
+    "center": [15.90, 80.47],
+    "polygon": [[16.20, 80.15], [16.20, 80.80], [15.55, 80.80], [15.55, 80.15]]
+  },
+  {
+    "slug": "palnadu",
+    "name": "Palnadu",
+    "state": "andhra-pradesh",
+    "center": [16.24, 80.05],
+    "polygon": [[16.65, 79.60], [16.65, 80.50], [15.80, 80.50], [15.80, 79.60]]
+  },
+  {
+    "slug": "prakasam",
+    "name": "Prakasam",
+    "state": "andhra-pradesh",
+    "center": [15.50, 80.04],
+    "polygon": [[16.00, 79.50], [16.00, 80.55], [14.95, 80.55], [14.95, 79.50]]
+  },
+  {
+    "slug": "spsr-nellore",
+    "name": "SPSR Nellore",
+    "state": "andhra-pradesh",
+    "center": [14.44, 79.99],
+    "polygon": [[15.00, 79.55], [15.00, 80.40], [13.85, 80.40], [13.85, 79.55]]
+  },
+  {
+    "slug": "ysr-kadapa",
+    "name": "YSR Kadapa",
+    "state": "andhra-pradesh",
+    "center": [14.47, 78.82],
+    "polygon": [[15.05, 78.30], [15.05, 79.40], [13.85, 79.40], [13.85, 78.30]]
+  },
+  {
+    "slug": "kurnool",
+    "name": "Kurnool",
+    "state": "andhra-pradesh",
+    "center": [15.83, 78.04],
+    "polygon": [[16.35, 77.55], [16.35, 78.60], [15.25, 78.60], [15.25, 77.55]]
+  },
+  {
+    "slug": "nandyal",
+    "name": "Nandyal",
+    "state": "andhra-pradesh",
+    "center": [15.48, 78.48],
+    "polygon": [[15.90, 78.00], [15.90, 78.95], [15.05, 78.95], [15.05, 78.00]]
+  },
+  {
+    "slug": "sri-sathya-sai",
+    "name": "Sri Sathya Sai",
+    "state": "andhra-pradesh",
+    "center": [14.17, 77.80],
+    "polygon": [[14.65, 77.35], [14.65, 78.25], [13.65, 78.25], [13.65, 77.35]]
+  },
+  {
+    "slug": "anantapuramu",
+    "name": "Anantapuramu",
+    "state": "andhra-pradesh",
+    "center": [14.68, 77.60],
+    "polygon": [[15.20, 77.10], [15.20, 78.10], [14.10, 78.10], [14.10, 77.10]]
+  },
+  {
+    "slug": "chittoor",
+    "name": "Chittoor",
+    "state": "andhra-pradesh",
+    "center": [13.22, 79.10],
+    "polygon": [[13.70, 78.65], [13.70, 79.60], [12.70, 79.60], [12.70, 78.65]]
+  },
+  {
+    "slug": "tirupati",
+    "name": "Tirupati",
+    "state": "andhra-pradesh",
+    "center": [13.65, 79.42],
+    "polygon": [[14.00, 79.10], [14.00, 79.80], [13.25, 79.80], [13.25, 79.10]]
+  },
+  {
+    "slug": "sri-balaji",
+    "name": "Sri Balaji",
+    "state": "andhra-pradesh",
+    "center": [13.40, 79.65],
+    "polygon": [[13.75, 79.35], [13.75, 79.95], [13.05, 79.95], [13.05, 79.35]]
+  }
+]
