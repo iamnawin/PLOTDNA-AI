@@ -2,7 +2,7 @@
  * BrochureUploadCard — AI brochure analyzer (Phase 2).
  * Drag & drop a PDF or image brochure → Gemini 2.0 Flash extracts
  * plot area, RERA number, lat/lng, hidden clauses, loading %, and pricing.
- * POST /api/v1/analyze-brochure
+ * POST /api/utils/analyze-brochure
  */
 import { useRef, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -80,9 +80,10 @@ export default function BrochureUploadCard() {
     form.append('file', f)
 
     try {
-      const res = await fetch(`${API_BASE}/api/v1/analyze-brochure`, {
+      const res = await fetch(`${API_BASE}/api/utils/analyze-brochure`, {
         method: 'POST',
         body: form,
+        signal: AbortSignal.timeout(60_000),
       })
       if (!res.ok) throw new Error(`Server error ${res.status}`)
       const data: BrochureResult = await res.json()

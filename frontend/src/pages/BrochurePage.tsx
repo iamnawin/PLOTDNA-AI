@@ -79,7 +79,11 @@ export default function BrochurePage() {
     const form = new FormData()
     form.append('file', f)
     try {
-      const res = await fetch(`${API_BASE}/api/v1/analyze-brochure`, { method: 'POST', body: form })
+      const res = await fetch(`${API_BASE}/api/utils/analyze-brochure`, {
+        method: 'POST',
+        body: form,
+        signal: AbortSignal.timeout(60_000),
+      })
       if (!res.ok) throw new Error(`Server error ${res.status}`)
       setResult(await res.json())
     } catch (err) {

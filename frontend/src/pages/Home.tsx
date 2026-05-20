@@ -88,10 +88,11 @@ export default function Home() {
   const parsedMapUrl   = parseMapUrl(searchQuery)
   const shortMapUrl    = isShortMapUrl(searchQuery)
   const isUrl          = isMapUrl(searchQuery)
+  const backendMapUrl  = isUrl && !parsedMapUrl
   const searchResults: MicroMarket[] = searchQuery.trim() && !parsedCoords && !isUrl
     ? sorted.filter(a => a.name.toLowerCase().includes(searchQuery.toLowerCase()))
     : []
-  const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl)
+  const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
   const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1]) : null
   const isGlobeMode = viewMode === 'globe'
 
@@ -133,7 +134,7 @@ export default function Home() {
     setTimeout(() => {
       setAnalyzingCoords(null)
       setViewMode('globe')
-      setPendingCoords(coords)
+      setSearchCoords(coords)
     }, 2200)
   }
 
@@ -179,7 +180,7 @@ export default function Home() {
       await requireSearchAccess(() => triggerCoordAnalysis(parsedMapUrl))
       return
     }
-    if (shortMapUrl) {
+    if (shortMapUrl || backendMapUrl) {
       setResolvingUrl(true)
       const result = await resolveMapLink(searchQuery.trim())
       setResolvingUrl(false)
@@ -189,10 +190,10 @@ export default function Home() {
       }
       setSearchError(result.detail ?? (
         result.reason === 'backend_unreachable'
-          ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
+          ? 'Map links need backend access to resolve. Raw coordinates still work.'
           : result.reason === 'timeout'
             ? 'Timed out while expanding this short link. Try again in a few seconds or paste the full map URL.'
-            : 'Could not extract coordinates from this map link. Try the full URL or raw coordinates.'
+            : 'Could not extract coordinates from this map link. Try raw coordinates.'
       ))
       return
     }
@@ -244,7 +245,7 @@ export default function Home() {
           className="w-9 h-9 rounded-xl object-cover flex-shrink-0"
           style={{ boxShadow: '0 0 24px #00e67640, 0 2px 8px #00000060' }}
         />
-        <div>
+        <div className="hidden sm:block">
           <p className="font-display font-bold text-[#e8e8f0] text-[15px] leading-tight tracking-tight">PlotDNA</p>
           <div className="flex items-center gap-1.5 mt-0.5">
             <div
@@ -382,7 +383,7 @@ export default function Home() {
                   </button>
                 )}
 
-                {shortMapUrl && (
+                {(shortMapUrl || backendMapUrl) && (
                   <button
                     onMouseDown={handleSearchSubmit}
                     className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.03] transition-colors"
@@ -535,12 +536,13 @@ export default function Home() {
       <div
         className={`absolute z-[999] flex-col rounded-xl overflow-hidden ${showMobileSidebar ? 'flex' : 'hidden'} md:flex`}
         style={{
-          left: 'calc(1.25rem + env(safe-area-inset-left))',
+          left: showMobileSidebar ? 'calc(0.75rem + env(safe-area-inset-left))' : 'calc(1.25rem + env(safe-area-inset-left))',
+          right: showMobileSidebar ? 'calc(0.75rem + env(safe-area-inset-right))' : 'auto',
           top: `calc(${isGlobeMode ? 106 : 78}px + env(safe-area-inset-top))`,
           bottom: isGlobeMode && !globeSidebarExpanded
             ? 'auto'
             : `calc(${isGlobeMode ? 128 : 76}px + env(safe-area-inset-bottom))`,
-          width: isGlobeMode ? 204 : 220,
+          width: showMobileSidebar ? 'auto' : (isGlobeMode ? 204 : 220),
           background: isGlobeMode
             ? 'linear-gradient(180deg, rgba(8,12,18,0.76), rgba(5,5,10,0.68))'
             : 'rgba(5,5,10,0.82)',

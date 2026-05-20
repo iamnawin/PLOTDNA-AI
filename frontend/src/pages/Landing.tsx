@@ -73,11 +73,12 @@ export default function Landing() {
   const parsedMapUrl  = parseMapUrl(query)
   const shortMapUrl   = isShortMapUrl(query)
   const isUrl         = isMapUrl(query)
+  const backendMapUrl = isUrl && !parsedMapUrl
 
   const results = query.trim() && !parsedCoords && !isUrl
     ? allAreas.filter(a => a.name.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
     : []
-  const showDropdown = focused && (results.length > 0 || parsedCoords !== null || parsedMapUrl !== null)
+  const showDropdown = focused && (results.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
 
   function goToArea(area: MicroMarket & { citySlug: string }) {
     setSelectedCitySlug(area.citySlug)
@@ -128,18 +129,18 @@ export default function Landing() {
     if (parsedCoords) { analyzeCoords(parsedCoords); return }
     // Full map URL (parsed on frontend)
     if (parsedMapUrl) { analyzeCoords(parsedMapUrl, 'Extracting map coordinates...'); return }
-    // Short map URL (needs backend resolution)
-    if (shortMapUrl) {
+    // Map URLs without embedded coordinates need backend redirect/geocode resolution.
+    if (shortMapUrl || backendMapUrl) {
       setResolving(true)
       const result = await resolveMapLink(query.trim())
       setResolving(false)
       if (result.coords) { analyzeCoords(result.coords, 'Resolved map link. Opening analysis...'); return }
       setInputError(result.detail ?? (
         result.reason === 'backend_unreachable'
-          ? 'Short map links need backend access to resolve. Full map URLs and raw coordinates still work.'
+          ? 'Map links need backend access to resolve. Raw coordinates still work.'
           : result.reason === 'timeout'
             ? 'Timed out while expanding this short link. Try again in a few seconds or paste the full map URL.'
-            : 'Could not extract coordinates from this map link. Try a full Google Maps URL or copy the coordinates directly.'
+            : 'Could not extract coordinates from this map link. Try copying the coordinates directly.'
       ))
       return
     }
@@ -513,8 +514,8 @@ export default function Landing() {
                   )
                 })()}
 
-                {/* Short map link — show resolve option */}
-                {shortMapUrl && (
+                {/* Map links without coordinates — show resolve option */}
+                {(shortMapUrl || backendMapUrl) && (
                   <button
                     onMouseDown={handleEnter}
                     className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors"

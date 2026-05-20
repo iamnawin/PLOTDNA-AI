@@ -1,7 +1,9 @@
 import { Capacitor } from '@capacitor/core'
 
 const MOBILE_DEFAULT_API_URL = 'https://plotdna-api.onrender.com'
-const WEB_DEFAULT_API_URL = 'http://localhost:8000'
+const WEB_DEFAULT_API_URL = import.meta.env.DEV
+  ? 'http://localhost:8000'
+  : 'https://plotdna-api.onrender.com'
 
 export const IS_NATIVE_APP = Capacitor.isNativePlatform()
 
