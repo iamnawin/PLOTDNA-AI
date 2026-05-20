@@ -1,6 +1,7 @@
 import type { CityMeta, MicroMarket } from '@/types'
 import { CITIES, CITY_LIST } from '@/data/cities'
 import regionalMarketsJson from '../../../../data/india/regional-markets.json'
+import panIndiaRegionsJson from '../../../../data/india/regions.json'
 import telanganaDistrictsJson from '../../../../data/telangana/districts.json'
 import apDistrictsJson from '../../../../data/ap/districts.json'
 import bangAliasesJson from '../../../../data/cities/bangalore/aliases.json'
@@ -116,6 +117,7 @@ const TELANGANA_DISTRICTS = telanganaDistrictsJson as ResolverDistrictData[]
 const AP_BOUNDS = { latMin: 12.0, latMax: 19.5, lngMin: 76.5, lngMax: 84.5 }
 const AP_DISTRICTS = apDistrictsJson as ResolverDistrictData[]
 const REGIONAL_MARKETS = regionalMarketsJson as ResolverRegionalData[]
+const PAN_INDIA_REGIONS = panIndiaRegionsJson as ResolverDistrictData[]
 
 interface CityCandidate {
   slug: string
@@ -696,6 +698,30 @@ export function resolveLocalityCandidates(
         districtName: bestDistrict.name,
         stateSlug: bestDistrict.state,
         distanceKm: roundKm(bestDistrictDist),
+      }
+    }
+  }
+
+  if (!district && !regional) {
+    let bestRegion: ResolverDistrictData | null = null
+    let bestRegionDist = Infinity
+
+    for (const region of PAN_INDIA_REGIONS) {
+      if (!pointInPolygon(lat, lng, region.polygon)) continue
+
+      const regionDist = distKm(lat, lng, region.center[0], region.center[1])
+      if (regionDist < bestRegionDist) {
+        bestRegion = region
+        bestRegionDist = regionDist
+      }
+    }
+
+    if (bestRegion) {
+      district = {
+        districtSlug: bestRegion.slug,
+        districtName: bestRegion.name,
+        stateSlug: bestRegion.state,
+        distanceKm: roundKm(bestRegionDist),
       }
     }
   }

@@ -96,7 +96,7 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
       stateSlug: candidates.district.stateSlug,
       distanceKm: candidates.district.distanceKm,
       matchedBy: 'district',
-      reason: `Coordinate is inside ${candidates.district.districtName} district — no micro-market data yet for this area.`,
+      reason: `Coordinate is inside ${candidates.district.districtName} regional coverage — no micro-market data yet for this area.`,
     }
   }
 
@@ -114,7 +114,7 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
     stateSlug: null,
     distanceKm: null,
     matchedBy: 'none',
-    reason: 'Coordinate does not map to a supported locality or district.',
+    reason: 'Coordinate does not map to a supported locality or regional coverage area.',
   }
 }
 
