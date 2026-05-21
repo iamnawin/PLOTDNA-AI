@@ -268,7 +268,7 @@ export default function Landing() {
       style={{ background: '#050508', color: '#e8e8f0', fontFamily: "'IBM Plex Mono', monospace" }}
     >
       {/* ── Nav ── */}
-      <nav className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <nav className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="flex items-center gap-2.5">
           <img
             src="/plotdna-logo.png"
@@ -290,7 +290,7 @@ export default function Landing() {
         </div>
         <button
           onClick={goToMap}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] font-mono transition-all"
+          className="mobile-tap flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-[11px] font-mono transition-all"
           style={{
             background: 'rgba(0,230,118,0.1)',
             border: '1px solid rgba(0,230,118,0.3)',
@@ -305,14 +305,14 @@ export default function Landing() {
       </nav>
 
       {/* ── Hero ── */}
-      <section className="flex-1 flex flex-col items-center justify-center px-5 pt-16 pb-10 text-center">
+      <section className="flex-1 flex flex-col items-center justify-center px-4 sm:px-5 pt-10 sm:pt-16 pb-10 text-center">
 
         {/* Eyebrow */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6"
+          className="inline-flex max-w-full items-center justify-center gap-2 px-3 py-1.5 rounded-full mb-6 text-center"
           style={{
             background: 'rgba(0,230,118,0.07)',
             border: '1px solid rgba(0,230,118,0.2)',
@@ -339,7 +339,7 @@ export default function Landing() {
             color: '#f0f0fa',
           }}
         >
-          Not sure whether a plot is<br />
+          Not sure whether a plot is<br className="hidden sm:block" />{' '}
           <span style={{ color: '#00e676' }}>truly worth buying?</span>
         </motion.h1>
 
@@ -374,7 +374,7 @@ export default function Landing() {
               transition: 'border-color 0.2s, box-shadow 0.2s, border-radius 0.15s',
             }}
           >
-            <div className="flex flex-wrap items-center px-5 py-4 gap-3">
+            <div className="landing-search-row flex flex-wrap items-center px-5 py-4 gap-3">
               {resolving || brochureLoading || locating || analysisLoading ? (
                 <Activity
                   size={16}
@@ -427,7 +427,7 @@ export default function Landing() {
                 title="Upload a property brochure (PDF or image)"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={brochureLoading || locating || analysisLoading}
-                className="flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0"
+                className="mobile-icon-button mobile-tap flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
@@ -442,7 +442,7 @@ export default function Landing() {
                 title="Allow location permission and analyze your current coordinates"
                 onClick={handleLocateMe}
                 disabled={resolving || brochureLoading || locating || analysisLoading}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
+                className="mobile-action-button mobile-tap flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
@@ -458,7 +458,7 @@ export default function Landing() {
               <button
                 onClick={handleEnter}
                 disabled={resolving || brochureLoading || analysisLoading}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
+                className="mobile-action-button mobile-tap flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
                 style={{
                   background: 'rgba(0,230,118,0.12)',
                   border: '1px solid rgba(0,230,118,0.3)',
@@ -585,14 +585,14 @@ export default function Landing() {
           style={{ maxWidth: 640 }}
         >
           {/* City selector */}
-          <div className="flex items-center justify-center gap-2 mb-4">
+          <div className="mobile-scroll-row flex items-center justify-start sm:justify-center gap-2 mb-4 overflow-x-auto px-1">
             {CITY_LIST.map(city => {
               const active = activeCity === city.slug
               return (
                 <button
                   key={city.slug}
                   onClick={() => setActiveCity(city.slug)}
-                  className="px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150"
+                  className="mobile-tap flex-shrink-0 px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150"
                   style={{
                     background: active ? 'rgba(0,230,118,0.12)' : 'rgba(255,255,255,0.04)',
                     border: active ? '1px solid rgba(0,230,118,0.4)' : '1px solid rgba(255,255,255,0.07)',
@@ -606,14 +606,14 @@ export default function Landing() {
             })}
           </div>
 
-          <div className="flex items-center justify-center flex-wrap gap-2 mb-4">
+          <div className="mobile-scroll-row flex items-center justify-start sm:justify-center gap-2 mb-4 overflow-x-auto px-1">
             {GOAL_OPTIONS.map(goal => {
               const active = goal === recommendationGoal
               return (
                 <button
                   key={goal}
                   onClick={() => setRecommendationGoal(goal)}
-                  className="px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150"
+                  className="mobile-tap flex-shrink-0 px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150"
                   style={{
                     background: active ? 'rgba(0,230,118,0.12)' : 'rgba(255,255,255,0.03)',
                     border: active ? '1px solid rgba(0,230,118,0.35)' : '1px solid rgba(255,255,255,0.07)',
@@ -634,7 +634,7 @@ export default function Landing() {
           </p>
 
           {/* Top areas for selected city */}
-          <div className="flex items-center justify-center flex-wrap gap-2">
+          <div className="mobile-scroll-row flex items-center justify-start sm:justify-center gap-2 overflow-x-auto px-1">
             {previewAreas.map(({ area, matchScore, reasons }) => {
               const color = getScoreColor(area.score)
               const areaWithCity = { ...area, citySlug: activeCity }
@@ -642,7 +642,7 @@ export default function Landing() {
                 <button
                   key={area.slug}
                   onClick={() => goToArea(areaWithCity)}
-                  className="flex items-center gap-2 px-3.5 py-2 rounded-full text-[11px] font-mono transition-all"
+                  className="mobile-tap flex flex-shrink-0 items-center gap-2 px-3.5 py-2 rounded-full text-[11px] font-mono transition-all"
                   style={{
                     background: `${color}12`,
                     border: `1px solid ${color}28`,
@@ -917,7 +917,7 @@ export default function Landing() {
           >
             What you get
           </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             {FEATURES.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
@@ -946,10 +946,10 @@ export default function Landing() {
         <p style={{ fontSize: 18, fontWeight: 700, color: '#e8e8f0', letterSpacing: '-0.02em' }}>
           Ready to analyze a plot?
         </p>
-        <div className="flex items-center gap-3">
+        <div className="flex w-full max-w-sm flex-col sm:flex-row items-stretch sm:items-center gap-3 px-4">
           <button
             onClick={goToMap}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl font-mono text-[13px] font-semibold transition-all"
+            className="mobile-tap flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-mono text-[13px] font-semibold transition-all"
             style={{
               background: 'linear-gradient(135deg, #00e676 0%, #00b36b 100%)',
               color: '#000',
@@ -963,7 +963,7 @@ export default function Landing() {
           </button>
           <button
             onClick={() => { inputRef.current?.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl font-mono text-[13px] transition-all"
+            className="mobile-tap flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-mono text-[13px] transition-all"
             style={{
               background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.1)',
@@ -980,7 +980,7 @@ export default function Landing() {
 
       {/* ── Footer ── */}
       <footer
-        className="px-6 py-5 flex items-center justify-between"
+        className="px-4 sm:px-6 py-5 flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:justify-between"
         style={{ borderTop: '1px solid rgba(255,255,255,0.04)', fontSize: 10, color: '#2e2e42' }}
       >
         <span>PlotDNA · Real Estate Intelligence</span>

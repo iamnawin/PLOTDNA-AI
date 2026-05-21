@@ -158,7 +158,7 @@ export default function BrochurePage() {
           </div>
 
           <h1 className="font-display text-2xl sm:text-4xl font-black text-[#e8e8f0] leading-tight mb-4">
-            Decode any property brochure<br />
+            Decode any property brochure<br className="hidden sm:block" />{' '}
             <span style={{ color: '#6366f1' }}>in seconds</span>
           </h1>
           <p className="text-sm font-mono text-[#555566] max-w-lg mx-auto leading-relaxed">
@@ -294,10 +294,10 @@ export default function BrochurePage() {
             >
               {/* Result header */}
               <div
-                className="flex items-center justify-between px-6 py-5 rounded-t-2xl"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 px-4 sm:px-6 py-5 rounded-t-2xl"
                 style={{ background: '#6366f110', border: '1px solid #6366f125', borderBottom: 'none' }}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-center gap-3">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center"
                     style={{ background: '#6366f118' }}
@@ -305,7 +305,7 @@ export default function BrochurePage() {
                     <CheckCircle2 size={18} className="text-[#6366f1]" />
                   </div>
                   <div>
-                    <p className="font-mono font-bold text-[#e8e8f0]">
+                    <p className="truncate font-mono font-bold text-[#e8e8f0]">
                       {result.project_name ?? file?.name ?? 'Brochure Analysis Complete'}
                     </p>
                     <p className="text-[10px] font-mono text-[#555566] mt-0.5">
@@ -324,7 +324,7 @@ export default function BrochurePage() {
                 style={{ border: '1px solid #6366f120', borderTop: 'none' }}
               >
                 {/* Stats grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 p-6" style={{ background: 'rgba(255,255,255,0.015)' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 p-4 sm:p-6" style={{ background: 'rgba(255,255,255,0.015)' }}>
                   {result.plot_area && <StatCard icon={<FileText size={13} />} label="Plot Area" value={result.plot_area} color="#6366f1" />}
                   {result.carpet_area && <StatCard icon={<FileText size={13} />} label="Carpet Area" value={result.carpet_area} color="#6366f1" />}
                   {result.loading_pct !== undefined && (
@@ -353,7 +353,7 @@ export default function BrochurePage() {
                 {/* RERA */}
                 {result.rera_number && (
                   <div
-                    className="mx-6 mb-4 flex items-center justify-between px-5 py-4 rounded-xl"
+                    className="mx-4 sm:mx-6 mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-5 py-4 rounded-xl"
                     style={{ background: '#10b98110', border: '1px solid #10b98128' }}
                   >
                     <div className="flex items-center gap-3">
@@ -370,7 +370,7 @@ export default function BrochurePage() {
                       href={buildReraUrl(result.rera_state, result.rera_number)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-xs font-mono text-[#10b981] hover:underline"
+                      className="mobile-tap flex items-center justify-center gap-1.5 text-xs font-mono text-[#10b981] hover:underline"
                     >
                       <Shield size={12} />
                       Verify on RERA Portal
@@ -381,9 +381,9 @@ export default function BrochurePage() {
 
                 {/* Hidden clauses */}
                 {clauses.length > 0 ? (
-                  <div className="mx-6 mb-4 rounded-xl overflow-hidden" style={{ border: '1px solid #f59e0b25' }}>
+                  <div className="mx-4 sm:mx-6 mb-4 rounded-xl overflow-hidden" style={{ border: '1px solid #f59e0b25' }}>
                     <div
-                      className="flex items-center justify-between px-5 py-3"
+                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 sm:px-5 py-3"
                       style={{ background: '#f59e0b0c' }}
                     >
                       <div className="flex items-center gap-2">
@@ -402,7 +402,7 @@ export default function BrochurePage() {
                         </button>
                       )}
                     </div>
-                    <div className="px-5 py-4 space-y-3" style={{ background: 'rgba(255,255,255,0.01)' }}>
+                    <div className="px-4 sm:px-5 py-4 space-y-3" style={{ background: 'rgba(255,255,255,0.01)' }}>
                       {displayClauses.map((c, i) => (
                         <div key={i} className="flex items-start gap-2.5">
                           <AlertTriangle size={11} className="text-[#f59e0b] flex-shrink-0 mt-0.5" />
@@ -413,7 +413,7 @@ export default function BrochurePage() {
                   </div>
                 ) : result.rera_number ? (
                   <div
-                    className="mx-6 mb-4 flex items-center gap-2 px-5 py-3 rounded-xl"
+                    className="mx-4 sm:mx-6 mb-4 flex items-center gap-2 px-4 sm:px-5 py-3 rounded-xl"
                     style={{ background: '#10b98108', border: '1px solid #10b98118' }}
                   >
                     <CheckCircle2 size={13} className="text-[#10b981]" />
@@ -423,12 +423,12 @@ export default function BrochurePage() {
 
                 {/* Map link if coordinates extracted */}
                 {result.lat !== undefined && result.lng !== undefined && (
-                  <div className="mx-6 mb-6">
+                  <div className="mx-4 sm:mx-6 mb-6">
                     <a
                       href={`https://maps.google.com/?q=${result.lat},${result.lng}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-mono transition-all hover:opacity-80"
+                      className="mobile-tap flex items-center gap-2 px-4 py-3 rounded-xl text-xs font-mono transition-all hover:opacity-80"
                       style={{ background: '#10b98110', border: '1px solid #10b98120', color: '#10b981', textDecoration: 'none' }}
                     >
                       <Map size={13} />
@@ -440,7 +440,7 @@ export default function BrochurePage() {
 
                 {/* Footer */}
                 <div
-                  className="flex items-center justify-between px-6 py-3"
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 sm:px-6 py-3"
                   style={{ background: '#0a0a14', borderTop: '1px solid rgba(255,255,255,0.04)' }}
                 >
                   <p className="text-[9px] font-mono text-[#222233]">
@@ -508,14 +508,14 @@ function StatCard({
 }) {
   return (
     <div
-      className="p-4 rounded-xl"
+      className="min-w-0 p-4 rounded-xl"
       style={{ background: `${color}08`, border: `1px solid ${color}18` }}
     >
       <div className="flex items-center gap-1.5 mb-1.5">
         <span style={{ color }}>{icon}</span>
         <p className="text-[8px] font-mono text-[#444455] uppercase tracking-widest">{label}</p>
       </div>
-      <p className="text-base font-mono font-bold" style={{ color }}>{value}</p>
+      <p className="break-words text-base font-mono font-bold" style={{ color }}>{value}</p>
       {note && <p className="text-[8px] font-mono mt-0.5" style={{ color }}>{note}</p>}
     </div>
   )

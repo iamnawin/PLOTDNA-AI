@@ -523,10 +523,10 @@ export default function AreaDetail() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12"
+          className="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8 mb-10 sm:mb-12"
         >
           {/* Score ring */}
-          <div className="relative flex-shrink-0">
+          <div className="relative flex-shrink-0 scale-90 sm:scale-100">
             <svg width={180} height={180} viewBox="0 0 180 180">
               <circle cx={90} cy={90} r={r} fill="none" stroke="#1a1a2e" strokeWidth={10} />
               <motion.circle
@@ -556,7 +556,7 @@ export default function AreaDetail() {
           </div>
 
           {/* Info */}
-          <div className="flex-1">
+          <div className="w-full flex-1 text-center md:text-left">
             <ScoreBadge score={area.score} size="lg" />
             <h1 className="font-display text-2xl sm:text-4xl font-black text-[#e8e8f0] mt-3 leading-tight">
               {area.name}
@@ -572,7 +572,7 @@ export default function AreaDetail() {
             </div>
 
             {/* Stats row */}
-            <div className="grid grid-cols-3 gap-2 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-4">
               <div
                 className="p-3 rounded-lg text-center"
                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
@@ -660,7 +660,7 @@ export default function AreaDetail() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="mb-10"
         >
-          <div className="flex items-center justify-between mb-5">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
             <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
               DNA Signal Breakdown
             </h2>
@@ -673,7 +673,7 @@ export default function AreaDetail() {
           </div>
 
           {/* Signal card grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
             {SIGNAL_CONFIG.map(({ key, icon: Icon, label }, i) => {
               const val = area.signals[key]
               const weight = SIGNAL_WEIGHTS[key] ?? 0
@@ -739,7 +739,7 @@ export default function AreaDetail() {
             transition={{ duration: 0.5, delay: 0.22 }}
             className="mb-10"
           >
-            <div className="flex items-center gap-3 mb-5">
+            <div className="flex flex-wrap items-center gap-3 mb-5">
               <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
                 Livability Index
               </h2>
@@ -751,7 +751,7 @@ export default function AreaDetail() {
               </span>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
               {LIVABILITY_CONFIG.map(({ key, icon: Icon, label, description }, i) => {
                 const val = area.livability![key]
                 const tier = getSignalTier(val)
@@ -1055,7 +1055,7 @@ export default function AreaDetail() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <div className="flex items-center justify-between gap-3 mb-5">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
               <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">Alternatives to Compare</h2>
               <span
                 className="text-[8px] font-mono px-2 py-1 rounded"
@@ -1064,7 +1064,7 @@ export default function AreaDetail() {
                 Ranked for {goalMeta.label}
               </span>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
               {nearby.map(({ area: altArea, matchScore, reasons, caution }) => {
                 const a = altArea
                 const c = getScoreColor(a.score)

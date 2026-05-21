@@ -196,7 +196,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: '100%', opacity: 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="absolute top-0 right-0 h-full w-[100dvw] max-w-full sm:w-[360px] z-[1010] flex flex-col overflow-hidden"
+      className="mobile-panel absolute top-0 right-0 h-full w-[100dvw] max-w-full sm:w-[360px] z-[1010] flex flex-col overflow-hidden"
       style={{
         background: 'rgba(4, 4, 10, 0.95)',
         backdropFilter: 'blur(28px)',
@@ -210,19 +210,19 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
           background: 'linear-gradient(180deg, rgba(0,230,118,0.04) 0%, transparent 100%)',
         }}
       >
-        <div className="flex items-start justify-between px-5 pt-5 pb-3">
-          <div>
+        <div className="flex items-start justify-between gap-3 px-4 sm:px-5 pt-5 pb-3">
+          <div className="min-w-0">
             <div className="flex items-center gap-1.5 mb-1.5">
               <Navigation size={10} className="text-[#00e676]" />
               <p className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.14em]">
                 Coordinate Detected
               </p>
             </div>
-            <p className="font-mono text-[12px] text-[#555566] leading-tight tracking-wide">
+            <p className="break-words font-mono text-[12px] text-[#555566] leading-tight tracking-wide">
               {coords[0].toFixed(5)} N &nbsp; {coords[1].toFixed(5)} E
             </p>
             {geo && (
-              <p className="text-[11px] font-mono text-[#aaaabc] mt-1.5">
+              <p className="break-words text-[11px] font-mono text-[#aaaabc] mt-1.5">
                 {[geo.locality, geo.city, geo.state].filter(Boolean).join(', ')}
               </p>
             )}

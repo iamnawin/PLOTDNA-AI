@@ -253,13 +253,13 @@ export default function BrochureUploadCard() {
             >
               {/* Result header */}
               <div
-                className="flex items-center justify-between px-5 py-4"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-5 py-4"
                 style={{ background: '#6366f110', borderBottom: '1px solid #6366f120' }}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex min-w-0 items-center gap-3">
                   <CheckCircle2 size={14} className="text-[#6366f1]" />
                   <div>
-                    <p className="text-sm font-mono font-bold text-[#e8e8f0]">
+                    <p className="truncate text-sm font-mono font-bold text-[#e8e8f0]">
                       {result.project_name ?? file?.name ?? 'Brochure Analyzed'}
                     </p>
                     <p className="text-[10px] font-mono text-[#555566] mt-0.5">
@@ -287,8 +287,8 @@ export default function BrochureUploadCard() {
               </div>
 
               {/* Extracted data grid */}
-              <div className="p-5" style={{ background: 'rgba(255,255,255,0.015)' }}>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+              <div className="p-4 sm:p-5" style={{ background: 'rgba(255,255,255,0.015)' }}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">
                   {result.plot_area && (
                     <StatTile icon={<FileText size={11} />} label="Plot Area" value={result.plot_area} color="#6366f1" />
                   )}
@@ -327,7 +327,7 @@ export default function BrochureUploadCard() {
                 {/* RERA number */}
                 {result.rera_number && (
                   <div
-                    className="flex items-center justify-between px-4 py-3 rounded-xl mb-4"
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 py-3 rounded-xl mb-4"
                     style={{ background: '#10b98110', border: '1px solid #10b98125' }}
                   >
                     <div className="flex items-center gap-2">
@@ -443,14 +443,14 @@ function StatTile({
 }) {
   return (
     <div
-      className="p-3 rounded-xl"
+      className="min-w-0 p-3 rounded-xl"
       style={{ background: `${color}08`, border: `1px solid ${color}18` }}
     >
       <div className="flex items-center gap-1.5 mb-1">
         <span style={{ color }}>{icon}</span>
         <p className="text-[8px] font-mono text-[#444455] uppercase tracking-widest">{label}</p>
       </div>
-      <p className="text-sm font-mono font-bold" style={{ color }}>{value}</p>
+      <p className="break-words text-sm font-mono font-bold" style={{ color }}>{value}</p>
     </div>
   )
 }

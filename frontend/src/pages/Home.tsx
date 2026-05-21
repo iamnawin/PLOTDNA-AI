@@ -207,7 +207,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative w-[100dvw] h-[100dvh] overflow-hidden bg-[#050508]">
+    <div className="relative h-[100dvh] w-full overflow-hidden bg-[#050508]">
 
       {/* ── Map fills 100% of screen ── */}
       <div className="absolute inset-0 z-0">
@@ -333,7 +333,7 @@ export default function Home() {
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setTimeout(() => setSearchFocused(false), 160)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit() }}
-                className="flex-1 bg-transparent text-[#e8e8f0] font-mono text-sm outline-none placeholder:text-[#3a3a52]"
+                className="min-w-0 flex-1 bg-transparent text-[#e8e8f0] font-mono text-sm outline-none placeholder:text-[#3a3a52]"
               />
               {searchQuery && (
                 <button
@@ -373,7 +373,7 @@ export default function Home() {
                     style={{ borderBottom: searchResults.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                   >
                     <Navigation size={13} className="text-[#00e676] flex-shrink-0" />
-                    <div className="flex-1">
+                    <div className="min-w-0 flex-1">
                       <span className="text-[12px] font-mono text-[#00e676]">Analyze this location</span>
                       <p className="text-[10px] font-mono text-[#444455] mt-0.5">
                         {(parsedCoords ?? parsedMapUrl)![0].toFixed(4)}°N  {(parsedCoords ?? parsedMapUrl)![1].toFixed(4)}°E · DNA score + growth story
@@ -390,7 +390,7 @@ export default function Home() {
                     style={{ borderBottom: searchResults.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                   >
                     <Navigation size={13} className="text-[#00e676] flex-shrink-0" />
-                    <div className="flex-1">
+                    <div className="min-w-0 flex-1">
                       <span className="text-[12px] font-mono text-[#00e676]">
                         {resolvingUrl ? 'Resolving map link…' : 'Resolve map link'}
                       </span>
@@ -413,7 +413,7 @@ export default function Home() {
                       style={{ borderBottom: i < Math.min(searchResults.length, 5) - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}
                     >
                       <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color, boxShadow: `0 0 5px ${color}80` }} />
-                      <span className="flex-1 text-[13px] font-mono text-[#ccccdd]">{area.name}</span>
+                      <span className="min-w-0 flex-1 truncate text-[13px] font-mono text-[#ccccdd]">{area.name}</span>
                       <span className="text-[11px] font-mono text-[#666680] uppercase tracking-wide">{area.category}</span>
                       <span className="text-sm font-mono font-bold" style={{ color }}>{area.score}</span>
                       <ChevronRight size={12} className="text-[#333344]" />
@@ -443,7 +443,7 @@ export default function Home() {
             >
               {/* City pills row */}
               <div
-                className="flex items-center gap-1.5 mb-2 overflow-x-auto md:justify-center"
+                className="mobile-scroll-row flex items-center gap-1.5 mb-2 overflow-x-auto md:justify-center"
                 style={{
                   scrollbarWidth: 'none',
                   msOverflowStyle: 'none',
@@ -474,7 +474,7 @@ export default function Home() {
               </div>
               {/* Top area chips */}
               <div
-                className="flex items-center gap-2 overflow-x-auto md:justify-center"
+                className="mobile-scroll-row flex items-center gap-2 overflow-x-auto md:justify-center"
                 style={{
                   scrollbarWidth: 'none',
                   msOverflowStyle: 'none',
@@ -538,11 +538,12 @@ export default function Home() {
         style={{
           left: showMobileSidebar ? 'calc(0.75rem + env(safe-area-inset-left))' : 'calc(1.25rem + env(safe-area-inset-left))',
           right: showMobileSidebar ? 'calc(0.75rem + env(safe-area-inset-right))' : 'auto',
-          top: `calc(${isGlobeMode ? 106 : 78}px + env(safe-area-inset-top))`,
+          top: `calc(${isGlobeMode ? 112 : 84}px + env(safe-area-inset-top))`,
           bottom: isGlobeMode && !globeSidebarExpanded
             ? 'auto'
             : `calc(${isGlobeMode ? 128 : 76}px + env(safe-area-inset-bottom))`,
           width: showMobileSidebar ? 'auto' : (isGlobeMode ? 204 : 220),
+          maxHeight: showMobileSidebar ? 'calc(100dvh - 8.5rem - env(safe-area-inset-bottom))' : undefined,
           background: isGlobeMode
             ? 'linear-gradient(180deg, rgba(8,12,18,0.76), rgba(5,5,10,0.68))'
             : 'rgba(5,5,10,0.82)',
@@ -713,7 +714,7 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 32 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-0 right-0 h-full z-[1010] overflow-y-auto"
+            className="mobile-panel absolute top-0 right-0 h-full z-[1010] overflow-y-auto"
             style={{ width: 'min(380px, 100vw)' }}
           >
             <div className="p-4 pt-16 min-h-full"
@@ -753,7 +754,7 @@ export default function Home() {
           BOTTOM RIGHT: Layer / View switcher
       ════════════════════════════════════════════════ */}
       <div
-        className={`absolute z-[1001] flex flex-col gap-2 rounded-2xl p-2 ${isGlobeMode ? 'hidden' : ''}`}
+        className={`absolute z-[1001] hidden md:flex flex-col gap-2 rounded-2xl p-2 ${isGlobeMode ? 'md:hidden' : ''}`}
         style={{
           bottom: 88,
           right: 20,
@@ -957,7 +958,7 @@ export default function Home() {
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className={`absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-[calc(0.75rem+env(safe-area-inset-left))] right-[calc(0.75rem+env(safe-area-inset-right))] md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto ${isGlobeMode ? 'hidden' : ''}`}
+        className={`mobile-scroll-row absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-[calc(0.75rem+env(safe-area-inset-left))] right-[calc(0.75rem+env(safe-area-inset-right))] md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto ${isGlobeMode ? 'hidden' : ''}`}
         style={{
           background: 'rgba(5,5,10,0.88)',
           backdropFilter: 'blur(22px)',
@@ -1033,7 +1034,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 8, scale: 0.97 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 bottom-full mb-3 w-[228px] rounded-xl overflow-hidden"
+                className="absolute right-0 bottom-full mb-3 w-[min(228px,calc(100vw-24px))] rounded-xl overflow-hidden"
                 style={{
                   background: 'linear-gradient(180deg, rgba(8,12,18,0.96), rgba(5,5,10,0.9))',
                   backdropFilter: 'blur(28px)',
@@ -1169,7 +1170,7 @@ export default function Home() {
           </AnimatePresence>
 
           <div
-            className="rounded-2xl px-3 py-3 grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,320px)] md:items-center"
+            className="mobile-bottom-dock rounded-2xl px-3 py-3 grid gap-3 md:gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,320px)] md:items-center"
             style={{
               background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.78))',
               backdropFilter: 'blur(24px)',
@@ -1178,7 +1179,7 @@ export default function Home() {
             }}
           >
             <div
-              className="flex items-center p-1.5 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center md:px-3"
+              className="mobile-scroll-row flex items-center p-1.5 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center md:px-3"
               style={{
                 background: 'rgba(255,255,255,0.012)',
                 border: '1px solid rgba(255,255,255,0.03)',
@@ -1233,7 +1234,7 @@ export default function Home() {
             </div>
 
             <div
-              className="flex items-center gap-2 justify-end min-w-[280px] rounded-xl px-3 py-2"
+              className="flex min-w-0 items-center justify-between gap-2 overflow-hidden rounded-xl px-2 sm:px-3 py-2"
               style={{
                 background: 'rgba(255,255,255,0.018)',
                 border: '1px solid rgba(255,255,255,0.045)',

@@ -48,7 +48,7 @@ export default function ScoreCard({ area, onClose }: Props) {
         animate={{ x: 0, opacity: 1 }}
         exit={{ x: '100%', opacity: 0 }}
         transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-        className="absolute top-0 right-0 h-full w-[100dvw] max-w-full sm:w-[340px] z-[1010] flex flex-col"
+        className="mobile-panel absolute top-0 right-0 h-full w-[100dvw] max-w-full sm:w-[340px] z-[1010] flex flex-col"
         style={{
           background: 'rgba(5, 5, 10, 0.92)',
           backdropFilter: 'blur(24px)',
@@ -73,7 +73,7 @@ export default function ScoreCard({ area, onClose }: Props) {
       </div>
 
       {/* Score ring */}
-      <div className="flex items-center gap-5 px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <div className="flex items-center gap-4 sm:gap-5 px-4 sm:px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="relative flex-shrink-0">
           <svg width={100} height={100} viewBox="0 0 100 100">
             {/* Track */}
@@ -106,7 +106,7 @@ export default function ScoreCard({ area, onClose }: Props) {
           </svg>
         </div>
 
-        <div className="flex-1">
+        <div className="min-w-0 flex-1">
           <p className="text-[#888899] text-xs font-mono mb-1 uppercase tracking-wider">{area.category}</p>
           <p className="text-[#e8e8f0] text-lg font-mono font-bold" style={{ color }}>{label}</p>
           <div className="mt-2 flex items-center gap-1.5">
@@ -115,7 +115,7 @@ export default function ScoreCard({ area, onClose }: Props) {
               +{area.yoy}% YoY
             </span>
           </div>
-          <p className="text-[#555566] text-xs font-mono mt-1">{area.priceRange}</p>
+          <p className="truncate text-[#555566] text-xs font-mono mt-1">{area.priceRange}</p>
         </div>
       </div>
 
