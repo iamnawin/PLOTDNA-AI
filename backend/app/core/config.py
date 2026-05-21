@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     # AI
     GEMINI_API_KEY: str = ""
     AI_PROVIDER_ORDER: str = "gemini,nvidia"
+    GEMINI_CHAT_MODELS: str = "gemini-1.5-flash,gemini-2.0-flash-lite"
     GEMINI_VERDICT_MODELS: str = "gemini-1.5-flash,gemini-2.0-flash-lite"
     GEMINI_BROCHURE_MODELS: str = "gemini-2.0-flash,gemini-2.0-flash-lite,gemini-1.5-flash"
     NVIDIA_API_KEY: str = ""

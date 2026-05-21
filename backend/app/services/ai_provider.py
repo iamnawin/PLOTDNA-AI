@@ -26,6 +26,13 @@ class JsonModelResult:
     source: str
 
 
+@dataclass
+class TextModelResult:
+    text: str
+    source: str
+    model: str
+
+
 def csv_values(value: str) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
 
@@ -40,6 +47,119 @@ def parse_json_text(raw: str) -> dict:
         if start >= 0 and end > start:
             text = text[start : end + 1]
     return json.loads(text.strip())
+
+
+def parse_json_object(raw_text: str) -> dict:
+    try:
+        return parse_json_text(raw_text)
+    except json.JSONDecodeError:
+        return {}
+
+
+def call_gemini_text(
+    prompt: str,
+    *,
+    models: list[str] | None = None,
+    max_output_tokens: int = 700,
+    temperature: float = 0.3,
+) -> TextModelResult | None:
+    if not settings.GEMINI_API_KEY:
+        return None
+
+    genai.configure(api_key=settings.GEMINI_API_KEY)
+    candidates = models or csv_values(settings.GEMINI_CHAT_MODELS) or ["gemini-1.5-flash"]
+
+    for model_name in candidates:
+        try:
+            model = genai.GenerativeModel(model_name)
+            response = model.generate_content(
+                prompt,
+                generation_config=genai.GenerationConfig(
+                    temperature=temperature,
+                    max_output_tokens=max_output_tokens,
+                ),
+            )
+            text = (getattr(response, "text", "") or "").strip()
+            if text:
+                return TextModelResult(text=text, source="gemini", model=model_name)
+        except Exception as exc:  # pragma: no cover - network/model failures are runtime dependent
+            logger.warning("Gemini text call failed with %s: %s", model_name, exc)
+
+    return None
+
+
+def call_nvidia_text(
+    prompt: str,
+    *,
+    models: list[str] | None = None,
+    max_tokens: int = 700,
+    temperature: float = 0.3,
+) -> TextModelResult | None:
+    if not settings.NVIDIA_API_KEY:
+        return None
+
+    base_url = settings.NVIDIA_BASE_URL.rstrip("/")
+    if base_url.endswith("/chat/completions"):
+        base_url = base_url.removesuffix("/chat/completions")
+    endpoint = f"{base_url}/chat/completions"
+    candidates = models or csv_values(settings.NVIDIA_CHAT_MODELS)
+    if not candidates:
+        return None
+
+    headers = {
+        "Authorization": f"Bearer {settings.NVIDIA_API_KEY}",
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
+
+    with httpx.Client(timeout=35.0) as client:
+        for model_name in candidates:
+            try:
+                response = client.post(
+                    endpoint,
+                    headers=headers,
+                    json={
+                        "model": model_name,
+                        "messages": [
+                            {
+                                "role": "system",
+                                "content": (
+                                    "You are PlotDNA, a concise property intelligence assistant. "
+                                    "Answer using only the provided context and avoid inventing facts."
+                                ),
+                            },
+                            {"role": "user", "content": prompt},
+                        ],
+                        "temperature": temperature,
+                        "max_tokens": max_tokens,
+                        "stream": False,
+                    },
+                )
+                response.raise_for_status()
+                payload = response.json()
+                content = payload["choices"][0]["message"]["content"].strip()
+                if content:
+                    return TextModelResult(text=content, source="nvidia", model=model_name)
+            except Exception as exc:  # pragma: no cover - network/model failures are runtime dependent
+                logger.warning("NVIDIA text call failed with %s: %s", model_name, exc)
+
+    return None
+
+
+def call_text_model(prompt: str) -> TextModelResult | None:
+    for provider in csv_values(settings.AI_PROVIDER_ORDER) or ["gemini", "nvidia"]:
+        if provider == "gemini":
+            result = call_gemini_text(prompt)
+        elif provider == "nvidia":
+            result = call_nvidia_text(prompt)
+        elif provider == "fallback":
+            return None
+        else:
+            logger.warning("Unknown AI provider in AI_PROVIDER_ORDER: %s", provider)
+            continue
+        if result is not None:
+            return result
+    return None
 
 
 def call_gemini_json(

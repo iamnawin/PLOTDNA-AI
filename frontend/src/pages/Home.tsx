@@ -443,7 +443,7 @@ export default function Home() {
               transition={{ duration: 0.2, delay: 0.05 }}
               className="mt-2"
             >
-              {/* City pills row */}
+              {/* City selector */}
               <div
                 className="mobile-scroll-row flex items-center gap-1.5 mb-2 overflow-x-auto md:justify-center"
                 style={{
@@ -460,12 +460,12 @@ export default function Home() {
                     <button
                       key={city.slug}
                       onClick={() => handleCityChange(city.slug)}
-                      className="px-3 py-1.5 rounded-full text-[10px] font-mono transition-all duration-150 flex-shrink-0"
+                      className="px-3.5 py-1.5 rounded-full text-[12px] font-medium transition-all duration-150 flex-shrink-0"
                       style={{
-                        background: isActive ? 'rgba(0,230,118,0.12)' : 'rgba(5,5,10,0.82)',
-                        border: isActive ? '1px solid rgba(0,230,118,0.4)' : '1px solid rgba(255,255,255,0.07)',
-                        color: isActive ? '#00e676' : '#666680',
-                        boxShadow: isActive ? '0 0 10px rgba(0,230,118,0.15)' : 'none',
+                        background: isActive ? 'rgba(244,247,251,0.1)' : 'rgba(5,7,10,0.72)',
+                        border: isActive ? '1px solid rgba(244,247,251,0.18)' : '1px solid rgba(255,255,255,0.07)',
+                        color: isActive ? '#f4f7fb' : '#8b95a7',
+                        boxShadow: isActive ? '0 10px 24px rgba(0,0,0,0.28)' : 'none',
                         backdropFilter: 'blur(12px)',
                       }}
                     >
@@ -491,30 +491,48 @@ export default function Home() {
                     <button
                       key={area.slug}
                       onClick={() => navigate(`/area/${area.slug}`)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all flex-shrink-0"
-                      style={{ background: `${color}16`, border: `1px solid ${color}28`, color }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = `${color}28`; e.currentTarget.style.boxShadow = `0 0 12px ${color}25` }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = `${color}16`; e.currentTarget.style.boxShadow = 'none' }}
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all flex-shrink-0"
+                      style={{
+                        background: 'rgba(8,12,18,0.76)',
+                        border: '1px solid rgba(255,255,255,0.09)',
+                        color: '#d9e1ea',
+                        boxShadow: '0 10px 24px rgba(0,0,0,0.22)',
+                        backdropFilter: 'blur(14px)',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = `${color}55`
+                        e.currentTarget.style.boxShadow = `0 12px 28px rgba(0,0,0,0.28), 0 0 18px ${color}18`
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'
+                        e.currentTarget.style.boxShadow = '0 10px 24px rgba(0,0,0,0.22)'
+                      }}
                       title={`${matchScore}/100 match`}
                     >
-                      <Zap size={9} />
+                      <Zap size={10} style={{ color }} />
                       {area.name}
-                      <span className="text-[9px]" style={{ color: '#e8e8f0' }}>{matchScore}</span>
+                      <span
+                        className="text-[10px] font-mono"
+                        style={{ color }}
+                      >
+                        {matchScore}
+                      </span>
                     </button>
                   )
                 })}
                 {/* Brochure AI chip */}
                 <button
                   onClick={() => { setShowBrochure(v => !v); setSearchCoords(null); setSelectedArea(null) }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono transition-all flex-shrink-0"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all flex-shrink-0"
                   style={{
-                    background: showBrochure ? '#6366f122' : '#6366f10e',
-                    border: showBrochure ? '1px solid #6366f150' : '1px solid #6366f122',
-                    color: '#818cf8',
-                    boxShadow: showBrochure ? '0 0 12px #6366f128' : 'none',
+                    background: showBrochure ? 'rgba(99,102,241,0.18)' : 'rgba(8,12,18,0.76)',
+                    border: showBrochure ? '1px solid rgba(129,140,248,0.45)' : '1px solid rgba(255,255,255,0.09)',
+                    color: showBrochure ? '#a5b4fc' : '#d9e1ea',
+                    boxShadow: showBrochure ? '0 0 18px rgba(99,102,241,0.18)' : '0 10px 24px rgba(0,0,0,0.22)',
+                    backdropFilter: 'blur(14px)',
                   }}
                 >
-                  <FileText size={9} />
+                  <FileText size={10} style={{ color: '#818cf8' }} />
                   Brochure AI
                 </button>
               </div>
@@ -544,14 +562,14 @@ export default function Home() {
           bottom: isGlobeMode && !globeSidebarExpanded
             ? 'auto'
             : `calc(${isGlobeMode ? 128 : 76}px + env(safe-area-inset-bottom))`,
-          width: showMobileSidebar ? 'auto' : (isGlobeMode ? 204 : 220),
+          width: showMobileSidebar ? 'auto' : (isGlobeMode ? 232 : 240),
           maxHeight: showMobileSidebar ? 'calc(100dvh - 8.5rem - env(safe-area-inset-bottom))' : undefined,
           background: isGlobeMode
-            ? 'linear-gradient(180deg, rgba(8,12,18,0.76), rgba(5,5,10,0.68))'
-            : 'rgba(5,5,10,0.82)',
+            ? 'linear-gradient(180deg, rgba(11,15,20,0.88), rgba(5,7,10,0.76))'
+            : 'rgba(5,7,10,0.86)',
           backdropFilter: 'blur(22px)',
-          border: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: isGlobeMode ? '0 16px 30px rgba(0,0,0,0.28)' : '0 8px 32px rgba(0,0,0,0.5)',
+          border: '1px solid rgba(255,255,255,0.09)',
+          boxShadow: isGlobeMode ? '0 18px 42px rgba(0,0,0,0.34)' : '0 10px 34px rgba(0,0,0,0.48)',
         }}
       >
         {/* Panel header */}
@@ -559,17 +577,26 @@ export default function Home() {
           className="px-4 pt-3.5 pb-3 flex-shrink-0"
           style={{
             borderBottom: '1px solid rgba(255,255,255,0.05)',
-            background: 'linear-gradient(180deg, rgba(0,230,118,0.05) 0%, transparent 100%)',
+            background: 'linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.006))',
           }}
         >
           <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
+            <div className="min-w-0">
+              <p className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.16em]">
+                Recommendation mode
+              </p>
               <div
-                className="w-0.5 h-3.5 rounded-full bg-[#00e676]"
-                style={{ boxShadow: '0 0 8px #00e67680' }}
-              />
-              <p className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.14em]">
-                Recommended for {goalMeta.shortLabel}
+                className="mt-1 flex items-baseline gap-2"
+              >
+                <p className="truncate text-[17px] font-bold leading-tight tracking-tight text-[#f4f7fb]">
+                  {goalMeta.shortLabel}
+                </p>
+                <span className="text-[10px] font-mono text-[#657086]">
+                  {recommendedAreas.length} areas
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] leading-snug text-[#8b95a7]">
+                Ranked by fit, risk, and growth signals.
               </p>
             </div>
             {isGlobeMode && (
@@ -592,21 +619,26 @@ export default function Home() {
               </button>
             )}
           </div>
-          <div className="flex flex-wrap gap-1.5 mt-3">
+          <div className="mt-3 space-y-1.5">
             {GOAL_OPTIONS.map(goal => {
               const active = goal === recommendationGoal
               return (
                 <button
                   key={goal}
                   onClick={() => setRecommendationGoal(goal)}
-                  className="px-2 py-1 rounded-full text-[9px] font-mono transition-all"
+                  className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-[12px] font-semibold transition-all"
                   style={{
-                    background: active ? 'rgba(0,230,118,0.12)' : 'rgba(255,255,255,0.03)',
-                    border: active ? '1px solid rgba(0,230,118,0.3)' : '1px solid rgba(255,255,255,0.06)',
-                    color: active ? '#00e676' : '#666680',
+                    background: active ? 'rgba(0,230,118,0.12)' : 'rgba(255,255,255,0.035)',
+                    border: active ? '1px solid rgba(0,230,118,0.32)' : '1px solid rgba(255,255,255,0.065)',
+                    color: active ? '#f4f7fb' : '#8b95a7',
+                    boxShadow: active ? '0 0 16px rgba(0,230,118,0.08)' : 'none',
                   }}
                 >
-                  {getRecommendationGoalMeta(goal).shortLabel}
+                  <span>{getRecommendationGoalMeta(goal).shortLabel}</span>
+                  <span
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ background: active ? '#00e676' : 'rgba(139,149,167,0.35)' }}
+                  />
                 </button>
               )
             })}
@@ -614,20 +646,21 @@ export default function Home() {
           {isGlobeMode && !globeSidebarExpanded && (
             <div className="mt-3 space-y-2">
               {recommendedAreas.slice(0, 2).map(({ area, matchScore }) => (
-                <div
+                <button
                   key={area.slug}
-                  className="flex items-center justify-between rounded-lg px-2.5 py-2"
+                  onClick={() => setSelectedArea(area)}
+                  className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left transition-all"
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.05)',
+                    background: 'rgba(255,255,255,0.045)',
+                    border: '1px solid rgba(255,255,255,0.065)',
                   }}
                 >
                   <div>
-                    <p className="text-[10px] font-mono text-[#e8e8f0]">{area.name}</p>
-                    <p className="text-[8px] font-mono text-[#555566]">Top match</p>
+                    <p className="text-[12px] font-semibold text-[#f4f7fb]">{area.name}</p>
+                    <p className="text-[10px] text-[#657086]">Top match</p>
                   </div>
                   <span className="text-[11px] font-mono font-bold text-[#00e676]">{matchScore}</span>
-                </div>
+                </button>
               ))}
             </div>
           )}
@@ -643,7 +676,7 @@ export default function Home() {
           <div className="flex-1 overflow-y-auto">
           {sidebarList.length === 0 ? (
             <div className="flex items-center justify-center h-full">
-              <p className="text-[11px] font-mono text-[#333344] text-center px-4">
+              <p className="text-[12px] text-[#657086] text-center px-4">
                 No areas in<br />this tier
               </p>
             </div>
@@ -658,7 +691,7 @@ export default function Home() {
                   onClick={() => setSelectedArea(isSelected ? null : area)}
                   className="w-full text-left transition-all duration-150"
                   style={{
-                    padding: '9px 14px',
+                    padding: '11px 14px',
                     borderBottom: '1px solid rgba(255,255,255,0.025)',
                     background: isSelected ? `${color}0d` : 'transparent',
                     borderLeft: isSelected ? `2px solid ${color}` : '2px solid transparent',
@@ -676,12 +709,12 @@ export default function Home() {
                     </span>
                     <div className="flex-1 min-w-0">
                       <p
-                        className="text-[11px] font-mono truncate leading-tight"
-                        style={{ color: isSelected ? '#e8e8f0' : '#9999aa' }}
+                        className="truncate text-[13px] font-semibold leading-tight"
+                        style={{ color: isSelected ? '#f4f7fb' : '#d9e1ea' }}
                       >
                         {area.name}
                       </p>
-                      <p className="text-[9px] text-[#333344] font-mono uppercase tracking-wide mt-0.5">
+                      <p className="mt-1 truncate text-[10px] text-[#657086]">
                         {reasons[0]?.label}: {reasons[0]?.value}
                       </p>
                     </div>
