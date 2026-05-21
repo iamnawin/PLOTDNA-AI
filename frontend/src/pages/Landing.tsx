@@ -25,25 +25,31 @@ const PAIN_POINTS = [
 const FEATURES = [
   {
     icon: MapPin,
-    title: 'Coordinate to context',
-    desc: 'A 0–100 score built from 7 signals — infrastructure, RERA, satellite, employment, and more.',
+    title: 'Coordinate-level context',
+    desc: 'Analyze a location using infrastructure, RERA, satellite, price, and growth signals.',
   },
   {
     icon: Map,
     title: 'City polygon maps',
-    desc: 'Every micro-market drawn on a live map. Click any zone to see its full breakdown.',
+    desc: 'Open supported city maps and inspect locality-level market boundaries.',
   },
   {
     icon: Satellite,
-    title: 'Past, now, future',
-    desc: 'See a 5-year outlook and key milestones driving value in each area.',
+    title: 'Past, present, future view',
+    desc: 'Understand what changed, what matters now, and where the area may be heading.',
   },
   {
     icon: Shield,
     title: 'Due diligence starter',
-    desc: 'Goldzone → Good Growth → Moderate → High Risk. Know before you invest.',
+    desc: 'Quickly classify locations into Good Growth, Moderate, Watchlist, or High Risk.',
   },
 ]
+
+const cardSurface = {
+  background: 'linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015)), #0b0f14',
+  border: '1px solid rgba(255,255,255,0.08)',
+  boxShadow: '0 18px 60px rgba(0,0,0,0.35)',
+}
 
 export default function Landing() {
   const navigate  = useNavigate()
@@ -238,7 +244,7 @@ export default function Landing() {
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center"
           style={{
             background: 'radial-gradient(circle at 50% 35%, rgba(0,230,118,0.14), transparent 34%), #050508',
-            fontFamily: "'IBM Plex Mono', monospace",
+            fontFamily: 'var(--font-mono)',
           }}
         >
           <motion.div
@@ -278,7 +284,7 @@ export default function Landing() {
 
     <div
       className="min-h-screen w-full flex flex-col"
-      style={{ background: '#050508', color: '#e8e8f0', fontFamily: "'IBM Plex Mono', monospace" }}
+      style={{ background: 'var(--bg-main)', color: 'var(--text-main)', fontFamily: 'var(--font-body)' }}
     >
       {/* ── Nav ── */}
       <nav className="flex items-center justify-between gap-3 px-4 sm:px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
@@ -289,7 +295,7 @@ export default function Landing() {
             className="w-8 h-8 rounded-xl object-cover"
             style={{ boxShadow: '0 0 20px #00e67640' }}
           />
-          <span style={{ fontWeight: 700, fontSize: 15, letterSpacing: '-0.02em', color: '#e8e8f0' }}>PlotDNA</span>
+          <span style={{ fontFamily: 'var(--font-heading)', fontWeight: 800, fontSize: 15, letterSpacing: '-0.02em', color: 'var(--text-main)' }}>PlotDNA</span>
           <span
             className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px]"
             style={{ background: 'rgba(0,230,118,0.1)', border: '1px solid rgba(0,230,118,0.25)', color: '#00e676' }}
@@ -303,11 +309,13 @@ export default function Landing() {
         </div>
         <button
           onClick={goToMap}
-          className="mobile-tap flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-[11px] font-mono transition-all"
+          className="mobile-tap flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl text-[11px] transition-all"
           style={{
             background: 'rgba(0,230,118,0.1)',
             border: '1px solid rgba(0,230,118,0.3)',
             color: '#00e676',
+            fontFamily: 'var(--font-mono)',
+            letterSpacing: '0.04em',
           }}
           onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,230,118,0.18)' }}
           onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(0,230,118,0.1)' }}
@@ -329,9 +337,11 @@ export default function Landing() {
           style={{
             background: 'rgba(0,230,118,0.07)',
             border: '1px solid rgba(0,230,118,0.2)',
+            fontFamily: 'var(--font-mono)',
             fontSize: 10,
             color: '#00e676',
             letterSpacing: '0.12em',
+            textTransform: 'uppercase',
           }}
         >
           <Zap size={10} />
@@ -344,16 +354,17 @@ export default function Landing() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.08 }}
           style={{
-            fontSize: 'clamp(26px, 5vw, 50px)',
+            fontFamily: 'var(--font-heading)',
+            fontSize: 'clamp(44px, 7vw, 88px)',
             fontWeight: 800,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.15,
-            maxWidth: 680,
-            color: '#f0f0fa',
+            letterSpacing: '-0.06em',
+            lineHeight: 0.96,
+            maxWidth: 780,
+            color: 'var(--text-main)',
           }}
         >
-          Not sure whether a plot is<br className="hidden sm:block" />{' '}
-          <span style={{ color: '#00e676' }}>truly worth buying?</span>
+          Decode the real potential
+          <span style={{ color: '#00e676' }}> of any land parcel.</span>
         </motion.h1>
 
         {/* Sub */}
@@ -361,10 +372,9 @@ export default function Landing() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.18 }}
-          style={{ fontSize: 14, color: '#666680', maxWidth: 520, marginTop: 18, lineHeight: 1.75 }}
+          style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 680, marginTop: 22, lineHeight: 1.7, letterSpacing: '-0.01em' }}
         >
-          PlotDNA decodes the past, present, and future of the location you are investing in —
-          from infrastructure and growth signals to satellite history and forward-looking trends.
+          PlotDNA analyzes infrastructure, growth signals, satellite context, RERA activity, and location patterns to help you judge land before you buy.
         </motion.p>
 
         {/* ── Search box ── */}
@@ -372,22 +382,22 @@ export default function Landing() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
-          className="relative w-full mt-10"
+          className="relative w-full mt-12"
           style={{ maxWidth: 680 }}
         >
           <div
             style={{
-              background: 'rgba(10,10,22,0.92)',
-              backdropFilter: 'blur(24px)',
+              background: 'rgba(11,15,20,0.82)',
+              backdropFilter: 'blur(26px)',
               border: `1px solid ${focused ? 'rgba(0,230,118,0.4)' : 'rgba(255,255,255,0.1)'}`,
-              borderRadius: showDropdown ? '16px 16px 0 0' : 16,
+              borderRadius: showDropdown ? '18px 18px 0 0' : 18,
               boxShadow: focused
-                ? '0 0 0 1px rgba(0,230,118,0.1), 0 20px 56px rgba(0,0,0,0.6)'
-                : '0 8px 32px rgba(0,0,0,0.5)',
+                ? '0 0 0 1px rgba(0,230,118,0.12), 0 24px 64px rgba(0,0,0,0.58)'
+                : '0 16px 48px rgba(0,0,0,0.42)',
               transition: 'border-color 0.2s, box-shadow 0.2s, border-radius 0.15s',
             }}
           >
-            <div className="landing-search-row flex flex-wrap items-center px-5 py-4 gap-3">
+            <div className="landing-search-row flex flex-wrap items-center px-5 py-4 gap-3 sm:flex-nowrap sm:px-6 sm:py-5">
               {resolving || brochureLoading || locating || analysisLoading ? (
                 <Activity
                   size={16}
@@ -404,7 +414,7 @@ export default function Landing() {
               <input
                 ref={inputRef}
                 type="text"
-                placeholder="Area name, lat/lng, or paste a map link..."
+                placeholder="Search area, coordinates, or paste a map link"
                 value={query}
                 onChange={e => { setQuery(e.target.value); setInputError('') }}
                 onFocus={() => setFocused(true)}
@@ -415,8 +425,8 @@ export default function Landing() {
                   minWidth: 0,
                   background: 'transparent',
                   color: '#e8e8f0',
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: 14,
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 15,
                   outline: 'none',
                   border: 'none',
                 }}
@@ -455,13 +465,15 @@ export default function Landing() {
                 title="Allow location permission and analyze your current coordinates"
                 onClick={handleLocateMe}
                 disabled={resolving || brochureLoading || locating || analysisLoading}
-                className="mobile-action-button mobile-tap flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
+                className="mobile-action-button mobile-tap flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] transition-all"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: locating ? '#00e676' : '#8a8a9a',
+                  border: '1px solid rgba(255,255,255,0.10)',
+                  color: locating ? '#00e676' : 'var(--text-muted)',
                   flexShrink: 0,
                   opacity: resolving || brochureLoading || locating || analysisLoading ? 0.55 : 1,
+                  fontFamily: 'var(--font-body)',
+                  fontWeight: 700,
                 }}
               >
                 <Navigation size={11} />
@@ -471,13 +483,16 @@ export default function Landing() {
               <button
                 onClick={handleEnter}
                 disabled={resolving || brochureLoading || analysisLoading}
-                className="mobile-action-button mobile-tap flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-mono transition-all"
+                className="mobile-action-button mobile-tap flex items-center gap-1.5 px-4 py-2 rounded-xl text-[12px] transition-all"
                 style={{
-                  background: 'rgba(0,230,118,0.12)',
-                  border: '1px solid rgba(0,230,118,0.3)',
-                  color: '#00e676',
+                  background: 'linear-gradient(135deg, #00E676, #00C267)',
+                  border: '1px solid rgba(0,230,118,0.35)',
+                  color: '#03130A',
                   flexShrink: 0,
                   opacity: resolving || brochureLoading || analysisLoading ? 0.5 : 1,
+                  fontFamily: 'var(--font-body)',
+                  fontWeight: 800,
+                  boxShadow: '0 0 24px rgba(0,230,118,0.22)',
                 }}
               >
                 {resolving ? 'Resolving…' : brochureLoading ? 'Reading…' : analysisLoading ? 'Opening...' : 'Analyze'}
@@ -613,11 +628,11 @@ export default function Landing() {
                   <Icon size={14} className="text-[#00e676]" />
                 </div>
                 <div>
-                  <p className="text-lg font-mono font-black text-[#e8e8f0]">{value}</p>
+                  <p className="text-lg font-black text-[#e8e8f0]" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.03em' }}>{value}</p>
                   <p className="text-[9px] font-mono uppercase tracking-[0.14em] text-[#00e676]">{label}</p>
                 </div>
               </div>
-              <p className="text-[10px] font-mono leading-relaxed text-[#555566]">{desc}</p>
+              <p className="text-[11px] leading-relaxed text-[#657086]" style={{ fontFamily: 'var(--font-body)', letterSpacing: '-0.01em' }}>{desc}</p>
             </div>
           ))}
         </motion.div>
@@ -732,6 +747,7 @@ export default function Landing() {
               style={{
                 background: 'rgba(239,68,68,0.08)',
                 border: '1px solid rgba(239,68,68,0.2)',
+                fontFamily: 'var(--font-mono)',
                 fontSize: 10,
                 color: '#ef4444',
                 letterSpacing: '0.1em',
@@ -742,31 +758,30 @@ export default function Landing() {
             </div>
             <h2
               style={{
-                fontSize: 'clamp(20px, 3.5vw, 34px)',
+                fontFamily: 'var(--font-heading)',
+                fontSize: 'clamp(28px, 4vw, 44px)',
                 fontWeight: 800,
-                letterSpacing: '-0.03em',
+                letterSpacing: '-0.055em',
                 lineHeight: 1.2,
-                color: '#f0f0fa',
-                maxWidth: 560,
+                color: 'var(--text-main)',
+                maxWidth: 660,
                 margin: '0 auto',
               }}
             >
-              Confused about whether to buy this plot?
+              Land decisions should not depend on guesswork.
             </h2>
             <p
               style={{
-                fontSize: 13,
-                color: '#555566',
-                marginTop: 14,
-                maxWidth: 480,
+                fontSize: 15,
+                color: 'var(--text-muted)',
+                marginTop: 16,
+                maxWidth: 620,
                 margin: '14px auto 0',
                 lineHeight: 1.7,
+                letterSpacing: '-0.01em',
               }}
             >
-              Most people buy plots based on a broker's word, a gut feeling, or
-              a friend's tip. Nobody shows you the <em style={{ color: '#888899' }}>actual data</em> —
-              what this land looked like 10 years ago, what changed, and where
-              it's realistically heading.
+              Most buyers rely on broker claims, gut feeling, or friend suggestions. PlotDNA brings the missing layer: location data, growth signals, infrastructure context, and risk indicators.
             </p>
           </motion.div>
 
@@ -789,8 +804,7 @@ export default function Landing() {
                 transition={{ duration: 0.4, delay: 0 }}
                 className="relative rounded-2xl p-5"
                 style={{
-                  background: 'rgba(239,68,68,0.05)',
-                  border: '1px solid rgba(239,68,68,0.18)',
+                  ...cardSurface,
                 }}
               >
                 <div
@@ -799,22 +813,25 @@ export default function Landing() {
                 >
                   <Clock size={14} style={{ color: '#ef4444' }} />
                 </div>
-                <p style={{ fontSize: 9, color: '#ef4444', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>
-                  10 Years Ago
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: '#ef4444', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  10 YEARS AGO
                 </p>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#ccccdd', marginBottom: 10 }}>
-                  Open farmland. No road. No power.
+                <p style={{ fontFamily: 'var(--font-heading)', fontSize: 17, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em', marginBottom: 8 }}>
+                  Past Context
+                </p>
+                <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
+                  Open farmland. Limited access. No strong infrastructure signal.
                 </p>
                 <div className="flex flex-col gap-2">
                   {[
-                    'No metro connectivity',
                     'Sparse satellite density',
-                    'Zero RERA registrations',
-                    'Price: ₹800/sq.yd',
+                    'Low connectivity',
+                    'Few formal registrations',
+                    'Early-stage pricing',
                   ].map(item => (
                     <div key={item} className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#ef444460' }} />
-                      <span style={{ fontSize: 10, color: '#555566' }}>{item}</span>
+                      <span style={{ fontSize: 11, color: 'var(--text-soft)', lineHeight: 1.45 }}>{item}</span>
                     </div>
                   ))}
                 </div>
@@ -828,9 +845,8 @@ export default function Landing() {
                 transition={{ duration: 0.4, delay: 0.1 }}
                 className="relative rounded-2xl p-5"
                 style={{
-                  background: 'rgba(0,230,118,0.05)',
-                  border: '1px solid rgba(0,230,118,0.25)',
-                  boxShadow: '0 0 32px rgba(0,230,118,0.06)',
+                  ...cardSurface,
+                  border: '1px solid rgba(0,230,118,0.28)',
                 }}
               >
                 {/* "You are here" badge */}
@@ -852,22 +868,25 @@ export default function Landing() {
                 >
                   <Satellite size={14} style={{ color: '#00e676' }} />
                 </div>
-                <p style={{ fontSize: 9, color: '#00e676', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>
-                  Right Now
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: '#00e676', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  RIGHT NOW
                 </p>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#ccccdd', marginBottom: 10 }}>
-                  Infrastructure arrived. Price tripled.
+                <p style={{ fontFamily: 'var(--font-heading)', fontSize: 17, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em', marginBottom: 8 }}>
+                  Current Signals
+                </p>
+                <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
+                  Infrastructure activity, registrations, and nearby development begin changing the area profile.
                 </p>
                 <div className="flex flex-col gap-2">
                   {[
-                    'Metro phase 2 under construction',
-                    'Satellite: high-density buildup',
-                    '38 active RERA projects',
-                    'Price: ₹2,800/sq.yd',
+                    'Road and metro activity nearby',
+                    'Higher satellite-visible buildup',
+                    'RERA and project movement',
+                    'Price momentum visible',
                   ].map(item => (
                     <div key={item} className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#00e67660' }} />
-                      <span style={{ fontSize: 10, color: '#666680' }}>{item}</span>
+                      <span style={{ fontSize: 11, color: 'var(--text-soft)', lineHeight: 1.45 }}>{item}</span>
                     </div>
                   ))}
                 </div>
@@ -890,8 +909,7 @@ export default function Landing() {
                 transition={{ duration: 0.4, delay: 0.2 }}
                 className="relative rounded-2xl p-5"
                 style={{
-                  background: 'rgba(0,180,255,0.04)',
-                  border: '1px solid rgba(0,180,255,0.15)',
+                  ...cardSurface,
                 }}
               >
                 <div
@@ -900,22 +918,25 @@ export default function Landing() {
                 >
                   <Building2 size={14} style={{ color: '#00b4ff' }} />
                 </div>
-                <p style={{ fontSize: 9, color: '#00b4ff', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 6 }}>
-                  10 Years From Now
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: '#00b4ff', letterSpacing: '0.14em', textTransform: 'uppercase', marginBottom: 8 }}>
+                  5-10 YEAR VIEW
                 </p>
-                <p style={{ fontSize: 13, fontWeight: 700, color: '#ccccdd', marginBottom: 10 }}>
-                  Projected outlook based on signals
+                <p style={{ fontFamily: 'var(--font-heading)', fontSize: 17, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em', marginBottom: 8 }}>
+                  Future Outlook
+                </p>
+                <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
+                  A forward-looking view based on infrastructure, demand, employment, and growth signals.
                 </p>
                 <div className="flex flex-col gap-2">
                   {[
-                    'Metro fully operational',
-                    'IT corridor expansion likely',
-                    'Estimated 3–4× price appreciation',
-                    'Entry window: closing fast',
+                    'Connectivity improvement likely',
+                    'Demand corridors expanding',
+                    'Entry window may narrow',
+                    'Risk depends on execution',
                   ].map(item => (
                     <div key={item} className="flex items-center gap-2">
                       <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#00b4ff50' }} />
-                      <span style={{ fontSize: 10, color: '#555566' }}>{item}</span>
+                      <span style={{ fontSize: 11, color: 'var(--text-soft)', lineHeight: 1.45 }}>{item}</span>
                     </div>
                   ))}
                 </div>
@@ -959,7 +980,7 @@ export default function Landing() {
         <div className="max-w-3xl mx-auto">
           <p
             className="text-center mb-8"
-            style={{ fontSize: 10, color: '#333344', letterSpacing: '0.16em', textTransform: 'uppercase' }}
+            style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: '#00e676', letterSpacing: '0.12em', textTransform: 'uppercase' }}
           >
             What you get
           </p>
@@ -967,10 +988,9 @@ export default function Landing() {
             {FEATURES.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
-                className="rounded-xl p-4"
+                className="rounded-2xl p-5 transition-all duration-200"
                 style={{
-                  background: 'rgba(255,255,255,0.025)',
-                  border: '1px solid rgba(255,255,255,0.06)',
+                  ...cardSurface,
                 }}
               >
                 <div
@@ -979,8 +999,8 @@ export default function Landing() {
                 >
                   <Icon size={14} style={{ color: '#00e676' }} />
                 </div>
-                <p style={{ fontSize: 12, fontWeight: 700, color: '#ccccdd', marginBottom: 6 }}>{title}</p>
-                <p style={{ fontSize: 10, color: '#444455', lineHeight: 1.6 }}>{desc}</p>
+                <p style={{ fontFamily: 'var(--font-heading)', fontSize: 14, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em', marginBottom: 8 }}>{title}</p>
+                <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.65, letterSpacing: '-0.01em' }}>{desc}</p>
               </div>
             ))}
           </div>
@@ -993,14 +1013,14 @@ export default function Landing() {
       >
         <div className="mx-auto max-w-5xl">
           <div className="mb-8 flex flex-col gap-2 text-center">
-            <p style={{ fontSize: 10, color: '#00e676', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: '#00e676', letterSpacing: '0.14em', textTransform: 'uppercase' }}>
               Open A City Polygon Map
             </p>
-            <h2 className="font-display text-2xl font-black text-[#e8e8f0] sm:text-3xl">
-              Start broad, then click the exact area.
+            <h2 className="font-display text-2xl font-black text-[#e8e8f0] sm:text-3xl" style={{ letterSpacing: '-0.04em' }}>
+              Choose a city. Then zoom into the exact market.
             </h2>
-            <p className="mx-auto max-w-xl text-sm font-mono leading-relaxed text-[#555566]">
-              Pick a city first. PlotDNA opens the actual polygon map for that city, then you can click any supported locality for full analysis.
+            <p className="mx-auto max-w-xl text-sm leading-relaxed text-[#8b95a7]" style={{ fontFamily: 'var(--font-body)', letterSpacing: '-0.01em' }}>
+              Start from supported city maps and open locality-level analysis for investment signals, risk, and future growth view.
             </p>
           </div>
 
@@ -1013,8 +1033,7 @@ export default function Landing() {
                   onClick={() => openCityMap(city.slug)}
                   className="group rounded-2xl p-4 text-left transition-all"
                   style={{
-                    background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.018))',
-                    border: '1px solid rgba(255,255,255,0.08)',
+                    ...cardSurface,
                   }}
                 >
                   <div className="mb-4 flex items-start justify-between gap-3">
@@ -1026,8 +1045,8 @@ export default function Landing() {
                         <Map size={16} className="text-[#00e676]" />
                       </div>
                       <div>
-                        <p className="font-mono text-sm font-bold text-[#e8e8f0]">{city.name}</p>
-                        <p className="mt-0.5 text-[10px] font-mono text-[#444455]">{areaCount} supported zones</p>
+                        <p className="text-sm font-bold text-[#f4f7fb]" style={{ fontFamily: 'var(--font-heading)', letterSpacing: '-0.02em' }}>{city.name}</p>
+                        <p className="mt-0.5 text-[11px] text-[#657086]" style={{ fontFamily: 'var(--font-body)' }}>{areaCount} supported zones</p>
                       </div>
                     </div>
                     <ChevronRight size={15} className="mt-2 text-[#333344] transition-colors group-hover:text-[#00e676]" />
@@ -1035,7 +1054,7 @@ export default function Landing() {
                   <div className="flex items-center gap-2 rounded-xl px-3 py-2"
                     style={{ background: 'rgba(0,230,118,0.055)', border: '1px solid rgba(0,230,118,0.13)' }}>
                     <Route size={12} className="text-[#00e676]" />
-                    <span className="text-[10px] font-mono text-[#00e676]">Open polygon map</span>
+                    <span className="text-[10px] font-mono text-[#00e676] tracking-[0.04em]">Open polygon map</span>
                   </div>
                 </button>
               )
@@ -1046,17 +1065,19 @@ export default function Landing() {
 
       {/* ── CTA ── */}
       <section className="py-14 flex flex-col items-center gap-5" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <p style={{ fontSize: 18, fontWeight: 700, color: '#e8e8f0', letterSpacing: '-0.02em' }}>
+        <p style={{ fontFamily: 'var(--font-heading)', fontSize: 22, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.04em' }}>
           Ready to analyze a plot?
         </p>
         <div className="flex w-full max-w-sm flex-col sm:flex-row items-stretch sm:items-center gap-3 px-4">
           <button
             onClick={goToMap}
-            className="mobile-tap flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-mono text-[13px] font-semibold transition-all"
+            className="mobile-tap flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-[13px] font-semibold transition-all"
             style={{
-              background: 'linear-gradient(135deg, #00e676 0%, #00b36b 100%)',
-              color: '#000',
-              boxShadow: '0 0 24px rgba(0,230,118,0.35)',
+              background: 'linear-gradient(135deg, #00E676, #00C267)',
+              color: '#03130A',
+              boxShadow: '0 0 24px rgba(0,230,118,0.22)',
+              fontFamily: 'var(--font-body)',
+              fontWeight: 800,
             }}
             onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 36px rgba(0,230,118,0.5)' }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.boxShadow = '0 0 24px rgba(0,230,118,0.35)' }}
@@ -1066,11 +1087,13 @@ export default function Landing() {
           </button>
           <button
             onClick={() => { inputRef.current?.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-            className="mobile-tap flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-mono text-[13px] transition-all"
+            className="mobile-tap flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-[13px] transition-all"
             style={{
               background: 'rgba(255,255,255,0.04)',
               border: '1px solid rgba(255,255,255,0.1)',
-              color: '#888899',
+              color: 'var(--text-muted)',
+              fontFamily: 'var(--font-body)',
+              fontWeight: 700,
             }}
             onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = '#e8e8f0' }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = '#888899' }}
@@ -1102,5 +1125,10 @@ export default function Landing() {
     </>
   )
 }
+
+
+
+
+
 
 

@@ -3,8 +3,25 @@
 
 /* ── Custom fonts for Tailwind v4 ── */
 @theme {
-  --font-display: 'Syne', sans-serif;
-  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Manrope', 'Inter Tight', system-ui, sans-serif;
+  --font-sans: 'Inter', 'Manrope', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+:root {
+  --font-heading: 'Manrope', 'Inter Tight', system-ui, sans-serif;
+  --font-body: 'Inter', 'Manrope', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --bg-main: #05070a;
+  --bg-card: #0b0f14;
+  --bg-card-soft: #0e1218;
+  --border-soft: rgba(255, 255, 255, 0.08);
+  --border-green: rgba(0, 230, 118, 0.35);
+  --text-main: #f4f7fb;
+  --text-muted: #8b95a7;
+  --text-soft: #657086;
+  --green: #00e676;
+  --green-soft: rgba(0, 230, 118, 0.12);
 }
 
 * {
@@ -20,9 +37,9 @@ body,
 }
 
 body {
-  background-color: #050508;
-  color: #e8e8f0;
-  font-family: 'IBM Plex Mono', monospace;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   overflow-x: hidden;
@@ -103,7 +120,7 @@ button {
 
 /* ── MapLibre GL overrides ── */
 .maplibregl-map {
-  font-family: 'IBM Plex Mono', monospace;
+  font-family: var(--font-body);
 }
 
 .maplibregl-ctrl-attrib,
