@@ -11,6 +11,10 @@ import httpx
 logger = logging.getLogger(__name__)
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+OVERPASS_HEADERS = {
+    "Accept": "application/json",
+    "User-Agent": "PlotDNA/1.0 (OpenStreetMap signal scoring)",
+}
 
 # Radius presets (meters) — tuned for Indian urban geography
 R_TRANSIT  = 3000    # metro stations, rail, bus terminals
@@ -134,8 +138,8 @@ async def fetch_osm_signals_with_status(lat: float, lng: float) -> tuple[dict, b
         async with httpx.AsyncClient(timeout=35) as client:
             resp = await client.post(
                 OVERPASS_URL,
-                data=f"data={query}",
-                headers={"Content-Type": "application/x-www-form-urlencoded"},
+                data={"data": query},
+                headers=OVERPASS_HEADERS,
             )
             resp.raise_for_status()
             counts = _count_elements(resp.json())

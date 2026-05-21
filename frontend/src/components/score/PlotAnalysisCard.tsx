@@ -140,6 +140,8 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
         ? 'Live OSM score'
         : liveData.freshness === 'stale'
           ? 'Cached OSM score (stale)'
+          : liveData.freshness === 'unavailable'
+            ? 'OSM score unavailable'
           : 'Cached OSM score'
       : 'Static market score'
 
@@ -277,6 +279,8 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                     ? `Live OSM coverage at this exact pin is sparse, so PlotDNA is using the ${fallbackDisplayLabel} reference score while still showing live coordinate context.`
                     : liveData.freshness === 'stale'
                       ? 'Overpass is temporarily unavailable, so this score is using the last cached OSM signal set for this coordinate cell.'
+                      : liveData.freshness === 'unavailable'
+                        ? 'Overpass is temporarily unavailable and PlotDNA does not yet have cached OSM signals for this coordinate cell.'
                     : 'Score derived from real transit, roads, offices and amenities near this coordinate. Price velocity is a proxy and static micro-market context is shown only when the fallback tier is exact or safely nearby.'}
                 </p>
               </div>

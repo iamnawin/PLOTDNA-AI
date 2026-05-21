@@ -28,7 +28,7 @@ export interface LiveDNAResult {
   signals:      LiveSignals
   highlights:   string[]
   confidence:   'High' | 'Medium' | 'Low'
-  freshness:    'live' | 'cached' | 'stale'
+  freshness:    'live' | 'cached' | 'stale' | 'unavailable'
   osm_counts:   Record<string, number>
   data_sources: string[]
   coverage_note: string

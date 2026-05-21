@@ -72,6 +72,9 @@ async def analyze_coordinate(req: AnalyzeRequest):
                 counts = stale.counts
                 freshness = "stale"
                 stale_reason = "Overpass unavailable; using expired cached OSM counts."
+            else:
+                freshness = "unavailable"
+                stale_reason = "Overpass unavailable and no cached OSM counts exist for this coordinate cell."
 
     result = compute_from_osm(counts)
 
