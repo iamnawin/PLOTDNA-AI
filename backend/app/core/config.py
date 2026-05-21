@@ -23,6 +23,13 @@ class Settings(BaseSettings):
 
     # AI
     GEMINI_API_KEY: str = ""
+    AI_PROVIDER_ORDER: str = "gemini,nvidia"
+    GEMINI_VERDICT_MODELS: str = "gemini-1.5-flash,gemini-2.0-flash-lite"
+    GEMINI_BROCHURE_MODELS: str = "gemini-2.0-flash,gemini-2.0-flash-lite,gemini-1.5-flash"
+    NVIDIA_API_KEY: str = ""
+    NVIDIA_BASE_URL: str = "https://integrate.api.nvidia.com/v1"
+    NVIDIA_CHAT_MODELS: str = "moonshotai/kimi-k2.6"
+    NVIDIA_SAFETY_MODEL: str = "nvidia/nemotron-3-content-safety"
 
     # Database / Supabase
     DATABASE_URL: str = ""

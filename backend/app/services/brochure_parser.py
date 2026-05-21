@@ -5,7 +5,6 @@ Accepts a real estate PDF/Image brochure and extracts structured investment data
 Supports: India (INR, RERA) and UAE (AED, DLD)
 """
 import os
-import json
 import time
 import logging
 import tempfile
@@ -15,6 +14,7 @@ from typing import Optional
 
 import google.generativeai as genai
 from app.core.config import settings
+from app.services.ai_provider import call_gemini_content_json, csv_values
 
 logger = logging.getLogger(__name__)
 
@@ -141,26 +141,15 @@ def _upload_file(file_path: str, mime_type: str) -> genai.types.File:
     raise TimeoutError("Gemini file processing timed out after 30s")
 
 
-def _call_gemini_vision(uploaded_file: genai.types.File) -> dict:
-    model = genai.GenerativeModel(
-        model_name="gemini-2.0-flash",
-        system_instruction=_SYSTEM_PROMPT,
-    )
-    response = model.generate_content(
+def _call_gemini_vision(uploaded_file: genai.types.File) -> tuple[dict, str]:
+    result = call_gemini_content_json(
         [uploaded_file, "Extract all real estate investment data from this brochure."],
-        generation_config=genai.GenerationConfig(
-            temperature=0.1,        # low temp for structured extraction
-            max_output_tokens=1500,
-            response_mime_type="application/json",
-        ),
+        csv_values(settings.GEMINI_BROCHURE_MODELS),
+        system_instruction=_SYSTEM_PROMPT,
+        temperature=0.1,
+        max_output_tokens=1500,
     )
-    raw = response.text.strip()
-    # Strip markdown fences if model ignores response_mime_type hint
-    if raw.startswith("```"):
-        raw = raw.split("```")[1]
-        if raw.startswith("json"):
-            raw = raw[4:]
-    return json.loads(raw.strip())
+    return result.data, result.source
 
 
 def _cleanup_file(name: str):
@@ -236,8 +225,8 @@ async def parse_brochure(
         logger.info("Uploading brochure to Gemini Files API: %s (%s MB)", original_filename, f"{size_mb:.2f}")
         uploaded_file = _upload_file(tmp_path, mime_type)
 
-        logger.info("Calling Gemini 2.0 Flash vision extraction")
-        raw_data = _call_gemini_vision(uploaded_file)
+        logger.info("Calling Gemini vision extraction")
+        raw_data, source = _call_gemini_vision(uploaded_file)
 
         extraction = BrochureExtraction(
             project_name=raw_data.get("project_name", ""),
@@ -261,7 +250,7 @@ async def parse_brochure(
             hidden_clauses=raw_data.get("hidden_clauses", []),
             confidence=float(raw_data.get("confidence", 0.5)),
             raw_text_excerpt=raw_data.get("raw_text_excerpt", "")[:500],
-            source="gemini-2.0-flash",
+            source=source,
         )
 
         logger.info(

@@ -220,18 +220,21 @@ Users upload a PDF/image brochure. The backend sends the file to Gemini Vision t
 | File | Responsibility |
 | --- | --- |
 | `backend/app/api/routes/ai.py` | Authenticated chat endpoint at `POST /api/ai/chat`. |
-| `backend/app/services/verdict_service.py` | Area verdict generation. |
+| `backend/app/services/ai_provider.py` | Shared JSON helpers for Gemini and NVIDIA provider calls. |
+| `backend/app/services/verdict_service.py` | Area verdict generation with Gemini-first, NVIDIA-second fallback. |
 | `frontend/src/components/ui/VerdictCard.tsx` | Displays AI verdict on area detail. |
-| `backend/app/core/config.py` | `GEMINI_API_KEY` and future provider envs. |
+| `backend/app/core/config.py` | Gemini, NVIDIA, and provider ordering envs. |
 
-### Planned Provider Fallback
+### Provider Fallback
 
-The app should not depend on a single Gemini model for all AI features. Proposed future envs:
+The app no longer depends on one Gemini model for area verdicts. Verdict generation reads `AI_PROVIDER_ORDER`, tries configured Gemini models first, then NVIDIA chat models when `NVIDIA_API_KEY` is present. If all external providers fail, the deterministic PlotDNA fallback verdict still returns a usable response.
+
+Brochure upload still uses Gemini Vision because it must read PDF/image files. The brochure path now tries multiple Gemini brochure models and returns a clear quota message when the Gemini account limit is exhausted.
 
 ```env
 AI_PROVIDER_ORDER=gemini,nvidia
-GEMINI_BROCHURE_MODELS=gemini-2.0-flash-lite,gemini-1.5-flash,gemini-2.0-flash
 GEMINI_VERDICT_MODELS=gemini-1.5-flash,gemini-2.0-flash-lite
+GEMINI_BROCHURE_MODELS=gemini-2.0-flash,gemini-2.0-flash-lite,gemini-1.5-flash
 NVIDIA_API_KEY=your_nvidia_key_in_render_only
 NVIDIA_BASE_URL=https://integrate.api.nvidia.com/v1
 NVIDIA_CHAT_MODELS=moonshotai/kimi-k2.6
@@ -376,9 +379,7 @@ Expected OSM cache behavior:
 
 | Gap | Current impact | Likely next file(s) |
 | --- | --- | --- |
-| Gemini quota exhausted | Brochure upload and some AI verdict paths can fail despite correct routing. | `backend/app/api/routes/utils.py`, `backend/app/services/brochure_parser.py`, `backend/app/services/verdict_service.py`, `backend/app/core/config.py` |
-| No AI provider fallback yet | One model/key outage blocks AI features. | New AI provider service plus config/env updates. |
+| Gemini quota exhausted | Brochure upload can still fail when all Gemini Vision models are quota-blocked; users should search by address/map link/coords while quota resets. | `backend/app/api/routes/utils.py`, `backend/app/services/brochure_parser.py` |
+| NVIDIA not configured on Render yet | Verdict fallback to NVIDIA only activates after `NVIDIA_API_KEY` is added to backend env. | `backend/app/services/ai_provider.py`, `backend/app/services/verdict_service.py`, `backend/app/core/config.py` |
 | Backend dependencies not installed in local clone | Local FastAPI route smoke tests cannot run until `pip install -r backend/requirements.txt`. | `backend/requirements.txt` |
-| `VerdictCard` lint warning | Lint exits 0 but reports one hook dependency warning. | `frontend/src/components/ui/VerdictCard.tsx` |
 | GEE not connected to live scoring | Satellite is currently curated/stubbed rather than computed. | `backend/app/api/routes/satellite.py`, future GEE service |
-

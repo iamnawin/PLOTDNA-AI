@@ -13,6 +13,7 @@ import httpx
 from fastapi import APIRouter, File, HTTPException, UploadFile
 
 from app.core.config import settings
+from app.services.ai_provider import call_gemini_content_json, csv_values
 
 router = APIRouter()
 
@@ -250,26 +251,31 @@ async def analyze_brochure(file: UploadFile = File(...)):
         mime = file.content_type or "application/octet-stream"
 
     try:
-        import google.generativeai as genai  # lazy import — only needed for this endpoint
-
-        genai.configure(api_key=settings.GEMINI_API_KEY)
-        model = genai.GenerativeModel("gemini-2.0-flash")
-
-        response = model.generate_content([
-            {"mime_type": mime, "data": base64.b64encode(content).decode()},
-            _BROCHURE_PROMPT,
-        ])
-
-        text = response.text.strip()
-        # Strip markdown code fences if Gemini adds them
-        text = re.sub(r"^```(?:json)?\s*", "", text)
-        text = re.sub(r"\s*```$", "", text)
-        data: dict = json.loads(text)
+        result = call_gemini_content_json(
+            [
+                {"mime_type": mime, "data": base64.b64encode(content).decode()},
+                _BROCHURE_PROMPT,
+            ],
+            csv_values(settings.GEMINI_BROCHURE_MODELS),
+            max_output_tokens=600,
+            temperature=0.1,
+        )
+        data: dict = result.data
 
     except (json.JSONDecodeError, ValueError) as exc:
         raise HTTPException(status_code=422, detail=f"Could not parse Gemini response: {exc}")
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Gemini Vision error: {exc}")
+        message = str(exc)
+        lower = message.lower()
+        if "quota" in lower or "429" in lower or "rate" in lower:
+            raise HTTPException(
+                status_code=429,
+                detail=(
+                    "Brochure AI quota is exhausted. Search by project address, map link, "
+                    "or coordinates for now, then retry after the Gemini quota resets."
+                ),
+            ) from exc
+        raise HTTPException(status_code=502, detail=f"Gemini Vision error: {message}")
 
     if "error" in data:
         raise HTTPException(
