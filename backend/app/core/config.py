@@ -33,6 +33,10 @@ class Settings(BaseSettings):
     GEE_SERVICE_ACCOUNT: str = ""
     GEE_KEY_FILE: str = ""
 
+    # OSM / Overpass cache
+    OSM_CACHE_DIR: str = ""
+    OSM_CACHE_TTL_SECONDS: int = 86400
+
     # Redis
     REDIS_URL: str = "redis://localhost:6379"
 

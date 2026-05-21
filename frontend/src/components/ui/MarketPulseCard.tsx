@@ -4,7 +4,7 @@
  * Shows: sentiment gauge, positive/neutral/negative breakdown,
  * area vs city comparison, and scored news articles.
  */
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Activity, TrendingUp, TrendingDown, Minus, RefreshCw, ExternalLink, Clock } from 'lucide-react'
 import { API_BASE_URL } from '@/lib/runtime'
@@ -73,8 +73,10 @@ export default function MarketPulseCard({ citySlug, areaSlug, country = 'india',
   const [error, setError] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
 
-  async function load(force = false) {
-    force ? setRefreshing(true) : setLoading(true)
+  const load = useCallback(async (force = false) => {
+    if (force) setRefreshing(true)
+    else setLoading(true)
+
     setError(false)
     try {
       const res = await fetch(`${API_BASE}/api/v1/market-pulse/${country}/${areaSlug}`)
@@ -87,9 +89,9 @@ export default function MarketPulseCard({ citySlug, areaSlug, country = 'india',
       setRefreshing(false)
       onReady?.()
     }
-  }
+  }, [areaSlug, country, onReady])
 
-  useEffect(() => { load() }, [citySlug, areaSlug, country])
+  useEffect(() => { void load() }, [citySlug, load])
 
   if (loading) {
     return (

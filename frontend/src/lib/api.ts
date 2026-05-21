@@ -28,11 +28,18 @@ export interface LiveDNAResult {
   signals:      LiveSignals
   highlights:   string[]
   confidence:   'High' | 'Medium' | 'Low'
-  freshness:    'live' | 'cached'
+  freshness:    'live' | 'cached' | 'stale'
   osm_counts:   Record<string, number>
   data_sources: string[]
   coverage_note: string
   scored_at:    string
+  cache?: {
+    key: string | null
+    hit: boolean
+    age_seconds: number
+    ttl_seconds: number
+    stale_reason?: string | null
+  }
 }
 
 export type MapLinkResolutionReason = 'ok' | 'backend_unreachable' | 'invalid_link' | 'timeout'

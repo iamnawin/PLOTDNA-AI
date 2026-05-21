@@ -117,10 +117,17 @@ def _count_elements(data: dict) -> dict:
     return c
 
 
-async def fetch_osm_signals(lat: float, lng: float) -> dict:
+def empty_osm_counts() -> dict:
+    return {k: 0 for k in (
+        "transit", "roads", "airport", "hospitals", "education",
+        "shopping", "offices", "it_offices", "residential", "construction"
+    )}
+
+
+async def fetch_osm_signals_with_status(lat: float, lng: float) -> tuple[dict, bool]:
     """
     Query Overpass API and return categorized OSM signal counts for the coordinate.
-    Returns zero-filled dict on failure (caller should degrade gracefully).
+    Returns (zero-filled dict, False) on failure so callers can choose stale cache.
     """
     query = _build_query(lat, lng)
     try:
@@ -138,10 +145,16 @@ async def fetch_osm_signals(lat: float, lng: float) -> dict:
                 counts["transit"], counts["roads"], counts["offices"],
                 counts["residential"], counts["construction"],
             )
-            return counts
+            return counts, True
     except Exception as exc:
         logger.warning("Overpass query failed for %.4f,%.4f: %s", lat, lng, exc)
-        return {k: 0 for k in (
-            "transit", "roads", "airport", "hospitals", "education",
-            "shopping", "offices", "it_offices", "residential", "construction"
-        )}
+        return empty_osm_counts(), False
+
+
+async def fetch_osm_signals(lat: float, lng: float) -> dict:
+    """
+    Backward-compatible helper that preserves the old zero-on-failure behavior.
+    Prefer fetch_osm_signals_with_status when a stale cache fallback is available.
+    """
+    counts, _ok = await fetch_osm_signals_with_status(lat, lng)
+    return counts

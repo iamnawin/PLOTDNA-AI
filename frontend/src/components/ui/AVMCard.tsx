@@ -47,17 +47,31 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
-    setError(false)
-    fetch(`${API_BASE}/api/v1/avm/${country}/${areaSlug}`)
-      .then(r => { if (!r.ok) throw new Error(r.statusText); return r.json() })
-      .then(setData)
-      .catch(() => setError(true))
-      .finally(() => {
-        setLoading(false)
-        onReady?.()
-      })
-  }, [areaSlug, country])
+    let cancelled = false
+
+    const loadAvm = async () => {
+      setLoading(true)
+      setError(false)
+
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/avm/${country}/${areaSlug}`)
+        if (!response.ok) throw new Error(response.statusText)
+        const payload = await response.json() as AVMData
+        if (!cancelled) setData(payload)
+      } catch {
+        if (!cancelled) setError(true)
+      } finally {
+        if (!cancelled) setLoading(false)
+        if (!cancelled) onReady?.()
+      }
+    }
+
+    void loadAvm()
+
+    return () => {
+      cancelled = true
+    }
+  }, [areaSlug, country, onReady])
 
   if (loading) {
     return (

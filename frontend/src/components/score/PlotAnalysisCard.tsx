@@ -136,7 +136,11 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
   const scoreSourceLabel = liveScoreIsSparse
     ? 'Approximate nearby proxy'
     : isLive
-      ? 'Live OSM score'
+      ? liveData.freshness === 'live'
+        ? 'Live OSM score'
+        : liveData.freshness === 'stale'
+          ? 'Cached OSM score (stale)'
+          : 'Cached OSM score'
       : 'Static market score'
 
   const fallbackTitle =
@@ -271,6 +275,8 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 <p className="text-[9px] font-mono text-[#555566] leading-relaxed">
                   {liveScoreIsSparse
                     ? `Live OSM coverage at this exact pin is sparse, so PlotDNA is using the ${fallbackDisplayLabel} reference score while still showing live coordinate context.`
+                    : liveData.freshness === 'stale'
+                      ? 'Overpass is temporarily unavailable, so this score is using the last cached OSM signal set for this coordinate cell.'
                     : 'Score derived from real transit, roads, offices and amenities near this coordinate. Price velocity is a proxy and static micro-market context is shown only when the fallback tier is exact or safely nearby.'}
                 </p>
               </div>
