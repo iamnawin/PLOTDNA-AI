@@ -197,7 +197,7 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
       { year: '2014', label: 'ORR connectivity', phase: 'early' },
       { year: '2019', label: 'IT park approvals', phase: 'growth' },
       { year: '2022', label: 'Construction surge', phase: 'boom' },
-      { year: '2024', label: 'Prime zone', phase: 'now' },
+      { year: '2026', label: 'Prime zone', phase: 'now' },
     ]
   if (s >= 66)
     return [
@@ -205,7 +205,7 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
       { year: '2015', label: 'Ring road access', phase: 'early' },
       { year: '2020', label: 'Residential projects', phase: 'growth' },
       { year: '2023', label: 'Rising demand', phase: 'boom' },
-      { year: '2024', label: 'Growth corridor', phase: 'now' },
+      { year: '2026', label: 'Growth corridor', phase: 'now' },
     ]
   if (s >= 41)
     return [
@@ -213,13 +213,13 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
       { year: '2016', label: 'Basic amenities', phase: 'early' },
       { year: '2021', label: 'Affordable housing', phase: 'growth' },
       { year: '2023', label: 'Slow appreciation', phase: 'boom' },
-      { year: '2024', label: 'Moderate zone', phase: 'now' },
+      { year: '2026', label: 'Moderate zone', phase: 'now' },
     ]
   return [
     { year: '2009', label: 'Agricultural land', phase: 'baseline' },
     { year: '2017', label: 'Minimal change', phase: 'early' },
     { year: '2022', label: 'Low activity', phase: 'growth' },
-    { year: '2024', label: 'Watch area', phase: 'now' },
+    { year: '2026', label: 'Watch area', phase: 'now' },
   ]
 }
 

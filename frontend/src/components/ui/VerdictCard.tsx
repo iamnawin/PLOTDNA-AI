@@ -140,8 +140,10 @@ export default function VerdictCard({
           className="p-6 rounded-2xl text-center"
           style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
         >
-          <p className="text-[#444455] font-mono text-xs">AI verdict unavailable — start backend or add GEMINI_API_KEY.</p>
-          <p className="text-[#2a2a3e] font-mono text-[10px] mt-1">cd backend && uvicorn app.main:app --reload</p>
+          <p className="text-[#555566] font-mono text-xs">AI verdict is temporarily unavailable.</p>
+          <p className="text-[#2a2a3e] font-mono text-[10px] mt-1">
+            The area score still works. Check backend API health and Render AI envs if this persists.
+          </p>
         </div>
       </motion.section>
     )

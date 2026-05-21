@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
 import { useAppStore } from '@/store'
@@ -33,6 +33,7 @@ const ANALYZE_STEPS = [
 
 export default function Home() {
   const navigate = useNavigate()
+  const location = useLocation()
   const {
     selectedArea,
     highlightTier,
@@ -58,7 +59,8 @@ export default function Home() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
   const [searchError, setSearchError]         = useState('')
   const [resolvingUrl, setResolvingUrl]       = useState(false)
-  const [viewMode, setViewMode]               = useState<ViewMode>('globe')
+  const routeState = location.state as { initialViewMode?: ViewMode } | null
+  const [viewMode, setViewMode]               = useState<ViewMode>(routeState?.initialViewMode ?? 'globe')
   const [globeSidebarExpanded, setGlobeSidebarExpanded] = useState(false)
   const [analyzingCoords, setAnalyzingCoords] = useState<[number, number] | null>(null)
   const [pendingCoords, setPendingCoords]     = useState<[number, number] | null>(null)

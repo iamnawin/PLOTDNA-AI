@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import {
   Search, ChevronRight, Navigation, Zap, Map, TrendingUp,
   Shield, Activity, X, Clock, Satellite, Building2, AlertTriangle,
-  ArrowRight, Paperclip, Link2,
+  ArrowRight, Paperclip, Link2, MapPin, Route,
 } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { CITY_LIST, CITIES } from '@/data/cities'
@@ -16,25 +16,31 @@ import { consumeSearchAccess, type EntitlementsResponse } from '@/lib/entitlemen
 import { getGoalTopAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import EmailGateModal from '@/components/ui/EmailGateModal'
 
+const PAIN_POINTS = [
+  { icon: Clock, value: '10+ hrs', label: 'research saved', desc: 'Broker calls, map checks, RERA lookup, infra notes, and area comparisons start from one coordinate.' },
+  { icon: AlertTriangle, value: '7 signals', label: 'risk screened', desc: 'Infrastructure, population, satellite density, RERA, employment, price movement, and scheme context.' },
+  { icon: TrendingUp, value: '5-year', label: 'growth view', desc: 'A directional future read before you spend serious money or visit the wrong land parcel.' },
+]
+
 const FEATURES = [
   {
-    icon: Activity,
-    title: 'DNA Score',
+    icon: MapPin,
+    title: 'Coordinate to context',
     desc: 'A 0–100 score built from 7 signals — infrastructure, RERA, satellite, employment, and more.',
   },
   {
     icon: Map,
-    title: 'Polygon Map',
+    title: 'City polygon maps',
     desc: 'Every micro-market drawn on a live map. Click any zone to see its full breakdown.',
   },
   {
-    icon: TrendingUp,
-    title: 'Growth Story',
+    icon: Satellite,
+    title: 'Past, now, future',
     desc: 'See a 5-year outlook and key milestones driving value in each area.',
   },
   {
     icon: Shield,
-    title: 'Risk Tiers',
+    title: 'Due diligence starter',
     desc: 'Goldzone → Good Growth → Moderate → High Risk. Know before you invest.',
   },
 ]
@@ -204,10 +210,17 @@ export default function Landing() {
 
   function goToMap() {
     setSelectedCitySlug(activeCity)
-    navigate('/map')
+    navigate('/map', { state: { initialViewMode: 'map' } })
   }
 
-  // Top areas for the selected preview city
+  function openCityMap(citySlug: string) {
+    setActiveCity(citySlug)
+    setSelectedCitySlug(citySlug)
+    setSelectedArea(null)
+    setSearchCoords(null)
+    navigate('/map', { state: { initialViewMode: 'map' } })
+  }
+
   const previewAreas = getGoalTopAreas(CITIES[activeCity]?.areas ?? [], recommendationGoal, 5)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
   const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
@@ -576,12 +589,45 @@ export default function Landing() {
           )}
         </motion.div>
 
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.35 }}
+          className="mt-10 grid w-full grid-cols-1 gap-3 sm:grid-cols-3"
+          style={{ maxWidth: 760 }}
+        >
+          {PAIN_POINTS.map(({ icon: Icon, value, label, desc }) => (
+            <div
+              key={label}
+              className="rounded-2xl p-4 text-left"
+              style={{
+                background: 'linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.018))',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+            >
+              <div className="mb-3 flex items-center gap-2">
+                <div
+                  className="flex h-8 w-8 items-center justify-center rounded-xl"
+                  style={{ background: 'rgba(0,230,118,0.10)', border: '1px solid rgba(0,230,118,0.22)' }}
+                >
+                  <Icon size={14} className="text-[#00e676]" />
+                </div>
+                <div>
+                  <p className="text-lg font-mono font-black text-[#e8e8f0]">{value}</p>
+                  <p className="text-[9px] font-mono uppercase tracking-[0.14em] text-[#00e676]">{label}</p>
+                </div>
+              </div>
+              <p className="text-[10px] font-mono leading-relaxed text-[#555566]">{desc}</p>
+            </div>
+          ))}
+        </motion.div>
+
         {/* ── City preview chips ── */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.35 }}
-          className="mt-10 w-full"
+          className="hidden"
           style={{ maxWidth: 640 }}
         >
           {/* City selector */}
@@ -937,6 +983,63 @@ export default function Landing() {
                 <p style={{ fontSize: 10, color: '#444455', lineHeight: 1.6 }}>{desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="px-5 py-14"
+        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+      >
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-8 flex flex-col gap-2 text-center">
+            <p style={{ fontSize: 10, color: '#00e676', letterSpacing: '0.16em', textTransform: 'uppercase' }}>
+              Open A City Polygon Map
+            </p>
+            <h2 className="font-display text-2xl font-black text-[#e8e8f0] sm:text-3xl">
+              Start broad, then click the exact area.
+            </h2>
+            <p className="mx-auto max-w-xl text-sm font-mono leading-relaxed text-[#555566]">
+              Pick a city first. PlotDNA opens the actual polygon map for that city, then you can click any supported locality for full analysis.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {CITY_LIST.map((city) => {
+              const areaCount = CITIES[city.slug]?.areas.length ?? 0
+              return (
+                <button
+                  key={city.slug}
+                  onClick={() => openCityMap(city.slug)}
+                  className="group rounded-2xl p-4 text-left transition-all"
+                  style={{
+                    background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.018))',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                  }}
+                >
+                  <div className="mb-4 flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="flex h-10 w-10 items-center justify-center rounded-2xl"
+                        style={{ background: 'rgba(0,230,118,0.10)', border: '1px solid rgba(0,230,118,0.24)' }}
+                      >
+                        <Map size={16} className="text-[#00e676]" />
+                      </div>
+                      <div>
+                        <p className="font-mono text-sm font-bold text-[#e8e8f0]">{city.name}</p>
+                        <p className="mt-0.5 text-[10px] font-mono text-[#444455]">{areaCount} supported zones</p>
+                      </div>
+                    </div>
+                    <ChevronRight size={15} className="mt-2 text-[#333344] transition-colors group-hover:text-[#00e676]" />
+                  </div>
+                  <div className="flex items-center gap-2 rounded-xl px-3 py-2"
+                    style={{ background: 'rgba(0,230,118,0.055)', border: '1px solid rgba(0,230,118,0.13)' }}>
+                    <Route size={12} className="text-[#00e676]" />
+                    <span className="text-[10px] font-mono text-[#00e676]">Open polygon map</span>
+                  </div>
+                </button>
+              )
+            })}
           </div>
         </div>
       </section>
