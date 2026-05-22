@@ -264,15 +264,12 @@ export default function Home() {
           left: 'calc(1.25rem + env(safe-area-inset-left))',
         }}
       >
-        <div
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
-          style={{
-            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-            boxShadow: '0 0 20px rgba(16, 185, 129, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4)',
-          }}
-        >
-          <span className="font-display font-black text-slate-950 text-sm leading-none">P</span>
-        </div>
+        <img
+          src="/plotdna-logo.png"
+          alt="PlotDNA"
+          className="w-9 h-9 rounded-xl object-cover flex-shrink-0"
+          style={{ boxShadow: '0 0 20px rgba(16, 185, 129, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4)' }}
+        />
         <div className="hidden sm:block">
           <p className="font-display font-bold text-slate-100 text-[15px] leading-tight tracking-tight">PlotDNA</p>
           <div className="flex items-center gap-1.5 mt-0.5">

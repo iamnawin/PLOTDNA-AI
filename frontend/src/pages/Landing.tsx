@@ -268,14 +268,12 @@ export default function Landing() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
-            <div style={{
-              width: 32, height: 32, borderRadius: 10,
-              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-              boxShadow: '0 0 24px rgba(16,185,129,0.5)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-            }}>
-              <span style={{ fontWeight: 900, color: '#000', fontSize: 13 }}>P</span>
-            </div>
+            <img
+              src="/plotdna-logo.png"
+              alt="PlotDNA"
+              className="w-8 h-8 rounded-xl object-cover"
+              style={{ boxShadow: '0 0 24px rgba(16,185,129,0.5)' }}
+            />
             <span className="font-display" style={{ fontSize: 16, fontWeight: 700, color: '#e8e8f0', letterSpacing: '-0.02em' }}>PlotDNA</span>
           </div>
 
@@ -322,15 +320,12 @@ export default function Landing() {
     >
       <nav className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="flex items-center gap-2.5">
-          <div
-            className="w-8 h-8 rounded-xl flex items-center justify-center"
-            style={{
-              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-              boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)',
-            }}
-          >
-            <span style={{ fontWeight: 900, color: '#000', fontSize: 13 }}>P</span>
-          </div>
+          <img
+            src="/plotdna-logo.png"
+            alt="PlotDNA"
+            className="w-8 h-8 rounded-xl object-cover"
+            style={{ boxShadow: '0 0 20px rgba(16, 185, 129, 0.4)' }}
+          />
           <span className="font-display" style={{ fontWeight: 800, fontSize: 15, letterSpacing: '-0.02em', color: 'var(--text-main)' }}>PlotDNA</span>
           <span
             className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[9px] font-sans"

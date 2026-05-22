@@ -121,12 +121,11 @@ export default function BrochurePage() {
         </button>
 
         <div className="flex items-center gap-2.5">
-          <div
-            className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0"
-            style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}
-          >
-            <span className="text-black font-black text-[10px]">P</span>
-          </div>
+          <img
+            src="/plotdna-logo.png"
+            alt="PlotDNA"
+            className="w-6 h-6 rounded object-cover flex-shrink-0"
+          />
           <span className="font-display font-bold text-[#e8e8f0] text-sm">PlotDNA</span>
           <span
             className="hidden sm:inline text-[8px] font-sans px-1.5 py-0.5 rounded"
