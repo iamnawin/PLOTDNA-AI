@@ -615,16 +615,62 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
               e.currentTarget.style.borderColor = `${color}35`
               e.currentTarget.style.boxShadow = 'none'
             }}
-            >
-              <span className="flex items-center gap-2 text-sm font-semibold" style={{ color }}>
-                View full analysis for this zone
-                <ArrowRight size={13} />
-              </span>
-              <span className="text-[9px] text-slate-400 font-sans mt-0.5">
-                {fallbackPrecisionText}: {fallbackDisplayLabel}
-              </span>
-            </button>
-          </div>
+          >
+            <span className="flex items-center gap-2 text-sm font-semibold" style={{ color }}>
+              View full analysis for this zone
+              <ArrowRight size={13} />
+            </span>
+            <span className="text-[9px] text-slate-400 font-sans mt-0.5">
+              {fallbackPrecisionText}: {fallbackDisplayLabel}
+            </span>
+          </button>
+        </div>
+      )}
+
+      {!hasStaticAreaContext && resolvedFallback.tier === 'regional' && (
+        <div
+          className="p-4 flex-shrink-0"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+        >
+          <button
+            onClick={() => navigate(`/area/${resolvedFallback.districtSlug || 'warangal'}`, {
+              state: {
+                fallbackContext: {
+                  tier: resolvedFallback.tier,
+                  displayLabel: fallbackDisplayLabel,
+                  precisionLabel: resolvedFallback.precisionLabel,
+                  coords,
+                  districtSlug: resolvedFallback.districtSlug,
+                  districtName: resolvedFallback.districtName,
+                  stateSlug: resolvedFallback.stateSlug,
+                },
+              },
+            })}
+            className="w-full flex flex-col items-center justify-center gap-0.5 py-3 px-4 rounded-lg font-sans transition-all duration-300"
+            style={{
+              background: 'rgba(16, 185, 129, 0.15)',
+              border: '1px solid rgba(16, 185, 129, 0.35)',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(16, 185, 129, 0.25)'
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.55)'
+              e.currentTarget.style.boxShadow = '0 0 12px rgba(16, 185, 129, 0.2)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(16, 185, 129, 0.15)'
+              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)'
+              e.currentTarget.style.boxShadow = 'none'
+            }}
+          >
+            <span className="flex items-center gap-2 text-sm font-semibold text-emerald-400">
+              View Regional Fallback Dashboard
+              <ArrowRight size={13} />
+            </span>
+            <span className="text-[9px] text-slate-400 font-sans mt-0.5">
+              District: {resolvedFallback.districtName || 'Regional coverage'}
+            </span>
+          </button>
+        </div>
       )}
     </motion.div>
   )

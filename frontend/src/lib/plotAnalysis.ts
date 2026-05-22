@@ -1,5 +1,5 @@
 import type { MicroMarket } from '@/types'
-import type { ResolutionTier } from '@/lib/location/contracts'
+import type { ResolutionTier, LocalityResolution } from '@/lib/location/contracts'
 import { resolveLocalityResolution } from '@/lib/location/classifier'
 import {
   getAreaReferenceBySlug,
@@ -77,6 +77,9 @@ export interface LocalityFallbackResult {
   displayLabel: string
   precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
   shouldSelectArea: boolean
+  districtSlug?: string | null
+  districtName?: string | null
+  stateSlug?: string | null
 }
 
 function mapTier(tier: ResolutionTier): LocalityFallbackTier {
@@ -91,8 +94,9 @@ export function resolveLocalityFallback(
   lat: number,
   lng: number,
   options: LocalityFallbackOptions = {},
+  preResolved?: LocalityResolution | null
 ): LocalityFallbackResult {
-  const resolution = resolveLocalityResolution(lat, lng, options)
+  const resolution = preResolved || resolveLocalityResolution(lat, lng, options)
   const tier = mapTier(resolution.tier)
   const areaRef = getAreaReferenceBySlug(resolution.citySlug, resolution.localitySlug)
   const clusterRepresentative = getClusterRepresentative(resolution.citySlug, resolution.clusterId, lat, lng)
@@ -144,6 +148,9 @@ export function resolveLocalityFallback(
       displayLabel: resolution.districtName ?? 'India regional coverage',
       precisionLabel: 'broad',
       shouldSelectArea: false,
+      districtSlug: resolution.districtSlug,
+      districtName: resolution.districtName,
+      stateSlug: resolution.stateSlug,
     }
   }
 
@@ -166,8 +173,9 @@ export function findNearestArea(
   lat: number,
   lng: number,
   options: LocalityFallbackOptions = {},
+  preResolved?: LocalityResolution | null
 ): LocalityFallbackResult {
-  return resolveLocalityFallback(lat, lng, options)
+  return resolveLocalityFallback(lat, lng, options, preResolved)
 }
 
 export type MilestonePhase = 'baseline' | 'early' | 'growth' | 'boom' | 'now'
@@ -186,7 +194,7 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
       { year: '2014', label: 'ORR connectivity', phase: 'early' },
       { year: '2019', label: 'IT park approvals', phase: 'growth' },
       { year: '2022', label: 'Construction surge', phase: 'boom' },
-      { year: '2024', label: 'Prime zone', phase: 'now' },
+      { year: '2026', label: 'Prime zone', phase: 'now' },
     ]
   if (s >= 66)
     return [
@@ -194,7 +202,7 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
       { year: '2015', label: 'Ring road access', phase: 'early' },
       { year: '2020', label: 'Residential projects', phase: 'growth' },
       { year: '2023', label: 'Rising demand', phase: 'boom' },
-      { year: '2024', label: 'Growth corridor', phase: 'now' },
+      { year: '2026', label: 'Growth corridor', phase: 'now' },
     ]
   if (s >= 41)
     return [
@@ -202,13 +210,13 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
       { year: '2016', label: 'Basic amenities', phase: 'early' },
       { year: '2021', label: 'Affordable housing', phase: 'growth' },
       { year: '2023', label: 'Slow appreciation', phase: 'boom' },
-      { year: '2024', label: 'Moderate zone', phase: 'now' },
+      { year: '2026', label: 'Moderate zone', phase: 'now' },
     ]
   return [
     { year: '2009', label: 'Agricultural land', phase: 'baseline' },
     { year: '2017', label: 'Minimal change', phase: 'early' },
     { year: '2022', label: 'Low activity', phase: 'growth' },
-    { year: '2024', label: 'Watch area', phase: 'now' },
+    { year: '2026', label: 'Watch area', phase: 'now' },
   ]
 }
 

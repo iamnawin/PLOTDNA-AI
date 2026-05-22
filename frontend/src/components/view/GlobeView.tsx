@@ -158,6 +158,15 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
     scale: 1,
     targetScale: 1,
   })
+  
+  // Dragging and interaction tracking references
+  const isMouseDownRef = useRef(false)
+  const dragStartRef = useRef<{ x: number; y: number; phiOffset: number; thetaOffset: number } | null>(null)
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null)
+  const touchStartOffsetRef = useRef<{ phi: number; theta: number }>({ phi: 0, theta: 0 })
+  const touchStartTimeRef = useRef<number>(0)
+  const isTouchDraggingRef = useRef(false)
+  const lastTouchTimeRef = useRef<number>(0)
 
   const focusPoint = coords ?? cityCenter
   const coverageMessage = getCoverageMessage(fallback, cityName)
@@ -425,24 +434,137 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
             className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
             animate={{ y: [0, -5, 0], scale: [1, 1.008, 1] }}
             transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ width: '90%', height: '90%', cursor: 'grab', pointerEvents: 'auto' }}
+            style={{ width: '90%', height: '90%', cursor: 'grab', pointerEvents: 'auto', touchAction: 'none' }}
             onMouseDown={(event) => {
+              isMouseDownRef.current = true
+              dragStartRef.current = {
+                x: event.clientX,
+                y: event.clientY,
+                phiOffset: pointerRef.current.targetPhiOffset,
+                thetaOffset: pointerRef.current.targetThetaOffset,
+              }
               mouseDownPosRef.current = { x: event.clientX, y: event.clientY }
             }}
             onMouseMove={(event) => {
-              const rect = event.currentTarget.getBoundingClientRect()
-              const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2
-              const normalizedY = ((event.clientY - rect.top) / rect.height - 0.5) * 2
-              pointerRef.current.targetPhiOffset = normalizedX * 0.2
-              pointerRef.current.targetThetaOffset = normalizedY * 0.15
+              // Ignore mouse move hover if a touch interaction was active recently
+              if (touchStartTimeRef.current > 0 && Date.now() - touchStartTimeRef.current < 2000) return
+
+              if (isMouseDownRef.current && dragStartRef.current) {
+                const rect = event.currentTarget.getBoundingClientRect()
+                const dx = event.clientX - dragStartRef.current.x
+                const dy = event.clientY - dragStartRef.current.y
+                
+                const phiFactor = 3
+                const thetaFactor = 2
+                
+                pointerRef.current.targetPhiOffset = dragStartRef.current.phiOffset - (dx / rect.width) * phiFactor
+                pointerRef.current.targetThetaOffset = Math.max(
+                  -1.2,
+                  Math.min(1.2, dragStartRef.current.thetaOffset + (dy / rect.height) * thetaFactor)
+                )
+              } else {
+                const rect = event.currentTarget.getBoundingClientRect()
+                const normalizedX = ((event.clientX - rect.left) / rect.width - 0.5) * 2
+                const normalizedY = ((event.clientY - rect.top) / rect.height - 0.5) * 2
+                pointerRef.current.targetPhiOffset = normalizedX * 0.2
+                pointerRef.current.targetThetaOffset = normalizedY * 0.15
+              }
+            }}
+            onMouseUp={() => {
+              isMouseDownRef.current = false
+              dragStartRef.current = null
             }}
             onMouseEnter={() => {
               pointerRef.current.targetHoverMix = 1
             }}
             onMouseLeave={() => {
+              isMouseDownRef.current = false
+              dragStartRef.current = null
               pointerRef.current.targetPhiOffset = 0
               pointerRef.current.targetThetaOffset = 0
               pointerRef.current.targetHoverMix = 0
+            }}
+            onTouchStart={(event) => {
+              if (event.touches.length > 0) {
+                const touch = event.touches[0]
+                touchStartTimeRef.current = Date.now()
+                isTouchDraggingRef.current = false
+                touchStartRef.current = {
+                  x: touch.clientX,
+                  y: touch.clientY,
+                }
+                touchStartOffsetRef.current = {
+                  phi: pointerRef.current.targetPhiOffset,
+                  theta: pointerRef.current.targetThetaOffset,
+                }
+                pointerRef.current.targetHoverMix = 1
+              }
+            }}
+            onTouchMove={(event) => {
+              if (!touchStartRef.current || event.touches.length === 0) return
+              const touch = event.touches[0]
+              const rect = event.currentTarget.getBoundingClientRect()
+              const dx = touch.clientX - touchStartRef.current.x
+              const dy = touch.clientY - touchStartRef.current.y
+              
+              if (Math.hypot(dx, dy) > 8) {
+                isTouchDraggingRef.current = true
+              }
+              
+              const phiFactor = 3
+              const thetaFactor = 2
+              
+              const deltaPhi = (dx / rect.width) * phiFactor
+              const deltaTheta = (dy / rect.height) * thetaFactor
+              
+              pointerRef.current.targetPhiOffset = touchStartOffsetRef.current.phi - deltaPhi
+              pointerRef.current.targetThetaOffset = Math.max(
+                -1.2,
+                Math.min(1.2, touchStartOffsetRef.current.theta + deltaTheta)
+              )
+            }}
+            onTouchEnd={(event) => {
+              const duration = Date.now() - touchStartTimeRef.current
+              const wasDragging = isTouchDraggingRef.current
+              
+              touchStartRef.current = null
+              isTouchDraggingRef.current = false
+              
+              // Tap detection: duration < 250ms and not dragged
+              if (duration < 250 && !wasDragging) {
+                lastTouchTimeRef.current = Date.now()
+                
+                if (onCityClick && canvasRef.current && event.changedTouches.length > 0) {
+                  const touch = event.changedTouches[0]
+                  const rect = canvasRef.current.getBoundingClientRect()
+                  const clickX = touch.clientX - rect.left
+                  const clickY = touch.clientY - rect.top
+                  const cx = rect.width / 2
+                  const cy = rect.height / 2
+                  const shortSide = Math.min(rect.width, rect.height)
+                  const { phi, theta, scale } = currentOrientationRef.current
+                  
+                  const HIT_RADIUS = 48 // Forgiving tap target on mobile
+                  let bestCity: (typeof CITY_LIST)[0] | null = null
+                  let bestDist = Infinity
+                  
+                  for (const city of CITY_LIST) {
+                    const { sx, sy, visible } = projectToScreen(
+                      city.center[0], city.center[1],
+                      phi, theta, scale,
+                      cx, cy, shortSide,
+                    )
+                    if (!visible) continue
+                    const dist = Math.hypot(clickX - sx, clickY - sy)
+                    if (dist < HIT_RADIUS && dist < bestDist) {
+                      bestDist = dist
+                      bestCity = city
+                    }
+                  }
+                  
+                  if (bestCity) onCityClick(bestCity.slug, bestCity.center)
+                }
+              }
             }}
             onWheel={(event) => {
               event.preventDefault()
@@ -456,6 +578,9 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
               pointerRef.current.targetScale = 1.14
             }}
             onClick={(event) => {
+              // Prevent duplicate executions on touch screens (ghost mouse clicks)
+              if (Date.now() - lastTouchTimeRef.current < 500) return
+              
               if (!onCityClick || !canvasRef.current) return
               const down = mouseDownPosRef.current
               if (down && Math.hypot(event.clientX - down.x, event.clientY - down.y) > 6) return
@@ -468,7 +593,7 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
               const shortSide = Math.min(rect.width, rect.height)
               const { phi, theta, scale } = currentOrientationRef.current
 
-              const HIT_RADIUS = 52
+              const HIT_RADIUS = 36 // Precise desktop mouse radius
               let bestCity: (typeof CITY_LIST)[0] | null = null
               let bestDist = Infinity
 

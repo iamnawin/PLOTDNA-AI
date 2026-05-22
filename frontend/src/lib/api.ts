@@ -9,6 +9,8 @@
  * so the frontend degrades gracefully to static data.
  */
 
+import type { LocalityResolution } from '@/lib/location/contracts'
+
 export const BASE_URL = (
   import.meta.env.VITE_API_URL ??
   (import.meta.env.DEV ? 'http://localhost:8000' : 'https://plotdna-api.onrender.com')
@@ -154,6 +156,31 @@ export async function analyzeCoordinate(
     })
     if (!res.ok) return null
     return (await res.json()) as LiveDNAResult
+  } catch {
+    return null
+  }
+}
+
+// ── Location resolution ──
+
+/**
+ * Resolve coordinates to the most specific geographical coverage tier.
+ */
+export async function resolveLocation(
+  lat: number,
+  lng: number,
+  locality?: string,
+  city?: string,
+): Promise<LocalityResolution | null> {
+  try {
+    const res = await fetch(`${BASE_URL}/api/utils/resolve`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ lat, lng, locality, city }),
+      signal:  AbortSignal.timeout(10_000),
+    })
+    if (!res.ok) return null
+    return (await res.json()) as LocalityResolution
   } catch {
     return null
   }

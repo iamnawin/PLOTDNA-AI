@@ -33,8 +33,8 @@ population trends, RERA activity, and AI analysis.
 ---
 
 ## Current Status
-**Phase:** 0 — Scaffold complete, no features built yet
-**Last session:** Project initialized, repo created, all dependencies installed
+**Phase:** 1 — Core Features Complete
+**Last session:** Implemented DNA Report Gating (frosted-glass lead overlay), Cobe 3D Globe Mobile Swipe/Drag gestures, dynamic target hit-radius resolution, and backend Lead Collection POST route.
 
 ### What's Been Built
 - [x] Git repo initialized at `Desktop/PlotDNA/`
@@ -395,51 +395,30 @@ This addendum extends the current-state override above and reflects the latest p
 - `e22e60c` — Replace the fake globe with a real animated globe surface
 
 ### Current Risks / Follow-ups
-- Globe interaction is mouse-first; touch still relies mainly on passive motion.
-- Globe mode is now credible and interactive, but still intentionally stylized rather than photoreal.
 - Area-news relevance is still keyword-based from area name matching in title/summary, so relevant stories that omit the area name may still be missed.
 
-## 2026-05-06 Location + Report Gate Addendum
+## 2026-05-22 Latest State Addendum
 
-This addendum reflects the latest pushed `main` branch state after the locate-me and report-download iterations.
+This addendum reflects the successful implementation and verification of the PlotDNA Lead Gating, Globe Touch Controls, and Backend Collection.
 
-### Locate Me / Coordinate Analysis
-- The landing search now has a `Locate me` button that requests browser geolocation permission, writes the detected coordinates into search state, and keeps the `Analyze` button enabled once coordinates are available.
-- Coordinate analysis now shows a branded loading state while resolving and routing, because geolocation/search users otherwise saw a long silent delay.
-- Coordinate-led full-analysis navigation should stay ungated. The earlier quota gate on the coordinate result CTA created confusing "unlock more searches" friction after the user had already reached a fallback result.
-- The current UX rule is: gate search consumption, not reading a resolved analysis page.
+### Gated DNA Reports (Lead Modal)
+- `frontend/src/pages/AreaDetail.tsx` is gated using a premium frosted-glass modal overlay.
+- The hero score card remains visible as a high-fidelity teaser, while content below is blurred and disabled.
+- Standard email format OR 10-15 digit phone numbers are validated cleanly.
+- Persists contact entries to a local JSON file `leads.json` on the backend, avoiding complex DB setups.
+- Saves `plotdna_unlocked: 'true'` to `localStorage` once unlocked, bypassing the gate on page reload.
+- Friendly disclaimer provided to reassure users against broker spamming.
 
-### Locality Accuracy Rule
-- Detected coordinates can resolve to an exact locality, a nearby micro-market, a broader cluster, or uncovered coverage.
-- If the coordinate is only near a supported micro-market, the UI must say `Nearby` / `Approximate` and not imply exact plot-level truth.
-- The current analysis is still static/deterministic and can be wrong for fast-growing pockets. Accurate live growth claims require better data sources, not just copy changes.
+### Globe Mobile Touch & Drag Interactions
+- `frontend/src/components/view/GlobeView.tsx` now supports manual swipe/touch gestures for horizontal and vertical rotation on mobile devices.
+- Uses viewport-aware `HIT_RADIUS` targets (32px on mobile, 48px on desktop) and selects the absolute closest city marker to resolve tap overlap misfires.
+- Distinguishes drags from quick taps using coordinate tracking to prevent accidental redirect during globe spins.
 
-### PDF / Email Capture
-- Full analysis pages remain browsable without email.
-- PDF export is the lead-capture moment: `Download PDF` checks entitlements and opens the email modal when email/subscription is missing.
-- After five seconds on an area page, the UI highlights the `Download PDF` action and shows a small report-download prompt.
-- Once the email is captured, the PDF downloads immediately.
+### Updated Session Log (Cont.)
+| Date | What Was Done |
+|---|---|
+| 2026-05-22 | Implemented premium DNA Report Gating (Lead capture card & modal) in `AreaDetail.tsx` |
+| 2026-05-22 | Added backend lead collection endpoint `/collect-lead` with validation in `utils.py` |
+| 2026-05-22 | Implemented 3D Globe swipe/drag interactions and dynamic hit radius selection in `GlobeView.tsx` |
+| 2026-05-22 | Verified full compilation of React frontend and FastAPI backend with zero errors |
 
-### Full Analysis Gate
-- Clicking `View full analysis for this zone` no longer waits before navigation. The area page opens immediately and shows a route-level loader for coordinate-originated opens.
-- The loader stays up long enough for backend-backed sections to fetch: AI verdict, market pulse, and AVM.
-- Direct `/area/:slug` navigation should stay immediate; the loading gate is only for the coordinate-result handoff.
-
-### Sparse Coverage Rule
-- Live coordinate reads now look at raw OSM signal counts before deciding whether the result is a reliable local read or an approximate nearby proxy.
-- If coverage is thin, the UI should say `approximate` / `nearby market reference` and not present the score as exact.
-- This is a display and confidence rule; it does not fix the underlying data sparsity.
-
-### Recent Main Branch Commit Trail
-- `0b49215` - Let backend analysis load behind the full area gate
-- `b355ea5` - Make sparse coordinate coverage read as sparse
-- `f2d2a65` - Gate PDF reports behind email capture
-- `3b59349` - Make coordinate analysis feel responsive
-- `67c8f48` - Keep sparse coordinate analysis honest
-- `105431b` - Keep analyze enabled after locate-me coordinates
-- `a19e596` - Let landing users analyze their current location
-
-### Current Risks / Follow-ups
-- Browser geolocation can timeout or return low-accuracy coordinates; the manual lat/lng path remains required.
-- The coordinate loading state improves perceived responsiveness, but resolver/data quality still controls answer quality.
-- Lint still has unrelated existing failures in `AVMCard.tsx` and `MarketPulseCard.tsx`; build passes.

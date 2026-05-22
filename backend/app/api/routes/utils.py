@@ -5,15 +5,18 @@ Utility routes:
 """
 import base64
 import json
+import os
 import re
 from html import unescape
 from urllib.parse import parse_qs, unquote, urlparse
 
 import httpx
 from fastapi import APIRouter, File, HTTPException, UploadFile
+from pydantic import BaseModel, Field
 
 from app.core.config import settings
-from app.services.ai_provider import call_gemini_content_json, csv_values
+from app.services.location_resolver import resolver
+
 
 router = APIRouter()
 
@@ -251,31 +254,26 @@ async def analyze_brochure(file: UploadFile = File(...)):
         mime = file.content_type or "application/octet-stream"
 
     try:
-        result = call_gemini_content_json(
-            [
-                {"mime_type": mime, "data": base64.b64encode(content).decode()},
-                _BROCHURE_PROMPT,
-            ],
-            csv_values(settings.GEMINI_BROCHURE_MODELS),
-            max_output_tokens=600,
-            temperature=0.1,
-        )
-        data: dict = result.data
+        import google.generativeai as genai  # lazy import — only needed for this endpoint
+
+        genai.configure(api_key=settings.GEMINI_API_KEY)
+        model = genai.GenerativeModel("gemini-2.0-flash")
+
+        response = model.generate_content([
+            {"mime_type": mime, "data": base64.b64encode(content).decode()},
+            _BROCHURE_PROMPT,
+        ])
+
+        text = response.text.strip()
+        # Strip markdown code fences if Gemini adds them
+        text = re.sub(r"^```(?:json)?\s*", "", text)
+        text = re.sub(r"\s*```$", "", text)
+        data: dict = json.loads(text)
 
     except (json.JSONDecodeError, ValueError) as exc:
         raise HTTPException(status_code=422, detail=f"Could not parse Gemini response: {exc}")
     except Exception as exc:
-        message = str(exc)
-        lower = message.lower()
-        if "quota" in lower or "429" in lower or "rate" in lower:
-            raise HTTPException(
-                status_code=429,
-                detail=(
-                    "Brochure AI quota is exhausted. Search by project address, map link, "
-                    "or coordinates for now, then retry after the Gemini quota resets."
-                ),
-            ) from exc
-        raise HTTPException(status_code=502, detail=f"Gemini Vision error: {message}")
+        raise HTTPException(status_code=500, detail=f"Gemini Vision error: {exc}")
 
     if "error" in data:
         raise HTTPException(
@@ -319,3 +317,94 @@ async def analyze_brochure(file: UploadFile = File(...)):
         "city":       data.get("city", ""),
         "confidence": data.get("confidence", "medium"),
     }
+
+
+# ── Lead Collection ───────────────────────────────────────────────────────────
+
+class LeadCreate(BaseModel):
+    contact: str = Field(..., min_length=5, max_length=100)
+
+@router.post("/collect-lead")
+async def collect_lead(payload: LeadCreate):
+    """
+    Validate and collect a lead (email or phone number) from the gated DNA report screen.
+    Checks if contact is a valid email or a valid 10-digit Indian mobile number.
+    Logs it to server output and appends to a local JSON file in workspace root directory.
+    """
+    contact = payload.contact.strip()
+    
+    # 1. Validation check
+    email_regex = r"^[^\s@]+@[^\s@]+\.[^\s@]+$"
+    is_email = bool(re.match(email_regex, contact))
+    
+    # Check if valid Indian phone number
+    # Extract digits only
+    digits = re.sub(r"\D", "", contact)
+    if len(digits) == 12 and digits.startswith("91"):
+        core_digits = digits[2:]
+    elif len(digits) == 11 and digits.startswith("0"):
+        core_digits = digits[1:]
+    else:
+        core_digits = digits
+        
+    is_phone = bool(re.match(r"^[6-9]\d{9}$", core_digits))
+    
+    if not (is_email or is_phone):
+        raise HTTPException(
+            status_code=422,
+            detail="Contact must be a valid email address or a valid 10-digit Indian mobile number."
+        )
+        
+    lead_type = "email" if is_email else "phone"
+    
+    # 2. Append to a local file leads.json in workspace root
+    import datetime
+    lead_data = {
+        "contact": contact,
+        "type": lead_type,
+        "timestamp": datetime.datetime.utcnow().isoformat()
+    }
+    
+    try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        workspace_root = os.path.abspath(os.path.join(current_dir, "..", "..", "..", ".."))
+        leads_file = os.path.join(workspace_root, "leads.json")
+        
+        leads_list = []
+        if os.path.exists(leads_file):
+            with open(leads_file, "r") as f:
+                try:
+                    leads_list = json.load(f)
+                except Exception:
+                    pass
+        leads_list.append(lead_data)
+        with open(leads_file, "w") as f:
+            json.dump(leads_list, f, indent=2)
+    except Exception as e:
+        print(f"Failed to write lead to leads.json: {e}")
+        
+    print(f"[Lead Collected] {lead_type.upper()}: {contact} at {lead_data['timestamp']}")
+    
+    return {"status": "success", "type": lead_type, "message": "Lead collected successfully."}
+
+
+# ── Coordinate Resolution ─────────────────────────────────────────────────────
+
+class ResolveRequest(BaseModel):
+    lat: float = Field(..., ge=-90, le=90)
+    lng: float = Field(..., ge=-180, le=180)
+    locality: str | None = None
+    city: str | None = None
+
+@router.post("/resolve")
+async def resolve_coordinate(payload: ResolveRequest):
+    """
+    Resolve coordinates to the most specific geographical coverage tier.
+    """
+    return resolver.resolve(
+        lat=payload.lat,
+        lng=payload.lng,
+        locality_hint=payload.locality,
+        city_hint=payload.city
+    )
+

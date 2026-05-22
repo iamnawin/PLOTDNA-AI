@@ -8,13 +8,14 @@ import type { MicroMarket, RecommendationGoal } from '@/types'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { getRecommendationGoalMeta, rankAreasForGoal } from '@/lib/recommendations'
-import { resolveMapLink } from '@/lib/api'
+import { resolveMapLink, resolveLocation } from '@/lib/api'
+import type { LocalityResolution } from '@/lib/location/contracts'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
 import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
 import AssistantDock from '@/components/ui/AssistantDock'
 import SpatialView from '@/components/view/SpatialView'
-import ViewModeToggle, { type ViewMode } from '@/components/view/ViewModeToggle'
+import { type ViewMode } from '@/components/view/ViewModeToggle'
 
 const RISK_TIERS = [
   { color: '#ef4444', label: 'High Risk',    range: '0-40'   },
@@ -63,6 +64,7 @@ export default function Home() {
   const [analyzingCoords, setAnalyzingCoords] = useState<[number, number] | null>(null)
   const [pendingCoords, setPendingCoords]     = useState<[number, number] | null>(null)
   const [analyzeStep, setAnalyzeStep]         = useState(0)
+  const [backendResolution, setBackendResolution] = useState<LocalityResolution | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -70,6 +72,24 @@ export default function Home() {
     const interval = setInterval(() => setAnalyzeStep(s => (s + 1) % ANALYZE_STEPS.length), 520)
     return () => clearInterval(interval)
   }, [analyzingCoords])
+
+  useEffect(() => {
+    if (!searchCoords) {
+      const timer = setTimeout(() => {
+        setBackendResolution(null)
+      }, 0)
+      return () => clearTimeout(timer)
+    }
+    let active = true
+    resolveLocation(searchCoords[0], searchCoords[1]).then(res => {
+      if (active && res) {
+        setBackendResolution(res)
+      }
+    }).catch(() => {})
+    return () => {
+      active = false
+    }
+  }, [searchCoords])
 
   const { areas: cityAreas, meta: cityMeta } = getCityEntry(selectedCitySlug)
   const recommendedAreas = rankAreasForGoal(cityAreas, recommendationGoal)
@@ -90,7 +110,7 @@ export default function Home() {
     ? sorted.filter(a => a.name.toLowerCase().includes(searchQuery.toLowerCase()))
     : []
   const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
-  const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1]) : null
+  const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1], {}, backendResolution) : null
   const isGlobeMode = viewMode === 'globe'
   const assistantContext = {
     page: 'map' as const,
@@ -143,11 +163,31 @@ export default function Home() {
     setAnalyzeStep(0)
     setAnalyzingCoords(coords)
 
-    setTimeout(() => {
+    Promise.all([
+      resolveLocation(coords[0], coords[1]).catch(() => null),
+      new Promise(resolve => setTimeout(resolve, 2200))
+    ]).then(([res]) => {
       setAnalyzingCoords(null)
-      setViewMode('globe')
-      setSearchCoords(coords)
-    }, 2200)
+      if (res && res.tier === 'regional') {
+        const districtSlug = res.districtSlug || 'warangal'
+        navigate(`/area/${districtSlug}`, {
+          state: {
+            fallbackContext: {
+              tier: res.tier,
+              displayLabel: `${res.districtName || 'Regional'} District Fallback`,
+              precisionLabel: 'broad',
+              coords,
+              districtSlug: res.districtSlug,
+              districtName: res.districtName,
+              stateSlug: res.stateSlug,
+            }
+          }
+        })
+      } else {
+        setViewMode('globe')
+        setSearchCoords(coords)
+      }
+    })
   }
 
   function handleGlobeMarkerClick(slug: string) {
@@ -768,207 +808,203 @@ export default function Home() {
         ) : null}
       </AnimatePresence>
 
-      {/* ── Layer / View switcher ── */}
+      {/* ── Unified Map/Globe/Layers controls capsule ── */}
       <div
-        className={`absolute z-[1001] flex flex-col gap-2 rounded-2xl p-2 glass-panel ${isGlobeMode ? 'hidden' : ''}`}
-        style={{
-          bottom: 88,
-          right: 20,
-          width: 'min(232px, calc(100vw - 24px))',
-        }}
+        className="absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] right-[calc(1.25rem+env(safe-area-inset-right))] z-[1001] flex items-center gap-2 rounded-full p-1.5 glass-panel"
       >
-        <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} />
+        {/* View Mode Segmented Switch */}
+        <div className="flex items-center bg-white/[0.02] p-1 rounded-full border border-white/5 shadow-inner">
+          <button
+            onClick={() => handleViewModeChange('map')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-300 text-[10px] uppercase tracking-wider font-bold ${viewMode === 'map' ? 'bg-gradient-to-b from-emerald-500/20 to-emerald-500/5 border border-emerald-500/30 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.15)]' : 'border border-transparent text-slate-400 hover:text-slate-200'}`}
+          >
+            <Map size={11} className={viewMode === 'map' ? 'text-emerald-400' : 'text-slate-500'} />
+            <span>Map</span>
+          </button>
+          <button
+            onClick={() => handleViewModeChange('globe')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all duration-300 text-[10px] uppercase tracking-wider font-bold ${viewMode === 'globe' ? 'bg-gradient-to-b from-emerald-500/20 to-emerald-500/5 border border-emerald-500/30 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.15)]' : 'border border-transparent text-slate-400 hover:text-slate-200'}`}
+          >
+            <Globe size={11} className={viewMode === 'globe' ? 'text-emerald-400' : 'text-slate-500'} />
+            <span>Globe</span>
+          </button>
+        </div>
 
-        {/* Trigger pill */}
-        <button
-          onClick={() => setShowLayers(v => !v)}
-          className="flex items-center gap-2 px-4 py-3 rounded-xl transition-all duration-200"
-          style={{
-            background: showLayers
-              ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05))'
-              : 'rgba(255,255,255,0.03)',
-            backdropFilter: 'blur(22px)',
-            border: showLayers ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid rgba(255,255,255,0.06)',
-            boxShadow: showLayers
-              ? '0 0 20px rgba(16, 185, 129, 0.15), inset 0 0 16px rgba(16, 185, 129, 0.05)'
-              : 'inset 0 0 14px rgba(255,255,255,0.02)',
-          }}
-        >
-          <Layers size={13} style={{ color: showLayers ? '#10b981' : '#64748b' }} />
-          <div className="flex-1 text-left">
-            <p className="text-[8px] font-sans font-bold text-slate-500 uppercase tracking-[0.16em] mb-0.5">Scene Controls</p>
-            <p className="text-[11px] font-sans font-bold" style={{ color: showLayers ? '#10b981' : '#cbd5e1' }}>
-              Layers
-            </p>
-          </div>
-          <ChevronUp
-            size={10}
-            style={{
-              color: showLayers ? '#10b981' : '#64748b',
-              transform: showLayers ? 'rotate(180deg)' : 'rotate(0deg)',
-              transition: 'transform 0.2s',
-            }}
-          />
-        </button>
+        <div className="w-px h-6 bg-white/10 mx-1" />
 
-        {/* Dropdown panel — opens UPWARD */}
-        <AnimatePresence>
-          {showLayers && (
-            <motion.div
-              initial={{ opacity: 0, y: 8, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 8, scale: 0.97 }}
-              transition={{ duration: 0.15 }}
-              className="absolute left-0 right-0 bottom-full mb-2 rounded-xl overflow-hidden glass-panel"
-              style={{
-                background: 'rgba(8, 12, 24, 0.95)',
-                boxShadow: '0 20px 48px rgba(0,0,0,0.7)',
-              }}
-            >
-              {/* ── Basemap section ── */}
-              <div
-                className="px-3.5 pt-3 pb-2"
-                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+        {/* Layers Toggle Button */}
+        <div className="relative">
+          <button
+            onClick={() => setShowLayers(v => !v)}
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[10px] uppercase tracking-wider font-bold border ${showLayers ? 'bg-gradient-to-b from-emerald-500/20 to-emerald-500/5 border-emerald-500/30 text-emerald-400 shadow-[0_0_12px_rgba(16,185,129,0.15)]' : 'bg-white/[0.02] border-white/5 text-slate-400 hover:text-slate-200 hover:bg-white/5'}`}
+          >
+            <Layers size={11} className={showLayers ? 'text-emerald-400' : 'text-slate-500'} />
+            <span>Layers</span>
+            <ChevronUp
+              size={10}
+              className={`transition-transform duration-200 ${showLayers ? 'rotate-180 text-emerald-400' : 'text-slate-500'}`}
+            />
+          </button>
+
+          {/* Dropdown panel — opens UPWARD */}
+          <AnimatePresence>
+            {showLayers && (
+              <motion.div
+                initial={{ opacity: 0, y: 8, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 8, scale: 0.97 }}
+                transition={{ duration: 0.15 }}
+                className="absolute right-0 bottom-full mb-3 w-[228px] rounded-xl overflow-hidden glass-panel"
+                style={{
+                  background: 'rgba(8, 12, 24, 0.95)',
+                  boxShadow: '0 20px 48px rgba(0,0,0,0.7)',
+                }}
               >
-                <p className="text-[8px] font-sans font-bold text-slate-500 uppercase tracking-[0.16em] mb-2">
-                  Basemap Style
-                </p>
-                <div className="grid grid-cols-2 gap-1.5">
-                  {([
-                    { key: 'dark',      Icon: Map,       label: 'Standard'  },
-                    { key: 'satellite', Icon: Satellite,  label: 'Satellite' },
-                    { key: 'terrain',   Icon: Globe,      label: 'Terrain'   },
-                    { key: 'light',     Icon: Sun,        label: 'Light'     },
-                  ] as const).map(({ key, Icon, label }) => {
-                    const active = mapStyleKey === key
-                    return (
-                      <button
-                        key={key}
-                        onClick={() => setMapStyleKey(key)}
-                        className="flex flex-col items-center gap-1.5 py-2.5 rounded-lg transition-all duration-150"
-                        style={{
-                          background: active ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255,255,255,0.03)',
-                          border: active ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(255,255,255,0.05)',
-                          boxShadow: active ? '0 0 10px rgba(16, 185, 129, 0.12)' : 'none',
-                        }}
-                      >
-                        <Icon size={15} style={{ color: active ? '#10b981' : '#64748b' }} />
-                        <span
-                          className="text-[9px] font-sans font-bold"
-                          style={{ color: active ? '#10b981' : '#64748b' }}
+                {/* ── Basemap section ── */}
+                <div
+                  className="px-3.5 pt-3 pb-2"
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                >
+                  <p className="text-[8px] font-sans font-bold text-slate-500 uppercase tracking-[0.16em] mb-2">
+                    Basemap Style
+                  </p>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    {([
+                      { key: 'dark',      Icon: Map,       label: 'Standard'  },
+                      { key: 'satellite', Icon: Satellite,  label: 'Satellite' },
+                      { key: 'terrain',   Icon: Globe,      label: 'Terrain'   },
+                      { key: 'light',     Icon: Sun,        label: 'Light'     },
+                    ] as const).map(({ key, Icon, label }) => {
+                      const active = mapStyleKey === key
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => setMapStyleKey(key)}
+                          className="flex flex-col items-center gap-1.5 py-2.5 rounded-lg transition-all duration-150"
+                          style={{
+                            background: active ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255,255,255,0.03)',
+                            border: active ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(255,255,255,0.05)',
+                            boxShadow: active ? '0 0 10px rgba(16, 185, 129, 0.12)' : 'none',
+                          }}
                         >
-                          {label}
-                        </span>
-                      </button>
-                    )
-                  })}
+                          <Icon size={15} style={{ color: active ? '#10b981' : '#64748b' }} />
+                          <span
+                            className="text-[9px] font-sans font-bold"
+                            style={{ color: active ? '#10b981' : '#64748b' }}
+                          >
+                            {label}
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
                 </div>
-              </div>
 
-              {/* ── 3D toggle ── */}
-              <button
-                onClick={() => setIs3D(!is3D)}
-                className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
-                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
-              >
-                <div className="flex items-center gap-2.5">
-                  <Box size={12} style={{ color: is3D ? '#10b981' : '#64748b' }} />
-                  <span className="text-[11px] font-sans font-medium" style={{ color: is3D ? '#10b981' : '#cbd5e1' }}>
-                    3D Tilt View
-                  </span>
-                </div>
-                {/* Toggle pill */}
-                <div
-                  className="relative w-8 h-4.5 rounded-full transition-all duration-250"
-                  style={{
-                    width: 30, height: 16,
-                    background: is3D ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 255, 255, 0.08)',
-                    border: is3D ? '1px solid rgba(16, 185, 129, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
-                  }}
+                {/* ── 3D toggle ── */}
+                <button
+                  onClick={() => setIs3D(!is3D)}
+                  className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
                 >
-                  <div
-                    className="absolute top-0.5 rounded-full transition-all duration-250"
-                    style={{
-                      width: 10, height: 10,
-                      top: 2,
-                      left: is3D ? 16 : 2,
-                      backgroundColor: is3D ? '#10b981' : '#64748b',
-                      boxShadow: is3D ? '0 0 6px rgba(16, 185, 129, 0.5)' : 'none',
-                    }}
-                  />
-                </div>
-              </button>
-
-              {/* ── Construction Sites toggle ── */}
-              <button
-                onClick={() => setShowConstruction(!showConstruction)}
-                className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
-                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-                onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
-                onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
-              >
-                <div className="flex items-center gap-2.5">
-                  <HardHat size={12} style={{ color: showConstruction ? '#f97316' : '#64748b' }} />
-                  <div className="text-left">
-                    <span className="text-[11px] font-sans font-medium block" style={{ color: showConstruction ? '#f97316' : '#cbd5e1' }}>
-                      Construction Sites
+                  <div className="flex items-center gap-2.5">
+                    <Box size={12} style={{ color: is3D ? '#10b981' : '#64748b' }} />
+                    <span className="text-[11px] font-sans font-medium" style={{ color: is3D ? '#10b981' : '#cbd5e1' }}>
+                      3D Tilt View
                     </span>
-                    <span className="text-[8px] font-sans text-slate-500">Active projects &amp; pipeline</span>
                   </div>
-                </div>
-                <div
-                  style={{
-                    width: 30, height: 16,
-                    background: showConstruction ? 'rgba(249,115,22,0.25)' : 'rgba(255,255,255,0.08)',
-                    border: showConstruction ? '1px solid rgba(249,115,22,0.5)' : '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: 9999,
-                    position: 'relative',
-                  }}
-                >
-                  <div style={{
-                    width: 10, height: 10,
-                    position: 'absolute',
-                    top: 2, left: showConstruction ? 16 : 2,
-                    borderRadius: '50%',
-                    backgroundColor: showConstruction ? '#f97316' : '#64748b',
-                    boxShadow: showConstruction ? '0 0 6px rgba(249,115,22,0.5)' : 'none',
-                    transition: 'all 0.25s',
-                  }} />
-                </div>
-              </button>
-
-              {/* ── Locked / Coming soon ── */}
-              <div className="px-3.5 pt-2.5 pb-3">
-                <p className="text-[8px] font-sans font-bold text-slate-600 uppercase tracking-[0.16em] mb-1.5">
-                  Phase 3 — Coming Soon
-                </p>
-                {([
-                  { Icon: Eye,  label: 'Street View 360\u00B0'  },
-                  { Icon: Car,  label: 'Traffic Overlay'   },
-                  { Icon: Clock,label: 'Historical Imagery' },
-                ] as const).map(({ Icon, label }) => (
+                  {/* Toggle pill */}
                   <div
-                    key={label}
-                    className="flex items-center gap-2.5 py-1.5 opacity-35"
+                    className="relative w-8 h-4.5 rounded-full transition-all duration-250"
+                    style={{
+                      width: 30, height: 16,
+                      background: is3D ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 255, 255, 0.08)',
+                      border: is3D ? '1px solid rgba(16, 185, 129, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
+                    }}
                   >
-                    <Icon size={11} className="text-slate-500" />
-                    <span className="text-[10px] font-sans text-slate-500 flex-1">{label}</span>
-                    <Lock size={9} className="text-slate-700" />
+                    <div
+                      className="absolute top-0.5 rounded-full transition-all duration-250"
+                      style={{
+                        width: 10, height: 10,
+                        top: 2,
+                        left: is3D ? 16 : 2,
+                        backgroundColor: is3D ? '#10b981' : '#64748b',
+                        boxShadow: is3D ? '0 0 6px rgba(16, 185, 129, 0.5)' : 'none',
+                      }}
+                    />
                   </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                </button>
+
+                {/* ── Construction Sites toggle ── */}
+                <button
+                  onClick={() => setShowConstruction(!showConstruction)}
+                  className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
+                  style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <HardHat size={12} style={{ color: showConstruction ? '#f97316' : '#64748b' }} />
+                    <div className="text-left">
+                      <span className="text-[11px] font-sans font-medium block" style={{ color: showConstruction ? '#f97316' : '#cbd5e1' }}>
+                        Construction Sites
+                      </span>
+                      <span className="text-[8px] font-sans text-slate-500">Active projects &amp; pipeline</span>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      width: 30, height: 16,
+                      background: showConstruction ? 'rgba(249,115,22,0.25)' : 'rgba(255,255,255,0.08)',
+                      border: showConstruction ? '1px solid rgba(249,115,22,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: 9999,
+                      position: 'relative',
+                    }}
+                  >
+                    <div style={{
+                      width: 10, height: 10,
+                      position: 'absolute',
+                      top: 2, left: showConstruction ? 16 : 2,
+                      borderRadius: '50%',
+                      backgroundColor: showConstruction ? '#f97316' : '#64748b',
+                      boxShadow: showConstruction ? '0 0 6px rgba(249,115,22,0.5)' : 'none',
+                      transition: 'all 0.25s',
+                    }} />
+                  </div>
+                </button>
+
+                {/* ── Locked / Coming soon ── */}
+                <div className="px-3.5 pt-2.5 pb-3">
+                  <p className="text-[8px] font-sans font-bold text-slate-600 uppercase tracking-[0.16em] mb-1.5">
+                    Phase 3 — Coming Soon
+                  </p>
+                  {([
+                    { Icon: Eye,  label: 'Street View 360\u00B0'  },
+                    { Icon: Car,  label: 'Traffic Overlay'   },
+                    { Icon: Clock,label: 'Historical Imagery' },
+                  ] as const).map(({ Icon, label }) => (
+                    <div
+                      key={label}
+                      className="flex items-center gap-2.5 py-1.5 opacity-35"
+                    >
+                      <Icon size={11} className="text-slate-500" />
+                      <span className="text-[10px] font-sans text-slate-500 flex-1">{label}</span>
+                      <Lock size={9} className="text-slate-700" />
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* ═══════════════════════════════════════════════
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className={`absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-[calc(0.75rem+env(safe-area-inset-left))] right-[calc(0.75rem+env(safe-area-inset-right))] md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1.5 gap-1.5 rounded-full overflow-x-auto glass-panel-light ${isGlobeMode ? 'hidden' : ''}`}
+        className="absolute bottom-5 left-5 z-[999] flex items-center p-1.5 gap-1.5 rounded-full overflow-x-auto glass-panel-light max-w-[calc(100vw-40px)]"
         style={{
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
@@ -1028,251 +1064,7 @@ export default function Home() {
         </AnimatePresence>
       </div>
 
-      {isGlobeMode && (
-        <div
-          className="absolute left-1/2 -translate-x-1/2 z-[1001] w-[min(96vw,1100px)]"
-          style={{ bottom: 'calc(18px + env(safe-area-inset-bottom))' }}
-        >
-          <AnimatePresence>
-            {showLayers && (
-              <motion.div
-                initial={{ opacity: 0, y: 8, scale: 0.97 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: 8, scale: 0.97 }}
-                transition={{ duration: 0.15 }}
-                className="absolute right-0 bottom-full mb-3 w-[228px] rounded-xl overflow-hidden glass-panel"
-                style={{
-                  background: 'rgba(8, 12, 24, 0.95)',
-                  boxShadow: '0 20px 48px rgba(0,0,0,0.7)',
-                }}
-              >
-                <div
-                  className="px-3.5 pt-3 pb-2"
-                  style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-                >
-                  <p className="text-[8px] font-sans font-bold text-slate-500 uppercase tracking-[0.16em] mb-2">
-                    Basemap Style
-                  </p>
-                  <div className="grid grid-cols-2 gap-1.5">
-                    {([
-                      { key: 'dark', Icon: Map, label: 'Standard' },
-                      { key: 'satellite', Icon: Satellite, label: 'Satellite' },
-                      { key: 'terrain', Icon: Globe, label: 'Terrain' },
-                      { key: 'light', Icon: Sun, label: 'Light' },
-                    ] as const).map(({ key, Icon, label }) => {
-                      const active = mapStyleKey === key
-                      return (
-                        <button
-                          key={key}
-                          onClick={() => setMapStyleKey(key)}
-                          className="flex flex-col items-center gap-1.5 py-2.5 rounded-lg transition-all duration-150"
-                          style={{
-                            background: active ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255,255,255,0.03)',
-                            border: active ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(255,255,255,0.05)',
-                            boxShadow: active ? '0 0 10px rgba(16, 185, 129, 0.12)' : 'none',
-                          }}
-                        >
-                          <Icon size={15} style={{ color: active ? '#10b981' : '#64748b' }} />
-                          <span className="text-[9px] font-sans font-bold" style={{ color: active ? '#10b981' : '#64748b' }}>
-                            {label}
-                          </span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                </div>
 
-                <button
-                  onClick={() => setIs3D(!is3D)}
-                  className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
-                  style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <Box size={12} style={{ color: is3D ? '#10b981' : '#64748b' }} />
-                    <span className="text-[11px] font-sans font-medium" style={{ color: is3D ? '#10b981' : '#cbd5e1' }}>
-                      3D Tilt View
-                    </span>
-                  </div>
-                  <div
-                    className="relative w-8 h-4.5 rounded-full transition-all duration-250"
-                    style={{
-                      width: 30, height: 16,
-                      background: is3D ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 255, 255, 0.08)',
-                      border: is3D ? '1px solid rgba(16, 185, 129, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
-                    }}
-                  >
-                    <div
-                      className="absolute top-0.5 rounded-full transition-all duration-250"
-                      style={{
-                        width: 10, height: 10,
-                        top: 2,
-                        left: is3D ? 16 : 2,
-                        backgroundColor: is3D ? '#10b981' : '#64748b',
-                        boxShadow: is3D ? '0 0 6px rgba(16, 185, 129, 0.5)' : 'none',
-                      }}
-                    />
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => setShowConstruction(!showConstruction)}
-                  className="w-full flex items-center justify-between px-3.5 py-3 transition-colors"
-                  style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)' }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <HardHat size={12} style={{ color: showConstruction ? '#f97316' : '#64748b' }} />
-                    <div className="text-left">
-                      <span className="text-[11px] font-sans font-medium block" style={{ color: showConstruction ? '#f97316' : '#cbd5e1' }}>
-                        Construction Sites
-                      </span>
-                      <span className="text-[8px] font-sans text-slate-500">Active projects &amp; pipeline</span>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      width: 30, height: 16,
-                      background: showConstruction ? 'rgba(249,115,22,0.25)' : 'rgba(255,255,255,0.08)',
-                      border: showConstruction ? '1px solid rgba(249,115,22,0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
-                      borderRadius: 9999,
-                      position: 'relative',
-                    }}
-                  >
-                    <div style={{
-                      width: 10, height: 10,
-                      position: 'absolute',
-                      top: 2, left: showConstruction ? 16 : 2,
-                      borderRadius: '50%',
-                      backgroundColor: showConstruction ? '#f97316' : '#64748b',
-                      boxShadow: showConstruction ? '0 0 6px rgba(249,115,22,0.5)' : 'none',
-                      transition: 'all 0.25s',
-                    }} />
-                  </div>
-                </button>
-
-                <div className="px-3.5 pt-2.5 pb-3">
-                  <p className="text-[8px] font-sans font-bold text-slate-600 uppercase tracking-[0.16em] mb-1.5">
-                    Phase 3 - Coming Soon
-                  </p>
-                  {([
-                    { Icon: Eye, label: 'Street View 360\u00B0' },
-                    { Icon: Car, label: 'Traffic Overlay' },
-                    { Icon: Clock, label: 'Historical Imagery' },
-                  ] as const).map(({ Icon, label }) => (
-                    <div key={label} className="flex items-center gap-2.5 py-1.5 opacity-35">
-                      <Icon size={11} className="text-slate-500" />
-                      <span className="text-[10px] font-sans text-slate-500 flex-1">{label}</span>
-                      <Lock size={9} className="text-slate-700" />
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <div
-            className="rounded-2xl px-3 py-3 grid gap-4 md:grid-cols-[1fr_auto] md:items-center glass-panel"
-            style={{
-              boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
-            }}
-          >
-            <div
-              className="flex items-center p-1.5 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center md:px-3"
-              style={{
-                background: 'rgba(255,255,255,0.012)',
-                border: '1px solid rgba(255,255,255,0.03)',
-                WebkitOverflowScrolling: 'touch',
-                scrollbarWidth: 'none',
-              } as React.CSSProperties}
-            >
-              {RISK_TIERS.map((tier) => {
-                const isActive = highlightTier === tier.label
-                return (
-                  <button
-                    key={tier.label}
-                    onClick={() => toggleTier(tier.label)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-200 hover:bg-white/5"
-                    style={{
-                      background: isActive ? `${tier.color}15` : 'transparent',
-                      border: isActive ? `1px solid ${tier.color}38` : '1px solid transparent',
-                      boxShadow: isActive ? `0 0 8px ${tier.color}14` : 'none',
-                    }}
-                  >
-                    <div
-                      className="w-2 h-2 rounded-sm flex-shrink-0"
-                      style={{
-                        background: isActive ? `${tier.color}cc` : `${tier.color}44`,
-                        border: `1.5px solid ${tier.color}`,
-                        boxShadow: isActive ? `0 0 7px ${tier.color}70` : 'none',
-                        transition: 'all 0.2s',
-                      }}
-                    />
-                    <span className="text-[9px] font-sans font-semibold whitespace-nowrap transition-colors duration-200" style={{ color: isActive ? tier.color : '#64748b' }}>
-                      {tier.label}
-                    </span>
-                    <span className="text-[8px] font-display transition-colors duration-200" style={{ color: isActive ? `${tier.color}72` : '#334155' }}>
-                      {tier.range}
-                    </span>
-                  </button>
-                )
-              })}
-              <AnimatePresence>
-                {highlightTier && (
-                  <motion.button
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: 'auto' }}
-                    exit={{ opacity: 0, width: 0 }}
-                    onClick={() => setHighlightTier(null)}
-                    className="flex items-center gap-1 px-2 py-2 text-slate-500 hover:text-slate-200 transition-colors overflow-hidden"
-                  >
-                    <X size={11} />
-                  </motion.button>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <div
-              className="flex items-center gap-2 justify-end min-w-[280px] rounded-xl px-3 py-2"
-              style={{
-                background: 'rgba(255,255,255,0.018)',
-                border: '1px solid rgba(255,255,255,0.045)',
-                boxShadow: 'inset 0 0 14px rgba(255,255,255,0.012)',
-              }}
-            >
-              <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} variant="dock" />
-              <button
-                onClick={() => setShowLayers(v => !v)}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-200"
-                style={{
-                  background: showLayers
-                    ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.18), rgba(16, 185, 129, 0.08))'
-                    : 'rgba(255,255,255,0.022)',
-                  border: showLayers ? '1px solid rgba(16, 185, 129, 0.34)' : '1px solid rgba(255,255,255,0.06)',
-                  boxShadow: showLayers
-                    ? '0 0 20px rgba(16, 185, 129, 0.16), inset 0 0 16px rgba(16, 185, 129, 0.06)'
-                    : 'inset 0 0 12px rgba(255,255,255,0.015)',
-                }}
-              >
-                <Layers size={12} style={{ color: showLayers ? '#10b981' : '#64748b' }} />
-                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em]" style={{ color: showLayers ? '#10b981' : '#cbd5e1' }}>
-                  Layers
-                </span>
-                <ChevronUp
-                  size={10}
-                  style={{
-                    color: showLayers ? '#10b981' : '#64748b',
-                    transform: showLayers ? 'rotate(180deg)' : 'rotate(0deg)',
-                    transition: 'transform 0.2s',
-                  }}
-                />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ═══════════════════════════════════════════════
           TAP-TO-REVEAL: after analyze loader, before panel opens

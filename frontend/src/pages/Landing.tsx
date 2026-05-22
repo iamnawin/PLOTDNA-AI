@@ -11,7 +11,7 @@ import { CITY_LIST, CITIES } from '@/data/cities'
 import type { MicroMarket, RecommendationGoal } from '@/types'
 import { getScoreColor } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
-import { resolveMapLink, analyzeBrochure } from '@/lib/api'
+import { resolveMapLink, analyzeBrochure, resolveLocation } from '@/lib/api'
 import { getGoalTopAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 
 const FEATURE_CARDS = [
@@ -115,13 +115,44 @@ export default function Landing() {
   }
 
   function goToCoords(coords: [number, number]) {
-    const analysis = findNearestArea(coords[0], coords[1])
+    const localAnalysis = findNearestArea(coords[0], coords[1])
     goToCoordWithLoader(() => {
-      if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
+      if (localAnalysis.citySlug) setSelectedCitySlug(localAnalysis.citySlug)
       setSearchCoords(coords)
-      setSelectedArea(analysis.shouldSelectArea ? analysis.area : null)
+      setSelectedArea(localAnalysis.shouldSelectArea ? localAnalysis.area : null)
       navigate('/map')
     })
+
+    resolveLocation(coords[0], coords[1]).then(res => {
+      if (res) {
+        if (res.tier === 'regional') {
+          setPendingNav(() => () => {
+            const districtSlug = res.districtSlug || 'warangal'
+            navigate(`/area/${districtSlug}`, {
+              state: {
+                fallbackContext: {
+                  tier: res.tier,
+                  displayLabel: `${res.districtName || 'Regional'} District Fallback`,
+                  precisionLabel: 'broad',
+                  coords,
+                  districtSlug: res.districtSlug,
+                  districtName: res.districtName,
+                  stateSlug: res.stateSlug,
+                }
+              }
+            })
+          })
+        } else {
+          const backendAnalysis = findNearestArea(coords[0], coords[1], {}, res)
+          setPendingNav(() => () => {
+            if (backendAnalysis.citySlug) setSelectedCitySlug(backendAnalysis.citySlug)
+            setSearchCoords(coords)
+            setSelectedArea(backendAnalysis.shouldSelectArea ? backendAnalysis.area : null)
+            navigate('/map')
+          })
+        }
+      }
+    }).catch(() => {})
   }
 
   async function handleEnter() {
