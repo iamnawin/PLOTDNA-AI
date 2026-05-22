@@ -353,12 +353,15 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 - 8 cities live with static data: Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi, Vijayawada, Vizag
 - All 8 cities have resolver-grade JSON data under `data/cities/`
 - Map: polygon overlays, hover tooltips, tier filtering, 3D tilt, 4 basemap styles, city switcher
-- AreaDetail: full score breakdown, signal bars, growth timeline, 5-year outlook, source links, PDF export
+- Home Layout: unified control capsule (Map/Globe/Layers) centered bottom-center; upward Layers dropdown centered
+- Assistant Chat: fully draggable FAB (`AssistantDock.tsx`) with Framer Motion, viewport-bound constraints, passive grab cursor cues, and z-index pass-through.
+- AreaDetail: full score breakdown, signal bars, growth timeline, 5-year outlook, source links, PDF export, regional fallback view support.
+- Gating / Paywall: frosted lead modal gates access to AreaDetail dashboards after 2 unique free searches (3rd unique check triggers lock).
+- Offline Resiliency: lead gate unlocks locally if backend collection throws TypeError (e.g. offline/dev env).
 - Location resolver: 4-tier coordinate → locality resolution (exact/nearby/cluster/uncovered)
 - Backend routes: all stubs — not used by frontend yet
 - No test suite
 - Landing `Locate me`: browser geolocation → coordinate-led analysis with approximation labels
-- PDF CTA: email capture gate after 5s on AreaDetail page
 
 ---
 

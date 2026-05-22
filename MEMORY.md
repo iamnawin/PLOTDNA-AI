@@ -440,3 +440,34 @@ This update details the decoupling of the frontend from rigid local city boundar
 ### Git Permission Bypass Workaround
 - **Root Cause:** Standard git commands inside the local workspace were locked with an OS-level "Access is denied" error on `.git/HEAD` due to active OneDrive synchronization locks and virtualization sandbox restrictions.
 - **Workaround:** Implemented a robust bypass by cloning `PLOTDNA-AI.git` into a temporary location `C:\Users\Naveen\PlotDNA-temp`, copying the modified files, staging, committing, and pushing from the clean clone directly to GitHub. This bypasses the locked directory entirely and keeps git history completely intact.
+
+---
+
+## 2026-05-22 Control Relocation, Draggable Assistant FAB, & Soft Gating Update
+
+This update details the UI layout refactoring, interactive animation additions, and improvements to the lead-generation gating logic.
+
+### 1. Viewport Layout Refactoring (Home.tsx)
+- **Control Capsule Relocation:** Centered the unified Map/Globe/Layers controls capsule symmetrically at the absolute bottom-center (`left-1/2 -translate-x-1/2`) of the Map and Globe workspace views.
+- **Dropdown Realignment:** Adjusted the upward-opening Layers dropdown menu to open perfectly from the center (`left-1/2 -translate-x-1/2`) instead of being absolute right-aligned, eliminating UI gaps and layout misalignments.
+
+### 2. Draggable Assistant Chat FAB (AssistantDock.tsx)
+- **Interactive Drag Boundaries:** Wrapped the "Ask PlotDNA" floating action button (FAB) in a Framer Motion `<motion.div>` element enabling full-axis dragging when the assistant drawer is closed (`drag={!open}`).
+- **Elastic Viewport Restraints:** Implemented smart viewport edge constraints (dynamic based on window resize) with fine-tuned elasticity and no drag-momentum, ensuring the chat button cannot be thrown off-screen.
+- **Visual Cursors:** Added interactive grabs (`cursor-grab` on idle, `cursor-grabbing` on drag) to communicate draggability clearly to the user.
+- **Pointer Events Pass-Through:** Configured `pointer-events-none` on the high z-index wrapping container, preventing the FAB dock from blocking user interactions with underlying Leaflet map polygons or Globe objects.
+
+### 3. 2-Check Soft Paywall Gating & Robust Unlocking (AreaDetail.tsx)
+- **Two Free Unique Checks:** Shifted the paywall gating model in `AreaDetail.tsx` to a soft lead gate. Tracks user search history in browser LocalStorage (`plotdna_viewed_slugs`) to allow full, unlocked access to the first two unique micro-markets or fallback districts.
+- **Lock Activation on 3rd Check:** The premium frosted glass lock modal triggers strictly on the 3rd new unique locality or district fallback analysis page.
+- **Graceful Network-Offline Fallback:** Added high-resilience handling to lead generation submissions. If the user submits a valid email or phone number and the backend is offline, CORS issues surface, or local testing occurs, the fetch block catches the `TypeError` ("Failed to fetch") and gracefully unlocks the dashboard locally rather than leaving the user stuck behind a locked screen.
+- **API URL Alignment:** Restructured lead capture submissions to target the full backend URL (`${BASE_URL}/api/utils/collect-lead`) rather than Vite localhost fallback.
+
+### Updated Session Log (Cont.)
+| Date | What Was Done |
+|---|---|
+| 2026-05-22 | Relocated unified control capsule to absolute bottom-center in `Home.tsx` and centered dropdown. |
+| 2026-05-22 | Wrapped the assistant chat FAB in `<motion.div>` with full dragging boundaries and pointer-events. |
+| 2026-05-22 | Built localStorage tracking for viewed area slugs to support 2 free unique checks in `AreaDetail.tsx`. |
+| 2026-05-22 | Added TypeError catch local-unlock fallback to lead collection to protect offline/dev environments. |
+| 2026-05-22 | Ran full production compilation and eslint clean checks, staged, committed, and successfully pushed to main. |
