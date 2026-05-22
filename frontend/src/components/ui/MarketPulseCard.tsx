@@ -116,7 +116,7 @@ export default function MarketPulseCard({ areaSlug, country = 'india' }: Props) 
           className="p-6 rounded-2xl text-center"
           style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
         >
-          <p className="text-[#444455] font-mono text-xs">Market pulse unavailable — Phase 2 backend not running.</p>
+          <p className="text-[#444455] font-sans text-xs">Market pulse unavailable — Phase 2 backend not running.</p>
           <p className="text-[#2a2a3e] font-mono text-[10px] mt-1">POST /api/v1/market-pulse/{country}/{areaSlug}</p>
         </div>
       </motion.section>
@@ -175,25 +175,25 @@ export default function MarketPulseCard({ areaSlug, country = 'india' }: Props) 
               />
               {/* Score text */}
               <text x={80} y={75} textAnchor="middle" fill={cfg.color}
-                style={{ fontSize: 28, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700 }}>
+                style={{ fontSize: 28, fontFamily: 'Sansation, sans-serif', fontWeight: 700 }}>
                 {score}
               </text>
             </svg>
 
-            <p className="text-sm font-mono font-bold mt-1" style={{ color: cfg.color }}>{cfg.label} Sentiment</p>
-            <p className="text-[9px] font-mono text-[#444455] mt-0.5">Market intelligence score</p>
+            <p className="text-sm font-display font-bold mt-1" style={{ color: cfg.color }}>{cfg.label} Sentiment</p>
+            <p className="text-[9px] font-sans text-[#444455] mt-0.5">Market intelligence score</p>
 
             {/* vs City comparison */}
             {data.city_sentiment_score !== undefined && (
               <div className="mt-4 flex items-center gap-3">
                 <div className="text-center">
-                  <p className="text-lg font-mono font-bold" style={{ color: cfg.color }}>{score}</p>
-                  <p className="text-[8px] font-mono text-[#444455]">This area</p>
+                  <p className="text-lg font-display font-bold" style={{ color: cfg.color }}>{score}</p>
+                  <p className="text-[8px] font-sans text-[#444455]">This area</p>
                 </div>
-                <div className="text-[9px] font-mono text-[#333344]">vs</div>
+                <div className="text-[9px] font-sans text-[#333344]">vs</div>
                 <div className="text-center">
-                  <p className="text-lg font-mono font-bold text-[#555566]">{data.city_sentiment_score}</p>
-                  <p className="text-[8px] font-mono text-[#444455]">City avg</p>
+                  <p className="text-lg font-display font-bold text-[#555566]">{data.city_sentiment_score}</p>
+                  <p className="text-[8px] font-sans text-[#444455]">City avg</p>
                 </div>
               </div>
             )}
@@ -201,7 +201,7 @@ export default function MarketPulseCard({ areaSlug, country = 'india' }: Props) 
 
           {/* Signal breakdown */}
           <div className="flex flex-col justify-center px-6 py-8" style={{ background: 'rgba(255,255,255,0.015)' }}>
-            <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest mb-4">Signal breakdown</p>
+            <p className="text-[9px] font-display font-semibold text-[#444455] uppercase tracking-widest mb-4">Signal breakdown</p>
 
             {([
               ['positive', data.positive_count],
@@ -216,9 +216,9 @@ export default function MarketPulseCard({ areaSlug, country = 'india' }: Props) 
                   <div className="flex items-center justify-between mb-1">
                     <div className="flex items-center gap-1.5">
                       <SIcon size={9} style={{ color: c.color }} />
-                      <span className="text-[9px] font-mono text-[#666680]">{c.label}</span>
+                      <span className="text-[9px] font-sans text-[#666680]">{c.label}</span>
                     </div>
-                    <span className="text-[9px] font-mono" style={{ color: c.color }}>{count} signals</span>
+                    <span className="text-[9px] font-display font-bold" style={{ color: c.color }}>{count} signals</span>
                   </div>
                   <div className="h-1.5 rounded-full overflow-hidden" style={{ background: '#1a1a2e' }}>
                     <motion.div
@@ -233,7 +233,7 @@ export default function MarketPulseCard({ areaSlug, country = 'india' }: Props) 
               )
             })}
 
-            <p className="text-[8px] font-mono text-[#333344] mt-1">
+            <p className="text-[8px] font-sans text-[#333344] mt-1">
               Based on {total} signals · NewsAPI + Gemini scoring
             </p>
           </div>
@@ -268,19 +268,19 @@ export default function MarketPulseCard({ areaSlug, country = 'india' }: Props) 
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-mono text-[#888899] group-hover:text-[#ccccdd] transition-colors leading-snug line-clamp-1">
+                    <p className="text-[11px] font-sans text-[#888899] group-hover:text-[#ccccdd] transition-colors leading-snug line-clamp-1">
                       {article.title}
                     </p>
                     <div className="flex items-center gap-1.5 mt-0.5">
                       <Clock size={8} className="text-[#2a2a3e]" />
-                      <span className="text-[8px] font-mono text-[#2a2a3e]">{timeAgo(article.published_at)}</span>
-                      <span className="text-[8px] font-mono text-[#222233]">· {article.source}</span>
+                      <span className="text-[8px] font-sans text-[#2a2a3e]">{timeAgo(article.published_at)}</span>
+                      <span className="text-[8px] font-sans text-[#222233]">· {article.source}</span>
                     </div>
                   </div>
 
                   {/* Score pill */}
                   <span
-                    className="text-[8px] font-mono px-1.5 py-0.5 rounded flex-shrink-0"
+                    className="text-[8px] font-display font-bold px-1.5 py-0.5 rounded flex-shrink-0"
                     style={{ background: `${ac.color}12`, color: ac.color, border: `1px solid ${ac.color}20` }}
                   >
                     {article.sentiment_score}
@@ -303,7 +303,7 @@ export default function MarketPulseCard({ areaSlug, country = 'india' }: Props) 
           style={{ background: '#0a0a14', borderTop: '1px solid rgba(255,255,255,0.04)' }}
         >
           <Activity size={9} className="text-[#222233]" />
-          <p className="text-[9px] font-mono text-[#222233]">
+          <p className="text-[9px] font-sans text-[#222233]">
             NewsAPI + Gemini sentiment · {data.last_updated ? `Updated ${timeAgo(data.last_updated)}` : 'Phase 2 live intelligence'}
           </p>
         </div>
@@ -317,13 +317,13 @@ function SectionHeader({ refreshing, onRefresh }: { refreshing: boolean; onRefre
     <div className="flex items-center justify-between mb-5">
       <div className="flex items-center gap-2">
         <Activity size={11} className="text-[#555566]" />
-        <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">Market Pulse</h2>
+        <h2 className="text-xs font-display font-bold text-[#444455] uppercase tracking-widest">Market Pulse</h2>
         <span className="flex items-center gap-1 ml-1">
           <span className="w-1.5 h-1.5 rounded-full bg-[#6366f1] animate-pulse" />
-          <span className="text-[9px] font-mono text-[#6366f1]">live</span>
+          <span className="text-[9px] font-sans text-[#6366f1]">live</span>
         </span>
         <span
-          className="text-[8px] font-mono px-1.5 py-0.5 rounded ml-1"
+          className="text-[8px] font-display font-bold px-1.5 py-0.5 rounded ml-1"
           style={{ background: '#6366f115', color: '#6366f1', border: '1px solid #6366f125' }}
         >
           Phase 2
@@ -332,7 +332,7 @@ function SectionHeader({ refreshing, onRefresh }: { refreshing: boolean; onRefre
       <button
         onClick={onRefresh}
         disabled={refreshing}
-        className="flex items-center gap-1.5 text-[10px] font-mono text-[#444455] hover:text-[#888899] transition-colors disabled:opacity-40"
+        className="flex items-center gap-1.5 text-[10px] font-sans text-[#444455] hover:text-[#888899] transition-colors disabled:opacity-40"
       >
         <RefreshCw size={10} className={refreshing ? 'animate-spin' : ''} />
         Refresh

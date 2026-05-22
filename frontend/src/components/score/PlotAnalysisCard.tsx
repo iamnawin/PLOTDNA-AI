@@ -360,7 +360,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 ) : (
                   <div className="flex items-center gap-1.5 mt-1">
                     <TrendingUp size={12} style={{ color }} />
-                    <span className="text-xs font-mono font-semibold" style={{ color }}>+{staticArea?.yoy ?? 0}% YoY</span>
+                    <span className="text-xs font-display font-semibold" style={{ color }}>+{staticArea?.yoy ?? 0}% YoY</span>
                   </div>
                 )}
                 {isLive ? (
@@ -368,7 +368,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                     Coordinate-level score. Static locality narratives appear only when the fallback tier is exact or safely nearby.
                   </p>
                 ) : (
-                  <p className="text-[11px] font-mono text-slate-400 mt-0.5">{staticArea?.priceRange}</p>
+                  <p className="text-[11px] font-display text-slate-400 mt-0.5">{staticArea?.priceRange}</p>
                 )}
               </div>
             </div>
@@ -399,7 +399,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                     <div key={key}>
                       <div className="flex items-center justify-between gap-3 mb-1">
                         <span className="text-[10px] font-sans text-slate-300">{SIGNAL_LABELS[key] ?? key}</span>
-                        <span className="text-[10px] font-mono text-slate-400"><span className="font-mono">{SIGNAL_WEIGHTS[key] ?? 0}%</span> wt {" \u00B7 "} <span className="font-mono">{value}</span></span>
+                        <span className="text-[10px] font-display text-slate-400"><span className="font-display font-bold">{SIGNAL_WEIGHTS[key] ?? 0}%</span> wt {" \u00B7 "} <span className="font-display font-bold">{value}</span></span>
                       </div>
                       <div className="h-1.5 rounded-full overflow-hidden bg-slate-900/50" style={{ border: '1px solid rgba(255,255,255,0.05)' }}>
                         <div
@@ -485,7 +485,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                           }}
                         />
                         <p
-                          className="text-[9px] font-mono font-semibold text-center"
+                          className="text-[9px] font-display font-semibold text-center"
                           style={{ color: isNow ? milestoneColor : '#64748b' }}
                         >
                           {m.year}
@@ -517,7 +517,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between">
                   <span className="text-[10px] font-sans text-slate-400">Projected price growth</span>
-                  <span className="text-sm font-mono font-bold" style={{ color }}>{outlook.range}</span>
+                  <span className="text-sm font-display font-bold" style={{ color }}>{outlook.range}</span>
                 </div>
 
                 <div className="flex items-center justify-between">

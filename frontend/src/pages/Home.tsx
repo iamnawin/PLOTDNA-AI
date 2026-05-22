@@ -57,6 +57,7 @@ export default function Home() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
   const [searchError, setSearchError]         = useState('')
   const [resolvingUrl, setResolvingUrl]       = useState(false)
+  const [locating, setLocating]               = useState(false)
   const [viewMode, setViewMode]               = useState<ViewMode>('globe')
   const [globeSidebarExpanded, setGlobeSidebarExpanded] = useState(false)
   const [analyzingCoords, setAnalyzingCoords] = useState<[number, number] | null>(null)
@@ -189,6 +190,43 @@ export default function Home() {
     }
   }
 
+  function handleLocateMe() {
+    setSearchError('')
+    if (!navigator.geolocation) {
+      setSearchError('Location permission is not available in this browser. Enter latitude and longitude manually.')
+      return
+    }
+
+    setLocating(true)
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const coords: [number, number] = [
+          position.coords.latitude,
+          position.coords.longitude,
+        ]
+        setLocating(false)
+        triggerCoordAnalysis(coords)
+      },
+      error => {
+        setLocating(false)
+        if (error.code === error.PERMISSION_DENIED) {
+          setSearchError('Location permission was denied. Allow location access or enter latitude and longitude manually.')
+          return
+        }
+        if (error.code === error.POSITION_UNAVAILABLE) {
+          setSearchError('Could not detect your location right now. Check device location services and try again.')
+          return
+        }
+        setSearchError('Location request timed out. Try again or enter latitude and longitude manually.')
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 12000,
+        maximumAge: 60000,
+      }
+    )
+  }
+
   function toggleTier(label: string) {
     setHighlightTier(highlightTier === label ? null : label)
   }
@@ -267,12 +305,12 @@ export default function Home() {
       >
         <div className="text-center">
           <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">Markets</p>
-          <p className="text-[15px] font-mono font-bold text-slate-100 leading-tight">{cityAreas.length}</p>
+          <p className="text-[15px] font-display font-bold text-slate-100 leading-tight">{cityAreas.length}</p>
         </div>
         <div className="w-px h-6 bg-white/10" />
         <div className="text-center">
           <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">Avg DNA</p>
-          <p className="text-[15px] font-mono font-bold text-emerald-400 leading-tight">{AVG_DNA}</p>
+          <p className="text-[15px] font-display font-bold text-emerald-400 leading-tight">{AVG_DNA}</p>
         </div>
         <div className="w-px h-6 bg-white/10" />
         <div className="text-center">
@@ -318,6 +356,25 @@ export default function Home() {
                 onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit() }}
                 className="flex-1 bg-transparent text-slate-100 font-sans text-sm outline-none placeholder:text-slate-500"
               />
+              {!searchQuery && (
+                <button
+                  title="Locate me"
+                  onClick={handleLocateMe}
+                  disabled={resolvingUrl || locating}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] transition-all cursor-pointer font-sans"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    color: locating ? '#10b981' : '#94a3b8',
+                    flexShrink: 0,
+                    opacity: resolvingUrl || locating ? 0.5 : 1,
+                    fontWeight: 600,
+                  }}
+                >
+                  <Navigation size={10} className={locating ? 'animate-pulse' : ''} />
+                  {locating ? 'Locating...' : 'Locate'}
+                </button>
+              )}
               {searchQuery && (
                 <button
                   onClick={() => { setSearchQuery(''); setSearchError(''); inputRef.current?.focus() }}
@@ -398,7 +455,7 @@ export default function Home() {
                       <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color, boxShadow: `0 0 8px ${color}` }} />
                       <span className="flex-1 text-[13px] font-sans text-slate-300 font-medium">{area.name}</span>
                       <span className="text-[11px] font-sans text-slate-500 uppercase tracking-wide font-semibold">{area.category}</span>
-                      <span className="text-sm font-mono font-bold" style={{ color }}>{area.score}</span>
+                      <span className="text-sm font-display font-bold" style={{ color }}>{area.score}</span>
                       <ChevronRight size={12} className="text-slate-600" />
                     </button>
                   )
@@ -469,7 +526,7 @@ export default function Home() {
                     >
                       <Zap size={9} />
                       {area.name}
-                      <span className="text-[9px] font-mono font-bold" style={{ color: '#f1f5f9' }}>{matchScore}</span>
+                      <span className="text-[9px] font-display font-bold" style={{ color: '#f1f5f9' }}>{matchScore}</span>
                     </button>
                   )
                 })}
@@ -589,7 +646,7 @@ export default function Home() {
                     <p className="text-[10px] font-sans font-medium text-slate-200">{area.name}</p>
                     <p className="text-[8px] font-sans text-slate-500">Top match</p>
                   </div>
-                  <span className="text-[11px] font-mono font-bold text-emerald-400">{matchScore}</span>
+                  <span className="text-[11px] font-display font-bold text-emerald-400">{matchScore}</span>
                 </div>
               ))}
             </div>
@@ -634,7 +691,7 @@ export default function Home() {
                   }}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="text-[9px] font-mono text-slate-500 w-4 text-right flex-shrink-0">
+                    <span className="text-[9px] font-sans text-slate-500 w-4 text-right flex-shrink-0">
                       {highlightTier ? idx + 1 : globalRank}
                     </span>
                     <div className="flex-1 min-w-0">
@@ -645,11 +702,11 @@ export default function Home() {
                         {area.name}
                       </p>
                       <p className="text-[9px] text-slate-500 font-sans uppercase tracking-wide mt-0.5">
-                        {reasons[0]?.label}: <span className="font-mono">{reasons[0]?.value}</span>
+                        {reasons[0]?.label}: <span className="font-display font-bold">{reasons[0]?.value}</span>
                       </p>
                     </div>
                     <div className="flex-shrink-0 text-right">
-                      <span className="text-[13px] font-mono font-bold" style={{ color }}>
+                      <span className="text-[13px] font-display font-bold" style={{ color }}>
                         {matchScore}
                       </span>
                       <div className="w-8 h-[2px] bg-slate-900 rounded-full mt-1 ml-auto">
@@ -950,7 +1007,7 @@ export default function Home() {
                 {tier.label}
               </span>
               <span
-                className="text-[9px] font-mono transition-colors duration-200"
+                className="text-[9px] font-display transition-colors duration-200"
                 style={{ color: isActive ? `${tier.color}aa` : '#334155' }}
               >
                 {tier.range}
@@ -1191,7 +1248,7 @@ export default function Home() {
                     <span className="text-[9px] font-sans font-semibold whitespace-nowrap transition-colors duration-200" style={{ color: isActive ? tier.color : '#64748b' }}>
                       {tier.label}
                     </span>
-                    <span className="text-[8px] font-mono transition-colors duration-200" style={{ color: isActive ? `${tier.color}72` : '#334155' }}>
+                    <span className="text-[8px] font-display transition-colors duration-200" style={{ color: isActive ? `${tier.color}72` : '#334155' }}>
                       {tier.range}
                     </span>
                   </button>

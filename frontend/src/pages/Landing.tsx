@@ -310,7 +310,7 @@ export default function Landing() {
           </div>
 
           <p style={{ fontSize: 10, color: '#64748b', letterSpacing: '0.1em' }}>
-            <span className="font-mono">{DNA_STEPS[dnaStep]?.pct ?? 0}%</span>{" \u00B7 "}Decoding location DNA
+            <span className="font-display font-bold">{DNA_STEPS[dnaStep]?.pct ?? 0}%</span>{" \u00B7 "}Decoding location DNA
           </p>
         </motion.div>
       )}
@@ -340,7 +340,7 @@ export default function Landing() {
               className="w-1.5 h-1.5 rounded-full bg-[#10b981]"
               style={{ boxShadow: '0 0 4px #10b981', animation: 'pulse 2s infinite' }}
             />
-            Live{" \u00B7 "}<span className="font-mono">{CITY_LIST.length}</span> Cities
+            Live{" \u00B7 "}<span className="font-display font-bold">{CITY_LIST.length}</span> Cities
           </span>
         </div>
         <button
@@ -388,16 +388,17 @@ export default function Landing() {
           transition={{ duration: 0.45, delay: 0.08 }}
           className="font-display"
           style={{
-            fontSize: 'clamp(44px, 7vw, 88px)',
+            fontSize: 'clamp(32px, 5vw, 56px)',
             fontWeight: 800,
-            letterSpacing: '-0.06em',
-            lineHeight: 0.96,
+            letterSpacing: '-0.05em',
+            lineHeight: 1.08,
             maxWidth: 780,
             color: 'var(--text-main)',
           }}
         >
-          Decode the real potential
-          <span className="bg-gradient-to-r from-emerald-400 via-teal-400 to-blue-500 bg-clip-text text-transparent"> of any land parcel.</span>
+          Know if a plot is worth buying
+          <br />
+          <span style={{ color: '#10b981' }}>before you invest.</span>
         </motion.h1>
 
         <motion.p
@@ -406,7 +407,7 @@ export default function Landing() {
           transition={{ duration: 0.4, delay: 0.18 }}
           style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 680, marginTop: 22, lineHeight: 1.7, letterSpacing: '-0.01em' }}
         >
-          PlotDNA analyzes infrastructure, growth signals, satellite context, RERA activity, and location patterns to help you judge land before you buy.
+          PlotDNA checks infrastructure, RERA activity, satellite context, growth signals, and location patterns so you can judge land with data — not just broker claims.
         </motion.p>
 
         <motion.div
@@ -605,7 +606,7 @@ export default function Landing() {
                       <span style={{ fontSize: 10, color: '#555566', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                         {area.citySlug}
                       </span>
-                      <span className="font-mono" style={{ fontSize: 13, fontWeight: 700, color }}>{area.score}</span>
+                      <span className="font-display" style={{ fontSize: 13, fontWeight: 700, color }}>{area.score}</span>
                       <ChevronRight size={11} style={{ color: '#333344' }} />
                     </button>
                   )
@@ -736,9 +737,9 @@ export default function Landing() {
                   }}
                   title={`${matchScore}/100 match \u00B7 ${reasons[0]?.value ?? ''}`}
                 >
-                  <span className="font-mono" style={{ fontWeight: 700, color: '#e8e8f0' }}>{matchScore}</span>
+                  <span className="font-display" style={{ fontWeight: 700, color: '#e8e8f0' }}>{matchScore}</span>
                   <span style={{ color: `${color}88` }}>match</span>
-                  <span className="font-mono" style={{ fontWeight: 700 }}>{area.score}</span>
+                  <span className="font-display" style={{ fontWeight: 700 }}>{area.score}</span>
                   <span style={{ color: `${color}bb` }}>{"\u00B7"}</span>
                   {area.name}
                 </button>
@@ -907,7 +908,7 @@ export default function Landing() {
                   style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)' }}
                 >
                   <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>DNA Score</span>
-                  <span className="font-mono" style={{ fontSize: 18, fontWeight: 800, color: '#10b981', marginLeft: 'auto' }}>82</span>
+                  <span className="font-display" style={{ fontSize: 18, fontWeight: 800, color: '#10b981', marginLeft: 'auto' }}>82</span>
                   <span style={{ fontSize: 9, color: '#10b981', fontWeight: 600 }}>Good Growth</span>
                 </div>
               </motion.div>

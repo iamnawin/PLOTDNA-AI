@@ -126,19 +126,19 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
             <div>
               <p className="text-[9px] font-sans font-bold text-slate-400 uppercase tracking-wider mb-1">Estimated Value</p>
               <p className="text-3xl font-sans font-bold" style={{ color: accentColor }}>
-                <span className="font-mono">{currency}{data.estimated_value_per_sqft.toLocaleString('en-IN')}</span>
+                <span className="font-display">{currency}{data.estimated_value_per_sqft.toLocaleString('en-IN')}</span>
                 <span className="text-xs text-slate-400 font-sans font-medium ml-1">/sqft</span>
               </p>
               {/* Confidence band */}
               <p className="text-[10px] font-sans text-slate-400 mt-1">
-                Range: <span className="font-mono">{currency}{data.confidence_low.toLocaleString('en-IN')}</span>{" \u2013 "}<span className="font-mono">{currency}{data.confidence_high.toLocaleString('en-IN')}</span> <span className="font-sans">/sqft</span>
+                Range: <span className="font-display">{currency}{data.confidence_low.toLocaleString('en-IN')}</span>{" \u2013 "}<span className="font-display">{currency}{data.confidence_high.toLocaleString('en-IN')}</span> <span className="font-sans">/sqft</span>
               </p>
             </div>
             <div
               className="text-right px-4 py-3 rounded-xl glass-panel-light"
             >
-              <p className="text-[8px] font-sans font-bold text-slate-400 uppercase tracking-wider">Total (<span className="font-mono">{assumedSqft}</span> sqft)</p>
-              <p className="text-lg font-mono font-bold text-slate-100 mt-0.5">
+              <p className="text-[8px] font-sans font-bold text-slate-400 uppercase tracking-wider">Total (<span className="font-display">{assumedSqft}</span> sqft)</p>
+              <p className="text-lg font-display font-bold text-slate-100 mt-0.5">
                 {fmt(data.estimated_value_per_sqft * assumedSqft, currency)}
               </p>
             </div>
@@ -147,9 +147,9 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
           {/* Confidence bar */}
           <div className="mt-3">
             <div className="flex justify-between text-[8px] font-sans text-slate-400 mb-1">
-              <span className="font-mono">{currency}{data.confidence_low.toLocaleString('en-IN')}</span>
+              <span className="font-display">{currency}{data.confidence_low.toLocaleString('en-IN')}</span>
               <span className="text-slate-400 font-sans font-medium">Confidence Range</span>
-              <span className="font-mono">{currency}{data.confidence_high.toLocaleString('en-IN')}</span>
+              <span className="font-display">{currency}{data.confidence_high.toLocaleString('en-IN')}</span>
             </div>
             <div className="h-2 rounded-full relative overflow-hidden bg-slate-900/50" style={{ border: '1px solid rgba(255,255,255,0.05)' }}>
               {/* Range band */}
@@ -205,7 +205,7 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
                 const opacityHex = Math.round(40 + (i / (proj.length - 1)) * 60).toString(16).padStart(2, '0')
                 return (
                   <div key={p.year} className="flex-1 flex flex-col items-center gap-1">
-                    <p className="text-[7px] font-mono text-slate-400">
+                    <p className="text-[7px] font-display text-slate-400">
                       {currency}{(p.value / 1000).toFixed(0)}k
                     </p>
                     <div className="w-full rounded-t-md relative overflow-hidden bg-slate-900/40" style={{ height: `${heightPct}%`, minHeight: 4, border: '1px solid rgba(255,255,255,0.03)' }}>
@@ -222,7 +222,7 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
                         transition={{ duration: 0.8, delay: 0.1 * i, ease: 'easeOut' }}
                       />
                     </div>
-                    <p className="text-[7px] font-mono text-slate-400">{p.year}</p>
+                    <p className="text-[7px] font-display text-slate-400">{p.year}</p>
                   </div>
                 )
               })}
@@ -264,7 +264,7 @@ function KpiCell({ label, value, color }: { label: string; value: string; color:
   return (
     <div className="flex flex-col items-center py-3 px-2" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
       <p className="text-[8px] font-sans font-bold text-slate-400 uppercase tracking-wider mb-1">{label}</p>
-      <p className="text-base sm:text-xl font-mono font-bold" style={{ color }}>{value}</p>
+      <p className="text-base sm:text-xl font-display font-bold" style={{ color }}>{value}</p>
     </div>
   )
 }

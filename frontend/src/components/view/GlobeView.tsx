@@ -550,32 +550,32 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
       }}>
         <div className="flex items-center gap-2 mb-2">
           <Globe size={12} style={{ color: tone.text }} />
-          <p className="text-[10px] font-mono uppercase tracking-[0.16em]" style={{ color: tone.text }}>
+          <p className="text-[10px] font-display font-bold uppercase tracking-[0.16em]" style={{ color: tone.text }}>
             Globe Intelligence View
           </p>
         </div>
-        <p className="text-sm font-mono text-[#e8e8f0] leading-relaxed">
+        <p className="text-sm font-sans text-[#e8e8f0] leading-relaxed">
           Live geospatial surface tracking the current PlotDNA market context.
         </p>
         <div className="flex items-center gap-2 mb-2 mt-4">
           <MapPin size={12} style={{ color: tone.text }} />
-          <p className="text-[10px] font-mono text-[#444455] uppercase tracking-[0.16em]">
+          <p className="text-[10px] font-display font-semibold text-[#444455] uppercase tracking-[0.16em]">
             Focus Region
           </p>
         </div>
-        <p className="text-[13px] font-mono text-[#e8e8f0] mb-1">{focusLabel}</p>
-        <p className="text-[10px] font-mono text-[#666680] mb-3">{precisionLabel}</p>
+        <p className="text-[13px] font-display font-bold text-[#e8e8f0] mb-1">{focusLabel}</p>
+        <p className="text-[10px] font-sans text-[#666680] mb-3">{precisionLabel}</p>
         <div className="flex items-center gap-2 mb-2">
           <Activity size={12} style={{ color: tone.text }} />
-          <p className="text-[10px] font-mono text-[#444455] uppercase tracking-[0.16em]">
+          <p className="text-[10px] font-display font-semibold text-[#444455] uppercase tracking-[0.16em]">
             Coverage Status
           </p>
         </div>
-        <p className="text-[12px] font-mono text-[#aaaabc] leading-relaxed">
+        <p className="text-[12px] font-sans text-[#aaaabc] leading-relaxed">
           {coverageMessage}
         </p>
         {citySlug === 'hyderabad' && (
-          <p className="text-[10px] font-mono mt-2" style={{ color: tone.text }}>
+          <p className="text-[10px] font-sans mt-2" style={{ color: tone.text }}>
             Hyderabad is currently the strongest supported intelligence corridor.
           </p>
         )}

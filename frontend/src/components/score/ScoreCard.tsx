@@ -77,7 +77,7 @@ export default function ScoreCard({ area, onClose }: Props) {
             />
             {/* Score number */}
             <text x={50} y={46} textAnchor="middle" fill={color}
-              style={{ fontSize: 24, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
+              style={{ fontSize: 24, fontFamily: 'Sansation, sans-serif', fontWeight: 700 }}>
               {area.score}
             </text>
             <text x={50} y={60} textAnchor="middle" fill="rgba(255,255,255,0.3)"
@@ -92,11 +92,11 @@ export default function ScoreCard({ area, onClose }: Props) {
           <p className="text-[#f8fafc] text-lg font-sans font-bold" style={{ color }}>{label}</p>
           <div className="mt-2 flex items-center gap-1.5">
             <TrendingUp size={13} style={{ color }} />
-            <span className="text-xs font-mono font-semibold" style={{ color }}>
+            <span className="text-xs font-display font-semibold" style={{ color }}>
               +{area.yoy}% YoY
             </span>
           </div>
-          <p className="text-slate-400 text-xs font-mono mt-1">{area.priceRange}</p>
+          <p className="text-slate-400 text-xs font-display mt-1">{area.priceRange}</p>
         </div>
       </div>
 

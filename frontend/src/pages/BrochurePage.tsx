@@ -305,7 +305,7 @@ export default function BrochurePage() {
                       {result.project_name ?? file?.name ?? 'Brochure Analysis Complete'}
                     </p>
                     <p className="text-[10px] font-sans text-slate-500 mt-0.5">
-                      Extraction confidence {"\u00B7"} <span className="font-mono font-bold" style={{ color: confColor }}>{confidence}%</span>
+                      Extraction confidence {"\u00B7"} <span className="font-display font-bold" style={{ color: confColor }}>{confidence}%</span>
                     </p>
                   </div>
                 </div>
@@ -356,7 +356,7 @@ export default function BrochurePage() {
                       <Shield size={16} className="text-[#10b981]" />
                       <div>
                         <p className="text-[8px] font-sans text-slate-500 uppercase tracking-widest">RERA Registration</p>
-                        <p className="text-base font-mono font-bold text-[#10b981]">{result.rera_number}</p>
+                        <p className="text-base font-display font-bold text-[#10b981]">{result.rera_number}</p>
                         {result.rera_state && (
                           <p className="text-[9px] font-sans text-slate-400">{result.rera_state}</p>
                         )}
@@ -511,7 +511,7 @@ function StatCard({
         <span style={{ color }}>{icon}</span>
         <p className="text-[8px] font-sans text-slate-500 uppercase tracking-widest">{label}</p>
       </div>
-      <p className="text-base font-mono font-bold" style={{ color }}>{value}</p>
+      <p className="text-base font-display font-bold" style={{ color }}>{value}</p>
       {note && <p className="text-[8px] font-sans mt-0.5" style={{ color }}>{note}</p>}
     </div>
   )

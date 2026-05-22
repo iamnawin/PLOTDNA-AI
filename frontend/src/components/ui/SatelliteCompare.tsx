@@ -128,10 +128,10 @@ export default function SatelliteCompare({ area, coords }: Props) {
             <Satellite size={14} style={{ color }} />
           </div>
           <div>
-            <h2 className="text-sm font-mono font-semibold text-[#e8e8f0]">
+            <h2 className="text-sm font-display font-bold text-[#e8e8f0] tracking-wide">
               Satellite Growth
             </h2>
-            <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest mt-0.5">
+            <p className="text-[9px] font-sans text-[#444455] uppercase tracking-wider mt-0.5">
               Before &amp; Now · Visual Comparison
             </p>
           </div>
@@ -144,7 +144,7 @@ export default function SatelliteCompare({ area, coords }: Props) {
               {coords[0].toFixed(4)}°N · {coords[1].toFixed(4)}°E
             </span>
           )}
-          <span className="text-[9px] font-mono text-[#666680] flex items-center gap-1 px-2.5 py-1.5 rounded-lg"
+          <span className="text-[9px] font-sans font-semibold text-[#666680] flex items-center gap-1 px-2.5 py-1.5 rounded-lg"
             style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
             <TrendingUp size={8} style={{ color }} />
             <span style={{ color }}>+{coveragePct}%</span> growth
@@ -173,11 +173,11 @@ export default function SatelliteCompare({ area, coords }: Props) {
                 <div className="absolute inset-x-0 top-0 h-0.5 rounded-full"
                   style={{ background: color, boxShadow: `0 0 8px ${color}` }} />
               )}
-              <span className="text-[9px] font-mono font-bold mb-0.5"
+              <span className="text-[10px] font-display font-bold mb-0.5"
                 style={{ color: isActive ? color : '#444455' }}>
                 {cfg.year}
               </span>
-              <span className="text-[8px] font-mono" style={{ color: isActive ? '#888899' : '#2e2e42' }}>
+              <span className="text-[8px] font-sans font-semibold" style={{ color: isActive ? '#888899' : '#2e2e42' }}>
                 {cfg.era}
               </span>
               {isLast && (
@@ -224,15 +224,15 @@ export default function SatelliteCompare({ area, coords }: Props) {
               style={{ background: 'rgba(5,5,10,0.88)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.1)' }}>
               <Clock size={10} className="text-[#555566]" />
               <div>
-                <p className="text-[10px] font-mono font-bold text-[#aaaabc]">{phaseConfig.year}</p>
-                <p className="text-[8px] font-mono text-[#444455]">{activeMilestone.label}</p>
+                <p className="text-[10px] font-display font-bold text-[#aaaabc]">{phaseConfig.year}</p>
+                <p className="text-[8px] font-sans text-[#444455]">{activeMilestone.label}</p>
               </div>
             </div>
 
             {/* BEFORE label — top right */}
             <div className="absolute top-3 right-3 z-[1] px-2 py-1 rounded-lg"
               style={{ background: 'rgba(5,5,10,0.75)', border: '1px solid rgba(255,255,255,0.08)' }}>
-              <p className="text-[8px] font-mono text-[#555566] uppercase tracking-widest">Before</p>
+              <p className="text-[8px] font-display font-bold text-[#555566] uppercase tracking-widest">Before</p>
             </div>
 
             {/* Growth stage badge — bottom */}
@@ -242,14 +242,14 @@ export default function SatelliteCompare({ area, coords }: Props) {
                 <div className="h-full rounded-full transition-all duration-500"
                   style={{ width: phaseConfig.growth, background: `linear-gradient(90deg, #444455, #666680)` }} />
               </div>
-              <span className="text-[9px] font-mono text-[#555566]">{phaseConfig.growth} built</span>
+              <span className="text-[9px] font-display font-bold text-[#555566]">{phaseConfig.growth} built</span>
             </div>
           </div>
 
           {/* Caption */}
           <div className="flex items-center gap-2 mt-2.5 px-1">
             <div className="w-1 h-1 rounded-full bg-[#444455]" />
-            <p className="text-[9px] font-mono text-[#444455]">{phaseConfig.caption}</p>
+            <p className="text-[9px] font-sans text-[#64748b]">{phaseConfig.caption}</p>
           </div>
         </div>
 
@@ -303,21 +303,21 @@ export default function SatelliteCompare({ area, coords }: Props) {
               <div className="w-1.5 h-1.5 rounded-full"
                 style={{ backgroundColor: color, boxShadow: `0 0 6px ${color}`, animation: 'pulse 2s infinite' }} />
               <div>
-                <p className="text-[10px] font-mono font-bold" style={{ color }}>2024 · LIVE</p>
-                <p className="text-[8px] font-mono text-[#555566]">{RADIUS_KM} km radius</p>
+                <p className="text-[10px] font-display font-bold" style={{ color }}>2024 · LIVE</p>
+                <p className="text-[8px] font-sans text-[#555566]">{RADIUS_KM} km radius</p>
               </div>
             </div>
 
             {/* NOW label — top right */}
             <div className="absolute top-3 right-3 z-[1] pointer-events-none px-2 py-1 rounded-lg"
               style={{ background: `${color}15`, border: `1px solid ${color}35` }}>
-              <p className="text-[8px] font-mono font-bold uppercase tracking-widest" style={{ color }}>Now</p>
+              <p className="text-[8px] font-display font-bold uppercase tracking-widest" style={{ color }}>Now</p>
             </div>
 
             {/* Scroll hint */}
             <div className="absolute bottom-3 right-3 z-[1] px-2 py-1 rounded-lg pointer-events-none"
               style={{ background: 'rgba(5,5,10,0.72)', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <p className="text-[8px] font-mono text-[#444455]">scroll · zoom</p>
+              <p className="text-[8px] font-display text-[#444455]">scroll · zoom</p>
             </div>
 
             {/* Growth badge — bottom left */}
@@ -326,14 +326,14 @@ export default function SatelliteCompare({ area, coords }: Props) {
               <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: '#1a1a2e', width: 60 }}>
                 <div className="h-full rounded-full" style={{ width: '100%', background: `linear-gradient(90deg, ${color}80, ${color})` }} />
               </div>
-              <span className="text-[9px] font-mono font-bold" style={{ color }}>100% built</span>
+              <span className="text-[9px] font-display font-bold" style={{ color }}>100% built</span>
             </div>
           </div>
 
           {/* Caption */}
           <div className="flex items-center gap-2 mt-2.5 px-1">
             <div className="w-1 h-1 rounded-full" style={{ backgroundColor: color }} />
-            <p className="text-[9px] font-mono" style={{ color: `${color}99` }}>
+            <p className="text-[9px] font-sans" style={{ color: `${color}99` }}>
               {coords ? `${RADIUS_KM} km · interactive` : 'Roads · Buildings · Growth'}
             </p>
           </div>
@@ -347,10 +347,10 @@ export default function SatelliteCompare({ area, coords }: Props) {
         {/* Progress track */}
         <div className="px-5 pt-4 pb-3">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest">
+            <p className="text-[9px] font-display font-bold text-[#444455] uppercase tracking-widest">
               Est. Development Timeline
             </p>
-            <span className="text-[11px] font-mono font-bold" style={{ color }}>
+            <span className="text-[11px] font-display font-bold" style={{ color }}>
               +{coveragePct}% coverage
             </span>
           </div>
@@ -381,7 +381,7 @@ export default function SatelliteCompare({ area, coords }: Props) {
                       outline: isActive ? `2px solid ${barColor}` : '2px solid transparent',
                       outlineOffset: 2,
                     }} />
-                  <p className="text-[7px] font-mono transition-colors duration-150"
+                  <p className="text-[8px] font-display font-bold transition-colors duration-150"
                     style={{ color: isActive ? color : '#333344' }}>
                     {m.year}
                   </p>
@@ -394,8 +394,8 @@ export default function SatelliteCompare({ area, coords }: Props) {
           <div className="mt-3 flex items-center gap-2.5 px-3 py-2.5 rounded-xl transition-all duration-300"
             style={{ background: `${color}0a`, border: `1px solid ${color}20` }}>
             <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ backgroundColor: color }} />
-            <p className="text-[9px] font-mono text-[#666680]">
-              <span style={{ color }} className="font-semibold">{activeMilestone.year}</span>
+            <p className="text-[9px] font-sans text-[#666680]">
+              <span style={{ color }} className="font-display font-bold">{activeMilestone.year}</span>
               {' — '}{activeMilestone.label} · {PHASE_CONFIG[activeMilestone.phase].caption}
             </p>
           </div>
@@ -406,7 +406,7 @@ export default function SatelliteCompare({ area, coords }: Props) {
       <div className="mt-3 flex items-start gap-2.5 p-3.5 rounded-xl"
         style={{ background: 'rgba(0,230,118,0.04)', border: '1px solid rgba(0,230,118,0.1)' }}>
         <Sparkles size={10} className="text-[#00e676] flex-shrink-0 mt-0.5" />
-        <p className="text-[9px] font-mono text-[#444455] leading-relaxed">
+        <p className="text-[9px] font-sans text-[#444455] leading-relaxed">
           <span className="text-[#00e676] font-semibold">Phase 3 —</span>{' '}
           Animated year-by-year satellite timelapse (2009–2024) via Google Earth Engine, showing exact building density, road expansion &amp; greenery loss.
         </p>

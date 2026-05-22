@@ -452,7 +452,7 @@ export default function AreaDetail() {
                 style={{ filter: `drop-shadow(0 0 12px ${color}60)` }}
               />
               <text x={90} y={82} textAnchor="middle" fill={color}
-                style={{ fontSize: 44, fontFamily: "var(--font-mono)", fontWeight: 700 }}>
+                style={{ fontSize: 44, fontFamily: "var(--font-display)", fontWeight: 700 }}>
                 {area.score}
               </text>
               <text x={90} y={102} textAnchor="middle" fill="#64748b"
@@ -485,21 +485,21 @@ export default function AreaDetail() {
                   <TrendingUp size={12} style={{ color }} />
                   <span className="text-[10px] font-sans font-semibold text-slate-400 uppercase tracking-wider">YoY Growth</span>
                 </div>
-                <p className="text-lg font-mono font-bold" style={{ color }}>+{area.yoy}%</p>
+                <p className="text-lg font-display font-bold" style={{ color }}>+{area.yoy}%</p>
               </div>
               <div className="p-3 rounded-2xl text-center glass-panel-light">
                 <div className="flex items-center justify-center gap-1 mb-1.5">
                   <Building2 size={12} className="text-slate-400" />
                   <span className="text-[10px] font-sans font-semibold text-slate-400 uppercase tracking-wider">Price Range</span>
                 </div>
-                <p className="text-xs font-mono font-bold text-slate-200 mt-0.5 leading-snug">{area.priceRange}</p>
+                <p className="text-xs font-display font-bold text-slate-200 mt-0.5 leading-snug">{area.priceRange}</p>
               </div>
               <div className="p-3 rounded-2xl text-center glass-panel-light">
                 <div className="flex items-center justify-center gap-1 mb-1.5">
                   <Zap size={12} className="text-amber-500" />
                   <span className="text-[10px] font-sans font-semibold text-slate-400 uppercase tracking-wider">Signal</span>
                 </div>
-                <p className="text-sm font-mono font-bold text-amber-500 mt-0.5">
+                <p className="text-sm font-display font-bold text-amber-500 mt-0.5">
                   {signals.reduce((best, [, v]) => v > best ? v : best, 0)}
                   <span className="text-[10px] text-slate-400 font-sans ml-0.5">peak</span>
                 </p>
@@ -595,7 +595,7 @@ export default function AreaDetail() {
                         </p>
                       </div>
                     </div>
-                    <span className="text-xl font-mono font-bold leading-none" style={{ color: tier.color }}>
+                    <span className="text-xl font-display font-bold leading-none" style={{ color: tier.color }}>
                       {val}
                     </span>
                   </div>
@@ -681,7 +681,7 @@ export default function AreaDetail() {
                           </p>
                         </div>
                       </div>
-                      <p className="text-xl font-mono font-bold leading-none" style={{ color: tier.color }}>{val}</p>
+                      <p className="text-xl font-display font-bold leading-none" style={{ color: tier.color }}>{val}</p>
                     </div>
 
                     <div className="h-[6px] rounded-full overflow-hidden bg-slate-950/50">
@@ -836,7 +836,7 @@ export default function AreaDetail() {
                             {tl}
                           </span>
                           {proj.investment && (
-                            <span className="text-xs font-mono font-bold text-slate-100">
+                            <span className="text-xs font-display font-bold text-slate-100">
                               {proj.investment}
                             </span>
                           )}
@@ -982,7 +982,7 @@ export default function AreaDetail() {
                           {matchScore}% match
                         </span>
                         <span
-                          className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full"
+                          className="text-[11px] font-display font-bold px-2 py-0.5 rounded-full"
                           style={{ background: `${nearColor}15`, color: nearColor, border: `1px solid ${nearColor}28` }}
                         >
                           {nearArea.score}

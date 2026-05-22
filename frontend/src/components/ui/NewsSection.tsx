@@ -109,21 +109,21 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2 flex-wrap">
           <Newspaper size={11} className="text-[#555566]" />
-          <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+          <h2 className="text-xs font-display font-bold text-[#444455] uppercase tracking-widest">
             What Changed Recently in
           </h2>
-          <span className="text-xs font-mono font-semibold" style={{ color: accentColor }}>
+          <span className="text-xs font-display font-bold" style={{ color: accentColor }}>
             {areaName}
           </span>
           <span className="flex items-center gap-1 ml-1">
             <span className="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse" />
-            <span className="text-[9px] font-mono text-[#22c55e]">live</span>
+            <span className="text-[9px] font-sans text-[#22c55e]">live</span>
           </span>
         </div>
         <button
           onClick={() => load(true)}
           disabled={refreshing}
-          className="flex items-center gap-1.5 text-[10px] font-mono text-[#444455] hover:text-[#888899] transition-colors disabled:opacity-40"
+          className="flex items-center gap-1.5 text-[10px] font-sans text-[#444455] hover:text-[#888899] transition-colors disabled:opacity-40"
         >
           <RefreshCw size={10} className={refreshing ? 'animate-spin' : ''} />
           Refresh
@@ -141,7 +141,7 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
           className="p-6 rounded-xl text-center"
           style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
         >
-          <p className="text-[#444455] font-mono text-xs">Backend not connected — start the FastAPI server to see live news.</p>
+          <p className="text-[#444455] font-sans text-xs">Backend not connected — start the FastAPI server to see live news.</p>
           <p className="text-[#2a2a3e] font-mono text-[10px] mt-1">cd backend && uvicorn app.main:app --reload</p>
         </div>
       ) : allItems.length === 0 ? (
@@ -149,8 +149,8 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
           className="p-6 rounded-xl text-center"
           style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
         >
-          <p className="text-[#444455] font-mono text-xs">No recent area-specific news found for {areaName}.</p>
-          <p className="text-[#2a2a3e] font-mono text-[10px] mt-1">
+          <p className="text-[#444455] font-sans text-xs">No recent area-specific news found for {areaName}.</p>
+          <p className="text-[#2a2a3e] font-sans text-[10px] mt-1">
             Regional fallback headlines are hidden to avoid unrelated stories.
           </p>
         </div>
@@ -184,19 +184,19 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
                   }}
                 >
                   <span
-                    className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5"
+                    className="text-[8px] font-display font-bold px-1.5 py-0.5 rounded flex-shrink-0 mt-0.5"
                     style={{ background: `${sc}15`, color: sc, border: `1px solid ${sc}25` }}
                   >
                     {item.source.split(' ')[0].toUpperCase()}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-mono text-[#aaaabc] group-hover:text-[#e8e8f0] transition-colors leading-snug line-clamp-2">
+                    <p className="text-[12px] font-sans text-[#aaaabc] group-hover:text-[#e8e8f0] transition-colors leading-snug line-clamp-2">
                       {item.title}
                     </p>
                     <div className="flex items-center gap-1.5 mt-1">
                       <Clock size={9} className="text-[#333344]" />
-                      <span className="text-[9px] font-mono text-[#333344]">{timeAgo(item.published_at)}</span>
-                      <span className="text-[9px] font-mono text-[#222233]">· {item.source}</span>
+                      <span className="text-[9px] font-sans text-[#333344]">{timeAgo(item.published_at)}</span>
+                      <span className="text-[9px] font-sans text-[#222233]">· {item.source}</span>
                     </div>
                   </div>
                   <ExternalLink
@@ -215,18 +215,18 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
               <button
                 onClick={() => setPage(p => Math.max(0, p - 1))}
                 disabled={page === 0}
-                className="flex items-center gap-1 text-[10px] font-mono text-[#444455] hover:text-[#888899] transition-colors disabled:opacity-25"
+                className="flex items-center gap-1 text-[10px] font-sans text-[#444455] hover:text-[#888899] transition-colors disabled:opacity-25"
               >
                 <ChevronLeft size={12} /> Prev
               </button>
-              <span className="text-[9px] font-mono text-[#2e2e42]">
+              <span className="text-[9px] font-sans text-[#2e2e42]">
                 {page + 1} / {totalPages}
                 <span className="ml-2 text-[#1e1e30]">({allItems.length} articles)</span>
               </span>
               <button
                 onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
                 disabled={page === totalPages - 1}
-                className="flex items-center gap-1 text-[10px] font-mono text-[#444455] hover:text-[#888899] transition-colors disabled:opacity-25"
+                className="flex items-center gap-1 text-[10px] font-sans text-[#444455] hover:text-[#888899] transition-colors disabled:opacity-25"
               >
                 Next <ChevronRight size={12} />
               </button>
@@ -235,7 +235,7 @@ export default function NewsSection({ citySlug, areaSlug, areaName, accentColor 
         </>
       )}
 
-      <p className="text-[9px] font-mono text-[#1e1e30] mt-3">
+      <p className="text-[9px] font-sans text-[#1e1e30] mt-3">
         Live aggregation from 20+ India RE sources · Updated every 6 hours
       </p>
     </motion.section>

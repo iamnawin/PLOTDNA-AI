@@ -165,7 +165,7 @@ export default function VerdictCard({
 
           <div className="text-right">
             {/* Confidence meter */}
-            <p className="text-2xl font-mono font-bold" style={{ color: cfg.color }}>{data.confidence}%</p>
+            <p className="text-2xl font-display font-bold" style={{ color: cfg.color }}>{data.confidence}%</p>
             <p className="text-[9px] font-sans text-slate-400">confidence</p>
             {/* Mini bar */}
             <div className="h-1 w-20 rounded-full overflow-hidden mt-1.5 ml-auto bg-slate-900/50" style={{ border: '1px solid rgba(255,255,255,0.05)' }}>
