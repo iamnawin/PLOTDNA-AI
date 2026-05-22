@@ -5,7 +5,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Newspaper, ExternalLink, Clock, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react'
-import { API_BASE_URL } from '@/lib/runtime'
 
 interface NewsItem {
   id: string
@@ -16,7 +15,7 @@ interface NewsItem {
   summary: string
 }
 
-const API_BASE = API_BASE_URL
+const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 const PAGE_SIZE = 3
 
 function sourceColor(source: string): string {

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -23,13 +22,9 @@ import VerdictCard from '@/components/ui/VerdictCard'
 import NewsSection from '@/components/ui/NewsSection'
 import MarketPulseCard from '@/components/ui/MarketPulseCard'
 import AVMCard from '@/components/ui/AVMCard'
-import EmailGateModal from '@/components/ui/EmailGateModal'
-import { getCachedEntitlements, getEntitlements, type EntitlementsResponse } from '@/lib/entitlements'
+import AssistantDock from '@/components/ui/AssistantDock'
 
 interface AreaDetailLocationState {
-  analysisTransition?: {
-    minHoldMs?: number
-  }
   fallbackContext?: {
     tier: 'exact_locality' | 'nearby_micro_market' | 'city_zone_cluster' | 'uncovered'
     displayLabel: string
@@ -37,13 +32,6 @@ interface AreaDetailLocationState {
     coords?: [number, number]
   }
 }
-
-const ANALYSIS_GATE_STEPS = [
-  'Loading AI verdict...',
-  'Reading market pulse...',
-  'Loading valuation model...',
-  'Preparing full area analysis...',
-]
 
 // ── Active project helpers ──────────────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
@@ -72,8 +60,7 @@ const STATUS_LABEL: Record<string, string> = {
 }
 
 // ── Signal tier helper ─────────────────────────────────────────────────────────
-function getSignalTier(v: number | null) {
-  if (v === null) return { label: 'Uncovered', color: '#64748b' }
+function getSignalTier(v: number) {
   if (v >= 85) return { label: 'Excellent', color: '#10b981' }
   if (v >= 65) return { label: 'Good',      color: '#22c55e' }
   if (v >= 45) return { label: 'Moderate',  color: '#f59e0b' }
@@ -341,48 +328,15 @@ export default function AreaDetail() {
   const location = useLocation()
   const navigate = useNavigate()
   const { searchCoords, recommendationGoal } = useAppStore()
-  const [reportGateOpen, setReportGateOpen] = useState(false)
-  const [reportEntitlements, setReportEntitlements] = useState<EntitlementsResponse | null>(null)
-  const [reportPromptReadySlug, setReportPromptReadySlug] = useState<string | null>(null)
-  const [reportPromptDismissedSlug, setReportPromptDismissedSlug] = useState<string | null>(null)
-  const [reportDownloadBusy, setReportDownloadBusy] = useState(false)
   const area = getAllAreas().find((a) => a.slug === slug)
-  const locationState = location.state as AreaDetailLocationState | null
-  const fallbackContext = locationState?.fallbackContext
-  const analysisTransition = locationState?.analysisTransition
-  const showAnalysisGate = Boolean(analysisTransition)
-  const analysisMinHoldMs = analysisTransition?.minHoldMs ?? 4_000
-  const [analysisGateElapsed, setAnalysisGateElapsed] = useState(!showAnalysisGate)
-  const [verdictReady, setVerdictReady] = useState(!showAnalysisGate)
-  const [marketPulseReady, setMarketPulseReady] = useState(!showAnalysisGate)
-  const [avmReady, setAvmReady] = useState(!showAnalysisGate)
-  const showReportPrompt = reportPromptReadySlug === slug && reportPromptDismissedSlug !== slug
-
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setReportPromptReadySlug(slug ?? null)
-    }, 5_000)
-    return () => window.clearTimeout(timer)
-  }, [slug])
-
-  useEffect(() => {
-    if (!showAnalysisGate) return
-    setAnalysisGateElapsed(false)
-    setVerdictReady(false)
-    setMarketPulseReady(false)
-    setAvmReady(false)
-    const timer = window.setTimeout(() => {
-      setAnalysisGateElapsed(true)
-    }, analysisMinHoldMs)
-    return () => window.clearTimeout(timer)
-  }, [analysisMinHoldMs, showAnalysisGate, slug])
+  const fallbackContext = (location.state as AreaDetailLocationState | null)?.fallbackContext
 
   if (!area) {
     return (
-      <div className="h-[100dvh] bg-[#050508] flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-[#444455] font-mono text-sm">Area not found</p>
-          <button onClick={() => navigate('/map')} className="mt-4 text-xs font-mono text-[#22c55e] underline">
+      <div className="h-[100dvh] flex items-center justify-center body">
+        <div className="text-center p-6 glass-panel rounded-2xl max-w-sm mx-4">
+          <p className="text-slate-400 font-sans text-sm">Area not found</p>
+          <button onClick={() => navigate('/map')} className="mt-4 text-xs font-sans text-emerald-400 hover:text-emerald-300 transition-colors underline cursor-pointer">
             Back to map
           </button>
         </div>
@@ -409,109 +363,62 @@ export default function AreaDetail() {
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
-  const showAnalysisOverlay = showAnalysisGate && !(analysisGateElapsed && verdictReady && marketPulseReady && avmReady)
-
-  async function prepareAndSaveReport() {
-    if (!area) return
-    setReportDownloadBusy(true)
-    setReportPromptDismissedSlug(slug ?? null)
-    await new Promise((resolve) => window.setTimeout(resolve, 80))
-    try {
-      generatePDF(area)
-    } finally {
-      setReportDownloadBusy(false)
-    }
-  }
-
-  async function handleDownloadReport() {
-    if (!area || reportDownloadBusy) return
-
-    const cachedEntitlements = reportEntitlements ?? getCachedEntitlements()
-    if (cachedEntitlements?.email || cachedEntitlements?.subscription_active) {
-      setReportEntitlements(cachedEntitlements)
-      await prepareAndSaveReport()
-      return
-    }
-
-    void getEntitlements().then((entitlements) => {
-      setReportEntitlements(entitlements)
-    })
-    setReportGateOpen(true)
-  }
-
-  async function handleReportUnlocked(nextEntitlements: EntitlementsResponse) {
-    if (!area) return
-    setReportEntitlements(nextEntitlements)
-    setReportGateOpen(false)
-    await prepareAndSaveReport()
+  const assistantContext = {
+    page: 'area' as const,
+    citySlug,
+    cityName,
+    areaSlug: area.slug,
+    areaName: area.name,
+    coords: fallbackContext?.coords ?? searchCoords ?? null,
+    resolutionTier: fallbackContext?.tier ?? null,
+    resolutionLabel: fallbackContext?.displayLabel ?? area.name,
+    summary: `${area.name} has a ${area.score}/100 DNA score, ${area.priceRange} price range, and ${area.yoy}% YoY growth.`,
   }
 
   return (
-    <div className="min-h-screen bg-[#050508] text-[#e8e8f0]">
+    <div className="min-h-screen body text-slate-100">
 
       {/* ── Nav bar ── */}
       <nav
-        className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 h-13"
-        style={{ background: 'rgba(5,5,10,0.96)', borderBottom: '1px solid rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)' }}
+        className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 h-13 glass-panel border-b border-white/5"
       >
         <button
           onClick={() => navigate('/map')}
-          className="flex items-center gap-2 text-[#666680] hover:text-[#e8e8f0] transition-colors text-sm font-mono flex-shrink-0"
+          className="flex items-center gap-2 text-[#94a3b8] hover:text-slate-100 transition-colors text-sm font-sans flex-shrink-0"
         >
           <ArrowLeft size={15} />
           <span className="hidden sm:inline">Back to Map</span>
         </button>
 
         <div className="flex items-center gap-2.5">
-          <img
-            src="/plotdna-logo.png"
-            alt="PlotDNA"
-            className="w-6 h-6 rounded object-cover flex-shrink-0"
-          />
-          <span className="font-display font-bold text-[#e8e8f0] text-sm">PlotDNA</span>
+          <div
+            className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
+            style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}
+          >
+            <span className="text-slate-950 font-display font-black text-[10px]">P</span>
+          </div>
+          <span className="font-display font-bold text-slate-100 text-sm">PlotDNA</span>
         </div>
 
         <div className="flex items-center gap-2">
           {/* Brochure AI link — hidden on small mobile */}
           <button
             onClick={() => navigate('/brochure')}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all"
-            style={{
-              background: '#6366f112',
-              border: '1px solid #6366f128',
-              color: '#6366f1',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = '#6366f122' }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = '#6366f112' }}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-[#6366f120] text-[#818cf8]"
+            style={{ border: '1px solid rgba(99, 102, 241, 0.2)' }}
           >
-            <Sparkles size={11} />
+            <Sparkles size={11} className="text-[#818cf8]" />
             Brochure AI
           </button>
 
           {/* Download PDF button */}
           <button
-            onClick={() => void handleDownloadReport()}
-            disabled={reportDownloadBusy}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all"
-            style={{
-              background: showReportPrompt
-                ? `linear-gradient(135deg, ${color}32, ${color}16)`
-                : `${color}12`,
-              border: `1px solid ${showReportPrompt ? color : `${color}30`}`,
-              color,
-              boxShadow: showReportPrompt || reportDownloadBusy ? `0 0 26px ${color}45` : 'none',
-              opacity: reportDownloadBusy ? 0.82 : 1,
-              cursor: reportDownloadBusy ? 'wait' : 'pointer',
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = `${color}22` }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = showReportPrompt
-                ? `linear-gradient(135deg, ${color}32, ${color}16)`
-                : `${color}12`
-            }}
+            onClick={() => generatePDF(area)}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10"
+            style={{ color, border: `1px solid ${color}40` }}
           >
-            <Download size={12} />
-            <span className="hidden sm:inline">{reportDownloadBusy ? 'Preparing...' : 'Download PDF'}</span>
+            <Download size={12} style={{ color }} />
+            <span className="hidden sm:inline">Download PDF</span>
           </button>
         </div>
       </nav>
@@ -523,12 +430,12 @@ export default function AreaDetail() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row items-center md:items-start gap-6 sm:gap-8 mb-10 sm:mb-12"
+          className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12"
         >
           {/* Score ring */}
-          <div className="relative flex-shrink-0 scale-90 sm:scale-100">
+          <div className="relative flex-shrink-0">
             <svg width={180} height={180} viewBox="0 0 180 180">
-              <circle cx={90} cy={90} r={r} fill="none" stroke="#1a1a2e" strokeWidth={10} />
+              <circle cx={90} cy={90} r={r} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth={10} />
               <motion.circle
                 cx={90}
                 cy={90}
@@ -545,65 +452,56 @@ export default function AreaDetail() {
                 style={{ filter: `drop-shadow(0 0 12px ${color}60)` }}
               />
               <text x={90} y={82} textAnchor="middle" fill={color}
-                style={{ fontSize: 44, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700 }}>
+                style={{ fontSize: 44, fontFamily: "var(--font-mono)", fontWeight: 700 }}>
                 {area.score}
               </text>
-              <text x={90} y={102} textAnchor="middle" fill="#555566"
-                style={{ fontSize: 11, fontFamily: 'IBM Plex Mono, monospace', textTransform: 'uppercase', letterSpacing: 2 }}>
+              <text x={90} y={102} textAnchor="middle" fill="#64748b"
+                style={{ fontSize: 10, fontFamily: "var(--font-sans)", fontWeight: 600, textTransform: 'uppercase', letterSpacing: 2 }}>
                 DNA SCORE
               </text>
             </svg>
           </div>
 
           {/* Info */}
-          <div className="w-full flex-1 text-center md:text-left">
+          <div className="flex-1 w-full">
             <ScoreBadge score={area.score} size="lg" />
-            <h1 className="font-display text-2xl sm:text-4xl font-black text-[#e8e8f0] mt-3 leading-tight">
+            <h1 className="font-display text-2xl sm:text-4xl font-extrabold text-slate-100 mt-3 leading-tight tracking-tight">
               {area.name}
             </h1>
-            <p className="text-[#555566] font-mono text-sm mt-1">{area.category} · {cityName}</p>
+            <p className="text-slate-400 font-sans text-sm mt-1.5">{area.category} {" \u00B7 "} {cityName}</p>
 
             <div
-              className="mt-6 p-4 rounded-xl"
-              style={{ background: `${color}08`, border: `1px solid ${color}20` }}
+              className="mt-6 p-4 rounded-2xl glass-panel relative overflow-hidden"
+              style={{ borderLeft: `4px solid ${color}` }}
             >
-              <p className="text-2xl font-mono font-bold" style={{ color }}>{label}</p>
-              <p className="text-xs font-mono text-[#666680] mt-1">Investment outlook for this micro-market</p>
+              <p className="text-xl font-display font-extrabold" style={{ color }}>{label}</p>
+              <p className="text-xs font-sans text-slate-400 mt-1">Investment outlook for this micro-market</p>
             </div>
 
             {/* Stats row */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-4">
-              <div
-                className="p-3 rounded-lg text-center"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
-              >
-                <div className="flex items-center justify-center gap-1 mb-1">
+            <div className="grid grid-cols-3 gap-3 mt-4">
+              <div className="p-3 rounded-2xl text-center glass-panel-light">
+                <div className="flex items-center justify-center gap-1 mb-1.5">
                   <TrendingUp size={12} style={{ color }} />
-                  <span className="text-[10px] font-mono text-[#555566] uppercase">YoY Growth</span>
+                  <span className="text-[10px] font-sans font-semibold text-slate-400 uppercase tracking-wider">YoY Growth</span>
                 </div>
                 <p className="text-lg font-mono font-bold" style={{ color }}>+{area.yoy}%</p>
               </div>
-              <div
-                className="p-3 rounded-lg text-center"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
-              >
-                <div className="flex items-center justify-center gap-1 mb-1">
-                  <Building2 size={12} className="text-[#555566]" />
-                  <span className="text-[10px] font-mono text-[#555566] uppercase">Price Range</span>
+              <div className="p-3 rounded-2xl text-center glass-panel-light">
+                <div className="flex items-center justify-center gap-1 mb-1.5">
+                  <Building2 size={12} className="text-slate-400" />
+                  <span className="text-[10px] font-sans font-semibold text-slate-400 uppercase tracking-wider">Price Range</span>
                 </div>
-                <p className="text-xs font-mono font-bold text-[#aaaabc]">{area.priceRange}</p>
+                <p className="text-xs font-mono font-bold text-slate-200 mt-0.5 leading-snug">{area.priceRange}</p>
               </div>
-              <div
-                className="p-3 rounded-lg text-center"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
-              >
-                <div className="flex items-center justify-center gap-1 mb-1">
-                  <Zap size={12} className="text-[#f59e0b]" />
-                  <span className="text-[10px] font-mono text-[#555566] uppercase">Signal</span>
+              <div className="p-3 rounded-2xl text-center glass-panel-light">
+                <div className="flex items-center justify-center gap-1 mb-1.5">
+                  <Zap size={12} className="text-amber-500" />
+                  <span className="text-[10px] font-sans font-semibold text-slate-400 uppercase tracking-wider">Signal</span>
                 </div>
-                <p className="text-sm font-mono font-bold text-[#f59e0b]">
+                <p className="text-sm font-mono font-bold text-amber-500 mt-0.5">
                   {signals.reduce((best, [, v]) => v > best ? v : best, 0)}
-                  <span className="text-[10px] text-[#444455] ml-0.5">peak</span>
+                  <span className="text-[10px] text-slate-400 font-sans ml-0.5">peak</span>
                 </p>
               </div>
             </div>
@@ -619,16 +517,12 @@ export default function AreaDetail() {
         >
           {fallbackContext && fallbackContext.tier !== 'exact_locality' && (
             <div
-              className="px-4 py-3 rounded-xl mb-4"
-              style={{
-                background: 'rgba(245,158,11,0.08)',
-                border: '1px solid rgba(245,158,11,0.18)',
-              }}
+              className="px-4 py-3.5 rounded-2xl mb-4 glass-panel border border-amber-500/20 bg-amber-500/5"
             >
-              <p className="text-[10px] font-mono text-[#f59e0b] uppercase tracking-widest mb-1">
+              <p className="text-[10px] font-sans font-bold text-amber-400 uppercase tracking-wider mb-1">
                 Opened From Fallback Match
               </p>
-              <p className="text-[11px] font-mono text-[#aaaabc] leading-relaxed">
+              <p className="text-[12px] font-sans text-slate-300 leading-relaxed">
                 {fallbackContext.displayLabel} was used to open this supported area from your searched coordinate.
                 This page shows the exact micro-market analysis for {area.name}, not a plot-exact verdict for the original point.
               </p>
@@ -639,7 +533,6 @@ export default function AreaDetail() {
             areaSlug={area.slug}
             resolutionTier="exact_locality"
             resolutionLabel={area.name}
-            onReady={() => setVerdictReady(true)}
           />
         </motion.div>
 
@@ -660,49 +553,54 @@ export default function AreaDetail() {
           transition={{ duration: 0.5, delay: 0.15 }}
           className="mb-10"
         >
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-5">
-            <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
               DNA Signal Breakdown
             </h2>
             <span
-              className="text-[8px] font-mono text-[#333344] px-2 py-1 rounded"
-              style={{ background: '#0d0d1a', border: '1px solid rgba(255,255,255,0.05)' }}
+              className="text-[10px] font-sans text-slate-400 px-2.5 py-0.5 rounded-full glass-panel-light border border-white/5"
             >
               Weighted composite
             </span>
           </div>
 
           {/* Signal card grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {SIGNAL_CONFIG.map(({ key, icon: Icon, label }, i) => {
               const val = area.signals[key]
               const weight = SIGNAL_WEIGHTS[key] ?? 0
-              const tier = getSignalTier(val)
+              const tier = getSignalTier(val ?? 0)
               return (
                 <motion.div
                   key={key}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + i * 0.06 }}
-                  className="p-4 rounded-xl"
-                  style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+                  className="rounded-2xl p-3.5 glass-panel-light"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div
-                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                      style={{ background: `${tier.color}18` }}
-                    >
-                      <Icon size={14} style={{ color: tier.color }} />
+                  <div className="flex items-center justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <div
+                        className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                        style={{ background: `${tier.color}18` }}
+                      >
+                        <Icon size={13} style={{ color: tier.color }} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-[12px] font-sans font-bold text-slate-100 truncate leading-tight">
+                          {label}
+                        </p>
+                        <p className="text-[9px] font-sans font-semibold text-slate-400 mt-0.5 uppercase tracking-wider">
+                          {tier.label}
+                        </p>
+                      </div>
                     </div>
-                    <span className="text-2xl font-mono font-bold" style={{ color: tier.color }}>
-                      {val ?? 'N/A'}
+                    <span className="text-xl font-mono font-bold leading-none" style={{ color: tier.color }}>
+                      {val}
                     </span>
                   </div>
 
-                  <p className="text-[10px] font-mono text-[#888899] leading-snug mb-2.5">{label}</p>
-
-                  {/* Animated fill bar */}
-                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: '#1a1a2e' }}>
+                  <div className="h-[6px] rounded-full overflow-hidden bg-slate-950/50">
                     <motion.div
                       className="h-full rounded-full"
                       style={{ backgroundColor: tier.color, boxShadow: `0 0 6px ${tier.color}50` }}
@@ -712,21 +610,25 @@ export default function AreaDetail() {
                     />
                   </div>
 
-                  <div className="flex items-center justify-between mt-2">
+                  <div className="flex items-center justify-between mt-3">
                     <span
-                      className="text-[8px] font-mono px-1.5 py-0.5 rounded"
+                      className="text-[9px] font-sans text-slate-500 font-medium"
+                    >
+                      Weight
+                    </span>
+                    <span
+                      className="text-[9px] font-sans font-semibold px-2 py-0.5 rounded-full"
                       style={{ background: `${tier.color}12`, color: tier.color, border: `1px solid ${tier.color}28` }}
                     >
-                      {tier.label}
+                      {weight}% wt
                     </span>
-                    <span className="text-[8px] font-mono text-[#333344]">{weight}% wt</span>
                   </div>
                 </motion.div>
               )
             })}
           </div>
 
-          <p className="text-[10px] font-mono text-[#333344] mt-3">
+          <p className="text-[11px] font-sans text-slate-500 mt-4 leading-relaxed">
             Weighted formula: Infrastructure (25%) + Population (20%) + Satellite (20%) + RERA (15%) + Employment (10%) + Price (5%) + Govt Scheme (5%)
           </p>
         </motion.section>
@@ -739,19 +641,18 @@ export default function AreaDetail() {
             transition={{ duration: 0.5, delay: 0.22 }}
             className="mb-10"
           >
-            <div className="flex flex-wrap items-center gap-3 mb-5">
-              <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
                 Livability Index
               </h2>
               <span
-                className="text-[8px] font-mono text-[#444455] px-2 py-0.5 rounded-full"
-                style={{ background: '#0d0d1a', border: '1px solid rgba(255,255,255,0.06)' }}
+                className="text-[10px] font-sans text-slate-400 px-2 py-0.5 rounded-full glass-panel-light border border-white/5"
               >
                 not in DNA score
               </span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
               {LIVABILITY_CONFIG.map(({ key, icon: Icon, label, description }, i) => {
                 const val = area.livability![key]
                 const tier = getSignalTier(val)
@@ -761,22 +662,29 @@ export default function AreaDetail() {
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.35 + i * 0.07 }}
-                    className="p-4 rounded-xl text-center"
-                    style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
+                    className="rounded-2xl p-3.5 glass-panel-light"
                   >
-                    <div
-                      className="w-9 h-9 rounded-full mx-auto flex items-center justify-center mb-2"
-                      style={{ background: `${tier.color}15`, border: `1px solid ${tier.color}28` }}
-                    >
-                      <Icon size={15} style={{ color: tier.color }} />
+                    <div className="flex items-center justify-between gap-3 mb-3.5">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <div
+                          className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                          style={{ background: `${tier.color}15`, border: `1px solid ${tier.color}28` }}
+                        >
+                          <Icon size={13} style={{ color: tier.color }} />
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-[11px] font-sans font-bold text-slate-100 truncate leading-tight">
+                            {label}
+                          </p>
+                          <p className="text-[9px] font-sans text-slate-400 mt-0.5 leading-tight">
+                            {description}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-xl font-mono font-bold leading-none" style={{ color: tier.color }}>{val}</p>
                     </div>
 
-                    <p className="text-xl font-mono font-bold mb-1" style={{ color: tier.color }}>{val}</p>
-                    <p className="text-[9px] font-mono text-[#888899] mb-0.5">{label}</p>
-                    <p className="text-[8px] font-mono text-[#444455]">{description}</p>
-
-                    {/* Mini bar */}
-                    <div className="h-1 rounded-full overflow-hidden mt-2.5" style={{ background: '#1a1a2e' }}>
+                    <div className="h-[6px] rounded-full overflow-hidden bg-slate-950/50">
                       <motion.div
                         className="h-full rounded-full"
                         style={{ backgroundColor: tier.color }}
@@ -799,19 +707,18 @@ export default function AreaDetail() {
           transition={{ duration: 0.5, delay: 0.35 }}
           className="mb-10"
         >
-          <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest mb-5">Key Highlights</h2>
+          <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider mb-5">Key Highlights</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {area.highlights.map((h, i) => (
               <div
                 key={i}
-                className="flex items-start gap-3 p-4 rounded-xl"
-                style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
+                className="flex items-start gap-3 p-4 rounded-2xl glass-panel-light"
               >
                 <div
-                  className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
+                  className="w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0"
                   style={{ backgroundColor: color }}
                 />
-                <p className="text-sm text-[#888899]">{h}</p>
+                <p className="text-sm text-slate-300 font-sans leading-relaxed">{h}</p>
               </div>
             ))}
           </div>
@@ -840,14 +747,14 @@ export default function AreaDetail() {
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-2.5">
                   <HardHat size={12} className="text-[#f97316]" />
-                  <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+                  <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
                     Active Development Pipeline
                   </h2>
                 </div>
                 <div className="flex items-center gap-2">
                   {activeCount > 0 && (
                     <span
-                      className="text-[8px] font-mono font-bold px-2 py-1 rounded"
+                      className="text-[9px] font-sans font-bold px-2 py-0.5 rounded-full"
                       style={{ background: '#3b82f618', color: '#3b82f6', border: '1px solid #3b82f630' }}
                     >
                       {activeCount} ACTIVE
@@ -855,17 +762,16 @@ export default function AreaDetail() {
                   )}
                   {totalInvestment > 0 && (
                     <span
-                      className="text-[8px] font-mono text-[#888899] px-2 py-1 rounded"
-                      style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+                      className="text-[9px] font-sans font-semibold text-slate-400 px-2 py-0.5 rounded-full glass-panel-light border border-white/5"
                     >
-                      ₹{totalInvestment.toLocaleString('en-IN')} Cr pipeline
+                      {"\u20B9"}{totalInvestment.toLocaleString('en-IN')} Cr pipeline
                     </span>
                   )}
                 </div>
               </div>
 
               {/* Project cards */}
-              <div className="space-y-3">
+              <div className="space-y-3.5">
                 {area.activeProjects.map((proj, i) => {
                   const tc   = PROJECT_TYPE_COLOR[proj.type]   ?? '#64748b'
                   const sc   = STATUS_COLOR[proj.status]        ?? '#64748b'
@@ -879,15 +785,14 @@ export default function AreaDetail() {
                       initial={{ opacity: 0, x: -12 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.42 + i * 0.07 }}
-                      className="flex items-start gap-4 p-4 rounded-xl"
+                      className="flex items-start gap-4 p-4 rounded-2xl glass-panel-light"
                       style={{
-                        background: `${tc}06`,
-                        border: `1px solid ${tc}20`,
+                        borderLeft: `3px solid ${tc}`,
                       }}
                     >
                       {/* Type icon */}
                       <div
-                        className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5"
+                        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
                         style={{ background: `${tc}18` }}
                       >
                         <Icon size={15} style={{ color: tc }} />
@@ -896,7 +801,7 @@ export default function AreaDetail() {
                       {/* Content */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-start justify-between gap-2 mb-1.5">
-                          <p className="text-sm font-mono font-semibold text-[#e8e8f0] leading-snug">
+                          <p className="text-sm font-sans font-bold text-slate-100 leading-snug">
                             {proj.name}
                           </p>
                           <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -909,7 +814,7 @@ export default function AreaDetail() {
                               </span>
                             )}
                             <span
-                              className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded"
+                              className="text-[9px] font-sans font-bold px-1.5 py-0.5 rounded-full"
                               style={{ background: `${sc}15`, color: sc, border: `1px solid ${sc}30` }}
                             >
                               {sl}
@@ -918,36 +823,36 @@ export default function AreaDetail() {
                         </div>
 
                         {proj.description && (
-                          <p className="text-[11px] font-mono text-[#666680] leading-relaxed mb-2.5">
+                          <p className="text-xs font-sans text-slate-400 leading-relaxed mb-2.5">
                             {proj.description}
                           </p>
                         )}
 
                         <div className="flex flex-wrap items-center gap-3">
                           <span
-                            className="text-[8px] font-mono px-1.5 py-0.5 rounded"
+                            className="text-[9px] font-sans font-semibold px-2 py-0.5 rounded-full"
                             style={{ background: `${tc}12`, color: tc, border: `1px solid ${tc}25` }}
                           >
                             {tl}
                           </span>
                           {proj.investment && (
-                            <span className="text-[11px] font-mono font-bold text-[#e8e8f0]">
+                            <span className="text-xs font-mono font-bold text-slate-100">
                               {proj.investment}
                             </span>
                           )}
                           {proj.expectedCompletion && (
-                            <span className="text-[10px] font-mono text-[#666680]">
+                            <span className="text-xs font-sans text-slate-400">
                               ETA {proj.expectedCompletion}
                             </span>
                           )}
                           {proj.developer && (
-                            <span className="text-[10px] font-mono text-[#555566]">
-                              · {proj.developer}
+                            <span className="text-xs font-sans text-slate-500">
+                              {" \u00B7 "} {proj.developer}
                             </span>
                           )}
                           {proj.impact === 'high' && (
                             <span
-                              className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded"
+                              className="text-[9px] font-sans font-bold px-2 py-0.5 rounded-full"
                               style={{ background: '#f59e0b12', color: '#f59e0b', border: '1px solid #f59e0b25' }}
                             >
                               HIGH IMPACT
@@ -974,20 +879,10 @@ export default function AreaDetail() {
         </motion.div>
 
         {/* ── Market Pulse ── */}
-        <MarketPulseCard
-          citySlug={citySlug}
-          areaSlug={area.slug}
-          country="india"
-          onReady={() => setMarketPulseReady(true)}
-        />
+        <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
 
         {/* ── Automated Valuation (AVM) ── */}
-        <AVMCard
-          areaSlug={area.slug}
-          country="india"
-          accentColor={color}
-          onReady={() => setAvmReady(true)}
-        />
+        <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
 
         {/* ── Sources & Citations ── */}
         <motion.section
@@ -996,9 +891,9 @@ export default function AreaDetail() {
           transition={{ duration: 0.5, delay: 0.4 }}
           className="mb-10"
         >
-          <div className="flex items-center gap-2 mb-5">
-            <FileText size={11} className="text-[#555566]" />
-            <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+          <div className="flex items-center gap-2.5 mb-5">
+            <FileText size={11} className="text-slate-500" />
+            <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
               Sources &amp; References
             </h2>
           </div>
@@ -1012,25 +907,21 @@ export default function AreaDetail() {
                   href={s.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-xl group transition-all duration-150 text-left cursor-pointer"
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl group transition-all duration-300 text-left cursor-pointer glass-panel-light hover:bg-white/5"
                   style={{
                     display: 'flex',
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid rgba(255,255,255,0.05)',
                     textDecoration: 'none',
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = `${tc}25` }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)' }}
                 >
                   {/* Type badge */}
                   <span
-                    className="text-[8px] font-mono font-bold px-1.5 py-0.5 rounded flex-shrink-0"
+                    className="text-[9px] font-sans font-bold px-2 py-0.5 rounded-full flex-shrink-0"
                     style={{ background: `${tc}15`, color: tc, border: `1px solid ${tc}25` }}
                   >
                     {tl}
                   </span>
 
-                  <span className="flex-1 text-[12px] font-mono text-[#888899] group-hover:text-[#ccccdd] transition-colors">
+                  <span className="flex-1 text-xs font-sans text-slate-400 group-hover:text-slate-200 transition-colors truncate">
                     {s.title}
                   </span>
 
@@ -1043,8 +934,8 @@ export default function AreaDetail() {
               )
             })}
           </div>
-          <p className="text-[9px] font-mono text-[#2a2a3e] mt-3">
-            Links open in a new tab · Always verify independently before making investment decisions
+          <p className="text-[10px] font-sans text-slate-500 mt-3">
+            Links open in a new tab {" \u00B7 "} Always verify independently before making investment decisions
           </p>
         </motion.section>
 
@@ -1053,37 +944,58 @@ export default function AreaDetail() {
           <motion.section
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
+            transition={{ duration: 0.5, delay: 0.42 }}
+            className="mb-10"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5">
-              <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">Alternatives to Compare</h2>
-              <span
-                className="text-[8px] font-mono px-2 py-1 rounded"
-                style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', color: '#666680' }}
-              >
-                Ranked for {goalMeta.label}
-              </span>
+            <div className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-2.5">
+                <Globe size={12} className="text-[#3b82f6]" />
+                <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
+                  Alternative Markets ({goalMeta.label})
+                </h2>
+              </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-              {nearby.map(({ area: altArea, matchScore, reasons, caution }) => {
-                const a = altArea
-                const c = getScoreColor(a.score)
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {nearby.map(({ area: nearArea, matchScore, reasons, caution }) => {
+                const nearColor = getScoreColor(nearArea.score)
                 return (
                   <button
-                    key={a.slug}
-                    onClick={() => navigate(`/area/${a.slug}`)}
-                    className="p-4 rounded-xl text-left transition-all hover:scale-[1.02]"
-                    style={{
-                      background: 'rgba(255,255,255,0.02)',
-                      border: '1px solid rgba(255,255,255,0.05)',
-                    }}
+                    key={nearArea.slug}
+                    onClick={() => navigate(`/area/${nearArea.slug}`)}
+                    className="w-full text-left rounded-2xl p-4 transition-all duration-300 cursor-pointer glass-panel glass-panel-hover"
                   >
-                    <p className="text-xs font-mono text-[#aaaabc] truncate">{a.name}</p>
-                    <p className="text-2xl font-mono font-bold mt-1" style={{ color: c }}>{a.score}</p>
-                    <p className="text-[10px] font-mono" style={{ color: c }}>{getScoreLabel(a.score)}</p>
-                    <p className="text-[10px] font-mono text-[#e8e8f0] mt-3">{matchScore}/100 match</p>
-                    <p className="text-[9px] font-mono text-[#666680] mt-1 leading-relaxed">{reasons[0]?.label}: {reasons[0]?.value}</p>
-                    <p className="text-[8px] font-mono text-[#333344] mt-2 leading-relaxed">{caution}</p>
+                    <div className="flex items-start justify-between gap-3 mb-2.5">
+                      <div className="min-w-0">
+                        <p className="text-sm font-sans font-bold text-slate-100 truncate">
+                          {nearArea.name}
+                        </p>
+                        <p className="text-[10px] font-sans text-slate-400 mt-0.5">
+                          {nearArea.category}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <span
+                          className="text-[9px] font-sans font-bold px-2 py-0.5 rounded-full"
+                          style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.2)' }}
+                        >
+                          {matchScore}% match
+                        </span>
+                        <span
+                          className="text-[11px] font-mono font-bold px-2 py-0.5 rounded-full"
+                          style={{ background: `${nearColor}15`, color: nearColor, border: `1px solid ${nearColor}28` }}
+                        >
+                          {nearArea.score}
+                        </span>
+                      </div>
+                    </div>
+
+                    <p className="text-[10px] font-sans text-slate-400 mt-1 leading-relaxed">
+                      <span className="font-bold text-slate-300">{reasons[0]?.label}:</span> {reasons[0]?.value}
+                    </p>
+                    <p className="text-[9px] font-sans text-slate-500 mt-2 leading-relaxed italic">
+                      {caution}
+                    </p>
                   </button>
                 )
               })}
@@ -1091,132 +1003,10 @@ export default function AreaDetail() {
           </motion.section>
         )}
       </div>
-      {showReportPrompt && (
-        <motion.div
-          initial={{ opacity: 0, y: 18, scale: 0.98 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 18, scale: 0.98 }}
-          className="fixed bottom-5 left-4 right-4 z-[80] mx-auto max-w-md rounded-3xl p-4"
-          style={{
-            background: 'linear-gradient(180deg, rgba(10,10,22,0.98), rgba(6,6,14,0.98))',
-            border: `1px solid ${color}55`,
-            boxShadow: `0 20px 70px rgba(0,0,0,0.55), 0 0 34px ${color}22`,
-          }}
-        >
-          <div className="flex items-start gap-3">
-            <div
-              className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-2xl"
-              style={{ background: `${color}18`, border: `1px solid ${color}35` }}
-            >
-              <FileText size={16} style={{ color }} />
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="font-mono text-sm font-semibold text-[#e8e8f0]">Download the full analysis report</p>
-              <p className="mt-1 text-[11px] font-mono leading-relaxed text-[#77778c]">
-                Get the PlotDNA PDF for {area.name}. Email is required before report download.
-              </p>
-              <div className="mt-3 flex gap-2">
-                <button
-                  onClick={() => void handleDownloadReport()}
-                  disabled={reportDownloadBusy}
-                  className="flex items-center gap-1.5 rounded-xl px-3 py-2 text-[11px] font-mono font-semibold text-black"
-                  style={{
-                    background: `linear-gradient(135deg, ${color}, #00e676)`,
-                    opacity: reportDownloadBusy ? 0.78 : 1,
-                    cursor: reportDownloadBusy ? 'wait' : 'pointer',
-                  }}
-                >
-                  <Download size={12} />
-                  {reportDownloadBusy ? 'Preparing PDF...' : 'Download report'}
-                </button>
-                <button
-                  onClick={() => setReportPromptDismissedSlug(slug ?? null)}
-                  className="rounded-xl px-3 py-2 text-[11px] font-mono text-[#888899]"
-                  style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
-                >
-                  Later
-                </button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      )}
-      {showAnalysisOverlay && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[2200] flex flex-col items-center justify-center px-6"
-          style={{ background: 'rgba(4,4,10,0.96)', backdropFilter: 'blur(24px)' }}
-        >
-          <div className="relative mb-6 h-28 w-28">
-            <svg className="absolute inset-0 animate-spin" style={{ animationDuration: '3.2s' }} viewBox="0 0 112 112">
-              <circle cx={56} cy={56} r={50} fill="none" stroke="rgba(0,230,118,0.08)" strokeWidth={1.5} />
-              <circle
-                cx={56}
-                cy={56}
-                r={50}
-                fill="none"
-                stroke="#00e676"
-                strokeDasharray="34 280"
-                strokeLinecap="round"
-                strokeWidth={2.5}
-                style={{ filter: 'drop-shadow(0 0 8px #00e67680)' }}
-              />
-            </svg>
-            <svg className="absolute inset-0 animate-spin" style={{ animationDuration: '1.8s', animationDirection: 'reverse' }} viewBox="0 0 112 112">
-              <circle cx={56} cy={56} r={35} fill="none" stroke="rgba(0,230,118,0.22)" strokeDasharray="18 200" strokeLinecap="round" strokeWidth={1.5} />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center text-center">
-              <div>
-                <p className="font-mono text-xl font-black leading-none text-[#00e676]" style={{ textShadow: '0 0 18px #00e67670' }}>
-                  DNA
-                </p>
-                <p className="mt-1 font-mono text-[8px] uppercase tracking-[0.2em] text-[#2a2a3e]">
-                  report
-                </p>
-              </div>
-            </div>
-          </div>
 
-          <motion.p
-            key={`${analysisGateElapsed}-${verdictReady}-${marketPulseReady}-${avmReady}`}
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -5 }}
-            transition={{ duration: 0.22 }}
-            className="text-center font-mono text-[13px] font-semibold text-[#ccccdd]"
-          >
-            {analysisGateElapsed && !(verdictReady && marketPulseReady && avmReady)
-              ? 'Waiting on backend sections...'
-              : !verdictReady
-                ? ANALYSIS_GATE_STEPS[0]
-                : !marketPulseReady
-                  ? ANALYSIS_GATE_STEPS[1]
-                  : ANALYSIS_GATE_STEPS[2]}
-          </motion.p>
-          <p className="mt-2 text-center font-mono text-[10px] leading-relaxed text-[#555566]">
-            Showing the page while AI verdict, market pulse, and valuation sections finish loading.
-          </p>
-          <div className="mt-6 h-px w-52 overflow-hidden rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
-            <motion.div
-              className="h-full rounded-full"
-              style={{ background: 'linear-gradient(90deg, #00e676, #00b36b)' }}
-              initial={{ width: '0%' }}
-              animate={{ width: '100%' }}
-              transition={{ duration: Math.max(analysisMinHoldMs / 1000, 3.2), ease: 'linear' }}
-            />
-          </div>
-        </motion.div>
-      )}
-      <EmailGateModal
-        open={reportGateOpen}
-        entitlements={reportEntitlements}
-        title="Email required for PDF report"
-        description={`Add your email to download the full PlotDNA analysis report for ${area.name}.`}
-        primaryLabel="Download report"
-        onClose={() => setReportGateOpen(false)}
-        onUnlocked={handleReportUnlocked}
+      <AssistantDock
+        key={`assistant-${area.slug}`}
+        context={assistantContext}
       />
     </div>
   )

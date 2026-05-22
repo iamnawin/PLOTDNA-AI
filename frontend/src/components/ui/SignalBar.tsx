@@ -11,19 +11,19 @@ export default function SignalBar({ label, value, weight, animated = true }: Pro
   const color = getScoreColor(value)
 
   return (
-    <div className="group">
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-xs text-[#888899] font-mono uppercase tracking-wider">
+    <div className="group rounded-xl px-3 py-2.5" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+      <div className="flex items-center justify-between gap-3 mb-2">
+        <span className="text-[11px] text-[#cfd0db] font-sans font-medium tracking-wide leading-tight">
           {label}
         </span>
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] text-[#555566] font-mono">{weight}%</span>
-          <span className="text-sm font-mono font-semibold" style={{ color }}>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span className="text-[9px] text-[#555566] font-sans">{weight}% wt</span>
+          <span className="text-base font-sans font-semibold leading-none" style={{ color }}>
             {value}
           </span>
         </div>
       </div>
-      <div className="h-1.5 bg-[#1a1a2e] rounded-full overflow-hidden">
+      <div className="h-[5px] bg-[#1a1a2e] rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full ${animated ? 'transition-all duration-700 ease-out' : ''}`}
           style={{

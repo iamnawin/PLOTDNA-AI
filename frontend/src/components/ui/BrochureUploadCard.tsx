@@ -11,7 +11,7 @@ import {
   MapPin, Shield, Calendar, IndianRupee, Percent, Loader2,
   X, ExternalLink, ChevronDown, ChevronUp,
 } from 'lucide-react'
-import { API_BASE_URL } from '@/lib/runtime'
+import { BASE_URL } from '@/lib/api'
 
 interface BrochureResult {
   project_name?: string
@@ -30,8 +30,6 @@ interface BrochureResult {
   confidence?: number
   source?: string
 }
-
-const API_BASE = API_BASE_URL
 
 const ACCEPTED_TYPES = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp']
 const MAX_MB = 10
@@ -80,7 +78,7 @@ export default function BrochureUploadCard() {
     form.append('file', f)
 
     try {
-      const res = await fetch(`${API_BASE}/api/utils/analyze-brochure`, {
+      const res = await fetch(`${BASE_URL}/api/utils/analyze-brochure`, {
         method: 'POST',
         body: form,
         signal: AbortSignal.timeout(60_000),
@@ -116,19 +114,19 @@ export default function BrochureUploadCard() {
     >
       {/* Section header */}
       <div className="flex items-center gap-2 mb-5">
-        <FileText size={11} className="text-[#555566]" />
-        <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">
+        <FileText size={11} className="text-slate-400" />
+        <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
           Brochure Analyzer
         </h2>
         <span
-          className="text-[8px] font-mono px-1.5 py-0.5 rounded flex items-center gap-1"
-          style={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.06)', color: '#444455' }}
+          className="text-[8px] font-sans font-bold px-1.5 py-0.5 rounded flex items-center gap-1"
+          style={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.06)', color: '#6366f1' }}
         >
           <Sparkles size={8} />
           Gemini 2.0 Flash
         </span>
         <span
-          className="text-[8px] font-mono px-1.5 py-0.5 rounded ml-1"
+          className="text-[8px] font-sans font-bold px-1.5 py-0.5 rounded ml-1"
           style={{ background: '#6366f115', color: '#6366f1', border: '1px solid #6366f125' }}
         >
           Phase 2
@@ -137,7 +135,7 @@ export default function BrochureUploadCard() {
 
       {/* Upload zone or result */}
       <div
-        className="rounded-2xl overflow-hidden"
+        className="rounded-2xl overflow-hidden glass-panel"
         style={{ border: '1px solid rgba(255,255,255,0.07)' }}
       >
         {/* Drop zone — shown when no file or reset */}
@@ -147,24 +145,26 @@ export default function BrochureUploadCard() {
             onDragLeave={() => setDragging(false)}
             onDrop={onDrop}
             onClick={() => inputRef.current?.click()}
-            className="flex flex-col items-center justify-center gap-4 py-12 px-6 cursor-pointer transition-all duration-200"
+            className="flex flex-col items-center justify-center gap-4 py-12 px-6 cursor-pointer glass-panel-hover"
             style={{
-              background: dragging ? 'rgba(99,102,241,0.08)' : 'rgba(255,255,255,0.02)',
+              background: dragging ? 'rgba(99,102,241,0.08)' : 'transparent',
               borderColor: dragging ? '#6366f140' : 'transparent',
             }}
           >
             <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center"
-              style={{ background: dragging ? '#6366f120' : '#111120', border: `1px solid ${dragging ? '#6366f140' : 'rgba(255,255,255,0.06)'}` }}
+              className="w-14 h-14 rounded-2xl flex items-center justify-center transition-transform duration-300 hover:scale-105"
+              style={{ background: dragging ? '#6366f120' : 'rgba(255,255,255,0.02)', border: `1px solid ${dragging ? '#6366f140' : 'rgba(255,255,255,0.06)'}` }}
             >
-              <Upload size={22} style={{ color: dragging ? '#6366f1' : '#444455' }} />
+              <Upload size={22} style={{ color: dragging ? '#6366f1' : '#64748b' }} />
             </div>
             <div className="text-center">
-              <p className="text-sm font-mono text-[#888899]">Drop a brochure PDF or image</p>
-              <p className="text-[10px] font-mono text-[#444455] mt-1">PDF · JPEG · PNG · WebP — max {MAX_MB} MB</p>
+              <p className="text-sm font-sans text-slate-300 font-medium">Drop a brochure PDF or image</p>
+              <p className="text-[10px] font-sans text-slate-500 mt-1">
+                PDF{" \u00B7 "}JPEG{" \u00B7 "}PNG{" \u00B7 "}WebP{" \u2014 "}max {MAX_MB} MB
+              </p>
             </div>
             <span
-              className="text-[10px] font-mono px-3 py-1.5 rounded-lg transition-colors"
+              className="text-[10px] font-sans font-semibold px-3 py-1.5 rounded-lg transition-all duration-200"
               style={{ background: '#6366f115', color: '#6366f1', border: '1px solid #6366f125' }}
             >
               Select file
@@ -181,7 +181,7 @@ export default function BrochureUploadCard() {
 
         {/* Loading state */}
         {loading && (
-          <div className="flex flex-col items-center justify-center gap-4 py-14 px-6" style={{ background: 'rgba(255,255,255,0.02)' }}>
+          <div className="flex flex-col items-center justify-center gap-4 py-14 px-6" style={{ background: 'rgba(255,255,255,0.01)' }}>
             <div className="relative w-16 h-16">
               <div className="absolute inset-0 rounded-full border-2 border-[#6366f130]" />
               <motion.div
@@ -194,8 +194,8 @@ export default function BrochureUploadCard() {
               </div>
             </div>
             <div className="text-center">
-              <p className="text-sm font-mono text-[#888899]">Gemini 2.0 Flash analyzing…</p>
-              <p className="text-[10px] font-mono text-[#444455] mt-1 truncate max-w-xs">{file?.name}</p>
+              <p className="text-sm font-sans text-slate-300">Gemini 2.0 Flash analyzing…</p>
+              <p className="text-[10px] font-sans text-slate-500 mt-1 truncate max-w-xs">{file?.name}</p>
             </div>
             <div className="flex items-center gap-1.5">
               {['Parsing layout', 'Extracting data', 'Verifying RERA', 'Scoring'].map((s, i) => (
@@ -204,7 +204,7 @@ export default function BrochureUploadCard() {
                   initial={{ opacity: 0.3 }}
                   animate={{ opacity: [0.3, 1, 0.3] }}
                   transition={{ repeat: Infinity, duration: 2, delay: i * 0.4 }}
-                  className="text-[8px] font-mono text-[#444455] px-1.5 py-0.5 rounded"
+                  className="text-[8px] font-sans font-bold text-slate-400 px-1.5 py-0.5 rounded"
                   style={{ background: '#0d0d1a', border: '1px solid rgba(255,255,255,0.04)' }}
                 >
                   {s}
@@ -220,16 +220,16 @@ export default function BrochureUploadCard() {
             <div className="flex items-start gap-3">
               <AlertTriangle size={14} className="text-[#ef4444] flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <p className="text-sm font-mono text-[#ef4444]">{error}</p>
-                <p className="text-[10px] font-mono text-[#444455] mt-1">cd backend && uvicorn app.main:app --reload</p>
+                <p className="text-sm font-sans text-[#ef4444]">{error}</p>
+                <p className="text-[10px] font-sans text-slate-500 mt-1">cd backend && uvicorn app.main:app --reload</p>
               </div>
-              <button onClick={reset} className="text-[#444455] hover:text-[#888899] transition-colors">
+              <button onClick={reset} className="text-slate-500 hover:text-slate-300 transition-colors">
                 <X size={13} />
               </button>
             </div>
             <button
               onClick={() => inputRef.current?.click()}
-              className="mt-4 text-[10px] font-mono text-[#6366f1] underline"
+              className="mt-4 text-[10px] font-sans text-[#6366f1] underline"
             >
               Try another file
             </button>
@@ -253,32 +253,32 @@ export default function BrochureUploadCard() {
             >
               {/* Result header */}
               <div
-                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 sm:px-5 py-4"
+                className="flex items-center justify-between px-5 py-4"
                 style={{ background: '#6366f110', borderBottom: '1px solid #6366f120' }}
               >
-                <div className="flex min-w-0 items-center gap-3">
+                <div className="flex items-center gap-3">
                   <CheckCircle2 size={14} className="text-[#6366f1]" />
                   <div>
-                    <p className="truncate text-sm font-mono font-bold text-[#e8e8f0]">
+                    <p className="text-sm font-sans font-bold text-[#e8e8f0]">
                       {result.project_name ?? file?.name ?? 'Brochure Analyzed'}
                     </p>
-                    <p className="text-[10px] font-mono text-[#555566] mt-0.5">
-                      Extraction confidence · <span style={{ color: confidenceColor }}>{confidence}%</span>
+                    <p className="text-[10px] font-sans text-slate-400 mt-0.5">
+                      Extraction confidence{" \u00B7 "}<span style={{ color: confidenceColor }} className="font-mono">{confidence}%</span>
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {/* Confidence badge */}
                   <div
-                    className="px-2.5 py-1 rounded-lg text-center"
-                    style={{ background: `${confidenceColor}12`, border: `1px solid ${confidenceColor}28` }}
+                    className="px-2.5 py-1 rounded-lg text-center glass-panel-light"
+                    style={{ border: `1px solid ${confidenceColor}28` }}
                   >
                     <p className="text-lg font-mono font-bold" style={{ color: confidenceColor }}>{confidence}%</p>
-                    <p className="text-[8px] font-mono text-[#444455]">confidence</p>
+                    <p className="text-[8px] font-sans text-slate-500">confidence</p>
                   </div>
                   <button
                     onClick={reset}
-                    className="text-[#333344] hover:text-[#666680] transition-colors ml-1"
+                    className="text-slate-400 hover:text-slate-200 transition-colors ml-1"
                     title="Clear"
                   >
                     <X size={13} />
@@ -287,8 +287,8 @@ export default function BrochureUploadCard() {
               </div>
 
               {/* Extracted data grid */}
-              <div className="p-4 sm:p-5" style={{ background: 'rgba(255,255,255,0.015)' }}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+              <div className="p-5" style={{ background: 'rgba(255,255,255,0.015)' }}>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
                   {result.plot_area && (
                     <StatTile icon={<FileText size={11} />} label="Plot Area" value={result.plot_area} color="#6366f1" />
                   )}
@@ -327,13 +327,13 @@ export default function BrochureUploadCard() {
                 {/* RERA number */}
                 {result.rera_number && (
                   <div
-                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 px-4 py-3 rounded-xl mb-4"
+                    className="flex items-center justify-between px-4 py-3 rounded-xl mb-4"
                     style={{ background: '#10b98110', border: '1px solid #10b98125' }}
                   >
                     <div className="flex items-center gap-2">
                       <Shield size={12} className="text-[#10b981]" />
                       <div>
-                        <p className="text-[8px] font-mono text-[#555566] uppercase tracking-widest">RERA Number</p>
+                        <p className="text-[8px] font-sans text-slate-500 uppercase tracking-widest">RERA Number</p>
                         <p className="text-sm font-mono font-bold text-[#10b981]">{result.rera_number}</p>
                       </div>
                     </div>
@@ -341,7 +341,7 @@ export default function BrochureUploadCard() {
                       href={buildReraUrl(result.rera_state, result.rera_number)}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-[9px] font-mono text-[#10b981] hover:underline"
+                      className="flex items-center gap-1 text-[9px] font-sans text-[#10b981] hover:underline"
                     >
                       Verify <ExternalLink size={9} />
                     </a>
@@ -360,14 +360,14 @@ export default function BrochureUploadCard() {
                     >
                       <div className="flex items-center gap-2">
                         <AlertTriangle size={11} className="text-[#f59e0b]" />
-                        <p className="text-[9px] font-mono text-[#f59e0b] uppercase tracking-widest">
+                        <p className="text-[9px] font-sans font-bold text-[#f59e0b] uppercase tracking-widest">
                           Hidden Clauses Detected ({clauses.length})
                         </p>
                       </div>
                       {clauses.length > 3 && (
                         <button
                           onClick={() => setShowClausesAll(p => !p)}
-                          className="flex items-center gap-1 text-[9px] font-mono text-[#f59e0b] hover:opacity-80"
+                          className="flex items-center gap-1 text-[9px] font-sans text-[#f59e0b] hover:opacity-80"
                         >
                           {showClausesAll ? <ChevronUp size={10} /> : <ChevronDown size={10} />}
                           {showClausesAll ? 'Less' : `+${clauses.length - 3} more`}
@@ -378,7 +378,7 @@ export default function BrochureUploadCard() {
                       {displayClauses.map((c, i) => (
                         <div key={i} className="flex items-start gap-2">
                           <AlertTriangle size={9} className="text-[#f59e0b] flex-shrink-0 mt-0.5" />
-                          <p className="text-[11px] font-mono text-[#888899]">{c}</p>
+                          <p className="text-[11px] font-sans text-slate-400">{c}</p>
                         </div>
                       ))}
                     </div>
@@ -391,7 +391,7 @@ export default function BrochureUploadCard() {
                     style={{ background: '#10b98108', border: '1px solid #10b98118' }}
                   >
                     <CheckCircle2 size={11} className="text-[#10b981]" />
-                    <p className="text-[10px] font-mono text-[#10b981]">No hidden clauses detected</p>
+                    <p className="text-[10px] font-sans text-[#10b981]">No hidden clauses detected</p>
                   </div>
                 )}
               </div>
@@ -399,16 +399,15 @@ export default function BrochureUploadCard() {
               {/* Footer */}
               <div
                 className="flex items-center gap-1.5 px-5 py-2.5"
-                style={{ background: '#0a0a14', borderTop: '1px solid rgba(255,255,255,0.04)' }}
+                style={{ background: 'rgba(10, 10, 20, 0.4)', borderTop: '1px solid rgba(255,255,255,0.04)' }}
               >
-                <Loader2 size={9} className="text-[#222233]" />
-                <p className="text-[9px] font-mono text-[#222233]">
-                  Powered by Gemini 2.0 Flash vision
-                  {result.source ? ` · ${result.source}` : ''}
+                <Loader2 size={9} className="text-slate-500 animate-spin" />
+                <p className="text-[9px] font-sans text-slate-500">
+                  Powered by Gemini 2.0 Flash vision{result.source ? ` \u00B7 ${result.source}` : ''}
                 </p>
                 <button
                   onClick={() => { reset(); setTimeout(() => inputRef.current?.click(), 50) }}
-                  className="ml-auto text-[9px] font-mono text-[#333344] hover:text-[#6366f1] transition-colors"
+                  className="ml-auto text-[9px] font-sans text-slate-400 hover:text-[#6366f1] transition-colors"
                 >
                   Analyze another
                 </button>
@@ -425,8 +424,8 @@ export default function BrochureUploadCard() {
         </AnimatePresence>
       </div>
 
-      <p className="text-[9px] font-mono text-[#1e1e30] mt-2">
-        PDF or image · max {MAX_MB} MB · Always verify RERA independently before purchasing
+      <p className="text-[9px] font-sans text-slate-500 mt-2">
+        PDF or image{" \u00B7 "}max {MAX_MB} MB{" \u00B7 "}Always verify RERA independently before purchasing
       </p>
     </motion.section>
   )
@@ -443,14 +442,14 @@ function StatTile({
 }) {
   return (
     <div
-      className="min-w-0 p-3 rounded-xl"
-      style={{ background: `${color}08`, border: `1px solid ${color}18` }}
+      className="p-3 rounded-xl glass-panel-light"
+      style={{ border: `1px solid ${color}18` }}
     >
       <div className="flex items-center gap-1.5 mb-1">
         <span style={{ color }}>{icon}</span>
-        <p className="text-[8px] font-mono text-[#444455] uppercase tracking-widest">{label}</p>
+        <p className="text-[8px] font-sans font-bold text-slate-400 uppercase tracking-widest">{label}</p>
       </div>
-      <p className="break-words text-sm font-mono font-bold" style={{ color }}>{value}</p>
+      <p className="text-sm font-mono font-bold" style={{ color }}>{value}</p>
     </div>
   )
 }

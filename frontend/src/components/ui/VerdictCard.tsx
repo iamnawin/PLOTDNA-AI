@@ -1,11 +1,10 @@
 /**
  * VerdictCard — AI-generated "Should you buy here?" verdict.
- * Fetches from /api/verdict/{city}/{area} with provider fallback.
+ * Fetches from /api/verdict/{city}/{area} with Gemini Flash.
  */
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Brain, TrendingUp, AlertTriangle, CheckCircle2, Clock, Sparkles } from 'lucide-react'
-import { API_BASE_URL } from '@/lib/runtime'
 
 interface VerdictData {
   verdict: 'buy' | 'hold' | 'wait' | 'avoid'
@@ -15,17 +14,17 @@ interface VerdictData {
   risks: string[]
   suitable_for: 'investment' | 'end-use' | 'both'
   last_updated: string
-  source: string
+  source: 'gemini' | 'fallback'
   resolution_tier: 'exact_locality' | 'nearby_micro_market' | 'city_zone_cluster' | 'uncovered'
   resolution_label: string
 }
 
-const API_BASE = API_BASE_URL
+const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 
 const VERDICT_CONFIG = {
-  buy:   { label: 'Buy Signal',  color: '#10b981', bg: '#10b98115', desc: 'Strong fundamentals — consider buying' },
-  hold:  { label: 'Hold',        color: '#22c55e', bg: '#22c55e15', desc: 'Good area — wait for right price'     },
-  wait:  { label: 'Wait & Watch',color: '#f59e0b', bg: '#f59e0b15', desc: 'Area maturing — revisit in 12–18 months' },
+  buy:   { label: 'Buy Signal',  color: '#10b981', bg: '#10b98115', desc: 'Strong fundamentals \u2014 consider buying' },
+  hold:  { label: 'Hold',        color: '#22c55e', bg: '#22c55e15', desc: 'Good area \u2014 wait for right price'     },
+  wait:  { label: 'Wait & Watch',color: '#f59e0b', bg: '#f59e0b15', desc: 'Area maturing \u2014 revisit in 12\u201318 months' },
   avoid: { label: 'Avoid Now',   color: '#ef4444', bg: '#ef444415', desc: 'Risk outweighs reward currently'      },
 }
 
@@ -33,12 +32,6 @@ const SUITABLE_LABELS = {
   investment: '📈 Investment',
   'end-use':  '🏡 End-Use',
   both:       '📈 Investment + 🏡 End-Use',
-}
-
-function sourceLabel(source: string): string {
-  if (source.startsWith('gemini:')) return `Gemini ${source.split(':').slice(1).join(':')}`
-  if (source.startsWith('nvidia:')) return `NVIDIA ${source.split(':').slice(1).join(':')}`
-  return 'Fallback analysis'
 }
 
 function timeAgo(iso: string): string {
@@ -56,7 +49,6 @@ interface Props {
   areaSlug: string
   resolutionTier?: VerdictData['resolution_tier']
   resolutionLabel?: string
-  onReady?: () => void
 }
 
 export default function VerdictCard({
@@ -64,16 +56,10 @@ export default function VerdictCard({
   areaSlug,
   resolutionTier,
   resolutionLabel,
-  onReady,
 }: Props) {
   const [data, setData] = useState<VerdictData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const onReadyRef = useRef(onReady)
-
-  useEffect(() => {
-    onReadyRef.current = onReady
-  }, [onReady])
 
   useEffect(() => {
     const params = new URLSearchParams()
@@ -96,7 +82,6 @@ export default function VerdictCard({
         if (!cancelled) setError(true)
       } finally {
         if (!cancelled) setLoading(false)
-        if (!cancelled) onReadyRef.current?.()
       }
     }
 
@@ -116,10 +101,10 @@ export default function VerdictCard({
         className="mb-10"
       >
         <div className="flex items-center gap-2 mb-5">
-          <Brain size={11} className="text-[#555566]" />
-          <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">AI Verdict</h2>
+          <Brain size={11} className="text-slate-400" />
+          <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">AI Verdict</h2>
         </div>
-        <div className="h-52 rounded-2xl animate-pulse" style={{ background: '#111120' }} />
+        <div className="h-52 rounded-2xl animate-pulse glass-panel" />
       </motion.section>
     )
   }
@@ -133,17 +118,14 @@ export default function VerdictCard({
         className="mb-10"
       >
         <div className="flex items-center gap-2 mb-5">
-          <Brain size={11} className="text-[#555566]" />
-          <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">AI Verdict</h2>
+          <Brain size={11} className="text-slate-400" />
+          <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">AI Verdict</h2>
         </div>
         <div
-          className="p-6 rounded-2xl text-center"
-          style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}
+          className="p-6 rounded-2xl text-center glass-panel"
         >
-          <p className="text-[#555566] font-mono text-xs">AI verdict is temporarily unavailable.</p>
-          <p className="text-[#2a2a3e] font-mono text-[10px] mt-1">
-            The area score still works. Check backend API health and Render AI envs if this persists.
-          </p>
+          <p className="text-slate-400 font-sans text-xs">AI verdict unavailable{" \u2014 "}start backend or add GEMINI_API_KEY.</p>
+          <p className="text-slate-500 font-sans text-[10px] mt-1">cd backend && uvicorn app.main:app --reload</p>
         </div>
       </motion.section>
     )
@@ -159,34 +141,34 @@ export default function VerdictCard({
       className="mb-10"
     >
       <div className="flex items-center gap-2 mb-5">
-        <Brain size={11} className="text-[#555566]" />
-        <h2 className="text-xs font-mono text-[#444455] uppercase tracking-widest">AI Verdict</h2>
+        <Brain size={11} className="text-slate-400" />
+        <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">AI Verdict</h2>
         <span
-          className="text-[8px] font-mono px-1.5 py-0.5 rounded flex items-center gap-1"
-          style={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.06)', color: '#444455' }}
+          className="text-[8px] font-sans font-bold px-1.5 py-0.5 rounded flex items-center gap-1"
+          style={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.06)', color: '#6366f1' }}
         >
           <Sparkles size={8} />
-          {data.source.startsWith('nvidia:') ? 'NVIDIA' : data.source.startsWith('gemini:') ? 'Gemini' : 'Fallback'}
+          Gemini Flash
         </span>
       </div>
 
-      <div className="rounded-2xl overflow-hidden" style={{ border: `1px solid ${cfg.color}25` }}>
+      <div className="glass-panel rounded-2xl overflow-hidden" style={{ borderColor: `${cfg.color}25` }}>
         {/* Verdict header */}
         <div
-          className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between px-4 sm:px-5 py-4"
-          style={{ background: cfg.bg, borderBottom: `1px solid ${cfg.color}20` }}
+          className="flex items-center justify-between px-5 py-4"
+          style={{ background: cfg.bg, borderBottom: '1px solid rgba(255,255,255,0.05)' }}
         >
           <div>
-            <p className="text-xl font-mono font-bold" style={{ color: cfg.color }}>{cfg.label}</p>
-            <p className="text-[10px] font-mono text-[#555566] mt-0.5">{cfg.desc}</p>
+            <p className="text-xl font-display font-black tracking-tight" style={{ color: cfg.color }}>{cfg.label}</p>
+            <p className="text-[10px] font-sans text-slate-400 mt-0.5">{cfg.desc}</p>
           </div>
 
-          <div className="w-full sm:w-auto text-left sm:text-right">
+          <div className="text-right">
             {/* Confidence meter */}
             <p className="text-2xl font-mono font-bold" style={{ color: cfg.color }}>{data.confidence}%</p>
-            <p className="text-[9px] font-mono text-[#444455]">confidence</p>
+            <p className="text-[9px] font-sans text-slate-400">confidence</p>
             {/* Mini bar */}
-            <div className="h-1 w-full sm:w-20 rounded-full overflow-hidden mt-1.5 sm:ml-auto" style={{ background: '#1a1a2e' }}>
+            <div className="h-1 w-20 rounded-full overflow-hidden mt-1.5 ml-auto bg-slate-900/50" style={{ border: '1px solid rgba(255,255,255,0.05)' }}>
               <motion.div
                 className="h-full rounded-full"
                 style={{ backgroundColor: cfg.color }}
@@ -199,50 +181,50 @@ export default function VerdictCard({
         </div>
 
         {/* Summary + suitability */}
-        <div className="px-4 sm:px-5 py-4" style={{ background: 'rgba(255,255,255,0.015)' }}>
-          <p className="text-sm font-mono text-[#aaaabc] leading-relaxed mb-3">{data.summary}</p>
+        <div className="px-5 py-4" style={{ background: 'rgba(255,255,255,0.015)' }}>
+          <p className="text-sm font-sans text-slate-300 leading-relaxed mb-3">{data.summary}</p>
           <span
-            className="text-[10px] font-mono px-2 py-1 rounded-full"
+            className="text-[10px] font-sans font-medium px-2.5 py-1 rounded-full"
             style={{ background: `${cfg.color}12`, color: cfg.color, border: `1px solid ${cfg.color}25` }}
           >
             Suitable for: {SUITABLE_LABELS[data.suitable_for]}
           </span>
           {data.resolution_tier !== 'exact_locality' && (
-            <p className="text-[10px] font-mono text-[#555566] mt-2">
+            <p className="text-[10px] font-sans text-slate-500 mt-2">
               Resolution context: {data.resolution_label}
             </p>
           )}
         </div>
 
         {/* Reasons + Risks */}
-        <div className="grid grid-cols-1 md:grid-cols-2" style={{ borderTop: `1px solid rgba(255,255,255,0.05)` }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/5" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
           {/* Reasons */}
-          <div className="px-4 sm:px-5 py-4" style={{ borderRight: '1px solid rgba(255,255,255,0.05)' }}>
+          <div className="px-5 py-4">
             <div className="flex items-center gap-1.5 mb-3">
-              <CheckCircle2 size={11} style={{ color: '#22c55e' }} />
-              <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest">Reasons to Consider</p>
+              <CheckCircle2 size={11} className="text-emerald-500" />
+              <p className="text-[9px] font-sans font-bold text-slate-400 uppercase tracking-wider">Reasons to Consider</p>
             </div>
             <ul className="space-y-2">
               {data.reasons.map((r, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <TrendingUp size={10} className="text-[#22c55e] flex-shrink-0 mt-0.5" />
-                  <p className="text-[11px] font-mono text-[#888899]">{r}</p>
+                  <TrendingUp size={10} className="text-emerald-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-[11px] font-sans text-slate-400">{r}</p>
                 </li>
               ))}
             </ul>
           </div>
 
           {/* Risks */}
-          <div className="px-4 sm:px-5 py-4">
+          <div className="px-5 py-4">
             <div className="flex items-center gap-1.5 mb-3">
-              <AlertTriangle size={11} style={{ color: '#f59e0b' }} />
-              <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest">Things to Watch</p>
+              <AlertTriangle size={11} className="text-amber-500" />
+              <p className="text-[9px] font-sans font-bold text-slate-400 uppercase tracking-wider">Things to Watch</p>
             </div>
             <ul className="space-y-2">
               {data.risks.map((r, i) => (
                 <li key={i} className="flex items-start gap-2">
-                  <AlertTriangle size={10} className="text-[#f59e0b] flex-shrink-0 mt-0.5" />
-                  <p className="text-[11px] font-mono text-[#888899]">{r}</p>
+                  <AlertTriangle size={10} className="text-amber-500 flex-shrink-0 mt-0.5" />
+                  <p className="text-[11px] font-sans text-slate-400">{r}</p>
                 </li>
               ))}
             </ul>
@@ -251,15 +233,20 @@ export default function VerdictCard({
 
         {/* Footer */}
         <div
-          className="flex flex-wrap items-center gap-1.5 px-4 sm:px-5 py-2.5"
-          style={{ background: '#0a0a14', borderTop: '1px solid rgba(255,255,255,0.04)' }}
+          className="flex items-center gap-1.5 px-5 py-2.5"
+          style={{ background: 'rgba(10, 10, 20, 0.4)', borderTop: '1px solid rgba(255,255,255,0.05)' }}
         >
-          <Clock size={9} className="text-[#222233]" />
-          <p className="text-[9px] font-mono text-[#222233]">
-            {data.source === 'fallback' ? 'Fallback analysis' : `Generated by ${sourceLabel(data.source)}`}
-            {data.last_updated ? ` · ${timeAgo(data.last_updated)}` : ''}
+          <Clock size={9} className="text-slate-500" />
+          <p className="text-[9px] font-sans text-slate-500">
+            {data.source === 'gemini' ? 'Generated by Gemini Flash' : 'Fallback analysis'}
+            {data.last_updated ? (
+              <>
+                {" \u00B7 "}
+                <span className="font-sans">{timeAgo(data.last_updated)}</span>
+              </>
+            ) : ''}
           </p>
-          <span className="sm:ml-auto text-[9px] font-mono text-[#1a1a2e]">AI analysis — verify before buying</span>
+          <span className="ml-auto text-[9px] font-sans text-slate-500">AI analysis{" \u2014 "}verify before buying</span>
         </div>
       </div>
     </motion.section>

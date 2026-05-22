@@ -17,7 +17,7 @@ export default function ScoreBadge({ score, size = 'md' }: Props) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded font-mono font-semibold tracking-wider uppercase ${sizeClass}`}
+      className={`inline-flex items-center gap-1 rounded font-sans font-semibold tracking-wide uppercase ${sizeClass}`}
       style={{
         color,
         backgroundColor: `${color}18`,

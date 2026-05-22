@@ -29,7 +29,7 @@ export default function ViewModeToggle({ mode, onChange, variant = 'panel' }: Pr
       }}
     >
       {!isDock && (
-        <p className="text-[8px] font-mono text-[#444455] uppercase tracking-[0.18em] px-1 mb-2">
+        <p className="text-[8px] font-sans text-[#444455] uppercase tracking-[0.18em] px-1 mb-2">
           Visual Mode
         </p>
       )}
@@ -54,9 +54,15 @@ export default function ViewModeToggle({ mode, onChange, variant = 'panel' }: Pr
                   : 'inset 0 0 12px rgba(255,255,255,0.015)',
               }}
             >
-              <Icon size={12} style={{ color: active ? '#00e676' : '#666680' }} />
+              <Icon
+                size={14}
+                style={{
+                  color: active ? '#00e676' : '#777788',
+                  filter: active ? 'drop-shadow(0 0 5px rgba(0,230,118,0.4))' : 'none',
+                }}
+              />
               <span
-                className="text-[10px] font-mono uppercase tracking-[0.14em]"
+                className="text-[10px] font-sans uppercase tracking-[0.14em]"
                 style={{ color: active ? '#00e676' : '#888899' }}
               >
                 {label}

@@ -12,16 +12,22 @@
   --font-heading: 'Manrope', 'Inter Tight', system-ui, sans-serif;
   --font-body: 'Inter', 'Manrope', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --bg-main: #05070a;
-  --bg-card: #0b0f14;
-  --bg-card-soft: #0e1218;
-  --border-soft: rgba(255, 255, 255, 0.08);
-  --border-green: rgba(0, 230, 118, 0.35);
-  --text-main: #f4f7fb;
-  --text-muted: #8b95a7;
-  --text-soft: #657086;
-  --green: #00e676;
-  --green-soft: rgba(0, 230, 118, 0.12);
+  --bg-main: #060814;
+  --bg-card: rgba(10, 15, 30, 0.65);
+  --bg-card-soft: rgba(15, 23, 42, 0.45);
+  --border-soft: rgba(255, 255, 255, 0.07);
+  --border-green: rgba(16, 185, 129, 0.35);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-soft: #64748b;
+  --green: #10b981;
+  --green-soft: rgba(16, 185, 129, 0.12);
+  --blue: #3b82f6;
+  --blue-soft: rgba(59, 130, 246, 0.12);
+  --amber: #f59e0b;
+  --amber-soft: rgba(245, 158, 11, 0.12);
+  --red: #ef4444;
+  --red-soft: rgba(239, 68, 68, 0.12);
 }
 
 * {
@@ -32,90 +38,46 @@ html,
 body,
 #root {
   height: 100%;
-  width: 100%;
   margin: 0;
 }
 
 body {
   background-color: var(--bg-main);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.06) 0px, transparent 50%), 
+    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.04) 0px, transparent 60%);
+  background-attachment: fixed;
   color: var(--text-main);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
-  -webkit-text-size-adjust: 100%;
-  overflow-x: hidden;
-  overscroll-behavior-y: none;
 }
 
-img,
-svg,
-canvas,
-video {
-  max-width: 100%;
+/* ── Glassmorphism Utility Classes ── */
+.glass-panel {
+  background: rgba(10, 15, 30, 0.65);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
 }
 
-button,
-input,
-textarea,
-select {
-  font: inherit;
+.glass-panel-light {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-button {
-  touch-action: manipulation;
+.glass-panel-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.mobile-scroll-row {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
-}
-
-.mobile-scroll-row::-webkit-scrollbar {
-  display: none;
-}
-
-.mobile-tap {
-  min-height: 40px;
-}
-
-@media (max-width: 640px) {
-  .landing-search-row {
-    align-items: stretch;
-    gap: 0.5rem;
-    padding: 0.875rem;
-  }
-
-  .landing-search-row input {
-    flex-basis: calc(100% - 2rem) !important;
-    font-size: 13px !important;
-  }
-
-  .landing-search-row .mobile-icon-button {
-    width: 40px;
-    height: 40px;
-  }
-
-  .landing-search-row .mobile-action-button {
-    flex: 1 1 calc(50% - 0.25rem);
-    justify-content: center;
-    min-height: 40px;
-    padding-inline: 0.75rem;
-  }
-
-  .mobile-panel {
-    width: 100dvw !important;
-    max-width: 100dvw !important;
-    border-left: 0 !important;
-  }
-
-  .mobile-bottom-dock {
-    max-height: 42dvh;
-    overflow-y: auto;
-  }
-
-  .mobile-report-grid {
-    grid-template-columns: 1fr !important;
-  }
+.glass-panel-hover:hover {
+  background: rgba(15, 22, 42, 0.75);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 12px 40px 0 rgba(16, 185, 129, 0.06);
+  transform: translateY(-1px);
 }
 
 /* ── MapLibre GL overrides ── */
@@ -141,17 +103,18 @@ button {
   100% { transform: translate(-50%, -50%) scale(3.2); opacity: 0; }
 }
 
-/* Scrollbar */
+/* Thin rounded scrollbars for premium look */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a2a3e;
-  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a5e;
+  background: rgba(255, 255, 255, 0.25);
 }

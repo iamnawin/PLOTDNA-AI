@@ -44,7 +44,7 @@ function getCoverageMessage(fallback: LocalityFallbackResult | null, cityName: s
   if (!fallback) return `Exploring ${cityName} through a premium intelligence surface.`
   if (fallback.tier === 'exact_locality') return `Exact locality context is available for ${fallback.displayLabel}.`
   if (fallback.tier === 'nearby_micro_market') return `${fallback.displayLabel} is being used as an approximate nearby market context.`
-  if (fallback.tier === 'city_zone_cluster' || fallback.tier === 'regional_market') return `${fallback.displayLabel} is available as broad regional context only.`
+  if (fallback.tier === 'city_zone_cluster' || fallback.tier === 'regional') return `${fallback.displayLabel} is available as broad regional context only.`
   return 'Coverage limited in this region.'
 }
 
@@ -73,7 +73,7 @@ function getFocusTone(fallback: LocalityFallbackResult | null): FocusTone {
       arcColor: [0.62, 1, 0.78],
     }
   }
-  if (fallback.tier === 'city_zone_cluster' || fallback.tier === 'regional_market') {
+  if (fallback.tier === 'city_zone_cluster' || fallback.tier === 'regional') {
     return {
       coreHex: '#f59e0b',
       glowCss: 'rgba(245,158,11,0.28)',
@@ -542,20 +542,20 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
         </div>
       </div>
 
-      <div className="absolute z-[2] rounded-2xl px-4 py-3.5 hidden md:block" style={{
+      <div className="absolute z-[2] rounded-2xl px-4 py-3 hidden md:block" style={{
         ...infoCardStyle,
         transform: 'translateY(-50%)',
         backdropFilter: 'blur(20px)',
-        border: '1px solid rgba(255,255,255,0.09)',
+        border: '1px solid rgba(255,255,255,0.08)',
       }}>
-        <div className="flex items-center gap-2 mb-2.5">
+        <div className="flex items-center gap-2 mb-2">
           <Globe size={12} style={{ color: tone.text }} />
           <p className="text-[10px] font-mono uppercase tracking-[0.16em]" style={{ color: tone.text }}>
-            Market context
+            Globe Intelligence View
           </p>
         </div>
-        <p className="text-[15px] font-bold leading-snug tracking-tight text-[#f4f7fb]">
-          Live geospatial surface for the current market.
+        <p className="text-sm font-mono text-[#e8e8f0] leading-relaxed">
+          Live geospatial surface tracking the current PlotDNA market context.
         </p>
         <div className="flex items-center gap-2 mb-2 mt-4">
           <MapPin size={12} style={{ color: tone.text }} />
@@ -563,19 +563,19 @@ export default function GlobeView({ citySlug, cityName, cityCenter, fallback, co
             Focus Region
           </p>
         </div>
-        <p className="text-[13px] font-semibold text-[#f4f7fb] mb-1">{focusLabel}</p>
-        <p className="text-[11px] text-[#657086] mb-3">{precisionLabel}</p>
+        <p className="text-[13px] font-mono text-[#e8e8f0] mb-1">{focusLabel}</p>
+        <p className="text-[10px] font-mono text-[#666680] mb-3">{precisionLabel}</p>
         <div className="flex items-center gap-2 mb-2">
           <Activity size={12} style={{ color: tone.text }} />
           <p className="text-[10px] font-mono text-[#444455] uppercase tracking-[0.16em]">
             Coverage Status
           </p>
         </div>
-        <p className="text-[12px] text-[#a7b0c0] leading-relaxed">
+        <p className="text-[12px] font-mono text-[#aaaabc] leading-relaxed">
           {coverageMessage}
         </p>
         {citySlug === 'hyderabad' && (
-          <p className="text-[11px] font-semibold mt-2" style={{ color: tone.text }}>
+          <p className="text-[10px] font-mono mt-2" style={{ color: tone.text }}>
             Hyderabad is currently the strongest supported intelligence corridor.
           </p>
         )}

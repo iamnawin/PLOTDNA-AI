@@ -7,7 +7,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Activity, TrendingUp, TrendingDown, Minus, RefreshCw, ExternalLink, Clock } from 'lucide-react'
-import { API_BASE_URL } from '@/lib/runtime'
 
 interface SentimentArticle {
   title: string
@@ -31,7 +30,7 @@ interface MarketPulseData {
   last_updated?: string
 }
 
-const API_BASE = API_BASE_URL
+const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 
 const SENTIMENT_CONFIG = {
   positive: { color: '#10b981', label: 'Positive',  Icon: TrendingUp  },
@@ -64,10 +63,9 @@ interface Props {
   citySlug: string
   areaSlug: string
   country?: string
-  onReady?: () => void
 }
 
-export default function MarketPulseCard({ citySlug, areaSlug, country = 'india', onReady }: Props) {
+export default function MarketPulseCard({ areaSlug, country = 'india' }: Props) {
   const [data, setData] = useState<MarketPulseData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -76,7 +74,6 @@ export default function MarketPulseCard({ citySlug, areaSlug, country = 'india',
   const load = useCallback(async (force = false) => {
     if (force) setRefreshing(true)
     else setLoading(true)
-
     setError(false)
     try {
       const res = await fetch(`${API_BASE}/api/v1/market-pulse/${country}/${areaSlug}`)
@@ -87,11 +84,10 @@ export default function MarketPulseCard({ citySlug, areaSlug, country = 'india',
     } finally {
       setLoading(false)
       setRefreshing(false)
-      onReady?.()
     }
-  }, [areaSlug, country, onReady])
+  }, [areaSlug, country])
 
-  useEffect(() => { void load() }, [citySlug, load])
+  useEffect(() => { void load() }, [load])
 
   if (loading) {
     return (

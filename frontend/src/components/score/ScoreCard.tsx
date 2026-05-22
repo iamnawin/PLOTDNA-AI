@@ -1,11 +1,8 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { X, ArrowRight, TrendingUp } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
-import { consumeSearchAccess, type EntitlementsResponse } from '@/lib/entitlements'
-import EmailGateModal from '@/components/ui/EmailGateModal'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SignalBar from '@/components/ui/SignalBar'
 
@@ -18,8 +15,6 @@ export default function ScoreCard({ area, onClose }: Props) {
   const navigate = useNavigate()
   const color = getScoreColor(area.score)
   const label = getScoreLabel(area.score)
-  const [emailGateOpen, setEmailGateOpen] = useState(false)
-  const [entitlements, setEntitlements] = useState<EntitlementsResponse | null>(null)
 
   // SVG ring
   const r = 42
@@ -28,56 +23,42 @@ export default function ScoreCard({ area, onClose }: Props) {
 
   const signals = Object.entries(area.signals) as [keyof typeof area.signals, number][]
 
-  async function handleFullAnalysis() {
-    const result = await consumeSearchAccess()
-    if (result.status === 'ok') {
-      setEntitlements(result.entitlements)
-      navigate(`/area/${area.slug}`)
-      return
-    }
-    if (result.status === 'email_required') {
-      setEntitlements(result.entitlements)
-      setEmailGateOpen(true)
-    }
-  }
-
   return (
-    <>
-      <motion.div
-        initial={{ x: '100%', opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        exit={{ x: '100%', opacity: 0 }}
-        transition={{ type: 'spring', stiffness: 320, damping: 30 }}
-        className="mobile-panel absolute top-0 right-0 h-full w-[100dvw] max-w-full sm:w-[340px] z-[1010] flex flex-col"
-        style={{
-          background: 'rgba(5, 5, 10, 0.92)',
-          backdropFilter: 'blur(24px)',
-          borderLeft: '1px solid rgba(255,255,255,0.06)',
-        }}
-      >
+    <motion.div
+      initial={{ x: '100%', opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      exit={{ x: '100%', opacity: 0 }}
+      transition={{ type: 'spring', stiffness: 320, damping: 30 }}
+      className="absolute top-0 right-0 h-full w-[100dvw] max-w-full sm:w-[340px] z-[1010] flex flex-col glass-panel"
+      style={{
+        background: 'rgba(10, 15, 30, 0.85)',
+        borderLeft: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '-8px 0 32px 0 rgba(0, 0, 0, 0.45)',
+      }}
+    >
       {/* Header */}
       <div className="flex items-start justify-between p-5 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div>
-          <p className="text-[10px] font-mono text-[#555566] uppercase tracking-widest mb-1">Micro-market</p>
-          <h2 className="text-[#e8e8f0] font-display text-xl font-bold leading-tight">{area.name}</h2>
+          <p className="text-[10px] font-sans font-bold text-slate-500 uppercase tracking-widest mb-1">Micro-market</p>
+          <h2 className="text-[#f8fafc] font-display text-xl font-bold leading-tight">{area.name}</h2>
           <div className="mt-2">
             <ScoreBadge score={area.score} />
           </div>
         </div>
         <button
           onClick={onClose}
-          className="text-[#444455] hover:text-[#e8e8f0] transition-colors mt-1"
+          className="text-slate-400 hover:text-white transition-colors mt-1"
         >
           <X size={18} />
         </button>
       </div>
 
       {/* Score ring */}
-      <div className="flex items-center gap-4 sm:gap-5 px-4 sm:px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <div className="flex items-center gap-5 px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="relative flex-shrink-0">
           <svg width={100} height={100} viewBox="0 0 100 100">
             {/* Track */}
-            <circle cx={50} cy={50} r={r} fill="none" stroke="#1a1a2e" strokeWidth={7} />
+            <circle cx={50} cy={50} r={r} fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth={7} />
             {/* Fill */}
             <motion.circle
               cx={50}
@@ -96,32 +77,32 @@ export default function ScoreCard({ area, onClose }: Props) {
             />
             {/* Score number */}
             <text x={50} y={46} textAnchor="middle" fill={color}
-              style={{ fontSize: 24, fontFamily: 'IBM Plex Mono, monospace', fontWeight: 700 }}>
+              style={{ fontSize: 24, fontFamily: 'JetBrains Mono, monospace', fontWeight: 700 }}>
               {area.score}
             </text>
-            <text x={50} y={60} textAnchor="middle" fill="#555566"
-              style={{ fontSize: 9, fontFamily: 'IBM Plex Mono, monospace', textTransform: 'uppercase', letterSpacing: 1 }}>
+            <text x={50} y={60} textAnchor="middle" fill="rgba(255,255,255,0.3)"
+              style={{ fontSize: 9, fontFamily: 'Inter, sans-serif', fontWeight: 600, textTransform: 'uppercase', letterSpacing: 1 }}>
               DNA
             </text>
           </svg>
         </div>
 
-        <div className="min-w-0 flex-1">
-          <p className="text-[#888899] text-xs font-mono mb-1 uppercase tracking-wider">{area.category}</p>
-          <p className="text-[#e8e8f0] text-lg font-mono font-bold" style={{ color }}>{label}</p>
+        <div className="flex-1">
+          <p className="text-slate-400 text-xs font-sans font-medium mb-1 uppercase tracking-wider">{area.category}</p>
+          <p className="text-[#f8fafc] text-lg font-sans font-bold" style={{ color }}>{label}</p>
           <div className="mt-2 flex items-center gap-1.5">
             <TrendingUp size={13} style={{ color }} />
-            <span className="text-xs font-mono" style={{ color }}>
+            <span className="text-xs font-mono font-semibold" style={{ color }}>
               +{area.yoy}% YoY
             </span>
           </div>
-          <p className="truncate text-[#555566] text-xs font-mono mt-1">{area.priceRange}</p>
+          <p className="text-slate-400 text-xs font-mono mt-1">{area.priceRange}</p>
         </div>
       </div>
 
       {/* Signals */}
       <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3.5">
-        <p className="text-[10px] font-mono text-[#444455] uppercase tracking-widest mb-1">Signal Breakdown</p>
+        <p className="text-[10px] font-sans font-bold text-slate-500 uppercase tracking-widest mb-1">Signal Breakdown</p>
         {signals.map(([key, val]) => (
           <SignalBar
             key={key}
@@ -133,12 +114,12 @@ export default function ScoreCard({ area, onClose }: Props) {
 
         {/* Highlights */}
         <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          <p className="text-[10px] font-mono text-[#444455] uppercase tracking-widest mb-3">Key Highlights</p>
+          <p className="text-[10px] font-sans font-bold text-slate-500 uppercase tracking-widest mb-3">Key Highlights</p>
           <ul className="space-y-2">
             {area.highlights.map((h, i) => (
-              <li key={i} className="flex items-start gap-2 text-xs text-[#888899]">
+              <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
                 <span className="mt-0.5 flex-shrink-0 w-1 h-1 rounded-full" style={{ backgroundColor: color, marginTop: 6 }} />
-                {h}
+                <span className="font-sans">{h}</span>
               </li>
             ))}
           </ul>
@@ -148,35 +129,28 @@ export default function ScoreCard({ area, onClose }: Props) {
       {/* CTA */}
       <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <button
-          onClick={() => { void handleFullAnalysis() }}
-          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-mono font-semibold transition-all"
+          onClick={() => navigate(`/area/${area.slug}`)}
+          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-sans font-semibold transition-all duration-300"
           style={{
-            background: `linear-gradient(135deg, ${color}22, ${color}11)`,
-            border: `1px solid ${color}40`,
+            background: `${color}15`,
+            border: `1px solid ${color}35`,
             color,
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = `${color}22`
+            e.currentTarget.style.background = `${color}25`
+            e.currentTarget.style.borderColor = `${color}55`
+            e.currentTarget.style.boxShadow = `0 0 12px ${color}20`
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = `linear-gradient(135deg, ${color}22, ${color}11)`
+            e.currentTarget.style.background = `${color}15`
+            e.currentTarget.style.borderColor = `${color}35`
+            e.currentTarget.style.boxShadow = 'none'
           }}
         >
           Full DNA Analysis
           <ArrowRight size={15} />
         </button>
       </div>
-      </motion.div>
-      <EmailGateModal
-        open={emailGateOpen}
-        entitlements={entitlements}
-        onClose={() => setEmailGateOpen(false)}
-        onUnlocked={(nextEntitlements) => {
-          setEntitlements(nextEntitlements)
-          setEmailGateOpen(false)
-          navigate(`/area/${area.slug}`)
-        }}
-      />
-    </>
+    </motion.div>
   )
 }

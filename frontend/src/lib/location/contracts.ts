@@ -8,11 +8,8 @@ export interface LocalityResolution {
   clusterId: string | null
   districtSlug: string | null
   districtName: string | null
-  regionalSlug: string | null
-  regionalName: string | null
-  marketTier: 'tier2' | 'tier3' | null
   stateSlug: string | null
   distanceKm: number | null
-  matchedBy: 'polygon' | 'alias' | 'radius' | 'cluster' | 'regional' | 'district' | 'none'
+  matchedBy: 'polygon' | 'alias' | 'radius' | 'cluster' | 'district' | 'none'
   reason: string
 }

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
 import { useAppStore } from '@/store'
@@ -9,19 +9,18 @@ import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { getRecommendationGoalMeta, rankAreasForGoal } from '@/lib/recommendations'
 import { resolveMapLink } from '@/lib/api'
-import { consumeSearchAccess, type EntitlementsResponse } from '@/lib/entitlements'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
 import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
-import EmailGateModal from '@/components/ui/EmailGateModal'
+import AssistantDock from '@/components/ui/AssistantDock'
 import SpatialView from '@/components/view/SpatialView'
 import ViewModeToggle, { type ViewMode } from '@/components/view/ViewModeToggle'
 
 const RISK_TIERS = [
-  { color: '#ef4444', label: 'High Risk',    range: '0–40'   },
-  { color: '#f59e0b', label: 'Moderate',     range: '41–65'  },
-  { color: '#22c55e', label: 'Good Growth',  range: '66–85'  },
-  { color: '#10b981', label: 'Goldzone',     range: '86–100' },
+  { color: '#ef4444', label: 'High Risk',    range: '0-40'   },
+  { color: '#f59e0b', label: 'Moderate',     range: '41-65'  },
+  { color: '#22c55e', label: 'Good Growth',  range: '66-85'  },
+  { color: '#10b981', label: 'Goldzone',     range: '86-100' },
 ]
 
 const ANALYZE_STEPS = [
@@ -33,7 +32,6 @@ const ANALYZE_STEPS = [
 
 export default function Home() {
   const navigate = useNavigate()
-  const location = useLocation()
   const {
     selectedArea,
     highlightTier,
@@ -59,16 +57,12 @@ export default function Home() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
   const [searchError, setSearchError]         = useState('')
   const [resolvingUrl, setResolvingUrl]       = useState(false)
-  const routeState = location.state as { initialViewMode?: ViewMode } | null
-  const [viewMode, setViewMode]               = useState<ViewMode>(routeState?.initialViewMode ?? 'globe')
+  const [viewMode, setViewMode]               = useState<ViewMode>('globe')
   const [globeSidebarExpanded, setGlobeSidebarExpanded] = useState(false)
   const [analyzingCoords, setAnalyzingCoords] = useState<[number, number] | null>(null)
   const [pendingCoords, setPendingCoords]     = useState<[number, number] | null>(null)
   const [analyzeStep, setAnalyzeStep]         = useState(0)
-  const [emailGateOpen, setEmailGateOpen]     = useState(false)
-  const [entitlements, setEntitlements]       = useState<EntitlementsResponse | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
-  const pendingSearchActionRef = useRef<null | (() => void)>(null)
 
   useEffect(() => {
     if (!analyzingCoords) return
@@ -97,6 +91,22 @@ export default function Home() {
   const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
   const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1]) : null
   const isGlobeMode = viewMode === 'globe'
+  const systemCities = CITY_LIST
+  const assistantContext = {
+    page: 'map' as const,
+    citySlug: selectedCitySlug,
+    cityName: cityMeta.name,
+    areaSlug: selectedArea?.slug ?? coordAnalysis?.area?.slug ?? null,
+    areaName: selectedArea?.name ?? coordAnalysis?.area?.name ?? coordAnalysis?.displayLabel ?? null,
+    coords: searchCoords ?? null,
+    resolutionTier: coordAnalysis?.tier ?? null,
+    resolutionLabel: coordAnalysis?.displayLabel ?? null,
+    summary: selectedArea
+      ? `${selectedArea.name} has a ${selectedArea.score}/100 DNA score and ${selectedArea.priceRange} price range.`
+      : coordAnalysis?.area
+        ? `${coordAnalysis.area.name} is the nearest supported locality.`
+        : `${cityMeta.name} map view with no exact locality selected yet.`,
+  }
 
   function handleViewModeChange(nextMode: ViewMode) {
     if (nextMode === 'globe') {
@@ -147,39 +157,14 @@ export default function Home() {
     setViewMode('map')
   }
 
-  async function requireSearchAccess(action: () => void) {
-    setSearchError('')
-    const result = await consumeSearchAccess()
-    if (result.status === 'ok') {
-      setEntitlements(result.entitlements)
-      action()
-      return
-    }
-    if (result.status === 'email_required') {
-      pendingSearchActionRef.current = action
-      setEntitlements(result.entitlements)
-      setEmailGateOpen(true)
-      return
-    }
-    setSearchError(result.message)
-  }
-
-  function handleEmailUnlocked(nextEntitlements: EntitlementsResponse) {
-    setEntitlements(nextEntitlements)
-    setEmailGateOpen(false)
-    const pending = pendingSearchActionRef.current
-    pendingSearchActionRef.current = null
-    pending?.()
-  }
-
   async function handleSearchSubmit() {
     setSearchError('')
     if (parsedCoords) {
-      await requireSearchAccess(() => triggerCoordAnalysis(parsedCoords))
+      triggerCoordAnalysis(parsedCoords)
       return
     }
     if (parsedMapUrl) {
-      await requireSearchAccess(() => triggerCoordAnalysis(parsedMapUrl))
+      triggerCoordAnalysis(parsedMapUrl)
       return
     }
     if (shortMapUrl || backendMapUrl) {
@@ -187,7 +172,7 @@ export default function Home() {
       const result = await resolveMapLink(searchQuery.trim())
       setResolvingUrl(false)
       if (result.coords) {
-        await requireSearchAccess(() => triggerCoordAnalysis(result.coords!))
+        triggerCoordAnalysis(result.coords)
         return
       }
       setSearchError(result.detail ?? (
@@ -200,7 +185,7 @@ export default function Home() {
       return
     }
     if (searchResults.length > 0) {
-      await requireSearchAccess(() => selectArea(searchResults[0]))
+      selectArea(searchResults[0])
     }
   }
 
@@ -209,7 +194,7 @@ export default function Home() {
   }
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden bg-[#050508]">
+    <div className="relative w-[100dvw] h-[100dvh] overflow-hidden bg-[#060814]">
 
       {/* ── Map fills 100% of screen ── */}
       <div className="absolute inset-0 z-0">
@@ -228,7 +213,7 @@ export default function Home() {
       {/* ── Edge vignette for depth ── */}
       <div
         className="absolute inset-0 z-[1] pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 50% 50%, transparent 42%, rgba(5,5,10,0.62) 100%)' }}
+        style={{ background: 'radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(6, 8, 20, 0.65) 100%)' }}
       />
 
       {/* ═══════════════════════════════════════════════
@@ -241,30 +226,32 @@ export default function Home() {
           left: 'calc(1.25rem + env(safe-area-inset-left))',
         }}
       >
-        <img
-          src="/plotdna-logo.png"
-          alt="PlotDNA"
-          className="w-9 h-9 rounded-xl object-cover flex-shrink-0"
-          style={{ boxShadow: '0 0 24px #00e67640, 0 2px 8px #00000060' }}
-        />
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{
+            background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+            boxShadow: '0 0 20px rgba(16, 185, 129, 0.3), 0 2px 8px rgba(0, 0, 0, 0.4)',
+          }}
+        >
+          <span className="font-display font-black text-slate-950 text-sm leading-none">P</span>
+        </div>
         <div className="hidden sm:block">
-          <p className="font-display font-bold text-[#e8e8f0] text-[15px] leading-tight tracking-tight">PlotDNA</p>
+          <p className="font-display font-bold text-slate-100 text-[15px] leading-tight tracking-tight">PlotDNA</p>
           <div className="flex items-center gap-1.5 mt-0.5">
             <div
-              className="w-1.5 h-1.5 rounded-full bg-[#00e676]"
-              style={{ boxShadow: '0 0 5px #00e676', animation: 'pulse 2s infinite' }}
+              className="w-1.5 h-1.5 rounded-full bg-emerald-500"
+              style={{ boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)', animation: 'pulse 2s infinite' }}
             />
-            <span className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.14em]">Live</span>
-            <span className="text-[9px] font-mono text-[#444455]">· {cityMeta.name}</span>
+            <span className="text-[9px] font-sans font-semibold text-emerald-400 uppercase tracking-[0.14em]">Live</span>
+            <span className="text-[9px] font-sans text-slate-500">{" \u00B7 "}{cityMeta.name}</span>
           </div>
         </div>
         {/* Mobile hamburger — visible only on small screens */}
         <button
-          className="md:hidden ml-2 flex items-center justify-center w-8 h-8 rounded-lg"
-          style={{ background: 'rgba(5,5,10,0.85)', border: '1px solid rgba(255,255,255,0.08)' }}
+          className="md:hidden ml-2 flex items-center justify-center w-8 h-8 rounded-lg glass-panel-light"
           onClick={() => setShowMobileSidebar(v => !v)}
         >
-          <Menu size={14} style={{ color: '#888899' }} />
+          <Menu size={14} className="text-slate-400" />
         </button>
       </div>
 
@@ -272,29 +259,25 @@ export default function Home() {
           TOP-RIGHT: Stats pill (hidden on mobile)
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute z-[1000] hidden md:flex items-center gap-4 px-4 py-2.5 rounded-xl"
+        className="absolute z-[1000] hidden md:flex items-center gap-4 px-4 py-2.5 rounded-xl glass-panel"
         style={{
           top: 'calc(1.25rem + env(safe-area-inset-top))',
           right: 'calc(1.25rem + env(safe-area-inset-right))',
-          background: 'rgba(5,5,10,0.78)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
         }}
       >
         <div className="text-center">
-          <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest">Markets</p>
-          <p className="text-[15px] font-mono font-bold text-[#e8e8f0] leading-tight">{cityAreas.length}</p>
+          <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">Markets</p>
+          <p className="text-[15px] font-mono font-bold text-slate-100 leading-tight">{cityAreas.length}</p>
         </div>
-        <div className="w-px h-6 bg-[#1e1e2e]" />
+        <div className="w-px h-6 bg-white/10" />
         <div className="text-center">
-          <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest">Avg DNA</p>
-          <p className="text-[15px] font-mono font-bold text-[#22c55e] leading-tight">{AVG_DNA}</p>
+          <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">Avg DNA</p>
+          <p className="text-[15px] font-mono font-bold text-emerald-400 leading-tight">{AVG_DNA}</p>
         </div>
-        <div className="w-px h-6 bg-[#1e1e2e]" />
+        <div className="w-px h-6 bg-white/10" />
         <div className="text-center">
-          <p className="text-[9px] font-mono text-[#444455] uppercase tracking-widest">City</p>
-          <p className="text-[11px] font-mono font-semibold text-[#888899] leading-tight">{cityShortCode}</p>
+          <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">City</p>
+          <p className="text-[11px] font-sans font-semibold text-slate-300 leading-tight">{cityShortCode}</p>
         </div>
       </div>
 
@@ -306,22 +289,20 @@ export default function Home() {
         {/* Search bar */}
         <div className="relative">
           <div
+            className="glass-panel transition-all duration-200"
             style={{
-              background: 'rgba(8,8,18,0.90)',
-              backdropFilter: 'blur(24px)',
-              border: `1px solid ${searchFocused ? 'rgba(0,230,118,0.35)' : 'rgba(255,255,255,0.08)'}`,
-              borderRadius: showDropdown ? '14px 14px 0 0' : 14,
+              border: searchFocused ? '1px solid rgba(16, 185, 129, 0.45)' : '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: showDropdown ? '16px 16px 0 0' : 16,
               boxShadow: searchFocused
-                ? '0 0 0 1px rgba(0,230,118,0.08), 0 16px 48px rgba(0,0,0,0.55)'
-                : '0 4px 24px rgba(0,0,0,0.45)',
-              transition: 'border-color 0.2s, box-shadow 0.2s, border-radius 0.15s',
+                ? '0 0 25px rgba(16, 185, 129, 0.15), 0 16px 48px rgba(0, 0, 0, 0.6)'
+                : '0 8px 32px 0 rgba(0, 0, 0, 0.35)',
             }}
           >
-            <div className="flex items-center px-4 py-3 gap-3">
+            <div className="flex items-center px-4 py-3.5 gap-3">
               <Search
                 size={14}
                 style={{
-                  color: resolvingUrl ? '#00e676' : searchFocused ? '#00e676' : '#555566',
+                  color: resolvingUrl ? '#10b981' : searchFocused ? '#10b981' : '#64748b',
                   transition: 'color 0.2s',
                   flexShrink: 0,
                 }}
@@ -335,12 +316,12 @@ export default function Home() {
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setTimeout(() => setSearchFocused(false), 160)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit() }}
-                className="min-w-0 flex-1 bg-transparent text-[#e8e8f0] font-mono text-sm outline-none placeholder:text-[#3a3a52]"
+                className="flex-1 bg-transparent text-slate-100 font-sans text-sm outline-none placeholder:text-slate-500"
               />
               {searchQuery && (
                 <button
                   onClick={() => { setSearchQuery(''); setSearchError(''); inputRef.current?.focus() }}
-                  className="text-[#555566] hover:text-[#e8e8f0] transition-colors"
+                  className="text-slate-500 hover:text-slate-200 transition-colors"
                 >
                   <X size={14} />
                 </button>
@@ -358,49 +339,49 @@ export default function Home() {
                 transition={{ duration: 0.12 }}
                 className="absolute left-0 right-0 top-full z-[1003] overflow-hidden"
                 style={{
-                  background: 'rgba(6,6,14,0.97)',
+                  background: 'rgba(8, 12, 24, 0.95)',
                   backdropFilter: 'blur(24px)',
-                  borderLeft:   '1px solid rgba(0,230,118,0.25)',
-                  borderRight:  '1px solid rgba(0,230,118,0.25)',
-                  borderBottom: '1px solid rgba(0,230,118,0.25)',
-                  borderRadius: '0 0 14px 14px',
-                  boxShadow: '0 20px 48px rgba(0,0,0,0.6)',
+                  borderLeft:   '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRight:  '1px solid rgba(16, 185, 129, 0.3)',
+                  borderBottom: '1px solid rgba(16, 185, 129, 0.3)',
+                  borderRadius: '0 0 16px 16px',
+                  boxShadow: '0 20px 48px rgba(0, 0, 0, 0.65)',
                 }}
               >
                 {/* Coordinate analysis option */}
                 {(parsedCoords || parsedMapUrl) && (
                   <button
-                    onMouseDown={() => { void requireSearchAccess(() => triggerCoordAnalysis(parsedCoords ?? parsedMapUrl!)) }}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.03] transition-colors"
+                    onMouseDown={() => triggerCoordAnalysis(parsedCoords ?? parsedMapUrl!)}
+                    className="w-full flex items-center gap-3 px-4 py-3.5 text-left hover:bg-white/[0.03] transition-colors"
                     style={{ borderBottom: searchResults.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                   >
-                    <Navigation size={13} className="text-[#00e676] flex-shrink-0" />
-                    <div className="min-w-0 flex-1">
-                      <span className="text-[12px] font-mono text-[#00e676]">Analyze this location</span>
-                      <p className="text-[10px] font-mono text-[#444455] mt-0.5">
-                        {(parsedCoords ?? parsedMapUrl)![0].toFixed(4)}°N  {(parsedCoords ?? parsedMapUrl)![1].toFixed(4)}°E · DNA score + growth story
+                    <Navigation size={13} className="text-emerald-400 flex-shrink-0" />
+                    <div className="flex-1">
+                      <span className="text-[12px] font-sans font-semibold text-emerald-400">Analyze this location</span>
+                      <p className="text-[10px] font-sans text-slate-500 mt-0.5">
+                        <span className="font-mono">{(parsedCoords ?? parsedMapUrl)![0].toFixed(4)}{"\u00B0N"}  {(parsedCoords ?? parsedMapUrl)![1].toFixed(4)}{"\u00B0E"}</span>{" \u00B7 "}DNA score + growth story
                       </p>
                     </div>
-                    <ChevronRight size={12} className="text-[#00e676]" />
+                    <ChevronRight size={12} className="text-emerald-400" />
                   </button>
                 )}
 
                 {(shortMapUrl || backendMapUrl) && (
                   <button
                     onMouseDown={handleSearchSubmit}
-                    className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.03] transition-colors"
+                    className="w-full flex items-center gap-3 px-4 py-3.5 text-left hover:bg-white/[0.03] transition-colors"
                     style={{ borderBottom: searchResults.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                   >
-                    <Navigation size={13} className="text-[#00e676] flex-shrink-0" />
-                    <div className="min-w-0 flex-1">
-                      <span className="text-[12px] font-mono text-[#00e676]">
-                        {resolvingUrl ? 'Resolving map link…' : 'Resolve map link'}
+                    <Navigation size={13} className="text-emerald-400 flex-shrink-0" />
+                    <div className="flex-1">
+                      <span className="text-[12px] font-sans font-semibold text-emerald-400">
+                        {resolvingUrl ? 'Resolving map link...' : 'Resolve map link'}
                       </span>
-                      <p className="text-[10px] font-mono text-[#444455] mt-0.5">
+                      <p className="text-[10px] font-sans text-slate-500 mt-0.5">
                         Extract coordinates, then analyze the location
                       </p>
                     </div>
-                    <ChevronRight size={12} className="text-[#00e676]" />
+                    <ChevronRight size={12} className="text-emerald-400" />
                   </button>
                 )}
 
@@ -410,15 +391,15 @@ export default function Home() {
                   return (
                     <button
                       key={area.slug}
-                      onMouseDown={() => { void requireSearchAccess(() => selectArea(area)) }}
-                      className="w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-white/[0.03] transition-colors"
+                      onMouseDown={() => selectArea(area)}
+                      className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-white/[0.03] transition-colors"
                       style={{ borderBottom: i < Math.min(searchResults.length, 5) - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}
                     >
-                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color, boxShadow: `0 0 5px ${color}80` }} />
-                      <span className="min-w-0 flex-1 truncate text-[13px] font-mono text-[#ccccdd]">{area.name}</span>
-                      <span className="text-[11px] font-mono text-[#666680] uppercase tracking-wide">{area.category}</span>
+                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: color, boxShadow: `0 0 8px ${color}` }} />
+                      <span className="flex-1 text-[13px] font-sans text-slate-300 font-medium">{area.name}</span>
+                      <span className="text-[11px] font-sans text-slate-500 uppercase tracking-wide font-semibold">{area.category}</span>
                       <span className="text-sm font-mono font-bold" style={{ color }}>{area.score}</span>
-                      <ChevronRight size={12} className="text-[#333344]" />
+                      <ChevronRight size={12} className="text-slate-600" />
                     </button>
                   )
                 })}
@@ -428,7 +409,7 @@ export default function Home() {
         </div>
 
         {searchError && (
-          <p className="text-center mt-2 text-[10px] font-mono text-[#ef4444]">
+          <p className="text-center mt-2 text-[10px] font-sans text-red-400 font-medium">
             {searchError}
           </p>
         )}
@@ -441,18 +422,12 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.2, delay: 0.05 }}
-              className="mt-2"
+              className="mt-2.5"
             >
-              {/* City selector */}
+              {/* City pills row */}
               <div
-                className="mobile-scroll-row flex items-center gap-1.5 mb-2 overflow-x-auto md:justify-center"
-                style={{
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                  WebkitOverflowScrolling: 'touch',
-                  touchAction: 'pan-x',
-                  paddingBottom: 2,
-                }}
+                className="flex items-center gap-1.5 mb-2.5 overflow-x-auto md:justify-center"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {CITY_LIST.map(city => {
                   const isActive = selectedCitySlug === city.slug
@@ -460,13 +435,14 @@ export default function Home() {
                     <button
                       key={city.slug}
                       onClick={() => handleCityChange(city.slug)}
-                      className="px-3.5 py-1.5 rounded-full text-[12px] font-medium transition-all duration-150 flex-shrink-0"
+                      className="px-3 py-1.5 rounded-full text-[10px] font-sans font-semibold transition-all duration-200 flex-shrink-0 hover:scale-[1.03] active:scale-[0.97]"
                       style={{
-                        background: isActive ? 'rgba(244,247,251,0.1)' : 'rgba(5,7,10,0.72)',
-                        border: isActive ? '1px solid rgba(244,247,251,0.18)' : '1px solid rgba(255,255,255,0.07)',
-                        color: isActive ? '#f4f7fb' : '#8b95a7',
-                        boxShadow: isActive ? '0 10px 24px rgba(0,0,0,0.28)' : 'none',
+                        background: isActive ? 'rgba(16, 185, 129, 0.15)' : 'rgba(15, 23, 42, 0.45)',
+                        border: isActive ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(255, 255, 255, 0.06)',
+                        color: isActive ? '#10b981' : '#94a3b8',
+                        boxShadow: isActive ? '0 0 12px rgba(16, 185, 129, 0.15)' : 'none',
                         backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)',
                       }}
                     >
                       {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
@@ -476,14 +452,8 @@ export default function Home() {
               </div>
               {/* Top area chips */}
               <div
-                className="mobile-scroll-row flex items-center gap-2 overflow-x-auto md:justify-center"
-                style={{
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                  WebkitOverflowScrolling: 'touch',
-                  touchAction: 'pan-x',
-                  paddingBottom: 2,
-                }}
+                className="flex items-center gap-2 overflow-x-auto md:justify-center"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
                 {recommendedAreas.slice(0, 4).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
                   const color = getScoreColor(area.score)
@@ -491,48 +461,30 @@ export default function Home() {
                     <button
                       key={area.slug}
                       onClick={() => navigate(`/area/${area.slug}`)}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all flex-shrink-0"
-                      style={{
-                        background: 'rgba(8,12,18,0.76)',
-                        border: '1px solid rgba(255,255,255,0.09)',
-                        color: '#d9e1ea',
-                        boxShadow: '0 10px 24px rgba(0,0,0,0.22)',
-                        backdropFilter: 'blur(14px)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = `${color}55`
-                        e.currentTarget.style.boxShadow = `0 12px 28px rgba(0,0,0,0.28), 0 0 18px ${color}18`
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'
-                        e.currentTarget.style.boxShadow = '0 10px 24px rgba(0,0,0,0.22)'
-                      }}
+                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-medium transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
+                      style={{ background: `${color}16`, border: `1px solid ${color}28`, color }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = `${color}28`; e.currentTarget.style.boxShadow = `0 0 12px ${color}25` }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = `${color}16`; e.currentTarget.style.boxShadow = 'none' }}
                       title={`${matchScore}/100 match`}
                     >
-                      <Zap size={10} style={{ color }} />
+                      <Zap size={9} />
                       {area.name}
-                      <span
-                        className="text-[10px] font-mono"
-                        style={{ color }}
-                      >
-                        {matchScore}
-                      </span>
+                      <span className="text-[9px] font-mono font-bold" style={{ color: '#f1f5f9' }}>{matchScore}</span>
                     </button>
                   )
                 })}
                 {/* Brochure AI chip */}
                 <button
                   onClick={() => { setShowBrochure(v => !v); setSearchCoords(null); setSelectedArea(null) }}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all flex-shrink-0"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-medium transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
                   style={{
-                    background: showBrochure ? 'rgba(99,102,241,0.18)' : 'rgba(8,12,18,0.76)',
-                    border: showBrochure ? '1px solid rgba(129,140,248,0.45)' : '1px solid rgba(255,255,255,0.09)',
-                    color: showBrochure ? '#a5b4fc' : '#d9e1ea',
-                    boxShadow: showBrochure ? '0 0 18px rgba(99,102,241,0.18)' : '0 10px 24px rgba(0,0,0,0.22)',
-                    backdropFilter: 'blur(14px)',
+                    background: showBrochure ? 'rgba(99, 102, 241, 0.2)' : 'rgba(99, 102, 241, 0.08)',
+                    border: showBrochure ? '1px solid rgba(99, 102, 241, 0.45)' : '1px solid rgba(99, 102, 241, 0.2)',
+                    color: '#a5b4fc',
+                    boxShadow: showBrochure ? '0 0 12px rgba(99, 102, 241, 0.2)' : 'none',
                   }}
                 >
-                  <FileText size={10} style={{ color: '#818cf8' }} />
+                  <FileText size={9} />
                   Brochure AI
                 </button>
               </div>
@@ -554,49 +506,33 @@ export default function Home() {
       )}
 
       <div
-        className={`absolute z-[999] flex-col rounded-xl overflow-hidden ${showMobileSidebar ? 'flex' : 'hidden'} md:flex`}
+        className={`absolute z-[999] flex-col rounded-2xl overflow-hidden glass-panel ${showMobileSidebar ? 'flex' : 'hidden'} md:flex`}
         style={{
           left: showMobileSidebar ? 'calc(0.75rem + env(safe-area-inset-left))' : 'calc(1.25rem + env(safe-area-inset-left))',
           right: showMobileSidebar ? 'calc(0.75rem + env(safe-area-inset-right))' : 'auto',
-          top: `calc(${isGlobeMode ? 112 : 84}px + env(safe-area-inset-top))`,
+          top: `calc(${isGlobeMode ? 106 : 78}px + env(safe-area-inset-top))`,
           bottom: isGlobeMode && !globeSidebarExpanded
             ? 'auto'
             : `calc(${isGlobeMode ? 128 : 76}px + env(safe-area-inset-bottom))`,
-          width: showMobileSidebar ? 'auto' : (isGlobeMode ? 232 : 240),
-          maxHeight: showMobileSidebar ? 'calc(100dvh - 8.5rem - env(safe-area-inset-bottom))' : undefined,
-          background: isGlobeMode
-            ? 'linear-gradient(180deg, rgba(11,15,20,0.88), rgba(5,7,10,0.76))'
-            : 'rgba(5,7,10,0.86)',
-          backdropFilter: 'blur(22px)',
-          border: '1px solid rgba(255,255,255,0.09)',
-          boxShadow: isGlobeMode ? '0 18px 42px rgba(0,0,0,0.34)' : '0 10px 34px rgba(0,0,0,0.48)',
+          width: showMobileSidebar ? 'auto' : (isGlobeMode ? 210 : 230),
         }}
       >
         {/* Panel header */}
         <div
           className="px-4 pt-3.5 pb-3 flex-shrink-0"
           style={{
-            borderBottom: '1px solid rgba(255,255,255,0.05)',
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.006))',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            background: 'linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0%, transparent 100%)',
           }}
         >
           <div className="flex items-center justify-between gap-2">
-            <div className="min-w-0">
-              <p className="text-[9px] font-mono text-[#00e676] uppercase tracking-[0.16em]">
-                Recommendation mode
-              </p>
+            <div className="flex items-center gap-2">
               <div
-                className="mt-1 flex items-baseline gap-2"
-              >
-                <p className="truncate text-[17px] font-bold leading-tight tracking-tight text-[#f4f7fb]">
-                  {goalMeta.shortLabel}
-                </p>
-                <span className="text-[10px] font-mono text-[#657086]">
-                  {recommendedAreas.length} areas
-                </span>
-              </div>
-              <p className="mt-1 text-[11px] leading-snug text-[#8b95a7]">
-                Ranked by fit, risk, and growth signals.
+                className="w-0.5 h-3.5 rounded-full bg-emerald-500"
+                style={{ boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)' }}
+              />
+              <p className="text-[9px] font-sans font-bold text-emerald-400 uppercase tracking-[0.14em]">
+                Recommended for {goalMeta.shortLabel}
               </p>
             </div>
             {isGlobeMode && (
@@ -606,7 +542,7 @@ export default function Home() {
                 style={{
                   background: 'rgba(255,255,255,0.03)',
                   border: '1px solid rgba(255,255,255,0.06)',
-                  color: globeSidebarExpanded ? '#00e676' : '#77778a',
+                  color: globeSidebarExpanded ? '#10b981' : '#64748b',
                 }}
               >
                 <ChevronUp
@@ -619,26 +555,21 @@ export default function Home() {
               </button>
             )}
           </div>
-          <div className="mt-3 space-y-1.5">
+          <div className="flex flex-wrap gap-1.5 mt-3">
             {GOAL_OPTIONS.map(goal => {
               const active = goal === recommendationGoal
               return (
                 <button
                   key={goal}
                   onClick={() => setRecommendationGoal(goal)}
-                  className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-[12px] font-semibold transition-all"
+                  className="px-2 py-1 rounded-full text-[9px] font-sans font-semibold transition-all duration-150 hover:scale-[1.02]"
                   style={{
-                    background: active ? 'rgba(0,230,118,0.12)' : 'rgba(255,255,255,0.035)',
-                    border: active ? '1px solid rgba(0,230,118,0.32)' : '1px solid rgba(255,255,255,0.065)',
-                    color: active ? '#f4f7fb' : '#8b95a7',
-                    boxShadow: active ? '0 0 16px rgba(0,230,118,0.08)' : 'none',
+                    background: active ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.03)',
+                    border: active ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid rgba(255, 255, 255, 0.06)',
+                    color: active ? '#10b981' : '#94a3b8',
                   }}
                 >
-                  <span>{getRecommendationGoalMeta(goal).shortLabel}</span>
-                  <span
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{ background: active ? '#00e676' : 'rgba(139,149,167,0.35)' }}
-                  />
+                  {getRecommendationGoalMeta(goal).shortLabel}
                 </button>
               )
             })}
@@ -646,27 +577,26 @@ export default function Home() {
           {isGlobeMode && !globeSidebarExpanded && (
             <div className="mt-3 space-y-2">
               {recommendedAreas.slice(0, 2).map(({ area, matchScore }) => (
-                <button
+                <div
                   key={area.slug}
-                  onClick={() => setSelectedArea(area)}
-                  className="flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-left transition-all"
+                  className="flex items-center justify-between rounded-lg px-2.5 py-2"
                   style={{
-                    background: 'rgba(255,255,255,0.045)',
-                    border: '1px solid rgba(255,255,255,0.065)',
+                    background: 'rgba(255,255,255,0.02)',
+                    border: '1px solid rgba(255,255,255,0.04)',
                   }}
                 >
                   <div>
-                    <p className="text-[12px] font-semibold text-[#f4f7fb]">{area.name}</p>
-                    <p className="text-[10px] text-[#657086]">Top match</p>
+                    <p className="text-[10px] font-sans font-medium text-slate-200">{area.name}</p>
+                    <p className="text-[8px] font-sans text-slate-500">Top match</p>
                   </div>
-                  <span className="text-[11px] font-mono font-bold text-[#00e676]">{matchScore}</span>
-                </button>
+                  <span className="text-[11px] font-mono font-bold text-emerald-400">{matchScore}</span>
+                </div>
               ))}
             </div>
           )}
           {highlightTier && (
-            <p className="text-[9px] font-mono text-[#555566] mt-1 pl-2.5">
-              {highlightTier} · {sidebarList.length} area{sidebarList.length !== 1 ? 's' : ''}
+            <p className="text-[9px] font-sans text-slate-500 mt-1 pl-2.5">
+              {highlightTier} • {sidebarList.length} area{sidebarList.length !== 1 ? 's' : ''}
             </p>
           )}
         </div>
@@ -676,7 +606,7 @@ export default function Home() {
           <div className="flex-1 overflow-y-auto">
           {sidebarList.length === 0 ? (
             <div className="flex items-center justify-center h-full">
-              <p className="text-[12px] text-[#657086] text-center px-4">
+              <p className="text-[11px] font-sans text-slate-500 text-center px-4">
                 No areas in<br />this tier
               </p>
             </div>
@@ -691,8 +621,8 @@ export default function Home() {
                   onClick={() => setSelectedArea(isSelected ? null : area)}
                   className="w-full text-left transition-all duration-150"
                   style={{
-                    padding: '11px 14px',
-                    borderBottom: '1px solid rgba(255,255,255,0.025)',
+                    padding: '10px 14px',
+                    borderBottom: '1px solid rgba(255,255,255,0.03)',
                     background: isSelected ? `${color}0d` : 'transparent',
                     borderLeft: isSelected ? `2px solid ${color}` : '2px solid transparent',
                   }}
@@ -704,25 +634,25 @@ export default function Home() {
                   }}
                 >
                   <div className="flex items-center gap-2">
-                    <span className="text-[9px] font-mono text-[#2a2a3e] w-4 text-right flex-shrink-0">
+                    <span className="text-[9px] font-mono text-slate-500 w-4 text-right flex-shrink-0">
                       {highlightTier ? idx + 1 : globalRank}
                     </span>
                     <div className="flex-1 min-w-0">
                       <p
-                        className="truncate text-[13px] font-semibold leading-tight"
-                        style={{ color: isSelected ? '#f4f7fb' : '#d9e1ea' }}
+                        className="text-[11.5px] font-sans font-medium truncate leading-tight"
+                        style={{ color: isSelected ? '#f1f5f9' : '#cbd5e1' }}
                       >
                         {area.name}
                       </p>
-                      <p className="mt-1 truncate text-[10px] text-[#657086]">
-                        {reasons[0]?.label}: {reasons[0]?.value}
+                      <p className="text-[9px] text-slate-500 font-sans uppercase tracking-wide mt-0.5">
+                        {reasons[0]?.label}: <span className="font-mono">{reasons[0]?.value}</span>
                       </p>
                     </div>
                     <div className="flex-shrink-0 text-right">
                       <span className="text-[13px] font-mono font-bold" style={{ color }}>
                         {matchScore}
                       </span>
-                      <div className="w-8 h-[2px] bg-[#161626] rounded-full mt-1 ml-auto">
+                      <div className="w-8 h-[2px] bg-slate-900 rounded-full mt-1 ml-auto">
                         <div
                           className="h-full rounded-full"
                           style={{ width: `${matchScore}%`, backgroundColor: color }}
@@ -749,19 +679,19 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 32 }}
             transition={{ duration: 0.25 }}
-            className="mobile-panel absolute top-0 right-0 h-full z-[1010] overflow-y-auto"
+            className="absolute top-0 right-0 h-full z-[1010] overflow-y-auto"
             style={{ width: 'min(380px, 100vw)' }}
           >
-            <div className="p-4 pt-16 min-h-full"
-              style={{ background: 'rgba(5,5,10,0.94)', backdropFilter: 'blur(24px)', borderLeft: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="p-4 pt-16 min-h-full glass-panel"
+              style={{ borderLeft: '1px solid rgba(255,255,255,0.08)' }}>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                  <FileText size={13} style={{ color: '#818cf8' }} />
-                  <p className="text-xs font-mono font-semibold text-[#818cf8]">Brochure Analyzer</p>
+                  <FileText size={13} style={{ color: '#a5b4fc' }} />
+                  <p className="text-xs font-sans font-bold text-[#a5b4fc] tracking-wide">Brochure Analyzer</p>
                 </div>
                 <button
                   onClick={() => setShowBrochure(false)}
-                  className="text-[#555566] hover:text-[#e8e8f0] transition-colors"
+                  className="text-slate-500 hover:text-slate-200 transition-colors"
                 >
                   <X size={14} />
                 </button>
@@ -785,19 +715,13 @@ export default function Home() {
         ) : null}
       </AnimatePresence>
 
-      {/* ═══════════════════════════════════════════════
-          BOTTOM RIGHT: Layer / View switcher
-      ════════════════════════════════════════════════ */}
+      {/* ── Layer / View switcher ── */}
       <div
-        className={`absolute z-[1001] hidden md:flex flex-col gap-2 rounded-2xl p-2 ${isGlobeMode ? 'md:hidden' : ''}`}
+        className={`absolute z-[1001] flex flex-col gap-2 rounded-2xl p-2 glass-panel ${isGlobeMode ? 'hidden' : ''}`}
         style={{
           bottom: 88,
           right: 20,
           width: 'min(232px, calc(100vw - 24px))',
-          background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.78))',
-          backdropFilter: 'blur(24px)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
         }}
       >
         <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} />
@@ -808,26 +732,26 @@ export default function Home() {
           className="flex items-center gap-2 px-4 py-3 rounded-xl transition-all duration-200"
           style={{
             background: showLayers
-              ? 'linear-gradient(180deg, rgba(0,230,118,0.18), rgba(0,230,118,0.08))'
+              ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05))'
               : 'rgba(255,255,255,0.03)',
             backdropFilter: 'blur(22px)',
-            border: showLayers ? '1px solid rgba(0,230,118,0.34)' : '1px solid rgba(255,255,255,0.06)',
+            border: showLayers ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid rgba(255,255,255,0.06)',
             boxShadow: showLayers
-              ? '0 0 20px rgba(0,230,118,0.16), inset 0 0 16px rgba(0,230,118,0.06)'
+              ? '0 0 20px rgba(16, 185, 129, 0.15), inset 0 0 16px rgba(16, 185, 129, 0.05)'
               : 'inset 0 0 14px rgba(255,255,255,0.02)',
           }}
         >
-          <Layers size={13} style={{ color: showLayers ? '#00e676' : '#666680' }} />
+          <Layers size={13} style={{ color: showLayers ? '#10b981' : '#64748b' }} />
           <div className="flex-1 text-left">
-            <p className="text-[8px] font-mono text-[#444455] uppercase tracking-[0.16em] mb-0.5">Scene Controls</p>
-            <p className="text-[11px] font-mono font-semibold" style={{ color: showLayers ? '#00e676' : '#aaaabc' }}>
+            <p className="text-[8px] font-sans font-bold text-slate-500 uppercase tracking-[0.16em] mb-0.5">Scene Controls</p>
+            <p className="text-[11px] font-sans font-bold" style={{ color: showLayers ? '#10b981' : '#cbd5e1' }}>
               Layers
             </p>
           </div>
           <ChevronUp
             size={10}
             style={{
-              color: showLayers ? '#00e676' : '#444455',
+              color: showLayers ? '#10b981' : '#64748b',
               transform: showLayers ? 'rotate(180deg)' : 'rotate(0deg)',
               transition: 'transform 0.2s',
             }}
@@ -842,11 +766,9 @@ export default function Home() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 8, scale: 0.97 }}
               transition={{ duration: 0.15 }}
-              className="absolute left-0 right-0 bottom-full mb-2 rounded-xl overflow-hidden"
+              className="absolute left-0 right-0 bottom-full mb-2 rounded-xl overflow-hidden glass-panel"
               style={{
-                background: 'linear-gradient(180deg, rgba(8,12,18,0.96), rgba(5,5,10,0.9))',
-                backdropFilter: 'blur(28px)',
-                border: '1px solid rgba(255,255,255,0.08)',
+                background: 'rgba(8, 12, 24, 0.95)',
                 boxShadow: '0 20px 48px rgba(0,0,0,0.7)',
               }}
             >
@@ -855,7 +777,7 @@ export default function Home() {
                 className="px-3.5 pt-3 pb-2"
                 style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
               >
-                <p className="text-[8px] font-mono text-[#333344] uppercase tracking-[0.16em] mb-2">
+                <p className="text-[8px] font-sans font-bold text-slate-500 uppercase tracking-[0.16em] mb-2">
                   Basemap Style
                 </p>
                 <div className="grid grid-cols-2 gap-1.5">
@@ -872,15 +794,15 @@ export default function Home() {
                         onClick={() => setMapStyleKey(key)}
                         className="flex flex-col items-center gap-1.5 py-2.5 rounded-lg transition-all duration-150"
                         style={{
-                          background: active ? 'rgba(0,230,118,0.1)' : 'rgba(255,255,255,0.03)',
-                          border: active ? '1px solid rgba(0,230,118,0.3)' : '1px solid rgba(255,255,255,0.05)',
-                          boxShadow: active ? '0 0 10px rgba(0,230,118,0.12)' : 'none',
+                          background: active ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255,255,255,0.03)',
+                          border: active ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(255,255,255,0.05)',
+                          boxShadow: active ? '0 0 10px rgba(16, 185, 129, 0.12)' : 'none',
                         }}
                       >
-                        <Icon size={15} style={{ color: active ? '#00e676' : '#555566' }} />
+                        <Icon size={15} style={{ color: active ? '#10b981' : '#64748b' }} />
                         <span
-                          className="text-[9px] font-mono"
-                          style={{ color: active ? '#00e676' : '#555566' }}
+                          className="text-[9px] font-sans font-bold"
+                          style={{ color: active ? '#10b981' : '#64748b' }}
                         >
                           {label}
                         </span>
@@ -899,8 +821,8 @@ export default function Home() {
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
               >
                 <div className="flex items-center gap-2.5">
-                  <Box size={12} style={{ color: is3D ? '#00e676' : '#555566' }} />
-                  <span className="text-[11px] font-mono" style={{ color: is3D ? '#00e676' : '#888899' }}>
+                  <Box size={12} style={{ color: is3D ? '#10b981' : '#64748b' }} />
+                  <span className="text-[11px] font-sans font-medium" style={{ color: is3D ? '#10b981' : '#cbd5e1' }}>
                     3D Tilt View
                   </span>
                 </div>
@@ -909,8 +831,8 @@ export default function Home() {
                   className="relative w-8 h-4.5 rounded-full transition-all duration-250"
                   style={{
                     width: 30, height: 16,
-                    background: is3D ? 'rgba(0,230,118,0.25)' : 'rgba(255,255,255,0.08)',
-                    border: is3D ? '1px solid rgba(0,230,118,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                    background: is3D ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 255, 255, 0.08)',
+                    border: is3D ? '1px solid rgba(16, 185, 129, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
                   }}
                 >
                   <div
@@ -919,8 +841,8 @@ export default function Home() {
                       width: 10, height: 10,
                       top: 2,
                       left: is3D ? 16 : 2,
-                      backgroundColor: is3D ? '#00e676' : '#555566',
-                      boxShadow: is3D ? '0 0 6px #00e67680' : 'none',
+                      backgroundColor: is3D ? '#10b981' : '#64748b',
+                      boxShadow: is3D ? '0 0 6px rgba(16, 185, 129, 0.5)' : 'none',
                     }}
                   />
                 </div>
@@ -935,12 +857,12 @@ export default function Home() {
                 onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
               >
                 <div className="flex items-center gap-2.5">
-                  <HardHat size={12} style={{ color: showConstruction ? '#f97316' : '#555566' }} />
+                  <HardHat size={12} style={{ color: showConstruction ? '#f97316' : '#64748b' }} />
                   <div className="text-left">
-                    <span className="text-[11px] font-mono block" style={{ color: showConstruction ? '#f97316' : '#888899' }}>
+                    <span className="text-[11px] font-sans font-medium block" style={{ color: showConstruction ? '#f97316' : '#cbd5e1' }}>
                       Construction Sites
                     </span>
-                    <span className="text-[8px] font-mono text-[#333344]">Active projects &amp; pipeline</span>
+                    <span className="text-[8px] font-sans text-slate-500">Active projects &amp; pipeline</span>
                   </div>
                 </div>
                 <div
@@ -957,8 +879,8 @@ export default function Home() {
                     position: 'absolute',
                     top: 2, left: showConstruction ? 16 : 2,
                     borderRadius: '50%',
-                    backgroundColor: showConstruction ? '#f97316' : '#555566',
-                    boxShadow: showConstruction ? '0 0 6px #f9731680' : 'none',
+                    backgroundColor: showConstruction ? '#f97316' : '#64748b',
+                    boxShadow: showConstruction ? '0 0 6px rgba(249,115,22,0.5)' : 'none',
                     transition: 'all 0.25s',
                   }} />
                 </div>
@@ -966,11 +888,11 @@ export default function Home() {
 
               {/* ── Locked / Coming soon ── */}
               <div className="px-3.5 pt-2.5 pb-3">
-                <p className="text-[8px] font-mono text-[#252535] uppercase tracking-[0.16em] mb-1.5">
+                <p className="text-[8px] font-sans font-bold text-slate-600 uppercase tracking-[0.16em] mb-1.5">
                   Phase 3 — Coming Soon
                 </p>
                 {([
-                  { Icon: Eye,  label: 'Street View 360°'  },
+                  { Icon: Eye,  label: 'Street View 360\u00B0'  },
                   { Icon: Car,  label: 'Traffic Overlay'   },
                   { Icon: Clock,label: 'Historical Imagery' },
                 ] as const).map(({ Icon, label }) => (
@@ -978,9 +900,9 @@ export default function Home() {
                     key={label}
                     className="flex items-center gap-2.5 py-1.5 opacity-35"
                   >
-                    <Icon size={11} className="text-[#444455]" />
-                    <span className="text-[10px] font-mono text-[#444455] flex-1">{label}</span>
-                    <Lock size={9} className="text-[#2a2a3e]" />
+                    <Icon size={11} className="text-slate-500" />
+                    <span className="text-[10px] font-sans text-slate-500 flex-1">{label}</span>
+                    <Lock size={9} className="text-slate-700" />
                   </div>
                 ))}
               </div>
@@ -993,12 +915,8 @@ export default function Home() {
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className={`mobile-scroll-row absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-[calc(0.75rem+env(safe-area-inset-left))] right-[calc(0.75rem+env(safe-area-inset-right))] md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto ${isGlobeMode ? 'hidden' : ''}`}
+        className={`absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-[calc(0.75rem+env(safe-area-inset-left))] right-[calc(0.75rem+env(safe-area-inset-right))] md:left-1/2 md:right-auto md:-translate-x-1/2 z-[999] flex items-center p-1.5 gap-1.5 rounded-full overflow-x-auto glass-panel-light ${isGlobeMode ? 'hidden' : ''}`}
         style={{
-          background: 'rgba(5,5,10,0.88)',
-          backdropFilter: 'blur(22px)',
-          border: '1px solid rgba(255,255,255,0.06)',
-          boxShadow: '0 4px 24px rgba(0,0,0,0.55)',
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
         } as React.CSSProperties}
@@ -1009,7 +927,7 @@ export default function Home() {
             <button
               key={tier.label}
               onClick={() => toggleTier(tier.label)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-full transition-all duration-200"
+              className="flex items-center gap-2 px-3.5 py-2 rounded-full transition-all duration-200 hover:bg-white/5"
               style={{
                 background: isActive ? `${tier.color}1e` : 'transparent',
                 border: isActive ? `1px solid ${tier.color}45` : '1px solid transparent',
@@ -1026,14 +944,14 @@ export default function Home() {
                 }}
               />
               <span
-                className="text-[10px] font-mono whitespace-nowrap transition-colors duration-200"
-                style={{ color: isActive ? tier.color : '#666680' }}
+                className="text-[10px] font-sans font-semibold whitespace-nowrap transition-colors duration-200"
+                style={{ color: isActive ? tier.color : '#64748b' }}
               >
                 {tier.label}
               </span>
               <span
                 className="text-[9px] font-mono transition-colors duration-200"
-                style={{ color: isActive ? `${tier.color}88` : '#2e2e42' }}
+                style={{ color: isActive ? `${tier.color}aa` : '#334155' }}
               >
                 {tier.range}
               </span>
@@ -1049,7 +967,7 @@ export default function Home() {
               animate={{ opacity: 1, width: 'auto' }}
               exit={{ opacity: 0, width: 0 }}
               onClick={() => setHighlightTier(null)}
-              className="flex items-center gap-1 px-2 py-2 text-[#555566] hover:text-[#e8e8f0] transition-colors overflow-hidden"
+              className="flex items-center gap-1 px-2 py-2 text-slate-500 hover:text-slate-200 transition-colors overflow-hidden"
             >
               <X size={11} />
             </motion.button>
@@ -1069,11 +987,9 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 8, scale: 0.97 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 bottom-full mb-3 w-[min(228px,calc(100vw-24px))] rounded-xl overflow-hidden"
+                className="absolute right-0 bottom-full mb-3 w-[228px] rounded-xl overflow-hidden glass-panel"
                 style={{
-                  background: 'linear-gradient(180deg, rgba(8,12,18,0.96), rgba(5,5,10,0.9))',
-                  backdropFilter: 'blur(28px)',
-                  border: '1px solid rgba(255,255,255,0.08)',
+                  background: 'rgba(8, 12, 24, 0.95)',
                   boxShadow: '0 20px 48px rgba(0,0,0,0.7)',
                 }}
               >
@@ -1081,7 +997,7 @@ export default function Home() {
                   className="px-3.5 pt-3 pb-2"
                   style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}
                 >
-                  <p className="text-[8px] font-mono text-[#333344] uppercase tracking-[0.16em] mb-2">
+                  <p className="text-[8px] font-sans font-bold text-slate-500 uppercase tracking-[0.16em] mb-2">
                     Basemap Style
                   </p>
                   <div className="grid grid-cols-2 gap-1.5">
@@ -1098,13 +1014,13 @@ export default function Home() {
                           onClick={() => setMapStyleKey(key)}
                           className="flex flex-col items-center gap-1.5 py-2.5 rounded-lg transition-all duration-150"
                           style={{
-                            background: active ? 'rgba(0,230,118,0.1)' : 'rgba(255,255,255,0.03)',
-                            border: active ? '1px solid rgba(0,230,118,0.3)' : '1px solid rgba(255,255,255,0.05)',
-                            boxShadow: active ? '0 0 10px rgba(0,230,118,0.12)' : 'none',
+                            background: active ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255,255,255,0.03)',
+                            border: active ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(255,255,255,0.05)',
+                            boxShadow: active ? '0 0 10px rgba(16, 185, 129, 0.12)' : 'none',
                           }}
                         >
-                          <Icon size={15} style={{ color: active ? '#00e676' : '#555566' }} />
-                          <span className="text-[9px] font-mono" style={{ color: active ? '#00e676' : '#555566' }}>
+                          <Icon size={15} style={{ color: active ? '#10b981' : '#64748b' }} />
+                          <span className="text-[9px] font-sans font-bold" style={{ color: active ? '#10b981' : '#64748b' }}>
                             {label}
                           </span>
                         </button>
@@ -1121,8 +1037,8 @@ export default function Home() {
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
                 >
                   <div className="flex items-center gap-2.5">
-                    <Box size={12} style={{ color: is3D ? '#00e676' : '#555566' }} />
-                    <span className="text-[11px] font-mono" style={{ color: is3D ? '#00e676' : '#888899' }}>
+                    <Box size={12} style={{ color: is3D ? '#10b981' : '#64748b' }} />
+                    <span className="text-[11px] font-sans font-medium" style={{ color: is3D ? '#10b981' : '#cbd5e1' }}>
                       3D Tilt View
                     </span>
                   </div>
@@ -1130,8 +1046,8 @@ export default function Home() {
                     className="relative w-8 h-4.5 rounded-full transition-all duration-250"
                     style={{
                       width: 30, height: 16,
-                      background: is3D ? 'rgba(0,230,118,0.25)' : 'rgba(255,255,255,0.08)',
-                      border: is3D ? '1px solid rgba(0,230,118,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                      background: is3D ? 'rgba(16, 185, 129, 0.25)' : 'rgba(255, 255, 255, 0.08)',
+                      border: is3D ? '1px solid rgba(16, 185, 129, 0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
                     }}
                   >
                     <div
@@ -1140,8 +1056,8 @@ export default function Home() {
                         width: 10, height: 10,
                         top: 2,
                         left: is3D ? 16 : 2,
-                        backgroundColor: is3D ? '#00e676' : '#555566',
-                        boxShadow: is3D ? '0 0 6px #00e67680' : 'none',
+                        backgroundColor: is3D ? '#10b981' : '#64748b',
+                        boxShadow: is3D ? '0 0 6px rgba(16, 185, 129, 0.5)' : 'none',
                       }}
                     />
                   </div>
@@ -1155,19 +1071,19 @@ export default function Home() {
                   onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent' }}
                 >
                   <div className="flex items-center gap-2.5">
-                    <HardHat size={12} style={{ color: showConstruction ? '#f97316' : '#555566' }} />
+                    <HardHat size={12} style={{ color: showConstruction ? '#f97316' : '#64748b' }} />
                     <div className="text-left">
-                      <span className="text-[11px] font-mono block" style={{ color: showConstruction ? '#f97316' : '#888899' }}>
+                      <span className="text-[11px] font-sans font-medium block" style={{ color: showConstruction ? '#f97316' : '#cbd5e1' }}>
                         Construction Sites
                       </span>
-                      <span className="text-[8px] font-mono text-[#333344]">Active projects &amp; pipeline</span>
+                      <span className="text-[8px] font-sans text-slate-500">Active projects &amp; pipeline</span>
                     </div>
                   </div>
                   <div
                     style={{
                       width: 30, height: 16,
                       background: showConstruction ? 'rgba(249,115,22,0.25)' : 'rgba(255,255,255,0.08)',
-                      border: showConstruction ? '1px solid rgba(249,115,22,0.5)' : '1px solid rgba(255,255,255,0.1)',
+                      border: showConstruction ? '1px solid rgba(249,115,22,0.5)' : '1px solid rgba(255, 255, 255, 0.1)',
                       borderRadius: 9999,
                       position: 'relative',
                     }}
@@ -1177,15 +1093,15 @@ export default function Home() {
                       position: 'absolute',
                       top: 2, left: showConstruction ? 16 : 2,
                       borderRadius: '50%',
-                      backgroundColor: showConstruction ? '#f97316' : '#555566',
-                      boxShadow: showConstruction ? '0 0 6px #f9731680' : 'none',
+                      backgroundColor: showConstruction ? '#f97316' : '#64748b',
+                      boxShadow: showConstruction ? '0 0 6px rgba(249,115,22,0.5)' : 'none',
                       transition: 'all 0.25s',
                     }} />
                   </div>
                 </button>
 
                 <div className="px-3.5 pt-2.5 pb-3">
-                  <p className="text-[8px] font-mono text-[#252535] uppercase tracking-[0.16em] mb-1.5">
+                  <p className="text-[8px] font-sans font-bold text-slate-600 uppercase tracking-[0.16em] mb-1.5">
                     Phase 3 - Coming Soon
                   </p>
                   {([
@@ -1194,9 +1110,9 @@ export default function Home() {
                     { Icon: Clock, label: 'Historical Imagery' },
                   ] as const).map(({ Icon, label }) => (
                     <div key={label} className="flex items-center gap-2.5 py-1.5 opacity-35">
-                      <Icon size={11} className="text-[#444455]" />
-                      <span className="text-[10px] font-mono text-[#444455] flex-1">{label}</span>
-                      <Lock size={9} className="text-[#2a2a3e]" />
+                      <Icon size={11} className="text-slate-500" />
+                      <span className="text-[10px] font-sans text-slate-500 flex-1">{label}</span>
+                      <Lock size={9} className="text-slate-700" />
                     </div>
                   ))}
                 </div>
@@ -1205,16 +1121,44 @@ export default function Home() {
           </AnimatePresence>
 
           <div
-            className="mobile-bottom-dock rounded-2xl px-3 py-3 grid gap-3 md:gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,320px)] md:items-center"
+            className="rounded-2xl px-3 py-3 grid gap-4 md:grid-cols-[minmax(0,300px)_minmax(0,1fr)_minmax(0,320px)] md:items-center glass-panel"
             style={{
-              background: 'linear-gradient(180deg, rgba(8,12,18,0.88), rgba(5,5,10,0.78))',
-              backdropFilter: 'blur(24px)',
-              border: '1px solid rgba(255,255,255,0.08)',
               boxShadow: '0 16px 38px rgba(0,0,0,0.34)',
             }}
           >
             <div
-              className="mobile-scroll-row flex items-center p-1.5 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center md:px-3"
+              className="hidden md:flex items-center gap-2 min-w-[240px] rounded-xl px-3 py-2.5"
+              style={{
+                background: 'rgba(255,255,255,0.018)',
+                border: '1px solid rgba(255,255,255,0.045)',
+                boxShadow: 'inset 0 0 14px rgba(255,255,255,0.012)',
+              }}
+            >
+              <span className="text-[8px] font-sans font-bold text-slate-500 uppercase tracking-[0.16em] mr-1 shrink-0">
+                Supported
+              </span>
+              <div className="flex items-center gap-2 flex-wrap">
+                {systemCities.map(city => {
+                  const active = city.slug === selectedCitySlug
+                  return (
+                    <span
+                      key={city.slug}
+                      className="px-2.5 py-1 rounded-full text-[9px] font-sans font-bold"
+                      style={{
+                        background: active ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255,255,255,0.03)',
+                        border: active ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(255,255,255,0.05)',
+                        color: active ? '#10b981' : '#77778a',
+                      }}
+                    >
+                      {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
+                    </span>
+                  )
+                })}
+              </div>
+            </div>
+
+            <div
+              className="flex items-center p-1.5 gap-1 rounded-full overflow-x-auto md:flex-1 md:justify-center md:px-3"
               style={{
                 background: 'rgba(255,255,255,0.012)',
                 border: '1px solid rgba(255,255,255,0.03)',
@@ -1228,7 +1172,7 @@ export default function Home() {
                   <button
                     key={tier.label}
                     onClick={() => toggleTier(tier.label)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-200"
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-200 hover:bg-white/5"
                     style={{
                       background: isActive ? `${tier.color}15` : 'transparent',
                       border: isActive ? `1px solid ${tier.color}38` : '1px solid transparent',
@@ -1244,10 +1188,10 @@ export default function Home() {
                         transition: 'all 0.2s',
                       }}
                     />
-                    <span className="text-[9px] font-mono whitespace-nowrap transition-colors duration-200" style={{ color: isActive ? tier.color : '#5f5f74' }}>
+                    <span className="text-[9px] font-sans font-semibold whitespace-nowrap transition-colors duration-200" style={{ color: isActive ? tier.color : '#64748b' }}>
                       {tier.label}
                     </span>
-                    <span className="text-[8px] font-mono transition-colors duration-200" style={{ color: isActive ? `${tier.color}72` : '#28283b' }}>
+                    <span className="text-[8px] font-mono transition-colors duration-200" style={{ color: isActive ? `${tier.color}72` : '#334155' }}>
                       {tier.range}
                     </span>
                   </button>
@@ -1260,7 +1204,7 @@ export default function Home() {
                     animate={{ opacity: 1, width: 'auto' }}
                     exit={{ opacity: 0, width: 0 }}
                     onClick={() => setHighlightTier(null)}
-                    className="flex items-center gap-1 px-2 py-2 text-[#555566] hover:text-[#e8e8f0] transition-colors overflow-hidden"
+                    className="flex items-center gap-1 px-2 py-2 text-slate-500 hover:text-slate-200 transition-colors overflow-hidden"
                   >
                     <X size={11} />
                   </motion.button>
@@ -1269,7 +1213,7 @@ export default function Home() {
             </div>
 
             <div
-              className="flex min-w-0 items-center justify-between gap-2 overflow-hidden rounded-xl px-2 sm:px-3 py-2"
+              className="flex items-center gap-2 justify-end min-w-[280px] rounded-xl px-3 py-2"
               style={{
                 background: 'rgba(255,255,255,0.018)',
                 border: '1px solid rgba(255,255,255,0.045)',
@@ -1282,22 +1226,22 @@ export default function Home() {
                 className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-200"
                 style={{
                   background: showLayers
-                    ? 'linear-gradient(180deg, rgba(0,230,118,0.18), rgba(0,230,118,0.08))'
+                    ? 'linear-gradient(180deg, rgba(16, 185, 129, 0.18), rgba(16, 185, 129, 0.08))'
                     : 'rgba(255,255,255,0.022)',
-                  border: showLayers ? '1px solid rgba(0,230,118,0.34)' : '1px solid rgba(255,255,255,0.06)',
+                  border: showLayers ? '1px solid rgba(16, 185, 129, 0.34)' : '1px solid rgba(255,255,255,0.06)',
                   boxShadow: showLayers
-                    ? '0 0 20px rgba(0,230,118,0.16), inset 0 0 16px rgba(0,230,118,0.06)'
+                    ? '0 0 20px rgba(16, 185, 129, 0.16), inset 0 0 16px rgba(16, 185, 129, 0.06)'
                     : 'inset 0 0 12px rgba(255,255,255,0.015)',
                 }}
               >
-                <Layers size={12} style={{ color: showLayers ? '#00e676' : '#666680' }} />
-                <span className="text-[10px] font-mono uppercase tracking-[0.14em]" style={{ color: showLayers ? '#00e676' : '#888899' }}>
+                <Layers size={12} style={{ color: showLayers ? '#10b981' : '#64748b' }} />
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em]" style={{ color: showLayers ? '#10b981' : '#cbd5e1' }}>
                   Layers
                 </span>
                 <ChevronUp
                   size={10}
                   style={{
-                    color: showLayers ? '#00e676' : '#444455',
+                    color: showLayers ? '#10b981' : '#64748b',
                     transform: showLayers ? 'rotate(180deg)' : 'rotate(0deg)',
                     transition: 'transform 0.2s',
                   }}
@@ -1327,7 +1271,7 @@ export default function Home() {
             {/* Subtle vignette pulse to signal interactivity */}
             <div
               className="absolute inset-0 pointer-events-none"
-              style={{ background: 'radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(0,230,118,0.06) 100%)' }}
+              style={{ background: 'radial-gradient(ellipse at 50% 50%, transparent 55%, rgba(16, 185, 129, 0.06) 100%)' }}
             />
             {/* Hint pill */}
             <motion.div
@@ -1340,22 +1284,22 @@ export default function Home() {
               <div
                 className="flex items-center gap-2.5 px-5 py-3 rounded-full"
                 style={{
-                  background: 'rgba(0,230,118,0.10)',
-                  border: '1px solid rgba(0,230,118,0.32)',
+                  background: 'rgba(16, 185, 129, 0.12)',
+                  border: '1px solid rgba(16, 185, 129, 0.35)',
                   backdropFilter: 'blur(18px)',
-                  boxShadow: '0 0 28px rgba(0,230,118,0.14)',
+                  boxShadow: '0 0 28px rgba(16, 185, 129, 0.15)',
                 }}
               >
                 <div
-                  className="w-2 h-2 rounded-full bg-[#00e676]"
-                  style={{ boxShadow: '0 0 8px #00e676', animation: 'pulse 1.4s infinite' }}
+                  className="w-2 h-2 rounded-full bg-emerald-500"
+                  style={{ boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)', animation: 'pulse 1.4s infinite' }}
                 />
-                <span className="text-[12px] font-mono font-semibold text-[#00e676]">
+                <span className="text-[12px] font-sans font-semibold text-emerald-400">
                   Tap anywhere to view DNA analysis
                 </span>
               </div>
-              <p className="text-[9px] font-mono text-[#444455]">
-                {pendingCoords[0].toFixed(4)}°N &nbsp; {pendingCoords[1].toFixed(4)}°E
+              <p className="text-[9px] font-mono text-slate-500">
+                {pendingCoords[0].toFixed(4)}{"\u00B0N"} &nbsp; {pendingCoords[1].toFixed(4)}{"\u00B0E"}
               </p>
             </motion.div>
           </motion.div>
@@ -1373,7 +1317,7 @@ export default function Home() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             className="absolute inset-0 z-[2000] flex flex-col items-center justify-center"
-            style={{ background: 'rgba(4,4,10,0.97)', backdropFilter: 'blur(28px)' }}
+            style={{ background: 'rgba(4, 6, 12, 0.96)', backdropFilter: 'blur(28px)' }}
           >
             {/* Spinning rings */}
             <div className="relative w-36 h-36 mb-7">
@@ -1383,12 +1327,12 @@ export default function Home() {
                 style={{ animationDuration: '3.5s' }}
                 viewBox="0 0 144 144"
               >
-                <circle cx={72} cy={72} r={66} fill="none" stroke="rgba(0,230,118,0.08)" strokeWidth={1.5} />
+                <circle cx={72} cy={72} r={66} fill="none" stroke="rgba(16, 185, 129, 0.08)" strokeWidth={1.5} />
                 <circle
                   cx={72} cy={72} r={66}
-                  fill="none" stroke="#00e676" strokeWidth={2.5}
+                  fill="none" stroke="#10b981" strokeWidth={2.5}
                   strokeDasharray="44 370" strokeLinecap="round"
-                  style={{ filter: 'drop-shadow(0 0 6px #00e67670)' }}
+                  style={{ filter: 'drop-shadow(0 0 6px rgba(16, 185, 129, 0.7))' }}
                 />
               </svg>
               {/* Middle ring reverse */}
@@ -1397,10 +1341,10 @@ export default function Home() {
                 style={{ animationDuration: '2.2s', animationDirection: 'reverse' }}
                 viewBox="0 0 144 144"
               >
-                <circle cx={72} cy={72} r={50} fill="none" stroke="rgba(0,230,118,0.05)" strokeWidth={1} />
+                <circle cx={72} cy={72} r={50} fill="none" stroke="rgba(16, 185, 129, 0.05)" strokeWidth={1} />
                 <circle
                   cx={72} cy={72} r={50}
-                  fill="none" stroke="rgba(0,230,118,0.45)" strokeWidth={1.5}
+                  fill="none" stroke="rgba(16, 185, 129, 0.45)" strokeWidth={1.5}
                   strokeDasharray="22 292" strokeLinecap="round"
                 />
               </svg>
@@ -1410,10 +1354,10 @@ export default function Home() {
                 style={{ animationDuration: '1.6s' }}
                 viewBox="0 0 144 144"
               >
-                <circle cx={72} cy={72} r={34} fill="none" stroke="rgba(0,230,118,0.04)" strokeWidth={1} />
+                <circle cx={72} cy={72} r={34} fill="none" stroke="rgba(16, 185, 129, 0.04)" strokeWidth={1} />
                 <circle
                   cx={72} cy={72} r={34}
-                  fill="none" stroke="rgba(0,230,118,0.3)" strokeWidth={1}
+                  fill="none" stroke="rgba(16, 185, 129, 0.3)" strokeWidth={1}
                   strokeDasharray="12 201" strokeLinecap="round"
                 />
               </svg>
@@ -1421,12 +1365,12 @@ export default function Home() {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
                   <p
-                    className="font-mono font-black text-[#00e676] leading-none"
-                    style={{ fontSize: 20, textShadow: '0 0 20px #00e67660' }}
+                    className="font-sans font-black text-emerald-400 leading-none"
+                    style={{ fontSize: 20, textShadow: '0 0 20px rgba(16, 185, 129, 0.6)' }}
                   >
                     DNA
                   </p>
-                  <p className="font-mono text-[8px] text-[#2a2a3e] tracking-[0.2em] mt-0.5 uppercase">
+                  <p className="font-sans text-[8px] text-slate-500 tracking-[0.2em] mt-0.5 uppercase font-bold">
                     scan
                   </p>
                 </div>
@@ -1440,12 +1384,12 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.25 }}
-              className="text-[13px] font-mono font-semibold text-[#ccccdd] mb-2 text-center px-8"
+              className="text-[13px] font-sans font-semibold text-slate-200 mb-2 text-center px-8"
             >
               {ANALYZE_STEPS[analyzeStep]}
             </motion.p>
-            <p className="text-[10px] font-mono text-[#3a3a52]">
-              {analyzingCoords[0].toFixed(5)}°N &nbsp; {analyzingCoords[1].toFixed(5)}°E
+            <p className="text-[10px] font-mono text-slate-500">
+              {analyzingCoords[0].toFixed(5)}{"\u00B0N"} &nbsp; {analyzingCoords[1].toFixed(5)}{"\u00B0E"}
             </p>
 
             {/* Progress bar */}
@@ -1455,7 +1399,7 @@ export default function Home() {
             >
               <motion.div
                 className="h-full rounded-full"
-                style={{ background: 'linear-gradient(90deg, #00e676, #00b36b)' }}
+                style={{ background: 'linear-gradient(90deg, #10b981, #059669)' }}
                 initial={{ width: '0%' }}
                 animate={{ width: '100%' }}
                 transition={{ duration: 2.2, ease: 'linear' }}
@@ -1465,14 +1409,9 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      <EmailGateModal
-        open={emailGateOpen}
-        entitlements={entitlements}
-        onClose={() => {
-          setEmailGateOpen(false)
-          pendingSearchActionRef.current = null
-        }}
-        onUnlocked={handleEmailUnlocked}
+      <AssistantDock
+        key={`assistant-${selectedCitySlug}-${selectedArea?.slug ?? coordAnalysis?.area?.slug ?? 'none'}`}
+        context={assistantContext}
       />
 
     </div>

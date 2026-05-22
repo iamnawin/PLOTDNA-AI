@@ -60,7 +60,7 @@ export type LocalityFallbackTier =
   | 'exact_locality'
   | 'nearby_micro_market'
   | 'city_zone_cluster'
-  | 'regional_market'
+  | 'regional'
   | 'uncovered'
 
 export type LocalityFallbackOptions = ResolverOptions
@@ -73,7 +73,6 @@ export interface LocalityFallbackResult {
   citySlug: string | null
   cityName: string | null
   clusterLabel: string | null
-  regionalLabel: string | null
   matchedLocality: string | null
   displayLabel: string
   precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
@@ -84,7 +83,7 @@ function mapTier(tier: ResolutionTier): LocalityFallbackTier {
   if (tier === 'exact') return 'exact_locality'
   if (tier === 'nearby') return 'nearby_micro_market'
   if (tier === 'cluster') return 'city_zone_cluster'
-  if (tier === 'regional') return 'regional_market'
+  if (tier === 'regional') return 'regional'
   return 'uncovered'
 }
 
@@ -109,7 +108,6 @@ export function resolveLocalityFallback(
       citySlug: resolution.citySlug,
       cityName,
       clusterLabel: null,
-      regionalLabel: null,
       matchedLocality: options.locality ?? resolution.localityName,
       displayLabel: resolution.localityName ?? 'Supported locality',
       precisionLabel: resolution.tier === 'exact' ? 'exact' : 'approximate',
@@ -126,7 +124,6 @@ export function resolveLocalityFallback(
       citySlug: resolution.citySlug,
       cityName,
       clusterLabel,
-      regionalLabel: null,
       matchedLocality: options.locality ?? null,
       displayLabel: clusterLabel ?? 'Supported city cluster',
       precisionLabel: 'broad',
@@ -135,12 +132,6 @@ export function resolveLocalityFallback(
   }
 
   if (resolution.tier === 'regional') {
-    const regionalLabel =
-      resolution.regionalName ??
-      resolution.districtName ??
-      'Regional coverage area'
-    const tierLabel = resolution.marketTier ? resolution.marketTier.toUpperCase() : 'Tier C'
-
     return {
       tier,
       area: null,
@@ -149,9 +140,8 @@ export function resolveLocalityFallback(
       citySlug: null,
       cityName: null,
       clusterLabel: null,
-      regionalLabel,
       matchedLocality: options.locality ?? null,
-      displayLabel: `${regionalLabel} (${tierLabel} regional)`,
+      displayLabel: resolution.districtName ?? 'India regional coverage',
       precisionLabel: 'broad',
       shouldSelectArea: false,
     }
@@ -165,7 +155,6 @@ export function resolveLocalityFallback(
     citySlug: null,
     cityName: null,
     clusterLabel: null,
-    regionalLabel: null,
     matchedLocality: options.locality ?? null,
     displayLabel: options.locality?.trim() || 'Unsupported location',
     precisionLabel: 'none',
@@ -197,7 +186,7 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
       { year: '2014', label: 'ORR connectivity', phase: 'early' },
       { year: '2019', label: 'IT park approvals', phase: 'growth' },
       { year: '2022', label: 'Construction surge', phase: 'boom' },
-      { year: '2026', label: 'Prime zone', phase: 'now' },
+      { year: '2024', label: 'Prime zone', phase: 'now' },
     ]
   if (s >= 66)
     return [
@@ -205,7 +194,7 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
       { year: '2015', label: 'Ring road access', phase: 'early' },
       { year: '2020', label: 'Residential projects', phase: 'growth' },
       { year: '2023', label: 'Rising demand', phase: 'boom' },
-      { year: '2026', label: 'Growth corridor', phase: 'now' },
+      { year: '2024', label: 'Growth corridor', phase: 'now' },
     ]
   if (s >= 41)
     return [
@@ -213,13 +202,13 @@ export function getGrowthMilestones(area: MicroMarket): Milestone[] {
       { year: '2016', label: 'Basic amenities', phase: 'early' },
       { year: '2021', label: 'Affordable housing', phase: 'growth' },
       { year: '2023', label: 'Slow appreciation', phase: 'boom' },
-      { year: '2026', label: 'Moderate zone', phase: 'now' },
+      { year: '2024', label: 'Moderate zone', phase: 'now' },
     ]
   return [
     { year: '2009', label: 'Agricultural land', phase: 'baseline' },
     { year: '2017', label: 'Minimal change', phase: 'early' },
     { year: '2022', label: 'Low activity', phase: 'growth' },
-    { year: '2026', label: 'Watch area', phase: 'now' },
+    { year: '2024', label: 'Watch area', phase: 'now' },
   ]
 }
 
