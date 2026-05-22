@@ -1,48 +1,28 @@
-#
+# PlotDNA
+
 <div align="center">
 
-<img width="104" height="104" alt="plotDNA logo2" src="https://github.com/user-attachments/assets/512d1ef5-4b11-46f1-bf8f-1a27e0650900" />
+**Decode any plot before you buy.**
 
-
-**PlotDNA - Decode any plot before you buy.**
-
-PlotDNA is a hybrid real-estate intelligence product for selected micro-markets.
+PlotDNA is a hybrid real-estate intelligence product for selected Indian micro-markets.
 It combines curated locality data, resolver-based coordinate matching, and a growing backend
 for dynamic analysis.
-
-[![Coverage](https://img.shields.io/badge/Coverage-8%20resolver--grade%20India%20markets%20%2B%20Dubai%20starter-00e676?style=flat-square&labelColor=050508)](#current-supported-markets)
-[![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-61dafb?style=flat-square&labelColor=050508)](#repository-layout)
-[![Backend](https://img.shields.io/badge/Backend-FastAPI-009688?style=flat-square&labelColor=050508)](#repository-layout)
-[![Mobile](https://img.shields.io/badge/Mobile-Capacitor%20path-119eff?style=flat-square&labelColor=050508)](#mobile-release-status)
 
 </div>
 
 ---
 
-## At a glance
-
-| Area | Current reality |
-|---|---|
-| Product shape | Supported-zones intelligence product |
-| Strongest mode | Curated micro-market coverage |
-| Dynamic capability | Coordinate analysis and resolver-based enrichment |
-| Coverage quality | Uneven by support tier |
-| Architecture state | Hybrid transition, not yet backend-canonical |
-| Next major step | Move market truth into one backend-owned catalog |
-
----
-
 ## What PlotDNA is today
 
-PlotDNA is strongest as a **supported-zones intelligence product**, not yet a
+PlotDNA is strongest as a **supported-zones intelligence product**, not yet as a
 fully dynamic "any plot in India" engine.
 
 Current product model:
 
-- curated micro-market coverage across selected markets
+- curated micro-market coverage across selected cities
 - coordinate and map-link input that resolves into supported locality context
 - stored market profiles for supported areas
-- selective backend-driven dynamic analysis and verdict flows
+- some backend-driven dynamic analysis and verdict flows
 
 The current system is best described as:
 
@@ -55,17 +35,17 @@ approximate or unsupported rather than exact.
 
 ## Architectural reality
 
-PlotDNA currently operates as two layers.
+PlotDNA currently has two layers:
 
-### Curated market intelligence
+### 1. Curated market intelligence
 
 This is the stronger part of the product today.
 
 - city datasets and market narratives live in `frontend/src/data/*.ts`
 - resolver-grade city geometry and aliases live in `data/cities/<city>/`
-- supported areas can show score, narrative, projects, sources, and area-detail UI
+- supported areas can show score, narrative, projects, sources, and area detail UI
 
-### Dynamic analysis
+### 2. Dynamic analysis
 
 This exists, but it is not yet the sole source of truth.
 
@@ -75,29 +55,36 @@ This exists, but it is not yet the sole source of truth.
 
 What is **not** true yet:
 
-- all market truth comes from one backend-owned canonical catalog
-- every searched point gets equally reliable locality intelligence
-- pricing, RERA, infra, and satellite freshness are fully automated across all markets
+- all of market truth comes from one backend-owned canonical catalog
+- every searched point in India gets equally reliable locality intelligence
+- pricing, RERA, infra, and satellite freshness are fully automated for all supported cities
 
 ---
 
 ## Coverage model
 
-PlotDNA should be read through explicit support tiers.
+PlotDNA should be read through explicit support tiers:
 
-| Tier | Meaning | What users should expect |
-|---|---|---|
-| Tier A | Full micro-market support | polygon-defined locality, stored profile, sources, projects, verdict support |
-| Tier B | Resolver or cluster support | approximate supported-market context, not exact point-native truth |
-| Tier C | Dynamic coordinate-only support | point analysis without full curated locality intelligence |
+- **Tier A: Full micro-market support**
+  - polygon-defined locality
+  - stored market profile
+  - area detail experience
+  - sources / projects / verdict support
+- **Tier B: Resolver or cluster support**
+  - approximate supported-market context
+  - partial confidence
+  - not exact point-level locality truth
+- **Tier C: Dynamic coordinate-only support**
+  - coordinate analysis without curated locality intelligence
+  - should not be presented as equal to Tier A
 
 See [docs/COVERAGE_TIERS.md](docs/COVERAGE_TIERS.md).
 
 ---
 
-## Current supported markets
+## Current supported cities
 
-### Resolver-grade coverage
+Resolver-grade support currently exists for:
 
 - Hyderabad
 - Bangalore
@@ -108,23 +95,19 @@ See [docs/COVERAGE_TIERS.md](docs/COVERAGE_TIERS.md).
 - Vijayawada Capital Region
 - Visakhapatnam
 
-### Starter coverage
-
-- Dubai
-
-Resolver data lives under `data/cities/`. Bundled market datasets currently live in
+These cities have resolver datasets under `data/cities/` and bundled market datasets in
 `frontend/src/data/`.
 
 ---
 
-## What the repo already does well
+## What the repo does well now
 
-- strong demoability and product framing
+- strong demoable product vision
 - polished map and area-detail UI
 - curated city storytelling
-- resolver-based locality matching for supported markets
+- resolver-based locality matching for supported cities
 - hybrid coordinate-to-market flow
-- investor-style score, outlook, and narrative presentation
+- investor-style presentation of score, outlook, and narrative
 
 ---
 
@@ -138,7 +121,7 @@ Key gaps:
 - backend area/catalog APIs are not yet the canonical source of truth
 - fresh data pipelines are incomplete
 - exact-location intelligence outside supported zones is limited
-- support tiers are stronger than current marketing claims if phrased too broadly
+- support tiers are stronger than nationwide claims
 
 The main architecture plan for fixing that lives in
 [docs/ALL_INDIA_EXPANSION_PLAN.md](docs/ALL_INDIA_EXPANSION_PLAN.md).
@@ -205,12 +188,9 @@ Runs at `http://localhost:8000`.
 
 ## Mobile release status
 
-Capacitor work exists here as an implementation path, but release readiness still depends on:
-
-- honest product copy
-- backend verification
-- native smoke testing
-- platform-specific icon and store-prep follow-through
+This repo does **not** yet contain the full Capacitor native-project baseline in its current
+state. Mobile store packaging should be treated as the next documentation and sync step, not
+as a finished repo capability here.
 
 Release prep docs:
 
@@ -224,8 +204,9 @@ Release prep docs:
 The highest-value technical next step is:
 
 1. move market truth into one canonical backend-owned catalog
-2. make the frontend consume that catalog through backend APIs
+2. make frontend consume that catalog through backend APIs
 3. keep support tiers explicit while dynamic coverage matures
 
 That migration direction is already outlined in
 [docs/ALL_INDIA_EXPANSION_PLAN.md](docs/ALL_INDIA_EXPANSION_PLAN.md).
+

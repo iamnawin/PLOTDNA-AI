@@ -90,12 +90,34 @@ export default function AssistantDock({ context }: Props) {
 
   const locationLabel = [context.areaName, context.cityName].filter(Boolean).join(', ')
 
+  const [dragConstraints, setDragConstraints] = useState({ left: -400, right: 10, top: -600, bottom: 10 })
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDragConstraints({
+        left: -window.innerWidth + 180,
+        right: 10,
+        top: -window.innerHeight + (context.page === 'map' ? 240 : 180),
+        bottom: context.page === 'map' ? 60 : 10,
+      })
+    }
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [context.page])
+
   return (
-    <div
-      className="fixed z-[1200] pointer-events-none"
+    <motion.div
+      drag={!open}
+      dragConstraints={dragConstraints}
+      dragElastic={0.1}
+      dragMomentum={false}
+      className={`fixed z-[1200] ${open ? 'pointer-events-none' : 'pointer-events-auto cursor-grab active:cursor-grabbing touch-none'}`}
       style={{
         right: 'calc(1rem + env(safe-area-inset-right))',
-        bottom: 'calc(1rem + env(safe-area-inset-bottom))',
+        bottom: context.page === 'map'
+          ? 'calc(5.25rem + env(safe-area-inset-bottom))'
+          : 'calc(1rem + env(safe-area-inset-bottom))',
       }}
     >
       <AnimatePresence>
@@ -104,6 +126,8 @@ export default function AssistantDock({ context }: Props) {
             initial={{ opacity: 0, y: 16, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.96 }}
             transition={{ duration: 0.18 }}
             onClick={() => setOpen(true)}
             className="pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-full shadow-lg"
@@ -274,6 +298,6 @@ export default function AssistantDock({ context }: Props) {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   )
 }

@@ -810,7 +810,7 @@ export default function Home() {
 
       {/* ── Unified Map/Globe/Layers controls capsule ── */}
       <div
-        className="absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] right-[calc(1.25rem+env(safe-area-inset-right))] z-[1001] flex items-center gap-2 rounded-full p-1.5 glass-panel"
+        className="absolute bottom-[calc(1.25rem+env(safe-area-inset-bottom))] left-1/2 transform -translate-x-1/2 z-[1001] flex items-center gap-2 rounded-full p-1.5 glass-panel"
       >
         {/* View Mode Segmented Switch */}
         <div className="flex items-center bg-white/[0.02] p-1 rounded-full border border-white/5 shadow-inner">
@@ -854,7 +854,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 8, scale: 0.97 }}
                 transition={{ duration: 0.15 }}
-                className="absolute right-0 bottom-full mb-3 w-[228px] rounded-xl overflow-hidden glass-panel"
+                className="absolute left-1/2 bottom-full mb-3 -translate-x-1/2 w-[228px] rounded-xl overflow-hidden glass-panel"
                 style={{
                   background: 'rgba(8, 12, 24, 0.95)',
                   boxShadow: '0 20px 48px rgba(0,0,0,0.7)',

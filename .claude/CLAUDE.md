@@ -184,15 +184,16 @@ It decodes the "DNA" of any land/plot — showing growth score, satellite change
 infrastructure pipeline, population trends — so buyers can invest smarter.
 
 ## Current Focus
-**Phase 1: Hyderabad MVP** — 20 micro-markets, static data, working map + score UI
+**Scalable location intelligence platform** — Telangana + AP complete coverage, then pan-India, then UAE.
+NOT a static city-list MVP. Every decision must support 10,000+ localities, not just the current 8 cities.
 
 ## Tech Stack
-- **Frontend**: React 19 + TypeScript + Vite + Tailwind CSS v4 + Leaflet.js
+- **Frontend**: React 19 + TypeScript + Vite + Tailwind CSS v4 + MapLibre GL (via react-map-gl)
 - **Backend**: FastAPI (Python 3.11+)
 - **Database**: Supabase (PostgreSQL + PostGIS)
-- **Maps**: Leaflet.js + OpenStreetMap (free tier)
-- **Satellite**: Google Earth Engine Python SDK (free non-commercial account)
-- **AI**: Gemini 2.0 Flash API (free tier: 1500 req/day)
+- **Maps**: MapLibre GL — NOT Leaflet. Free tiles (CartoCDN, ArcGIS satellite, OpenTopoMap)
+- **Satellite**: Google Earth Engine Python SDK (async only, cache 30 days)
+- **AI**: Gemini 2.0 Flash API (free tier: 1500 req/day) — for summarization only, NOT score generation
 - **Hosting**: Vercel (frontend) + Render.com (backend)
 
 ## Directory Structure
@@ -244,11 +245,15 @@ uvicorn app.main:app --reload    # http://localhost:8000
 ```
 
 ## Phase Roadmap
-- **Phase 1 (Now)**: Hyderabad map + static DNA scores for 20 micro-markets
-- **Phase 2**: RERA scraper + dynamic scoring + Gemini AI chat
-- **Phase 3**: GEE satellite timelapse integration
-- **Phase 4**: Pan-India expansion (Bangalore, Mumbai, Chennai, Pune)
-- **Phase 5**: Monetization (free/pro tiers)
+- **Phase 1 (Done)**: 8 cities, static data, MapLibre map, 4-tier resolver, PDF lead capture
+- **Phase 2 (Next)**: Complete Telangana — 33 districts, 200+ Hyderabad localities, RERA Telangana integration
+- **Phase 3**: Complete Andhra Pradesh — 26 districts, Amaravati/Vizag/Tirupati micro-markets
+- **Phase 4**: Pan-India — NCR, Bengaluru, Pune, Mumbai MMR, Chennai, Tier-2 cities
+- **Phase 5**: UAE — Dubai (DLD zones), Abu Dhabi, Sharjah
+- **Phase 6**: Backend API live — PostGIS locality resolution, dynamic scoring, admin data pipeline
+- **Phase 7**: Monetization — free/pro tiers, API access, white-label reports
+
+See `CLAUDE.md` (root) for full architecture, data sources, fallback logic, and production checklist.
 
 ## Free API Limits (respect these)
 - Gemini Flash: 15 req/min, 1500 req/day

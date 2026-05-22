@@ -20,8 +20,6 @@ Baseline support means PlotDNA can resolve exact, nearby, and city-cluster match
 
 All 28 Indian states and 8 union territories are represented in `data/india/regions.json` for broad regional fallback.
 
-Tier-2 and tier-3 city catchments remain in `data/india/regional-markets.json`. Those catchments are more specific than state/UT fallback and are resolved first when a coordinate lands near a known regional market.
-
 Regional fallback is intentionally labeled as regional-only coverage. It does not create a locality score, substitute a nearby micro-market, or present state-level coverage as verified locality intelligence.
 
 ## Product Rules

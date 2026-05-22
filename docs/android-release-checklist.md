@@ -2,8 +2,9 @@
 
 ## Purpose
 
-This checklist is for the Android release path for the current Capacitor-enabled repo state.
-Release readiness still depends on honest product copy, backend verification, and native testing.
+This checklist is for the Android release path once the Capacitor/mobile baseline is synced into
+this repo. In the current repo state, treat this as release-prep documentation rather than a
+completed implementation.
 
 ## Product truth before release
 
@@ -14,39 +15,22 @@ Before Play Store submission, confirm public copy does not overclaim:
 - approximate or cluster matches are labeled as such
 - "works for any plot in India" is not used as an exact-intelligence claim
 
-## Pre-release prerequisites
+## Pre-implementation prerequisites
 
-Before packaging:
+Before running Android packaging work in this repo:
 
-- confirm `frontend/capacitor.config.ts`
+- sync Capacitor config and scripts into `frontend/`
+- add Android native project generation path
 - confirm backend production URL
 - confirm app identity decisions:
   - app name
   - package id
   - icon
   - splash
-- confirm canonical branding assets:
-  - web/native source logo: `frontend/public/plotdna-logo.png`
-  - adaptive icon config: `frontend/android/app/src/main/res/mipmap-anydpi-v26/`
-  - generated launcher PNGs: `frontend/android/app/src/main/res/mipmap-*/`
 
-## Current repo state
+## After Capacitor is present
 
-Already done in-repo:
-
-- app id is `com.plotdna.app`
-- app name is `PlotDNA`
-- launcher PNGs in `mipmap-mdpi` through `mipmap-xxxhdpi` now use the supplied PlotDNA logo
-- web favicon and manifest icon also point at the same logo source
-
-Still requires manual validation:
-
-- visual check of launcher icon on emulator
-- visual check of round icon crop on supported Android launchers
-- splash quality check on a real device
-- signed release build generation in Android Studio
-
-## Android build path
+Expected commands:
 
 ```bash
 cd frontend
@@ -62,8 +46,6 @@ Confirm:
 
 - app launches on emulator
 - app launches on physical device
-- launcher icon looks correct in app drawer and home screen
-- round icon crop does not clip the logo awkwardly
 - internet permission exists
 - map renders
 - search works
@@ -98,9 +80,10 @@ Test:
 
 ## Recommended release order
 
-1. Android emulator smoke test
-2. Physical device smoke test
-3. Signed `.aab` generation
-4. Play internal testing track
+1. Sync mobile baseline into this repo
+2. Android emulator smoke test
+3. Physical device smoke test
+4. Internal testing track
 5. Closed testing
 6. Public release
+

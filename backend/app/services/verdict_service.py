@@ -1,21 +1,22 @@
 """
 AI verdict service for PlotDNA.
 
-Gemini is the primary path. NVIDIA NIM can be enabled as a text/chat
-fallback for JSON verdicts. When external models are unavailable, the
-deterministic fallback path still respects locality resolution tiers so
-nearby or cluster-based context does not read like an exact micro-market call.
+Gemini is the primary path. When Gemini is unavailable, the fallback path
+still respects locality resolution tiers so nearby or cluster-based context
+does not read like an exact micro-market call.
 """
 
 from __future__ import annotations
 
+import json
 import logging
 import time
 from dataclasses import dataclass
 from typing import Optional
 
+import google.generativeai as genai
+
 from app.core.config import settings
-from app.services.ai_provider import call_gemini_json, call_nvidia_json, csv_values
 
 logger = logging.getLogger(__name__)
 
@@ -139,46 +140,22 @@ Rules:
 - Do not invent facts"""
 
 
-async def _call_ai_verdict(prompt: str) -> tuple[dict, str]:
-    errors: list[str] = []
-
-    for provider in csv_values(settings.AI_PROVIDER_ORDER):
-        provider = provider.lower()
-        if provider == "gemini":
-            if not settings.GEMINI_API_KEY:
-                errors.append("gemini: missing GEMINI_API_KEY")
-                continue
-            try:
-                result = call_gemini_json(
-                    prompt,
-                    csv_values(settings.GEMINI_VERDICT_MODELS),
-                    temperature=0.3,
-                    max_output_tokens=600,
-                )
-                return result.data, result.source
-            except Exception as exc:  # pragma: no cover - external model failures are runtime dependent
-                errors.append(f"gemini: {exc}")
-                continue
-
-        if provider == "nvidia":
-            if not settings.NVIDIA_API_KEY:
-                errors.append("nvidia: missing NVIDIA_API_KEY")
-                continue
-            try:
-                result = await call_nvidia_json(
-                    prompt,
-                    csv_values(settings.NVIDIA_CHAT_MODELS),
-                    temperature=0.2,
-                    max_tokens=700,
-                )
-                return result.data, result.source
-            except Exception as exc:  # pragma: no cover - external model failures are runtime dependent
-                errors.append(f"nvidia: {exc}")
-                continue
-
-        logger.warning("Unknown AI provider in AI_PROVIDER_ORDER: %s", provider)
-
-    raise RuntimeError("; ".join(errors) or "No AI providers configured")
+def _call_gemini(prompt: str) -> dict:
+    genai.configure(api_key=settings.GEMINI_API_KEY)
+    model = genai.GenerativeModel("gemini-1.5-flash")
+    response = model.generate_content(
+        prompt,
+        generation_config=genai.GenerationConfig(
+            temperature=0.3,
+            max_output_tokens=600,
+        ),
+    )
+    raw = response.text.strip()
+    if raw.startswith("```"):
+        raw = raw.split("```")[1]
+        if raw.startswith("json"):
+            raw = raw[4:]
+    return json.loads(raw.strip())
 
 
 def _fallback_verdict(area_name: str, score: int, fallback_context: FallbackContext) -> Verdict:
@@ -315,15 +292,15 @@ async def get_verdict(
     if cached:
         return cached
 
-    if not settings.GEMINI_API_KEY and not settings.NVIDIA_API_KEY:
-        logger.warning("No external AI provider key set. Returning fallback verdict.")
+    if not settings.GEMINI_API_KEY:
+        logger.warning("GEMINI_API_KEY not set. Returning fallback verdict.")
         verdict = _fallback_verdict(area_name, score, context)
         _set_cached(city_slug, area_slug, context, verdict)
         return verdict
 
     try:
         prompt = _build_prompt(area_name, city_name, signals, score, price_range, yoy, recent_news, context)
-        data, source = await _call_ai_verdict(prompt)
+        data = _call_gemini(prompt)
         verdict = Verdict(
             verdict=data.get("verdict", "hold"),
             confidence=int(data.get("confidence", 50)),
@@ -332,14 +309,14 @@ async def get_verdict(
             risks=data.get("risks", [])[:3],
             suitable_for=data.get("suitable_for", "both"),
             last_updated=_now_iso(),
-            source=source,
+            source="gemini",
             resolution_tier=context.tier,
             resolution_label=context.label or area_name,
         )
         _set_cached(city_slug, area_slug, context, verdict)
         return verdict
     except Exception as exc:  # pragma: no cover - network/model failures are runtime dependent
-        logger.error("AI verdict failed for %s/%s: %s", city_slug, area_slug, exc)
+        logger.error("Gemini verdict failed for %s/%s: %s", city_slug, area_slug, exc)
         verdict = _fallback_verdict(area_name, score, context)
         _set_cached(city_slug, area_slug, context, verdict)
         return verdict

@@ -1,29 +1,16 @@
-"""
-Small AI provider helpers for JSON-only PlotDNA model calls.
-
-Gemini remains the only brochure vision provider. NVIDIA is wired as an
-OpenAI-compatible text/chat fallback for verdict-style JSON tasks.
-"""
-
 from __future__ import annotations
 
 import json
 import logging
-import re
 from dataclasses import dataclass
+from typing import Optional
 
-import google.generativeai as genai
 import httpx
+import google.generativeai as genai
 
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
-
-
-@dataclass
-class JsonModelResult:
-    data: dict
-    source: str
 
 
 @dataclass
@@ -33,41 +20,38 @@ class TextModelResult:
     model: str
 
 
-def csv_values(value: str) -> list[str]:
+def _split_csv(value: str) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
 
 
-def parse_json_text(raw: str) -> dict:
+def _strip_wrappers(raw: str) -> str:
     text = raw.strip()
-    text = re.sub(r"^```(?:json)?\s*", "", text, flags=re.I)
-    text = re.sub(r"\s*```$", "", text)
-    if not text.startswith("{"):
-        start = text.find("{")
-        end = text.rfind("}")
-        if start >= 0 and end > start:
-            text = text[start : end + 1]
-    return json.loads(text.strip())
+    if text.startswith("```"):
+        parts = text.split("```")
+        if len(parts) >= 2:
+            text = parts[1].strip()
+            if text.startswith("json"):
+                text = text[4:].strip()
+    return text
 
 
-def parse_json_object(raw_text: str) -> dict:
-    try:
-        return parse_json_text(raw_text)
-    except json.JSONDecodeError:
-        return {}
+def _extract_gemini_text(response: object) -> str:
+    text = getattr(response, "text", "") or ""
+    return text.strip()
 
 
 def call_gemini_text(
     prompt: str,
     *,
-    models: list[str] | None = None,
-    max_output_tokens: int = 700,
+    models: Optional[list[str]] = None,
     temperature: float = 0.3,
-) -> TextModelResult | None:
+    max_output_tokens: int = 700,
+) -> Optional[TextModelResult]:
     if not settings.GEMINI_API_KEY:
         return None
 
     genai.configure(api_key=settings.GEMINI_API_KEY)
-    candidates = models or csv_values(settings.GEMINI_CHAT_MODELS) or ["gemini-1.5-flash"]
+    candidates = models or _split_csv(settings.GEMINI_CHAT_MODELS) or ["gemini-1.5-flash"]
 
     for model_name in candidates:
         try:
@@ -79,11 +63,11 @@ def call_gemini_text(
                     max_output_tokens=max_output_tokens,
                 ),
             )
-            text = (getattr(response, "text", "") or "").strip()
+            text = _extract_gemini_text(response)
             if text:
                 return TextModelResult(text=text, source="gemini", model=model_name)
         except Exception as exc:  # pragma: no cover - network/model failures are runtime dependent
-            logger.warning("Gemini text call failed with %s: %s", model_name, exc)
+            logger.warning("Gemini text call failed for %s: %s", model_name, exc)
 
     return None
 
@@ -91,18 +75,15 @@ def call_gemini_text(
 def call_nvidia_text(
     prompt: str,
     *,
-    models: list[str] | None = None,
-    max_tokens: int = 700,
+    models: Optional[list[str]] = None,
     temperature: float = 0.3,
-) -> TextModelResult | None:
+    max_tokens: int = 700,
+) -> Optional[TextModelResult]:
     if not settings.NVIDIA_API_KEY:
         return None
 
     base_url = settings.NVIDIA_BASE_URL.rstrip("/")
-    if base_url.endswith("/chat/completions"):
-        base_url = base_url.removesuffix("/chat/completions")
-    endpoint = f"{base_url}/chat/completions"
-    candidates = models or csv_values(settings.NVIDIA_CHAT_MODELS)
+    candidates = models or _split_csv(settings.NVIDIA_CHAT_MODELS) or []
     if not candidates:
         return None
 
@@ -111,43 +92,46 @@ def call_nvidia_text(
         "Content-Type": "application/json",
         "Accept": "application/json",
     }
+    payload_template = {
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "You are PlotDNA, a concise property intelligence assistant. "
+                    "Answer using only the provided context and avoid inventing facts."
+                ),
+            },
+            {"role": "user", "content": prompt},
+        ],
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+        "stream": False,
+    }
 
     with httpx.Client(timeout=35.0) as client:
         for model_name in candidates:
             try:
-                response = client.post(
-                    endpoint,
-                    headers=headers,
-                    json={
-                        "model": model_name,
-                        "messages": [
-                            {
-                                "role": "system",
-                                "content": (
-                                    "You are PlotDNA, a concise property intelligence assistant. "
-                                    "Answer using only the provided context and avoid inventing facts."
-                                ),
-                            },
-                            {"role": "user", "content": prompt},
-                        ],
-                        "temperature": temperature,
-                        "max_tokens": max_tokens,
-                        "stream": False,
-                    },
-                )
+                payload = dict(payload_template)
+                payload["model"] = model_name
+                response = client.post(f"{base_url}/chat/completions", headers=headers, json=payload)
                 response.raise_for_status()
-                payload = response.json()
-                content = payload["choices"][0]["message"]["content"].strip()
+                data = response.json()
+                choices = data.get("choices") or []
+                if not choices:
+                    continue
+                message = choices[0].get("message") or {}
+                content = (message.get("content") or "").strip()
                 if content:
                     return TextModelResult(text=content, source="nvidia", model=model_name)
             except Exception as exc:  # pragma: no cover - network/model failures are runtime dependent
-                logger.warning("NVIDIA text call failed with %s: %s", model_name, exc)
+                logger.warning("NVIDIA text call failed for %s: %s", model_name, exc)
 
     return None
 
 
-def call_text_model(prompt: str) -> TextModelResult | None:
-    for provider in csv_values(settings.AI_PROVIDER_ORDER) or ["gemini", "nvidia"]:
+def call_text_model(prompt: str) -> Optional[TextModelResult]:
+    order = _split_csv(settings.AI_PROVIDER_ORDER) or ["gemini", "nvidia"]
+    for provider in order:
         if provider == "gemini":
             result = call_gemini_text(prompt)
         elif provider == "nvidia":
@@ -155,129 +139,24 @@ def call_text_model(prompt: str) -> TextModelResult | None:
         elif provider == "fallback":
             return None
         else:
-            logger.warning("Unknown AI provider in AI_PROVIDER_ORDER: %s", provider)
             continue
         if result is not None:
             return result
     return None
 
 
-def call_gemini_json(
-    prompt: str,
-    models: list[str],
-    *,
-    max_output_tokens: int,
-    temperature: float = 0.2,
-    system_instruction: str | None = None,
-) -> JsonModelResult:
-    if not settings.GEMINI_API_KEY:
-        raise RuntimeError("GEMINI_API_KEY not configured")
-
-    genai.configure(api_key=settings.GEMINI_API_KEY)
-    last_error: Exception | None = None
-
-    for model_name in models:
-        try:
-            model = genai.GenerativeModel(
-                model_name=model_name,
-                system_instruction=system_instruction,
-            )
-            response = model.generate_content(
-                prompt,
-                generation_config=genai.GenerationConfig(
-                    temperature=temperature,
-                    max_output_tokens=max_output_tokens,
-                    response_mime_type="application/json",
-                ),
-            )
-            return JsonModelResult(data=parse_json_text(response.text), source=f"gemini:{model_name}")
-        except Exception as exc:  # pragma: no cover - depends on external model quota/network
-            logger.warning("Gemini JSON call failed with %s: %s", model_name, exc)
-            last_error = exc
-
-    raise RuntimeError(f"All Gemini models failed: {last_error}") from last_error
-
-
-def call_gemini_content_json(
-    contents: list,
-    models: list[str],
-    *,
-    max_output_tokens: int,
-    temperature: float = 0.1,
-    system_instruction: str | None = None,
-) -> JsonModelResult:
-    if not settings.GEMINI_API_KEY:
-        raise RuntimeError("GEMINI_API_KEY not configured")
-
-    genai.configure(api_key=settings.GEMINI_API_KEY)
-    last_error: Exception | None = None
-
-    for model_name in models:
-        try:
-            model = genai.GenerativeModel(
-                model_name=model_name,
-                system_instruction=system_instruction,
-            )
-            response = model.generate_content(
-                contents,
-                generation_config=genai.GenerationConfig(
-                    temperature=temperature,
-                    max_output_tokens=max_output_tokens,
-                    response_mime_type="application/json",
-                ),
-            )
-            return JsonModelResult(data=parse_json_text(response.text), source=f"gemini:{model_name}")
-        except Exception as exc:  # pragma: no cover - depends on external model quota/network
-            logger.warning("Gemini content call failed with %s: %s", model_name, exc)
-            last_error = exc
-
-    raise RuntimeError(f"All Gemini content models failed: {last_error}") from last_error
-
-
-async def call_nvidia_json(
-    prompt: str,
-    models: list[str],
-    *,
-    max_tokens: int,
-    temperature: float = 0.2,
-    system_prompt: str = "Return only valid JSON. Do not include markdown.",
-) -> JsonModelResult:
-    if not settings.NVIDIA_API_KEY:
-        raise RuntimeError("NVIDIA_API_KEY not configured")
-
-    base_url = settings.NVIDIA_BASE_URL.rstrip("/")
-    if base_url.endswith("/chat/completions"):
-        base_url = base_url.removesuffix("/chat/completions")
-    endpoint = f"{base_url}/chat/completions"
-    headers = {
-        "Authorization": f"Bearer {settings.NVIDIA_API_KEY}",
-        "Content-Type": "application/json",
-    }
-    last_error: Exception | None = None
-
-    async with httpx.AsyncClient(timeout=45) as client:
-        for model_name in models:
+def parse_json_object(raw_text: str) -> dict:
+    text = _strip_wrappers(raw_text)
+    if not text:
+        return {}
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        start = text.find("{")
+        end = text.rfind("}")
+        if start != -1 and end != -1 and end > start:
             try:
-                response = await client.post(
-                    endpoint,
-                    headers=headers,
-                    json={
-                        "model": model_name,
-                        "messages": [
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": prompt},
-                        ],
-                        "temperature": temperature,
-                        "max_tokens": max_tokens,
-                        "stream": False,
-                    },
-                )
-                response.raise_for_status()
-                payload = response.json()
-                content = payload["choices"][0]["message"]["content"]
-                return JsonModelResult(data=parse_json_text(content), source=f"nvidia:{model_name}")
-            except Exception as exc:  # pragma: no cover - depends on external model quota/network
-                logger.warning("NVIDIA JSON call failed with %s: %s", model_name, exc)
-                last_error = exc
-
-    raise RuntimeError(f"All NVIDIA models failed: {last_error}") from last_error
+                return json.loads(text[start : end + 1])
+            except json.JSONDecodeError:
+                return {}
+    return {}

@@ -1,5 +1,5 @@
 {
-  "name": "PlotDNA - Real Estate Intelligence",
+  "name": "PlotDNA — Real Estate Intelligence",
   "short_name": "PlotDNA",
   "description": "AI-powered DNA scores for land micro-markets across India. Decode any plot before you invest.",
   "start_url": "/",
@@ -10,15 +10,21 @@
   "categories": ["finance", "business", "utilities"],
   "icons": [
     {
-      "src": "/plotdna-logo.png",
-      "sizes": "1024x1024",
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
     }
   ],
   "screenshots": [
     {
-      "label": "PlotDNA Map - Hyderabad DNA scores",
+      "label": "PlotDNA Map — Hyderabad DNA scores",
       "sizes": "390x844",
       "type": "image/png"
     }

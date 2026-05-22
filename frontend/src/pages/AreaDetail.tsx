@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -330,6 +330,8 @@ function generatePDF(area: MicroMarket) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { BASE_URL } from '@/lib/api'
+
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
   const location = useLocation()
@@ -339,13 +341,58 @@ export default function AreaDetail() {
   const fallbackContext = (location.state as AreaDetailLocationState | null)?.fallbackContext
 
   const contactInputRef = useRef<HTMLInputElement>(null)
+  
+  // Lead Gating Modal state with 2 free checks soft paywall
   const [isLocked, setIsLocked] = useState(() => {
-    return localStorage.getItem('plotdna_unlocked') !== 'true'
+    if (localStorage.getItem('plotdna_unlocked') === 'true') {
+      return false
+    }
+    try {
+      const stored = localStorage.getItem('plotdna_viewed_slugs')
+      const slugs = stored ? JSON.parse(stored) : []
+      if (slug && slugs.includes(slug)) {
+        return false
+      }
+      if (slugs.length < 2) {
+        return false
+      }
+      return true
+    } catch {
+      return true
+    }
   })
+  
   const [contactInput, setContactInput] = useState('')
   const [isValid, setIsValid] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+
+  // Manage viewed area slugs tracker effect
+  useEffect(() => {
+    if (localStorage.getItem('plotdna_unlocked') === 'true') {
+      setIsLocked(false)
+      return
+    }
+
+    try {
+      const stored = localStorage.getItem('plotdna_viewed_slugs')
+      const slugs: string[] = stored ? JSON.parse(stored) : []
+      
+      if (slug) {
+        if (slugs.includes(slug)) {
+          setIsLocked(false)
+        } else if (slugs.length < 2) {
+          const nextSlugs = [...slugs, slug]
+          localStorage.setItem('plotdna_viewed_slugs', JSON.stringify(nextSlugs))
+          setIsLocked(false)
+        } else {
+          setIsLocked(true)
+        }
+      }
+    } catch {
+      setIsLocked(true)
+    }
+  }, [slug])
 
   const validateContact = (val: string) => {
     const trimmed = val.trim()
@@ -371,7 +418,7 @@ export default function AreaDetail() {
     setIsSubmitting(true)
     setErrorMessage('')
     try {
-      const response = await fetch('/api/utils/collect-lead', {
+      const response = await fetch(`${BASE_URL}/api/utils/collect-lead`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ contact: contactInput.trim() })
@@ -383,6 +430,12 @@ export default function AreaDetail() {
       localStorage.setItem('plotdna_unlocked', 'true')
       setIsLocked(false)
     } catch (err) {
+      if (err instanceof TypeError) {
+        console.warn("Backend offline or CORS issue, unlocking locally:", err)
+        localStorage.setItem('plotdna_unlocked', 'true')
+        setIsLocked(false)
+        return
+      }
       const msg = err instanceof Error ? err.message : 'An error occurred. Please try again.'
       setErrorMessage(msg)
     } finally {

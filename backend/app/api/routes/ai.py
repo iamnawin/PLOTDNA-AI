@@ -132,7 +132,7 @@ def _fallback_response(request: ChatRequest) -> ChatResponse:
         answer = (
             f"{target} is the right level for a local comparison view. "
             "Use it to compare growth signals, infrastructure, and risk before you shortlist. "
-            "I can also compare this with nearby areas or explain the score in plain language."
+            "If you want, I can also compare this with nearby areas or explain the score in plain language."
         )
     else:
         answer = (

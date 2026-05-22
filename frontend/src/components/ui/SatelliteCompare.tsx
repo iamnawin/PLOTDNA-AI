@@ -61,7 +61,7 @@ const PHASE_CONFIG: Record<Milestone['phase'], {
   now: {
     zoom: 13,
     filter: 'none',
-    year: '2024',
+    year: '2026',
     era: 'Present',
     caption: 'Current density',
     growth: '100%',
@@ -303,7 +303,7 @@ export default function SatelliteCompare({ area, coords }: Props) {
               <div className="w-1.5 h-1.5 rounded-full"
                 style={{ backgroundColor: color, boxShadow: `0 0 6px ${color}`, animation: 'pulse 2s infinite' }} />
               <div>
-                <p className="text-[10px] font-display font-bold" style={{ color }}>2024 · LIVE</p>
+                <p className="text-[10px] font-display font-bold" style={{ color }}>2026 · LIVE</p>
                 <p className="text-[8px] font-sans text-[#555566]">{RADIUS_KM} km radius</p>
               </div>
             </div>
@@ -408,7 +408,7 @@ export default function SatelliteCompare({ area, coords }: Props) {
         <Sparkles size={10} className="text-[#00e676] flex-shrink-0 mt-0.5" />
         <p className="text-[9px] font-sans text-[#444455] leading-relaxed">
           <span className="text-[#00e676] font-semibold">Phase 3 —</span>{' '}
-          Animated year-by-year satellite timelapse (2009–2024) via Google Earth Engine, showing exact building density, road expansion &amp; greenery loss.
+          Animated year-by-year satellite timelapse (2009–2026) via Google Earth Engine, showing exact building density, road expansion &amp; greenery loss.
         </p>
       </div>
     </div>

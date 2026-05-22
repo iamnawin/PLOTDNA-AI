@@ -63,7 +63,7 @@ def _norm(count: float, cap: float) -> int:
     return min(100, round(100 * math.log1p(count) / math.log1p(cap)))
 
 
-def compute_from_osm(counts: dict) -> DNAResult:
+def compute_from_osm(counts: dict, lat: float = None, lng: float = None) -> DNAResult:
     """
     Convert raw OSM element counts into a DNA score and signal breakdown.
     """
@@ -98,9 +98,18 @@ def compute_from_osm(counts: dict) -> DNAResult:
     satellite = _norm(counts.get("construction", 0), CAPS["construction"])
 
     # ── RERA proxy (15%) ──────────────────────────────────────────────────────
-    # Residential project density (apartments + construction) — RERA scraping is Phase 3
-    rera_raw = counts.get("residential", 0) + counts.get("construction", 0)
-    rera = _norm(rera_raw, CAPS["residential"] + CAPS["construction"])
+    # If coordinate is inside Telangana bounds, query the TSRERA scraper density
+    is_telangana = False
+    if lat is not None and lng is not None:
+        is_telangana = (15.8 <= lat <= 19.95) and (77.0 <= lng <= 81.4)
+        
+    if is_telangana:
+        from app.services.tsrera_scraper import tsrera_scraper
+        project_count = tsrera_scraper.get_rera_project_density(lat, lng, radius_km=5.0)
+        rera = _norm(project_count, cap=15)
+    else:
+        rera_raw = counts.get("residential", 0) + counts.get("construction", 0)
+        rera = _norm(rera_raw, CAPS["residential"] + CAPS["construction"])
 
     # ── Static defaults (can't derive from OSM reliably) ─────────────────────
     price_velocity = 50   # neutral — real data needs price API (Phase 3)
@@ -132,6 +141,15 @@ def compute_from_osm(counts: dict) -> DNAResult:
 
     if counts.get("airport", 0) > 0:
         highlights.append("Airport within 10 km — premium connectivity")
+        
+    if is_telangana and lat is not None and lng is not None:
+        from app.services.tsrera_scraper import tsrera_scraper
+        project_count = tsrera_scraper.get_rera_project_density(lat, lng, radius_km=5.0)
+        if project_count >= 10:
+            highlights.append(f"{project_count} RERA projects within 5km — high compliance zone")
+        elif project_count > 0:
+            highlights.append(f"{project_count} RERA projects nearby — regulated development")
+
     if signals.infrastructure >= 75:
         highlights.append("Excellent transit and road network")
     elif signals.infrastructure >= 50:

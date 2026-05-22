@@ -2,8 +2,9 @@
 
 ## Purpose
 
-This checklist is for the iOS release path for the current Capacitor-enabled repo state.
-Release readiness still depends on honest product copy, backend verification, and native testing.
+This checklist is for the iOS release path once the Capacitor/mobile baseline is synced into
+this repo. In the current repo state, treat this as release-prep documentation rather than a
+completed implementation.
 
 ## Product truth before release
 
@@ -14,11 +15,12 @@ Before TestFlight or App Store submission, confirm public copy does not overclai
 - approximate or cluster matches are labeled as such
 - dynamic coordinate analysis is not presented as equal to curated locality support
 
-## Pre-release prerequisites
+## Pre-implementation prerequisites
 
-Before packaging:
+Before running iOS packaging work in this repo:
 
-- confirm `frontend/capacitor.config.ts`
+- sync Capacitor config and scripts into `frontend/`
+- add iOS native project generation path
 - confirm backend production URL
 - confirm app identity decisions:
   - app name
@@ -26,7 +28,9 @@ Before packaging:
   - icon
   - splash
 
-## iOS build path
+## After Capacitor is present
+
+Expected commands:
 
 ```bash
 cd frontend
@@ -77,8 +81,9 @@ Test:
 
 ## Recommended release order
 
-1. iOS simulator smoke test
-2. Physical iPhone smoke test
-3. TestFlight internal testing
-4. External TestFlight testing
-5. App Store submission
+1. Sync mobile baseline into this repo
+2. iOS simulator smoke test
+3. Physical iPhone smoke test
+4. TestFlight internal testing
+5. External TestFlight testing
+6. App Store submission

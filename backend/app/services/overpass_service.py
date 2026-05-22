@@ -11,10 +11,6 @@ import httpx
 logger = logging.getLogger(__name__)
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
-OVERPASS_HEADERS = {
-    "Accept": "application/json",
-    "User-Agent": "PlotDNA/1.0 (OpenStreetMap signal scoring)",
-}
 
 # Radius presets (meters) — tuned for Indian urban geography
 R_TRANSIT  = 3000    # metro stations, rail, bus terminals
@@ -121,25 +117,18 @@ def _count_elements(data: dict) -> dict:
     return c
 
 
-def empty_osm_counts() -> dict:
-    return {k: 0 for k in (
-        "transit", "roads", "airport", "hospitals", "education",
-        "shopping", "offices", "it_offices", "residential", "construction"
-    )}
-
-
-async def fetch_osm_signals_with_status(lat: float, lng: float) -> tuple[dict, bool]:
+async def fetch_osm_signals(lat: float, lng: float) -> dict:
     """
     Query Overpass API and return categorized OSM signal counts for the coordinate.
-    Returns (zero-filled dict, False) on failure so callers can choose stale cache.
+    Returns zero-filled dict on failure (caller should degrade gracefully).
     """
     query = _build_query(lat, lng)
     try:
         async with httpx.AsyncClient(timeout=35) as client:
             resp = await client.post(
                 OVERPASS_URL,
-                data={"data": query},
-                headers=OVERPASS_HEADERS,
+                data=f"data={query}",
+                headers={"Content-Type": "application/x-www-form-urlencoded"},
             )
             resp.raise_for_status()
             counts = _count_elements(resp.json())
@@ -149,16 +138,10 @@ async def fetch_osm_signals_with_status(lat: float, lng: float) -> tuple[dict, b
                 counts["transit"], counts["roads"], counts["offices"],
                 counts["residential"], counts["construction"],
             )
-            return counts, True
+            return counts
     except Exception as exc:
         logger.warning("Overpass query failed for %.4f,%.4f: %s", lat, lng, exc)
-        return empty_osm_counts(), False
-
-
-async def fetch_osm_signals(lat: float, lng: float) -> dict:
-    """
-    Backward-compatible helper that preserves the old zero-on-failure behavior.
-    Prefer fetch_osm_signals_with_status when a stale cache fallback is available.
-    """
-    counts, _ok = await fetch_osm_signals_with_status(lat, lng)
-    return counts
+        return {k: 0 for k in (
+            "transit", "roads", "airport", "hospitals", "education",
+            "shopping", "offices", "it_offices", "residential", "construction"
+        )}
