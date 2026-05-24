@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { AnimatePresence, motion, useMotionValue } from 'framer-motion'
 import {
   Loader2,
   MapPin,
@@ -29,6 +29,9 @@ export default function AssistantDock({ context }: Props) {
   ])
 
   const listRef = useRef<HTMLDivElement>(null)
+  const dockRef = useRef<HTMLDivElement>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
@@ -92,31 +95,57 @@ export default function AssistantDock({ context }: Props) {
 
   const [dragConstraints, setDragConstraints] = useState({ left: -400, right: 10, top: -600, bottom: 10 })
 
+  const keepDockInViewport = useCallback(() => {
+    const el = dockRef.current
+    if (!el || typeof window === 'undefined') return
+
+    const rect = el.getBoundingClientRect()
+    const safe = 10
+    const minTop = safe
+    const maxRight = window.innerWidth - safe
+    const maxBottom = window.innerHeight - safe
+    let nextX = x.get()
+    let nextY = y.get()
+
+    if (rect.left < safe) nextX += safe - rect.left
+    if (rect.right > maxRight) nextX -= rect.right - maxRight
+    if (rect.top < minTop) nextY += minTop - rect.top
+    if (rect.bottom > maxBottom) nextY -= rect.bottom - maxBottom
+
+    x.set(nextX)
+    y.set(nextY)
+  }, [x, y])
+
   useEffect(() => {
     const handleResize = () => {
       setDragConstraints({
         left: -window.innerWidth + 180,
         right: 10,
-        top: -window.innerHeight + (context.page === 'map' ? 240 : 180),
+        top: -window.innerHeight + (context.page === 'map' ? 120 : 100),
         bottom: context.page === 'map' ? 60 : 10,
       })
+      window.requestAnimationFrame(keepDockInViewport)
     }
     handleResize()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [context.page])
+  }, [context.page, keepDockInViewport])
 
   return (
     <motion.div
+      ref={dockRef}
       drag={!open}
       dragConstraints={dragConstraints}
       dragElastic={0.1}
       dragMomentum={false}
+      onDragEnd={() => window.requestAnimationFrame(keepDockInViewport)}
       className={`fixed z-[1200] ${open ? 'pointer-events-none' : 'pointer-events-auto cursor-grab active:cursor-grabbing touch-none'}`}
       style={{
+        x,
+        y,
         right: 'calc(1rem + env(safe-area-inset-right))',
         bottom: context.page === 'map'
-          ? 'calc(5.25rem + env(safe-area-inset-bottom))'
+          ? 'calc(7.25rem + env(safe-area-inset-bottom))'
           : 'calc(1rem + env(safe-area-inset-bottom))',
       }}
     >
@@ -129,8 +158,12 @@ export default function AssistantDock({ context }: Props) {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 0.18 }}
-            onClick={() => setOpen(true)}
-            className="pointer-events-auto flex items-center gap-2 px-4 py-3 rounded-full shadow-lg"
+            onClick={() => {
+              x.set(0)
+              y.set(0)
+              setOpen(true)
+            }}
+            className="pointer-events-auto flex items-center gap-2 px-3 sm:px-4 py-3 rounded-full shadow-lg"
             style={{
               background: 'rgba(7, 10, 16, 0.96)',
               border: '1px solid rgba(0, 230, 118, 0.22)',
@@ -138,7 +171,8 @@ export default function AssistantDock({ context }: Props) {
             }}
           >
             <MessageCircle size={15} className="text-[#00e676]" />
-            <span className="text-xs font-mono font-semibold text-[#e8e8f0]">Ask PlotDNA</span>
+            <span className="text-xs font-mono font-semibold text-[#e8e8f0] sm:hidden">Ask</span>
+            <span className="hidden sm:inline text-xs font-mono font-semibold text-[#e8e8f0]">Ask PlotDNA</span>
           </motion.button>
         )}
       </AnimatePresence>

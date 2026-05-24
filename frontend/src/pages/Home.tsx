@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, type RefObject } from 'react'
+import { useRef, useState, useEffect, type CSSProperties, type RefObject } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X, Zap, ChevronLeft, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
@@ -19,10 +19,10 @@ import SpatialView from '@/components/view/SpatialView'
 import { type ViewMode } from '@/components/view/ViewModeToggle'
 
 const RISK_TIERS = [
-  { color: '#ef4444', label: 'High Risk',    range: '0-40'   },
-  { color: '#f59e0b', label: 'Moderate',     range: '41-65'  },
-  { color: '#22c55e', label: 'Good Growth',  range: '66-85'  },
-  { color: '#10b981', label: 'Goldzone',     range: '86-100' },
+  { color: '#ef4444', label: 'High Risk',    short: 'H', range: '0-40'   },
+  { color: '#f59e0b', label: 'Moderate',     short: 'M', range: '41-65'  },
+  { color: '#22c55e', label: 'Good Growth',  short: 'G', range: '66-85'  },
+  { color: '#10b981', label: 'Goldzone',     short: 'Z', range: '86-100' },
 ]
 
 const ANALYZE_STEPS = [
@@ -581,7 +581,7 @@ export default function Home() {
               <div className="relative mb-2.5">
                 <button
                   onClick={() => scrollRail(cityRailRef, -1)}
-                  className="absolute left-1 top-1/2 -translate-y-1/2 z-[1] hidden md:flex items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
+                  className="absolute left-1 top-1/2 -translate-y-1/2 z-[1] hidden items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
                   style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
                   aria-label="Scroll cities left"
                 >
@@ -593,14 +593,8 @@ export default function Home() {
                   style={{
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
-                    padding: '4px 42px',
-                    scrollPaddingInline: 42,
-                    borderRadius: 999,
-                    background: 'rgba(3, 7, 18, 0.78)',
-                    border: '1px solid rgba(148, 163, 184, 0.20)',
-                    backdropFilter: 'blur(18px)',
-                    WebkitBackdropFilter: 'blur(18px)',
-                    boxShadow: '0 12px 34px rgba(0,0,0,0.34)',
+                    padding: '2px max(0.75rem, env(safe-area-inset-left)) 2px max(0.75rem, env(safe-area-inset-right))',
+                    scrollPaddingInline: 12,
                   }}
                 >
                   {CITY_LIST.map(city => {
@@ -624,7 +618,7 @@ export default function Home() {
                 </div>
                 <button
                   onClick={() => scrollRail(cityRailRef, 1)}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 z-[1] hidden md:flex items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 z-[1] hidden items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
                   style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
                   aria-label="Scroll cities right"
                 >
@@ -635,7 +629,7 @@ export default function Home() {
               <div className="relative">
                 <button
                   onClick={() => scrollRail(areaRailRef, -1)}
-                  className="absolute left-1 top-1/2 -translate-y-1/2 z-[1] hidden md:flex items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
+                  className="absolute left-1 top-1/2 -translate-y-1/2 z-[1] hidden items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
                   style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
                   aria-label="Scroll suggestions left"
                 >
@@ -647,14 +641,8 @@ export default function Home() {
                   style={{
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
-                    padding: '4px 42px',
-                    scrollPaddingInline: 42,
-                    borderRadius: 999,
-                    background: 'rgba(3, 7, 18, 0.76)',
-                    border: '1px solid rgba(148, 163, 184, 0.20)',
-                    backdropFilter: 'blur(18px)',
-                    WebkitBackdropFilter: 'blur(18px)',
-                    boxShadow: '0 12px 34px rgba(0,0,0,0.34)',
+                    padding: '2px max(0.75rem, env(safe-area-inset-left)) 2px max(0.75rem, env(safe-area-inset-right))',
+                    scrollPaddingInline: 12,
                   }}
                 >
                   {sidebarList.slice(0, 6).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
@@ -698,7 +686,7 @@ export default function Home() {
                 </div>
                 <button
                   onClick={() => scrollRail(areaRailRef, 1)}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 z-[1] hidden md:flex items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 z-[1] hidden items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
                   style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
                   aria-label="Scroll suggestions right"
                 >
@@ -1172,16 +1160,11 @@ export default function Home() {
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute bottom-5 left-5 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto max-w-[calc(100vw-40px)]"
+        className="absolute bottom-[calc(4.75rem+env(safe-area-inset-bottom))] md:bottom-5 left-[calc(0.75rem+env(safe-area-inset-left))] md:left-5 z-[999] flex items-center gap-1 rounded-full overflow-x-auto max-w-[calc(100vw-1.5rem)]"
         style={{
-          background: 'rgba(3, 7, 18, 0.72)',
-          border: '1px solid rgba(148, 163, 184, 0.16)',
-          boxShadow: '0 12px 34px rgba(0,0,0,0.34)',
-          backdropFilter: 'blur(18px)',
-          WebkitBackdropFilter: 'blur(18px)',
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
-        } as React.CSSProperties}
+        } as CSSProperties}
       >
         {RISK_TIERS.map((tier) => {
           const isActive = highlightTier === tier.label
@@ -1192,12 +1175,14 @@ export default function Home() {
               key={tier.label}
               onClick={() => toggleTier(tier.label)}
               disabled={disabled}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-200 disabled:cursor-not-allowed"
+              className="flex items-center justify-center gap-1.5 h-8 min-w-9 px-2 rounded-full transition-all duration-200 disabled:cursor-not-allowed"
               style={{
-                background: isActive ? `${tier.color}24` : disabled ? 'rgba(15,23,42,0.48)' : 'rgba(15,23,42,0.72)',
-                border: isActive ? `1px solid ${tier.color}55` : disabled ? '1px solid rgba(148,163,184,0.10)' : '1px solid rgba(148,163,184,0.18)',
-                boxShadow: isActive ? `0 0 12px ${tier.color}20` : 'none',
+                background: isActive ? `${tier.color}26` : 'rgba(3,7,18,0.72)',
+                border: isActive ? `1px solid ${tier.color}80` : '1px solid rgba(148,163,184,0.14)',
+                boxShadow: isActive ? `0 0 14px ${tier.color}28, inset 0 1px 0 rgba(255,255,255,0.08)` : '0 8px 22px rgba(0,0,0,0.28)',
                 opacity: disabled ? 0.42 : 1,
+                backdropFilter: 'blur(14px)',
+                WebkitBackdropFilter: 'blur(14px)',
               }}
               title={disabled ? `No ${tier.label} areas in ${cityMeta.name}` : `${count} ${tier.label} areas in ${cityMeta.name}`}
             >
@@ -1211,19 +1196,10 @@ export default function Home() {
                 }}
               />
               <span
-                className="text-[9px] font-sans font-semibold whitespace-nowrap transition-colors duration-200"
-                style={{ color: isActive ? tier.color : disabled ? '#475569' : '#94a3b8' }}
+                className="text-[11px] font-sans font-black uppercase leading-none transition-colors duration-200"
+                style={{ color: isActive ? tier.color : disabled ? '#475569' : '#cbd5e1' }}
               >
-                {tier.label}
-              </span>
-              <span
-                className="min-w-4 text-center text-[8px] font-display font-bold rounded-full px-1 transition-colors duration-200"
-                style={{
-                  color: isActive ? `${tier.color}` : disabled ? '#334155' : '#cbd5e1',
-                  background: disabled ? 'rgba(15,23,42,0.38)' : 'rgba(255,255,255,0.06)',
-                }}
-              >
-                {count}
+                {tier.short}
               </span>
             </button>
           )

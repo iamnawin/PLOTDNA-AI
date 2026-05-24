@@ -130,21 +130,21 @@ export default function ScoreCard({ area, onClose }: Props) {
       <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <button
           onClick={() => navigate(`/area/${area.slug}`)}
-          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-sm font-sans font-semibold transition-all duration-300"
+          className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-sans font-black uppercase tracking-[0.08em] transition-all duration-300"
           style={{
-            background: `${color}15`,
-            border: `1px solid ${color}35`,
-            color,
+            background: `linear-gradient(145deg, rgba(255,255,255,0.20) 0%, ${color}38 18%, rgba(2,6,23,0.92) 54%, ${color}28 100%)`,
+            border: `1px solid ${color}90`,
+            color: '#f8fafc',
+            boxShadow: `0 14px 30px rgba(0,0,0,0.42), 0 0 24px ${color}30, inset 0 1px 0 rgba(255,255,255,0.26), inset 0 -10px 18px rgba(0,0,0,0.20)`,
+            textShadow: `0 0 12px ${color}95`,
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = `${color}25`
-            e.currentTarget.style.borderColor = `${color}55`
-            e.currentTarget.style.boxShadow = `0 0 12px ${color}20`
+            e.currentTarget.style.transform = 'translateY(-1px)'
+            e.currentTarget.style.boxShadow = `0 18px 36px rgba(0,0,0,0.50), 0 0 34px ${color}46, inset 0 1px 0 rgba(255,255,255,0.32), inset 0 -10px 18px rgba(0,0,0,0.20)`
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = `${color}15`
-            e.currentTarget.style.borderColor = `${color}35`
-            e.currentTarget.style.boxShadow = 'none'
+            e.currentTarget.style.transform = 'translateY(0)'
+            e.currentTarget.style.boxShadow = `0 14px 30px rgba(0,0,0,0.42), 0 0 24px ${color}30, inset 0 1px 0 rgba(255,255,255,0.26), inset 0 -10px 18px rgba(0,0,0,0.20)`
           }}
         >
           Full DNA Analysis

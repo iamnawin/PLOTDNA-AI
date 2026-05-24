@@ -1141,14 +1141,7 @@ export default function AreaDetail() {
 
           {/* Download PDF button */}
           <button
-            onClick={() => {
-              if (isLocked) {
-                contactInputRef.current?.focus()
-                contactInputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-              } else {
-                generatePDF(area)
-              }
-            }}
+            onClick={() => generatePDF(area)}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10"
             style={{ color, border: `1px solid ${color}40` }}
           >

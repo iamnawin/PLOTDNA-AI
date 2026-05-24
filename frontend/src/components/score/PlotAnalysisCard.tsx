@@ -600,24 +600,23 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 },
               },
             })}
-            className="w-full flex flex-col items-center justify-center gap-0.5 py-3 px-4 rounded-lg font-sans transition-all duration-300"
+            className="w-full flex flex-col items-center justify-center gap-1 py-3.5 px-4 rounded-xl font-sans transition-all duration-300"
             style={{
-              background: `${color}15`,
-              border: `1px solid ${color}35`,
+              background: `linear-gradient(145deg, rgba(255,255,255,0.18) 0%, ${color}36 18%, rgba(2,6,23,0.90) 54%, ${color}24 100%)`,
+              border: `1px solid ${color}85`,
+              boxShadow: `0 14px 30px rgba(0,0,0,0.40), 0 0 24px ${color}2f, inset 0 1px 0 rgba(255,255,255,0.24)`,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = `${color}25`
-              e.currentTarget.style.borderColor = `${color}55`
-              e.currentTarget.style.boxShadow = `0 0 12px ${color}20`
+              e.currentTarget.style.transform = 'translateY(-1px)'
+              e.currentTarget.style.boxShadow = `0 18px 36px rgba(0,0,0,0.48), 0 0 34px ${color}44, inset 0 1px 0 rgba(255,255,255,0.30)`
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = `${color}15`
-              e.currentTarget.style.borderColor = `${color}35`
-              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = `0 14px 30px rgba(0,0,0,0.40), 0 0 24px ${color}2f, inset 0 1px 0 rgba(255,255,255,0.24)`
             }}
           >
-            <span className="flex items-center gap-2 text-sm font-semibold" style={{ color }}>
-              View full analysis for this zone
+            <span className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.08em]" style={{ color: '#f8fafc', textShadow: `0 0 12px ${color}95` }}>
+              Full DNA Analysis
               <ArrowRight size={13} />
             </span>
             <span className="text-[9px] text-slate-400 font-sans mt-0.5">
@@ -646,24 +645,23 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 },
               },
             })}
-            className="w-full flex flex-col items-center justify-center gap-0.5 py-3 px-4 rounded-lg font-sans transition-all duration-300"
+            className="w-full flex flex-col items-center justify-center gap-1 py-3.5 px-4 rounded-xl font-sans transition-all duration-300"
             style={{
-              background: 'rgba(16, 185, 129, 0.15)',
-              border: '1px solid rgba(16, 185, 129, 0.35)',
+              background: 'linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(16,185,129,0.36) 18%, rgba(2,6,23,0.90) 54%, rgba(16,185,129,0.24) 100%)',
+              border: '1px solid rgba(16, 185, 129, 0.72)',
+              boxShadow: '0 14px 30px rgba(0,0,0,0.40), 0 0 24px rgba(16,185,129,0.30), inset 0 1px 0 rgba(255,255,255,0.24)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(16, 185, 129, 0.25)'
-              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.55)'
-              e.currentTarget.style.boxShadow = '0 0 12px rgba(16, 185, 129, 0.2)'
+              e.currentTarget.style.transform = 'translateY(-1px)'
+              e.currentTarget.style.boxShadow = '0 18px 36px rgba(0,0,0,0.48), 0 0 34px rgba(16,185,129,0.44), inset 0 1px 0 rgba(255,255,255,0.30)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(16, 185, 129, 0.15)'
-              e.currentTarget.style.borderColor = 'rgba(16, 185, 129, 0.35)'
-              e.currentTarget.style.boxShadow = 'none'
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.boxShadow = '0 14px 30px rgba(0,0,0,0.40), 0 0 24px rgba(16,185,129,0.30), inset 0 1px 0 rgba(255,255,255,0.24)'
             }}
           >
-            <span className="flex items-center gap-2 text-sm font-semibold text-emerald-400">
-              View Regional Fallback Dashboard
+            <span className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.08em] text-slate-50" style={{ textShadow: '0 0 12px rgba(16,185,129,0.95)' }}>
+              Full DNA Analysis
               <ArrowRight size={13} />
             </span>
             <span className="text-[9px] text-slate-400 font-sans mt-0.5">
