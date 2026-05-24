@@ -78,8 +78,8 @@ const SATELLITE_SPEC: StyleSpecification = {
       paint: {
         'raster-brightness-min': 0.08,
         'raster-brightness-max': 1,
-        'raster-contrast': 0.18,
-        'raster-saturation': 0.16,
+        'raster-contrast': 0.04,
+        'raster-saturation': -0.18,
       },
     },
     {

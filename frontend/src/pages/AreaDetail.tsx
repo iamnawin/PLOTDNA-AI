@@ -2,6 +2,15 @@ import { useState, useRef, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
+import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
   Hammer, Users, Globe, Shield, Briefcase, Landmark, Lock, AlertTriangle,
   Navigation, ShoppingBag, Package, Film, Leaf, Sparkles,
@@ -94,6 +103,183 @@ const LIVABILITY_CONFIG: { key: keyof Livability; icon: LucideIcon; label: strin
   { key: 'entertainment', icon: Film,        label: 'Entertainment',   description: 'Malls, theaters & dining' },
   { key: 'greenSpaces',   icon: Leaf,        label: 'Green Spaces',    description: 'Parks, lakes & open areas' },
 ]
+
+type TrendHorizon = 'past5' | 'now' | 'next5' | 'next10'
+
+const TREND_HORIZONS: { key: TrendHorizon; label: string }[] = [
+  { key: 'past5', label: '5Y Back' },
+  { key: 'now', label: 'Now' },
+  { key: 'next5', label: '+5Y' },
+  { key: 'next10', label: '+10Y' },
+]
+
+function clampScore(v: number) {
+  return Math.max(5, Math.min(98, Math.round(v)))
+}
+
+function buildTrendValue(current: number, yoy: number, horizon: TrendHorizon, slower = false) {
+  const factor = slower ? 0.26 : 0.42
+  const movement = Math.max(5, Math.min(18, yoy * factor))
+  const headroom = Math.max(0.35, (100 - current) / 100)
+
+  if (horizon === 'past5') return clampScore(current - movement)
+  if (horizon === 'next5') return clampScore(current + movement * 0.65 * headroom)
+  if (horizon === 'next10') return clampScore(current + movement * 1.05 * headroom)
+  return clampScore(current)
+}
+
+function SignalTrendPanel({ area, accentColor }: { area: MicroMarket; accentColor: string }) {
+  const [active, setActive] = useState<TrendHorizon>('now')
+  const selectedLabel = TREND_HORIZONS.find(h => h.key === active)?.label ?? 'Now'
+  const chartData = SIGNAL_CONFIG.map(({ key, label }) => {
+    const current = area.signals[key] ?? 0
+    return {
+      key,
+      label: label.replace('Population Growth', 'Population').replace('Satellite Growth', 'Satellite').replace('Employment Hub', 'Jobs').replace('Govt Schemes', 'Govt'),
+      past5: buildTrendValue(current, area.yoy, 'past5'),
+      now: buildTrendValue(current, area.yoy, 'now'),
+      next5: buildTrendValue(current, area.yoy, 'next5'),
+      next10: buildTrendValue(current, area.yoy, 'next10'),
+      weight: SIGNAL_WEIGHTS[key] ?? 0,
+    }
+  })
+  const average = Math.round(chartData.reduce((sum, item) => sum + Number(item[active]), 0) / chartData.length)
+  const strongest = chartData.reduce((best, item) => Number(item[active]) > Number(best[active]) ? item : best, chartData[0])
+
+  return (
+    <div className="rounded-2xl glass-panel-light p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <div>
+          <p className="text-[11px] font-sans font-bold text-slate-200">Modeled signal trend</p>
+          <p className="text-[9px] font-sans text-slate-500 mt-0.5">Derived from current score, signal weights, YoY velocity, and local growth stage.</p>
+        </div>
+        <div className="flex items-center gap-1 rounded-full p-1 bg-slate-950/50 border border-white/5">
+          {TREND_HORIZONS.map(horizon => {
+            const isActive = active === horizon.key
+            return (
+              <button
+                key={horizon.key}
+                onClick={() => setActive(horizon.key)}
+                className="px-2.5 py-1 rounded-full text-[9px] font-sans font-bold transition-all"
+                style={{
+                  background: isActive ? `${accentColor}22` : 'transparent',
+                  color: isActive ? accentColor : '#64748b',
+                  border: isActive ? `1px solid ${accentColor}40` : '1px solid transparent',
+                }}
+              >
+                {horizon.label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_190px] gap-4">
+        <div className="h-[260px] rounded-2xl bg-slate-950/35 border border-white/5 p-3">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData} margin={{ top: 12, right: 12, bottom: 6, left: -12 }}>
+              <CartesianGrid stroke="rgba(148,163,184,0.12)" vertical={false} />
+              <XAxis dataKey="label" tick={{ fill: '#64748b', fontSize: 9 }} axisLine={false} tickLine={false} interval={0} />
+              <YAxis domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 9 }} axisLine={false} tickLine={false} />
+              <Tooltip
+                contentStyle={{ background: 'rgba(5,8,16,0.96)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, color: '#e2e8f0' }}
+                labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
+              />
+              <Line type="monotone" dataKey="past5" name="5Y Back" stroke="#64748b" strokeWidth={1.5} dot={false} opacity={active === 'past5' ? 1 : 0.35} />
+              <Line type="monotone" dataKey="now" name="Now" stroke={accentColor} strokeWidth={active === 'now' ? 3 : 2} dot={{ r: active === 'now' ? 4 : 2 }} opacity={active === 'now' ? 1 : 0.55} />
+              <Line type="monotone" dataKey="next5" name="+5Y" stroke="#38bdf8" strokeWidth={active === 'next5' ? 3 : 1.8} strokeDasharray="5 4" dot={false} opacity={active === 'next5' ? 1 : 0.45} />
+              <Line type="monotone" dataKey="next10" name="+10Y" stroke="#a78bfa" strokeWidth={active === 'next10' ? 3 : 1.8} strokeDasharray="3 5" dot={false} opacity={active === 'next10' ? 1 : 0.42} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-1 gap-2">
+          <div className="rounded-2xl p-3 bg-slate-950/35 border border-white/5">
+            <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">{selectedLabel} Avg</p>
+            <p className="text-3xl font-display font-black mt-1" style={{ color: accentColor }}>{average}</p>
+            <p className="text-[10px] font-sans text-slate-500 mt-1">Composite signal strength</p>
+          </div>
+          <div className="rounded-2xl p-3 bg-slate-950/35 border border-white/5">
+            <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Strongest</p>
+            <p className="text-sm font-sans font-bold text-slate-100 mt-1">{strongest?.label}</p>
+            <p className="text-2xl font-display font-black mt-1" style={{ color: accentColor }}>{strongest ? strongest[active] : 0}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function LivabilityTrendPanel({ livability, yoy }: { livability: Livability; yoy: number }) {
+  const [active, setActive] = useState<TrendHorizon>('now')
+  const chartData = LIVABILITY_CONFIG.map(({ key, label }) => {
+    const current = livability[key]
+    return {
+      label,
+      past5: buildTrendValue(current, yoy, 'past5', true),
+      now: buildTrendValue(current, yoy, 'now', true),
+      next5: buildTrendValue(current, yoy, 'next5', true),
+      next10: buildTrendValue(current, yoy, 'next10', true),
+    }
+  })
+
+  return (
+    <div className="rounded-2xl glass-panel-light p-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+        <p className="text-[11px] font-sans text-slate-400">Livability moves slower than investment signals, so forecasts are intentionally conservative.</p>
+        <div className="flex items-center gap-1 rounded-full p-1 bg-slate-950/50 border border-white/5">
+          {TREND_HORIZONS.map(horizon => {
+            const isActive = active === horizon.key
+            return (
+              <button
+                key={horizon.key}
+                onClick={() => setActive(horizon.key)}
+                className="px-2.5 py-1 rounded-full text-[9px] font-sans font-bold transition-all"
+                style={{
+                  background: isActive ? 'rgba(16,185,129,0.16)' : 'transparent',
+                  color: isActive ? '#10b981' : '#64748b',
+                  border: isActive ? '1px solid rgba(16,185,129,0.35)' : '1px solid transparent',
+                }}
+              >
+                {horizon.label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+      <div className="space-y-3">
+        {LIVABILITY_CONFIG.map(({ key, icon: Icon, label, description }) => {
+          const item = chartData.find(row => row.label === label)!
+          const value = item[active]
+          const tier = getSignalTier(value)
+          return (
+            <div key={key} className="grid grid-cols-[minmax(116px,180px)_1fr_42px] items-center gap-3">
+              <div className="flex items-center gap-2 min-w-0">
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: `${tier.color}15`, border: `1px solid ${tier.color}28` }}>
+                  <Icon size={13} style={{ color: tier.color }} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[11px] font-sans font-bold text-slate-100 truncate">{label}</p>
+                  <p className="text-[9px] font-sans text-slate-500 truncate">{description}</p>
+                </div>
+              </div>
+              <div className="h-2 rounded-full bg-slate-950/60 overflow-hidden">
+                <motion.div
+                  className="h-full rounded-full"
+                  style={{ width: `${value}%`, background: `linear-gradient(90deg, ${tier.color}80, ${tier.color})` }}
+                  initial={{ width: 0 }}
+                  animate={{ width: `${value}%` }}
+                  transition={{ duration: 0.6 }}
+                />
+              </div>
+              <p className="text-lg font-display font-black text-right" style={{ color: tier.color }}>{value}</p>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
 
 // ── PDF generator ─────────────────────────────────────────────────────────────
 function generatePDF(area: MicroMarket) {
@@ -1039,69 +1225,7 @@ export default function AreaDetail() {
                 </span>
               </div>
 
-              {/* Signal card grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {SIGNAL_CONFIG.map(({ key, icon: Icon, label }, i) => {
-                  const val = area.signals[key]
-                  const weight = SIGNAL_WEIGHTS[key] ?? 0
-                  const tier = getSignalTier(val ?? 0)
-                  return (
-                    <motion.div
-                      key={key}
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.2 + i * 0.06 }}
-                      className="rounded-2xl p-3.5 glass-panel-light"
-                    >
-                      <div className="flex items-center justify-between gap-3 mb-3">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <div
-                            className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                            style={{ background: `${tier.color}18` }}
-                          >
-                            <Icon size={13} style={{ color: tier.color }} />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="text-[12px] font-sans font-bold text-slate-100 truncate leading-tight">
-                              {label}
-                            </p>
-                            <p className="text-[9px] font-sans font-semibold text-slate-400 mt-0.5 uppercase tracking-wider">
-                              {tier.label}
-                            </p>
-                          </div>
-                        </div>
-                        <span className="text-xl font-display font-bold leading-none" style={{ color: tier.color }}>
-                          {val}
-                        </span>
-                      </div>
-
-                      <div className="h-[6px] rounded-full overflow-hidden bg-slate-950/50">
-                        <motion.div
-                          className="h-full rounded-full"
-                          style={{ backgroundColor: tier.color, boxShadow: `0 0 6px ${tier.color}50` }}
-                          initial={{ width: 0 }}
-                          animate={{ width: `${val}%` }}
-                          transition={{ duration: 1.2, delay: 0.3 + i * 0.06, ease: 'easeOut' }}
-                        />
-                      </div>
-
-                      <div className="flex items-center justify-between mt-3">
-                        <span
-                          className="text-[9px] font-sans text-slate-500 font-medium"
-                        >
-                          Weight
-                        </span>
-                        <span
-                          className="text-[9px] font-sans font-semibold px-2 py-0.5 rounded-full"
-                          style={{ background: `${tier.color}12`, color: tier.color, border: `1px solid ${tier.color}28` }}
-                        >
-                          {weight}% wt
-                        </span>
-                      </div>
-                    </motion.div>
-                  )
-                })}
-              </div>
+              <SignalTrendPanel area={area} accentColor={color} />
 
               <p className="text-[11px] font-sans text-slate-500 mt-4 leading-relaxed">
                 Weighted formula: Infrastructure (25%) + Population (20%) + Satellite (20%) + RERA (15%) + Employment (10%) + Price (5%) + Govt Scheme (5%)
@@ -1127,51 +1251,7 @@ export default function AreaDetail() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-                  {LIVABILITY_CONFIG.map(({ key, icon: Icon, label, description }, i) => {
-                    const val = area.livability![key]
-                    const tier = getSignalTier(val)
-                    return (
-                      <motion.div
-                        key={key}
-                        initial={{ opacity: 0, y: 16 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.35 + i * 0.07 }}
-                        className="rounded-2xl p-3.5 glass-panel-light"
-                      >
-                        <div className="flex items-center justify-between gap-3 mb-3.5">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <div
-                              className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                              style={{ background: `${tier.color}15`, border: `1px solid ${tier.color}28` }}
-                            >
-                              <Icon size={13} style={{ color: tier.color }} />
-                            </div>
-                            <div className="min-w-0">
-                              <p className="text-[11px] font-sans font-bold text-slate-100 truncate leading-tight">
-                                {label}
-                              </p>
-                              <p className="text-[9px] font-sans text-slate-400 mt-0.5 leading-tight">
-                                {description}
-                              </p>
-                            </div>
-                          </div>
-                          <p className="text-xl font-display font-bold leading-none" style={{ color: tier.color }}>{val}</p>
-                        </div>
-
-                        <div className="h-[6px] rounded-full overflow-hidden bg-slate-950/50">
-                          <motion.div
-                            className="h-full rounded-full"
-                            style={{ backgroundColor: tier.color }}
-                            initial={{ width: 0 }}
-                            animate={{ width: `${val}%` }}
-                            transition={{ duration: 1, delay: 0.45 + i * 0.07 }}
-                          />
-                        </div>
-                      </motion.div>
-                    )
-                  })}
-                </div>
+                <LivabilityTrendPanel livability={area.livability} yoy={area.yoy} />
               </motion.section>
             )}
 
@@ -1434,40 +1514,66 @@ export default function AreaDetail() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {nearby.map(({ area: nearArea, matchScore, reasons, caution }) => {
                     const nearColor = getScoreColor(nearArea.score)
+                    const nearTier = getScoreLabel(nearArea.score)
+                    const topReason = reasons[0]
+                    const secondReason = reasons[1]
                     return (
                       <button
                         key={nearArea.slug}
                         onClick={() => navigate(`/area/${nearArea.slug}`)}
-                        className="w-full text-left rounded-2xl p-4 transition-all duration-300 cursor-pointer glass-panel glass-panel-hover"
+                        className="group relative w-full text-left rounded-2xl p-4 transition-all duration-300 cursor-pointer overflow-hidden"
+                        style={{
+                          background: `linear-gradient(145deg, ${nearColor}18, rgba(15,23,42,0.82) 38%, rgba(2,6,23,0.92))`,
+                          border: `1px solid ${nearColor}38`,
+                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 18px 34px rgba(0,0,0,0.22)`,
+                        }}
                       >
-                        <div className="flex items-start justify-between gap-3 mb-2.5">
+                        <div
+                          className="absolute inset-x-0 top-0 h-px opacity-80"
+                          style={{ background: `linear-gradient(90deg, transparent, ${nearColor}, transparent)` }}
+                        />
+                        <div className="flex items-start justify-between gap-3 mb-3">
                           <div className="min-w-0">
-                            <p className="text-sm font-sans font-bold text-slate-100 truncate">
+                            <p className="text-[15px] font-display font-black text-slate-50 truncate tracking-tight">
                               {nearArea.name}
                             </p>
-                            <p className="text-[10px] font-sans text-slate-400 mt-0.5">
-                              {nearArea.category}
+                            <p className="text-[10px] font-sans text-slate-400 mt-1">
+                              {nearArea.category} · {nearTier}
                             </p>
                           </div>
-                          <div className="flex items-center gap-2 flex-shrink-0">
-                            <span
-                              className="text-[9px] font-sans font-bold px-2 py-0.5 rounded-full"
-                              style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.2)' }}
-                            >
-                              {matchScore}% match
-                            </span>
-                            <span
-                              className="text-[11px] font-display font-bold px-2 py-0.5 rounded-full"
-                              style={{ background: `${nearColor}15`, color: nearColor, border: `1px solid ${nearColor}28` }}
-                            >
+                          <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                            <span className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">DNA</span>
+                            <span className="text-3xl font-display font-black leading-none" style={{ color: nearColor }}>
                               {nearArea.score}
                             </span>
                           </div>
                         </div>
 
-                        <p className="text-[10px] font-sans text-slate-400 mt-1 leading-relaxed">
-                          <span className="font-bold text-slate-300">{reasons[0]?.label}:</span> {reasons[0]?.value}
-                        </p>
+                        <div className="grid grid-cols-3 gap-2 mb-3">
+                          <div className="rounded-xl px-2.5 py-2 bg-slate-950/35 border border-white/5">
+                            <p className="text-[8px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">Match</p>
+                            <p className="text-sm font-display font-black text-sky-300">{matchScore}%</p>
+                          </div>
+                          <div className="rounded-xl px-2.5 py-2 bg-slate-950/35 border border-white/5">
+                            <p className="text-[8px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">YoY</p>
+                            <p className="text-sm font-display font-black text-emerald-300">+{nearArea.yoy}%</p>
+                          </div>
+                          <div className="rounded-xl px-2.5 py-2 bg-slate-950/35 border border-white/5">
+                            <p className="text-[8px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">Price</p>
+                            <p className="text-[10px] font-sans font-bold text-slate-200 truncate">{nearArea.priceRange}</p>
+                          </div>
+                        </div>
+
+                        {topReason && (
+                          <p className="text-[10px] font-sans text-slate-300 mt-1 leading-relaxed">
+                            <span className="font-bold" style={{ color: nearColor }}>{topReason.label}:</span> {topReason.value}
+                          </p>
+                        )}
+                        {secondReason && (
+                          <p className="text-[10px] font-sans text-slate-400 mt-1 leading-relaxed">
+                            <span className="font-bold text-slate-300">{secondReason.label}:</span> {secondReason.value}
+                          </p>
+                        )}
                         <p className="text-[9px] font-sans text-slate-500 mt-2 leading-relaxed italic">
                           {caution}
                         </p>

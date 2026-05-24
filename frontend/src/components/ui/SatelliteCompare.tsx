@@ -33,8 +33,8 @@ const SATELLITE_STYLE: StyleSpecification = {
       paint: {
         'raster-brightness-min': 0.08,
         'raster-brightness-max': 1,
-        'raster-contrast': 0.16,
-        'raster-saturation': 0.14,
+        'raster-contrast': 0.08,
+        'raster-saturation': -0.08,
       },
     },
     {
@@ -67,7 +67,7 @@ const PHASE_CONFIG: Record<Milestone['phase'], {
 }> = {
   baseline: {
     zoom: 10,
-    filter: 'grayscale(1) brightness(0.45) sepia(0.6) contrast(0.80)',
+    filter: 'grayscale(1) brightness(0.48) sepia(0.18) saturate(0.82) contrast(0.86)',
     year: '~2009',
     era: 'Agricultural',
     caption: 'Open fields, sparse roads',
@@ -75,7 +75,7 @@ const PHASE_CONFIG: Record<Milestone['phase'], {
   },
   early: {
     zoom: 11,
-    filter: 'grayscale(0.75) brightness(0.58) sepia(0.45) contrast(0.88)',
+    filter: 'grayscale(0.72) brightness(0.62) sepia(0.12) saturate(0.88) contrast(0.90)',
     year: '~2013',
     era: 'Early Infra',
     caption: 'Initial roads laid',
@@ -83,7 +83,7 @@ const PHASE_CONFIG: Record<Milestone['phase'], {
   },
   growth: {
     zoom: 12,
-    filter: 'grayscale(0.5) brightness(0.70) sepia(0.28) contrast(0.93)',
+    filter: 'grayscale(0.42) brightness(0.74) sepia(0.08) saturate(0.92) contrast(0.94)',
     year: '~2018',
     era: 'Growth Phase',
     caption: 'Plots & roads emerging',
@@ -91,7 +91,7 @@ const PHASE_CONFIG: Record<Milestone['phase'], {
   },
   boom: {
     zoom: 13,
-    filter: 'grayscale(0.18) brightness(0.82) sepia(0.12) contrast(0.98)',
+    filter: 'grayscale(0.12) brightness(0.90) sepia(0.04) saturate(0.96) contrast(0.98)',
     year: '~2021',
     era: 'Boom',
     caption: 'Rapid construction',
@@ -338,19 +338,19 @@ export default function SatelliteCompare({ area, coords }: Props) {
 
             {/* Live badge — top left */}
             <div className="absolute top-3 left-3 z-[1] flex items-center gap-2 px-3 py-2 rounded-xl pointer-events-none"
-              style={{ background: `${color}18`, backdropFilter: 'blur(12px)', border: `1px solid ${color}40` }}>
+              style={{ background: 'rgba(15,23,42,0.74)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.12)' }}>
               <div className="w-1.5 h-1.5 rounded-full"
-                style={{ backgroundColor: color, boxShadow: `0 0 6px ${color}`, animation: 'pulse 2s infinite' }} />
+                style={{ backgroundColor: '#38bdf8', boxShadow: '0 0 6px #38bdf8', animation: 'pulse 2s infinite' }} />
               <div>
-                <p className="text-[10px] font-display font-bold" style={{ color }}>2026 · LIVE</p>
+                <p className="text-[10px] font-display font-bold text-sky-200">2026 · LIVE</p>
                 <p className="text-[8px] font-sans text-[#555566]">{RADIUS_KM} km radius</p>
               </div>
             </div>
 
             {/* NOW label — top right */}
             <div className="absolute top-3 right-3 z-[1] pointer-events-none px-2 py-1 rounded-lg"
-              style={{ background: `${color}15`, border: `1px solid ${color}35` }}>
-              <p className="text-[8px] font-display font-bold uppercase tracking-widest" style={{ color }}>Now</p>
+              style={{ background: 'rgba(15,23,42,0.7)', border: '1px solid rgba(56,189,248,0.3)' }}>
+              <p className="text-[8px] font-display font-bold uppercase tracking-widest text-sky-200">Now</p>
             </div>
 
             {/* Scroll hint */}
