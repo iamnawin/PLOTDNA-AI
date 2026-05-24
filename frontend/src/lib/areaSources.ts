@@ -774,6 +774,101 @@ const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
     { title: 'Uppal Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Uppal/residential-real-estate-Uppal', type: 'data' },
     { title: 'Uppal East Corridor Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
   ],
+  'hitec-city': [
+    { title: 'HITEC City IT Corridor - TSIIC', url: 'https://www.tsiic.telangana.gov.in/', type: 'gov' },
+    { title: 'HITEC City Office and Residential Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Hitech-City/residential-real-estate-Hitech-City', type: 'data' },
+    { title: 'HITEC City Business District Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  nanakramguda: [
+    { title: 'Nanakramguda Financial District Planning - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Nanakramguda Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Nanakramguda/residential-real-estate-Nanakramguda', type: 'data' },
+    { title: 'Nanakramguda West Corridor Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  mehdipatnam: [
+    { title: 'Mehdipatnam Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Mehdipatnam Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Mehdipatnam/residential-real-estate-Mehdipatnam', type: 'data' },
+    { title: 'Mehdipatnam Transit and Civic Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  dilsukhnagar: [
+    { title: 'Dilsukhnagar Metro Corridor - HMRL', url: 'https://hmrl.telangana.gov.in/', type: 'gov' },
+    { title: 'Dilsukhnagar Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Dilsukhnagar/residential-real-estate-Dilsukhnagar', type: 'data' },
+    { title: 'Dilsukhnagar East Hyderabad Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  tolichowki: [
+    { title: 'Tolichowki Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Tolichowki Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Tolichowki/residential-real-estate-Tolichowki', type: 'data' },
+    { title: 'Tolichowki West Hyderabad Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  bachupally: [
+    { title: 'Bachupally Growth Zone - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Bachupally Property Market - 99acres', url: 'https://www.99acres.com/property-in-bachupally-hyderabad-ffid', type: 'data' },
+    { title: 'Bachupally Residential Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  hafeezpet: [
+    { title: 'Hafeezpet West Corridor - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Hafeezpet Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Hafeezpet/residential-real-estate-Hafeezpet', type: 'data' },
+    { title: 'Hafeezpet Connectivity Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  malkajgiri: [
+    { title: 'Malkajgiri Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Malkajgiri Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Malkajgiri/residential-real-estate-Malkajgiri', type: 'data' },
+    { title: 'Malkajgiri North-East Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  balanagar: [
+    { title: 'Balanagar Industrial Area - TSIIC', url: 'https://www.tsiic.telangana.gov.in/', type: 'gov' },
+    { title: 'Balanagar Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Balanagar/residential-real-estate-Balanagar', type: 'data' },
+    { title: 'Balanagar Industrial Belt Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  bowenpally: [
+    { title: 'Bowenpally Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Bowenpally Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Bowenpally/residential-real-estate-Bowenpally', type: 'data' },
+    { title: 'Bowenpally Transit Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  nizampet: [
+    { title: 'Nizampet Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Nizampet Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Nizampet/residential-real-estate-Nizampet', type: 'data' },
+    { title: 'Nizampet Residential Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  kothapet: [
+    { title: 'Kothapet Metro Corridor - HMRL', url: 'https://hmrl.telangana.gov.in/', type: 'gov' },
+    { title: 'Kothapet Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Kothapet/residential-real-estate-Kothapet', type: 'data' },
+    { title: 'Kothapet East Hyderabad Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  hayathnagar: [
+    { title: 'Hayathnagar East Growth Zone - HMDA', url: 'https://hmda.telangana.gov.in/master-plan', type: 'gov' },
+    { title: 'Hayathnagar Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Hayathnagar/residential-real-estate-Hayathnagar', type: 'data' },
+    { title: 'Hayathnagar Corridor Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  'jntu-kphb': [
+    { title: 'KPHB Metro Corridor - HMRL', url: 'https://hmrl.telangana.gov.in/', type: 'gov' },
+    { title: 'KPHB Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-KPHB/residential-real-estate-KPHB', type: 'data' },
+    { title: 'JNTU-KPHB Residential Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  chandanagar: [
+    { title: 'Chandanagar West Corridor - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Chandanagar Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Chanda-Nagar/residential-real-estate-Chanda-Nagar', type: 'data' },
+    { title: 'Chandanagar Residential Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  alwal: [
+    { title: 'Alwal Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Alwal Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Alwal/residential-real-estate-Alwal', type: 'data' },
+    { title: 'Alwal North Hyderabad Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  nacharam: [
+    { title: 'Nacharam Industrial and Civic Zone - TSIIC', url: 'https://www.tsiic.telangana.gov.in/', type: 'gov' },
+    { title: 'Nacharam Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Nacharam/residential-real-estate-Nacharam', type: 'data' },
+    { title: 'Nacharam East Hyderabad Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  attapur: [
+    { title: 'Attapur Civic Zone - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Attapur Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Attapur/residential-real-estate-Attapur', type: 'data' },
+    { title: 'Attapur South-West Hyderabad Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
+  vanasthalipuram: [
+    { title: 'Vanasthalipuram East Corridor - GHMC', url: 'https://www.ghmc.gov.in/', type: 'gov' },
+    { title: 'Vanasthalipuram Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Vanasthalipuram/residential-real-estate-Vanasthalipuram', type: 'data' },
+    { title: 'Vanasthalipuram Residential Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
+  ],
 }
 
 // ── Exports ───────────────────────────────────────────────────────────────────

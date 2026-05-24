@@ -10,6 +10,7 @@ import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } fr
 import { getRecommendationGoalMeta, rankAreasForGoal } from '@/lib/recommendations'
 import { resolveMapLink, resolveLocation } from '@/lib/api'
 import type { LocalityResolution } from '@/lib/location/contracts'
+import { getCityProductionProfile } from '@/lib/cityProduction'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
 import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
@@ -92,12 +93,9 @@ export default function Home() {
   }, [searchCoords])
 
   const { areas: cityAreas, meta: cityMeta } = getCityEntry(selectedCitySlug)
+  const cityProfile = getCityProductionProfile(cityMeta, cityAreas)
   const recommendedAreas = rankAreasForGoal(cityAreas, recommendationGoal)
   const sorted = recommendedAreas.map(({ area }) => area)
-  const AVG_DNA = Math.round(cityAreas.reduce((s, a) => s + a.score, 0) / cityAreas.length)
-  const cityShortCode = cityMeta.name === 'Delhi NCR'
-    ? 'DEL'
-    : cityMeta.name.slice(0, 3).toUpperCase()
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
   const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
 
@@ -318,6 +316,9 @@ export default function Home() {
             />
             <span className="text-[9px] font-sans font-semibold text-emerald-400 uppercase tracking-[0.14em]">Live</span>
             <span className="text-[9px] font-sans text-slate-500">{" \u00B7 "}{cityMeta.name}</span>
+            {cityProfile.isFlagship && (
+              <span className="text-[8px] font-sans font-bold text-emerald-300 uppercase tracking-[0.12em]">Flagship</span>
+            )}
           </div>
         </div>
         {/* Mobile hamburger — visible only on small screens */}
@@ -340,18 +341,18 @@ export default function Home() {
         }}
       >
         <div className="text-center">
-          <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">Markets</p>
-          <p className="text-[15px] font-display font-bold text-slate-100 leading-tight">{cityAreas.length}</p>
+          <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">Covered</p>
+          <p className="text-[15px] font-display font-bold text-slate-100 leading-tight">{cityProfile.totalLocalities}</p>
         </div>
         <div className="w-px h-6 bg-white/10" />
         <div className="text-center">
           <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">Avg DNA</p>
-          <p className="text-[15px] font-display font-bold text-emerald-400 leading-tight">{AVG_DNA}</p>
+          <p className="text-[15px] font-display font-bold text-emerald-400 leading-tight">{cityProfile.averageScore}</p>
         </div>
         <div className="w-px h-6 bg-white/10" />
         <div className="text-center">
-          <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">City</p>
-          <p className="text-[11px] font-sans font-semibold text-slate-300 leading-tight">{cityShortCode}</p>
+          <p className="text-[9px] font-sans font-semibold text-slate-500 uppercase tracking-widest">Verified</p>
+          <p className="text-[15px] font-display font-bold text-slate-100 leading-tight">{cityProfile.verifiedCount}</p>
         </div>
       </div>
 
@@ -666,6 +667,25 @@ export default function Home() {
                 </button>
               )
             })}
+          </div>
+          <div className="mt-3 grid grid-cols-3 gap-1.5">
+            {[
+              { label: 'Verified', value: cityProfile.verifiedCount, tone: '#10b981' },
+              { label: 'Partial', value: cityProfile.partialCount, tone: '#f59e0b' },
+              { label: 'Estimated', value: cityProfile.estimatedCount, tone: '#38bdf8' },
+            ].map(item => (
+              <div
+                key={item.label}
+                className="rounded-lg px-2 py-1.5"
+                style={{
+                  background: 'rgba(255,255,255,0.025)',
+                  border: '1px solid rgba(255,255,255,0.05)',
+                }}
+              >
+                <p className="text-[10px] font-display font-bold" style={{ color: item.tone }}>{item.value}</p>
+                <p className="text-[7px] font-sans font-semibold uppercase tracking-[0.08em] text-slate-500">{item.label}</p>
+              </div>
+            ))}
           </div>
           {isGlobeMode && !globeSidebarExpanded && (
             <div className="mt-3 space-y-2">

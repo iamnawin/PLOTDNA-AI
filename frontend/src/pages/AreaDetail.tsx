@@ -16,6 +16,8 @@ import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/l
 import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
 import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/areaSources'
 import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
+import { getConfidenceMeta } from '@/lib/cityProduction'
+import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SatelliteCompare from '@/components/ui/SatelliteCompare'
@@ -804,6 +806,10 @@ export default function AreaDetail() {
   const cityName = cityEntry?.meta.name ?? 'India'
 
   const sources = getAreaSources(area.slug, citySlug)
+  const displayedConfidence = citySlug === 'hyderabad' && HYDERABAD_VERIFIED_PRIORITY_SET.has(area.slug)
+    ? 'verified'
+    : area.dataConfidence
+  const confidenceMeta = getConfidenceMeta(displayedConfidence)
 
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
@@ -920,6 +926,21 @@ export default function AreaDetail() {
               {area.name}
             </h1>
             <p className="text-slate-400 font-sans text-sm mt-1.5">{area.category} {" \u00B7 "} {cityName}</p>
+
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <div className="glass-panel-light rounded-xl px-3 py-2">
+                <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Confidence</p>
+                <p className="text-[13px] font-sans font-bold mt-0.5" style={{ color: confidenceMeta.tone }}>{confidenceMeta.label}</p>
+              </div>
+              <div className="glass-panel-light rounded-xl px-3 py-2">
+                <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Data as of</p>
+                <p className="text-[13px] font-sans font-bold text-slate-200 mt-0.5">{area.dataAsOf ?? 'Current cycle'}</p>
+              </div>
+              <div className="glass-panel-light rounded-xl px-3 py-2">
+                <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Sources</p>
+                <p className="text-[13px] font-sans font-bold text-slate-200 mt-0.5">{sources.length} references</p>
+              </div>
+            </div>
 
             <div
               className="mt-6 p-4 rounded-2xl glass-panel relative overflow-hidden"

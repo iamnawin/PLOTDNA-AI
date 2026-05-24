@@ -13,6 +13,7 @@ import { getScoreColor } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { resolveMapLink, analyzeBrochure, resolveLocation } from '@/lib/api'
 import { getGoalTopAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
+import { getCityProductionProfile } from '@/lib/cityProduction'
 
 const FEATURE_CARDS = [
   {
@@ -234,7 +235,9 @@ export default function Landing() {
     navigate('/map')
   }
 
-  const previewAreas = getGoalTopAreas(CITIES[activeCity]?.areas ?? [], recommendationGoal, 5)
+  const activeCityEntry = CITIES[activeCity] ?? CITIES.hyderabad
+  const activeCityProfile = getCityProductionProfile(activeCityEntry.meta, activeCityEntry.areas)
+  const previewAreas = getGoalTopAreas(activeCityEntry.areas, recommendationGoal, 5)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
   const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
 
@@ -405,7 +408,7 @@ export default function Landing() {
           }}
         >
           <Zap size={10} />
-          REAL ESTATE INVESTMENT INTELLIGENCE{" \u00B7 "}INDIA
+          {activeCityProfile.isFlagship ? activeCityProfile.label : 'Real estate investment intelligence'}{" \u00B7 "}{activeCityEntry.meta.name}
         </motion.div>
 
         <motion.h1
@@ -433,7 +436,7 @@ export default function Landing() {
           transition={{ duration: 0.4, delay: 0.18 }}
           style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 680, marginTop: 22, lineHeight: 1.7, letterSpacing: '-0.01em' }}
         >
-          PlotDNA checks infrastructure, RERA activity, satellite context, growth signals, and location patterns so you can judge land with data — not just broker claims.
+          PlotDNA checks infrastructure, RERA activity, satellite context, growth signals, and location patterns. Hyderabad is the production-first city, with coverage and confidence labels built for real buyer screening.
         </motion.p>
 
         <motion.div
@@ -704,9 +707,33 @@ export default function Landing() {
                   }}
                 >
                   {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
+                  {city.slug === 'hyderabad' && (
+                    <span style={{ marginLeft: 6, color: active ? '#a7f3d0' : '#10b981' }}>Flagship</span>
+                  )}
                 </button>
               )
             })}
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
+            {[
+              ['Covered', activeCityProfile.totalLocalities],
+              ['Verified', activeCityProfile.verifiedCount],
+              ['Project zones', activeCityProfile.activeProjectCount],
+              ['Priority target', activeCityProfile.priorityTarget],
+            ].map(([metric, value]) => (
+              <div
+                key={metric}
+                className="rounded-xl px-3 py-2"
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                }}
+              >
+                <p className="font-display" style={{ fontSize: 17, fontWeight: 800, color: '#e8e8f0' }}>{value}</p>
+                <p style={{ fontSize: 9, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{metric}</p>
+              </div>
+            ))}
           </div>
 
           <div className="flex items-center justify-center flex-wrap gap-2 mb-4">
