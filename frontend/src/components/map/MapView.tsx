@@ -114,8 +114,36 @@ const TERRAIN_SPEC: StyleSpecification = {
   layers: [{ id: 'topo-base', type: 'raster', source: 'topo' }],
 }
 
+const DARK_SPEC: StyleSpecification = {
+  version: 8,
+  sources: {
+    darkRaster: {
+      type: 'raster',
+      tiles: [
+        'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+        'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+        'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+      ],
+      tileSize: 256,
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+    },
+  },
+  layers: [
+    {
+      id: 'dark-raster-base',
+      type: 'raster',
+      source: 'darkRaster',
+      paint: {
+        'raster-brightness-min': 0,
+        'raster-brightness-max': 1,
+        'raster-contrast': 0.04,
+      },
+    },
+  ],
+}
+
 const MAP_STYLES: Record<MapStyleKey, string | StyleSpecification> = {
-  dark:      'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+  dark:      DARK_SPEC,
   light:     'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
   satellite: SATELLITE_SPEC,
   terrain:   TERRAIN_SPEC,

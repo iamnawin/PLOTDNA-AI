@@ -30,7 +30,7 @@ export const useAppStore = create<AppStore>((set) => ({
   highlightTier: null,
   searchCoords: null,
   is3D: false,
-  mapStyleKey: 'dark',
+  mapStyleKey: 'satellite',
   selectedCitySlug: 'hyderabad',
   showConstruction: false,
   recommendationGoal: 'balanced',

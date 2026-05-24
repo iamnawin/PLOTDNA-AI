@@ -77,6 +77,12 @@ export default function Home() {
   }, [analyzingCoords])
 
   useEffect(() => {
+    if (viewMode === 'map' && mapStyleKey === 'dark') {
+      setMapStyleKey('satellite')
+    }
+  }, [mapStyleKey, setMapStyleKey, viewMode])
+
+  useEffect(() => {
     if (!searchCoords) {
       const timer = setTimeout(() => {
         setBackendResolution(null)
@@ -138,6 +144,9 @@ export default function Home() {
   }
 
   function handleViewModeChange(nextMode: ViewMode) {
+    if (nextMode === 'map' && mapStyleKey === 'dark') {
+      setMapStyleKey('satellite')
+    }
     if (nextMode === 'globe') {
       setGlobeSidebarExpanded(false)
     }
@@ -147,9 +156,16 @@ export default function Home() {
   const sidebarList = highlightTier
     ? recommendedAreas.filter(({ area }) => getScoreLabel(area.score) === highlightTier)
     : recommendedAreas
+  const tierCounts = RISK_TIERS.reduce<Record<string, number>>((counts, tier) => {
+    counts[tier.label] = cityAreas.filter(area => getScoreLabel(area.score) === tier.label).length
+    return counts
+  }, {})
 
   function handleCityChange(slug: string) {
     setSelectedCitySlug(slug)
+    if (viewMode === 'map' && mapStyleKey === 'dark') {
+      setMapStyleKey('satellite')
+    }
     setShowMobileSidebar(false)
   }
 
@@ -284,6 +300,7 @@ export default function Home() {
   }
 
   function toggleTier(label: string) {
+    if ((tierCounts[label] ?? 0) === 0) return
     const nextTier = highlightTier === label ? null : label
     setHighlightTier(nextTier)
     if (nextTier && selectedArea && getScoreLabel(selectedArea.score) !== nextTier) {
@@ -1155,45 +1172,58 @@ export default function Home() {
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute bottom-5 left-5 z-[999] flex items-center p-1.5 gap-1.5 rounded-full overflow-x-auto glass-panel-light max-w-[calc(100vw-40px)]"
+        className="absolute bottom-5 left-5 z-[999] flex items-center p-1 gap-1 rounded-full overflow-x-auto max-w-[calc(100vw-40px)]"
         style={{
+          background: 'rgba(3, 7, 18, 0.72)',
+          border: '1px solid rgba(148, 163, 184, 0.16)',
+          boxShadow: '0 12px 34px rgba(0,0,0,0.34)',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)',
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
         } as React.CSSProperties}
       >
         {RISK_TIERS.map((tier) => {
           const isActive = highlightTier === tier.label
+          const count = tierCounts[tier.label] ?? 0
+          const disabled = count === 0
           return (
             <button
               key={tier.label}
               onClick={() => toggleTier(tier.label)}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-full transition-all duration-200 hover:bg-white/5"
+              disabled={disabled}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full transition-all duration-200 disabled:cursor-not-allowed"
               style={{
-                background: isActive ? `${tier.color}1e` : 'transparent',
-                border: isActive ? `1px solid ${tier.color}45` : '1px solid transparent',
+                background: isActive ? `${tier.color}24` : disabled ? 'rgba(15,23,42,0.48)' : 'rgba(15,23,42,0.72)',
+                border: isActive ? `1px solid ${tier.color}55` : disabled ? '1px solid rgba(148,163,184,0.10)' : '1px solid rgba(148,163,184,0.18)',
                 boxShadow: isActive ? `0 0 12px ${tier.color}20` : 'none',
+                opacity: disabled ? 0.42 : 1,
               }}
+              title={disabled ? `No ${tier.label} areas in ${cityMeta.name}` : `${count} ${tier.label} areas in ${cityMeta.name}`}
             >
               <div
-                className="w-2 h-2 rounded-sm flex-shrink-0"
+                className="w-1.5 h-1.5 rounded-full flex-shrink-0"
                 style={{
                   background: isActive ? `${tier.color}cc` : `${tier.color}44`,
-                  border: `1.5px solid ${tier.color}`,
+                  border: `1px solid ${tier.color}`,
                   boxShadow: isActive ? `0 0 7px ${tier.color}70` : 'none',
                   transition: 'all 0.2s',
                 }}
               />
               <span
-                className="text-[10px] font-sans font-semibold whitespace-nowrap transition-colors duration-200"
-                style={{ color: isActive ? tier.color : '#64748b' }}
+                className="text-[9px] font-sans font-semibold whitespace-nowrap transition-colors duration-200"
+                style={{ color: isActive ? tier.color : disabled ? '#475569' : '#94a3b8' }}
               >
                 {tier.label}
               </span>
               <span
-                className="text-[9px] font-display transition-colors duration-200"
-                style={{ color: isActive ? `${tier.color}aa` : '#334155' }}
+                className="min-w-4 text-center text-[8px] font-display font-bold rounded-full px-1 transition-colors duration-200"
+                style={{
+                  color: isActive ? `${tier.color}` : disabled ? '#334155' : '#cbd5e1',
+                  background: disabled ? 'rgba(15,23,42,0.38)' : 'rgba(255,255,255,0.06)',
+                }}
               >
-                {tier.range}
+                {count}
               </span>
             </button>
           )
