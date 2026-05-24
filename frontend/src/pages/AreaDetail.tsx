@@ -1255,6 +1255,9 @@ export default function AreaDetail() {
               </motion.section>
             )}
 
+            {/* ── Automated Valuation (AVM) ── */}
+            <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
+
             {/* ── Key Highlights ── */}
             <motion.section
               initial={{ opacity: 0, y: 24 }}
@@ -1435,9 +1438,6 @@ export default function AreaDetail() {
 
             {/* ── Market Pulse ── */}
             <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
-
-            {/* ── Automated Valuation (AVM) ── */}
-            <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
 
             {/* ── Sources & Citations ── */}
             <motion.section
