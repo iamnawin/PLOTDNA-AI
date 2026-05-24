@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState, useEffect, type RefObject } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
+import { Search, X, Zap, ChevronLeft, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { getCityEntry, CITY_LIST } from '@/data/cities'
 import type { MicroMarket, RecommendationGoal } from '@/types'
@@ -67,6 +67,8 @@ export default function Home() {
   const [analyzeStep, setAnalyzeStep]         = useState(0)
   const [backendResolution, setBackendResolution] = useState<LocalityResolution | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
+  const cityRailRef = useRef<HTMLDivElement>(null)
+  const areaRailRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (!analyzingCoords) return
@@ -289,6 +291,13 @@ export default function Home() {
     }
   }
 
+  function scrollRail(ref: RefObject<HTMLDivElement | null>, direction: -1 | 1) {
+    ref.current?.scrollBy({
+      left: direction * 260,
+      behavior: 'smooth',
+    })
+  }
+
   return (
     <div className="relative w-[100dvw] h-[100dvh] overflow-hidden bg-[#060814]">
 
@@ -380,7 +389,14 @@ export default function Home() {
       {/* ═══════════════════════════════════════════════
           CENTER TOP: Search + Suggestions
       ════════════════════════════════════════════════ */}
-      <div className="absolute top-[calc(3.5rem+env(safe-area-inset-top))] md:top-[calc(1.25rem+env(safe-area-inset-top))] left-[calc(0.75rem+env(safe-area-inset-left))] right-[calc(0.75rem+env(safe-area-inset-right))] md:left-1/2 md:right-auto md:-translate-x-1/2 z-[1002] md:w-[460px]">
+      <div
+        className="absolute top-[calc(3.5rem+env(safe-area-inset-top))] md:top-[calc(1.25rem+env(safe-area-inset-top))] left-[calc(0.75rem+env(safe-area-inset-left))] right-[calc(0.75rem+env(safe-area-inset-right))] md:left-1/2 md:right-auto md:-translate-x-1/2 z-[1002]"
+        style={{
+          width: 'min(860px, calc(100vw - 420px))',
+          maxWidth: 'calc(100vw - 1.5rem)',
+          minWidth: 'min(460px, calc(100vw - 1.5rem))',
+        }}
+      >
 
         {/* Search bar */}
         <div className="relative">
@@ -545,91 +561,131 @@ export default function Home() {
               className="mt-2.5"
             >
               {/* City pills row */}
-              <div
-                className="flex items-center gap-1.5 mb-2.5 overflow-x-auto md:justify-center"
-                style={{
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                  padding: '4px 6px',
-                  borderRadius: 999,
-                  background: 'rgba(3, 7, 18, 0.62)',
-                  border: '1px solid rgba(148, 163, 184, 0.16)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  boxShadow: '0 12px 34px rgba(0,0,0,0.28)',
-                }}
-              >
-                {CITY_LIST.map(city => {
-                  const isActive = selectedCitySlug === city.slug
-                  return (
-                    <button
-                      key={city.slug}
-                      onClick={() => handleCityChange(city.slug)}
-                      className="px-3 py-1.5 rounded-full text-[10px] font-sans font-semibold transition-all duration-200 flex-shrink-0 hover:scale-[1.03] active:scale-[0.97]"
-                      style={{
-                        background: isActive ? 'rgba(16, 185, 129, 0.22)' : 'rgba(15, 23, 42, 0.88)',
-                        border: isActive ? '1px solid rgba(16, 185, 129, 0.55)' : '1px solid rgba(148, 163, 184, 0.20)',
-                        color: isActive ? '#34d399' : '#dbeafe',
-                        boxShadow: isActive ? '0 0 14px rgba(16, 185, 129, 0.25)' : '0 6px 16px rgba(0,0,0,0.22)',
-                      }}
-                    >
-                      {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
-                    </button>
-                  )
-                })}
-              </div>
-              {/* Top area chips */}
-              <div
-                className="flex items-center gap-2 overflow-x-auto md:justify-center"
-                style={{
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                  padding: '4px 6px',
-                  borderRadius: 999,
-                  background: 'rgba(3, 7, 18, 0.58)',
-                  border: '1px solid rgba(148, 163, 184, 0.14)',
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  boxShadow: '0 12px 34px rgba(0,0,0,0.26)',
-                }}
-              >
-                {sidebarList.slice(0, 4).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
-                  const color = getScoreColor(area.score)
-                  const scoreValue = highlightTier ? area.score : matchScore
-                  return (
-                    <button
-                      key={area.slug}
-                      onClick={() => navigate(`/area/${area.slug}`)}
-                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
-                      style={{
-                        background: `linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.82)), ${color}22`,
-                        border: `1px solid ${color}55`,
-                        color,
-                        boxShadow: `0 8px 20px rgba(0,0,0,0.28), 0 0 12px ${color}18`,
-                      }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = `linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.88)), ${color}34`; e.currentTarget.style.boxShadow = `0 8px 22px rgba(0,0,0,0.34), 0 0 16px ${color}30` }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = `linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.82)), ${color}22`; e.currentTarget.style.boxShadow = `0 8px 20px rgba(0,0,0,0.28), 0 0 12px ${color}18` }}
-                      title={highlightTier ? `${area.score}/100 DNA score` : `${matchScore}/100 match`}
-                    >
-                      <Zap size={9} />
-                      {area.name}
-                      <span className="text-[9px] font-display font-bold" style={{ color: '#f1f5f9' }}>{scoreValue}</span>
-                    </button>
-                  )
-                })}
-                {/* Brochure AI chip */}
+              <div className="relative mb-2.5">
                 <button
-                  onClick={() => { setShowBrochure(v => !v); setSearchCoords(null); setSelectedArea(null) }}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
+                  onClick={() => scrollRail(cityRailRef, -1)}
+                  className="absolute left-1 top-1/2 -translate-y-1/2 z-[1] hidden md:flex items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
+                  style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
+                  aria-label="Scroll cities left"
+                >
+                  <ChevronLeft size={13} />
+                </button>
+                <div
+                  ref={cityRailRef}
+                  className="flex items-center gap-1.5 overflow-x-auto"
                   style={{
-                    background: showBrochure ? 'rgba(99, 102, 241, 0.28)' : 'rgba(15, 23, 42, 0.88)',
-                    border: showBrochure ? '1px solid rgba(165, 180, 252, 0.58)' : '1px solid rgba(165, 180, 252, 0.34)',
-                    color: '#c7d2fe',
-                    boxShadow: showBrochure ? '0 0 14px rgba(99, 102, 241, 0.26)' : '0 8px 20px rgba(0,0,0,0.26)',
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
+                    padding: '4px 42px',
+                    scrollPaddingInline: 42,
+                    borderRadius: 999,
+                    background: 'rgba(3, 7, 18, 0.78)',
+                    border: '1px solid rgba(148, 163, 184, 0.20)',
+                    backdropFilter: 'blur(18px)',
+                    WebkitBackdropFilter: 'blur(18px)',
+                    boxShadow: '0 12px 34px rgba(0,0,0,0.34)',
                   }}
                 >
-                  <FileText size={9} />
-                  Brochure AI
+                  {CITY_LIST.map(city => {
+                    const isActive = selectedCitySlug === city.slug
+                    return (
+                      <button
+                        key={city.slug}
+                        onClick={() => handleCityChange(city.slug)}
+                        className="px-3 py-1.5 rounded-full text-[10px] font-sans font-semibold transition-all duration-200 flex-shrink-0 hover:scale-[1.03] active:scale-[0.97]"
+                        style={{
+                          background: isActive ? 'rgba(16, 185, 129, 0.24)' : 'rgba(15, 23, 42, 0.94)',
+                          border: isActive ? '1px solid rgba(16, 185, 129, 0.62)' : '1px solid rgba(148, 163, 184, 0.26)',
+                          color: isActive ? '#34d399' : '#e2e8f0',
+                          boxShadow: isActive ? '0 0 14px rgba(16, 185, 129, 0.28)' : '0 6px 16px rgba(0,0,0,0.26)',
+                        }}
+                      >
+                        {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
+                      </button>
+                    )
+                  })}
+                </div>
+                <button
+                  onClick={() => scrollRail(cityRailRef, 1)}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 z-[1] hidden md:flex items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
+                  style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
+                  aria-label="Scroll cities right"
+                >
+                  <ChevronRight size={13} />
+                </button>
+              </div>
+              {/* Top area chips */}
+              <div className="relative">
+                <button
+                  onClick={() => scrollRail(areaRailRef, -1)}
+                  className="absolute left-1 top-1/2 -translate-y-1/2 z-[1] hidden md:flex items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
+                  style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
+                  aria-label="Scroll suggestions left"
+                >
+                  <ChevronLeft size={13} />
+                </button>
+                <div
+                  ref={areaRailRef}
+                  className="flex items-center gap-2 overflow-x-auto"
+                  style={{
+                    scrollbarWidth: 'none',
+                    msOverflowStyle: 'none',
+                    padding: '4px 42px',
+                    scrollPaddingInline: 42,
+                    borderRadius: 999,
+                    background: 'rgba(3, 7, 18, 0.76)',
+                    border: '1px solid rgba(148, 163, 184, 0.20)',
+                    backdropFilter: 'blur(18px)',
+                    WebkitBackdropFilter: 'blur(18px)',
+                    boxShadow: '0 12px 34px rgba(0,0,0,0.34)',
+                  }}
+                >
+                  {sidebarList.slice(0, 6).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
+                    const color = getScoreColor(area.score)
+                    const scoreValue = highlightTier ? area.score : matchScore
+                    return (
+                      <button
+                        key={area.slug}
+                        onClick={() => navigate(`/area/${area.slug}`)}
+                        className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
+                        style={{
+                          background: `linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.88)), ${color}2f`,
+                          border: `1px solid ${color}70`,
+                          color,
+                          boxShadow: `0 8px 20px rgba(0,0,0,0.32), 0 0 14px ${color}24`,
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = `linear-gradient(180deg, rgba(15,23,42,1), rgba(15,23,42,0.92)), ${color}44`; e.currentTarget.style.boxShadow = `0 8px 22px rgba(0,0,0,0.38), 0 0 18px ${color}38` }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = `linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.88)), ${color}2f`; e.currentTarget.style.boxShadow = `0 8px 20px rgba(0,0,0,0.32), 0 0 14px ${color}24` }}
+                        title={highlightTier ? `${area.score}/100 DNA score` : `${matchScore}/100 match`}
+                      >
+                        <Zap size={9} />
+                        {area.name}
+                        <span className="text-[9px] font-display font-bold" style={{ color: '#f8fafc' }}>{scoreValue}</span>
+                      </button>
+                    )
+                  })}
+                  {/* Brochure AI chip */}
+                  <button
+                    onClick={() => { setShowBrochure(v => !v); setSearchCoords(null); setSelectedArea(null) }}
+                    className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
+                    style={{
+                      background: showBrochure ? 'rgba(99, 102, 241, 0.32)' : 'rgba(15, 23, 42, 0.94)',
+                      border: showBrochure ? '1px solid rgba(165, 180, 252, 0.64)' : '1px solid rgba(165, 180, 252, 0.42)',
+                      color: '#dbe4ff',
+                      boxShadow: showBrochure ? '0 0 14px rgba(99, 102, 241, 0.30)' : '0 8px 20px rgba(0,0,0,0.30)',
+                    }}
+                  >
+                    <FileText size={9} />
+                    Brochure AI
+                  </button>
+                </div>
+                <button
+                  onClick={() => scrollRail(areaRailRef, 1)}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 z-[1] hidden md:flex items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
+                  style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
+                  aria-label="Scroll suggestions right"
+                >
+                  <ChevronRight size={13} />
                 </button>
               </div>
             </motion.div>
