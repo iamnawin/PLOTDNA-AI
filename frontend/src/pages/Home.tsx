@@ -267,7 +267,11 @@ export default function Home() {
   }
 
   function toggleTier(label: string) {
-    setHighlightTier(highlightTier === label ? null : label)
+    const nextTier = highlightTier === label ? null : label
+    setHighlightTier(nextTier)
+    if (nextTier && selectedArea && getScoreLabel(selectedArea.score) !== nextTier) {
+      setSelectedArea(null)
+    }
   }
 
   return (
@@ -551,8 +555,9 @@ export default function Home() {
                 className="flex items-center gap-2 overflow-x-auto md:justify-center"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {recommendedAreas.slice(0, 4).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
+                {sidebarList.slice(0, 4).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
                   const color = getScoreColor(area.score)
+                  const scoreValue = highlightTier ? area.score : matchScore
                   return (
                     <button
                       key={area.slug}
@@ -561,11 +566,11 @@ export default function Home() {
                       style={{ background: `${color}16`, border: `1px solid ${color}28`, color }}
                       onMouseEnter={(e) => { e.currentTarget.style.background = `${color}28`; e.currentTarget.style.boxShadow = `0 0 12px ${color}25` }}
                       onMouseLeave={(e) => { e.currentTarget.style.background = `${color}16`; e.currentTarget.style.boxShadow = 'none' }}
-                      title={`${matchScore}/100 match`}
+                      title={highlightTier ? `${area.score}/100 DNA score` : `${matchScore}/100 match`}
                     >
                       <Zap size={9} />
                       {area.name}
-                      <span className="text-[9px] font-display font-bold" style={{ color: '#f1f5f9' }}>{matchScore}</span>
+                      <span className="text-[9px] font-display font-bold" style={{ color: '#f1f5f9' }}>{scoreValue}</span>
                     </button>
                   )
                 })}
@@ -628,7 +633,7 @@ export default function Home() {
                 style={{ boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)' }}
               />
               <p className="text-[9px] font-sans font-bold text-emerald-400 uppercase tracking-[0.14em]">
-                Recommended for {goalMeta.shortLabel}
+                {highlightTier ? `${highlightTier} areas` : `Recommended for ${goalMeta.shortLabel}`}
               </p>
             </div>
             {isGlobeMode && (
@@ -691,22 +696,41 @@ export default function Home() {
           </div>
           {isGlobeMode && !globeSidebarExpanded && (
             <div className="mt-3 space-y-2">
-              {recommendedAreas.slice(0, 2).map(({ area, matchScore }) => (
+              {sidebarList.length === 0 ? (
                 <div
-                  key={area.slug}
-                  className="flex items-center justify-between rounded-lg px-2.5 py-2"
+                  className="rounded-lg px-2.5 py-3"
                   style={{
                     background: 'rgba(255,255,255,0.02)',
                     border: '1px solid rgba(255,255,255,0.04)',
                   }}
                 >
-                  <div>
-                    <p className="text-[10px] font-sans font-medium text-slate-200">{area.name}</p>
-                    <p className="text-[8px] font-sans text-slate-500">Top match</p>
-                  </div>
-                  <span className="text-[11px] font-display font-bold text-emerald-400">{matchScore}</span>
+                  <p className="text-[10px] font-sans text-slate-500">No areas in this tier</p>
                 </div>
-              ))}
+              ) : (
+                sidebarList.slice(0, 2).map(({ area, matchScore }) => {
+                  const color = getScoreColor(area.score)
+                  const value = highlightTier ? area.score : matchScore
+                  return (
+                    <button
+                      key={area.slug}
+                      onClick={() => setSelectedArea(selectedArea?.slug === area.slug ? null : area)}
+                      className="w-full flex items-center justify-between rounded-lg px-2.5 py-2 text-left transition-all hover:bg-white/[0.04]"
+                      style={{
+                        background: selectedArea?.slug === area.slug ? `${color}12` : 'rgba(255,255,255,0.02)',
+                        border: selectedArea?.slug === area.slug ? `1px solid ${color}35` : '1px solid rgba(255,255,255,0.04)',
+                      }}
+                    >
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-sans font-medium text-slate-200 truncate">{area.name}</p>
+                        <p className="text-[8px] font-sans text-slate-500">
+                          {highlightTier ? `${getScoreLabel(area.score)} DNA` : 'Top match'}
+                        </p>
+                      </div>
+                      <span className="text-[11px] font-display font-bold" style={{ color }}>{value}</span>
+                    </button>
+                  )
+                })
+              )}
             </div>
           )}
           {highlightTier && (
