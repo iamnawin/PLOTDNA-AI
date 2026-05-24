@@ -130,21 +130,35 @@ export default function ScoreCard({ area, onClose }: Props) {
       <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <button
           onClick={() => navigate(`/area/${area.slug}`)}
-          className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-sans font-black uppercase tracking-[0.08em] transition-all duration-300"
+          className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-sans font-black uppercase tracking-[0.08em] transition-all duration-200 btn-3d-reflective"
           style={{
-            background: `linear-gradient(145deg, rgba(255,255,255,0.20) 0%, ${color}38 18%, rgba(2,6,23,0.92) 54%, ${color}28 100%)`,
-            border: `1px solid ${color}90`,
-            color: '#f8fafc',
-            boxShadow: `0 14px 30px rgba(0,0,0,0.42), 0 0 24px ${color}30, inset 0 1px 0 rgba(255,255,255,0.26), inset 0 -10px 18px rgba(0,0,0,0.20)`,
-            textShadow: `0 0 12px ${color}95`,
+            background: `linear-gradient(135deg, ${color}dd 0%, ${color}aa 100%)`,
+            borderTop: '1px solid rgba(255,255,255,0.4)',
+            borderLeft: '1px solid rgba(255,255,255,0.2)',
+            borderRight: '1px solid rgba(0,0,0,0.2)',
+            borderBottom: '4px solid rgba(0,0,0,0.45)',
+            color: '#ffffff',
+            boxShadow: `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`,
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-1px)'
-            e.currentTarget.style.boxShadow = `0 18px 36px rgba(0,0,0,0.50), 0 0 34px ${color}46, inset 0 1px 0 rgba(255,255,255,0.32), inset 0 -10px 18px rgba(0,0,0,0.20)`
+            e.currentTarget.style.transform = 'translateY(-2px)'
+            e.currentTarget.style.borderBottomWidth = '6px'
+            e.currentTarget.style.boxShadow = `0 12px 30px rgba(0,0,0,0.45), 0 0 24px ${color}4d`
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0)'
-            e.currentTarget.style.boxShadow = `0 14px 30px rgba(0,0,0,0.42), 0 0 24px ${color}30, inset 0 1px 0 rgba(255,255,255,0.26), inset 0 -10px 18px rgba(0,0,0,0.20)`
+            e.currentTarget.style.borderBottomWidth = '4px'
+            e.currentTarget.style.boxShadow = `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`
+          }}
+          onMouseDown={(e) => {
+            e.currentTarget.style.transform = 'translateY(2px)'
+            e.currentTarget.style.borderBottomWidth = '1px'
+            e.currentTarget.style.boxShadow = `0 2px 10px rgba(0,0,0,0.25)`
+          }}
+          onMouseUp={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)'
+            e.currentTarget.style.borderBottomWidth = '4px'
+            e.currentTarget.style.boxShadow = `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`
           }}
         >
           Full DNA Analysis

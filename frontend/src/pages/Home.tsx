@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, type CSSProperties, type RefObject } from 'react'
+import { useRef, useState, useEffect, type RefObject } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Search, X, Zap, ChevronLeft, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
@@ -1160,11 +1160,7 @@ export default function Home() {
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute bottom-[calc(4.75rem+env(safe-area-inset-bottom))] md:bottom-5 left-[calc(0.75rem+env(safe-area-inset-left))] md:left-5 z-[999] flex items-center gap-1 rounded-full overflow-x-auto max-w-[calc(100vw-1.5rem)]"
-        style={{
-          WebkitOverflowScrolling: 'touch',
-          scrollbarWidth: 'none',
-        } as CSSProperties}
+        className="absolute bottom-[calc(4.75rem+env(safe-area-inset-bottom))] md:bottom-5 left-[calc(0.75rem+env(safe-area-inset-left))] md:left-5 z-[999] flex items-center gap-1.5"
       >
         {RISK_TIERS.map((tier) => {
           const isActive = highlightTier === tier.label
@@ -1175,29 +1171,21 @@ export default function Home() {
               key={tier.label}
               onClick={() => toggleTier(tier.label)}
               disabled={disabled}
-              className="flex items-center justify-center gap-1.5 h-8 min-w-9 px-2 rounded-full transition-all duration-200 disabled:cursor-not-allowed"
+              className="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200 disabled:cursor-not-allowed select-none"
               style={{
-                background: isActive ? `${tier.color}26` : 'rgba(3,7,18,0.72)',
-                border: isActive ? `1px solid ${tier.color}80` : '1px solid rgba(148,163,184,0.14)',
-                boxShadow: isActive ? `0 0 14px ${tier.color}28, inset 0 1px 0 rgba(255,255,255,0.08)` : '0 8px 22px rgba(0,0,0,0.28)',
-                opacity: disabled ? 0.42 : 1,
-                backdropFilter: 'blur(14px)',
-                WebkitBackdropFilter: 'blur(14px)',
+                background: isActive ? tier.color : 'rgba(3, 7, 18, 0.72)',
+                border: isActive ? `1px solid ${tier.color}` : '1px solid rgba(148, 163, 184, 0.16)',
+                boxShadow: isActive ? `0 0 14px ${tier.color}70, inset 0 1px 0 rgba(255,255,255,0.2)` : '0 8px 22px rgba(0,0,0,0.28)',
+                opacity: disabled ? 0.35 : 1,
+                cursor: disabled ? 'not-allowed' : 'pointer',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
               }}
               title={disabled ? `No ${tier.label} areas in ${cityMeta.name}` : `${count} ${tier.label} areas in ${cityMeta.name}`}
             >
-              <div
-                className="w-1.5 h-1.5 rounded-full flex-shrink-0"
-                style={{
-                  background: isActive ? `${tier.color}cc` : `${tier.color}44`,
-                  border: `1px solid ${tier.color}`,
-                  boxShadow: isActive ? `0 0 7px ${tier.color}70` : 'none',
-                  transition: 'all 0.2s',
-                }}
-              />
               <span
                 className="text-[11px] font-sans font-black uppercase leading-none transition-colors duration-200"
-                style={{ color: isActive ? tier.color : disabled ? '#475569' : '#cbd5e1' }}
+                style={{ color: isActive ? '#0f172a' : '#cbd5e1' }}
               >
                 {tier.short}
               </span>
@@ -1209,13 +1197,13 @@ export default function Home() {
         <AnimatePresence>
           {highlightTier && (
             <motion.button
-              initial={{ opacity: 0, width: 0 }}
-              animate={{ opacity: 1, width: 'auto' }}
-              exit={{ opacity: 0, width: 0 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
               onClick={() => setHighlightTier(null)}
-              className="flex items-center gap-1 px-2 py-2 text-slate-500 hover:text-slate-200 transition-colors overflow-hidden"
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900/60 border border-white/5 text-slate-400 hover:text-slate-200 transition-colors"
             >
-              <X size={11} />
+              <X size={12} />
             </motion.button>
           )}
         </AnimatePresence>

@@ -600,19 +600,34 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 },
               },
             })}
-            className="w-full flex flex-col items-center justify-center gap-1 py-3.5 px-4 rounded-xl font-sans transition-all duration-300"
+            className="w-full flex flex-col items-center justify-center gap-1 py-3.5 px-4 rounded-xl font-sans transition-all duration-200 btn-3d-reflective"
             style={{
-              background: `linear-gradient(145deg, rgba(255,255,255,0.18) 0%, ${color}36 18%, rgba(2,6,23,0.90) 54%, ${color}24 100%)`,
-              border: `1px solid ${color}85`,
-              boxShadow: `0 14px 30px rgba(0,0,0,0.40), 0 0 24px ${color}2f, inset 0 1px 0 rgba(255,255,255,0.24)`,
+              background: `linear-gradient(135deg, ${color}dd 0%, ${color}aa 100%)`,
+              borderTop: '1px solid rgba(255,255,255,0.4)',
+              borderLeft: '1px solid rgba(255,255,255,0.2)',
+              borderRight: '1px solid rgba(0,0,0,0.2)',
+              borderBottom: '4px solid rgba(0,0,0,0.45)',
+              boxShadow: `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-1px)'
-              e.currentTarget.style.boxShadow = `0 18px 36px rgba(0,0,0,0.48), 0 0 34px ${color}44, inset 0 1px 0 rgba(255,255,255,0.30)`
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.borderBottomWidth = '6px'
+              e.currentTarget.style.boxShadow = `0 12px 30px rgba(0,0,0,0.45), 0 0 24px ${color}4d`
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = `0 14px 30px rgba(0,0,0,0.40), 0 0 24px ${color}2f, inset 0 1px 0 rgba(255,255,255,0.24)`
+              e.currentTarget.style.borderBottomWidth = '4px'
+              e.currentTarget.style.boxShadow = `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'translateY(2px)'
+              e.currentTarget.style.borderBottomWidth = '1px'
+              e.currentTarget.style.boxShadow = `0 2px 10px rgba(0,0,0,0.25)`
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.borderBottomWidth = '4px'
+              e.currentTarget.style.boxShadow = `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`
             }}
           >
             <span className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.08em]" style={{ color: '#f8fafc', textShadow: `0 0 12px ${color}95` }}>
@@ -645,19 +660,34 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 },
               },
             })}
-            className="w-full flex flex-col items-center justify-center gap-1 py-3.5 px-4 rounded-xl font-sans transition-all duration-300"
+            className="w-full flex flex-col items-center justify-center gap-1 py-3.5 px-4 rounded-xl font-sans transition-all duration-200 btn-3d-reflective"
             style={{
-              background: 'linear-gradient(145deg, rgba(255,255,255,0.18) 0%, rgba(16,185,129,0.36) 18%, rgba(2,6,23,0.90) 54%, rgba(16,185,129,0.24) 100%)',
-              border: '1px solid rgba(16, 185, 129, 0.72)',
-              boxShadow: '0 14px 30px rgba(0,0,0,0.40), 0 0 24px rgba(16,185,129,0.30), inset 0 1px 0 rgba(255,255,255,0.24)',
+              background: 'linear-gradient(135deg, rgba(16,185,129,0.85) 0%, rgba(5,150,105,0.7) 100%)',
+              borderTop: '1px solid rgba(255,255,255,0.4)',
+              borderLeft: '1px solid rgba(255,255,255,0.2)',
+              borderRight: '1px solid rgba(0,0,0,0.2)',
+              borderBottom: '4px solid rgba(0,0,0,0.45)',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.35), 0 0 16px rgba(16,185,129,0.33)',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-1px)'
-              e.currentTarget.style.boxShadow = '0 18px 36px rgba(0,0,0,0.48), 0 0 34px rgba(16,185,129,0.44), inset 0 1px 0 rgba(255,255,255,0.30)'
+              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.borderBottomWidth = '6px'
+              e.currentTarget.style.boxShadow = '0 12px 30px rgba(0,0,0,0.45), 0 0 24px rgba(16,185,129,0.45)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)'
-              e.currentTarget.style.boxShadow = '0 14px 30px rgba(0,0,0,0.40), 0 0 24px rgba(16,185,129,0.30), inset 0 1px 0 rgba(255,255,255,0.24)'
+              e.currentTarget.style.borderBottomWidth = '4px'
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.35), 0 0 16px rgba(16,185,129,0.33)'
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = 'translateY(2px)'
+              e.currentTarget.style.borderBottomWidth = '1px'
+              e.currentTarget.style.boxShadow = '0 2px 10px rgba(0,0,0,0.25)'
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.borderBottomWidth = '4px'
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.35), 0 0 16px rgba(16,185,129,0.33)'
             }}
           >
             <span className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.08em] text-slate-50" style={{ textShadow: '0 0 12px rgba(16,185,129,0.95)' }}>

@@ -100,28 +100,29 @@ export default function AssistantDock({ context }: Props) {
     if (!el || typeof window === 'undefined') return
 
     const rect = el.getBoundingClientRect()
-    const safe = 10
-    const minTop = safe
-    const maxRight = window.innerWidth - safe
-    const maxBottom = window.innerHeight - safe
+    const safeLeft = 16
+    const safeRight = 16
+    const safeTop = 80 // Prevents dock going under top search/header bars
+    const safeBottom = context.page === 'map' ? 120 : 20 // Prevents dock going under bottom controls/bars
+
     let nextX = x.get()
     let nextY = y.get()
 
-    if (rect.left < safe) nextX += safe - rect.left
-    if (rect.right > maxRight) nextX -= rect.right - maxRight
-    if (rect.top < minTop) nextY += minTop - rect.top
-    if (rect.bottom > maxBottom) nextY -= rect.bottom - maxBottom
+    if (rect.left < safeLeft) nextX += safeLeft - rect.left
+    if (rect.right > window.innerWidth - safeRight) nextX -= rect.right - (window.innerWidth - safeRight)
+    if (rect.top < safeTop) nextY += safeTop - rect.top
+    if (rect.bottom > window.innerHeight - safeBottom) nextY -= rect.bottom - (window.innerHeight - safeBottom)
 
     x.set(nextX)
     y.set(nextY)
-  }, [x, y])
+  }, [x, y, context.page])
 
   useEffect(() => {
     const handleResize = () => {
       setDragConstraints({
         left: -window.innerWidth + 180,
         right: 10,
-        top: -window.innerHeight + (context.page === 'map' ? 120 : 100),
+        top: -window.innerHeight + (context.page === 'map' ? 200 : 180),
         bottom: context.page === 'map' ? 60 : 10,
       })
       window.requestAnimationFrame(keepDockInViewport)
