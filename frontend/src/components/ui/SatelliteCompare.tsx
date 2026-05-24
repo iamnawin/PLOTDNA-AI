@@ -14,8 +14,47 @@ const SATELLITE_STYLE: StyleSpecification = {
       tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
       tileSize: 256,
     },
+    roads: {
+      type: 'raster',
+      tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'],
+      tileSize: 256,
+    },
+    labels: {
+      type: 'raster',
+      tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'],
+      tileSize: 256,
+    },
   },
-  layers: [{ id: 'satellite', type: 'raster', source: 'satellite' }],
+  layers: [
+    {
+      id: 'satellite',
+      type: 'raster',
+      source: 'satellite',
+      paint: {
+        'raster-brightness-min': 0.08,
+        'raster-brightness-max': 1,
+        'raster-contrast': 0.16,
+        'raster-saturation': 0.14,
+      },
+    },
+    {
+      id: 'roads',
+      type: 'raster',
+      source: 'roads',
+      paint: {
+        'raster-opacity': 0.72,
+        'raster-brightness-min': 0.12,
+      },
+    },
+    {
+      id: 'labels',
+      type: 'raster',
+      source: 'labels',
+      paint: {
+        'raster-opacity': 0.86,
+      },
+    },
+  ],
 }
 
 const PHASE_CONFIG: Record<Milestone['phase'], {
@@ -260,7 +299,7 @@ export default function SatelliteCompare({ area, coords }: Props) {
 
             <Map
               mapStyle={SATELLITE_STYLE}
-              initialViewState={{ longitude: lng, latitude: lat, zoom: 12.5 }}
+              initialViewState={{ longitude: lng, latitude: lat, zoom: coords ? 17.2 : 12.5 }}
               style={{ width: '100%', height: '100%' }}
               scrollZoom={true} dragPan={true} dragRotate={false}
               doubleClickZoom={true} touchZoomRotate={true} keyboard={false}

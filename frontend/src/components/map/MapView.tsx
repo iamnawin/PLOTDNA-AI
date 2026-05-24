@@ -59,8 +59,47 @@ const SATELLITE_SPEC: StyleSpecification = {
       tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
       tileSize: 256,
     },
+    roads: {
+      type: 'raster',
+      tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'],
+      tileSize: 256,
+    },
+    labels: {
+      type: 'raster',
+      tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'],
+      tileSize: 256,
+    },
   },
-  layers: [{ id: 'sat-base', type: 'raster', source: 'sat' }],
+  layers: [
+    {
+      id: 'sat-base',
+      type: 'raster',
+      source: 'sat',
+      paint: {
+        'raster-brightness-min': 0.08,
+        'raster-brightness-max': 1,
+        'raster-contrast': 0.18,
+        'raster-saturation': 0.16,
+      },
+    },
+    {
+      id: 'sat-roads',
+      type: 'raster',
+      source: 'roads',
+      paint: {
+        'raster-opacity': 0.72,
+        'raster-brightness-min': 0.12,
+      },
+    },
+    {
+      id: 'sat-labels',
+      type: 'raster',
+      source: 'labels',
+      paint: {
+        'raster-opacity': 0.86,
+      },
+    },
+  ],
 }
 
 const TERRAIN_SPEC: StyleSpecification = {
@@ -117,11 +156,11 @@ export default function MapView() {
     if (!searchCoords || !mapRef.current) return
     mapRef.current.flyTo({
       center: [searchCoords[1], searchCoords[0]], // MapLibre: [lng, lat]
-      zoom: 14,
+      zoom: mapStyleKey === 'satellite' ? 17.2 : 14,
       duration: 1500,
       essential: true,
     })
-  }, [searchCoords])
+  }, [mapStyleKey, searchCoords])
 
   // ── Fly to selected area (sidebar / chip click) ───────────────────────────
   useEffect(() => {

@@ -417,30 +417,30 @@ export default function AreaDetail() {
 
   const handleUnlock = async () => {
     if (!validateContact(contactInput)) return
-    setIsSubmitting(true)
+    const contact = contactInput.trim()
+    localStorage.setItem('plotdna_unlocked', 'true')
+    setIsLocked(false)
     setErrorMessage('')
+    setIsSubmitting(true)
+
+    const controller = new AbortController()
+    const timeoutId = window.setTimeout(() => controller.abort(), 5000)
+
     try {
       const response = await fetch(`${BASE_URL}/api/utils/collect-lead`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contact: contactInput.trim() })
+        body: JSON.stringify({ contact }),
+        signal: controller.signal,
       })
       if (!response.ok) {
         const errData = await response.json().catch(() => ({}))
         throw new Error(errData.detail || 'Failed to submit contact. Please try again.')
       }
-      localStorage.setItem('plotdna_unlocked', 'true')
-      setIsLocked(false)
     } catch (err) {
-      if (err instanceof TypeError) {
-        console.warn("Backend offline or CORS issue, unlocking locally:", err)
-        localStorage.setItem('plotdna_unlocked', 'true')
-        setIsLocked(false)
-        return
-      }
-      const msg = err instanceof Error ? err.message : 'An error occurred. Please try again.'
-      setErrorMessage(msg)
+      console.warn('Lead capture failed after local unlock:', err)
     } finally {
+      window.clearTimeout(timeoutId)
       setIsSubmitting(false)
     }
   }

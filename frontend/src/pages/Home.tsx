@@ -182,7 +182,9 @@ export default function Home() {
           }
         })
       } else {
-        setViewMode('globe')
+        setViewMode('map')
+        setMapStyleKey('satellite')
+        setIs3D(false)
         setSearchCoords(coords)
       }
     })
