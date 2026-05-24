@@ -76,10 +76,10 @@ const SATELLITE_SPEC: StyleSpecification = {
       type: 'raster',
       source: 'sat',
       paint: {
-        'raster-brightness-min': 0.08,
+        'raster-brightness-min': 0.11,
         'raster-brightness-max': 1,
-        'raster-contrast': 0.04,
-        'raster-saturation': -0.18,
+        'raster-contrast': 0.12,
+        'raster-saturation': -0.24,
       },
     },
     {
@@ -87,7 +87,7 @@ const SATELLITE_SPEC: StyleSpecification = {
       type: 'raster',
       source: 'roads',
       paint: {
-        'raster-opacity': 0.72,
+        'raster-opacity': 0.56,
         'raster-brightness-min': 0.12,
       },
     },
@@ -96,7 +96,7 @@ const SATELLITE_SPEC: StyleSpecification = {
       type: 'raster',
       source: 'labels',
       paint: {
-        'raster-opacity': 0.86,
+        'raster-opacity': 0.76,
       },
     },
   ],

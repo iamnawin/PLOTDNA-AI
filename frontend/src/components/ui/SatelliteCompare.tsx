@@ -31,10 +31,10 @@ const SATELLITE_STYLE: StyleSpecification = {
       type: 'raster',
       source: 'satellite',
       paint: {
-        'raster-brightness-min': 0.08,
+        'raster-brightness-min': 0.11,
         'raster-brightness-max': 1,
-        'raster-contrast': 0.08,
-        'raster-saturation': -0.08,
+        'raster-contrast': 0.14,
+        'raster-saturation': -0.18,
       },
     },
     {
@@ -42,7 +42,7 @@ const SATELLITE_STYLE: StyleSpecification = {
       type: 'raster',
       source: 'roads',
       paint: {
-        'raster-opacity': 0.72,
+        'raster-opacity': 0.58,
         'raster-brightness-min': 0.12,
       },
     },
@@ -51,7 +51,7 @@ const SATELLITE_STYLE: StyleSpecification = {
       type: 'raster',
       source: 'labels',
       paint: {
-        'raster-opacity': 0.86,
+        'raster-opacity': 0.78,
       },
     },
   ],
@@ -307,14 +307,14 @@ export default function SatelliteCompare({ area, coords }: Props) {
             >
               {/* 5km radius ring */}
               <Source type="geojson" data={radiusGeoJSON}>
-                <Layer id="radius-fill"   type="fill" paint={{ 'fill-color': color, 'fill-opacity': 0.06 }} />
-                <Layer id="radius-border" type="line" paint={{ 'line-color': color, 'line-width': 1.5, 'line-opacity': 0.55, 'line-dasharray': [5, 3] }} />
+                <Layer id="radius-fill"   type="fill" paint={{ 'fill-color': '#38bdf8', 'fill-opacity': 0.025 }} />
+                <Layer id="radius-border" type="line" paint={{ 'line-color': '#38bdf8', 'line-width': 1.3, 'line-opacity': 0.42, 'line-dasharray': [5, 3] }} />
               </Source>
 
               {/* Area polygon */}
               <Source type="geojson" data={areaGeoJSON}>
-                <Layer id="area-fill"   type="fill" paint={{ 'fill-color': color, 'fill-opacity': 0.10 }} />
-                <Layer id="area-border" type="line" paint={{ 'line-color': color, 'line-width': 2, 'line-opacity': 0.9 }} />
+                <Layer id="area-fill"   type="fill" paint={{ 'fill-color': '#22d3ee', 'fill-opacity': 0.04 }} />
+                <Layer id="area-border" type="line" paint={{ 'line-color': '#22d3ee', 'line-width': 1.8, 'line-opacity': 0.68 }} />
               </Source>
 
               {/* Coordinate pin */}
@@ -361,18 +361,18 @@ export default function SatelliteCompare({ area, coords }: Props) {
 
             {/* Growth badge — bottom left */}
             <div className="absolute bottom-3 left-3 z-[1] flex items-center gap-2 px-3 py-2 rounded-lg pointer-events-none"
-              style={{ background: 'rgba(5,5,10,0.82)', backdropFilter: 'blur(8px)', border: `1px solid ${color}25` }}>
+              style={{ background: 'rgba(5,5,10,0.82)', backdropFilter: 'blur(8px)', border: '1px solid rgba(56,189,248,0.22)' }}>
               <div className="flex-1 h-1 rounded-full overflow-hidden" style={{ background: '#1a1a2e', width: 60 }}>
-                <div className="h-full rounded-full" style={{ width: '100%', background: `linear-gradient(90deg, ${color}80, ${color})` }} />
+                <div className="h-full rounded-full" style={{ width: '100%', background: 'linear-gradient(90deg, rgba(8,145,178,0.70), #38bdf8)' }} />
               </div>
-              <span className="text-[9px] font-display font-bold" style={{ color }}>100% built</span>
+              <span className="text-[9px] font-display font-bold text-sky-300">100% built</span>
             </div>
           </div>
 
           {/* Caption */}
           <div className="flex items-center gap-2 mt-2.5 px-1">
-            <div className="w-1 h-1 rounded-full" style={{ backgroundColor: color }} />
-            <p className="text-[9px] font-sans" style={{ color: `${color}99` }}>
+            <div className="w-1 h-1 rounded-full bg-sky-400" />
+            <p className="text-[9px] font-sans text-sky-300/70">
               {coords ? `${RADIUS_KM} km · interactive` : 'Roads · Buildings · Growth'}
             </p>
           </div>

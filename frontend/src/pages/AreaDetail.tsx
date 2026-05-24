@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
+  Bar,
+  BarChart,
   CartesianGrid,
   Line,
   LineChart,
@@ -21,7 +23,7 @@ import jsPDF from 'jspdf'
 import { useAppStore } from '@/store'
 import { CITIES, getAllAreas, getCityForArea } from '@/data/cities'
 import type { MicroMarket } from '@/types'
-import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
+import { getScoreColor, getScoreLabel, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
 import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/areaSources'
 import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
@@ -105,6 +107,7 @@ const LIVABILITY_CONFIG: { key: keyof Livability; icon: LucideIcon; label: strin
 ]
 
 type TrendHorizon = 'past5' | 'now' | 'next5' | 'next10'
+type SignalGraphMode = 'timeline' | 'mix'
 
 const TREND_HORIZONS: { key: TrendHorizon; label: string }[] = [
   { key: 'past5', label: '5Y Back' },
@@ -130,6 +133,7 @@ function buildTrendValue(current: number, yoy: number, horizon: TrendHorizon, sl
 
 function SignalTrendPanel({ area, accentColor }: { area: MicroMarket; accentColor: string }) {
   const [active, setActive] = useState<TrendHorizon>('now')
+  const [mode, setMode] = useState<SignalGraphMode>('timeline')
   const selectedLabel = TREND_HORIZONS.find(h => h.key === active)?.label ?? 'Now'
   const chartData = SIGNAL_CONFIG.map(({ key, label }) => {
     const current = area.signals[key] ?? 0
@@ -153,43 +157,78 @@ function SignalTrendPanel({ area, accentColor }: { area: MicroMarket; accentColo
           <p className="text-[11px] font-sans font-bold text-slate-200">Modeled signal trend</p>
           <p className="text-[9px] font-sans text-slate-500 mt-0.5">Derived from current score, signal weights, YoY velocity, and local growth stage.</p>
         </div>
-        <div className="flex items-center gap-1 rounded-full p-1 bg-slate-950/50 border border-white/5">
-          {TREND_HORIZONS.map(horizon => {
-            const isActive = active === horizon.key
-            return (
-              <button
-                key={horizon.key}
-                onClick={() => setActive(horizon.key)}
-                className="px-2.5 py-1 rounded-full text-[9px] font-sans font-bold transition-all"
-                style={{
-                  background: isActive ? `${accentColor}22` : 'transparent',
-                  color: isActive ? accentColor : '#64748b',
-                  border: isActive ? `1px solid ${accentColor}40` : '1px solid transparent',
-                }}
-              >
-                {horizon.label}
-              </button>
-            )
-          })}
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-1 rounded-full p-1 bg-slate-950/50 border border-white/5">
+            {(['timeline', 'mix'] as SignalGraphMode[]).map(graphMode => {
+              const isActive = mode === graphMode
+              return (
+                <button
+                  key={graphMode}
+                  onClick={() => setMode(graphMode)}
+                  className="px-2.5 py-1 rounded-full text-[9px] font-sans font-bold transition-all"
+                  style={{
+                    background: isActive ? 'rgba(56,189,248,0.14)' : 'transparent',
+                    color: isActive ? '#38bdf8' : '#64748b',
+                    border: isActive ? '1px solid rgba(56,189,248,0.32)' : '1px solid transparent',
+                  }}
+                >
+                  {graphMode === 'timeline' ? 'Timeline' : 'Score Mix'}
+                </button>
+              )
+            })}
+          </div>
+          <div className="flex items-center gap-1 rounded-full p-1 bg-slate-950/50 border border-white/5">
+            {TREND_HORIZONS.map(horizon => {
+              const isActive = active === horizon.key
+              return (
+                <button
+                  key={horizon.key}
+                  onClick={() => setActive(horizon.key)}
+                  className="px-2.5 py-1 rounded-full text-[9px] font-sans font-bold transition-all"
+                  style={{
+                    background: isActive ? `${accentColor}22` : 'transparent',
+                    color: isActive ? accentColor : '#64748b',
+                    border: isActive ? `1px solid ${accentColor}40` : '1px solid transparent',
+                  }}
+                >
+                  {horizon.label}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_190px] gap-4">
         <div className="h-[260px] rounded-2xl bg-slate-950/35 border border-white/5 p-3">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData} margin={{ top: 12, right: 12, bottom: 6, left: -12 }}>
-              <CartesianGrid stroke="rgba(148,163,184,0.12)" vertical={false} />
-              <XAxis dataKey="label" tick={{ fill: '#64748b', fontSize: 9 }} axisLine={false} tickLine={false} interval={0} />
-              <YAxis domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 9 }} axisLine={false} tickLine={false} />
-              <Tooltip
-                contentStyle={{ background: 'rgba(5,8,16,0.96)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, color: '#e2e8f0' }}
-                labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
-              />
-              <Line type="monotone" dataKey="past5" name="5Y Back" stroke="#64748b" strokeWidth={1.5} dot={false} opacity={active === 'past5' ? 1 : 0.35} />
-              <Line type="monotone" dataKey="now" name="Now" stroke={accentColor} strokeWidth={active === 'now' ? 3 : 2} dot={{ r: active === 'now' ? 4 : 2 }} opacity={active === 'now' ? 1 : 0.55} />
-              <Line type="monotone" dataKey="next5" name="+5Y" stroke="#38bdf8" strokeWidth={active === 'next5' ? 3 : 1.8} strokeDasharray="5 4" dot={false} opacity={active === 'next5' ? 1 : 0.45} />
-              <Line type="monotone" dataKey="next10" name="+10Y" stroke="#a78bfa" strokeWidth={active === 'next10' ? 3 : 1.8} strokeDasharray="3 5" dot={false} opacity={active === 'next10' ? 1 : 0.42} />
-            </LineChart>
+            {mode === 'timeline' ? (
+              <LineChart data={chartData} margin={{ top: 12, right: 12, bottom: 6, left: -12 }}>
+                <CartesianGrid stroke="rgba(148,163,184,0.12)" vertical={false} />
+                <XAxis dataKey="label" tick={{ fill: '#64748b', fontSize: 9 }} axisLine={false} tickLine={false} interval={0} />
+                <YAxis domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 9 }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{ background: 'rgba(5,8,16,0.96)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, color: '#e2e8f0' }}
+                  labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
+                />
+                <Line type="monotone" dataKey="past5" name="5Y Back" stroke="#64748b" strokeWidth={1.5} dot={false} opacity={active === 'past5' ? 1 : 0.35} />
+                <Line type="monotone" dataKey="now" name="Now" stroke={accentColor} strokeWidth={active === 'now' ? 3 : 2} dot={{ r: active === 'now' ? 4 : 2 }} opacity={active === 'now' ? 1 : 0.55} />
+                <Line type="monotone" dataKey="next5" name="+5Y" stroke="#38bdf8" strokeWidth={active === 'next5' ? 3 : 1.8} strokeDasharray="5 4" dot={false} opacity={active === 'next5' ? 1 : 0.45} />
+                <Line type="monotone" dataKey="next10" name="+10Y" stroke="#a78bfa" strokeWidth={active === 'next10' ? 3 : 1.8} strokeDasharray="3 5" dot={false} opacity={active === 'next10' ? 1 : 0.42} />
+              </LineChart>
+            ) : (
+              <BarChart data={chartData} margin={{ top: 12, right: 12, bottom: 6, left: -12 }}>
+                <CartesianGrid stroke="rgba(148,163,184,0.12)" vertical={false} />
+                <XAxis dataKey="label" tick={{ fill: '#64748b', fontSize: 9 }} axisLine={false} tickLine={false} interval={0} />
+                <YAxis domain={[0, 100]} tick={{ fill: '#64748b', fontSize: 9 }} axisLine={false} tickLine={false} />
+                <Tooltip
+                  contentStyle={{ background: 'rgba(5,8,16,0.96)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, color: '#e2e8f0' }}
+                  labelStyle={{ color: '#e2e8f0', fontWeight: 700 }}
+                />
+                <Bar dataKey={active} name={`${selectedLabel} score`} radius={[6, 6, 0, 0]} fill={accentColor} />
+                <Bar dataKey="weight" name="DNA weight" radius={[6, 6, 0, 0]} fill="#38bdf8" opacity={0.72} />
+              </BarChart>
+            )}
           </ResponsiveContainer>
         </div>
 
@@ -203,6 +242,9 @@ function SignalTrendPanel({ area, accentColor }: { area: MicroMarket; accentColo
             <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Strongest</p>
             <p className="text-sm font-sans font-bold text-slate-100 mt-1">{strongest?.label}</p>
             <p className="text-2xl font-display font-black mt-1" style={{ color: accentColor }}>{strongest ? strongest[active] : 0}</p>
+            <p className="text-[9px] font-sans text-slate-500 mt-1">
+              {mode === 'timeline' ? 'Trendline shows direction over time.' : 'Score Mix compares strength vs DNA weight.'}
+            </p>
           </div>
         </div>
       </div>
@@ -284,234 +326,246 @@ function LivabilityTrendPanel({ livability, yoy }: { livability: Livability; yoy
 // ── PDF generator ─────────────────────────────────────────────────────────────
 function generatePDF(area: MicroMarket) {
   if (!area) return
-  const doc     = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
-  const color   = getScoreColor(area.score)
-  const label   = getScoreLabel(area.score)
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+  const pageW = 210
+  const pageH = 297
+  const margin = 14
+  const color = getScoreColor(area.score)
+  const scoreLabel = getScoreLabel(area.score)
   const outlook = getOutlook(area)
   const milestones = getGrowthMilestones(area)
-  const sources    = getAreaSources(area.slug)
+  const sources = getAreaSources(area.slug)
+  const city = getCityForArea(area.slug)
+  const confidence = getConfidenceMeta(area.dataConfidence)
+  const generated = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
 
-  // Helper: hex → RGB
   function hexRgb(hex: string): [number, number, number] {
-    const r = parseInt(hex.slice(1, 3), 16)
-    const g = parseInt(hex.slice(3, 5), 16)
-    const b = parseInt(hex.slice(5, 7), 16)
-    return [r, g, b]
+    const normalized = hex.replace('#', '')
+    return [
+      parseInt(normalized.slice(0, 2), 16),
+      parseInt(normalized.slice(2, 4), 16),
+      parseInt(normalized.slice(4, 6), 16),
+    ]
   }
+
   const [cr, cg, cb] = hexRgb(color)
+  let y = 0
 
-  const W = 210, margin = 14
-
-  // ── Background ──
-  doc.setFillColor(5, 5, 10)
-  doc.rect(0, 0, W, 297, 'F')
-
-  // ── Header band ──
-  doc.setFillColor(cr, cg, cb)
-  doc.rect(0, 0, W, 2, 'F')
-
-  // ── Logo + Title ──
-  doc.setFillColor(cr, cg, cb)
-  doc.roundedRect(margin, 10, 12, 12, 2, 2, 'F')
-  doc.setTextColor(5, 5, 10)
-  doc.setFontSize(9)
-  doc.setFont('helvetica', 'bold')
-  doc.text('P', margin + 3.8, 18)
-
-  doc.setTextColor(232, 232, 240)
-  doc.setFontSize(18)
-  doc.setFont('helvetica', 'bold')
-  doc.text('PlotDNA', margin + 16, 18)
-
-  doc.setTextColor(cr, cg, cb)
-  doc.setFontSize(7)
-  doc.setFont('helvetica', 'normal')
-  doc.text(`Area DNA Analysis Report  ·  ${area.category}`, margin + 16, 23)
-
-  // Date
-  doc.setTextColor(80, 80, 100)
-  doc.setFontSize(7)
-  doc.text(`Generated: ${new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}`, W - margin, 18, { align: 'right' })
-
-  // ── Divider ──
-  doc.setDrawColor(cr, cg, cb)
-  doc.setLineWidth(0.3)
-  doc.line(margin, 28, W - margin, 28)
-
-  // ── Area name + score ring ──
-  let y = 36
-
-  doc.setTextColor(232, 232, 240)
-  doc.setFontSize(22)
-  doc.setFont('helvetica', 'bold')
-  doc.text(area.name, margin, y)
-
-  doc.setTextColor(cr, cg, cb)
-  doc.setFontSize(9)
-  doc.text(`${area.category}  ·  ${label}`, margin, y + 7)
-
-  // Score badge
-  doc.setFillColor(cr, cg, cb)
-  doc.setTextColor(5, 5, 10)
-  doc.roundedRect(W - margin - 26, y - 10, 26, 18, 3, 3, 'F')
-  doc.setFontSize(20)
-  doc.setFont('helvetica', 'bold')
-  doc.text(`${area.score}`, W - margin - 13, y + 3, { align: 'center' })
-  doc.setFontSize(6)
-  doc.text('DNA SCORE', W - margin - 13, y + 9, { align: 'center' })
-
-  y += 20
-
-  // Stats row
-  const stats = [
-    { label: 'YoY Growth', value: `+${area.yoy}%` },
-    { label: 'Price Range', value: area.priceRange },
-    { label: '5-Yr Outlook', value: outlook.range },
-    { label: 'Confidence', value: outlook.confidence },
-  ]
-  const colW = (W - margin * 2) / stats.length
-  stats.forEach(({ label: sl, value }, i) => {
-    const x = margin + i * colW
-    doc.setFillColor(20, 20, 35)
-    doc.roundedRect(x, y, colW - 2, 14, 2, 2, 'F')
-    doc.setTextColor(cr, cg, cb)
-    doc.setFontSize(10)
-    doc.setFont('helvetica', 'bold')
-    doc.text(value, x + (colW - 2) / 2, y + 7, { align: 'center' })
-    doc.setTextColor(80, 80, 100)
-    doc.setFontSize(6)
-    doc.setFont('helvetica', 'normal')
-    doc.text(sl.toUpperCase(), x + (colW - 2) / 2, y + 12, { align: 'center' })
-  })
-
-  y += 22
-
-  // ── Signal breakdown ──
-  doc.setTextColor(80, 80, 100)
-  doc.setFontSize(7)
-  doc.setFont('helvetica', 'bold')
-  doc.text('DNA SIGNAL BREAKDOWN', margin, y)
-  y += 5
-
-  const signalEntries = Object.entries(area.signals) as [string, number][]
-  signalEntries.forEach(([key, val]) => {
-    const slabel = SIGNAL_LABELS[key as keyof typeof SIGNAL_LABELS] ?? key
-    const weight = SIGNAL_WEIGHTS[key as keyof typeof SIGNAL_WEIGHTS] ?? 0
-    const barMaxW = W - margin * 2 - 45
-    const barW    = (val / 100) * barMaxW
-
-    doc.setTextColor(150, 150, 170)
-    doc.setFontSize(7)
-    doc.setFont('helvetica', 'normal')
-    doc.text(`${slabel} (${weight}%)`, margin, y + 3)
-
-    doc.setFillColor(25, 25, 42)
-    doc.roundedRect(margin + 50, y, barMaxW, 4, 1, 1, 'F')
-    doc.setFillColor(cr, cg, cb)
-    doc.roundedRect(margin + 50, y, barW, 4, 1, 1, 'F')
-
-    doc.setTextColor(cr, cg, cb)
-    doc.text(`${val}`, W - margin, y + 3.5, { align: 'right' })
-
-    y += 8
-  })
-
-  y += 4
-
-  // ── 15-Year Growth Timeline ──
-  doc.setTextColor(80, 80, 100)
-  doc.setFontSize(7)
-  doc.setFont('helvetica', 'bold')
-  doc.text('15-YEAR GROWTH TIMELINE', margin, y)
-  y += 6
-
-  const msW = (W - margin * 2) / milestones.length
-  milestones.forEach((m, i) => {
-    const x = margin + i * msW + msW / 2
-    const alpha = (i + 1) / milestones.length
-    const rr = Math.round(cr * alpha), rg = Math.round(cg * alpha), rb = Math.round(cb * alpha)
-    doc.setFillColor(rr, rg, rb)
-    doc.circle(x, y, 2.5, 'F')
-    doc.setTextColor(150, 150, 170)
-    doc.setFontSize(6.5)
-    doc.text(String(m.year), x, y + 6, { align: 'center' })
-    doc.setFontSize(5.5)
-    doc.text(m.label, x, y + 10, { align: 'center', maxWidth: msW - 2 })
-  })
-
-  y += 18
-
-  // ── 5-Year Forecast ──
-  doc.setFillColor(20, 20, 35)
-  doc.roundedRect(margin, y, W - margin * 2, 28, 3, 3, 'F')
-  doc.setDrawColor(cr, cg, cb)
-  doc.setLineWidth(0.4)
-  doc.roundedRect(margin, y, W - margin * 2, 28, 3, 3, 'S')
-
-  doc.setTextColor(cr, cg, cb)
-  doc.setFontSize(8)
-  doc.setFont('helvetica', 'bold')
-  doc.text('5-YEAR FORECAST', margin + 4, y + 7)
-
-  doc.setTextColor(232, 232, 240)
-  doc.setFontSize(12)
-  doc.text(outlook.range, margin + 4, y + 15)
-
-  doc.setTextColor(150, 150, 170)
-  doc.setFontSize(7)
-  doc.setFont('helvetica', 'normal')
-  const lines = doc.splitTextToSize(outlook.headline, W - margin * 2 - 8)
-  doc.text(lines, margin + 4, y + 22)
-
-  y += 36
-
-  // ── Key Highlights ──
-  doc.setTextColor(80, 80, 100)
-  doc.setFontSize(7)
-  doc.setFont('helvetica', 'bold')
-  doc.text('KEY HIGHLIGHTS', margin, y)
-  y += 5
-
-  area.highlights.forEach((h: string) => {
-    doc.setFillColor(cr, cg, cb)
-    doc.circle(margin + 1.5, y + 1, 1, 'F')
-    doc.setTextColor(150, 150, 170)
-    doc.setFontSize(7)
-    doc.setFont('helvetica', 'normal')
-    const hlines = doc.splitTextToSize(h, W - margin * 2 - 8)
-    doc.text(hlines, margin + 5, y + 2)
-    y += hlines.length * 5 + 2
-  })
-
-  y += 4
-
-  // ── Sources ──
-  if (y < 255) {
-    doc.setTextColor(80, 80, 100)
-    doc.setFontSize(7)
-    doc.setFont('helvetica', 'bold')
-    doc.text('SOURCES & REFERENCES', margin, y)
-    y += 5
-    sources.slice(0, 5).forEach(s => {
-      doc.setFillColor(30, 30, 50)
-      doc.roundedRect(margin, y, W - margin * 2, 7, 1, 1, 'F')
-      doc.setTextColor(150, 150, 170)
-      doc.setFontSize(6.5)
-      doc.text(s.title, margin + 4, y + 4.5)
-      doc.setTextColor(100, 140, 200)
-      doc.text(s.url, W - margin - 2, y + 4.5, { align: 'right' })
-      y += 9
-    })
+  const setText = (r: number, g: number, b: number, size: number, style: 'normal' | 'bold' = 'normal') => {
+    doc.setTextColor(r, g, b)
+    doc.setFont('helvetica', style)
+    doc.setFontSize(size)
   }
 
-  // ── Footer ──
-  doc.setDrawColor(cr, cg, cb)
-  doc.setLineWidth(0.3)
-  doc.line(margin, 287, W - margin, 287)
-  doc.setTextColor(60, 60, 80)
-  doc.setFontSize(6)
-  doc.text('PlotDNA — AI-powered real estate intelligence for India  ·  plotdna.in', margin, 292)
-  doc.text('Data reflects area-level signals only. Always verify RERA registration before purchasing.', W - margin, 292, { align: 'right' })
+  const header = (title = 'PlotDNA Area Intelligence Report') => {
+    doc.setFillColor(248, 250, 252)
+    doc.rect(0, 0, pageW, pageH, 'F')
+    doc.setFillColor(10, 15, 28)
+    doc.rect(0, 0, pageW, 28, 'F')
+    doc.setFillColor(cr, cg, cb)
+    doc.rect(0, 0, pageW, 2, 'F')
+    setText(255, 255, 255, 15, 'bold')
+    doc.text('PlotDNA', margin, 17)
+    setText(148, 163, 184, 7)
+    doc.text(title, margin + 34, 17)
+    doc.text(`Generated ${generated}`, pageW - margin, 17, { align: 'right' })
+    y = 38
+  }
+
+  const footer = (page: number) => {
+    doc.setDrawColor(226, 232, 240)
+    doc.line(margin, 284, pageW - margin, 284)
+    setText(100, 116, 139, 6.5)
+    doc.text('PlotDNA screening report. Verify title, RERA, zoning, access, utilities, and latest comps before purchase.', margin, 290)
+    doc.text(`Page ${page}`, pageW - margin, 290, { align: 'right' })
+  }
+
+  const section = (label: string) => {
+    setText(15, 23, 42, 9, 'bold')
+    doc.text(label.toUpperCase(), margin, y)
+    doc.setDrawColor(cr, cg, cb)
+    doc.setLineWidth(0.5)
+    doc.line(margin, y + 2.5, pageW - margin, y + 2.5)
+    y += 8
+  }
+
+  const card = (x: number, top: number, w: number, h: number, label: string, value: string, note?: string) => {
+    doc.setFillColor(255, 255, 255)
+    doc.setDrawColor(226, 232, 240)
+    doc.roundedRect(x, top, w, h, 3, 3, 'FD')
+    setText(100, 116, 139, 6.5, 'bold')
+    doc.text(label.toUpperCase(), x + 4, top + 6)
+    setText(15, 23, 42, 13, 'bold')
+    doc.text(doc.splitTextToSize(value, w - 8), x + 4, top + 14)
+    if (note) {
+      setText(100, 116, 139, 6.2)
+      doc.text(doc.splitTextToSize(note, w - 8), x + 4, top + h - 5)
+    }
+  }
+
+  header()
+
+  setText(15, 23, 42, 23, 'bold')
+  doc.text(area.name, margin, y)
+  setText(71, 85, 105, 8)
+  doc.text(`${city?.meta.name ?? 'India'} / ${area.category} / ${scoreLabel}`, margin, y + 7)
+
+  doc.setFillColor(cr, cg, cb)
+  doc.roundedRect(pageW - margin - 35, y - 8, 35, 24, 4, 4, 'F')
+  setText(255, 255, 255, 25, 'bold')
+  doc.text(String(area.score), pageW - margin - 17.5, y + 6, { align: 'center' })
+  setText(236, 253, 245, 6.5, 'bold')
+  doc.text('DNA SCORE', pageW - margin - 17.5, y + 13, { align: 'center' })
+  y += 26
+
+  const col = (pageW - margin * 2 - 6) / 4
+  card(margin, y, col, 24, 'YoY velocity', `+${area.yoy}%`, 'Current market momentum')
+  card(margin + col + 2, y, col, 24, 'Price range', area.priceRange, 'Local market band')
+  card(margin + (col + 2) * 2, y, col, 24, '5Y outlook', outlook.range, outlook.confidence)
+  card(margin + (col + 2) * 3, y, col, 24, 'Coverage', confidence.label, 'Production data status')
+  y += 34
+
+  section('Investment read')
+  setText(15, 23, 42, 12, 'bold')
+  doc.text(outlook.headline, margin, y)
+  y += 7
+  setText(71, 85, 105, 8)
+  const executiveLines = doc.splitTextToSize(
+    `${area.name} currently screens as ${scoreLabel.toLowerCase()} with a ${area.score}/100 DNA score. The model blends infrastructure, population, satellite growth, RERA activity, employment, price velocity, and government scheme signals. Use this page to shortlist, then verify project-level legal and ground data before committing capital.`,
+    pageW - margin * 2,
+  )
+  doc.text(executiveLines, margin, y)
+  y += executiveLines.length * 4.3 + 8
+
+  section('DNA signal table')
+  const tableX = margin
+  const tableW = pageW - margin * 2
+  const signalEntries = SIGNAL_CONFIG.map(({ key, label: signalLabel }) => ({
+    key,
+    label: signalLabel,
+    value: area.signals[key] ?? 0,
+    weight: SIGNAL_WEIGHTS[key] ?? 0,
+  }))
+  signalEntries.forEach((signal, index) => {
+    const rowY = y + index * 9
+    const tier = getSignalTier(signal.value)
+    doc.setFillColor(index % 2 === 0 ? 255 : 248, index % 2 === 0 ? 255 : 250, index % 2 === 0 ? 255 : 252)
+    doc.rect(tableX, rowY - 5, tableW, 8, 'F')
+    setText(30, 41, 59, 7.5, 'bold')
+    doc.text(signal.label, tableX + 3, rowY)
+    setText(100, 116, 139, 7)
+    doc.text(`${signal.weight}% weight`, tableX + 58, rowY)
+    doc.setFillColor(226, 232, 240)
+    doc.roundedRect(tableX + 88, rowY - 3.5, 58, 3, 1, 1, 'F')
+    const [tr, tg, tb] = hexRgb(tier.color)
+    doc.setFillColor(tr, tg, tb)
+    doc.roundedRect(tableX + 88, rowY - 3.5, signal.value * 0.58, 3, 1, 1, 'F')
+    setText(tr, tg, tb, 8, 'bold')
+    doc.text(`${signal.value}`, tableX + 153, rowY)
+    setText(71, 85, 105, 7)
+    doc.text(tier.label, pageW - margin, rowY, { align: 'right' })
+  })
+  y += signalEntries.length * 9 + 8
+
+  section('Growth timeline')
+  const lineY = y + 8
+  doc.setDrawColor(203, 213, 225)
+  doc.setLineWidth(0.7)
+  doc.line(margin + 8, lineY, pageW - margin - 8, lineY)
+  milestones.forEach((milestone, index) => {
+    const x = margin + 8 + index * ((pageW - margin * 2 - 16) / Math.max(1, milestones.length - 1))
+    doc.setFillColor(cr, cg, cb)
+    doc.circle(x, lineY, 2.3, 'F')
+    setText(15, 23, 42, 7, 'bold')
+    doc.text(String(milestone.year), x, lineY + 8, { align: 'center' })
+    setText(100, 116, 139, 6)
+    doc.text(doc.splitTextToSize(milestone.label, 30), x, lineY + 13, { align: 'center' })
+  })
+  y += 34
+
+  section('Key highlights')
+  area.highlights.slice(0, 6).forEach(highlight => {
+    setText(cr, cg, cb, 9, 'bold')
+    doc.text('-', margin, y)
+    setText(51, 65, 85, 8)
+    const lines = doc.splitTextToSize(highlight, pageW - margin * 2 - 5)
+    doc.text(lines, margin + 5, y)
+    y += lines.length * 4.2 + 2
+  })
+  footer(1)
+
+  doc.addPage()
+  header('Due diligence notes and data points')
+
+  section('Livability index')
+  const livabilityRows = LIVABILITY_CONFIG.map(({ key, label: livabilityLabel, description }) => ({
+    label: livabilityLabel,
+    description,
+    value: area.livability?.[key] ?? 0,
+  }))
+  livabilityRows.forEach((row, index) => {
+    const rowY = y + index * 10
+    const tier = getSignalTier(row.value)
+    const [tr, tg, tb] = hexRgb(tier.color)
+    setText(30, 41, 59, 7.5, 'bold')
+    doc.text(row.label, margin, rowY)
+    setText(100, 116, 139, 6.5)
+    doc.text(row.description, margin + 45, rowY)
+    doc.setFillColor(226, 232, 240)
+    doc.roundedRect(pageW - margin - 70, rowY - 3.5, 48, 3, 1, 1, 'F')
+    doc.setFillColor(tr, tg, tb)
+    doc.roundedRect(pageW - margin - 70, rowY - 3.5, row.value * 0.48, 3, 1, 1, 'F')
+    setText(tr, tg, tb, 8, 'bold')
+    doc.text(String(row.value), pageW - margin, rowY, { align: 'right' })
+  })
+  y += livabilityRows.length * 10 + 8
+
+  section('Active project signals')
+  if (area.activeProjects?.length) {
+    area.activeProjects.slice(0, 6).forEach(project => {
+      setText(30, 41, 59, 8, 'bold')
+      doc.text(project.name, margin, y)
+      setText(100, 116, 139, 6.8)
+      doc.text(`${PROJECT_TYPE_LABEL[project.type] ?? project.type} / ${STATUS_LABEL[project.status] ?? project.status} / ETA ${project.expectedCompletion}`, margin, y + 4.5)
+      y += 10
+    })
+  } else {
+    setText(100, 116, 139, 8)
+    doc.text('No active project feed is attached to this micro-market yet.', margin, y)
+    y += 10
+  }
+
+  section('Buyer notes')
+  const notes = [
+    'Screen the location first, then inspect the exact plot entrance, road width, drainage, utilities, nearby industrial use, and flood history.',
+    'For plotted land, verify title chain, conversion permissions, RERA applicability, zoning, survey number, and encumbrance certificate independently.',
+    'Forecasts are modelled from available area-level signals. They are useful for comparison, not a guaranteed return estimate.',
+    'For Hyderabad flagship zones, use exact coordinates wherever possible because one micro-market can contain very different street-level outcomes.',
+  ]
+  notes.forEach(note => {
+    setText(cr, cg, cb, 9, 'bold')
+    doc.text('-', margin, y)
+    setText(51, 65, 85, 8)
+    const lines = doc.splitTextToSize(note, pageW - margin * 2 - 5)
+    doc.text(lines, margin + 5, y)
+    y += lines.length * 4.2 + 2
+  })
+  y += 3
+
+  section('Sources')
+  if (sources.length) {
+    sources.slice(0, 8).forEach((source, index) => {
+      setText(30, 41, 59, 7.2, 'bold')
+      doc.text(`${index + 1}. ${source.title}`, margin, y)
+      setText(37, 99, 235, 6.2)
+      doc.text(doc.splitTextToSize(source.url, pageW - margin * 2), margin, y + 4)
+      y += 10
+    })
+  } else {
+    setText(100, 116, 139, 8)
+    doc.text('No public source links are attached to this report yet.', margin, y)
+  }
+  footer(2)
 
   doc.save(`PlotDNA_${area.name.replace(/\s+/g, '_')}_Report.pdf`)
 }
