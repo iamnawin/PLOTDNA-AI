@@ -527,7 +527,17 @@ export default function Home() {
               {/* City pills row */}
               <div
                 className="flex items-center gap-1.5 mb-2.5 overflow-x-auto md:justify-center"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  padding: '4px 6px',
+                  borderRadius: 999,
+                  background: 'rgba(3, 7, 18, 0.62)',
+                  border: '1px solid rgba(148, 163, 184, 0.16)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  boxShadow: '0 12px 34px rgba(0,0,0,0.28)',
+                }}
               >
                 {CITY_LIST.map(city => {
                   const isActive = selectedCitySlug === city.slug
@@ -537,12 +547,10 @@ export default function Home() {
                       onClick={() => handleCityChange(city.slug)}
                       className="px-3 py-1.5 rounded-full text-[10px] font-sans font-semibold transition-all duration-200 flex-shrink-0 hover:scale-[1.03] active:scale-[0.97]"
                       style={{
-                        background: isActive ? 'rgba(16, 185, 129, 0.15)' : 'rgba(15, 23, 42, 0.45)',
-                        border: isActive ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(255, 255, 255, 0.06)',
-                        color: isActive ? '#10b981' : '#94a3b8',
-                        boxShadow: isActive ? '0 0 12px rgba(16, 185, 129, 0.15)' : 'none',
-                        backdropFilter: 'blur(12px)',
-                        WebkitBackdropFilter: 'blur(12px)',
+                        background: isActive ? 'rgba(16, 185, 129, 0.22)' : 'rgba(15, 23, 42, 0.88)',
+                        border: isActive ? '1px solid rgba(16, 185, 129, 0.55)' : '1px solid rgba(148, 163, 184, 0.20)',
+                        color: isActive ? '#34d399' : '#dbeafe',
+                        boxShadow: isActive ? '0 0 14px rgba(16, 185, 129, 0.25)' : '0 6px 16px rgba(0,0,0,0.22)',
                       }}
                     >
                       {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
@@ -553,7 +561,17 @@ export default function Home() {
               {/* Top area chips */}
               <div
                 className="flex items-center gap-2 overflow-x-auto md:justify-center"
-                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  padding: '4px 6px',
+                  borderRadius: 999,
+                  background: 'rgba(3, 7, 18, 0.58)',
+                  border: '1px solid rgba(148, 163, 184, 0.14)',
+                  backdropFilter: 'blur(16px)',
+                  WebkitBackdropFilter: 'blur(16px)',
+                  boxShadow: '0 12px 34px rgba(0,0,0,0.26)',
+                }}
               >
                 {sidebarList.slice(0, 4).map(({ area, matchScore }: { area: MicroMarket; matchScore: number }) => {
                   const color = getScoreColor(area.score)
@@ -562,10 +580,15 @@ export default function Home() {
                     <button
                       key={area.slug}
                       onClick={() => navigate(`/area/${area.slug}`)}
-                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-medium transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
-                      style={{ background: `${color}16`, border: `1px solid ${color}28`, color }}
-                      onMouseEnter={(e) => { e.currentTarget.style.background = `${color}28`; e.currentTarget.style.boxShadow = `0 0 12px ${color}25` }}
-                      onMouseLeave={(e) => { e.currentTarget.style.background = `${color}16`; e.currentTarget.style.boxShadow = 'none' }}
+                      className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
+                      style={{
+                        background: `linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.82)), ${color}22`,
+                        border: `1px solid ${color}55`,
+                        color,
+                        boxShadow: `0 8px 20px rgba(0,0,0,0.28), 0 0 12px ${color}18`,
+                      }}
+                      onMouseEnter={(e) => { e.currentTarget.style.background = `linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.88)), ${color}34`; e.currentTarget.style.boxShadow = `0 8px 22px rgba(0,0,0,0.34), 0 0 16px ${color}30` }}
+                      onMouseLeave={(e) => { e.currentTarget.style.background = `linear-gradient(180deg, rgba(15,23,42,0.94), rgba(15,23,42,0.82)), ${color}22`; e.currentTarget.style.boxShadow = `0 8px 20px rgba(0,0,0,0.28), 0 0 12px ${color}18` }}
                       title={highlightTier ? `${area.score}/100 DNA score` : `${matchScore}/100 match`}
                     >
                       <Zap size={9} />
@@ -577,12 +600,12 @@ export default function Home() {
                 {/* Brochure AI chip */}
                 <button
                   onClick={() => { setShowBrochure(v => !v); setSearchCoords(null); setSelectedArea(null) }}
-                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-medium transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
+                  className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
                   style={{
-                    background: showBrochure ? 'rgba(99, 102, 241, 0.2)' : 'rgba(99, 102, 241, 0.08)',
-                    border: showBrochure ? '1px solid rgba(99, 102, 241, 0.45)' : '1px solid rgba(99, 102, 241, 0.2)',
-                    color: '#a5b4fc',
-                    boxShadow: showBrochure ? '0 0 12px rgba(99, 102, 241, 0.2)' : 'none',
+                    background: showBrochure ? 'rgba(99, 102, 241, 0.28)' : 'rgba(15, 23, 42, 0.88)',
+                    border: showBrochure ? '1px solid rgba(165, 180, 252, 0.58)' : '1px solid rgba(165, 180, 252, 0.34)',
+                    color: '#c7d2fe',
+                    boxShadow: showBrochure ? '0 0 14px rgba(99, 102, 241, 0.26)' : '0 8px 20px rgba(0,0,0,0.26)',
                   }}
                 >
                   <FileText size={9} />
@@ -616,6 +639,11 @@ export default function Home() {
             ? 'auto'
             : `calc(${isGlobeMode ? 128 : 76}px + env(safe-area-inset-bottom))`,
           width: showMobileSidebar ? 'auto' : (isGlobeMode ? 210 : 230),
+          background: 'rgba(3, 7, 18, 0.74)',
+          border: '1px solid rgba(148, 163, 184, 0.16)',
+          boxShadow: '0 18px 48px rgba(0,0,0,0.38)',
+          backdropFilter: 'blur(18px)',
+          WebkitBackdropFilter: 'blur(18px)',
         }}
       >
         {/* Panel header */}
@@ -665,9 +693,10 @@ export default function Home() {
                   onClick={() => setRecommendationGoal(goal)}
                   className="px-2 py-1 rounded-full text-[9px] font-sans font-semibold transition-all duration-150 hover:scale-[1.02]"
                   style={{
-                    background: active ? 'rgba(16, 185, 129, 0.15)' : 'rgba(255, 255, 255, 0.03)',
-                    border: active ? '1px solid rgba(16, 185, 129, 0.35)' : '1px solid rgba(255, 255, 255, 0.06)',
-                    color: active ? '#10b981' : '#94a3b8',
+                    background: active ? 'rgba(16, 185, 129, 0.22)' : 'rgba(15, 23, 42, 0.86)',
+                    border: active ? '1px solid rgba(16, 185, 129, 0.52)' : '1px solid rgba(148, 163, 184, 0.18)',
+                    color: active ? '#34d399' : '#cbd5e1',
+                    boxShadow: active ? '0 0 12px rgba(16, 185, 129, 0.18)' : '0 5px 14px rgba(0,0,0,0.18)',
                   }}
                 >
                   {getRecommendationGoalMeta(goal).shortLabel}
