@@ -123,6 +123,15 @@ const MAP_STYLES: Record<MapStyleKey, string | StyleSpecification> = {
 
 interface HoverInfo { x: number; y: number; slug: string }
 
+function getPolygonBounds(polygon: [number, number][]): [[number, number], [number, number]] {
+  const lngs = polygon.map(([, lng]) => lng)
+  const lats = polygon.map(([lat]) => lat)
+  return [
+    [Math.min(...lngs), Math.min(...lats)],
+    [Math.max(...lngs), Math.max(...lats)],
+  ]
+}
+
 export default function MapView() {
   const mapRef      = useRef<MapRef>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -165,13 +174,19 @@ export default function MapView() {
   // ── Fly to selected area (sidebar / chip click) ───────────────────────────
   useEffect(() => {
     if (!selectedArea || !mapRef.current) return
-    mapRef.current.flyTo({
-      center: [selectedArea.center[1], selectedArea.center[0]], // [lng, lat]
-      zoom: 13,
-      duration: 1200,
+    const width = containerRef.current?.clientWidth ?? window.innerWidth
+    const padding = width >= 1200
+      ? { top: 190, right: 520, bottom: 120, left: 300 }
+      : width >= 768
+        ? { top: 160, right: 320, bottom: 110, left: 240 }
+        : { top: 130, right: 40, bottom: 120, left: 40 }
+    mapRef.current.fitBounds(getPolygonBounds(selectedArea.polygon), {
+      padding,
+      maxZoom: mapStyleKey === 'satellite' ? 15.8 : 14.8,
+      duration: 1300,
       essential: true,
     })
-  }, [selectedArea])
+  }, [mapStyleKey, selectedArea])
 
   // ── 3D / 2D camera toggle ─────────────────────────────────────────────────
   useEffect(() => {

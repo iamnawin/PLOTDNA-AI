@@ -95,7 +95,6 @@ export default function Home() {
   const { areas: cityAreas, meta: cityMeta } = getCityEntry(selectedCitySlug)
   const cityProfile = getCityProductionProfile(cityMeta, cityAreas)
   const recommendedAreas = rankAreasForGoal(cityAreas, recommendationGoal)
-  const sorted = recommendedAreas.map(({ area }) => area)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
   const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
 
@@ -105,7 +104,17 @@ export default function Home() {
   const isUrl          = isMapUrl(searchQuery)
   const backendMapUrl  = isUrl && !parsedMapUrl
   const searchResults: MicroMarket[] = searchQuery.trim() && !parsedCoords && !isUrl
-    ? sorted.filter(a => a.name.toLowerCase().includes(searchQuery.toLowerCase()))
+    ? cityAreas
+        .map((area) => {
+          const query = searchQuery.trim().toLowerCase()
+          const name = area.name.toLowerCase()
+          const rank = recommendedAreas.findIndex(({ area: rankedArea }) => rankedArea.slug === area.slug)
+          const matchRank = name === query ? 0 : name.startsWith(query) ? 1 : name.includes(query) ? 2 : 99
+          return { area, matchRank, rank: rank === -1 ? 999 : rank }
+        })
+        .filter(({ matchRank }) => matchRank < 99)
+        .sort((a, b) => a.matchRank - b.matchRank || a.rank - b.rank || b.area.score - a.area.score)
+        .map(({ area }) => area)
     : []
   const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
   const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1], {}, backendResolution) : null
@@ -143,7 +152,13 @@ export default function Home() {
   }
 
   function selectArea(area: MicroMarket) {
+    setViewMode('map')
     setSelectedArea(area)
+    setSearchCoords(null)
+    setHighlightTier(null)
+    setPendingCoords(null)
+    setAnalyzingCoords(null)
+    setShowBrochure(false)
     setSearchQuery('')
     setSearchFocused(false)
     setSearchError('')
@@ -396,7 +411,12 @@ export default function Home() {
                 onChange={(e) => { setSearchQuery(e.target.value); setSearchError('') }}
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setTimeout(() => setSearchFocused(false), 160)}
-                onKeyDown={(e) => { if (e.key === 'Enter') handleSearchSubmit() }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault()
+                    handleSearchSubmit()
+                  }
+                }}
                 className="flex-1 bg-transparent text-slate-100 font-sans text-sm outline-none placeholder:text-slate-500"
               />
               {!searchQuery && (
