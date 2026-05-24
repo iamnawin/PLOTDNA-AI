@@ -323,8 +323,24 @@ function LivabilityTrendPanel({ livability, yoy }: { livability: Livability; yoy
   )
 }
 
+async function loadPdfAsset(path: string) {
+  try {
+    const response = await fetch(path)
+    if (!response.ok) return null
+    const blob = await response.blob()
+    return await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(String(reader.result))
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  } catch {
+    return null
+  }
+}
+
 // ── PDF generator ─────────────────────────────────────────────────────────────
-function generatePDF(area: MicroMarket) {
+async function generatePDF(area: MicroMarket) {
   if (!area) return
   const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
   const pageW = 210
@@ -338,6 +354,7 @@ function generatePDF(area: MicroMarket) {
   const city = getCityForArea(area.slug)
   const confidence = getConfidenceMeta(area.dataConfidence)
   const generated = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+  const logoDataUrl = await loadPdfAsset('/plotdna-logo.png')
 
   function hexRgb(hex: string): [number, number, number] {
     const normalized = hex.replace('#', '')
@@ -357,19 +374,40 @@ function generatePDF(area: MicroMarket) {
     doc.setFontSize(size)
   }
 
+  const watermark = () => {
+    setText(226, 232, 240, 38, 'bold')
+    doc.text('PlotDNA', pageW / 2, 158, { align: 'center', angle: -28 })
+    setText(220, 252, 231, 8, 'bold')
+    doc.text('AI-POWERED REAL ESTATE INTELLIGENCE', pageW / 2, 169, { align: 'center', angle: -28 })
+  }
+
   const header = (title = 'PlotDNA Area Intelligence Report') => {
     doc.setFillColor(248, 250, 252)
     doc.rect(0, 0, pageW, pageH, 'F')
-    doc.setFillColor(10, 15, 28)
-    doc.rect(0, 0, pageW, 28, 'F')
+    watermark()
+    doc.setFillColor(255, 255, 255)
+    doc.rect(0, 0, pageW, 30, 'F')
     doc.setFillColor(cr, cg, cb)
-    doc.rect(0, 0, pageW, 2, 'F')
-    setText(255, 255, 255, 15, 'bold')
-    doc.text('PlotDNA', margin, 17)
-    setText(148, 163, 184, 7)
-    doc.text(title, margin + 34, 17)
-    doc.text(`Generated ${generated}`, pageW - margin, 17, { align: 'right' })
-    y = 38
+    doc.rect(0, 0, pageW, 1.8, 'F')
+    doc.setDrawColor(226, 232, 240)
+    doc.line(margin, 30, pageW - margin, 30)
+
+    if (logoDataUrl) {
+      doc.addImage(logoDataUrl, 'PNG', margin, 7, 13, 13)
+    } else {
+      doc.setFillColor(cr, cg, cb)
+      doc.roundedRect(margin, 7, 13, 13, 3, 3, 'F')
+      setText(255, 255, 255, 10, 'bold')
+      doc.text('P', margin + 6.5, 15.8, { align: 'center' })
+    }
+
+    setText(15, 23, 42, 15, 'bold')
+    doc.text('PlotDNA', margin + 17, 15.5)
+    setText(71, 85, 105, 7)
+    doc.text(title, margin + 17, 21)
+    setText(100, 116, 139, 7)
+    doc.text(`Generated ${generated}`, pageW - margin, 15.5, { align: 'right' })
+    y = 40
   }
 
   const footer = (page: number) => {
