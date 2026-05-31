@@ -33,6 +33,7 @@ def _print_provider_matrix() -> None:
     keys = [
         "JWT_SECRET",
         "GEMINI_API_KEY",
+        "TOGETHER_API_KEY",
         "NVIDIA_API_KEY",
         "NEWS_API_KEY",
         "DLD_API_KEY",
@@ -88,8 +89,12 @@ def _smoke_core() -> None:
 
 
 def _smoke_live_ai() -> None:
-    if not (_configured("GEMINI_API_KEY") or _configured("NVIDIA_API_KEY")):
-        print("live ai smoke: skipped (no Gemini or NVIDIA key)")
+    if not (
+        _configured("GEMINI_API_KEY")
+        or _configured("TOGETHER_API_KEY")
+        or _configured("NVIDIA_API_KEY")
+    ):
+        print("live ai smoke: skipped (no Gemini, Together, or NVIDIA key)")
         return
 
     from app.services.ai_provider import call_text_model

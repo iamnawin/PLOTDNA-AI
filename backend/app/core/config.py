@@ -29,10 +29,15 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
     GEMINI_CHAT_MODELS: str = "gemini-1.5-flash"
     GEMINI_BROCHURE_MODELS: str = "gemini-2.0-flash,gemini-1.5-flash"
-    AI_PROVIDER_ORDER: str = "gemini,nvidia,fallback"
+    AI_PROVIDER_ORDER: str = "gemini,together,nvidia,fallback"
+    TOGETHER_API_KEY: str = ""
+    TOGETHER_BASE_URL: str = "https://api.together.ai/v1"
+    TOGETHER_CHAT_MODELS: str = "openai/gpt-oss-20b,meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8"
+    TOGETHER_TIMEOUT_SECONDS: float = 45.0
     NVIDIA_API_KEY: str = ""
     NVIDIA_BASE_URL: str = "https://integrate.api.nvidia.com/v1"
     NVIDIA_CHAT_MODELS: str = "moonshotai/kimi-k2.6"
+    NVIDIA_TIMEOUT_SECONDS: float = 35.0
     NEWS_API_KEY: str = ""
 
     # External data providers

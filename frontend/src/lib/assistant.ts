@@ -27,7 +27,7 @@ export interface AssistantResponse {
   answer: string
   sources: string[]
   followups: string[]
-  source: 'gemini' | 'nvidia' | 'fallback'
+  source: 'gemini' | 'together' | 'nvidia' | 'fallback'
   model?: string | null
   last_updated: string
 }

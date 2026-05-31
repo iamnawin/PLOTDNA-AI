@@ -59,7 +59,7 @@ class ChatResponse(BaseModel):
     answer: str
     sources: list[str]
     followups: list[str]
-    source: Literal["gemini", "nvidia", "fallback"]
+    source: Literal["gemini", "together", "nvidia", "fallback"]
     model: str | None = None
     last_updated: str
 
