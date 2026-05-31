@@ -55,6 +55,9 @@ class Settings(BaseSettings):
     MAX_BROCHURE_SIZE_MB: int = 10
     UPLOAD_TEMP_DIR: str = ""
 
+    # Local entitlement store. Leave blank to use backend/app/.local.
+    ENTITLEMENTS_DB_PATH: str = ""
+
     @field_validator("DEBUG", mode="before")
     @classmethod
     def parse_debug(cls, value: Any) -> Any:

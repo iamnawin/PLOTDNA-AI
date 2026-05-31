@@ -11,6 +11,10 @@ from app.core.config import settings
 def _db_path() -> Path:
     # Local-first MVP: a tiny SQLite DB.
     # In production, replace with Supabase/Postgres + verified IAP receipts.
+    if settings.ENTITLEMENTS_DB_PATH:
+        path = Path(settings.ENTITLEMENTS_DB_PATH).expanduser()
+        path.parent.mkdir(parents=True, exist_ok=True)
+        return path
     base = Path(__file__).resolve().parents[2]  # backend/app
     path = base / ".local" / "entitlements.sqlite3"
     path.parent.mkdir(parents=True, exist_ok=True)
