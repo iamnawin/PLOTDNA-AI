@@ -20,8 +20,19 @@ class TextModelResult:
     model: str
 
 
+@dataclass
+class JsonModelResult:
+    data: dict
+    source: str
+    model: str
+
+
 def _split_csv(value: str) -> list[str]:
     return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def csv_values(value: str) -> list[str]:
+    return _split_csv(value)
 
 
 def _strip_wrappers(raw: str) -> str:
@@ -70,6 +81,44 @@ def call_gemini_text(
             logger.warning("Gemini text call failed for %s: %s", model_name, exc)
 
     return None
+
+
+def call_gemini_content_json(
+    content: list[object],
+    models: Optional[list[str]] = None,
+    *,
+    system_instruction: str = "",
+    temperature: float = 0.2,
+    max_output_tokens: int = 1000,
+) -> JsonModelResult:
+    if not settings.GEMINI_API_KEY:
+        return JsonModelResult(data={}, source="fallback", model="")
+
+    genai.configure(api_key=settings.GEMINI_API_KEY)
+    candidates = models or _split_csv(settings.GEMINI_CHAT_MODELS) or ["gemini-1.5-flash"]
+
+    for model_name in candidates:
+        try:
+            model = genai.GenerativeModel(
+                model_name,
+                system_instruction=system_instruction or None,
+            )
+            response = model.generate_content(
+                content,
+                generation_config=genai.GenerationConfig(
+                    temperature=temperature,
+                    max_output_tokens=max_output_tokens,
+                    response_mime_type="application/json",
+                ),
+            )
+            text = _extract_gemini_text(response)
+            data = parse_json_object(text)
+            if data:
+                return JsonModelResult(data=data, source=f"gemini:{model_name}", model=model_name)
+        except Exception as exc:  # pragma: no cover - network/model failures are runtime dependent
+            logger.warning("Gemini JSON content call failed for %s: %s", model_name, exc)
+
+    return JsonModelResult(data={}, source="fallback", model="")
 
 
 def call_nvidia_text(

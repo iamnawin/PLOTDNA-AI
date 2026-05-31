@@ -1,4 +1,4 @@
-# render.yaml — PlotDNA backend deployment on Render.com
+# PlotDNA backend deployment on Render.com
 # Docs: https://render.com/docs/blueprint-spec
 
 services:
@@ -10,26 +10,46 @@ services:
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
 
-    # Render free plan: 512 MB RAM, spins down after 15 min inactivity
-    # Upgrade to Starter ($7/mo) to avoid cold starts in production
+    # Public beta can run on free, but expect cold starts.
     plan: free
 
     envVars:
-      # ── Required ────────────────────────────────────────────────────────────
-      - key: GEMINI_API_KEY
-        sync: false           # set manually in Render dashboard
-
-      # ── Optional — tighten once you have a custom domain ──────────────────
-      - key: ALLOWED_ORIGINS
-        value: "*"            # replace with https://plotdna.in,https://plotdna-*.vercel.app
-
-      # ── Runtime ─────────────────────────────────────────────────────────────
       - key: APP_ENV
         value: production
+      - key: DEBUG
+        value: "false"
       - key: PYTHON_VERSION
         value: 3.11.0
+      - key: ALLOWED_ORIGINS
+        value: "*"
 
-      # ── Phase 2 (leave blank until Supabase is wired up) ──────────────────
+      # Required public-beta secrets. Set manually in Render.
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+
+      # Public-beta defaults.
+      - key: FREE_SEARCH_LIMIT
+        value: "5"
+      - key: GEMINI_CHAT_MODELS
+        value: gemini-1.5-flash
+      - key: GEMINI_BROCHURE_MODELS
+        value: gemini-2.0-flash,gemini-1.5-flash
+      - key: AI_PROVIDER_ORDER
+        value: gemini,nvidia,fallback
+      - key: MAX_BROCHURE_SIZE_MB
+        value: "10"
+
+      # Optional providers and persistence. Leave unset until configured.
+      - key: NVIDIA_API_KEY
+        sync: false
+      - key: NEWS_API_KEY
+        sync: false
+      - key: DLD_API_KEY
+        sync: false
+      - key: API_SETU_KEY
+        sync: false
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY

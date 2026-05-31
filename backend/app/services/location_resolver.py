@@ -9,6 +9,11 @@ import os
 import re
 from typing import TypedDict, List, Dict, Tuple, Optional
 
+
+def load_json_file(path: str):
+    with open(path, "r", encoding="utf-8-sig") as f:
+        return json.load(f)
+
 # ── Haversine Distance Helper ──────────────────────────────────────────────────
 def dist_km(lat1: float, lng1: float, lat2: float, lng2: float) -> float:
     r = 6371.0
@@ -85,13 +90,11 @@ class LocationResolverStore:
     def load_districts_and_regions(self):
         districts_path = os.path.join(self.data_dir, "telangana", "districts.json")
         if os.path.exists(districts_path):
-            with open(districts_path, "r", encoding="utf-8") as f:
-                self.districts = json.load(f)
+            self.districts = load_json_file(districts_path)
                 
         regions_path = os.path.join(self.data_dir, "india", "regions.json")
         if os.path.exists(regions_path):
-            with open(regions_path, "r", encoding="utf-8") as f:
-                self.regions = json.load(f)
+            self.regions = load_json_file(regions_path)
 
     def load_cities_data(self):
         cities_dir = os.path.join(self.data_dir, "cities")
@@ -109,20 +112,16 @@ class LocationResolverStore:
             clusters_path = os.path.join(city_path, "clusters.json")
             
             if os.path.exists(city_config_path) and os.path.exists(localities_path):
-                with open(city_config_path, "r", encoding="utf-8") as f:
-                    city_meta = json.load(f)
-                with open(localities_path, "r", encoding="utf-8") as f:
-                    localities = json.load(f)
+                city_meta = load_json_file(city_config_path)
+                localities = load_json_file(localities_path)
                 
                 aliases = {}
                 if os.path.exists(aliases_path):
-                    with open(aliases_path, "r", encoding="utf-8") as f:
-                        aliases = json.load(f)
+                    aliases = load_json_file(aliases_path)
                 
                 clusters = []
                 if os.path.exists(clusters_path):
-                    with open(clusters_path, "r", encoding="utf-8") as f:
-                        clusters = json.load(f)
+                    clusters = load_json_file(clusters_path)
                         
                 self.cities[slug] = {
                     "meta": city_meta,

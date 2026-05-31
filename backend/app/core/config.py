@@ -1,4 +1,7 @@
 from pathlib import Path
+from typing import Any
+
+from pydantic import field_validator, model_validator
 from pydantic_settings import BaseSettings
 
 
@@ -16,6 +19,8 @@ class Settings(BaseSettings):
     # App
     APP_ENV:  str  = "development"
     DEBUG:    bool = True
+    JWT_SECRET: str = "plotdna-dev-only-change-me"
+    FREE_SEARCH_LIMIT: int = 5
 
     # CORS (set "*" for public APIs, or comma-separated origins for production)
     ALLOWED_ORIGINS: str = "*"
@@ -23,10 +28,16 @@ class Settings(BaseSettings):
     # AI — required for live verdicts
     GEMINI_API_KEY: str = ""
     GEMINI_CHAT_MODELS: str = "gemini-1.5-flash"
+    GEMINI_BROCHURE_MODELS: str = "gemini-2.0-flash,gemini-1.5-flash"
     AI_PROVIDER_ORDER: str = "gemini,nvidia,fallback"
     NVIDIA_API_KEY: str = ""
     NVIDIA_BASE_URL: str = "https://integrate.api.nvidia.com/v1"
     NVIDIA_CHAT_MODELS: str = "moonshotai/kimi-k2.6"
+    NEWS_API_KEY: str = ""
+
+    # External data providers
+    DLD_API_KEY: str = ""
+    API_SETU_KEY: str = ""
 
     # Database (Supabase) — Phase 2
     DATABASE_URL:  str = ""
@@ -39,6 +50,24 @@ class Settings(BaseSettings):
 
     # Redis — Phase 2 (replaced by in-memory cache for Phase 1)
     REDIS_URL: str = "redis://localhost:6379"
+
+    # Brochure uploads
+    MAX_BROCHURE_SIZE_MB: int = 10
+    UPLOAD_TEMP_DIR: str = ""
+
+    @field_validator("DEBUG", mode="before")
+    @classmethod
+    def parse_debug(cls, value: Any) -> Any:
+        if isinstance(value, str) and value.strip().lower() in {"release", "prod", "production"}:
+            return False
+        return value
+
+    @model_validator(mode="after")
+    def validate_production_secrets(self) -> "Settings":
+        if self.APP_ENV.lower() == "production":
+            if self.JWT_SECRET == "plotdna-dev-only-change-me" or len(self.JWT_SECRET) < 32:
+                raise ValueError("JWT_SECRET must be set to a long random value in production")
+        return self
 
     model_config = {
         "env_file": _find_env(),

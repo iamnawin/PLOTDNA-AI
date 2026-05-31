@@ -1,8 +1,9 @@
 import os
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from app.api.routes import areas, score, satellite, ai, news, verdict, utils, market_pulse, avm
+from app.api.india import land_verify
+from app.api.routes import ai, areas, auth, avm, brochure, entitlements, market_pulse, news, satellite, score, utils, verdict
+from app.api.uae import dld_routes
 
 app = FastAPI(
     title="PlotDNA API",
@@ -46,6 +47,11 @@ app.include_router(verdict.router,   prefix="/api/verdict",   tags=["verdict"])
 app.include_router(utils.router,        prefix="/api/utils",              tags=["utils"])
 app.include_router(market_pulse.router, prefix="/api/v1/market-pulse",    tags=["market-pulse"])
 app.include_router(avm.router,          prefix="/api/v1/avm",             tags=["avm"])
+app.include_router(auth.router,         prefix="/api/v1/auth",            tags=["auth"])
+app.include_router(entitlements.router, prefix="/api/v1/entitlements",    tags=["entitlements"])
+app.include_router(brochure.router,     prefix="/api/v1",                 tags=["brochure"])
+app.include_router(land_verify.router,  prefix="/api/india",              tags=["india"])
+app.include_router(dld_routes.router,   prefix="/api/uae",                tags=["uae"])
 
 
 # ── Health & root ────────────────────────────────────────────────────────────

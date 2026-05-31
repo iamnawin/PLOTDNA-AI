@@ -4,7 +4,6 @@ Accepts a real estate PDF/Image brochure and extracts structured investment data
 
 Supports: India (INR, RERA) and UAE (AED, DLD)
 """
-import os
 import time
 import logging
 import tempfile
@@ -25,7 +24,7 @@ SUPPORTED_MIME_TYPES = {
     "image/webp": ".webp",
 }
 
-MAX_FILE_SIZE_MB = int(os.getenv("MAX_BROCHURE_SIZE_MB", "10"))
+MAX_FILE_SIZE_MB = int(settings.MAX_BROCHURE_SIZE_MB)
 
 
 # ── Data model ────────────────────────────────────────────────────────────────
@@ -217,7 +216,7 @@ async def parse_brochure(
 
         with tempfile.NamedTemporaryFile(
             suffix=suffix, delete=False,
-            dir=os.getenv("UPLOAD_TEMP_DIR", tempfile.gettempdir())
+            dir=settings.UPLOAD_TEMP_DIR or tempfile.gettempdir()
         ) as tmp:
             tmp.write(file_bytes)
             tmp_path = tmp.name
