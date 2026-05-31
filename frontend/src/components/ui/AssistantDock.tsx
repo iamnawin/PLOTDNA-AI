@@ -100,10 +100,10 @@ export default function AssistantDock({ context }: Props) {
     if (!el || typeof window === 'undefined') return
 
     const rect = el.getBoundingClientRect()
-    const safeLeft = 16
-    const safeRight = 16
-    const safeTop = 80 // Prevents dock going under top search/header bars
-    const safeBottom = context.page === 'map' ? 120 : 20 // Prevents dock going under bottom controls/bars
+    const safeLeft = 12
+    const safeRight = 12
+    const safeTop = context.page === 'map' ? 88 : 16
+    const safeBottom = context.page === 'map' ? 108 : 16
 
     let nextX = x.get()
     let nextY = y.get()
@@ -135,12 +135,12 @@ export default function AssistantDock({ context }: Props) {
   return (
     <motion.div
       ref={dockRef}
-      drag={!open}
+      drag
       dragConstraints={dragConstraints}
       dragElastic={0.1}
       dragMomentum={false}
       onDragEnd={() => window.requestAnimationFrame(keepDockInViewport)}
-      className={`fixed z-[1200] ${open ? 'pointer-events-none' : 'pointer-events-auto cursor-grab active:cursor-grabbing touch-none'}`}
+      className="fixed z-[1200] pointer-events-auto cursor-grab active:cursor-grabbing touch-none"
       style={{
         x,
         y,
@@ -186,6 +186,7 @@ export default function AssistantDock({ context }: Props) {
             exit={{ opacity: 0, y: 20, scale: 0.98 }}
             transition={{ duration: 0.18 }}
             className="pointer-events-auto w-[calc(100vw-1.5rem)] sm:w-[380px] max-h-[72dvh] overflow-hidden rounded-2xl"
+            onAnimationComplete={keepDockInViewport}
             style={{
               background: 'rgba(5, 6, 12, 0.98)',
               border: '1px solid rgba(255,255,255,0.07)',
@@ -193,7 +194,7 @@ export default function AssistantDock({ context }: Props) {
               backdropFilter: 'blur(24px)',
             }}
           >
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 cursor-grab active:cursor-grabbing select-none">
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <Sparkles size={13} className="text-[#00e676]" />

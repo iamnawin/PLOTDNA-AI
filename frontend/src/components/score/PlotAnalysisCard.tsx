@@ -600,14 +600,14 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 },
               },
             })}
-            className="w-full flex flex-col items-center justify-center gap-1 py-3.5 px-4 rounded-xl font-sans transition-all duration-200 btn-3d-reflective"
+            className="w-full flex flex-col items-center justify-center gap-1.5 py-4 px-4 rounded-2xl font-sans transition-all duration-200 btn-3d-reflective relative overflow-hidden"
             style={{
-              background: `linear-gradient(135deg, ${color}dd 0%, ${color}aa 100%)`,
+              background: `linear-gradient(145deg, rgba(255,255,255,0.18) 0%, ${color}f2 18%, ${color}b8 64%, rgba(2,6,23,0.92) 100%)`,
               borderTop: '1px solid rgba(255,255,255,0.4)',
               borderLeft: '1px solid rgba(255,255,255,0.2)',
               borderRight: '1px solid rgba(0,0,0,0.2)',
               borderBottom: '4px solid rgba(0,0,0,0.45)',
-              boxShadow: `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`,
+              boxShadow: `0 14px 34px rgba(0,0,0,0.42), 0 0 26px ${color}55, inset 0 1px 0 rgba(255,255,255,0.28)`,
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-2px)'
@@ -660,7 +660,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                 },
               },
             })}
-            className="w-full flex flex-col items-center justify-center gap-1 py-3.5 px-4 rounded-xl font-sans transition-all duration-200 btn-3d-reflective"
+            className="w-full flex flex-col items-center justify-center gap-1.5 py-4 px-4 rounded-2xl font-sans transition-all duration-200 btn-3d-reflective relative overflow-hidden"
             style={{
               background: 'linear-gradient(135deg, rgba(16,185,129,0.85) 0%, rgba(5,150,105,0.7) 100%)',
               borderTop: '1px solid rgba(255,255,255,0.4)',

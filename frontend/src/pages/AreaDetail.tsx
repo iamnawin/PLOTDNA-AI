@@ -646,6 +646,17 @@ export default function AreaDetail() {
   const [isValid, setIsValid] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [pdfReady, setPdfReady] = useState(() => !isLocked)
+
+  useEffect(() => {
+    if (isLocked) {
+      setPdfReady(false)
+      return
+    }
+    setPdfReady(false)
+    const timer = window.setTimeout(() => setPdfReady(true), 10000)
+    return () => window.clearTimeout(timer)
+  }, [isLocked, slug])
 
   // Manage viewed area slugs tracker effect
   useEffect(() => {
@@ -1141,12 +1152,14 @@ export default function AreaDetail() {
 
           {/* Download PDF button */}
           <button
-            onClick={() => generatePDF(area)}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10"
-            style={{ color, border: `1px solid ${color}40` }}
+            onClick={() => { if (pdfReady) void generatePDF(area) }}
+            disabled={!pdfReady}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 disabled:opacity-45 disabled:cursor-not-allowed"
+            style={{ color: pdfReady ? color : '#64748b', border: `1px solid ${pdfReady ? color : '#64748b'}40` }}
+            title={pdfReady ? 'Download PlotDNA PDF report' : 'PDF download unlocks 10 seconds after opening Full DNA'}
           >
-            <Download size={12} style={{ color }} />
-            <span className="hidden sm:inline">Download PDF</span>
+            <Download size={12} style={{ color: pdfReady ? color : '#64748b' }} />
+            <span className="hidden sm:inline">{pdfReady ? 'Download PDF' : 'PDF in 10s'}</span>
           </button>
         </div>
       </nav>

@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect, type RefObject } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Search, X, Zap, ChevronLeft, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
+import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { getCityEntry, CITY_LIST } from '@/data/cities'
 import type { MicroMarket, RecommendationGoal } from '@/types'
@@ -69,6 +69,15 @@ export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null)
   const cityRailRef = useRef<HTMLDivElement>(null)
   const areaRailRef = useRef<HTMLDivElement>(null)
+  const resetInitialTierRef = useRef(false)
+
+  useEffect(() => {
+    if (resetInitialTierRef.current) return
+    resetInitialTierRef.current = true
+    if (highlightTier) {
+      setHighlightTier(null)
+    }
+  }, [highlightTier, setHighlightTier])
 
   useEffect(() => {
     if (!analyzingCoords) return
@@ -308,12 +317,6 @@ export default function Home() {
     }
   }
 
-  function scrollRail(ref: RefObject<HTMLDivElement | null>, direction: -1 | 1) {
-    ref.current?.scrollBy({
-      left: direction * 260,
-      behavior: 'smooth',
-    })
-  }
 
   return (
     <div className="relative w-[100dvw] h-[100dvh] overflow-hidden bg-[#060814]">
@@ -578,22 +581,14 @@ export default function Home() {
               className="mt-2.5"
             >
               {/* City pills row */}
-              <div className="relative mb-2.5">
-                <button
-                  onClick={() => scrollRail(cityRailRef, -1)}
-                  className="absolute left-1 top-1/2 -translate-y-1/2 z-[1] hidden items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
-                  style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
-                  aria-label="Scroll cities left"
-                >
-                  <ChevronLeft size={13} />
-                </button>
+              <div className="relative mb-2">
                 <div
                   ref={cityRailRef}
                   className="flex items-center gap-1.5 overflow-x-auto"
                   style={{
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
-                    padding: '2px max(0.75rem, env(safe-area-inset-left)) 2px max(0.75rem, env(safe-area-inset-right))',
+                    padding: '1px max(0.25rem, env(safe-area-inset-left)) 1px max(0.25rem, env(safe-area-inset-right))',
                     scrollPaddingInline: 12,
                   }}
                 >
@@ -603,9 +598,9 @@ export default function Home() {
                       <button
                         key={city.slug}
                         onClick={() => handleCityChange(city.slug)}
-                        className="px-3 py-1.5 rounded-full text-[10px] font-sans font-semibold transition-all duration-200 flex-shrink-0 hover:scale-[1.03] active:scale-[0.97]"
+                        className="px-2.5 py-1.5 rounded-full text-[9px] sm:text-[10px] font-sans font-semibold transition-all duration-200 flex-shrink-0 hover:scale-[1.03] active:scale-[0.97]"
                         style={{
-                          background: isActive ? 'rgba(16, 185, 129, 0.24)' : 'rgba(15, 23, 42, 0.94)',
+                          background: isActive ? 'rgba(16, 185, 129, 0.30)' : 'rgba(15, 23, 42, 0.80)',
                           border: isActive ? '1px solid rgba(16, 185, 129, 0.62)' : '1px solid rgba(148, 163, 184, 0.26)',
                           color: isActive ? '#34d399' : '#e2e8f0',
                           boxShadow: isActive ? '0 0 14px rgba(16, 185, 129, 0.28)' : '0 6px 16px rgba(0,0,0,0.26)',
@@ -616,32 +611,16 @@ export default function Home() {
                     )
                   })}
                 </div>
-                <button
-                  onClick={() => scrollRail(cityRailRef, 1)}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 z-[1] hidden items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
-                  style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
-                  aria-label="Scroll cities right"
-                >
-                  <ChevronRight size={13} />
-                </button>
               </div>
               {/* Top area chips */}
               <div className="relative">
-                <button
-                  onClick={() => scrollRail(areaRailRef, -1)}
-                  className="absolute left-1 top-1/2 -translate-y-1/2 z-[1] hidden items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
-                  style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
-                  aria-label="Scroll suggestions left"
-                >
-                  <ChevronLeft size={13} />
-                </button>
                 <div
                   ref={areaRailRef}
                   className="flex items-center gap-2 overflow-x-auto"
                   style={{
                     scrollbarWidth: 'none',
                     msOverflowStyle: 'none',
-                    padding: '2px max(0.75rem, env(safe-area-inset-left)) 2px max(0.75rem, env(safe-area-inset-right))',
+                    padding: '1px max(0.25rem, env(safe-area-inset-left)) 1px max(0.25rem, env(safe-area-inset-right))',
                     scrollPaddingInline: 12,
                   }}
                 >
@@ -652,9 +631,9 @@ export default function Home() {
                       <button
                         key={area.slug}
                         onClick={() => navigate(`/area/${area.slug}`)}
-                        className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] sm:text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
                         style={{
-                          background: `linear-gradient(180deg, rgba(15,23,42,0.98), rgba(15,23,42,0.88)), ${color}2f`,
+                          background: `linear-gradient(180deg, rgba(15,23,42,0.90), rgba(15,23,42,0.78)), ${color}2f`,
                           border: `1px solid ${color}70`,
                           color,
                           boxShadow: `0 8px 20px rgba(0,0,0,0.32), 0 0 14px ${color}24`,
@@ -672,9 +651,9 @@ export default function Home() {
                   {/* Brochure AI chip */}
                   <button
                     onClick={() => { setShowBrochure(v => !v); setSearchCoords(null); setSelectedArea(null) }}
-                    className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] sm:text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
                     style={{
-                      background: showBrochure ? 'rgba(99, 102, 241, 0.32)' : 'rgba(15, 23, 42, 0.94)',
+                      background: showBrochure ? 'rgba(99, 102, 241, 0.32)' : 'rgba(15, 23, 42, 0.80)',
                       border: showBrochure ? '1px solid rgba(165, 180, 252, 0.64)' : '1px solid rgba(165, 180, 252, 0.42)',
                       color: '#dbe4ff',
                       boxShadow: showBrochure ? '0 0 14px rgba(99, 102, 241, 0.30)' : '0 8px 20px rgba(0,0,0,0.30)',
@@ -684,14 +663,6 @@ export default function Home() {
                     Brochure AI
                   </button>
                 </div>
-                <button
-                  onClick={() => scrollRail(areaRailRef, 1)}
-                  className="absolute right-1 top-1/2 -translate-y-1/2 z-[1] hidden items-center justify-center w-7 h-7 rounded-full text-slate-200 hover:text-emerald-300 transition-colors"
-                  style={{ background: 'rgba(3,7,18,0.84)', border: '1px solid rgba(148,163,184,0.20)', boxShadow: '0 8px 18px rgba(0,0,0,0.28)' }}
-                  aria-label="Scroll suggestions right"
-                >
-                  <ChevronRight size={13} />
-                </button>
               </div>
             </motion.div>
           )}
@@ -1160,7 +1131,7 @@ export default function Home() {
           BOTTOM CENTER: Risk tier legend (clickable)
       ════════════════════════════════════════════════ */}
       <div
-        className="absolute bottom-[calc(4.75rem+env(safe-area-inset-bottom))] md:bottom-5 left-[calc(0.75rem+env(safe-area-inset-left))] md:left-5 z-[999] flex items-center gap-1.5"
+        className="absolute bottom-[calc(4.75rem+env(safe-area-inset-bottom))] md:bottom-5 left-[calc(0.75rem+env(safe-area-inset-left))] md:left-5 z-[999] flex items-center gap-1"
       >
         {RISK_TIERS.map((tier) => {
           const isActive = highlightTier === tier.label
@@ -1171,7 +1142,7 @@ export default function Home() {
               key={tier.label}
               onClick={() => toggleTier(tier.label)}
               disabled={disabled}
-              className="flex items-center justify-center w-8 h-8 rounded-full transition-all duration-200 disabled:cursor-not-allowed select-none"
+              className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full transition-all duration-200 disabled:cursor-not-allowed select-none"
               style={{
                 background: isActive ? tier.color : 'rgba(3, 7, 18, 0.72)',
                 border: isActive ? `1px solid ${tier.color}` : '1px solid rgba(148, 163, 184, 0.16)',
@@ -1184,7 +1155,7 @@ export default function Home() {
               title={disabled ? `No ${tier.label} areas in ${cityMeta.name}` : `${count} ${tier.label} areas in ${cityMeta.name}`}
             >
               <span
-                className="text-[11px] font-sans font-black uppercase leading-none transition-colors duration-200"
+                className="text-[10px] sm:text-[11px] font-sans font-black uppercase leading-none transition-colors duration-200"
                 style={{ color: isActive ? '#0f172a' : '#cbd5e1' }}
               >
                 {tier.short}
@@ -1201,7 +1172,7 @@ export default function Home() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
               onClick={() => setHighlightTier(null)}
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900/60 border border-white/5 text-slate-400 hover:text-slate-200 transition-colors"
+              className="flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-slate-900/60 border border-white/5 text-slate-400 hover:text-slate-200 transition-colors"
             >
               <X size={12} />
             </motion.button>
