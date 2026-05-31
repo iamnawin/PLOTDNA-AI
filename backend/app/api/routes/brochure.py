@@ -11,11 +11,28 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import JSONResponse
 
 from app.services.brochure_parser import parse_brochure, SUPPORTED_MIME_TYPES
+from app.services.rera_verification import ReraVerificationRequest, verify_rera_registration
 from app.services.supabase_writer import save_brochure_extraction
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
+
+
+def _build_rera_verification(result: dict) -> dict | None:
+    rera_number = (result.get("rera_number") or "").strip()
+    rera_state = (result.get("rera_state") or "").strip()
+    if not rera_number or not rera_state:
+        return None
+
+    verification = verify_rera_registration(
+        ReraVerificationRequest(
+            state=rera_state,
+            registration_number=rera_number,
+            project_name=result.get("project_name"),
+        )
+    )
+    return verification.model_dump()
 
 
 @router.post(
@@ -83,6 +100,7 @@ async def analyze_brochure(
     result = extraction.to_dict()
     result["city_slug"] = city_slug or ""
     result["file_size_mb"] = round(size_mb, 2)
+    result["rera_verification"] = _build_rera_verification(result)
 
     # ── Optionally persist to Supabase ────────────────────────────────────────
     if save_to_db and not extraction.extraction_error:

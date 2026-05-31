@@ -2,7 +2,7 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.india import land_verify
-from app.api.routes import ai, areas, auth, avm, brochure, entitlements, market_pulse, news, satellite, score, utils, verdict
+from app.api.routes import ai, areas, auth, avm, brochure, entitlements, market_pulse, news, rera, satellite, score, utils, verdict
 from app.api.uae import dld_routes
 
 app = FastAPI(
@@ -50,6 +50,7 @@ app.include_router(avm.router,          prefix="/api/v1/avm",             tags=[
 app.include_router(auth.router,         prefix="/api/v1/auth",            tags=["auth"])
 app.include_router(entitlements.router, prefix="/api/v1/entitlements",    tags=["entitlements"])
 app.include_router(brochure.router,     prefix="/api/v1",                 tags=["brochure"])
+app.include_router(rera.router,         prefix="/api/v1/rera",            tags=["rera"])
 app.include_router(land_verify.router,  prefix="/api/india",              tags=["india"])
 app.include_router(dld_routes.router,   prefix="/api/uae",                tags=["uae"])
 
