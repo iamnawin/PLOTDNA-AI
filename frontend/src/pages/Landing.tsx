@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useCallback, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
@@ -15,6 +15,7 @@ import { resolveMapLink, analyzeBrochure, resolveLocation } from '@/lib/api'
 import { getGoalTopAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import { getCityProductionProfile } from '@/lib/cityProduction'
 import { trackEvent } from '@/lib/analytics'
+import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
 
 const FEATURE_CARDS = [
   {
@@ -39,39 +40,6 @@ const FEATURE_CARDS = [
   },
 ]
 
-const DNA_STEPS = [
-  {
-    label: 'Reading market signals before you commit capital...',
-    insight: 'Good land decisions start with location, access, demand, and risk.',
-    pct: 18,
-  },
-  {
-    label: 'Checking growth, access, risk, and price context...',
-    insight: 'PlotDNA helps you understand the market before you shortlist a site.',
-    pct: 36,
-  },
-  {
-    label: 'Analysing infrastructure pipeline...',
-    insight: 'Roads, transit, employment hubs, and approvals can change the real value story.',
-    pct: 57,
-  },
-  {
-    label: 'Calculating buyer-side DNA score...',
-    insight: 'The score is a screening signal, not a replacement for title and RERA checks.',
-    pct: 76,
-  },
-  {
-    label: 'Mapping 5-year growth trajectory...',
-    insight: 'Know what changed, what is active now, and what still needs verification.',
-    pct: 91,
-  },
-  {
-    label: 'Finalising area intelligence...',
-    insight: 'Use the report to ask better questions before you trust any quoted price.',
-    pct: 100,
-  },
-]
-
 export default function Landing() {
   const navigate  = useNavigate()
   const {
@@ -90,34 +58,23 @@ export default function Landing() {
   const [locating, setLocating]       = useState(false)
   const [inputError, setInputError]   = useState('')
   const [dnaLoading, setDnaLoading]   = useState(false)
-  const [dnaStep, setDnaStep]         = useState(0)
-  const [, setPendingNav]            = useState<(() => void) | null>(null)
+  const [dnaLoaderRunId, setDnaLoaderRunId] = useState(0)
   const inputRef      = useRef<HTMLInputElement>(null)
   const fileInputRef  = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (!dnaLoading) return
-    let step = 0
-    const iv = setInterval(() => {
-      step += 1
-      if (step >= DNA_STEPS.length) {
-        clearInterval(iv)
-        setTimeout(() => {
-          setDnaLoading(false)
-          setPendingNav(fn => { fn?.(); return null })
-        }, 300)
-      } else {
-        setDnaStep(step)
-      }
-    }, 380)
-    return () => clearInterval(iv)
-  }, [dnaLoading])
+  const pendingNavRef = useRef<(() => void) | null>(null)
 
   function goToCoordWithLoader(navFn: () => void) {
-    setPendingNav(() => navFn)
-    setDnaStep(0)
+    pendingNavRef.current = navFn
+    setDnaLoaderRunId(id => id + 1)
     setDnaLoading(true)
   }
+
+  const handleDnaLoaderComplete = useCallback(() => {
+    setDnaLoading(false)
+    const pendingNav = pendingNavRef.current
+    pendingNavRef.current = null
+    pendingNav?.()
+  }, [])
 
   const allAreas: (MicroMarket & { citySlug: string })[] = Object.entries(CITIES).flatMap(
     ([slug, { areas }]) => areas.map(a => ({ ...a, citySlug: slug }))
@@ -152,7 +109,7 @@ export default function Landing() {
     resolveLocation(coords[0], coords[1]).then(res => {
       if (res) {
         if (res.tier === 'regional') {
-          setPendingNav(() => () => {
+          pendingNavRef.current = () => {
             const districtSlug = res.districtSlug || 'warangal'
             navigate(`/area/${districtSlug}`, {
               state: {
@@ -167,15 +124,15 @@ export default function Landing() {
                 }
               }
             })
-          })
+          }
         } else {
           const backendAnalysis = findNearestArea(coords[0], coords[1], {}, res)
-          setPendingNav(() => () => {
+          pendingNavRef.current = () => {
             if (backendAnalysis.citySlug) setSelectedCitySlug(backendAnalysis.citySlug)
             setSearchCoords(coords)
             setSelectedArea(backendAnalysis.shouldSelectArea ? backendAnalysis.area : null)
             navigate('/map')
-          })
+          }
         }
       }
     }).catch(() => {})
@@ -269,131 +226,7 @@ export default function Landing() {
 
   return (
     <>
-    <AnimatePresence>
-      {dnaLoading && (
-        <motion.div
-          key="dna-loader"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.35 }}
-          style={{
-            position: 'fixed', inset: 0, zIndex: 9999,
-            background: 'rgba(5, 7, 20, 0.85)',
-            backdropFilter: 'blur(20px)',
-            WebkitBackdropFilter: 'blur(20px)',
-            display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          <div style={{
-            position: 'absolute', top: '30%', left: '50%', transform: 'translate(-50%,-50%)',
-            width: 420, height: 420, borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)',
-            pointerEvents: 'none',
-          }} />
-
-          <div style={{ position: 'relative', width: 64, height: 80, marginBottom: 32 }}>
-            {[0,1,2,3,4,5].map(i => (
-              <motion.div
-                key={i}
-                animate={{
-                  x: [0, 18, 0, -18, 0],
-                  opacity: [0.25, 1, 0.25],
-                  scale: [0.7, 1.1, 0.7],
-                }}
-                transition={{
-                  duration: 1.4,
-                  delay: i * 0.18,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                }}
-                style={{
-                  position: 'absolute',
-                  top: i * 12,
-                  left: 24,
-                  width: 16, height: 16, borderRadius: '50%',
-                  background: i % 2 === 0 ? '#10b981' : '#3b82f6',
-                  boxShadow: i % 2 === 0
-                    ? '0 0 12px rgba(16,185,129,0.6)'
-                    : '0 0 12px rgba(59,130,246,0.6)',
-                  display: 'block',
-                }}
-              />
-            ))}
-            <div style={{
-              position: 'absolute', left: 31, top: 4, width: 2, height: 72,
-              background: 'linear-gradient(to bottom, transparent, rgba(16,185,129,0.3), transparent)',
-            }} />
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 28 }}>
-            <img
-              src="/plotdna-logo.png"
-              alt="PlotDNA"
-              className="w-8 h-8 rounded-xl object-cover"
-              style={{ boxShadow: '0 0 24px rgba(16,185,129,0.5)' }}
-            />
-            <span className="font-display" style={{ fontSize: 16, fontWeight: 700, color: '#e8e8f0', letterSpacing: '-0.02em' }}>PlotDNA</span>
-          </div>
-
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={dnaStep}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-              style={{ fontSize: 13, color: '#10b981', marginBottom: 20, textAlign: 'center', minHeight: 20, fontWeight: 500 }}
-            >
-              {DNA_STEPS[dnaStep]?.label}
-            </motion.p>
-          </AnimatePresence>
-
-          <div style={{
-            width: 240, height: 3, borderRadius: 99,
-            background: 'rgba(255,255,255,0.06)',
-            overflow: 'hidden',
-            marginBottom: 14,
-          }}>
-            <motion.div
-              animate={{ width: `${DNA_STEPS[dnaStep]?.pct ?? 0}%` }}
-              transition={{ duration: 0.38, ease: 'easeOut' }}
-              style={{
-                height: '100%', borderRadius: 99,
-                background: 'linear-gradient(90deg, #059669, #10b981)',
-                boxShadow: '0 0 8px rgba(16,185,129,0.5)',
-              }}
-            />
-          </div>
-
-          <p style={{ fontSize: 10, color: '#64748b', letterSpacing: '0.1em' }}>
-            <span className="font-display font-bold">{DNA_STEPS[dnaStep]?.pct ?? 0}%</span>{" \u00B7 "}Decoding location DNA
-          </p>
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={`insight-${dnaStep}`}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.25 }}
-              style={{
-                maxWidth: 440,
-                marginTop: 18,
-                padding: '0 24px',
-                textAlign: 'center',
-                color: '#94a3b8',
-                fontSize: 13,
-                lineHeight: 1.6,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              {DNA_STEPS[dnaStep]?.insight}
-            </motion.p>
-          </AnimatePresence>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <DnaRoutePreloader key={dnaLoaderRunId} active={dnaLoading} onComplete={handleDnaLoaderComplete} />
 
     <div
       className="min-h-screen w-full flex flex-col font-sans"

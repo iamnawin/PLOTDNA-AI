@@ -2,9 +2,11 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 const landingPath = path.join(process.cwd(), 'src', 'pages', 'Landing.tsx')
+const preloaderPath = path.join(process.cwd(), 'src', 'components', 'ui', 'DnaRoutePreloader.tsx')
 const readmePath = path.resolve(process.cwd(), '..', 'README.md')
 
 const landing = fs.readFileSync(landingPath, 'utf8')
+const preloader = fs.readFileSync(preloaderPath, 'utf8')
 const readme = fs.readFileSync(readmePath, 'utf8')
 
 function assert(condition, message) {
@@ -17,8 +19,8 @@ function assert(condition, message) {
 assert(landing.includes('Hyderabad live'), 'nav badge must say Hyderabad live')
 assert(landing.includes('Know if the plot is worth buying'), 'hero must use a direct buyer-value headline')
 assert(!landing.includes('before you trust the pitch'), 'hero must avoid the confusing broker-pitch line')
-assert(landing.includes('Reading market signals before you commit capital'), 'loader must include investor-context guidance')
-assert(landing.includes('Checking growth, access, risk, and price context'), 'loader must explain the signal mix')
+assert(preloader.includes('Reading market signals before you commit capital'), 'loader must include investor-context guidance')
+assert(preloader.includes('Checking growth, access, risk, and price context'), 'loader must explain the signal mix')
 assert(!landing.includes('Live{" \\u00B7 "}<span className="font-display font-bold">{CITY_LIST.length}</span> Cities'), 'landing must not claim all configured cities are live')
 assert(landing.includes('Other city rollouts are coming soon'), 'landing must explain non-Hyderabad cities are coming soon')
 assert(landing.includes('Coming soon'), 'city chips must expose coming-soon status')
