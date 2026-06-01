@@ -54,6 +54,26 @@ export interface BackendAreaList {
   areas: MicroMarket[]
 }
 
+export interface CustomReportLeadPayload {
+  name: string
+  contact: string
+  citySlug: string
+  cityName: string
+  areaSlug: string
+  areaName: string
+  budgetRange?: string
+  timeline?: string
+  notes?: string
+  source?: string
+}
+
+export interface CustomReportLeadResponse {
+  status: 'success'
+  leadId: string
+  leadType: 'email' | 'phone'
+  message: string
+}
+
 // ── Map link resolution ───────────────────────────────────────────────────────
 
 /**
@@ -217,4 +237,22 @@ export async function fetchBackendArea(citySlug: string, areaSlug: string): Prom
   } catch {
     return null
   }
+}
+
+export async function submitCustomReportLead(
+  payload: CustomReportLeadPayload,
+): Promise<CustomReportLeadResponse> {
+  const res = await fetch(`${BASE_URL}/api/leads/custom-report`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    signal: AbortSignal.timeout(10_000),
+  })
+
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({})) as { detail?: string }
+    throw new Error(errorBody.detail ?? 'Could not submit request. Please try again.')
+  }
+
+  return (await res.json()) as CustomReportLeadResponse
 }
