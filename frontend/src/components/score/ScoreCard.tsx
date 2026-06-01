@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { X, ArrowRight, TrendingUp } from 'lucide-react'
 import type { MicroMarket } from '@/types'
@@ -8,11 +7,11 @@ import SignalBar from '@/components/ui/SignalBar'
 
 interface Props {
   area: MicroMarket
+  onOpenAreaReport: (slug: string) => void
   onClose: () => void
 }
 
-export default function ScoreCard({ area, onClose }: Props) {
-  const navigate = useNavigate()
+export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
   const color = getScoreColor(area.score)
   const label = getScoreLabel(area.score)
 
@@ -129,7 +128,7 @@ export default function ScoreCard({ area, onClose }: Props) {
       {/* CTA */}
       <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <button
-          onClick={() => navigate(`/area/${area.slug}`)}
+          onClick={() => onOpenAreaReport(area.slug)}
           className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-sans font-black uppercase tracking-[0.08em] transition-all duration-200 btn-3d-reflective"
           style={{
             background: `linear-gradient(135deg, ${color}dd 0%, ${color}aa 100%)`,

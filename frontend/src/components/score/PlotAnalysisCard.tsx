@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
 import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX, Activity } from 'lucide-react'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import {
@@ -17,6 +16,7 @@ import { analyzeCoordinate, type LiveDNAResult } from '@/lib/api'
 interface Props {
   coords: [number, number]
   fallback: LocalityFallbackResult
+  onOpenAreaReport: (slug: string, state?: unknown) => void
   onClose: () => void
 }
 
@@ -34,9 +34,7 @@ const PHASE_COLOR: Record<Milestone['phase'], string> = {
   now: '#00e676',
 }
 
-export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
-  const navigate = useNavigate()
-
+export default function PlotAnalysisCard({ coords, fallback, onOpenAreaReport, onClose }: Props) {
   const [geo, setGeo] = useState<ReverseGeoResult | null>(null)
   const [liveData, setLiveData] = useState<LiveDNAResult | null>(null)
   const [liveLoading, setLiveLoading] = useState(true)
@@ -589,14 +587,12 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
           style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
         >
           <button
-            onClick={() => navigate(`/area/${staticArea.slug}`, {
-              state: {
-                fallbackContext: {
-                  tier: resolvedFallback.tier,
-                  displayLabel: fallbackDisplayLabel,
-                  precisionLabel: resolvedFallback.precisionLabel,
-                  coords,
-                },
+            onClick={() => onOpenAreaReport(staticArea.slug, {
+              fallbackContext: {
+                tier: resolvedFallback.tier,
+                displayLabel: fallbackDisplayLabel,
+                precisionLabel: resolvedFallback.precisionLabel,
+                coords,
               },
             })}
             className="w-full flex flex-col items-center justify-center gap-1.5 py-4 px-4 rounded-2xl font-sans transition-all duration-200 btn-3d-reflective relative overflow-hidden"
@@ -646,17 +642,15 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
           style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
         >
           <button
-            onClick={() => navigate(`/area/${resolvedFallback.districtSlug || 'warangal'}`, {
-              state: {
-                fallbackContext: {
-                  tier: resolvedFallback.tier,
-                  displayLabel: fallbackDisplayLabel,
-                  precisionLabel: resolvedFallback.precisionLabel,
-                  coords,
-                  districtSlug: resolvedFallback.districtSlug,
-                  districtName: resolvedFallback.districtName,
-                  stateSlug: resolvedFallback.stateSlug,
-                },
+            onClick={() => onOpenAreaReport(resolvedFallback.districtSlug || 'warangal', {
+              fallbackContext: {
+                tier: resolvedFallback.tier,
+                displayLabel: fallbackDisplayLabel,
+                precisionLabel: resolvedFallback.precisionLabel,
+                coords,
+                districtSlug: resolvedFallback.districtSlug,
+                districtName: resolvedFallback.districtName,
+                stateSlug: resolvedFallback.stateSlug,
               },
             })}
             className="w-full flex flex-col items-center justify-center gap-1.5 py-4 px-4 rounded-2xl font-sans transition-all duration-200 btn-3d-reflective relative overflow-hidden"

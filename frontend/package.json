@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "test:hyderabad-production": "node scripts/check-hyderabad-production.mjs",
     "test:landing-rollout-copy": "node scripts/check-landing-rollout-copy.mjs",
+    "test:area-report-loader": "node scripts/check-area-report-loader.mjs",
     "test:custom-buyer-brief": "node --experimental-strip-types scripts/check-custom-buyer-brief.mjs"
   },
   "dependencies": {
