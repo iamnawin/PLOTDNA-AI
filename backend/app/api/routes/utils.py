@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 
 from app.core.config import settings
 from app.services.location_resolver import resolver
+from app.services.market_catalog import get_city_area
 
 
 router = APIRouter()
@@ -401,10 +402,17 @@ async def resolve_coordinate(payload: ResolveRequest):
     """
     Resolve coordinates to the most specific geographical coverage tier.
     """
-    return resolver.resolve(
+    resolution = resolver.resolve(
         lat=payload.lat,
         lng=payload.lng,
         locality_hint=payload.locality,
         city_hint=payload.city
     )
+    catalog_area = None
+    if resolution["tier"] in {"exact", "nearby"} and resolution["citySlug"] and resolution["localitySlug"]:
+        area = get_city_area(resolution["citySlug"], resolution["localitySlug"])
+        if area is not None:
+            catalog_area = area.model_dump()
+
+    return {**resolution, "catalogArea": catalog_area}
 

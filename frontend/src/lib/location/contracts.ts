@@ -1,3 +1,5 @@
+import type { MicroMarket } from '@/types'
+
 export type ResolutionTier = 'exact' | 'nearby' | 'cluster' | 'regional' | 'uncovered'
 
 export interface LocalityResolution {
@@ -12,4 +14,5 @@ export interface LocalityResolution {
   distanceKm: number | null
   matchedBy: 'polygon' | 'alias' | 'radius' | 'cluster' | 'district' | 'none'
   reason: string
+  catalogArea?: MicroMarket | null
 }
