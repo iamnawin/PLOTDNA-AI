@@ -29,6 +29,7 @@ import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/area
 import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import { getConfidenceMeta } from '@/lib/cityProduction'
 import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib/investmentReport'
+import { buildCustomBuyerVerificationBrief, type BuyerBriefInput } from '@/lib/customBuyerBrief'
 import { trackEvent } from '@/lib/analytics'
 import { getReportPaymentLink, openReportPaymentLink, type ReportPackage } from '@/lib/paymentLinks'
 import { checkReportAccess } from '@/lib/entitlements'
@@ -611,6 +612,159 @@ async function generatePDF(area: MicroMarket) {
   footer(2)
 
   doc.save(`PlotDNA_${area.name.replace(/\s+/g, '_')}_Report.pdf`)
+}
+
+async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefInput = {}) {
+  if (!area) return
+  const brief = buildCustomBuyerVerificationBrief(area, input)
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
+  const pageW = 210
+  const pageH = 297
+  const margin = 14
+  const color = getScoreColor(area.score)
+  const generated = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
+  const logoDataUrl = await loadPdfAsset('/plotdna-logo.png')
+
+  function hexRgb(hex: string): [number, number, number] {
+    const normalized = hex.replace('#', '')
+    return [
+      parseInt(normalized.slice(0, 2), 16),
+      parseInt(normalized.slice(2, 4), 16),
+      parseInt(normalized.slice(4, 6), 16),
+    ]
+  }
+
+  const [cr, cg, cb] = hexRgb(color)
+  let y = 0
+  let page = 1
+
+  const setText = (r: number, g: number, b: number, size: number, style: 'normal' | 'bold' = 'normal') => {
+    doc.setTextColor(r, g, b)
+    doc.setFont('helvetica', style)
+    doc.setFontSize(size)
+  }
+
+  const header = () => {
+    doc.setFillColor(248, 250, 252)
+    doc.rect(0, 0, pageW, pageH, 'F')
+    doc.setFillColor(255, 255, 255)
+    doc.rect(0, 0, pageW, 30, 'F')
+    doc.setFillColor(5, 150, 105)
+    doc.rect(0, 0, pageW, 1.8, 'F')
+    doc.setDrawColor(226, 232, 240)
+    doc.line(margin, 30, pageW - margin, 30)
+
+    if (logoDataUrl) {
+      doc.addImage(logoDataUrl, 'PNG', margin, 7, 13, 13)
+    } else {
+      doc.setFillColor(5, 150, 105)
+      doc.roundedRect(margin, 7, 13, 13, 3, 3, 'F')
+      setText(255, 255, 255, 10, 'bold')
+      doc.text('P', margin + 6.5, 15.8, { align: 'center' })
+    }
+
+    setText(15, 23, 42, 15, 'bold')
+    doc.text('PlotDNA', margin + 17, 15.5)
+    setText(71, 85, 105, 7)
+    doc.text(brief.title, margin + 17, 21)
+    setText(100, 116, 139, 7)
+    doc.text(`Generated ${generated}`, pageW - margin, 15.5, { align: 'right' })
+    y = 42
+  }
+
+  const footer = () => {
+    doc.setDrawColor(226, 232, 240)
+    doc.line(margin, 284, pageW - margin, 284)
+    setText(100, 116, 139, 6.3)
+    doc.text('Custom buyer verification brief. Not legal due diligence or investment advice.', margin, 290)
+    doc.text(`Page ${page}`, pageW - margin, 290, { align: 'right' })
+  }
+
+  const ensureSpace = (height: number) => {
+    if (y + height <= 276) return
+    footer()
+    doc.addPage()
+    page += 1
+    header()
+  }
+
+  const writeWrapped = (text: string, x: number, width: number, lineHeight = 4.3) => {
+    const lines = doc.splitTextToSize(text, width)
+    doc.text(lines, x, y)
+    y += lines.length * lineHeight
+  }
+
+  const section = (title: string) => {
+    ensureSpace(18)
+    setText(15, 23, 42, 9, 'bold')
+    doc.text(title.toUpperCase(), margin, y)
+    doc.setDrawColor(5, 150, 105)
+    doc.setLineWidth(0.45)
+    doc.line(margin, y + 2.5, pageW - margin, y + 2.5)
+    y += 8
+  }
+
+  header()
+
+  setText(15, 23, 42, 22, 'bold')
+  doc.text(area.name, margin, y)
+  y += 8
+  setText(71, 85, 105, 8)
+  doc.text(`${brief.audience} / ${brief.areaLine}`, margin, y)
+
+  doc.setFillColor(cr, cg, cb)
+  doc.roundedRect(pageW - margin - 36, y - 14, 36, 25, 4, 4, 'F')
+  setText(255, 255, 255, 24, 'bold')
+  doc.text(String(area.score), pageW - margin - 18, y - 1, { align: 'center' })
+  setText(236, 253, 245, 6.2, 'bold')
+  doc.text('DNA SCORE', pageW - margin - 18, y + 6, { align: 'center' })
+  y += 16
+
+  doc.setFillColor(236, 253, 245)
+  doc.setDrawColor(167, 243, 208)
+  doc.roundedRect(margin, y, pageW - margin * 2, 34, 3, 3, 'FD')
+  y += 8
+  setText(6, 95, 70, 11, 'bold')
+  doc.text('What this Rs 499 brief adds', margin + 5, y)
+  y += 6
+  setText(51, 65, 85, 8)
+  writeWrapped(
+    `${brief.positioning} It converts the area score into project-level questions, document checks, price sanity, and next actions using the buyer context shared at request time.`,
+    margin + 5,
+    pageW - margin * 2 - 10,
+    4.2,
+  )
+  y += 8
+
+  section('Decision snapshot')
+  const snapshotRows = [brief.scoreLine, brief.priceLine, `Main location signal: ${area.highlights?.[0] ?? 'available area-level signals'}`]
+  snapshotRows.forEach(row => {
+    ensureSpace(8)
+    setText(5, 150, 105, 8, 'bold')
+    doc.text('-', margin, y)
+    setText(51, 65, 85, 8)
+    writeWrapped(row, margin + 5, pageW - margin * 2 - 5)
+    y += 1.5
+  })
+
+  brief.sections.forEach(briefSection => {
+    section(briefSection.title)
+    briefSection.items.forEach(item => {
+      ensureSpace(12)
+      setText(5, 150, 105, 8, 'bold')
+      doc.text('-', margin, y)
+      setText(51, 65, 85, 8)
+      writeWrapped(item, margin + 5, pageW - margin * 2 - 5)
+      y += 1.5
+    })
+  })
+
+  section('Important boundary')
+  setText(71, 85, 105, 8)
+  writeWrapped(brief.disclaimer, margin, pageW - margin * 2)
+  footer()
+
+  doc.save(`PlotDNA_${area.name.replace(/\s+/g, '_')}_Custom_Buyer_Verification_Brief.pdf`)
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1241,7 +1395,7 @@ export default function AreaDetail() {
                 disabled={checkingReportPackage === 'custom_due_diligence_499'}
                 className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-sans font-bold text-emerald-300 hover:bg-emerald-500/15 disabled:opacity-70 sm:w-auto"
               >
-                {checkingReportPackage === 'custom_due_diligence_499' ? 'Checking access...' : 'Request custom due-diligence report'}
+                {checkingReportPackage === 'custom_due_diligence_499' ? 'Checking access...' : 'Request custom buyer verification brief'}
               </button>
             </section>
 
@@ -1290,14 +1444,14 @@ export default function AreaDetail() {
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
-                        Custom due-diligence request
+                        Custom buyer verification brief
                       </p>
                       <p className="mt-1 font-display text-2xl font-extrabold text-slate-100">Rs 499</p>
                     </div>
                     <Shield size={18} className="text-emerald-300" />
                   </div>
                   <p className="mt-3 text-xs font-sans leading-relaxed text-slate-300">
-                    Project-specific verification brief covering title chain, RERA, approvals, access, and current price checks.
+                    Project-specific buyer brief covering title chain, RERA, approvals, access, seller questions, and current price checks.
                   </p>
                   <button
                     onClick={() => void openCustomReportRequest('custom_due_diligence_499', 'area_report_pricing')}
@@ -1322,7 +1476,9 @@ export default function AreaDetail() {
                 areaName: area.name,
                 source: selectedReportSource,
               }}
+              paymentRequired={selectedReportPaymentRequired}
               paymentAvailable={selectedReportPaymentRequired && Boolean(getReportPaymentLink(selectedReportPackage))}
+              canGenerateBrief={!selectedReportPaymentRequired && selectedReportPackage === 'custom_due_diligence_499'}
               onProceedToPayment={() => {
                 const openedPaymentLink = openReportPaymentLink(selectedReportPackage)
                 trackEvent('payment_link_clicked', {
@@ -1335,8 +1491,18 @@ export default function AreaDetail() {
                   dataConfidence: displayedConfidence ?? 'estimated',
                 })
               }}
+              onGenerateBrief={(input) => {
+                void generateCustomBuyerBriefPDF(area, input)
+                trackEvent('custom_buyer_brief_downloaded', {
+                  citySlug,
+                  areaSlug: area.slug,
+                  dataConfidence: displayedConfidence ?? 'estimated',
+                  source: selectedReportSource,
+                  packageInterest: selectedReportPackage,
+                })
+              }}
               onClose={() => setCustomReportOpen(false)}
-              onSubmitted={(leadId) => {
+              onSubmitted={(leadId, input) => {
                 trackEvent('custom_report_lead_submitted', {
                   citySlug,
                   areaSlug: area.slug,
@@ -1344,6 +1510,8 @@ export default function AreaDetail() {
                   source: selectedReportSource,
                   packageInterest: selectedReportPackage,
                   leadId,
+                  hasBuyerNotes: Boolean(input.notes),
+                  hasBuyerBudget: Boolean(input.budgetRange),
                 })
               }}
             />

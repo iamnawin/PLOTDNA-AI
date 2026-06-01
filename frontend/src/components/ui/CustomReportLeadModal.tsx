@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { FileText, X } from 'lucide-react'
 import { submitCustomReportLead } from '@/lib/api'
 import type { CustomReportLeadPayload } from '@/lib/api'
+import type { BuyerBriefInput } from '@/lib/customBuyerBrief'
 
 interface Props {
   open: boolean
@@ -10,10 +11,13 @@ interface Props {
   cityName: string
   payloadBase: Pick<CustomReportLeadPayload, 'citySlug' | 'cityName' | 'areaSlug' | 'areaName' | 'source'>
   packageInterest?: string
+  paymentRequired?: boolean
   paymentAvailable?: boolean
+  canGenerateBrief?: boolean
   onProceedToPayment?: () => void
+  onGenerateBrief?: (input: BuyerBriefInput) => void
   onClose: () => void
-  onSubmitted: (leadId: string) => void
+  onSubmitted: (leadId: string, input: BuyerBriefInput) => void
 }
 
 const BUDGET_OPTIONS = ['', 'Under Rs 50L', 'Rs 50L-1Cr', 'Rs 1Cr-2Cr', 'Rs 2Cr+']
@@ -25,8 +29,11 @@ export default function CustomReportLeadModal({
   cityName,
   payloadBase,
   packageInterest,
+  paymentRequired = true,
   paymentAvailable = false,
+  canGenerateBrief = false,
   onProceedToPayment,
+  onGenerateBrief,
   onClose,
   onSubmitted,
 }: Props) {
@@ -38,19 +45,22 @@ export default function CustomReportLeadModal({
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [submittedLeadId, setSubmittedLeadId] = useState('')
+  const [submittedInput, setSubmittedInput] = useState<BuyerBriefInput | null>(null)
   const isCustomReport = packageInterest === 'custom_due_diligence_499'
-  const isManualFallback = !paymentAvailable
-  const packageLabel = isCustomReport ? 'Rs 499 custom report' : 'Rs 99 screening PDF'
+  const isManualFallback = paymentRequired && !paymentAvailable
+  const packageLabel = isCustomReport ? 'Rs 499 buyer brief' : 'Rs 99 screening PDF'
   const title = isCustomReport
-    ? 'Request custom due-diligence report'
+    ? 'Request custom buyer verification brief'
     : paymentAvailable ? 'Get instant screening PDF' : 'Request instant PDF payment link'
   const description = isCustomReport
-    ? `Share your buying context for ${areaName}, ${cityName}. PlotDNA will use this to prioritize RERA, access, approvals, pricing, and risk checks.`
+    ? `Share your buying context for ${areaName}, ${cityName}. PlotDNA will use this to prioritize RERA, access, approvals, pricing, seller questions, and risk checks.`
     : paymentAvailable
       ? `The instant PDF for ${areaName}, ${cityName} should normally open through Razorpay. Leave your contact only if checkout is unavailable and we need to send the PDF link manually.`
       : `Razorpay checkout is temporarily unavailable for ${areaName}, ${cityName}. Leave your contact and we will send the payment link or PDF link manually.`
   const submittedMessage = paymentAvailable
     ? 'Contact captured. Continue to Razorpay payment to complete this request.'
+    : canGenerateBrief
+      ? 'Contact captured. Download the custom buyer verification brief for testing or admin fulfilment.'
     : isCustomReport
       ? 'Contact captured. We will follow up with the custom report payment link and next verification steps.'
       : 'Contact captured. We will follow up with the PDF payment link or report link.'
@@ -61,6 +71,7 @@ export default function CustomReportLeadModal({
   useEffect(() => {
     if (open) return
     setSubmittedLeadId('')
+    setSubmittedInput(null)
     setError('')
   }, [open])
 
@@ -72,17 +83,23 @@ export default function CustomReportLeadModal({
     }
     setSubmitting(true)
     try {
-      const result = await submitCustomReportLead({
-        ...payloadBase,
+      const leadInput: BuyerBriefInput = {
         name,
         contact,
         budgetRange: budgetRange || undefined,
         timeline: timeline || undefined,
-        packageInterest,
         notes: notes || undefined,
+      }
+      const result = await submitCustomReportLead({
+        ...payloadBase,
+        ...leadInput,
+        name,
+        contact,
+        packageInterest,
       })
       setSubmittedLeadId(result.leadId)
-      onSubmitted(result.leadId)
+      setSubmittedInput(leadInput)
+      onSubmitted(result.leadId, leadInput)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not submit request. Please try again.')
     } finally {
@@ -170,6 +187,14 @@ export default function CustomReportLeadModal({
                       className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b]"
                     >
                       Continue to payment
+                    </button>
+                  )}
+                  {isCustomReport && canGenerateBrief && onGenerateBrief && submittedInput && (
+                    <button
+                      onClick={() => onGenerateBrief(submittedInput)}
+                      className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b]"
+                    >
+                      Download custom brief
                     </button>
                   )}
                 </div>
