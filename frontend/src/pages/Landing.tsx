@@ -40,12 +40,36 @@ const FEATURE_CARDS = [
 ]
 
 const DNA_STEPS = [
-  { label: 'Reading satellite signals...',         pct: 18 },
-  { label: 'Cross-referencing RERA data...',       pct: 36 },
-  { label: 'Analysing infrastructure pipeline...', pct: 57 },
-  { label: 'Calculating DNA score...',             pct: 76 },
-  { label: 'Mapping 5-year growth trajectory...',  pct: 91 },
-  { label: 'Finalising report...',                 pct: 100 },
+  {
+    label: 'Reading market signals before you commit capital...',
+    insight: 'Good land decisions start with location, access, demand, and risk.',
+    pct: 18,
+  },
+  {
+    label: 'Checking growth, access, risk, and price context...',
+    insight: 'PlotDNA helps you understand the market before you shortlist a site.',
+    pct: 36,
+  },
+  {
+    label: 'Analysing infrastructure pipeline...',
+    insight: 'Roads, transit, employment hubs, and approvals can change the real value story.',
+    pct: 57,
+  },
+  {
+    label: 'Calculating buyer-side DNA score...',
+    insight: 'The score is a screening signal, not a replacement for title and RERA checks.',
+    pct: 76,
+  },
+  {
+    label: 'Mapping 5-year growth trajectory...',
+    insight: 'Know what changed, what is active now, and what still needs verification.',
+    pct: 91,
+  },
+  {
+    label: 'Finalising area intelligence...',
+    insight: 'Use the report to ask better questions before you trust any quoted price.',
+    pct: 100,
+  },
 ]
 
 export default function Landing() {
@@ -346,6 +370,27 @@ export default function Landing() {
           <p style={{ fontSize: 10, color: '#64748b', letterSpacing: '0.1em' }}>
             <span className="font-display font-bold">{DNA_STEPS[dnaStep]?.pct ?? 0}%</span>{" \u00B7 "}Decoding location DNA
           </p>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={`insight-${dnaStep}`}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25 }}
+              style={{
+                maxWidth: 440,
+                marginTop: 18,
+                padding: '0 24px',
+                textAlign: 'center',
+                color: '#94a3b8',
+                fontSize: 13,
+                lineHeight: 1.6,
+                letterSpacing: '-0.01em',
+              }}
+            >
+              {DNA_STEPS[dnaStep]?.insight}
+            </motion.p>
+          </AnimatePresence>
         </motion.div>
       )}
     </AnimatePresence>
@@ -446,9 +491,9 @@ export default function Landing() {
             color: 'var(--text-main)',
           }}
         >
-          Hyderabad Land Investment Scanner
+          Know if the plot is worth buying
           <br />
-          <span style={{ color: '#10b981' }}>before you trust the pitch.</span>
+          <span style={{ color: '#10b981' }}>before you commit capital.</span>
         </motion.h1>
 
         <motion.p
@@ -457,7 +502,7 @@ export default function Landing() {
           transition={{ duration: 0.4, delay: 0.18 }}
           style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 680, marginTop: 22, lineHeight: 1.7, letterSpacing: '-0.01em' }}
         >
-          Screen micro-markets, compare risk, and prepare the right verification checklist before you talk to brokers. PlotDNA is buyer-side screening for serious Hyderabad property decisions, not a replacement for legal or title diligence.
+          Hyderabad land intelligence that helps you compare micro-markets, understand growth signals, and prepare the right verification checklist before you talk to brokers. PlotDNA is buyer-side screening, not a replacement for legal or title diligence.
         </motion.p>
 
         <motion.div

@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**Buyer-side land intelligence before you trust the pitch.**
+**Know if the plot is worth buying before you commit capital.**
 
 PlotDNA helps property buyers screen micro-markets, compare risk, and prepare the
 right verification checklist before talking to brokers.
@@ -96,6 +96,34 @@ buyer context such as budget, timeline, notes, and the target area to produce:
 
 This is a buyer verification brief, not legal due diligence, title advice, or
 investment advice.
+
+### Admin/test flow for the Rs 499 buyer brief
+
+The Rs 499 brief has a test/admin path so internal QA can verify the generated
+custom buyer verification PDF without paying through Razorpay on every run.
+
+Local test process:
+
+1. Start the backend with `APP_ENV=development`.
+2. Start the frontend with `VITE_API_URL=http://localhost:8000`.
+3. Open the app once so an anonymous PlotDNA session is created.
+4. In browser DevTools, read `localStorage.plotdna_access_token`.
+5. Activate the test entitlement with `POST /api/v1/entitlements/dev/activate`:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/entitlements/dev/activate \
+  -H "Authorization: Bearer <plotdna_access_token>" \
+  -H "Content-Type: application/json" \
+  -d "{\"days\":30}"
+```
+
+6. Open an area report, click `Pay Rs 499`, enter contact and buyer context,
+   then click `Download custom brief`.
+
+Production-safe admin testing uses `ADMIN_ACCESS_USER_IDS`. Add the internal
+test user id to that environment variable when a trusted admin account should
+bypass payment. `ADMIN_ACCESS_EMAILS` is intentionally ignored in production so
+public users cannot self-declare an admin email to unlock paid reports.
 
 ---
 
