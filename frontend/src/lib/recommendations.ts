@@ -1,4 +1,5 @@
 import type { MicroMarket, RecommendationGoal } from '@/types'
+import { getInvestmentReportSummary } from '@/lib/investmentReport'
 
 export interface RecommendationReason {
   label: string
@@ -184,7 +185,7 @@ function buildCaution(goal: RecommendationGoal, rankedArea: RankedArea) {
     return `Premium market with a higher entry band near ${formatCurrency(priceFloor)}.`
   }
 
-  return 'Verify plot-level legal status and project execution before committing.'
+  return getInvestmentReportSummary(area).nextVerification
 }
 
 function scoreArea(goal: RecommendationGoal, rankedArea: RankedArea) {
