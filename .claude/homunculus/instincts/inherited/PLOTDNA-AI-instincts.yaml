@@ -1,0 +1,360 @@
+# Instincts generated from https://github.com/iamnawin/PLOTDNA-AI
+# Generated: 2026-06-01T07:44:38.811Z
+# Version: 2.0
+# NOTE: This file supplements (does not replace) any existing curated instincts.
+# High-confidence manually curated instincts should be preserved alongside these.
+
+---
+id: PLOTDNA-AI-commit-length
+trigger: "when writing a commit message"
+confidence: 0.6
+domain: git
+source: repo-analysis
+source_repo: https://github.com/iamnawin/PLOTDNA-AI
+---
+
+# PLOTDNA AI Commit Length
+
+## Action
+
+Write moderate-length commit messages (~55 characters)
+
+## Evidence
+
+- Average commit message length: 55 chars
+- Based on 3 commits
+
+---
+id: PLOTDNA-AI-naming-files
+trigger: "when creating a new file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/iamnawin/PLOTDNA-AI
+---
+
+# PLOTDNA AI Naming Files
+
+## Action
+
+Use camelCase naming convention
+
+## Evidence
+
+- Analyzed file naming patterns in repository
+- Dominant pattern: camelCase
+
+---
+id: PLOTDNA-AI-import-alias
+trigger: "when importing modules"
+confidence: 0.85
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/iamnawin/PLOTDNA-AI
+---
+
+# PLOTDNA AI Import Alias
+
+## Action
+
+Use path aliases (@/, ~/) instead of relative imports
+
+## Evidence
+
+- Import analysis shows alias pattern
+- Example: import { x } from '@/lib/x'
+
+---
+id: PLOTDNA-AI-export-style
+trigger: "when exporting from a module"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: https://github.com/iamnawin/PLOTDNA-AI
+---
+
+# PLOTDNA AI Export Style
+
+## Action
+
+Prefer named exports
+
+## Evidence
+
+- Export pattern analysis
+- Dominant style: named
+
+---
+id: PLOTDNA-AI-arch-type-based
+trigger: "when adding new code"
+confidence: 0.8
+domain: architecture
+source: repo-analysis
+source_repo: https://github.com/iamnawin/PLOTDNA-AI
+---
+
+# PLOTDNA AI Arch Type Based
+
+## Action
+
+Place code in the appropriate type folder (components/, services/, utils/, etc.)
+
+## Evidence
+
+- Type-based module organization detected
+- Folders: 
+
+---
+id: PLOTDNA-AI-workflow-backend-feature-addition-with-tests
+trigger: "when doing backend feature addition with tests"
+confidence: 0.6
+domain: workflow
+source: repo-analysis
+source_repo: https://github.com/iamnawin/PLOTDNA-AI
+---
+
+# PLOTDNA AI Workflow Backend Feature Addition With Tests
+
+## Action
+
+Follow the backend-feature-addition-with-tests workflow:
+1. Create or update backend service or API route files to implement the new feature.
+2. Add or update test files to validate the new backend logic.
+3. Optionally, add or update data files if the feature involves new datasets.
+
+## Evidence
+
+- Workflow detected from commit patterns
+- Frequency: ~2x per month
+- Files: backend/app/services/*.py, backend/app/api/routes/*.py, backend/tests/test_*.py
+
+---
+id: plotdna-ai-instinct-file-naming-camelCase
+trigger: "When creating or renaming a Python file"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct File Naming CamelCase
+
+## Action
+
+Name the file using camelCase convention
+
+## Evidence
+
+- Pattern in namingConventions.files: camelCase
+
+---
+id: plotdna-ai-instinct-function-naming-camelCase
+trigger: "When defining a new function"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Function Naming CamelCase
+
+## Action
+
+Name the function using camelCase convention
+
+## Evidence
+
+- Pattern in namingConventions.functions: camelCase
+
+---
+id: plotdna-ai-instinct-class-naming-pascalCase
+trigger: "When defining a new class"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Class Naming PascalCase
+
+## Action
+
+Name the class using PascalCase convention
+
+## Evidence
+
+- Pattern in namingConventions.classes: PascalCase
+
+---
+id: plotdna-ai-instinct-constant-naming-screaming-snake-case
+trigger: "When defining a constant"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Constant Naming Screaming Snake Case
+
+## Action
+
+Name the constant using SCREAMING_SNAKE_CASE convention
+
+## Evidence
+
+- Pattern in namingConventions.constants: SCREAMING_SNAKE_CASE
+
+---
+id: plotdna-ai-instinct-import-alias-style
+trigger: "When importing modules in Python"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Import Alias Style
+
+## Action
+
+Use alias style for imports
+
+## Evidence
+
+- Pattern in importStyle: alias
+
+---
+id: plotdna-ai-instinct-export-named-style
+trigger: "When exporting functions, classes, or variables"
+confidence: 0.7
+domain: code-style
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Export Named Style
+
+## Action
+
+Use named exports
+
+## Evidence
+
+- Pattern in exportStyle: named
+
+---
+id: plotdna-ai-instinct-test-file-location-mixed
+trigger: "When adding or updating tests"
+confidence: 0.6
+domain: testing
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Test File Location Mixed
+
+## Action
+
+Place test files in both source and dedicated test directories as appropriate
+
+## Evidence
+
+- Pattern in architecture.folderStructure.testLocation: mixed
+
+---
+id: plotdna-ai-instinct-test-file-naming
+trigger: "When creating a new test file for backend Python code"
+confidence: 0.8
+domain: testing
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Test File Naming
+
+## Action
+
+Name the test file as test_*.py
+
+## Evidence
+
+- Pattern in workflows.backend-feature-addition-with-tests.filesInvolved: backend/tests/test_*.py
+
+---
+id: plotdna-ai-instinct-backend-feature-addition-with-tests
+trigger: "When introducing new backend features or data sources"
+confidence: 0.9
+domain: workflow
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Backend Feature Addition With Tests
+
+## Action
+
+Create or update backend service/API route files, add or update corresponding test files, and optionally update data files
+
+## Evidence
+
+- Workflow: backend-feature-addition-with-tests
+- Pattern in commit examples and filesInvolved
+
+---
+id: plotdna-ai-instinct-git-commit-freeform
+trigger: "When writing a commit message"
+confidence: 0.8
+domain: git
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Git Commit Freeform
+
+## Action
+
+Use a freeform, descriptive commit message without a strict prefix
+
+## Evidence
+
+- Pattern in commits.type: freeform
+- Examples: 'Establish Hyderabad as the first backend-owned market catalog'
+
+---
+id: plotdna-ai-instinct-git-commit-length
+trigger: "When composing a commit message"
+confidence: 0.7
+domain: git
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Git Commit Length
+
+## Action
+
+Keep the commit message concise, around 55 characters on average
+
+## Evidence
+
+- Pattern in commits.averageLength: 55
+
+---
+id: plotdna-ai-instinct-error-handling-try-catch
+trigger: "When handling errors in Python code"
+confidence: 0.8
+domain: code-style
+source: repo-analysis
+source_repo: iamnawin/PLOTDNA-AI
+---
+
+# Plotdna Ai Instinct Error Handling Try Catch
+
+## Action
+
+Use try-catch (try-except) blocks for error handling
+
+## Evidence
+
+- Pattern in errorHandling.style: try-catch
+
