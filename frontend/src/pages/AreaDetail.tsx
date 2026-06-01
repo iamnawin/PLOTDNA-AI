@@ -30,6 +30,7 @@ import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommenda
 import { getConfidenceMeta } from '@/lib/cityProduction'
 import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib/investmentReport'
 import { trackEvent } from '@/lib/analytics'
+import { openReportPaymentLink, type ReportPackage } from '@/lib/paymentLinks'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
@@ -657,7 +658,7 @@ export default function AreaDetail() {
   const [errorMessage, setErrorMessage] = useState('')
   const [pdfReady, setPdfReady] = useState(() => !isLocked)
   const [customReportOpen, setCustomReportOpen] = useState(false)
-  const [selectedReportPackage, setSelectedReportPackage] = useState<'instant_pdf_99' | 'custom_due_diligence_499'>('custom_due_diligence_499')
+  const [selectedReportPackage, setSelectedReportPackage] = useState<ReportPackage>('custom_due_diligence_499')
 
   useEffect(() => {
     let cancelled = false
@@ -1161,7 +1162,7 @@ export default function AreaDetail() {
   const compareSlugs = [area.slug, 'adibatla', 'tukkuguda', 'kokapet']
     .filter((slug, index, slugs) => slugs.indexOf(slug) === index)
     .slice(0, 3)
-  const openCustomReportRequest = (packageInterest: 'instant_pdf_99' | 'custom_due_diligence_499', source: string) => {
+  const openCustomReportRequest = (packageInterest: ReportPackage, source: string) => {
     setSelectedReportPackage(packageInterest)
     trackEvent(packageInterest === 'instant_pdf_99' ? 'paid_report_clicked' : 'custom_report_pricing_clicked', {
       citySlug,
@@ -1170,6 +1171,20 @@ export default function AreaDetail() {
       source,
       dataConfidence: displayedConfidence ?? 'estimated',
     })
+
+    const openedPaymentLink = openReportPaymentLink(packageInterest)
+    trackEvent('payment_link_clicked', {
+      citySlug,
+      areaSlug: area.slug,
+      packageInterest,
+      source,
+      provider: 'razorpay_payment_link',
+      hasConfiguredLink: openedPaymentLink,
+      dataConfidence: displayedConfidence ?? 'estimated',
+    })
+
+    if (openedPaymentLink) return
+
     setCustomReportOpen(true)
   }
 
@@ -1425,7 +1440,7 @@ export default function AreaDetail() {
                     onClick={() => openCustomReportRequest('instant_pdf_99', 'area_report_pricing')}
                     className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-white/10 px-3 py-2 text-xs font-sans font-bold text-slate-200 hover:border-emerald-500/40 hover:text-emerald-300"
                   >
-                    Register interest
+                    Pay Rs 99
                   </button>
                 </article>
 
@@ -1446,7 +1461,7 @@ export default function AreaDetail() {
                     onClick={() => openCustomReportRequest('custom_due_diligence_499', 'area_report_pricing')}
                     className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-bold text-[#04110b] hover:bg-emerald-400"
                   >
-                    Request custom report
+                    Pay Rs 499
                   </button>
                 </article>
               </div>
