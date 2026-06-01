@@ -63,6 +63,7 @@ export interface CustomReportLeadPayload {
   areaName: string
   budgetRange?: string
   timeline?: string
+  packageInterest?: string
   notes?: string
   source?: string
 }

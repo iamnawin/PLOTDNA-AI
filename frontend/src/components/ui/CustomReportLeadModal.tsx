@@ -9,6 +9,7 @@ interface Props {
   areaName: string
   cityName: string
   payloadBase: Pick<CustomReportLeadPayload, 'citySlug' | 'cityName' | 'areaSlug' | 'areaName' | 'source'>
+  packageInterest?: string
   onClose: () => void
   onSubmitted: (leadId: string) => void
 }
@@ -21,6 +22,7 @@ export default function CustomReportLeadModal({
   areaName,
   cityName,
   payloadBase,
+  packageInterest,
   onClose,
   onSubmitted,
 }: Props) {
@@ -49,6 +51,7 @@ export default function CustomReportLeadModal({
         contact,
         budgetRange: budgetRange || undefined,
         timeline: timeline || undefined,
+        packageInterest,
         notes: notes || undefined,
       })
       setSubmittedLeadId(result.leadId)
@@ -99,6 +102,11 @@ export default function CustomReportLeadModal({
                 <p className="mt-2 text-sm font-sans leading-relaxed text-slate-400">
                   Share your buying context for {areaName}, {cityName}. PlotDNA will use this to prioritize title, RERA, access, pricing, and risk checks.
                 </p>
+                {packageInterest && (
+                  <p className="mt-2 inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
+                    {packageInterest === 'custom_due_diligence_499' ? 'Rs 499 custom report' : 'Rs 99 screening PDF'}
+                  </p>
+                )}
               </div>
               <button
                 onClick={handleClose}

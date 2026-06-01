@@ -28,6 +28,7 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                         "areaName": "Adibatla",
                         "budgetRange": "50L-1Cr",
                         "timeline": "0-3 months",
+                        "packageInterest": "custom_due_diligence_499",
                         "notes": "Need title and access checks before site visit.",
                         "source": "area_report_summary",
                     },
@@ -47,6 +48,7 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                 self.assertEqual(records[0]["areaSlug"], "adibatla")
                 self.assertEqual(records[0]["contact"], "+91 98765 43210")
                 self.assertEqual(records[0]["leadType"], "phone")
+                self.assertEqual(records[0]["packageInterest"], "custom_due_diligence_499")
                 self.assertIn("createdAt", records[0])
             finally:
                 if previous_path is None:
