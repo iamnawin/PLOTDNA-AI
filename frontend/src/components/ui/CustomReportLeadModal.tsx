@@ -10,6 +10,8 @@ interface Props {
   cityName: string
   payloadBase: Pick<CustomReportLeadPayload, 'citySlug' | 'cityName' | 'areaSlug' | 'areaName' | 'source'>
   packageInterest?: string
+  paymentAvailable?: boolean
+  onProceedToPayment?: () => void
   onClose: () => void
   onSubmitted: (leadId: string) => void
 }
@@ -23,6 +25,8 @@ export default function CustomReportLeadModal({
   cityName,
   payloadBase,
   packageInterest,
+  paymentAvailable = false,
+  onProceedToPayment,
   onClose,
   onSubmitted,
 }: Props) {
@@ -34,6 +38,15 @@ export default function CustomReportLeadModal({
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [submittedLeadId, setSubmittedLeadId] = useState('')
+  const isCustomReport = packageInterest === 'custom_due_diligence_499'
+  const packageLabel = isCustomReport ? 'Rs 499 custom report' : 'Rs 99 screening PDF'
+  const title = isCustomReport ? 'Request custom due-diligence report' : 'Get instant screening PDF'
+  const description = isCustomReport
+    ? `Share your buying context for ${areaName}, ${cityName}. PlotDNA will use this to prioritize RERA, access, approvals, pricing, and risk checks.`
+    : `The instant PDF for ${areaName}, ${cityName} should normally open through Razorpay. Leave your contact only if checkout is unavailable and we need to send the PDF link manually.`
+  const submittedMessage = paymentAvailable
+    ? 'Contact captured. Continue to Razorpay payment to complete this request.'
+    : 'Contact captured. We will follow up with the checkout or report link.'
 
   useEffect(() => {
     if (open) return
@@ -43,6 +56,10 @@ export default function CustomReportLeadModal({
 
   async function handleSubmit() {
     setError('')
+    if (!contact.trim()) {
+      setError('Enter an email or phone number so we can send the report or payment link.')
+      return
+    }
     setSubmitting(true)
     try {
       const result = await submitCustomReportLead({
@@ -98,13 +115,13 @@ export default function CustomReportLeadModal({
                 >
                   <FileText size={16} className="text-emerald-400" />
                 </div>
-                <h2 className="font-display text-lg font-bold text-slate-100">Request due-diligence report</h2>
+                <h2 className="font-display text-lg font-bold text-slate-100">{title}</h2>
                 <p className="mt-2 text-sm font-sans leading-relaxed text-slate-400">
-                  Share your buying context for {areaName}, {cityName}. PlotDNA will use this to prioritize title, RERA, access, pricing, and risk checks.
+                  {description}
                 </p>
                 {packageInterest && (
                   <p className="mt-2 inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
-                    {packageInterest === 'custom_due_diligence_499' ? 'Rs 499 custom report' : 'Rs 99 screening PDF'}
+                    {packageLabel}
                   </p>
                 )}
               </div>
@@ -121,14 +138,24 @@ export default function CustomReportLeadModal({
               <div className="mt-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4">
                 <p className="font-sans text-sm font-bold text-emerald-300">Request received</p>
                 <p className="mt-2 text-xs font-sans leading-relaxed text-slate-300">
-                  Lead ID {submittedLeadId}. This is now captured for follow-up instead of opening email.
+                  Lead ID {submittedLeadId}. {submittedMessage}
                 </p>
-                <button
-                  onClick={handleClose}
-                  className="mt-4 w-full rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b]"
-                >
-                  Close
-                </button>
+                <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                  <button
+                    onClick={handleClose}
+                    className="flex-1 rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm font-sans text-slate-300"
+                  >
+                    Close
+                  </button>
+                  {paymentAvailable && onProceedToPayment && (
+                    <button
+                      onClick={onProceedToPayment}
+                      className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b]"
+                    >
+                      Continue to payment
+                    </button>
+                  )}
+                </div>
               </div>
             ) : (
               <>
@@ -155,48 +182,54 @@ export default function CustomReportLeadModal({
                       className="w-full rounded-2xl border border-white/10 bg-transparent px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/40"
                     />
                   </label>
-                  <label>
-                    <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
-                      Budget
-                    </span>
-                    <select
-                      value={budgetRange}
-                      onChange={(event) => setBudgetRange(event.target.value)}
-                      className="w-full rounded-2xl border border-white/10 bg-[#080a16] px-4 py-3 font-sans text-sm text-slate-100 outline-none focus:border-emerald-500/40"
-                    >
-                      {BUDGET_OPTIONS.map(option => (
-                        <option key={option || 'empty'} value={option}>{option || 'Select budget'}</option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
-                      Timeline
-                    </span>
-                    <select
-                      value={timeline}
-                      onChange={(event) => setTimeline(event.target.value)}
-                      className="w-full rounded-2xl border border-white/10 bg-[#080a16] px-4 py-3 font-sans text-sm text-slate-100 outline-none focus:border-emerald-500/40"
-                    >
-                      {TIMELINE_OPTIONS.map(option => (
-                        <option key={option || 'empty'} value={option}>{option || 'Select timeline'}</option>
-                      ))}
-                    </select>
-                  </label>
+                  {isCustomReport && (
+                    <label>
+                      <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
+                        Budget
+                      </span>
+                      <select
+                        value={budgetRange}
+                        onChange={(event) => setBudgetRange(event.target.value)}
+                        className="w-full rounded-2xl border border-white/10 bg-[#080a16] px-4 py-3 font-sans text-sm text-slate-100 outline-none focus:border-emerald-500/40"
+                      >
+                        {BUDGET_OPTIONS.map(option => (
+                          <option key={option || 'empty'} value={option}>{option || 'Select budget'}</option>
+                        ))}
+                      </select>
+                    </label>
+                  )}
+                  {isCustomReport && (
+                    <label>
+                      <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
+                        Timeline
+                      </span>
+                      <select
+                        value={timeline}
+                        onChange={(event) => setTimeline(event.target.value)}
+                        className="w-full rounded-2xl border border-white/10 bg-[#080a16] px-4 py-3 font-sans text-sm text-slate-100 outline-none focus:border-emerald-500/40"
+                      >
+                        {TIMELINE_OPTIONS.map(option => (
+                          <option key={option || 'empty'} value={option}>{option || 'Select timeline'}</option>
+                        ))}
+                      </select>
+                    </label>
+                  )}
                 </div>
 
-                <label className="mt-3 block">
-                  <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
-                    Notes
-                  </span>
-                  <textarea
-                    value={notes}
-                    onChange={(event) => setNotes(event.target.value)}
-                    placeholder="Project name, survey number, broker quote, or checks needed"
-                    rows={3}
-                    className="w-full resize-none rounded-2xl border border-white/10 bg-transparent px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/40"
-                  />
-                </label>
+                {isCustomReport && (
+                  <label className="mt-3 block">
+                    <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
+                      Notes
+                    </span>
+                    <textarea
+                      value={notes}
+                      onChange={(event) => setNotes(event.target.value)}
+                      placeholder="Project name, survey number, broker quote, or checks needed"
+                      rows={3}
+                      className="w-full resize-none rounded-2xl border border-white/10 bg-transparent px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/40"
+                    />
+                  </label>
+                )}
 
                 {error && <p className="mt-3 text-[11px] font-sans text-red-400">{error}</p>}
 
@@ -212,7 +245,7 @@ export default function CustomReportLeadModal({
                     disabled={submitting}
                     className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b] disabled:opacity-60"
                   >
-                    {submitting ? 'Submitting...' : 'Request report'}
+                    {submitting ? 'Submitting...' : isCustomReport ? 'Request report' : 'Send PDF link'}
                   </button>
                 </div>
               </>
