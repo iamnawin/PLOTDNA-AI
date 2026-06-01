@@ -92,8 +92,8 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
   const showAnalysisBody = isLive || hasStaticAreaContext
   const showScrollableBody = showAnalysisBody || showFallbackVerdict
 
-  const displayScore = liveData?.score ?? (hasStaticAreaContext && staticArea ? staticArea.score : 0)
-  const displayHighlights = liveData?.highlights ?? (hasStaticAreaContext && staticArea ? staticArea.highlights.slice(0, 3) : [])
+  const displayScore = hasStaticAreaContext && staticArea ? staticArea.score : liveData?.score ?? 0
+  const displayHighlights = hasStaticAreaContext && staticArea ? staticArea.highlights.slice(0, 3) : liveData?.highlights ?? []
   const milestones = hasStaticAreaContext && staticArea ? getGrowthMilestones(staticArea) : []
   const outlook = hasStaticAreaContext && staticArea ? getOutlook(staticArea) : null
 
@@ -226,8 +226,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
               <div className="flex items-start gap-2 px-3 py-2.5">
                 <Info size={9} className="text-slate-500 flex-shrink-0 mt-1" />
                 <p className="text-[9px] font-sans text-slate-400 leading-relaxed">
-                  Score derived from real transit, roads, offices and amenities near this coordinate.
-                  Price velocity is a proxy and static micro-market context is shown only when the fallback tier is exact or safely nearby.
+                  Area DNA score uses the supported micro-market shown below. Live coordinate signals are used only as nearby context.
                 </p>
               </div>
             </>
@@ -352,7 +351,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
               <div>
                 <ScoreBadge score={displayScore} />
                 <p className="text-base font-sans font-bold mt-1.5" style={{ color }}>{label}</p>
-                {isLive ? (
+                {isLive && !hasStaticAreaContext ? (
                   <div className="flex items-center gap-1.5 mt-1">
                     <Activity size={11} style={{ color: '#10b981' }} />
                     <span className="text-[10px] font-sans font-semibold text-[#10b981]">Live OSM score</span>
@@ -363,7 +362,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
                     <span className="text-xs font-display font-semibold" style={{ color }}>+{staticArea?.yoy ?? 0}% YoY</span>
                   </div>
                 )}
-                {isLive ? (
+                {isLive && !hasStaticAreaContext ? (
                   <p className="text-[10px] font-sans mt-0.5 text-slate-400">
                     Coordinate-level score. Static locality narratives appear only when the fallback tier is exact or safely nearby.
                   </p>
@@ -631,7 +630,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
             }}
           >
             <span className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.08em]" style={{ color: '#f8fafc', textShadow: `0 0 12px ${color}95` }}>
-              Open area report
+              Open Area DNA Report
               <ArrowRight size={13} />
             </span>
             <span className="text-[9px] text-slate-400 font-sans mt-0.5">
@@ -691,7 +690,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
             }}
           >
             <span className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.08em] text-slate-50" style={{ textShadow: '0 0 12px rgba(16,185,129,0.95)' }}>
-              Open district report
+              Open Regional DNA Report
               <ArrowRight size={13} />
             </span>
             <span className="text-[9px] text-slate-400 font-sans mt-0.5">
