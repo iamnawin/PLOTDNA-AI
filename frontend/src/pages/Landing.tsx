@@ -14,6 +14,7 @@ import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } fr
 import { resolveMapLink, analyzeBrochure, resolveLocation } from '@/lib/api'
 import { getGoalTopAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import { getCityProductionProfile } from '@/lib/cityProduction'
+import { trackEvent } from '@/lib/analytics'
 
 const FEATURE_CARDS = [
   {
@@ -374,7 +375,10 @@ export default function Landing() {
         </div>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => navigate('/compare')}
+            onClick={() => {
+              trackEvent('landing_investment_cta_clicked', { destination: 'compare', citySlug: 'hyderabad' })
+              navigate('/compare')
+            }}
             className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] transition-all cursor-pointer font-sans"
             style={{
               background: 'rgba(255,255,255,0.04)',

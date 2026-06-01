@@ -29,6 +29,7 @@ import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/area
 import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import { getConfidenceMeta } from '@/lib/cityProduction'
 import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib/investmentReport'
+import { trackEvent } from '@/lib/analytics'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
@@ -687,6 +688,15 @@ export default function AreaDetail() {
     return () => window.clearTimeout(timer)
   }, [isLocked, slug])
 
+  useEffect(() => {
+    if (!area) return
+    trackEvent('area_report_preview_viewed', {
+      citySlug: staticCitySlug,
+      areaSlug: area.slug,
+      dataConfidence: area.dataConfidence ?? 'estimated',
+    })
+  }, [area, staticCitySlug])
+
   // Manage viewed area slugs tracker effect
   useEffect(() => {
     if (localStorage.getItem('plotdna_unlocked') === 'true') {
@@ -1142,6 +1152,7 @@ export default function AreaDetail() {
   const compareSlugs = [area.slug, 'adibatla', 'tukkuguda', 'kokapet']
     .filter((slug, index, slugs) => slugs.indexOf(slug) === index)
     .slice(0, 3)
+  const customReportMailto = `mailto:hello@plotdna.in?subject=${encodeURIComponent(`Custom due-diligence report for ${area.name}`)}&body=${encodeURIComponent(`I want a custom due-diligence report for ${area.name}, ${cityName}.`)}`
 
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
@@ -1184,7 +1195,15 @@ export default function AreaDetail() {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => navigate(`/compare?areas=${compareSlugs.join(',')}`)}
+            onClick={() => {
+              trackEvent('compare_started', {
+                citySlug,
+                areaSlug: area.slug,
+                source: 'area_nav',
+                dataConfidence: displayedConfidence ?? 'estimated',
+              })
+              navigate(`/compare?areas=${compareSlugs.join(',')}`)
+            }}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 text-slate-300"
             style={{ border: '1px solid rgba(255,255,255,0.10)' }}
           >
@@ -1203,7 +1222,15 @@ export default function AreaDetail() {
 
           {/* Download PDF button */}
           <button
-            onClick={() => { if (pdfReady) void generatePDF(area) }}
+            onClick={() => {
+              if (!pdfReady) return
+              trackEvent('area_pdf_download_clicked', {
+                citySlug,
+                areaSlug: area.slug,
+                dataConfidence: displayedConfidence ?? 'estimated',
+              })
+              void generatePDF(area)
+            }}
             disabled={!pdfReady}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 disabled:opacity-45 disabled:cursor-not-allowed"
             style={{ color: pdfReady ? color : '#64748b', border: `1px solid ${pdfReady ? color : '#64748b'}40` }}
@@ -1326,6 +1353,19 @@ export default function AreaDetail() {
                   </span>
                 ))}
               </div>
+
+              <a
+                href={customReportMailto}
+                onClick={() => trackEvent('custom_report_requested', {
+                  citySlug,
+                  areaSlug: area.slug,
+                  dataConfidence: displayedConfidence ?? 'estimated',
+                  source: 'area_report_summary',
+                })}
+                className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-sans font-bold text-emerald-300 hover:bg-emerald-500/15 sm:w-auto"
+              >
+                Request custom due-diligence report
+              </a>
             </section>
 
             {/* Stats row */}

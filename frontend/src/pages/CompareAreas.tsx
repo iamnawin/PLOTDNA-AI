@@ -1,9 +1,10 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { ArrowLeft, BarChart3, CheckCircle2, Shield, TrendingUp } from 'lucide-react'
 import { CITIES } from '@/data/cities'
 import { getScoreColor } from '@/lib/utils'
 import { getInvestmentReportSummary } from '@/lib/investmentReport'
+import { trackEvent } from '@/lib/analytics'
 
 const DEFAULT_AREAS = ['adibatla', 'tukkuguda', 'kokapet']
 const CITY_SLUG = 'hyderabad'
@@ -24,9 +25,23 @@ export default function CompareAreas() {
     [cityEntry.areas, selectedSlugs],
   )
 
+  useEffect(() => {
+    trackEvent('compare_started', {
+      citySlug: CITY_SLUG,
+      areas: selectedAreas.map(area => area.slug).join(','),
+      source: 'compare_page',
+    })
+  }, [selectedAreas])
+
   function updateSelection(index: number, slug: string) {
     const next = [...selectedAreas.map(area => area.slug)]
     next[index] = slug
+    trackEvent('compare_area_changed', {
+      citySlug: CITY_SLUG,
+      index,
+      areaSlug: slug,
+      areas: next.join(','),
+    })
     setSearchParams({ areas: next.join(',') })
   }
 
