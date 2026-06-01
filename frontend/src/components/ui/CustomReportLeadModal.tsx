@@ -39,14 +39,24 @@ export default function CustomReportLeadModal({
   const [error, setError] = useState('')
   const [submittedLeadId, setSubmittedLeadId] = useState('')
   const isCustomReport = packageInterest === 'custom_due_diligence_499'
+  const isManualFallback = !paymentAvailable
   const packageLabel = isCustomReport ? 'Rs 499 custom report' : 'Rs 99 screening PDF'
-  const title = isCustomReport ? 'Request custom due-diligence report' : 'Get instant screening PDF'
+  const title = isCustomReport
+    ? 'Request custom due-diligence report'
+    : paymentAvailable ? 'Get instant screening PDF' : 'Request instant PDF payment link'
   const description = isCustomReport
     ? `Share your buying context for ${areaName}, ${cityName}. PlotDNA will use this to prioritize RERA, access, approvals, pricing, and risk checks.`
-    : `The instant PDF for ${areaName}, ${cityName} should normally open through Razorpay. Leave your contact only if checkout is unavailable and we need to send the PDF link manually.`
+    : paymentAvailable
+      ? `The instant PDF for ${areaName}, ${cityName} should normally open through Razorpay. Leave your contact only if checkout is unavailable and we need to send the PDF link manually.`
+      : `Razorpay checkout is temporarily unavailable for ${areaName}, ${cityName}. Leave your contact and we will send the payment link or PDF link manually.`
   const submittedMessage = paymentAvailable
     ? 'Contact captured. Continue to Razorpay payment to complete this request.'
-    : 'Contact captured. We will follow up with the checkout or report link.'
+    : isCustomReport
+      ? 'Contact captured. We will follow up with the custom report payment link and next verification steps.'
+      : 'Contact captured. We will follow up with the PDF payment link or report link.'
+  const submitLabel = isCustomReport
+    ? paymentAvailable ? 'Request report' : 'Request payment link'
+    : paymentAvailable ? 'Send PDF link' : 'Request PDF link'
 
   useEffect(() => {
     if (open) return
@@ -124,6 +134,11 @@ export default function CustomReportLeadModal({
                     {packageLabel}
                   </p>
                 )}
+                {isManualFallback && (
+                  <p className="mt-2 inline-flex rounded-full border border-amber-500/25 bg-amber-500/10 px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-amber-300">
+                    Manual checkout fallback
+                  </p>
+                )}
               </div>
               <button
                 onClick={handleClose}
@@ -136,7 +151,9 @@ export default function CustomReportLeadModal({
 
             {submittedLeadId ? (
               <div className="mt-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4">
-                <p className="font-sans text-sm font-bold text-emerald-300">Request received</p>
+                <p className="font-sans text-sm font-bold text-emerald-300">
+                  {paymentAvailable ? 'Contact saved' : 'Manual request received'}
+                </p>
                 <p className="mt-2 text-xs font-sans leading-relaxed text-slate-300">
                   Lead ID {submittedLeadId}. {submittedMessage}
                 </p>
@@ -245,7 +262,7 @@ export default function CustomReportLeadModal({
                     disabled={submitting}
                     className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b] disabled:opacity-60"
                   >
-                    {submitting ? 'Submitting...' : isCustomReport ? 'Request report' : 'Send PDF link'}
+                    {submitting ? 'Submitting...' : submitLabel}
                   </button>
                 </div>
               </>
