@@ -372,22 +372,38 @@ export default function Landing() {
             Live{" \u00B7 "}<span className="font-display font-bold">{CITY_LIST.length}</span> Cities
           </span>
         </div>
-        <button
-          onClick={goToMap}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] transition-all cursor-pointer font-sans"
-          style={{
-            background: 'rgba(16,185,129,0.1)',
-            border: '1px solid rgba(16,185,129,0.3)',
-            color: '#10b981',
-            fontWeight: 600,
-            letterSpacing: '0.01em',
-          }}
-          onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(16,185,129,0.18)' }}
-          onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(16,185,129,0.1)' }}
-        >
-          <Map size={12} />
-          Open Map
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate('/compare')}
+            className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] transition-all cursor-pointer font-sans"
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: '#cbd5e1',
+              fontWeight: 600,
+              letterSpacing: '0.01em',
+            }}
+          >
+            <TrendingUp size={12} />
+            Compare
+          </button>
+          <button
+            onClick={goToMap}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] transition-all cursor-pointer font-sans"
+            style={{
+              background: 'rgba(16,185,129,0.1)',
+              border: '1px solid rgba(16,185,129,0.3)',
+              color: '#10b981',
+              fontWeight: 600,
+              letterSpacing: '0.01em',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(16,185,129,0.18)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(16,185,129,0.1)' }}
+          >
+            <Map size={12} />
+            Open Map
+          </button>
+        </div>
       </nav>
 
       <section className="flex-1 flex flex-col items-center justify-center px-5 pt-16 pb-10 text-center">
