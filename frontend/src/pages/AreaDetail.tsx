@@ -39,6 +39,7 @@ import NewsSection from '@/components/ui/NewsSection'
 import MarketPulseCard from '@/components/ui/MarketPulseCard'
 import AVMCard from '@/components/ui/AVMCard'
 import AssistantDock from '@/components/ui/AssistantDock'
+import CustomReportLeadModal from '@/components/ui/CustomReportLeadModal'
 
 interface AreaDetailLocationState {
   fallbackContext?: {
@@ -655,6 +656,7 @@ export default function AreaDetail() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [pdfReady, setPdfReady] = useState(() => !isLocked)
+  const [customReportOpen, setCustomReportOpen] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -1152,7 +1154,6 @@ export default function AreaDetail() {
   const compareSlugs = [area.slug, 'adibatla', 'tukkuguda', 'kokapet']
     .filter((slug, index, slugs) => slugs.indexOf(slug) === index)
     .slice(0, 3)
-  const customReportMailto = `mailto:hello@plotdna.in?subject=${encodeURIComponent(`Custom due-diligence report for ${area.name}`)}&body=${encodeURIComponent(`I want a custom due-diligence report for ${area.name}, ${cityName}.`)}`
 
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
@@ -1354,19 +1355,44 @@ export default function AreaDetail() {
                 ))}
               </div>
 
-              <a
-                href={customReportMailto}
-                onClick={() => trackEvent('custom_report_requested', {
+              <button
+                onClick={() => {
+                  trackEvent('custom_report_requested', {
+                    citySlug,
+                    areaSlug: area.slug,
+                    dataConfidence: displayedConfidence ?? 'estimated',
+                    source: 'area_report_summary',
+                  })
+                  setCustomReportOpen(true)
+                }}
+                className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-sans font-bold text-emerald-300 hover:bg-emerald-500/15 sm:w-auto"
+              >
+                Request custom due-diligence report
+              </button>
+            </section>
+
+            <CustomReportLeadModal
+              open={customReportOpen}
+              areaName={area.name}
+              cityName={cityName}
+              payloadBase={{
+                citySlug,
+                cityName,
+                areaSlug: area.slug,
+                areaName: area.name,
+                source: 'area_report_summary',
+              }}
+              onClose={() => setCustomReportOpen(false)}
+              onSubmitted={(leadId) => {
+                trackEvent('custom_report_lead_submitted', {
                   citySlug,
                   areaSlug: area.slug,
                   dataConfidence: displayedConfidence ?? 'estimated',
                   source: 'area_report_summary',
-                })}
-                className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-sans font-bold text-emerald-300 hover:bg-emerald-500/15 sm:w-auto"
-              >
-                Request custom due-diligence report
-              </a>
-            </section>
+                  leadId,
+                })
+              }}
+            />
 
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-3 mt-4">
