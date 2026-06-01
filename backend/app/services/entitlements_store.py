@@ -4,6 +4,7 @@ import sqlite3
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from typing import Literal
 
 from app.core.config import settings
 
@@ -73,6 +74,34 @@ class Entitlements:
     subscription_active: bool
     subscription_expires_at: str | None
     email: str | None
+
+
+ReportPackage = Literal["instant_pdf_99", "custom_due_diligence_499"]
+
+
+@dataclass(frozen=True)
+class ReportAccess:
+    package_interest: ReportPackage
+    can_access: bool
+    requires_payment: bool
+    reason: Literal["admin_allowlist", "subscription_active", "payment_required"]
+    email: str | None
+
+
+def _admin_access_emails() -> set[str]:
+    return {
+        email.strip().lower()
+        for email in settings.ADMIN_ACCESS_EMAILS.split(",")
+        if email.strip()
+    }
+
+
+def _admin_access_user_ids() -> set[str]:
+    return {
+        user_id.strip()
+        for user_id in settings.ADMIN_ACCESS_USER_IDS.split(",")
+        if user_id.strip()
+    }
 
 
 def ensure_user(user_id: str) -> None:
@@ -187,3 +216,44 @@ def set_email(user_id: str, email: str) -> Entitlements:
         conn.close()
 
     return get_entitlements(user_id)
+
+
+def get_report_access(user_id: str, package_interest: ReportPackage) -> ReportAccess:
+    ent = get_entitlements(user_id)
+    normalized_email = ent.email.strip().lower() if ent.email else None
+
+    if user_id in _admin_access_user_ids():
+        return ReportAccess(
+            package_interest=package_interest,
+            can_access=True,
+            requires_payment=False,
+            reason="admin_allowlist",
+            email=normalized_email,
+        )
+
+    email_bypass_enabled = settings.APP_ENV.lower() != "production"
+    if email_bypass_enabled and normalized_email and normalized_email in _admin_access_emails():
+        return ReportAccess(
+            package_interest=package_interest,
+            can_access=True,
+            requires_payment=False,
+            reason="admin_allowlist",
+            email=normalized_email,
+        )
+
+    if ent.subscription_active:
+        return ReportAccess(
+            package_interest=package_interest,
+            can_access=True,
+            requires_payment=False,
+            reason="subscription_active",
+            email=normalized_email,
+        )
+
+    return ReportAccess(
+        package_interest=package_interest,
+        can_access=False,
+        requires_payment=True,
+        reason="payment_required",
+        email=normalized_email,
+    )
