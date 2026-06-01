@@ -1139,6 +1139,9 @@ export default function AreaDetail() {
     area.dataAsOf ?? 'Current cycle',
     `${confidenceMeta.label} confidence`,
   ]
+  const compareSlugs = [area.slug, 'adibatla', 'tukkuguda', 'kokapet']
+    .filter((slug, index, slugs) => slugs.indexOf(slug) === index)
+    .slice(0, 3)
 
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
@@ -1180,6 +1183,14 @@ export default function AreaDetail() {
         </div>
 
         <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate(`/compare?areas=${compareSlugs.join(',')}`)}
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 text-slate-300"
+            style={{ border: '1px solid rgba(255,255,255,0.10)' }}
+          >
+            <TrendingUp size={11} className="text-emerald-400" />
+            Compare
+          </button>
           {/* Brochure AI link — hidden on small mobile */}
           <button
             onClick={() => navigate('/brochure')}

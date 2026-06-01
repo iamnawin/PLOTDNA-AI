@@ -6,6 +6,7 @@ const Landing = lazy(() => import('@/pages/Landing'))
 const Home = lazy(() => import('@/pages/Home'))
 const AreaDetail = lazy(() => import('@/pages/AreaDetail'))
 const BrochurePage = lazy(() => import('@/pages/BrochurePage'))
+const CompareAreas = lazy(() => import('@/pages/CompareAreas'))
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/map" element={<Home />} />
           <Route path="/area/:slug" element={<AreaDetail />} />
+          <Route path="/compare" element={<CompareAreas />} />
           <Route path="/brochure" element={<BrochurePage />} />
         </Routes>
       </Suspense>
