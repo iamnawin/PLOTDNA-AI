@@ -5,6 +5,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { Brain, TrendingUp, AlertTriangle, CheckCircle2, Clock, Sparkles } from 'lucide-react'
+import { getAllAreas } from '@/data/cities'
 
 interface VerdictData {
   verdict: 'buy' | 'hold' | 'wait' | 'avoid'
@@ -29,9 +30,45 @@ const VERDICT_CONFIG = {
 }
 
 const SUITABLE_LABELS = {
-  investment: '📈 Investment',
-  'end-use':  '🏡 End-Use',
-  both:       '📈 Investment + 🏡 End-Use',
+  investment: 'Investment',
+  'end-use':  'End-use',
+  both:       'Investment + End-use',
+}
+
+function buildFallbackVerdict(
+  areaSlug: string,
+  resolutionTier?: VerdictData['resolution_tier'],
+  resolutionLabel?: string,
+): VerdictData {
+  const area = getAllAreas().find(item => item.slug === areaSlug)
+  const score = area?.score ?? 0
+  const verdict: VerdictData['verdict'] =
+    score >= 78 ? 'buy' :
+    score >= 60 ? 'hold' :
+    score >= 45 ? 'wait' :
+    'avoid'
+  const confidence = area?.dataConfidence === 'verified' ? 72 : area?.dataConfidence === 'partial' ? 58 : 45
+  const areaName = area?.name ?? resolutionLabel ?? 'this area'
+  const priceRange = area?.priceRange ? ` Current quoted band: ${area.priceRange}.` : ''
+  const highlights = area?.highlights?.slice(0, 2) ?? []
+
+  return {
+    verdict,
+    confidence,
+    summary: `${areaName} is shown with a rule-based PlotDNA fallback because live AI analysis is temporarily unavailable.${priceRange} Treat this as screening context, not a final buy decision.`,
+    reasons: highlights.length > 0
+      ? highlights
+      : ['Supported locality context is available for first-pass screening.', 'Use the area report to compare growth, access, and risk signals.'],
+    risks: [
+      'Verify project-level title, RERA, approvals, access, and current pricing independently.',
+      'Fallback verdicts use catalog signals and may miss recent ground-level changes.',
+    ],
+    suitable_for: 'both',
+    last_updated: new Date().toISOString(),
+    source: 'fallback',
+    resolution_tier: resolutionTier ?? 'exact_locality',
+    resolution_label: resolutionLabel ?? areaName,
+  }
 }
 
 function timeAgo(iso: string): string {
@@ -79,7 +116,7 @@ export default function VerdictCard({
         const payload = await response.json() as VerdictData
         if (!cancelled) setData(payload)
       } catch {
-        if (!cancelled) setError(true)
+        if (!cancelled) setData(buildFallbackVerdict(areaSlug, resolutionTier, resolutionLabel))
       } finally {
         if (!cancelled) setLoading(false)
       }
@@ -124,8 +161,7 @@ export default function VerdictCard({
         <div
           className="p-6 rounded-2xl text-center glass-panel"
         >
-          <p className="text-slate-400 font-sans text-xs">AI verdict unavailable{" \u2014 "}start backend or add GEMINI_API_KEY.</p>
-          <p className="text-slate-500 font-sans text-[10px] mt-1">cd backend && uvicorn app.main:app --reload</p>
+          <p className="text-slate-400 font-sans text-xs">Verdict is temporarily unavailable. Use the area score, risks, and verification checklist before shortlisting.</p>
         </div>
       </motion.section>
     )

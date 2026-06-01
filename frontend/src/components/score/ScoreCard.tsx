@@ -161,7 +161,7 @@ export default function ScoreCard({ area, onClose }: Props) {
             e.currentTarget.style.boxShadow = `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`
           }}
         >
-          Open Area Report
+          Open Area DNA Report
           <ArrowRight size={15} />
         </button>
       </div>
