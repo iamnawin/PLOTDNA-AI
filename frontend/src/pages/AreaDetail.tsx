@@ -657,6 +657,7 @@ export default function AreaDetail() {
   const [errorMessage, setErrorMessage] = useState('')
   const [pdfReady, setPdfReady] = useState(() => !isLocked)
   const [customReportOpen, setCustomReportOpen] = useState(false)
+  const [selectedReportPackage, setSelectedReportPackage] = useState<'instant_pdf_99' | 'custom_due_diligence_499'>('custom_due_diligence_499')
 
   useEffect(() => {
     let cancelled = false
@@ -695,6 +696,12 @@ export default function AreaDetail() {
     trackEvent('area_report_preview_viewed', {
       citySlug: staticCitySlug,
       areaSlug: area.slug,
+      dataConfidence: area.dataConfidence ?? 'estimated',
+    })
+    trackEvent('pricing_viewed', {
+      citySlug: staticCitySlug,
+      areaSlug: area.slug,
+      source: 'area_report',
       dataConfidence: area.dataConfidence ?? 'estimated',
     })
   }, [area, staticCitySlug])
@@ -1154,6 +1161,17 @@ export default function AreaDetail() {
   const compareSlugs = [area.slug, 'adibatla', 'tukkuguda', 'kokapet']
     .filter((slug, index, slugs) => slugs.indexOf(slug) === index)
     .slice(0, 3)
+  const openCustomReportRequest = (packageInterest: 'instant_pdf_99' | 'custom_due_diligence_499', source: string) => {
+    setSelectedReportPackage(packageInterest)
+    trackEvent(packageInterest === 'instant_pdf_99' ? 'paid_report_clicked' : 'custom_report_pricing_clicked', {
+      citySlug,
+      areaSlug: area.slug,
+      packageInterest,
+      source,
+      dataConfidence: displayedConfidence ?? 'estimated',
+    })
+    setCustomReportOpen(true)
+  }
 
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
@@ -1363,7 +1381,7 @@ export default function AreaDetail() {
                     dataConfidence: displayedConfidence ?? 'estimated',
                     source: 'area_report_summary',
                   })
-                  setCustomReportOpen(true)
+                  openCustomReportRequest('custom_due_diligence_499', 'area_report_summary')
                 }}
                 className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-sans font-bold text-emerald-300 hover:bg-emerald-500/15 sm:w-auto"
               >
@@ -1371,10 +1389,74 @@ export default function AreaDetail() {
               </button>
             </section>
 
+            <section
+              aria-label="Investment report options"
+              className="mt-4 rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.04] p-4"
+            >
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
+                    Investment report options
+                  </p>
+                  <h2 className="mt-1 font-display text-xl font-extrabold text-slate-100">
+                    Convert screening into an action plan
+                  </h2>
+                </div>
+                <p className="max-w-sm text-[11px] font-sans leading-relaxed text-slate-400">
+                  Screening intelligence only. Legal title, RERA, zoning, approvals, and quoted pricing still need independent verification.
+                </p>
+              </div>
+
+              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <article className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
+                        Instant screening PDF
+                      </p>
+                      <p className="mt-1 font-display text-2xl font-extrabold text-slate-100">Rs 99</p>
+                    </div>
+                    <FileText size={18} className="text-emerald-300" />
+                  </div>
+                  <p className="mt-3 text-xs font-sans leading-relaxed text-slate-400">
+                    Area score, growth signals, risk notes, and buyer checklist for quick shortlisting.
+                  </p>
+                  <button
+                    onClick={() => openCustomReportRequest('instant_pdf_99', 'area_report_pricing')}
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-white/10 px-3 py-2 text-xs font-sans font-bold text-slate-200 hover:border-emerald-500/40 hover:text-emerald-300"
+                  >
+                    Register interest
+                  </button>
+                </article>
+
+                <article className="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
+                        Custom due-diligence request
+                      </p>
+                      <p className="mt-1 font-display text-2xl font-extrabold text-slate-100">Rs 499</p>
+                    </div>
+                    <Shield size={18} className="text-emerald-300" />
+                  </div>
+                  <p className="mt-3 text-xs font-sans leading-relaxed text-slate-300">
+                    Project-specific verification brief covering title chain, RERA, approvals, access, and current price checks.
+                  </p>
+                  <button
+                    onClick={() => openCustomReportRequest('custom_due_diligence_499', 'area_report_pricing')}
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-bold text-[#04110b] hover:bg-emerald-400"
+                  >
+                    Request custom report
+                  </button>
+                </article>
+              </div>
+            </section>
+
             <CustomReportLeadModal
               open={customReportOpen}
               areaName={area.name}
               cityName={cityName}
+              packageInterest={selectedReportPackage}
               payloadBase={{
                 citySlug,
                 cityName,
@@ -1389,6 +1471,7 @@ export default function AreaDetail() {
                   areaSlug: area.slug,
                   dataConfidence: displayedConfidence ?? 'estimated',
                   source: 'area_report_summary',
+                  packageInterest: selectedReportPackage,
                   leadId,
                 })
               }}

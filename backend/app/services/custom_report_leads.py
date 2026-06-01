@@ -39,6 +39,7 @@ class CustomReportLeadCreate(BaseModel):
     areaName: str = Field(..., min_length=2, max_length=160)
     budgetRange: str | None = Field(default=None, max_length=80)
     timeline: str | None = Field(default=None, max_length=80)
+    packageInterest: str | None = Field(default=None, max_length=80)
     notes: str | None = Field(default=None, max_length=500)
     source: str = Field(default="area_report_summary", min_length=2, max_length=120)
 
@@ -47,7 +48,7 @@ class CustomReportLeadCreate(BaseModel):
     def strip_required_text(cls, value: str) -> str:
         return value.strip()
 
-    @field_validator("budgetRange", "timeline", "notes")
+    @field_validator("budgetRange", "timeline", "packageInterest", "notes")
     @classmethod
     def strip_optional_text(cls, value: str | None) -> str | None:
         if value is None:
