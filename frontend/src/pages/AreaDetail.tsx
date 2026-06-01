@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -14,7 +14,7 @@ import {
 } from 'recharts'
 import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
-  Hammer, Users, Globe, Shield, Briefcase, Landmark, Lock, AlertTriangle,
+  Hammer, Users, Globe, Shield, Briefcase, Landmark, AlertTriangle,
   Navigation, ShoppingBag, Package, Film, Leaf, Sparkles,
   HardHat, Train, Car, Home, Building, Plane, Factory, Wifi,
 } from 'lucide-react'
@@ -615,7 +615,7 @@ async function generatePDF(area: MicroMarket) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { BASE_URL, fetchBackendArea } from '@/lib/api'
+import { fetchBackendArea } from '@/lib/api'
 
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
@@ -630,34 +630,6 @@ export default function AreaDetail() {
   const staticCitySlug = staticCityEntry
     ? Object.entries(CITIES).find(([, v]) => v === staticCityEntry)?.[0] ?? 'hyderabad'
     : 'hyderabad'
-
-  const contactInputRef = useRef<HTMLInputElement>(null)
-  
-  // Lead Gating Modal state with 2 free checks soft paywall
-  const [isLocked, setIsLocked] = useState(() => {
-    if (localStorage.getItem('plotdna_unlocked') === 'true') {
-      return false
-    }
-    try {
-      const stored = localStorage.getItem('plotdna_viewed_slugs')
-      const slugs = stored ? JSON.parse(stored) : []
-      if (slug && slugs.includes(slug)) {
-        return false
-      }
-      if (slugs.length < 2) {
-        return false
-      }
-      return true
-    } catch {
-      return true
-    }
-  })
-  
-  const [contactInput, setContactInput] = useState('')
-  const [isValid, setIsValid] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
-  const [pdfReady, setPdfReady] = useState(() => !isLocked)
   const [customReportOpen, setCustomReportOpen] = useState(false)
   const [selectedReportPackage, setSelectedReportPackage] = useState<ReportPackage>('custom_due_diligence_499')
   const [checkingReportPackage, setCheckingReportPackage] = useState<ReportPackage | null>(null)
@@ -685,16 +657,6 @@ export default function AreaDetail() {
   }, [slug, staticCitySlug])
 
   useEffect(() => {
-    if (isLocked) {
-      setPdfReady(false)
-      return
-    }
-    setPdfReady(false)
-    const timer = window.setTimeout(() => setPdfReady(true), 10000)
-    return () => window.clearTimeout(timer)
-  }, [isLocked, slug])
-
-  useEffect(() => {
     if (!area) return
     trackEvent('area_report_preview_viewed', {
       citySlug: staticCitySlug,
@@ -708,83 +670,6 @@ export default function AreaDetail() {
       dataConfidence: area.dataConfidence ?? 'estimated',
     })
   }, [area, staticCitySlug])
-
-  // Manage viewed area slugs tracker effect
-  useEffect(() => {
-    if (localStorage.getItem('plotdna_unlocked') === 'true') {
-      setIsLocked(false)
-      return
-    }
-
-    try {
-      const stored = localStorage.getItem('plotdna_viewed_slugs')
-      const slugs: string[] = stored ? JSON.parse(stored) : []
-      
-      if (slug) {
-        if (slugs.includes(slug)) {
-          setIsLocked(false)
-        } else if (slugs.length < 2) {
-          const nextSlugs = [...slugs, slug]
-          localStorage.setItem('plotdna_viewed_slugs', JSON.stringify(nextSlugs))
-          setIsLocked(false)
-        } else {
-          setIsLocked(true)
-        }
-      }
-    } catch {
-      setIsLocked(true)
-    }
-  }, [slug])
-
-  const validateContact = (val: string) => {
-    const trimmed = val.trim()
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (emailRegex.test(trimmed)) return true
-    
-    // Clean all non-digit characters
-    const digits = trimmed.replace(/\D/g, '')
-    
-    let coreDigits = digits
-    if (digits.length === 12 && digits.startsWith('91')) {
-      coreDigits = digits.slice(2)
-    } else if (digits.length === 11 && digits.startsWith('0')) {
-      coreDigits = digits.slice(1)
-    }
-    
-    const phoneRegex = /^[6-9]\d{9}$/
-    return phoneRegex.test(coreDigits)
-  }
-
-  const handleUnlock = async () => {
-    if (!validateContact(contactInput)) return
-    const contact = contactInput.trim()
-    localStorage.setItem('plotdna_unlocked', 'true')
-    setIsLocked(false)
-    setErrorMessage('')
-    setIsSubmitting(true)
-
-    const controller = new AbortController()
-    const timeoutId = window.setTimeout(() => controller.abort(), 5000)
-
-    try {
-      const response = await fetch(`${BASE_URL}/api/utils/collect-lead`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contact }),
-        signal: controller.signal,
-      })
-      if (!response.ok) {
-        const errData = await response.json().catch(() => ({}))
-        throw new Error(errData.detail || 'Failed to submit contact. Please try again.')
-      }
-    } catch (err) {
-      console.warn('Lead capture failed after local unlock:', err)
-    } finally {
-      window.clearTimeout(timeoutId)
-      setIsSubmitting(false)
-    }
-  }
-
   const isRegionalFallback = fallbackContext?.tier === 'regional' || slug === 'warangal'
 
   if (isRegionalFallback) {
@@ -917,7 +802,7 @@ export default function AreaDetail() {
           </motion.div>
 
           <div className="relative mt-8">
-            <div className={isLocked ? "blur-md select-none pointer-events-none transition-all duration-500" : "transition-all duration-500"}>
+            <div className="transition-all duration-500">
               {/* Region Context Card */}
               <motion.div
                 initial={{ opacity: 0, y: 24 }}
@@ -1016,100 +901,7 @@ export default function AreaDetail() {
               </motion.section>
             </div>
 
-            {/* Frosted glass modal gating overlay */}
-            {isLocked && (
-              <div className="absolute inset-x-0 top-0 z-30 flex flex-col items-center justify-start pt-16 px-4 bg-slate-950/80 backdrop-blur-xl rounded-3xl min-h-[500px]">
-                <motion.div
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, type: 'spring', damping: 20 }}
-                  className="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-slate-900/40 backdrop-blur-2xl border border-white/10 shadow-2xl relative overflow-hidden"
-                >
-                  <div className="absolute -top-24 -left-24 w-48 h-48 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
-                  <div className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
-
-                  <div className="flex flex-col items-center text-center">
-                    <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(16,185,129,0.1)] relative">
-                      <Lock className="text-emerald-400 w-6 h-6" />
-                      <div className="absolute inset-0 rounded-2xl bg-emerald-500/5 animate-ping opacity-75" />
-                    </div>
-
-                    <h3 className="text-xl sm:text-2xl font-display font-extrabold text-slate-100 mb-2 leading-tight">
-                      Unlock District Report
-                    </h3>
-                    <p className="text-xs font-sans text-slate-400 max-w-sm mb-6 leading-relaxed">
-                      Unlock land yield profiles, infrastructure corridor maps, and scraped RERA registration updates for this district.
-                    </p>
-
-                    <div className="w-full space-y-4">
-                      <div className="relative">
-                        <input
-                          ref={contactInputRef}
-                          type="text"
-                          placeholder="Email or Indian Phone Number"
-                          value={contactInput}
-                          onChange={(e) => {
-                            const val = e.target.value
-                            setContactInput(val)
-                            setIsValid(validateContact(val))
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter' && isValid && !isSubmitting) {
-                              handleUnlock()
-                            }
-                          }}
-                          className={`w-full px-4 py-3 rounded-2xl bg-slate-950/80 border text-slate-100 font-sans text-sm outline-none transition-all duration-300 ${
-                            contactInput
-                              ? isValid
-                                ? 'border-emerald-500/50 focus:border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.15)]'
-                                : 'border-red-500/50 focus:border-red-500 shadow-[0_0_12px_rgba(239,68,68,0.15)]'
-                              : 'border-slate-800 focus:border-emerald-500/50'
-                          }`}
-                        />
-                        
-                        {contactInput && (
-                          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none">
-                            {isValid ? (
-                              <span className="text-[10px] font-sans font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                                Valid
-                              </span>
-                            ) : (
-                              <span className="text-[10px] font-sans font-bold text-red-400 uppercase tracking-wider flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                                Invalid
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-
-                      {errorMessage && (
-                        <p className="text-[11px] font-sans text-red-400 text-left bg-red-500/5 border border-red-500/10 px-3 py-2 rounded-xl">
-                          {errorMessage}
-                        </p>
-                      )}
-
-                      <button
-                        onClick={handleUnlock}
-                        disabled={!isValid || isSubmitting}
-                        className={`w-full py-3 rounded-2xl font-sans font-bold text-sm transition-all duration-300 ${
-                          isValid && !isSubmitting
-                            ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 cursor-pointer shadow-[0_4px_20px_rgba(16,185,129,0.3)] hover:scale-[1.02]'
-                            : 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                        }`}
-                      >
-                        {isSubmitting ? 'Unlocking...' : 'Unlock Now'}
-                      </button>
-                    </div>
-
-                    <p className="text-[10px] font-sans text-slate-500 mt-6 leading-relaxed max-w-xs">
-                      Zero spam guarantee. We hate annoying real estate broker calls as much as you do. We promise to keep your contact info safe and locked in our digital vault. Pinky swear! 🤙
-                    </p>
-                  </div>
-                </motion.div>
-              </div>
-            )}
+            {/* Regional browsing stays open. */}
           </div>
         </div>
 
@@ -1296,21 +1088,19 @@ export default function AreaDetail() {
           {/* Download PDF button */}
           <button
             onClick={() => {
-              if (!pdfReady) return
               trackEvent('area_pdf_download_clicked', {
                 citySlug,
                 areaSlug: area.slug,
                 dataConfidence: displayedConfidence ?? 'estimated',
               })
-              void generatePDF(area)
+              void openCustomReportRequest('instant_pdf_99', 'area_nav_pdf')
             }}
-            disabled={!pdfReady}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 disabled:opacity-45 disabled:cursor-not-allowed"
-            style={{ color: pdfReady ? color : '#64748b', border: `1px solid ${pdfReady ? color : '#64748b'}40` }}
-            title={pdfReady ? 'Download PlotDNA PDF report' : 'PDF download unlocks 10 seconds after opening Full DNA'}
+            style={{ color, border: `1px solid ${color}40` }}
+            title="Get PlotDNA PDF report"
           >
-            <Download size={12} style={{ color: pdfReady ? color : '#64748b' }} />
-            <span className="hidden sm:inline">{pdfReady ? 'Download PDF' : 'PDF in 10s'}</span>
+            <Download size={12} style={{ color }} />
+            <span className="hidden sm:inline">{checkingReportPackage === 'instant_pdf_99' ? 'Checking...' : 'Get PDF'}</span>
           </button>
         </div>
       </nav>
@@ -1566,7 +1356,7 @@ export default function AreaDetail() {
 
         {/* Gated Report Sections Wrapper */}
         <div className="relative mt-8">
-          <div className={isLocked ? "blur-md select-none pointer-events-none transition-all duration-500" : "transition-all duration-500"}>
+          <div className="transition-all duration-500">
             {/* ── AI Verdict ── */}
             <motion.div
               initial={{ opacity: 0, y: 24 }}
@@ -2009,102 +1799,7 @@ export default function AreaDetail() {
             )}
           </div>
 
-          {/* Frosted glass modal gating overlay */}
-          {isLocked && (
-            <div className="absolute inset-x-0 top-0 z-30 flex flex-col items-center justify-start pt-16 px-4 bg-slate-950/80 backdrop-blur-xl rounded-3xl min-h-[500px]">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, type: 'spring', damping: 20 }}
-                className="w-full max-w-md p-6 sm:p-8 rounded-3xl bg-slate-900/40 backdrop-blur-2xl border border-white/10 shadow-2xl relative overflow-hidden"
-              >
-                {/* Visual gradient light behind lock */}
-                <div className="absolute -top-24 -left-24 w-48 h-48 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
-                <div className="absolute -bottom-24 -right-24 w-48 h-48 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
-
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(16,185,129,0.1)] relative">
-                    <Lock className="text-emerald-400 w-6 h-6" />
-                    <div className="absolute inset-0 rounded-2xl bg-emerald-500/5 animate-ping opacity-75" />
-                  </div>
-
-                  <h3 className="text-xl sm:text-2xl font-display font-extrabold text-slate-100 mb-2 leading-tight">
-                    Unlock Full DNA Report
-                  </h3>
-                  <p className="text-xs font-sans text-slate-400 max-w-sm mb-6 leading-relaxed">
-                    PlotDNA parses satellite imagery, growth signals, and active projects so you can verify land quality instantly.
-                  </p>
-
-                  <div className="w-full space-y-4">
-                    <div className="relative">
-                      <input
-                        ref={contactInputRef}
-                        type="text"
-                        placeholder="Email or Phone Number"
-                        value={contactInput}
-                        onChange={(e) => {
-                          const val = e.target.value
-                          setContactInput(val)
-                          setIsValid(validateContact(val))
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' && isValid && !isSubmitting) {
-                            handleUnlock()
-                          }
-                        }}
-                        className={`w-full px-4 py-3 rounded-2xl bg-slate-950/80 border text-slate-100 font-sans text-sm outline-none transition-all duration-300 ${
-                          contactInput
-                            ? isValid
-                              ? 'border-emerald-500/50 focus:border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.15)]'
-                              : 'border-red-500/50 focus:border-red-500 shadow-[0_0_12px_rgba(239,68,68,0.15)]'
-                            : 'border-slate-800 focus:border-emerald-500/50'
-                        }`}
-                      />
-                      
-                      {contactInput && (
-                        <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none">
-                          {isValid ? (
-                            <span className="text-[10px] font-sans font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1">
-                              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                              Valid
-                            </span>
-                          ) : (
-                            <span className="text-[10px] font-sans font-bold text-red-400 uppercase tracking-wider flex items-center gap-1">
-                              <span className="w-1.5 h-1.5 rounded-full bg-red-400" />
-                              Invalid
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    {errorMessage && (
-                      <p className="text-[11px] font-sans text-red-400 text-left bg-red-500/5 border border-red-500/10 px-3 py-2 rounded-xl">
-                        {errorMessage}
-                      </p>
-                    )}
-
-                    <button
-                      onClick={handleUnlock}
-                      disabled={!isValid || isSubmitting}
-                      className={`w-full py-3 rounded-2xl font-sans font-bold text-sm transition-all duration-300 ${
-                        isValid && !isSubmitting
-                          ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950 cursor-pointer shadow-[0_4px_20px_rgba(16,185,129,0.3)] hover:scale-[1.02]'
-                          : 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                      }`}
-                    >
-                      {isSubmitting ? 'Unlocking...' : 'Unlock Now'}
-                    </button>
-                  </div>
-
-                  {/* Spam disclaimer */}
-                  <p className="text-[10px] font-sans text-slate-500 mt-6 leading-relaxed max-w-xs">
-                    Zero spam guarantee. We hate annoying real estate broker calls as much as you do. We promise to keep your contact info safe and locked in our digital vault. Pinky swear! 🤙
-                  </p>
-                </div>
-              </motion.div>
-            </div>
-          )}
+          {/* Area browsing stays open. */}
         </div>
       </div>
 
@@ -2115,3 +1810,4 @@ export default function AreaDetail() {
     </div>
   )
 }
+
