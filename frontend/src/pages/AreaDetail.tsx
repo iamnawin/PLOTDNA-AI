@@ -28,6 +28,7 @@ import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
 import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/areaSources'
 import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import { getConfidenceMeta } from '@/lib/cityProduction'
+import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib/investmentReport'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
@@ -1127,6 +1128,17 @@ export default function AreaDetail() {
     ? 'verified'
     : area.dataConfidence
   const confidenceMeta = getConfidenceMeta(displayedConfidence)
+  const reportSummary = getInvestmentReportSummary({
+    ...area,
+    dataConfidence: displayedConfidence,
+  })
+  const dataBasis = [
+    'Catalog profile',
+    'OSM proximity signals where available',
+    'RERA/proxy activity',
+    area.dataAsOf ?? 'Current cycle',
+    `${confidenceMeta.label} confidence`,
+  ]
 
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
@@ -1262,6 +1274,49 @@ export default function AreaDetail() {
               <p className="text-xs font-sans text-slate-400 mt-1">Investment outlook for this micro-market</p>
             </div>
 
+            <section
+              aria-label="Investment report summary"
+              className="mt-4 rounded-2xl glass-panel-light border border-white/5 p-4"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <span
+                  className="rounded-full px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.12em]"
+                  style={{ color, background: `${color}1f`, border: `1px solid ${color}40` }}
+                >
+                  {reportSummary.verdict}
+                </span>
+                <span className="text-[11px] font-sans font-semibold text-slate-300">
+                  {reportSummary.bestFor}
+                </span>
+              </div>
+
+              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div>
+                  <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Main upside</p>
+                  <p className="mt-1 text-[12px] font-sans leading-relaxed text-slate-300">{reportSummary.mainUpside}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Main risk</p>
+                  <p className="mt-1 text-[12px] font-sans leading-relaxed text-slate-300">{reportSummary.mainRisk}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Next verification</p>
+                  <p className="mt-1 text-[12px] font-sans leading-relaxed text-slate-300">{reportSummary.nextVerification}</p>
+                </div>
+              </div>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {dataBasis.map(item => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-white/5 bg-white/[0.03] px-2.5 py-1 text-[10px] font-sans text-slate-400"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </section>
+
             {/* Stats row */}
             <div className="grid grid-cols-3 gap-3 mt-4">
               <div className="p-3 rounded-2xl text-center glass-panel-light">
@@ -1322,6 +1377,32 @@ export default function AreaDetail() {
                 resolutionLabel={area.name}
               />
             </motion.div>
+
+            {/* ── Buyer due diligence ── */}
+            <motion.section
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.11 }}
+              className="mb-10"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Shield size={14} style={{ color }} />
+                <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
+                  Buyer Due-Diligence Checklist
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {BUYER_DUE_DILIGENCE_CHECKLIST.map(item => (
+                  <div key={item} className="flex items-start gap-2.5 rounded-xl glass-panel-light border border-white/5 px-3 py-2.5">
+                    <AlertTriangle size={12} className="mt-0.5 flex-shrink-0 text-amber-400" />
+                    <p className="text-[12px] font-sans leading-relaxed text-slate-300">{item}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] font-sans leading-relaxed text-slate-500">
+                PlotDNA narrows the area shortlist. These checks still need independent document, site, and professional verification before paying an advance.
+              </p>
+            </motion.section>
 
             {/* ── Satellite Growth ── */}
             <motion.section
