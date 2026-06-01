@@ -658,7 +658,7 @@ export default function AreaDetail() {
     let cancelled = false
 
     async function loadBackendArea() {
-      if (!slug || staticCitySlug !== 'hyderabad') {
+      if (!slug || staticCitySlug === 'dubai') {
         setBackendArea(null)
         return
       }
