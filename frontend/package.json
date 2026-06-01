@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test:hyderabad-production": "node scripts/check-hyderabad-production.mjs"
+    "test:hyderabad-production": "node scripts/check-hyderabad-production.mjs",
+    "test:custom-buyer-brief": "node --experimental-strip-types scripts/check-custom-buyer-brief.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.3.4",
