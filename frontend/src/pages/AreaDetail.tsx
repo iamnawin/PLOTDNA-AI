@@ -31,6 +31,7 @@ import { getConfidenceMeta } from '@/lib/cityProduction'
 import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib/investmentReport'
 import { trackEvent } from '@/lib/analytics'
 import { openReportPaymentLink, type ReportPackage } from '@/lib/paymentLinks'
+import { checkReportAccess } from '@/lib/entitlements'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
@@ -659,6 +660,7 @@ export default function AreaDetail() {
   const [pdfReady, setPdfReady] = useState(() => !isLocked)
   const [customReportOpen, setCustomReportOpen] = useState(false)
   const [selectedReportPackage, setSelectedReportPackage] = useState<ReportPackage>('custom_due_diligence_499')
+  const [checkingReportPackage, setCheckingReportPackage] = useState<ReportPackage | null>(null)
 
   useEffect(() => {
     let cancelled = false
@@ -1162,8 +1164,9 @@ export default function AreaDetail() {
   const compareSlugs = [area.slug, 'adibatla', 'tukkuguda', 'kokapet']
     .filter((slug, index, slugs) => slugs.indexOf(slug) === index)
     .slice(0, 3)
-  const openCustomReportRequest = (packageInterest: ReportPackage, source: string) => {
+  const openCustomReportRequest = async (packageInterest: ReportPackage, source: string) => {
     setSelectedReportPackage(packageInterest)
+    setCheckingReportPackage(packageInterest)
     trackEvent(packageInterest === 'instant_pdf_99' ? 'paid_report_clicked' : 'custom_report_pricing_clicked', {
       citySlug,
       areaSlug: area.slug,
@@ -1172,20 +1175,56 @@ export default function AreaDetail() {
       dataConfidence: displayedConfidence ?? 'estimated',
     })
 
-    const openedPaymentLink = openReportPaymentLink(packageInterest)
-    trackEvent('payment_link_clicked', {
-      citySlug,
-      areaSlug: area.slug,
-      packageInterest,
-      source,
-      provider: 'razorpay_payment_link',
-      hasConfiguredLink: openedPaymentLink,
-      dataConfidence: displayedConfidence ?? 'estimated',
-    })
+    try {
+      const reportAccess = await checkReportAccess(packageInterest)
 
-    if (openedPaymentLink) return
+      trackEvent('report_access_checked', {
+        citySlug,
+        areaSlug: area.slug,
+        packageInterest,
+        source,
+        canAccess: reportAccess?.canAccess ?? false,
+        requiresPayment: reportAccess?.requiresPayment ?? true,
+        reason: reportAccess?.reason ?? 'unavailable',
+        dataConfidence: displayedConfidence ?? 'estimated',
+      })
 
-    setCustomReportOpen(true)
+      if (reportAccess?.canAccess) {
+        trackEvent('report_access_unlocked', {
+          citySlug,
+          areaSlug: area.slug,
+          packageInterest,
+          source,
+          reason: reportAccess.reason,
+          dataConfidence: displayedConfidence ?? 'estimated',
+        })
+
+        if (packageInterest === 'instant_pdf_99') {
+          void generatePDF(area)
+          return
+        }
+
+        setCustomReportOpen(true)
+        return
+      }
+
+      const openedPaymentLink = openReportPaymentLink(packageInterest)
+      trackEvent('payment_link_clicked', {
+        citySlug,
+        areaSlug: area.slug,
+        packageInterest,
+        source,
+        provider: 'razorpay_payment_link',
+        hasConfiguredLink: openedPaymentLink,
+        dataConfidence: displayedConfidence ?? 'estimated',
+      })
+
+      if (openedPaymentLink) return
+
+      setCustomReportOpen(true)
+    } finally {
+      setCheckingReportPackage(null)
+    }
   }
 
   // Nearby areas — same city only, ±15 DNA score range
@@ -1396,11 +1435,12 @@ export default function AreaDetail() {
                     dataConfidence: displayedConfidence ?? 'estimated',
                     source: 'area_report_summary',
                   })
-                  openCustomReportRequest('custom_due_diligence_499', 'area_report_summary')
+                  void openCustomReportRequest('custom_due_diligence_499', 'area_report_summary')
                 }}
-                className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-sans font-bold text-emerald-300 hover:bg-emerald-500/15 sm:w-auto"
+                disabled={checkingReportPackage === 'custom_due_diligence_499'}
+                className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-sans font-bold text-emerald-300 hover:bg-emerald-500/15 disabled:opacity-70 sm:w-auto"
               >
-                Request custom due-diligence report
+                {checkingReportPackage === 'custom_due_diligence_499' ? 'Checking access...' : 'Request custom due-diligence report'}
               </button>
             </section>
 
@@ -1437,10 +1477,11 @@ export default function AreaDetail() {
                     Area score, growth signals, risk notes, and buyer checklist for quick shortlisting.
                   </p>
                   <button
-                    onClick={() => openCustomReportRequest('instant_pdf_99', 'area_report_pricing')}
-                    className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-white/10 px-3 py-2 text-xs font-sans font-bold text-slate-200 hover:border-emerald-500/40 hover:text-emerald-300"
+                    onClick={() => void openCustomReportRequest('instant_pdf_99', 'area_report_pricing')}
+                    disabled={checkingReportPackage === 'instant_pdf_99'}
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-white/10 px-3 py-2 text-xs font-sans font-bold text-slate-200 hover:border-emerald-500/40 hover:text-emerald-300 disabled:opacity-70"
                   >
-                    Pay Rs 99
+                    {checkingReportPackage === 'instant_pdf_99' ? 'Checking access...' : 'Pay Rs 99'}
                   </button>
                 </article>
 
@@ -1458,10 +1499,11 @@ export default function AreaDetail() {
                     Project-specific verification brief covering title chain, RERA, approvals, access, and current price checks.
                   </p>
                   <button
-                    onClick={() => openCustomReportRequest('custom_due_diligence_499', 'area_report_pricing')}
-                    className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-bold text-[#04110b] hover:bg-emerald-400"
+                    onClick={() => void openCustomReportRequest('custom_due_diligence_499', 'area_report_pricing')}
+                    disabled={checkingReportPackage === 'custom_due_diligence_499'}
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-bold text-[#04110b] hover:bg-emerald-400 disabled:opacity-70"
                   >
-                    Pay Rs 499
+                    {checkingReportPackage === 'custom_due_diligence_499' ? 'Checking access...' : 'Pay Rs 499'}
                   </button>
                 </article>
               </div>

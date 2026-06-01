@@ -1,5 +1,7 @@
 import { API_BASE_URL } from '@/lib/runtime'
+import type { ReportPackage } from '@/lib/paymentLinks'
 const TOKEN_KEY = 'plotdna_access_token'
+const USER_ID_KEY = 'plotdna_user_id'
 const ENTITLEMENTS_CACHE_KEY = 'plotdna_entitlements'
 
 interface AnonymousAuthResponse {
@@ -13,6 +15,14 @@ export interface EntitlementsResponse {
   free_limit: number
   subscription_active: boolean
   subscription_expires_at: string | null
+  email: string | null
+}
+
+export interface ReportAccessResponse {
+  packageInterest: ReportPackage
+  canAccess: boolean
+  requiresPayment: boolean
+  reason: 'admin_allowlist' | 'subscription_active' | 'payment_required'
   email: string | null
 }
 
@@ -36,6 +46,14 @@ function getStoredToken(): string | null {
 function setStoredToken(token: string) {
   try {
     window.localStorage.setItem(TOKEN_KEY, token)
+  } catch {
+    // ignore storage failures in privacy modes
+  }
+}
+
+function setStoredUserId(userId: string) {
+  try {
+    window.localStorage.setItem(USER_ID_KEY, userId)
   } catch {
     // ignore storage failures in privacy modes
   }
@@ -72,6 +90,7 @@ async function createAnonymousSession(): Promise<string> {
     throw new Error('PlotDNA session token missing.')
   }
   setStoredToken(payload.access_token)
+  setStoredUserId(payload.user_id)
   return payload.access_token
 }
 
@@ -108,6 +127,17 @@ export async function getEntitlements(): Promise<EntitlementsResponse | null> {
     const entitlements = await res.json() as EntitlementsResponse
     rememberEntitlements(entitlements)
     return entitlements
+  } catch {
+    return null
+  }
+}
+
+export async function checkReportAccess(packageInterest: ReportPackage): Promise<ReportAccessResponse | null> {
+  try {
+    const params = new URLSearchParams({ packageInterest })
+    const res = await authedFetch(`/api/v1/entitlements/report-access?${params.toString()}`)
+    if (!res.ok) return null
+    return await res.json() as ReportAccessResponse
   } catch {
     return null
   }

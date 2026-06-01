@@ -5,9 +5,12 @@ from app.core.auth import require_user_id
 from app.core.config import settings
 from app.services.entitlements_store import (
     Entitlements,
+    ReportAccess,
+    ReportPackage,
     consume_search,
     dev_activate_subscription,
     get_entitlements,
+    get_report_access,
     set_email,
 )
 
@@ -22,6 +25,14 @@ class EntitlementsResponse(BaseModel):
     email: str | None
 
 
+class ReportAccessResponse(BaseModel):
+    packageInterest: str
+    canAccess: bool
+    requiresPayment: bool
+    reason: str
+    email: str | None
+
+
 def _to_response(ent: Entitlements) -> EntitlementsResponse:
     return EntitlementsResponse(
         free_remaining=ent.free_remaining,
@@ -32,9 +43,24 @@ def _to_response(ent: Entitlements) -> EntitlementsResponse:
     )
 
 
+def _to_report_access_response(access: ReportAccess) -> ReportAccessResponse:
+    return ReportAccessResponse(
+        packageInterest=access.package_interest,
+        canAccess=access.can_access,
+        requiresPayment=access.requires_payment,
+        reason=access.reason,
+        email=access.email,
+    )
+
+
 @router.get("", response_model=EntitlementsResponse)
 def me(user_id: str = Depends(require_user_id)):
     return _to_response(get_entitlements(user_id))
+
+
+@router.get("/report-access", response_model=ReportAccessResponse)
+def report_access(packageInterest: ReportPackage, user_id: str = Depends(require_user_id)):
+    return _to_report_access_response(get_report_access(user_id, packageInterest))
 
 
 @router.post("/consume", response_model=EntitlementsResponse)

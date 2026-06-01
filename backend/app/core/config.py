@@ -62,6 +62,8 @@ class Settings(BaseSettings):
 
     # Local entitlement store. Leave blank to use backend/app/.local.
     ENTITLEMENTS_DB_PATH: str = ""
+    ADMIN_ACCESS_EMAILS: str = ""
+    ADMIN_ACCESS_USER_IDS: str = ""
 
     @field_validator("DEBUG", mode="before")
     @classmethod
