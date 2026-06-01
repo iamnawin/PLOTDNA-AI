@@ -30,7 +30,7 @@ import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommenda
 import { getConfidenceMeta } from '@/lib/cityProduction'
 import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib/investmentReport'
 import { trackEvent } from '@/lib/analytics'
-import { openReportPaymentLink, type ReportPackage } from '@/lib/paymentLinks'
+import { getReportPaymentLink, openReportPaymentLink, type ReportPackage } from '@/lib/paymentLinks'
 import { checkReportAccess } from '@/lib/entitlements'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
@@ -632,6 +632,8 @@ export default function AreaDetail() {
     : 'hyderabad'
   const [customReportOpen, setCustomReportOpen] = useState(false)
   const [selectedReportPackage, setSelectedReportPackage] = useState<ReportPackage>('custom_due_diligence_499')
+  const [selectedReportSource, setSelectedReportSource] = useState('area_report_summary')
+  const [selectedReportPaymentRequired, setSelectedReportPaymentRequired] = useState(true)
   const [checkingReportPackage, setCheckingReportPackage] = useState<ReportPackage | null>(null)
 
   useEffect(() => {
@@ -958,6 +960,7 @@ export default function AreaDetail() {
     .slice(0, 3)
   const openCustomReportRequest = async (packageInterest: ReportPackage, source: string) => {
     setSelectedReportPackage(packageInterest)
+    setSelectedReportSource(source)
     setCheckingReportPackage(packageInterest)
     trackEvent(packageInterest === 'instant_pdf_99' ? 'paid_report_clicked' : 'custom_report_pricing_clicked', {
       citySlug,
@@ -982,6 +985,7 @@ export default function AreaDetail() {
       })
 
       if (reportAccess?.canAccess) {
+        setSelectedReportPaymentRequired(false)
         trackEvent('report_access_unlocked', {
           citySlug,
           areaSlug: area.slug,
@@ -996,6 +1000,13 @@ export default function AreaDetail() {
           return
         }
 
+        setCustomReportOpen(true)
+        return
+      }
+
+      setSelectedReportPaymentRequired(true)
+
+      if (packageInterest === 'custom_due_diligence_499') {
         setCustomReportOpen(true)
         return
       }
@@ -1309,7 +1320,20 @@ export default function AreaDetail() {
                 cityName,
                 areaSlug: area.slug,
                 areaName: area.name,
-                source: 'area_report_summary',
+                source: selectedReportSource,
+              }}
+              paymentAvailable={selectedReportPaymentRequired && Boolean(getReportPaymentLink(selectedReportPackage))}
+              onProceedToPayment={() => {
+                const openedPaymentLink = openReportPaymentLink(selectedReportPackage)
+                trackEvent('payment_link_clicked', {
+                  citySlug,
+                  areaSlug: area.slug,
+                  packageInterest: selectedReportPackage,
+                  source: selectedReportSource,
+                  provider: 'razorpay_payment_link',
+                  hasConfiguredLink: openedPaymentLink,
+                  dataConfidence: displayedConfidence ?? 'estimated',
+                })
               }}
               onClose={() => setCustomReportOpen(false)}
               onSubmitted={(leadId) => {
@@ -1317,7 +1341,7 @@ export default function AreaDetail() {
                   citySlug,
                   areaSlug: area.slug,
                   dataConfidence: displayedConfidence ?? 'estimated',
-                  source: 'area_report_summary',
+                  source: selectedReportSource,
                   packageInterest: selectedReportPackage,
                   leadId,
                 })

@@ -631,7 +631,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
             }}
           >
             <span className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.08em]" style={{ color: '#f8fafc', textShadow: `0 0 12px ${color}95` }}>
-              Full DNA Analysis
+              Open area report
               <ArrowRight size={13} />
             </span>
             <span className="text-[9px] text-slate-400 font-sans mt-0.5">
@@ -691,7 +691,7 @@ export default function PlotAnalysisCard({ coords, fallback, onClose }: Props) {
             }}
           >
             <span className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.08em] text-slate-50" style={{ textShadow: '0 0 12px rgba(16,185,129,0.95)' }}>
-              Full DNA Analysis
+              Open district report
               <ArrowRight size={13} />
             </span>
             <span className="text-[9px] text-slate-400 font-sans mt-0.5">
