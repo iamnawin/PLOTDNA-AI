@@ -10,6 +10,7 @@
  */
 
 import type { LocalityResolution } from '@/lib/location/contracts'
+import type { CityMeta, MicroMarket } from '@/types'
 
 export const BASE_URL = (
   import.meta.env.VITE_API_URL ??
@@ -46,6 +47,11 @@ export interface MapLinkResolutionResult {
   coords: [number, number] | null
   reason: MapLinkResolutionReason
   detail?: string
+}
+
+export interface BackendAreaList {
+  city: CityMeta & { state?: string }
+  areas: MicroMarket[]
 }
 
 // ── Map link resolution ───────────────────────────────────────────────────────
@@ -181,6 +187,33 @@ export async function resolveLocation(
     })
     if (!res.ok) return null
     return (await res.json()) as LocalityResolution
+  } catch {
+    return null
+  }
+}
+
+// ── Backend-owned area catalog ──
+
+export async function fetchBackendAreas(citySlug = 'hyderabad'): Promise<BackendAreaList | null> {
+  try {
+    const res = await fetch(`${BASE_URL}/api/areas/?city=${encodeURIComponent(citySlug)}`, {
+      signal: AbortSignal.timeout(10_000),
+    })
+    if (!res.ok) return null
+    return (await res.json()) as BackendAreaList
+  } catch {
+    return null
+  }
+}
+
+export async function fetchBackendArea(citySlug: string, areaSlug: string): Promise<MicroMarket | null> {
+  try {
+    const res = await fetch(
+      `${BASE_URL}/api/areas/${encodeURIComponent(citySlug)}/${encodeURIComponent(areaSlug)}`,
+      { signal: AbortSignal.timeout(10_000) },
+    )
+    if (!res.ok) return null
+    return (await res.json()) as MicroMarket
   } catch {
     return null
   }

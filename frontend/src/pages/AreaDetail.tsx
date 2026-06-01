@@ -610,15 +610,21 @@ async function generatePDF(area: MicroMarket) {
 
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { BASE_URL } from '@/lib/api'
+import { BASE_URL, fetchBackendArea } from '@/lib/api'
 
 export default function AreaDetail() {
   const { slug } = useParams<{ slug: string }>()
   const location = useLocation()
   const navigate = useNavigate()
   const { searchCoords, recommendationGoal } = useAppStore()
-  const area = getAllAreas().find((a) => a.slug === slug)
+  const staticArea = getAllAreas().find((a) => a.slug === slug)
+  const [backendArea, setBackendArea] = useState<MicroMarket | null>(null)
+  const area = backendArea ?? staticArea
   const fallbackContext = (location.state as AreaDetailLocationState | null)?.fallbackContext
+  const staticCityEntry = staticArea ? getCityForArea(staticArea.slug) : undefined
+  const staticCitySlug = staticCityEntry
+    ? Object.entries(CITIES).find(([, v]) => v === staticCityEntry)?.[0] ?? 'hyderabad'
+    : 'hyderabad'
 
   const contactInputRef = useRef<HTMLInputElement>(null)
   
@@ -647,6 +653,28 @@ export default function AreaDetail() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   const [pdfReady, setPdfReady] = useState(() => !isLocked)
+
+  useEffect(() => {
+    let cancelled = false
+
+    async function loadBackendArea() {
+      if (!slug || staticCitySlug !== 'hyderabad') {
+        setBackendArea(null)
+        return
+      }
+
+      const nextArea = await fetchBackendArea(staticCitySlug, slug)
+      if (!cancelled) {
+        setBackendArea(nextArea)
+      }
+    }
+
+    void loadBackendArea()
+
+    return () => {
+      cancelled = true
+    }
+  }, [slug, staticCitySlug])
 
   useEffect(() => {
     if (isLocked) {
