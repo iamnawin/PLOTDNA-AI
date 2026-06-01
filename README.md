@@ -2,91 +2,25 @@
 
 <div align="center">
 
-**Decode any plot before you buy.**
+**Buyer-side land intelligence before you trust the pitch.**
 
-PlotDNA is a hybrid real-estate intelligence product for selected Indian micro-markets.
-It combines curated locality data, resolver-based coordinate matching, and a growing backend
-for dynamic analysis.
+PlotDNA helps property buyers screen micro-markets, compare risk, and prepare the
+right verification checklist before talking to brokers.
+
+**Live release market: Hyderabad**
 
 </div>
 
 ---
 
-## What PlotDNA is today
+## Public Release Scope
 
-PlotDNA is strongest as a **supported-zones intelligence product**, not yet as a
-fully dynamic "any plot in India" engine.
+Hyderabad is the live public release market. The current production experience is
+optimized around Hyderabad micro-markets, including map search, coordinate
+analysis, area reports, comparison views, and buyer verification workflows.
 
-Current product model:
+Coming-soon markets:
 
-- curated micro-market coverage across selected cities
-- coordinate and map-link input that resolves into supported locality context
-- stored market profiles for supported areas
-- some backend-driven dynamic analysis and verdict flows
-
-The current system is best described as:
-
-`user input -> resolver -> supported locality or cluster -> stored market profile -> optional dynamic enrichment`
-
-If a searched point is outside supported coverage, the product should be treated as
-approximate or unsupported rather than exact.
-
----
-
-## Architectural reality
-
-PlotDNA currently has two layers:
-
-### 1. Curated market intelligence
-
-This is the stronger part of the product today.
-
-- city datasets and market narratives live in `frontend/src/data/*.ts`
-- resolver-grade city geometry and aliases live in `data/cities/<city>/`
-- supported areas can show score, narrative, projects, sources, and area detail UI
-
-### 2. Dynamic analysis
-
-This exists, but it is not yet the sole source of truth.
-
-- backend scoring routes can analyze coordinates
-- resolver logic can map coordinates to exact, nearby, cluster, or uncovered context
-- some verdict and live-analysis flows use backend services
-
-What is **not** true yet:
-
-- all of market truth comes from one backend-owned canonical catalog
-- every searched point in India gets equally reliable locality intelligence
-- pricing, RERA, infra, and satellite freshness are fully automated for all supported cities
-
----
-
-## Coverage model
-
-PlotDNA should be read through explicit support tiers:
-
-- **Tier A: Full micro-market support**
-  - polygon-defined locality
-  - stored market profile
-  - area detail experience
-  - sources / projects / verdict support
-- **Tier B: Resolver or cluster support**
-  - approximate supported-market context
-  - partial confidence
-  - not exact point-level locality truth
-- **Tier C: Dynamic coordinate-only support**
-  - coordinate analysis without curated locality intelligence
-  - should not be presented as equal to Tier A
-
-See [docs/COVERAGE_TIERS.md](docs/COVERAGE_TIERS.md).
-
----
-
-## Current supported cities
-
-Resolver-grade support currently exists for:
-
-- Hyderabad
 - Bangalore
 - Mumbai
 - Chennai
@@ -94,41 +28,144 @@ Resolver-grade support currently exists for:
 - Delhi NCR
 - Vijayawada Capital Region
 - Visakhapatnam
+- Dubai
 
-These cities have resolver datasets under `data/cities/` and bundled market datasets in
-`frontend/src/data/`.
-
----
-
-## What the repo does well now
-
-- strong demoable product vision
-- polished map and area-detail UI
-- curated city storytelling
-- resolver-based locality matching for supported cities
-- hybrid coordinate-to-market flow
-- investor-style presentation of score, outlook, and narrative
+These cities may have seeded datasets or resolver experiments in the repo, but
+they should not be presented as fully live public release markets yet.
 
 ---
 
-## What is still incomplete
+## What PlotDNA Does Today
 
-The repo is not yet a fully accurate nationwide intelligence engine.
+PlotDNA is a supported-zones intelligence product. It is not yet a nationwide
+"any plot in India" engine.
 
-Key gaps:
+Current product model:
 
-- market truth is still duplicated across frontend and backend paths
-- backend area/catalog APIs are not yet the canonical source of truth
-- fresh data pipelines are incomplete
-- exact-location intelligence outside supported zones is limited
-- support tiers are stronger than nationwide claims
+```text
+user input -> resolver -> supported locality or nearby market -> area profile -> optional dynamic enrichment
+```
 
-The main architecture plan for fixing that lives in
-[docs/ALL_INDIA_EXPANSION_PLAN.md](docs/ALL_INDIA_EXPANSION_PLAN.md).
+The strongest current flows are:
+
+- free homepage search and Hyderabad market discovery
+- Hyderabad map and coordinate screening
+- area DNA score, growth view, risk notes, and source references
+- compare view for shortlisted Hyderabad micro-markets
+- instant screening PDF
+- custom buyer verification brief request
+
+If a searched point is outside exact supported coverage, PlotDNA must show it as
+nearby, approximate, or unsupported rather than exact.
 
 ---
 
-## Repository layout
+## Report Products
+
+PlotDNA currently separates free browsing from paid report actions.
+
+### Free
+
+- homepage search
+- Hyderabad map exploration
+- basic area DNA score
+- compare page
+- general risk and growth context
+
+### Rs 99 instant screening PDF
+
+Quick shortlist report for one area:
+
+- area score
+- growth signals
+- risk notes
+- buyer checklist
+- source/context summary
+
+### Rs 499 custom buyer verification brief
+
+A deeper buyer-side brief that is not the same output as the Rs 99 PDF. It uses
+buyer context such as budget, timeline, notes, and the target area to produce:
+
+- buyer context summary
+- verification priorities
+- seller questions
+- price sanity checks
+- risk flags
+- next actions
+
+This is a buyer verification brief, not legal due diligence, title advice, or
+investment advice.
+
+---
+
+## Payments
+
+Razorpay is the intended India payment path.
+
+Frontend payment-link environment variables:
+
+```bash
+VITE_RAZORPAY_PDF_LINK=
+VITE_RAZORPAY_CUSTOM_REPORT_LINK=
+```
+
+When those links are configured at build time, the Rs 99 and Rs 499 buttons can
+open the relevant checkout/payment link. If they are missing, the UI falls back
+to a manual checkout request so the user can still leave contact details.
+
+Future checkout/webhook integration should use:
+
+```bash
+RAZORPAY_KEY_ID=
+RAZORPAY_KEY_SECRET=
+VITE_RAZORPAY_KEY_ID=
+RAZORPAY_WEBHOOK_SECRET=
+```
+
+Do not commit API keys or downloaded Razorpay CSV files.
+
+---
+
+## Architecture
+
+PlotDNA currently has two layers.
+
+### Curated Market Intelligence
+
+This is the strongest production layer today.
+
+- bundled city/locality datasets live in `frontend/src/data/`
+- city and locality resolver data lives under `data/cities/`
+- area detail pages show score, narrative, projects, sources, and report actions
+
+### Dynamic Analysis
+
+This layer exists but is not the sole source of truth yet.
+
+- backend routes can analyze coordinates
+- resolver logic can map points to exact, nearby, cluster, or uncovered context
+- AI verdict flows can enrich area pages when backend/API configuration is present
+- UI fallbacks should remain user-safe when backend enrichment is unavailable
+
+---
+
+## Coverage Tiers
+
+PlotDNA should always describe coverage explicitly:
+
+- **Tier A: Full micro-market support** - polygon-defined locality, stored market
+  profile, area page, sources, projects, verdict support.
+- **Tier B: Nearby or cluster support** - approximate supported-market context
+  with partial confidence.
+- **Tier C: Coordinate-only support** - dynamic location signals without full
+  curated locality intelligence.
+
+See [docs/COVERAGE_TIERS.md](docs/COVERAGE_TIERS.md).
+
+---
+
+## Repository Layout
 
 ```text
 frontend/
@@ -137,24 +174,26 @@ frontend/
     data/                   bundled city and market datasets
     lib/                    API helpers, resolver, analysis helpers
     pages/                  landing, home, area detail, brochure flows
+  scripts/                  focused release checks
 
 backend/
   app/
     api/routes/             FastAPI routes
-    services/               scoring, verdict, routing, and helpers
+    services/               scoring, verdict, payment, and helper logic
 
 data/
-  cities/                   resolver-grade city geometry, aliases, clusters
+  cities/                   city geometry, aliases, clusters, resolver data
 
 docs/
   ROADMAP.md
   ALL_INDIA_EXPANSION_PLAN.md
   COVERAGE_TIERS.md
+  GTM_STRATEGY.md
 ```
 
 ---
 
-## Local development
+## Local Development
 
 ### Frontend
 
@@ -165,6 +204,16 @@ npm run dev
 ```
 
 Runs at `http://localhost:5173`.
+
+Useful checks:
+
+```bash
+npm run test:hyderabad-production
+npm run test:landing-rollout-copy
+npm run test:custom-buyer-brief
+npm run lint
+npm run build
+```
 
 ### Backend
 
@@ -178,35 +227,31 @@ uvicorn app.main:app --reload
 
 Runs at `http://localhost:8000`.
 
-### Important truth about local dev
+---
 
-- the frontend can run by itself because much of the current product is still bundled static data
-- the backend is needed for the dynamic flows that do exist
-- this mixed setup is part of the current transition state, not the desired end architecture
+## Release Notes
+
+Current release posture:
+
+- Hyderabad is the launch market.
+- Other cities are visible as coming-soon expansion markets.
+- Free browsing stays open before asking for contact/payment.
+- Paid actions are separated into Rs 99 screening PDF and Rs 499 custom buyer
+  verification brief.
+- Razorpay payment links can be configured now; full Razorpay Checkout/webhook
+  entitlement automation is the next payment hardening step.
 
 ---
 
-## Mobile release status
+## Recommended Next Engineering Move
 
-This repo does **not** yet contain the full Capacitor native-project baseline in its current
-state. Mobile store packaging should be treated as the next documentation and sync step, not
-as a finished repo capability here.
+The highest-value next technical step is backend-backed Razorpay Checkout:
 
-Release prep docs:
+1. create backend orders for Rs 99 and Rs 499 packages
+2. verify Razorpay payment signatures
+3. grant report entitlements after payment success or webhook confirmation
+4. keep admin/test bypasses for internal QA
+5. keep Payment Links as a fallback path
 
-- [docs/android-release-checklist.md](docs/android-release-checklist.md)
-- [docs/ios-release-checklist.md](docs/ios-release-checklist.md)
-
----
-
-## Recommended next engineering move
-
-The highest-value technical next step is:
-
-1. move market truth into one canonical backend-owned catalog
-2. make frontend consume that catalog through backend APIs
-3. keep support tiers explicit while dynamic coverage matures
-
-That migration direction is already outlined in
-[docs/ALL_INDIA_EXPANSION_PLAN.md](docs/ALL_INDIA_EXPANSION_PLAN.md).
-
+Longer term, move market truth into one backend-owned catalog and make the
+frontend consume that catalog through APIs.

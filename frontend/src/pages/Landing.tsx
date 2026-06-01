@@ -240,6 +240,7 @@ export default function Landing() {
   const activeCityProfile = getCityProductionProfile(activeCityEntry.meta, activeCityEntry.areas)
   const previewAreas = getGoalTopAreas(activeCityEntry.areas, recommendationGoal, 5)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
+  const showSignalPreview = activeCity === 'hyderabad'
   const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
 
   return (
@@ -370,7 +371,7 @@ export default function Landing() {
               className="w-1.5 h-1.5 rounded-full bg-[#10b981]"
               style={{ boxShadow: '0 0 4px #10b981', animation: 'pulse 2s infinite' }}
             />
-            Live{" \u00B7 "}<span className="font-display font-bold">{CITY_LIST.length}</span> Cities
+            Hyderabad live
           </span>
         </div>
         <div className="flex items-center gap-2">
@@ -697,7 +698,7 @@ export default function Landing() {
                 color: 'var(--text-main)',
               }}
             >
-              Choose a city. Then zoom into the exact market.
+              Hyderabad is live for release. More cities are next.
             </p>
             <p
               style={{
@@ -709,36 +710,45 @@ export default function Landing() {
                 margin: '8px auto 0',
               }}
             >
-              Start from supported city maps and open locality-level analysis for investment signals, risk, and future growth view.
+              Use Hyderabad now for buyer-side micro-market screening. Other city rollouts are coming soon and are shown here so users understand the expansion roadmap.
             </p>
           </div>
 
-          <div className="flex items-center justify-center gap-2 mb-4">
+          <div className="flex items-center justify-center flex-wrap gap-2 mb-4">
             {CITY_LIST.map(city => {
               const active = activeCity === city.slug
+              const isLaunchCity = city.slug === 'hyderabad'
               return (
                 <button
                   key={city.slug}
                   onClick={() => setActiveCity(city.slug)}
                   className="px-4 py-2 rounded-full text-[11px] transition-all duration-300 cursor-pointer font-sans"
                   style={{
-                    background: active ? 'rgba(16, 185, 129, 0.12)' : 'rgba(255, 255, 255, 0.03)',
-                    border: active ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(255, 255, 255, 0.06)',
-                    color: active ? '#10b981' : '#94a3b8',
+                    background: active
+                      ? isLaunchCity ? 'rgba(16, 185, 129, 0.12)' : 'rgba(148, 163, 184, 0.10)'
+                      : 'rgba(255, 255, 255, 0.03)',
+                    border: active
+                      ? isLaunchCity ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(148, 163, 184, 0.22)'
+                      : '1px solid rgba(255, 255, 255, 0.06)',
+                    color: active ? isLaunchCity ? '#10b981' : '#cbd5e1' : '#94a3b8',
                     backdropFilter: 'blur(8px)',
-                    boxShadow: active ? '0 0 15px rgba(16, 185, 129, 0.2)' : 'none',
+                    boxShadow: active && isLaunchCity ? '0 0 15px rgba(16, 185, 129, 0.2)' : 'none',
                     fontWeight: 600,
                   }}
                 >
                   {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
-                  {city.slug === 'hyderabad' && (
+                  {isLaunchCity ? (
                     <span style={{ marginLeft: 6, color: active ? '#a7f3d0' : '#10b981' }}>Flagship</span>
+                  ) : (
+                    <span style={{ marginLeft: 6, color: active ? '#cbd5e1' : '#64748b' }}>Coming soon</span>
                   )}
                 </button>
               )
             })}
           </div>
 
+          {showSignalPreview ? (
+            <>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
             {[
               ['Covered', activeCityProfile.totalLocalities],
@@ -823,6 +833,59 @@ export default function Landing() {
               )
             })}
           </div>
+            </>
+          ) : (
+            <div
+              className="mx-auto rounded-2xl px-5 py-5 text-left"
+              style={{
+                maxWidth: 560,
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(255,255,255,0.08)',
+              }}
+            >
+              <p
+                className="font-display"
+                style={{ fontSize: 18, fontWeight: 800, color: '#e8e8f0', letterSpacing: '-0.035em' }}
+              >
+                {activeCityEntry.meta.name} is coming soon.
+              </p>
+              <p style={{ marginTop: 8, fontSize: 13, lineHeight: 1.65, color: 'var(--text-muted)' }}>
+                We are keeping the first public release focused on Hyderabad so the score, report, and verification workflow stay clear. {activeCityEntry.meta.name} will open after its source deck, locality confidence, and buyer checklist reach release quality.
+              </p>
+              <div className="grid grid-cols-3 gap-2 mt-4">
+                {[
+                  ['Status', 'Roadmap'],
+                  ['Access', 'Waitlist'],
+                  ['Reports', 'Not live'],
+                ].map(([metric, value]) => (
+                  <div
+                    key={metric}
+                    className="rounded-xl px-3 py-2"
+                    style={{
+                      background: 'rgba(15, 23, 42, 0.55)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                    }}
+                  >
+                    <p className="font-display" style={{ fontSize: 15, fontWeight: 800, color: '#cbd5e1' }}>{value}</p>
+                    <p style={{ fontSize: 9, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{metric}</p>
+                  </div>
+                ))}
+              </div>
+              <button
+                onClick={() => setActiveCity('hyderabad')}
+                className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] transition-all cursor-pointer font-sans"
+                style={{
+                  background: 'rgba(16,185,129,0.1)',
+                  border: '1px solid rgba(16,185,129,0.3)',
+                  color: '#10b981',
+                  fontWeight: 700,
+                }}
+              >
+                View live Hyderabad market
+                <ArrowRight size={12} />
+              </button>
+            </div>
+          )}
         </motion.div>
       </section>
 
