@@ -408,7 +408,7 @@ export default function Landing() {
           }}
         >
           <Zap size={10} />
-          {activeCityProfile.isFlagship ? activeCityProfile.label : 'Real estate investment intelligence'}{" \u00B7 "}{activeCityEntry.meta.name}
+          {activeCityProfile.isFlagship ? activeCityProfile.label : 'Investment screening intelligence'}{" \u00B7 "}{activeCityEntry.meta.name}
         </motion.div>
 
         <motion.h1
@@ -425,9 +425,9 @@ export default function Landing() {
             color: 'var(--text-main)',
           }}
         >
-          Know if a plot is worth buying
+          Hyderabad Land Investment Scanner
           <br />
-          <span style={{ color: '#10b981' }}>before you invest.</span>
+          <span style={{ color: '#10b981' }}>before you trust the pitch.</span>
         </motion.h1>
 
         <motion.p
@@ -436,7 +436,7 @@ export default function Landing() {
           transition={{ duration: 0.4, delay: 0.18 }}
           style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 680, marginTop: 22, lineHeight: 1.7, letterSpacing: '-0.01em' }}
         >
-          PlotDNA checks infrastructure, RERA activity, satellite context, growth signals, and location patterns. Hyderabad is the production-first city, with coverage and confidence labels built for real buyer screening.
+          Screen micro-markets, compare risk, and prepare the right verification checklist before you talk to brokers. PlotDNA is buyer-side screening for serious Hyderabad property decisions, not a replacement for legal or title diligence.
         </motion.p>
 
         <motion.div
@@ -555,6 +555,10 @@ export default function Landing() {
               </button>
             </div>
           </div>
+
+          <p className="mt-3 px-2 text-xs leading-5 text-slate-500">
+            Buyer screening only. Verify title, RERA, zoning, approvals, access, and latest pricing independently before committing capital.
+          </p>
 
           <AnimatePresence>
             {showDropdown && (
