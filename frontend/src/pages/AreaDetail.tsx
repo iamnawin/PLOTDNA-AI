@@ -331,10 +331,12 @@ function LivabilityTrendPanel({ livability, yoy }: { livability: Livability; yoy
 
 function ReportExportPanel({
   checking,
+  checkingCustom,
   onDownloadPdf,
   onCustomBrief,
 }: {
   checking: boolean
+  checkingCustom: boolean
   onDownloadPdf: () => void
   onCustomBrief: () => void
 }) {
@@ -355,10 +357,10 @@ function ReportExportPanel({
             Don't buy on broker claims. Buy with PlotDNA.
           </p>
           <h2 className="mt-1 font-display text-xl font-extrabold text-slate-100">
-            Preview the DNA, then unlock the full app view and PDF.
+            Preview the DNA, then unlock the complete in-app view and PDF.
           </h2>
           <p className="mt-2 max-w-2xl text-xs font-sans leading-relaxed text-slate-400">
-            The live app opens long enough to inspect the verdict and evidence. After the preview window, the paid unlock opens the full UI analysis plus the printable source-of-truth PDF.
+            The live app opens long enough to inspect the verdict and evidence. After the preview window, either package unlocks the full UI analysis plus the printable source-of-truth PDF.
           </p>
         </div>
 
@@ -379,11 +381,11 @@ function ReportExportPanel({
             onClick={onCustomBrief}
             className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left transition-colors hover:bg-emerald-500/15"
           >
-            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Buyer verification brief</span>
+            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Full app + buyer brief</span>
             <span className="mt-1 block font-display text-2xl font-extrabold text-slate-100">Rs 499</span>
-            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-300">Add title, RERA, access, pricing, and seller-question checks.</span>
+            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-300">Unlock the UI, PDF, title, RERA, access, pricing, and seller-question checks.</span>
             <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-400/35 px-3 py-2 text-xs font-sans font-black text-emerald-300">
-              Request buyer brief
+              {checkingCustom ? 'Checking access...' : 'Unlock buyer brief'}
             </span>
           </button>
         </div>
@@ -394,11 +396,13 @@ function ReportExportPanel({
 
 function ReportDownloadNudge({
   checking,
+  checkingCustom,
   onDownloadPdf,
   onCustomBrief,
   onDismiss,
 }: {
   checking: boolean
+  checkingCustom: boolean
   onDownloadPdf: () => void
   onCustomBrief: () => void
   onDismiss: () => void
@@ -437,7 +441,7 @@ function ReportDownloadNudge({
             </button>
           </div>
           <p className="mt-2 text-xs font-sans leading-relaxed text-slate-400">
-            Screenshots are not reliable delivery copies. Rs 99 keeps the full UI open and gives you the PDF with the verdict, graphs, source trail, and buyer checklist.
+            Screenshots are not reliable delivery copies. Rs 99 or Rs 499 keeps the full UI open and gives you the PDF with the verdict, growth graphs, source trail, and buyer checklist.
           </p>
           <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto]">
             <button
@@ -450,9 +454,10 @@ function ReportDownloadNudge({
             </button>
             <button
               onClick={onCustomBrief}
+              disabled={checkingCustom}
               className="inline-flex items-center justify-center rounded-xl border border-emerald-400/30 px-3 py-2 text-xs font-sans font-bold text-emerald-300 transition-colors hover:bg-emerald-500/10"
             >
-              Buyer brief - Rs 499
+              {checkingCustom ? 'Checking access...' : 'Unlock brief - Rs 499'}
             </button>
           </div>
         </div>
@@ -465,12 +470,14 @@ function TimedDnaAccessGate({
   children,
   locked,
   checking,
+  checkingCustom,
   onUnlock,
   onCustomBrief,
 }: {
   children: ReactNode
   locked: boolean
   checking: boolean
+  checkingCustom: boolean
   onUnlock: () => void
   onCustomBrief: () => void
 }) {
@@ -517,7 +524,7 @@ function TimedDnaAccessGate({
               Don't buy on broker claims. Buy with PlotDNA.
             </p>
             <p className="mx-auto mt-2 max-w-md text-sm font-sans leading-relaxed text-slate-400">
-              You have seen the live DNA preview. Unlock the full app view, satellite evidence, signal graphs, market pulse, sources, and printable PDF to continue.
+              You have seen the live DNA preview. Unlock the complete in-app view, satellite evidence, growth graphs, market pulse, sources, and printable PDF to continue.
             </p>
             <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
               <button
@@ -534,13 +541,14 @@ function TimedDnaAccessGate({
               </button>
               <button
                 onClick={onCustomBrief}
-                className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left transition-colors hover:bg-emerald-500/15"
+                disabled={checkingCustom}
+                className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left transition-colors hover:bg-emerald-500/15 disabled:opacity-60"
               >
-                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Buyer verification brief</span>
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Full app + buyer brief</span>
                 <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 499</span>
-                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-300">Add project-specific title, RERA, access, pricing, and seller-question checks.</span>
+                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-300">Unlock the full UI, source-trail PDF, title, RERA, access, pricing, and seller-question checks.</span>
                 <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-400/35 px-3 py-2 text-xs font-sans font-black text-emerald-300">
-                  Request buyer brief
+                  {checkingCustom ? 'Checking access...' : 'Unlock full brief'}
                 </span>
               </button>
             </div>
@@ -672,6 +680,8 @@ async function generatePDF(area: MicroMarket) {
     }
   }
 
+  const signalGrowthContribution = (value: number, weight: number) => Math.max(1, Math.round((value * weight) / 100))
+
   header()
 
   setText(15, 23, 42, 23, 'bold')
@@ -706,7 +716,7 @@ async function generatePDF(area: MicroMarket) {
   doc.text(executiveLines, margin, y)
   y += executiveLines.length * 4.3 + 8
 
-  section('DNA signal table')
+  section('Growth signal table')
   const tableX = margin
   const tableW = pageW - margin * 2
   const signalEntries = SIGNAL_CONFIG.map(({ key, label: signalLabel }) => ({
@@ -723,7 +733,7 @@ async function generatePDF(area: MicroMarket) {
     setText(30, 41, 59, 7.5, 'bold')
     doc.text(signal.label, tableX + 3, rowY)
     setText(100, 116, 139, 7)
-    doc.text(`${signal.weight}% weight`, tableX + 58, rowY)
+    doc.text(`${signalGrowthContribution(signal.value, signal.weight)}% growth`, tableX + 58, rowY)
     doc.setFillColor(226, 232, 240)
     doc.roundedRect(tableX + 88, rowY - 3.5, 58, 3, 1, 1, 'F')
     const [tr, tg, tb] = hexRgb(tier.color)
@@ -987,6 +997,8 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
     doc.text(doc.splitTextToSize(note, w - 8), x + 4, top + 21)
   }
 
+  const signalGrowthContribution = (value: number, weight: number) => Math.max(1, Math.round((value * weight) / 100))
+
   const horizontalBar = (label: string, value: number, note: string, barColor: [number, number, number] = [cr, cg, cb]) => {
     ensureSpace(13)
     const safeValue = Math.max(0, Math.min(100, Math.round(value)))
@@ -1012,9 +1024,9 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
     doc.roundedRect(margin, panelTop, pageW - margin * 2, panelH, 3, 3, 'FD')
 
     setText(15, 23, 42, 8.4, 'bold')
-    doc.text('Weighted PlotDNA inputs', margin + 5, panelTop + 7)
+    doc.text('PlotDNA growth inputs', margin + 5, panelTop + 7)
     setText(100, 116, 139, 6.3)
-    doc.text('Higher bars improve shortlist confidence; lower bars become document questions.', margin + 58, panelTop + 7)
+    doc.text('Higher bars show stronger growth evidence; lower bars become document questions.', margin + 58, panelTop + 7)
 
     SIGNAL_CONFIG.forEach(({ key, label: signalLabel }, index) => {
       const value = area.signals[key] ?? 0
@@ -1024,7 +1036,7 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
       setText(30, 41, 59, 7.1, 'bold')
       doc.text(signalLabel, margin + 5, rowY)
       setText(100, 116, 139, 5.9)
-      doc.text(`${SIGNAL_WEIGHTS[key] ?? 0}% weight`, margin + 49, rowY)
+      doc.text(`${signalGrowthContribution(value, SIGNAL_WEIGHTS[key] ?? 0)}% growth`, margin + 49, rowY)
       doc.setFillColor(226, 232, 240)
       doc.roundedRect(margin + 78, rowY - 3, 72, 3.4, 1.2, 1.2, 'F')
       doc.setFillColor(tr, tg, tb)
@@ -1034,6 +1046,63 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
       setText(71, 85, 105, 6.2)
       doc.text(tier.label, pageW - margin - 5, rowY, { align: 'right' })
     })
+
+    y = panelTop + panelH + 8
+  }
+
+  const drawLocationMapSnapshot = () => {
+    ensureSpace(45)
+    const panelTop = y
+    const panelH = 40
+    const panelW = pageW - margin * 2
+    const mapW = 62
+    const mapH = 30
+    const mapX = margin + 5
+    const mapY = panelTop + 6
+    const lats = area.polygon.map(([lat]) => lat)
+    const lngs = area.polygon.map(([, lng]) => lng)
+    const minLat = Math.min(...lats)
+    const maxLat = Math.max(...lats)
+    const minLng = Math.min(...lngs)
+    const maxLng = Math.max(...lngs)
+    const latRange = Math.max(0.001, maxLat - minLat)
+    const lngRange = Math.max(0.001, maxLng - minLng)
+    const mapUrl = `https://www.google.com/maps/search/?api=1&query=${area.center[0]},${area.center[1]}`
+
+    doc.setFillColor(255, 255, 255)
+    doc.setDrawColor(203, 213, 225)
+    doc.roundedRect(margin, panelTop, panelW, panelH, 3, 3, 'FD')
+    doc.setFillColor(15, 23, 42)
+    doc.roundedRect(mapX, mapY, mapW, mapH, 2.4, 2.4, 'F')
+    doc.setDrawColor(16, 185, 129)
+    doc.setLineWidth(0.7)
+
+    const points = area.polygon.map(([lat, lng]) => {
+      const px = mapX + 5 + ((lng - minLng) / lngRange) * (mapW - 10)
+      const py = mapY + mapH - 5 - ((lat - minLat) / latRange) * (mapH - 10)
+      return [px, py] as [number, number]
+    })
+    points.forEach(([px, py], index) => {
+      const [nextX, nextY] = points[(index + 1) % points.length]
+      doc.line(px, py, nextX, nextY)
+    })
+
+    const centerX = mapX + 5 + ((area.center[1] - minLng) / lngRange) * (mapW - 10)
+    const centerY = mapY + mapH - 5 - ((area.center[0] - minLat) / latRange) * (mapH - 10)
+    doc.setFillColor(cr, cg, cb)
+    doc.circle(centerX, centerY, 2.2, 'F')
+    setText(226, 232, 240, 5.8, 'bold')
+    doc.text('CENTER', centerX, centerY - 4, { align: 'center' })
+
+    setText(15, 23, 42, 8.4, 'bold')
+    doc.text('Location map snapshot', margin + 73, panelTop + 9)
+    setText(71, 85, 105, 7)
+    doc.text(`Center: ${area.center[0].toFixed(5)}, ${area.center[1].toFixed(5)}`, margin + 73, panelTop + 16)
+    doc.text(`Bounds: ${minLat.toFixed(4)}-${maxLat.toFixed(4)} N / ${minLng.toFixed(4)}-${maxLng.toFixed(4)} E`, margin + 73, panelTop + 22)
+    setText(37, 99, 235, 7)
+    doc.textWithLink('Open live map for satellite inspection', margin + 73, panelTop + 29, { url: mapUrl })
+    setText(100, 116, 139, 6.2)
+    doc.text('Printable schematic, not a legal survey map.', margin + 73, panelTop + 35)
 
     y = panelTop + panelH + 8
   }
@@ -1071,6 +1140,8 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
 
   header()
 
+  y = 46
+
   setText(15, 23, 42, 22, 'bold')
   doc.text(area.name, margin, y)
   y += 8
@@ -1078,16 +1149,16 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   doc.text(`${brief.audience} / ${brief.areaLine}`, margin, y)
 
   doc.setFillColor(cr, cg, cb)
-  doc.roundedRect(pageW - margin - 36, y - 14, 36, 25, 4, 4, 'F')
-  setText(255, 255, 255, 24, 'bold')
-  doc.text(String(area.score), pageW - margin - 18, y - 1, { align: 'center' })
+  doc.roundedRect(pageW - margin - 34, y - 10, 34, 22, 4, 4, 'F')
+  setText(255, 255, 255, 21, 'bold')
+  doc.text(String(area.score), pageW - margin - 17, y + 1, { align: 'center' })
   setText(236, 253, 245, 6.2, 'bold')
-  doc.text('DNA SCORE', pageW - margin - 18, y + 6, { align: 'center' })
-  y += 16
+  doc.text('DNA SCORE', pageW - margin - 17, y + 7, { align: 'center' })
+  y += 14
 
   doc.setFillColor(236, 253, 245)
   doc.setDrawColor(167, 243, 208)
-  doc.roundedRect(margin, y, pageW - margin * 2, 34, 3, 3, 'FD')
+  doc.roundedRect(margin, y, pageW - margin * 2, 31, 3, 3, 'FD')
   y += 8
   setText(6, 95, 70, 11, 'bold')
   doc.text('What this Rs 499 brief adds', margin + 5, y)
@@ -1097,9 +1168,9 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
     `${brief.positioning} It converts the area score into project-level questions, document checks, price sanity, and next actions using the buyer context shared at request time.`,
     margin + 5,
     pageW - margin * 2 - 10,
-    4.2,
+    4,
   )
-  y += 8
+  y += 5
 
   section('Buyer context and notes')
   const contextRows = [
@@ -1172,6 +1243,9 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
     doc.text(doc.splitTextToSize(milestone.label, 30), x, lineY + 13, { align: 'center' })
   })
   y += 34
+
+  section('Location map snapshot')
+  drawLocationMapSnapshot()
 
   footer()
   doc.addPage()
@@ -1714,7 +1788,18 @@ export default function AreaDetail() {
 
     if (packageInterest === 'custom_due_diligence_499') {
       setSelectedReportPaymentRequired(false)
+      setReportAccessUnlocked(true)
+      setReportPreviewLocked(false)
+      setShowReportNudge(false)
       setCustomReportOpen(true)
+      trackEvent('report_access_unlocked', {
+        citySlug,
+        areaSlug: area.slug,
+        packageInterest,
+        source,
+        reason: 'custom_buyer_brief_flow',
+        dataConfidence: displayedConfidence ?? 'estimated',
+      })
       trackEvent('custom_buyer_brief_preview_opened', {
         citySlug,
         areaSlug: area.slug,
@@ -2187,6 +2272,7 @@ export default function AreaDetail() {
 
             <ReportExportPanel
               checking={checkingReportPackage === 'instant_pdf_99'}
+              checkingCustom={checkingReportPackage === 'custom_due_diligence_499'}
               onDownloadPdf={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_export_cta')}
               onCustomBrief={() => void openCustomReportRequest('custom_due_diligence_499', 'area_dna_export_cta')}
             />
@@ -2194,6 +2280,7 @@ export default function AreaDetail() {
             <TimedDnaAccessGate
               locked={reportPreviewLocked && !reportAccessUnlocked}
               checking={checkingReportPackage === 'instant_pdf_99'}
+              checkingCustom={checkingReportPackage === 'custom_due_diligence_499'}
               onUnlock={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_timed_lock')}
               onCustomBrief={() => void openCustomReportRequest('custom_due_diligence_499', 'area_dna_timed_lock')}
             >
@@ -2613,13 +2700,14 @@ export default function AreaDetail() {
             </TimedDnaAccessGate>
           </div>
 
-          {/* Area browsing stays open; paid flow is for PDF export and buyer brief. */}
+          {/* Deep area browsing reopens after the Rs 99 or Rs 499 unlock flow. */}
         </div>
       </div>
 
       {showReportNudge && (
         <ReportDownloadNudge
           checking={checkingReportPackage === 'instant_pdf_99'}
+          checkingCustom={checkingReportPackage === 'custom_due_diligence_499'}
           onDownloadPdf={() => {
             dismissReportNudge('pdf_clicked')
             void openCustomReportRequest('instant_pdf_99', 'area_pdf_timer_nudge')
