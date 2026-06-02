@@ -379,6 +379,9 @@ function LockedDnaAnalysis({
               <Shield size={18} className="text-emerald-300" />
             </div>
             <p className="font-display text-xl font-extrabold text-slate-100">Unlock full DNA analysis</p>
+            <p className="mt-2 text-xs font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
+              Don't buy on broker claims. Buy with PlotDNA.
+            </p>
             <p className="mx-auto mt-2 max-w-sm text-sm font-sans leading-relaxed text-slate-400">
               The free preview shows the verdict and checklist. Satellite growth, weighted signal graphs, market pulse, development pipeline, and source links unlock below.
             </p>
@@ -508,7 +511,7 @@ async function generatePDF(area: MicroMarket) {
     doc.setDrawColor(226, 232, 240)
     doc.line(margin, 284, pageW - margin, 284)
     setText(100, 116, 139, 6.5)
-    doc.text('PlotDNA screening report. Verify title, RERA, zoning, access, utilities, and latest comps before purchase.', margin, 290)
+    doc.text("Don't buy on broker claims. Buy with PlotDNA. Verify title, RERA, zoning, access, utilities, and latest comps.", margin, 290)
     doc.text(`Page ${page}`, pageW - margin, 290, { align: 'right' })
   }
 
@@ -820,7 +823,7 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
     doc.setDrawColor(226, 232, 240)
     doc.line(margin, 284, pageW - margin, 284)
     setText(100, 116, 139, 6.3)
-    doc.text('Custom buyer verification brief. Not legal due diligence or investment advice.', margin, 290)
+    doc.text("Don't buy on broker claims. Buy with PlotDNA. Not legal due diligence or investment advice.", margin, 290)
     doc.text(`Page ${page}`, pageW - margin, 290, { align: 'right' })
   }
 

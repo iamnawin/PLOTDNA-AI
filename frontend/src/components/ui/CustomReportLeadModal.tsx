@@ -159,6 +159,11 @@ export default function CustomReportLeadModal({
                 <p className="mt-2 text-sm font-sans leading-relaxed text-slate-400">
                   {description}
                 </p>
+                {isCustomReport && (
+                  <p className="mt-2 text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
+                    Don't buy on broker claims. Buy with PlotDNA.
+                  </p>
+                )}
                 {packageInterest && (
                   <p className="mt-2 inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
                     {packageLabel}

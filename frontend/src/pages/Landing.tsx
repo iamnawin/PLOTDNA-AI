@@ -340,6 +340,14 @@ export default function Landing() {
         >
           Hyderabad land intelligence that helps you compare micro-markets, understand growth signals, and prepare the right verification checklist before you talk to brokers. PlotDNA is buyer-side screening, not a replacement for legal or title diligence.
         </motion.p>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.22 }}
+          className="mt-4 inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-sans font-bold uppercase tracking-[0.12em] text-emerald-300"
+        >
+          Don't buy on broker claims. Buy with PlotDNA.
+        </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 8 }}
