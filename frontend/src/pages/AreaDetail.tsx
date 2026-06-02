@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -355,10 +355,10 @@ function ReportExportPanel({
             Don't buy on broker claims. Buy with PlotDNA.
           </p>
           <h2 className="mt-1 font-display text-xl font-extrabold text-slate-100">
-            Full DNA view is free. Pay only when you need the PDF or buyer brief.
+            Preview the DNA, then unlock the full app view and PDF.
           </h2>
           <p className="mt-2 max-w-2xl text-xs font-sans leading-relaxed text-slate-400">
-            Use the live app view to inspect maps, satellite screenshots, KPIs, graphs, market pulse, pipeline, and source links. Download the printable report when you want to save or share the analysis.
+            The live app opens long enough to inspect the verdict and evidence. After the preview window, the paid unlock opens the full UI analysis plus the printable source-of-truth PDF.
           </p>
         </div>
 
@@ -368,11 +368,11 @@ function ReportExportPanel({
             disabled={checking}
             className="rounded-2xl border border-white/10 bg-slate-950/35 p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.05] disabled:opacity-60"
           >
-            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Download / print copy</span>
+            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Full app + PDF</span>
             <span className="mt-1 block font-display text-2xl font-extrabold text-slate-100">Rs 99</span>
-            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Save the instant DNA report as a PDF.</span>
+            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full UI analysis and save the instant DNA report as a PDF.</span>
             <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
-              {checking ? 'Checking access...' : 'Get PDF'}
+              {checking ? 'Checking access...' : 'Unlock full DNA'}
             </span>
           </button>
           <button
@@ -425,7 +425,7 @@ function ReportDownloadNudge({
                 Source-of-truth copy
               </p>
               <h2 className="mt-1 text-sm font-display font-extrabold leading-snug text-slate-100">
-                Viewing is free. Download the PDF when you need the official buyer copy.
+                Your preview will lock soon. Unlock the full app and PDF when you need the official buyer copy.
               </h2>
             </div>
             <button
@@ -437,7 +437,7 @@ function ReportDownloadNudge({
             </button>
           </div>
           <p className="mt-2 text-xs font-sans leading-relaxed text-slate-400">
-            Screenshots are not reliable delivery copies. The PDF keeps the verdict, graphs, source trail, and buyer checklist together for sharing, printing, and due-diligence review.
+            Screenshots are not reliable delivery copies. Rs 99 keeps the full UI open and gives you the PDF with the verdict, graphs, source trail, and buyer checklist.
           </p>
           <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-[1fr_auto]">
             <button
@@ -446,7 +446,7 @@ function ReportDownloadNudge({
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b] transition-colors hover:bg-emerald-400 disabled:opacity-60"
             >
               <Download size={13} />
-              {checking ? 'Checking access...' : 'Download PDF - Rs 99'}
+              {checking ? 'Checking access...' : 'Unlock app + PDF - Rs 99'}
             </button>
             <button
               onClick={onCustomBrief}
@@ -458,6 +458,99 @@ function ReportDownloadNudge({
         </div>
       </div>
     </motion.div>
+  )
+}
+
+function TimedDnaAccessGate({
+  children,
+  locked,
+  checking,
+  onUnlock,
+  onCustomBrief,
+}: {
+  children: ReactNode
+  locked: boolean
+  checking: boolean
+  onUnlock: () => void
+  onCustomBrief: () => void
+}) {
+  if (!locked) return <>{children}</>
+
+  return (
+    <div className="relative">
+      <div
+        aria-hidden="true"
+        style={{
+          filter: 'blur(14px) saturate(0.78)',
+          userSelect: 'none',
+          pointerEvents: 'none',
+          opacity: 0.95,
+        }}
+      >
+        {children}
+      </div>
+
+      <div
+        className="pointer-events-none absolute inset-0 z-20 px-3"
+        style={{
+          background: 'linear-gradient(180deg, rgba(6,8,20,0.04), rgba(6,8,20,0.16) 42%, rgba(6,8,20,0.28))',
+        }}
+      >
+        <div className="sticky top-5 flex min-h-[calc(100vh-40px)] items-center justify-center py-6 sm:top-8 sm:min-h-[calc(100vh-64px)]">
+          <div
+            className="pointer-events-auto w-full max-w-5xl rounded-3xl p-5 text-center sm:p-7"
+            style={{
+              background: 'linear-gradient(180deg, rgba(2,6,23,0.76), rgba(2,10,20,0.62))',
+              border: '1px solid rgba(16,185,129,0.34)',
+              boxShadow: '0 24px 90px rgba(0,0,0,0.42)',
+              backdropFilter: 'blur(14px)',
+            }}
+          >
+            <div
+              className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl"
+              style={{ background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.28)' }}
+            >
+              <Shield size={18} className="text-emerald-300" />
+            </div>
+            <p className="font-display text-xl font-extrabold text-slate-100">Preview time complete</p>
+            <p className="mt-2 text-xs font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
+              Don't buy on broker claims. Buy with PlotDNA.
+            </p>
+            <p className="mx-auto mt-2 max-w-md text-sm font-sans leading-relaxed text-slate-400">
+              You have seen the live DNA preview. Unlock the full app view, satellite evidence, signal graphs, market pulse, sources, and printable PDF to continue.
+            </p>
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <button
+                onClick={onUnlock}
+                disabled={checking}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.07] disabled:opacity-60"
+              >
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Full app + PDF</span>
+                <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
+                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full UI analysis and download the instant DNA report.</span>
+                <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
+                  {checking ? 'Checking access...' : 'Unlock full DNA'}
+                </span>
+              </button>
+              <button
+                onClick={onCustomBrief}
+                className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left transition-colors hover:bg-emerald-500/15"
+              >
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Buyer verification brief</span>
+                <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 499</span>
+                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-300">Add project-specific title, RERA, access, pricing, and seller-question checks.</span>
+                <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-400/35 px-3 py-2 text-xs font-sans font-black text-emerald-300">
+                  Request buyer brief
+                </span>
+              </button>
+            </div>
+            <p className="mt-3 text-[10px] font-sans leading-relaxed text-slate-500">
+              Screenshots are not reliable delivery copies; the unlocked report keeps the evidence trail together.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -1192,6 +1285,8 @@ export default function AreaDetail() {
   const [selectedReportPaymentRequired, setSelectedReportPaymentRequired] = useState(true)
   const [checkingReportPackage, setCheckingReportPackage] = useState<ReportPackage | null>(null)
   const [showReportNudge, setShowReportNudge] = useState(false)
+  const [reportAccessUnlocked, setReportAccessUnlocked] = useState(false)
+  const [reportPreviewLocked, setReportPreviewLocked] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -1231,7 +1326,7 @@ export default function AreaDetail() {
   }, [area, staticCitySlug])
 
   useEffect(() => {
-    if (!area) return
+    if (!area || reportAccessUnlocked) return
     const storageKey = `plotdna_report_nudge_dismissed_${area.slug}`
     if (sessionStorage.getItem(storageKey) === '1') return
 
@@ -1240,14 +1335,54 @@ export default function AreaDetail() {
       trackEvent('area_report_pdf_nudge_shown', {
         citySlug: staticCitySlug,
         areaSlug: area.slug,
-        delayMs: 15000,
+        delayMs: 20000,
         source: 'area_detail_timer',
         dataConfidence: area.dataConfidence ?? 'estimated',
       })
-    }, 15000)
+    }, 20000)
 
     return () => window.clearTimeout(timer)
-  }, [area, staticCitySlug])
+  }, [area, reportAccessUnlocked, staticCitySlug])
+
+  useEffect(() => {
+    if (!area) return
+    let cancelled = false
+
+    async function verifyReportAccess() {
+      const reportAccess = await checkReportAccess('instant_pdf_99')
+      if (cancelled) return
+
+      if (reportAccess?.canAccess) {
+        setReportAccessUnlocked(true)
+        setReportPreviewLocked(false)
+      }
+    }
+
+    void verifyReportAccess()
+
+    return () => {
+      cancelled = true
+    }
+  }, [area])
+
+  useEffect(() => {
+    if (!area || reportAccessUnlocked) return
+
+    setReportPreviewLocked(false)
+    const timer = window.setTimeout(() => {
+      setReportPreviewLocked(true)
+      setShowReportNudge(false)
+      trackEvent('area_report_preview_locked', {
+        citySlug: staticCitySlug,
+        areaSlug: area.slug,
+        delayMs: 30000,
+        source: 'area_detail_timer',
+        dataConfidence: area.dataConfidence ?? 'estimated',
+      })
+    }, 30000)
+
+    return () => window.clearTimeout(timer)
+  }, [area, reportAccessUnlocked, staticCitySlug])
 
   useEffect(() => {
     if (!area) return
@@ -1608,6 +1743,11 @@ export default function AreaDetail() {
 
       if (reportAccess?.canAccess) {
         setSelectedReportPaymentRequired(false)
+        if (packageInterest === 'instant_pdf_99') {
+          setReportAccessUnlocked(true)
+          setReportPreviewLocked(false)
+          setShowReportNudge(false)
+        }
         trackEvent('report_access_unlocked', {
           citySlug,
           areaSlug: area.slug,
@@ -2051,6 +2191,13 @@ export default function AreaDetail() {
               onCustomBrief={() => void openCustomReportRequest('custom_due_diligence_499', 'area_dna_export_cta')}
             />
 
+            <TimedDnaAccessGate
+              locked={reportPreviewLocked && !reportAccessUnlocked}
+              checking={checkingReportPackage === 'instant_pdf_99'}
+              onUnlock={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_timed_lock')}
+              onCustomBrief={() => void openCustomReportRequest('custom_due_diligence_499', 'area_dna_timed_lock')}
+            >
+
             {/* ── Buyer due diligence ── */}
             <motion.section
               initial={{ opacity: 0, y: 24 }}
@@ -2463,6 +2610,7 @@ export default function AreaDetail() {
                 </div>
               </motion.section>
             )}
+            </TimedDnaAccessGate>
           </div>
 
           {/* Area browsing stays open; paid flow is for PDF export and buyer brief. */}
