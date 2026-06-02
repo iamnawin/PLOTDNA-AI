@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 
 const CmdK = lazy(() => import('@/components/ui/CmdK'))
 const Landing = lazy(() => import('@/pages/Landing'))
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/compare" element={<CompareAreas />} />
           <Route path="/brochure" element={<BrochurePage />} />
         </Routes>
+        <Analytics />
       </Suspense>
     </BrowserRouter>
   )
