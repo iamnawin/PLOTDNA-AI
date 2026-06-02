@@ -348,7 +348,7 @@ function LockedDnaAnalysis({
           filter: 'blur(14px) saturate(0.78)',
           userSelect: 'none',
           pointerEvents: 'none',
-          opacity: 0.8,
+          opacity: 0.95,
         }}
       >
         {children}
