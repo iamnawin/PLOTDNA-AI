@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import {
   Search, ChevronRight, Navigation, Zap, Map, TrendingUp,
   Shield, Activity, X, Clock, Satellite, Building2, AlertTriangle,
-  ArrowRight, Paperclip, Link2,
+  ArrowRight, Paperclip, Link2, Users,
 } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { CITY_LIST, CITIES } from '@/data/cities'
@@ -39,6 +39,8 @@ const FEATURE_CARDS = [
     desc: 'Quickly classify locations into Good Growth, Moderate, Watchlist, or High Risk.',
   },
 ]
+
+const LIVE_NOW_COUNT = 27
 
 export default function Landing() {
   const navigate  = useNavigate()
@@ -220,6 +222,7 @@ export default function Landing() {
   const activeCityEntry = CITIES[activeCity] ?? CITIES.hyderabad
   const activeCityProfile = getCityProductionProfile(activeCityEntry.meta, activeCityEntry.areas)
   const previewAreas = getGoalTopAreas(activeCityEntry.areas, recommendationGoal, 5)
+  const liveAreaCount = CITIES.hyderabad.areas.length
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
   const showSignalPreview = activeCity === 'hyderabad'
   const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
@@ -1029,6 +1032,40 @@ export default function Landing() {
       </section>
 
       <section className="py-14 flex flex-col items-center gap-5 font-sans" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.35 }}
+          className="mb-3 grid w-[min(92vw,560px)] grid-cols-[1fr_auto_1fr] items-center rounded-full px-6 py-4 sm:px-8"
+          style={{
+            background: 'rgba(255,255,255,0.025)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            boxShadow: '0 18px 60px rgba(0,0,0,0.32)',
+          }}
+        >
+          <div className="flex items-center justify-center gap-4 sm:justify-start">
+            <span
+              className="h-3.5 w-3.5 rounded-full bg-emerald-400"
+              style={{ boxShadow: '0 0 20px rgba(16,185,129,0.85)' }}
+            />
+            <div>
+              <p className="text-[10px] font-sans font-black uppercase tracking-[0.32em] text-slate-500">LIVE NOW</p>
+              <p className="mt-1 font-display text-lg font-black text-slate-100">{LIVE_NOW_COUNT.toLocaleString('en-IN')}</p>
+            </div>
+          </div>
+
+          <div className="mx-5 h-12 w-px bg-white/10" />
+
+          <div className="flex items-center justify-center gap-4 sm:justify-start">
+            <Users size={22} className="text-cyan-400" />
+            <div>
+              <p className="text-[10px] font-sans font-black uppercase tracking-[0.32em] text-slate-500">AREAS LIVE</p>
+              <p className="mt-1 font-display text-lg font-black text-cyan-400">{liveAreaCount.toLocaleString('en-IN')}</p>
+            </div>
+          </div>
+        </motion.div>
+
         <p className="font-display" style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.04em' }}>
           Ready to analyze a plot?
         </p>

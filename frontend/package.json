@@ -14,6 +14,7 @@
     "test:dna-preloader-timing": "node scripts/check-dna-preloader-timing.mjs",
     "test:custom-buyer-brief-preview": "node scripts/check-custom-buyer-brief-preview.mjs",
     "test:custom-report-error-messages": "node scripts/check-custom-report-error-messages.mjs",
+    "test:landing-live-metrics": "node scripts/check-landing-live-metrics.mjs",
     "test:custom-buyer-brief": "node --experimental-strip-types scripts/check-custom-buyer-brief.mjs"
   },
   "dependencies": {
