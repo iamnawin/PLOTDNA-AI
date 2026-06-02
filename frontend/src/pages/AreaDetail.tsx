@@ -2045,6 +2045,12 @@ export default function AreaDetail() {
               />
             </motion.div>
 
+            <ReportExportPanel
+              checking={checkingReportPackage === 'instant_pdf_99'}
+              onDownloadPdf={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_export_cta')}
+              onCustomBrief={() => void openCustomReportRequest('custom_due_diligence_499', 'area_dna_export_cta')}
+            />
+
             {/* ── Buyer due diligence ── */}
             <motion.section
               initial={{ opacity: 0, y: 24 }}
@@ -2367,12 +2373,6 @@ export default function AreaDetail() {
                 Links open in a new tab {" \u00B7 "} Always verify independently before making investment decisions
               </p>
             </motion.section>
-
-            <ReportExportPanel
-              checking={checkingReportPackage === 'instant_pdf_99'}
-              onDownloadPdf={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_export_cta')}
-              onCustomBrief={() => void openCustomReportRequest('custom_due_diligence_499', 'area_dna_export_cta')}
-            />
 
             {/* ── Nearby areas ── */}
             {nearby.length > 0 && (

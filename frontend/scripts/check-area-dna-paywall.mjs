@@ -34,9 +34,10 @@ assert(areaDetail.includes("openCustomReportRequest('instant_pdf_99', 'area_pdf_
 
 const satellite = areaDetail.indexOf('<SatelliteCompare')
 const signalTrend = areaDetail.indexOf('<SignalTrendPanel')
-const sources = areaDetail.indexOf('Sources &amp; References')
+const verdict = areaDetail.indexOf('<VerdictCard')
+const buyerChecklist = areaDetail.indexOf('Buyer Due-Diligence Checklist')
 const exportPanel = areaDetail.indexOf('<ReportExportPanel')
-assert(satellite > -1 && signalTrend > -1 && sources > -1, 'deep DNA content must remain rendered in the page')
-assert(exportPanel > sources, 'export CTA should appear after users can inspect sources and evidence')
+assert(satellite > -1 && signalTrend > -1 && verdict > -1 && buyerChecklist > -1, 'deep DNA content must remain rendered in the page')
+assert(verdict < exportPanel && exportPanel < buyerChecklist, 'export CTA should appear immediately after the AI verdict and before the checklist')
 
 console.log('Area DNA access check passed.')
