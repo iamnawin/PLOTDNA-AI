@@ -11,7 +11,7 @@ function assert(condition, message) {
   }
 }
 
-const pricingMatch = areaDetail.match(/function ReportExportPanel[\s\S]*?function ReportDownloadNudge/)
+const pricingMatch = areaDetail.match(/function ReportExportPanel[\s\S]*?function TimedDnaAccessGate/)
 assert(pricingMatch, 'download and print report pricing surface must exist')
 
 const pricing = pricingMatch[0]
@@ -25,6 +25,8 @@ assert(pricing.includes('Full app + PDF'), 'Rs 99 package should unlock app view
 assert(pricing.includes('Full app + buyer brief'), 'Rs 499 package should unlock app viewing and buyer brief together')
 assert(pricing.includes('Unlock buyer brief'), 'Rs 499 CTA should describe the action')
 assert(pricing.includes('Preview the DNA, then unlock the complete in-app view and PDF.'), 'pricing copy must explain timed preview access')
+assert(pricing.includes('{!locked && ('), 'Rs 499 pricing card must be conditionally hidden after the timed lock')
+assert(pricing.includes('source-of-truth PDF'), 'locked pricing copy must preserve source-of-truth wording')
 assert(!areaDetail.includes('aria-label="Investment report options"'), 'paid report options must not be repeated as a separate section')
 assert(!areaDetail.includes('Unlock full DNA analysis'), 'pricing copy must not reintroduce the old full-DNA blocker')
 
