@@ -345,70 +345,72 @@ function LockedDnaAnalysis({
       <div
         aria-hidden="true"
         style={{
-          filter: 'blur(10px)',
+          filter: 'blur(14px) saturate(0.78)',
           userSelect: 'none',
           pointerEvents: 'none',
-          maxHeight: 760,
-          overflow: 'hidden',
-          opacity: 0.62,
+          opacity: 0.28,
         }}
       >
         {children}
       </div>
 
       <div
-        className="absolute inset-x-0 top-0 flex min-h-[760px] items-start justify-center px-3 pt-14"
+        className="pointer-events-none absolute inset-0 z-20 px-3"
         style={{
-          background: 'linear-gradient(180deg, rgba(6,8,20,0.22), rgba(6,8,20,0.74) 42%, rgba(6,8,20,0.92))',
+          background: 'linear-gradient(180deg, rgba(6,8,20,0.04), rgba(6,8,20,0.16) 42%, rgba(6,8,20,0.28))',
         }}
       >
         <div
-          className="w-full max-w-2xl rounded-3xl p-5 text-center"
-          style={{
-            background: 'linear-gradient(180deg, rgba(2,6,23,0.86), rgba(2,6,23,0.76))',
-            border: '1px solid rgba(16,185,129,0.26)',
-            boxShadow: '0 24px 80px rgba(0,0,0,0.55)',
-            backdropFilter: 'blur(18px)',
-          }}
+          className="sticky top-5 flex min-h-[calc(100vh-40px)] items-center justify-center py-6 sm:top-8 sm:min-h-[calc(100vh-64px)]"
         >
           <div
-            className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl"
-            style={{ background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.28)' }}
+            className="pointer-events-auto w-full max-w-5xl rounded-3xl p-5 text-center sm:p-7"
+            style={{
+              background: 'linear-gradient(180deg, rgba(2,6,23,0.72), rgba(2,10,20,0.58))',
+              border: '1px solid rgba(16,185,129,0.34)',
+              boxShadow: '0 24px 90px rgba(0,0,0,0.42)',
+              backdropFilter: 'blur(14px)',
+            }}
           >
-            <Shield size={18} className="text-emerald-300" />
-          </div>
-          <p className="font-display text-xl font-extrabold text-slate-100">Unlock full DNA analysis</p>
-          <p className="mx-auto mt-2 max-w-sm text-sm font-sans leading-relaxed text-slate-400">
-            The free preview shows the verdict and checklist. Satellite growth, weighted signal graphs, market pulse, development pipeline, and source links unlock below.
-          </p>
-          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <button
-              onClick={onUnlock}
-              disabled={checking}
-              className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.07] disabled:opacity-60"
+            <div
+              className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl"
+              style={{ background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.28)' }}
             >
-              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Instant DNA report</span>
-              <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
-              <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full area analysis, sources, graphs, and PDF.</span>
-              <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
-                {checking ? 'Checking access...' : 'Unlock instant report'}
-              </span>
-            </button>
-            <button
-              onClick={onCustomBrief}
-              className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left transition-colors hover:bg-emerald-500/15"
-            >
-              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Buyer verification brief</span>
-              <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 499</span>
-              <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-300">Add project-specific title, RERA, access, pricing, and seller-question checks.</span>
-              <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-400/35 px-3 py-2 text-xs font-sans font-black text-emerald-300">
-                Request buyer brief
-              </span>
-            </button>
+              <Shield size={18} className="text-emerald-300" />
+            </div>
+            <p className="font-display text-xl font-extrabold text-slate-100">Unlock full DNA analysis</p>
+            <p className="mx-auto mt-2 max-w-sm text-sm font-sans leading-relaxed text-slate-400">
+              The free preview shows the verdict and checklist. Satellite growth, weighted signal graphs, market pulse, development pipeline, and source links unlock below.
+            </p>
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <button
+                onClick={onUnlock}
+                disabled={checking}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.07] disabled:opacity-60"
+              >
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Instant DNA report</span>
+                <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
+                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full area analysis, sources, graphs, and PDF.</span>
+                <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
+                  {checking ? 'Checking access...' : 'Unlock instant report'}
+                </span>
+              </button>
+              <button
+                onClick={onCustomBrief}
+                className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left transition-colors hover:bg-emerald-500/15"
+              >
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Buyer verification brief</span>
+                <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 499</span>
+                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-300">Add project-specific title, RERA, access, pricing, and seller-question checks.</span>
+                <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-400/35 px-3 py-2 text-xs font-sans font-black text-emerald-300">
+                  Request buyer brief
+                </span>
+              </button>
+            </div>
+            <p className="mt-3 text-[10px] font-sans leading-relaxed text-slate-500">
+              Browser screenshots cannot be technically blocked reliably, so the full data is not exposed until unlock.
+            </p>
           </div>
-          <p className="mt-3 text-[10px] font-sans leading-relaxed text-slate-500">
-            Browser screenshots cannot be technically blocked reliably, so the full data is not exposed until unlock.
-          </p>
         </div>
       </div>
     </div>
