@@ -26,12 +26,17 @@ assert(instant.includes('doc.textWithLink'), 'Rs 99 PDF source URLs must be clic
 assert(instant.includes('BUYER_DUE_DILIGENCE_CHECKLIST'), 'Rs 99 PDF must include buyer due-diligence checklist details')
 
 assert(custom.includes("section('DNA signal graph')"), 'Rs 499 PDF must include a DNA signal graph section')
+assert(custom.includes('const drawSignalGraphPanel'), 'Rs 499 DNA signal graph must use a padded panel renderer')
+assert(custom.includes("ensureSpace(SIGNAL_CONFIG.length * 9 + 28)"), 'Rs 499 DNA signal graph must reserve top/bottom breathing room')
 assert(custom.includes("section('Buyer context and notes')"), 'Rs 499 PDF must show the buyer-entered context near the start')
 assert(custom.includes("section('Price sanity graph')"), 'Rs 499 PDF must include a price sanity graph')
 assert(custom.includes("section('Document packet plan')"), 'Rs 499 PDF must include a document packet plan')
 assert(custom.includes("section('Growth timeline')"), 'Rs 499 PDF must include a growth timeline section')
 assert(custom.includes("section('Source links')"), 'Rs 499 PDF must include source links')
 assert(custom.includes('doc.textWithLink'), 'Rs 499 PDF source URLs must be clickable links')
+assert(custom.includes('drawChecklistRow'), 'Rs 499 PDF checklist must render printable checkbox rows')
+assert(custom.includes("'Owner/date'"), 'Rs 499 PDF checklist must leave owner/date space for pen review')
+assert(custom.includes("section('Source-of-truth closeout')"), 'Rs 499 PDF must end with a source-of-truth closeout note')
 assert((custom.match(/footer\(\)/g) ?? []).length >= 3, 'Rs 499 PDF must produce a multi-page polished brief')
 
 console.log('PDF report quality check passed.')

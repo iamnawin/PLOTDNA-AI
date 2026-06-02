@@ -69,13 +69,18 @@ export function getInvestmentReportSummary(area: MicroMarket): InvestmentReportS
 }
 
 export const BUYER_DUE_DILIGENCE_CHECKLIST = [
-  'RERA registration or written reason RERA does not apply',
+  'TG-RERA registration number, project status, promoter name, validity, and latest quarterly updates',
+  'Written reason RERA does not apply, if the project is not registered',
   'Mother deed and complete title chain',
-  'Latest encumbrance certificate',
+  'Latest encumbrance certificate from the correct SRO for the full review period requested by your lawyer',
   'HMDA, DTCP, or local authority layout approval',
+  'Building permission, sanctioned plan, completion certificate, or occupancy certificate where applicable',
   'Land conversion and zoning permission',
+  'Revenue record, mutation, pattadar passbook, or municipal record consistency where applicable',
   'Survey number match with physical plot boundaries',
   'Road access width and public/private access status',
   'Lake, forest, nala, buffer, or litigation risk check',
+  'Draft sale agreement, payment schedule, GST, corpus, development charges, and cancellation terms',
+  'Seller authority, power of attorney, NOCs, property tax, utility dues, and society handover status where applicable',
   'Current market quote compared with nearby registered or broker-verified transactions',
 ] as const

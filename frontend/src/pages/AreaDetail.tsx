@@ -760,6 +760,11 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   const outlook = getOutlook(area)
   const milestones = getGrowthMilestones(area)
   const sources = getAreaSources(area.slug)
+  const officialVerificationSources = [
+    ['TG-RERA project search and updates', 'https://rera.telangana.gov.in/'],
+    ['HMDA occupancy and approval procedures', 'https://www.hmda.gov.in/procedure-for-occupancy-certificate/'],
+    ['Telangana Registration and Stamps / EC services', 'https://registration.telangana.gov.in/'],
+  ] as const
   const confidence = getConfidenceMeta(area.dataConfidence)
   const generated = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
   const logoDataUrl = await loadPdfAsset('/plotdna-logo.png')
@@ -861,6 +866,62 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
     y += 9
   }
 
+  const drawSignalGraphPanel = () => {
+    ensureSpace(SIGNAL_CONFIG.length * 9 + 28)
+    const panelTop = y
+    const panelH = SIGNAL_CONFIG.length * 9 + 20
+    doc.setFillColor(255, 255, 255)
+    doc.setDrawColor(203, 213, 225)
+    doc.roundedRect(margin, panelTop, pageW - margin * 2, panelH, 3, 3, 'FD')
+
+    setText(15, 23, 42, 8.4, 'bold')
+    doc.text('Weighted PlotDNA inputs', margin + 5, panelTop + 7)
+    setText(100, 116, 139, 6.3)
+    doc.text('Higher bars improve shortlist confidence; lower bars become document questions.', margin + 58, panelTop + 7)
+
+    SIGNAL_CONFIG.forEach(({ key, label: signalLabel }, index) => {
+      const value = area.signals[key] ?? 0
+      const tier = getSignalTier(value)
+      const [tr, tg, tb] = hexRgb(tier.color)
+      const rowY = panelTop + 16 + index * 9
+      setText(30, 41, 59, 7.1, 'bold')
+      doc.text(signalLabel, margin + 5, rowY)
+      setText(100, 116, 139, 5.9)
+      doc.text(`${SIGNAL_WEIGHTS[key] ?? 0}% weight`, margin + 49, rowY)
+      doc.setFillColor(226, 232, 240)
+      doc.roundedRect(margin + 78, rowY - 3, 72, 3.4, 1.2, 1.2, 'F')
+      doc.setFillColor(tr, tg, tb)
+      doc.roundedRect(margin + 78, rowY - 3, value * 0.72, 3.4, 1.2, 1.2, 'F')
+      setText(tr, tg, tb, 7.8, 'bold')
+      doc.text(String(value), pageW - margin - 18, rowY, { align: 'right' })
+      setText(71, 85, 105, 6.2)
+      doc.text(tier.label, pageW - margin - 5, rowY, { align: 'right' })
+    })
+
+    y = panelTop + panelH + 8
+  }
+
+  const drawChecklistRow = (item: string, index: number) => {
+    const bodyLines = doc.splitTextToSize(item, pageW - margin * 2 - 58)
+    const rowH = Math.max(17, bodyLines.length * 4.2 + 10)
+    ensureSpace(rowH + 3)
+    const rowTop = y - 5
+    doc.setFillColor(index % 2 === 0 ? 255 : 248, index % 2 === 0 ? 255 : 250, index % 2 === 0 ? 255 : 252)
+    doc.setDrawColor(203, 213, 225)
+    doc.roundedRect(margin, rowTop, pageW - margin * 2, rowH, 2, 2, 'FD')
+    doc.setDrawColor(5, 150, 105)
+    doc.rect(margin + 4, rowTop + 5, 4.5, 4.5)
+    setText(15, 23, 42, 7.4, 'bold')
+    doc.text(`${index + 1}.`, margin + 12, y)
+    setText(51, 65, 85, 7.2)
+    doc.text(bodyLines, margin + 20, y)
+    setText(100, 116, 139, 5.8, 'bold')
+    doc.text('Owner/date', pageW - margin - 33, y)
+    doc.setDrawColor(148, 163, 184)
+    doc.line(pageW - margin - 33, y + 5, pageW - margin - 5, y + 5)
+    y += rowH + 3
+  }
+
   const section = (title: string) => {
     ensureSpace(18)
     setText(15, 23, 42, 9, 'bold')
@@ -957,25 +1018,7 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   y += 3
 
   section('DNA signal graph')
-  SIGNAL_CONFIG.forEach(({ key, label: signalLabel }, index) => {
-    const value = area.signals[key] ?? 0
-    const tier = getSignalTier(value)
-    const [tr, tg, tb] = hexRgb(tier.color)
-    const rowY = y + index * 10
-    setText(30, 41, 59, 7.4, 'bold')
-    doc.text(signalLabel, margin, rowY)
-    setText(100, 116, 139, 6.3)
-    doc.text(`${SIGNAL_WEIGHTS[key] ?? 0}% DNA weight`, margin + 46, rowY)
-    doc.setFillColor(226, 232, 240)
-    doc.roundedRect(margin + 82, rowY - 3.2, 68, 3.5, 1.2, 1.2, 'F')
-    doc.setFillColor(tr, tg, tb)
-    doc.roundedRect(margin + 82, rowY - 3.2, value * 0.68, 3.5, 1.2, 1.2, 'F')
-    setText(tr, tg, tb, 8, 'bold')
-    doc.text(String(value), pageW - margin - 14, rowY, { align: 'right' })
-    setText(71, 85, 105, 6.5)
-    doc.text(tier.label, pageW - margin, rowY, { align: 'right' })
-  })
-  y += SIGNAL_CONFIG.length * 10 + 8
+  drawSignalGraphPanel()
 
   section('Growth timeline')
   const lineY = y + 9
@@ -1040,14 +1083,19 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   y += 5
 
   section('Source links')
-  if (sources.length) {
-    sources.slice(0, 10).forEach((source, index) => {
+  const sourceRows = [
+    ...sources.slice(0, 8).map(source => [source.title, source.url] as const),
+    ...officialVerificationSources,
+  ]
+
+  if (sourceRows.length) {
+    sourceRows.forEach(([title, url], index) => {
       ensureSpace(12)
       setText(15, 23, 42, 7.4, 'bold')
-      doc.text(`${index + 1}. ${source.title}`, margin, y)
+      doc.text(`${index + 1}. ${title}`, margin, y)
       y += 4
       setText(37, 99, 235, 6.4)
-      doc.textWithLink(source.url, margin, y, { url: source.url })
+      doc.textWithLink(url, margin, y, { url })
       y += 7
     })
   } else {
@@ -1058,13 +1106,16 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
 
   section('Buyer document checklist')
   BUYER_DUE_DILIGENCE_CHECKLIST.forEach((item, index) => {
-    ensureSpace(10)
-    setText(5, 150, 105, 7.6, 'bold')
-    doc.text(`${index + 1}.`, margin, y)
-    setText(51, 65, 85, 7.7)
-    writeWrapped(item, margin + 8, pageW - margin * 2 - 8, 4.1)
-    y += 1
+    drawChecklistRow(item, index)
   })
+
+  section('Source-of-truth closeout')
+  setText(51, 65, 85, 8)
+  writeWrapped('Treat this PDF as the buyer workbook: every open checkbox should be closed with a document, official portal lookup, site photo, lawyer note, or written seller response before paying a token advance.', margin, pageW - margin * 2, 4.2)
+  y += 2
+  setText(5, 150, 105, 7.5, 'bold')
+  writeWrapped('Minimum source trail: TG-RERA project page or exemption proof, HMDA/DTCP/local approval reference, SRO encumbrance certificate, full title chain, sanctioned plan or OC where applicable, written quote breakup, and site/access evidence.', margin, pageW - margin * 2, 4.2)
+  y += 2
 
   section('Important boundary')
   setText(71, 85, 105, 8)
