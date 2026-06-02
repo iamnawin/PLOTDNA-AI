@@ -596,13 +596,13 @@ async function generatePDF(area: MicroMarket) {
   })
   y += 3
 
-  section('Sources')
+  section('Source links')
   if (sources.length) {
     sources.slice(0, 8).forEach((source, index) => {
       setText(30, 41, 59, 7.2, 'bold')
       doc.text(`${index + 1}. ${source.title}`, margin, y)
       setText(37, 99, 235, 6.2)
-      doc.text(doc.splitTextToSize(source.url, pageW - margin * 2), margin, y + 4)
+      doc.textWithLink(source.url, margin, y + 4, { url: source.url })
       y += 10
     })
   } else {
@@ -610,6 +610,53 @@ async function generatePDF(area: MicroMarket) {
     doc.text('No public source links are attached to this report yet.', margin, y)
   }
   footer(2)
+
+  doc.addPage()
+  header('Source links and buyer checklist')
+
+  section('Buyer due diligence checklist')
+  BUYER_DUE_DILIGENCE_CHECKLIST.forEach((item, index) => {
+    setText(cr, cg, cb, 8, 'bold')
+    doc.text(`${index + 1}.`, margin, y)
+    setText(51, 65, 85, 8)
+    const lines = doc.splitTextToSize(item, pageW - margin * 2 - 8)
+    doc.text(lines, margin + 8, y)
+    y += lines.length * 4.3 + 2
+  })
+
+  y += 4
+  section('Verification links')
+  if (sources.length) {
+    sources.slice(0, 10).forEach((source, index) => {
+      setText(15, 23, 42, 7.5, 'bold')
+      doc.text(`${index + 1}. ${source.title}`, margin, y)
+      y += 4
+      setText(37, 99, 235, 6.5)
+      doc.textWithLink(source.url, margin, y, { url: source.url })
+      y += 7
+    })
+  } else {
+    setText(100, 116, 139, 8)
+    doc.text('No public source links are attached to this report yet.', margin, y)
+    y += 8
+  }
+
+  y += 4
+  section('How to use this Rs 99 report')
+  const usageNotes = [
+    'Use the score and signal graph to compare this micro-market against nearby options before calling sellers.',
+    'Use the checklist before paying any token advance, because project-level title, RERA, access, and pricing can differ from area-level signals.',
+    'Use the source links as starting points for independent verification, not as final proof of legal status.',
+  ]
+  usageNotes.forEach(note => {
+    setText(cr, cg, cb, 9, 'bold')
+    doc.text('-', margin, y)
+    setText(51, 65, 85, 8)
+    const lines = doc.splitTextToSize(note, pageW - margin * 2 - 5)
+    doc.text(lines, margin + 5, y)
+    y += lines.length * 4.2 + 2
+  })
+  footer(3)
 
   doc.save(`PlotDNA_${area.name.replace(/\s+/g, '_')}_Report.pdf`)
 }
@@ -622,6 +669,10 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   const pageH = 297
   const margin = 14
   const color = getScoreColor(area.score)
+  const outlook = getOutlook(area)
+  const milestones = getGrowthMilestones(area)
+  const sources = getAreaSources(area.slug)
+  const confidence = getConfidenceMeta(area.dataConfidence)
   const generated = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })
   const logoDataUrl = await loadPdfAsset('/plotdna-logo.png')
 
@@ -694,6 +745,18 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
     y += lines.length * lineHeight
   }
 
+  const metricCard = (x: number, top: number, w: number, label: string, value: string, note: string) => {
+    doc.setFillColor(255, 255, 255)
+    doc.setDrawColor(226, 232, 240)
+    doc.roundedRect(x, top, w, 24, 3, 3, 'FD')
+    setText(100, 116, 139, 6.3, 'bold')
+    doc.text(label.toUpperCase(), x + 4, top + 6)
+    setText(15, 23, 42, 11.5, 'bold')
+    doc.text(doc.splitTextToSize(value, w - 8), x + 4, top + 14)
+    setText(100, 116, 139, 5.8)
+    doc.text(doc.splitTextToSize(note, w - 8), x + 4, top + 21)
+  }
+
   const section = (title: string) => {
     ensureSpace(18)
     setText(15, 23, 42, 9, 'bold')
@@ -747,6 +810,55 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
     y += 1.5
   })
 
+  const col = (pageW - margin * 2 - 6) / 4
+  metricCard(margin, y, col, 'YoY velocity', `+${area.yoy}%`, 'Momentum')
+  metricCard(margin + col + 2, y, col, 'Price band', area.priceRange, 'Seller sanity')
+  metricCard(margin + (col + 2) * 2, y, col, '5Y outlook', outlook.range, outlook.confidence)
+  metricCard(margin + (col + 2) * 3, y, col, 'Coverage', confidence.label, 'Data status')
+  y += 32
+
+  section('DNA signal graph')
+  SIGNAL_CONFIG.forEach(({ key, label: signalLabel }, index) => {
+    const value = area.signals[key] ?? 0
+    const tier = getSignalTier(value)
+    const [tr, tg, tb] = hexRgb(tier.color)
+    const rowY = y + index * 10
+    setText(30, 41, 59, 7.4, 'bold')
+    doc.text(signalLabel, margin, rowY)
+    setText(100, 116, 139, 6.3)
+    doc.text(`${SIGNAL_WEIGHTS[key] ?? 0}% DNA weight`, margin + 46, rowY)
+    doc.setFillColor(226, 232, 240)
+    doc.roundedRect(margin + 82, rowY - 3.2, 68, 3.5, 1.2, 1.2, 'F')
+    doc.setFillColor(tr, tg, tb)
+    doc.roundedRect(margin + 82, rowY - 3.2, value * 0.68, 3.5, 1.2, 1.2, 'F')
+    setText(tr, tg, tb, 8, 'bold')
+    doc.text(String(value), pageW - margin - 14, rowY, { align: 'right' })
+    setText(71, 85, 105, 6.5)
+    doc.text(tier.label, pageW - margin, rowY, { align: 'right' })
+  })
+  y += SIGNAL_CONFIG.length * 10 + 8
+
+  section('Growth timeline')
+  const lineY = y + 9
+  doc.setDrawColor(203, 213, 225)
+  doc.setLineWidth(0.7)
+  doc.line(margin + 8, lineY, pageW - margin - 8, lineY)
+  milestones.forEach((milestone, index) => {
+    const x = margin + 8 + index * ((pageW - margin * 2 - 16) / Math.max(1, milestones.length - 1))
+    doc.setFillColor(cr, cg, cb)
+    doc.circle(x, lineY, 2.4, 'F')
+    setText(15, 23, 42, 7, 'bold')
+    doc.text(String(milestone.year), x, lineY + 8, { align: 'center' })
+    setText(100, 116, 139, 5.8)
+    doc.text(doc.splitTextToSize(milestone.label, 30), x, lineY + 13, { align: 'center' })
+  })
+  y += 34
+
+  footer()
+  doc.addPage()
+  page += 1
+  header()
+
   brief.sections.forEach(briefSection => {
     section(briefSection.title)
     briefSection.items.forEach(item => {
@@ -757,6 +869,38 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
       writeWrapped(item, margin + 5, pageW - margin * 2 - 5)
       y += 1.5
     })
+  })
+
+  footer()
+  doc.addPage()
+  page += 1
+  header()
+
+  section('Source links')
+  if (sources.length) {
+    sources.slice(0, 10).forEach((source, index) => {
+      ensureSpace(12)
+      setText(15, 23, 42, 7.4, 'bold')
+      doc.text(`${index + 1}. ${source.title}`, margin, y)
+      y += 4
+      setText(37, 99, 235, 6.4)
+      doc.textWithLink(source.url, margin, y, { url: source.url })
+      y += 7
+    })
+  } else {
+    setText(100, 116, 139, 8)
+    doc.text('No public source links are attached to this brief yet.', margin, y)
+    y += 8
+  }
+
+  section('Buyer document checklist')
+  BUYER_DUE_DILIGENCE_CHECKLIST.forEach((item, index) => {
+    ensureSpace(10)
+    setText(5, 150, 105, 7.6, 'bold')
+    doc.text(`${index + 1}.`, margin, y)
+    setText(51, 65, 85, 7.7)
+    writeWrapped(item, margin + 8, pageW - margin * 2 - 8, 4.1)
+    y += 1
   })
 
   section('Important boundary')
