@@ -11,8 +11,8 @@ function assert(condition, message) {
   }
 }
 
-const pricingMatch = areaDetail.match(/<section\s+aria-label="Investment report options"[\s\S]*?<CustomReportLeadModal/)
-assert(pricingMatch, 'investment report options section must exist')
+const pricingMatch = areaDetail.match(/function LockedDnaAnalysis[\s\S]*?async function loadPdfAsset/)
+assert(pricingMatch, 'locked DNA analysis pricing surface must exist')
 
 const pricing = pricingMatch[0]
 const rs99Count = (pricing.match(/Rs 99/g) ?? []).length
@@ -20,7 +20,8 @@ const rs499Count = (pricing.match(/Rs 499/g) ?? []).length
 
 assert(rs99Count === 1, `Rs 99 should appear once in the pricing section, found ${rs99Count}`)
 assert(rs499Count === 1, `Rs 499 should appear once in the pricing section, found ${rs499Count}`)
-assert(pricing.includes('Unlock instant PDF'), 'Rs 99 CTA should not repeat the price')
-assert(pricing.includes('Preview buyer brief'), 'Rs 499 CTA should not repeat the price')
+assert(pricing.includes('Unlock instant report'), 'Rs 99 CTA should describe the action')
+assert(pricing.includes('Request buyer brief'), 'Rs 499 CTA should describe the action')
+assert(!areaDetail.includes('aria-label="Investment report options"'), 'paid report options must not be repeated as a separate section')
 
 console.log('Report pricing copy check passed.')

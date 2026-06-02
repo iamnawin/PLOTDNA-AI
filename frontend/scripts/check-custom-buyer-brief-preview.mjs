@@ -26,7 +26,7 @@ assert(customBypass.includes('setSelectedReportPaymentRequired(false)'), 'Rs 499
 assert(customBypass.includes('setCustomReportOpen(true)'), 'Rs 499 preview must open the lead/context modal')
 assert(!customBypass.includes('checkReportAccess'), 'Rs 499 preview must not call entitlement access check')
 assert(!customBypass.includes('openReportPaymentLink'), 'Rs 499 preview must not open Razorpay')
-assert(areaDetail.includes("Preview buyer brief"), 'Rs 499 pricing CTA must be a preview action, not a payment action')
+assert(areaDetail.includes("Request buyer brief"), 'Rs 499 pricing CTA must be a preview action, not a payment action')
 assert(areaDetail.includes("Preview custom buyer verification brief"), 'summary CTA must clearly preview the custom brief')
 assert(areaDetail.includes("paymentRequired={selectedReportPackage === 'custom_due_diligence_499' ? false : selectedReportPaymentRequired}"), 'Rs 499 modal must explicitly bypass payment-required state')
 assert(areaDetail.includes("canGenerateBrief={selectedReportPackage === 'custom_due_diligence_499'}"), 'Rs 499 modal must always enable preview generation')

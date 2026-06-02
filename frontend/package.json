@@ -19,6 +19,7 @@
     "test:area-dna-paywall": "node scripts/check-area-dna-paywall.mjs",
     "test:report-pricing-copy": "node scripts/check-report-pricing-copy.mjs",
     "test:area-compare-highlight": "node scripts/check-area-compare-highlight.mjs",
+    "test:landing-search-redesign": "node scripts/check-landing-search-redesign.mjs",
     "test:custom-buyer-brief": "node --experimental-strip-types scripts/check-custom-buyer-brief.mjs"
   },
   "dependencies": {

@@ -333,10 +333,12 @@ function LockedDnaAnalysis({
   children,
   checking,
   onUnlock,
+  onCustomBrief,
 }: {
   children: ReactNode
   checking: boolean
   onUnlock: () => void
+  onCustomBrief: () => void
 }) {
   return (
     <div className="relative">
@@ -348,7 +350,7 @@ function LockedDnaAnalysis({
           pointerEvents: 'none',
           maxHeight: 760,
           overflow: 'hidden',
-          opacity: 0.48,
+          opacity: 0.62,
         }}
       >
         {children}
@@ -357,15 +359,16 @@ function LockedDnaAnalysis({
       <div
         className="absolute inset-x-0 top-0 flex min-h-[760px] items-start justify-center px-3 pt-14"
         style={{
-          background: 'linear-gradient(180deg, rgba(6,8,20,0.60), rgba(6,8,20,0.96) 38%, rgba(6,8,20,1))',
+          background: 'linear-gradient(180deg, rgba(6,8,20,0.22), rgba(6,8,20,0.74) 42%, rgba(6,8,20,0.92))',
         }}
       >
         <div
-          className="w-full max-w-lg rounded-3xl p-5 text-center"
+          className="w-full max-w-2xl rounded-3xl p-5 text-center"
           style={{
-            background: 'rgba(2,6,23,0.92)',
+            background: 'linear-gradient(180deg, rgba(2,6,23,0.86), rgba(2,6,23,0.76))',
             border: '1px solid rgba(16,185,129,0.26)',
             boxShadow: '0 24px 80px rgba(0,0,0,0.55)',
+            backdropFilter: 'blur(18px)',
           }}
         >
           <div
@@ -376,15 +379,33 @@ function LockedDnaAnalysis({
           </div>
           <p className="font-display text-xl font-extrabold text-slate-100">Unlock full DNA analysis</p>
           <p className="mx-auto mt-2 max-w-sm text-sm font-sans leading-relaxed text-slate-400">
-            The free preview shows the verdict and checklist. Satellite growth, weighted signal graphs, market pulse, development pipeline, and source links unlock with the Rs 99 report.
+            The free preview shows the verdict and checklist. Satellite growth, weighted signal graphs, market pulse, development pipeline, and source links unlock below.
           </p>
-          <button
-            onClick={onUnlock}
-            disabled={checking}
-            className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-sans font-black text-[#04110b] hover:bg-emerald-400 disabled:opacity-60"
-          >
-            {checking ? 'Checking access...' : 'Pay Rs 99 and unlock'}
-          </button>
+          <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <button
+              onClick={onUnlock}
+              disabled={checking}
+              className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.07] disabled:opacity-60"
+            >
+              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Instant DNA report</span>
+              <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
+              <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full area analysis, sources, graphs, and PDF.</span>
+              <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
+                {checking ? 'Checking access...' : 'Unlock instant report'}
+              </span>
+            </button>
+            <button
+              onClick={onCustomBrief}
+              className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left transition-colors hover:bg-emerald-500/15"
+            >
+              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Buyer verification brief</span>
+              <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 499</span>
+              <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-300">Add project-specific title, RERA, access, pricing, and seller-question checks.</span>
+              <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-400/35 px-3 py-2 text-xs font-sans font-black text-emerald-300">
+                Request buyer brief
+              </span>
+            </button>
+          </div>
           <p className="mt-3 text-[10px] font-sans leading-relaxed text-slate-500">
             Browser screenshots cannot be technically blocked reliably, so the full data is not exposed until unlock.
           </p>
@@ -1755,70 +1776,6 @@ export default function AreaDetail() {
               </div>
             </section>
 
-            <section
-              aria-label="Investment report options"
-              className="mt-4 rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.04] p-4"
-            >
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
-                    Investment report options
-                  </p>
-                  <h2 className="mt-1 font-display text-xl font-extrabold text-slate-100">
-                    Convert screening into an action plan
-                  </h2>
-                </div>
-                <p className="max-w-sm text-[11px] font-sans leading-relaxed text-slate-400">
-                  Screening intelligence only. Legal title, RERA, zoning, approvals, and quoted pricing still need independent verification.
-                </p>
-              </div>
-
-              <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <article className="rounded-2xl border border-white/5 bg-white/[0.03] p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
-                        Instant screening PDF
-                      </p>
-                      <p className="mt-1 font-display text-2xl font-extrabold text-slate-100">Rs 99</p>
-                    </div>
-                    <FileText size={18} className="text-emerald-300" />
-                  </div>
-                  <p className="mt-3 text-xs font-sans leading-relaxed text-slate-400">
-                    Area score, growth signals, risk notes, and buyer checklist for quick shortlisting.
-                  </p>
-                  <button
-                    onClick={() => void openCustomReportRequest('instant_pdf_99', 'area_report_pricing')}
-                    disabled={checkingReportPackage === 'instant_pdf_99'}
-                    className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-white/10 px-3 py-2 text-xs font-sans font-bold text-slate-200 hover:border-emerald-500/40 hover:text-emerald-300 disabled:opacity-70"
-                  >
-                    {checkingReportPackage === 'instant_pdf_99' ? 'Checking access...' : 'Unlock instant PDF'}
-                  </button>
-                </article>
-
-                <article className="rounded-2xl border border-emerald-500/25 bg-emerald-500/10 p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
-                        Custom buyer verification brief
-                      </p>
-                      <p className="mt-1 font-display text-2xl font-extrabold text-slate-100">Rs 499</p>
-                    </div>
-                    <Shield size={18} className="text-emerald-300" />
-                  </div>
-                  <p className="mt-3 text-xs font-sans leading-relaxed text-slate-300">
-                    Project-specific buyer brief covering title chain, RERA, approvals, access, seller questions, and current price checks.
-                  </p>
-                  <button
-                    onClick={() => void openCustomReportRequest('custom_due_diligence_499', 'area_report_pricing')}
-                    className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-bold text-[#04110b] hover:bg-emerald-400 disabled:opacity-70"
-                  >
-                    Preview buyer brief
-                  </button>
-                </article>
-              </div>
-            </section>
-
             <CustomReportLeadModal
               open={customReportOpen}
               areaName={area.name}
@@ -1962,6 +1919,7 @@ export default function AreaDetail() {
             <LockedDnaAnalysis
               checking={checkingReportPackage === 'instant_pdf_99'}
               onUnlock={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_analysis_lock')}
+              onCustomBrief={() => void openCustomReportRequest('custom_due_diligence_499', 'area_dna_analysis_lock')}
             >
             <motion.section
               initial={{ opacity: 0, y: 24 }}

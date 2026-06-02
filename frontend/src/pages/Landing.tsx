@@ -349,54 +349,66 @@ export default function Landing() {
           style={{ maxWidth: 680 }}
         >
           <div
-            className="glass-panel"
+            aria-label="PlotDNA location search"
+            className="rounded-[28px] p-2"
             style={{
-              border: `1px solid ${focused ? 'rgba(16, 185, 129, 0.45)' : 'rgba(255, 255, 255, 0.08)'}`,
-              borderRadius: showDropdown ? '20px 20px 0 0' : 20,
+              background: focused
+                ? 'linear-gradient(135deg, rgba(16,185,129,0.18), rgba(56,189,248,0.08) 46%, rgba(15,23,42,0.92))'
+                : 'linear-gradient(135deg, rgba(15,23,42,0.92), rgba(2,6,23,0.96))',
+              border: `1px solid ${focused ? 'rgba(16, 185, 129, 0.48)' : 'rgba(148, 163, 184, 0.16)'}`,
               boxShadow: focused
-                ? '0 0 20px 0 rgba(16, 185, 129, 0.15), 0 12px 40px rgba(0, 0, 0, 0.5)'
-                : '0 8px 32px rgba(0, 0, 0, 0.35)',
+                ? '0 0 0 1px rgba(16,185,129,0.18), 0 22px 70px rgba(0, 0, 0, 0.58), 0 0 42px rgba(16,185,129,0.13)'
+                : '0 18px 54px rgba(0, 0, 0, 0.42)',
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              backdropFilter: 'blur(20px)',
             }}
           >
-            <div className="flex flex-wrap items-center px-5 py-4 gap-3 sm:flex-nowrap sm:px-6 sm:py-5">
-              {resolving || brochureLoading || locating ? (
-                <Activity
-                  size={16}
-                  style={{ color: '#10b981', flexShrink: 0, animation: 'spin 1s linear infinite' }}
-                />
-              ) : isUrl ? (
-                <Link2 size={16} style={{ color: '#10b981', flexShrink: 0 }} />
-              ) : (
-                <Search
-                  size={16}
-                  style={{ color: focused ? '#10b981' : '#444455', transition: 'color 0.2s', flexShrink: 0 }}
-                />
-              )}
-              <input
-                ref={inputRef}
-                type="text"
-                placeholder="Search area, coordinates, or paste a map link"
-                value={query}
-                onChange={e => { setQuery(e.target.value); setInputError('') }}
-                onFocus={() => setFocused(true)}
-                onBlur={() => setTimeout(() => setFocused(false), 160)}
-                onKeyDown={e => { if (e.key === 'Enter') handleEnter() }}
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1fr_auto]">
+              <div
+                className="grid min-h-[58px] grid-cols-[44px_1fr] items-center rounded-[22px] px-3"
                 style={{
-                  flex: 1,
-                  minWidth: 180,
-                  background: 'transparent',
-                  color: '#e8e8f0',
-                  fontSize: 15,
-                  outline: 'none',
-                  border: 'none',
+                  background: 'rgba(2,6,23,0.62)',
+                  border: '1px solid rgba(255,255,255,0.08)',
                 }}
-              />
-              {query && (
-                <button onClick={() => { setQuery(''); setInputError(''); inputRef.current?.focus() }} style={{ color: '#444455' }}>
-                  <X size={14} />
-                </button>
-              )}
+              >
+                <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/[0.04]">
+                  {resolving || brochureLoading || locating ? (
+                    <Activity
+                      size={16}
+                      style={{ color: '#10b981', flexShrink: 0, animation: 'spin 1s linear infinite' }}
+                    />
+                  ) : isUrl ? (
+                    <Link2 size={16} style={{ color: '#10b981', flexShrink: 0 }} />
+                  ) : (
+                    <Search
+                      size={16}
+                      style={{ color: focused ? '#10b981' : '#64748b', transition: 'color 0.2s', flexShrink: 0 }}
+                    />
+                  )}
+                </div>
+                <div className="flex min-w-0 items-center gap-2">
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    placeholder="Search area, coordinates, map link"
+                    value={query}
+                    onChange={e => { setQuery(e.target.value); setInputError('') }}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setTimeout(() => setFocused(false), 160)}
+                    onKeyDown={e => { if (e.key === 'Enter') handleEnter() }}
+                    className="min-w-0 flex-1 bg-transparent text-[14px] text-slate-100 outline-none placeholder:text-slate-500 sm:text-[15px]"
+                  />
+                  {query && (
+                    <button
+                      onClick={() => { setQuery(''); setInputError(''); inputRef.current?.focus() }}
+                      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-white/[0.05] hover:text-slate-200"
+                      aria-label="Clear search"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
+              </div>
 
               <input
                 ref={fileInputRef}
@@ -405,43 +417,44 @@ export default function Landing() {
                 style={{ display: 'none' }}
                 onChange={handleBrochureUpload}
               />
+              <div className="grid grid-cols-2 gap-2 sm:flex">
               <button
                 title="Upload a property brochure (PDF or image)"
                 onClick={() => fileInputRef.current?.click()}
                 disabled={brochureLoading || locating}
-                className="flex items-center justify-center w-7 h-7 rounded-lg transition-all flex-shrink-0 cursor-pointer"
+                className="flex min-h-[48px] items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] px-3 text-slate-400 transition-all hover:bg-white/[0.07] hover:text-slate-200 disabled:opacity-50 sm:w-12"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.08)',
-                  color: brochureLoading ? '#10b981' : '#444455',
+                  color: brochureLoading ? '#10b981' : '#94a3b8',
                   opacity: brochureLoading || locating ? 0.5 : 1,
                 }}
               >
-                <Paperclip size={12} />
+                <Paperclip size={14} />
               </button>
 
               <button
                 title="Allow location permission and analyze your current coordinates"
                 onClick={handleLocateMe}
                 disabled={resolving || brochureLoading || locating}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-[11px] transition-all cursor-pointer font-sans"
+                className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.04] px-3 text-[11px] font-sans font-bold text-slate-300 transition-all hover:bg-white/[0.07] disabled:opacity-55"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.10)',
-                  color: locating ? '#10b981' : 'var(--text-muted)',
+                  color: locating ? '#10b981' : '#cbd5e1',
                   flexShrink: 0,
                   opacity: resolving || brochureLoading || locating ? 0.55 : 1,
                   fontWeight: 700,
                 }}
               >
-                <Navigation size={11} />
+                <Navigation size={12} />
                 {locating ? 'Locating...' : 'Locate me'}
               </button>
 
               <button
                 onClick={handleEnter}
                 disabled={resolving || brochureLoading || locating}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-[12px] transition-all cursor-pointer font-sans"
+                className="col-span-2 flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl bg-emerald-500 px-5 text-[12px] font-sans font-black text-[#041e15] transition-all hover:bg-emerald-400 disabled:opacity-50 sm:col-span-1"
                 style={{
                   background: 'linear-gradient(135deg, #10b981, #059669)',
                   border: '1px solid rgba(16, 185, 129, 0.35)',
@@ -453,8 +466,9 @@ export default function Landing() {
                 }}
               >
                 {resolving ? 'Resolving…' : brochureLoading ? 'Reading…' : 'Analyze'}
-                <ChevronRight size={11} />
+                <ChevronRight size={12} />
               </button>
+              </div>
             </div>
           </div>
 
