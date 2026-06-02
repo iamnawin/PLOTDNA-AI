@@ -86,14 +86,14 @@ export default function CustomReportLeadModal({
       return
     }
     setSubmitting(true)
+    const leadInput: BuyerBriefInput = {
+      name,
+      contact,
+      budgetRange: budgetRange || undefined,
+      timeline: timeline || undefined,
+      notes: notes || undefined,
+    }
     try {
-      const leadInput: BuyerBriefInput = {
-        name,
-        contact,
-        budgetRange: budgetRange || undefined,
-        timeline: timeline || undefined,
-        notes: notes || undefined,
-      }
       const result = await submitCustomReportLead({
         ...payloadBase,
         ...leadInput,
@@ -105,7 +105,16 @@ export default function CustomReportLeadModal({
       setSubmittedInput(leadInput)
       onSubmitted(result.leadId, leadInput)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not submit request. Please try again.')
+      const message = err instanceof Error ? err.message : 'Could not submit request. Please try again.'
+      const isLeadCaptureTimeout = message.includes('Lead capture timed out')
+      if (canGenerateBrief && isLeadCaptureTimeout) {
+        const previewLeadId = `preview_${Date.now().toString(36)}`
+        setSubmittedLeadId(previewLeadId)
+        setSubmittedInput(leadInput)
+        onSubmitted(previewLeadId, leadInput)
+        return
+      }
+      setError(message)
     } finally {
       setSubmitting(false)
     }

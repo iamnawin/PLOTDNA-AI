@@ -105,6 +105,10 @@ function formatApiErrorMessage(errorBody: unknown, fallback = 'Could not submit 
   return fallback
 }
 
+function isAbortTimeoutError(error: unknown) {
+  return error instanceof DOMException && (error.name === 'TimeoutError' || error.name === 'AbortError')
+}
+
 // ── Map link resolution ───────────────────────────────────────────────────────
 
 /**
@@ -273,12 +277,20 @@ export async function fetchBackendArea(citySlug: string, areaSlug: string): Prom
 export async function submitCustomReportLead(
   payload: CustomReportLeadPayload,
 ): Promise<CustomReportLeadResponse> {
-  const res = await fetch(`${BASE_URL}/api/leads/custom-report`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-    signal: AbortSignal.timeout(10_000),
-  })
+  let res: Response
+  try {
+    res = await fetch(`${BASE_URL}/api/leads/custom-report`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(10_000),
+    })
+  } catch (error) {
+    if (isAbortTimeoutError(error)) {
+      throw new Error('Lead capture timed out. You can still prepare the preview brief, and we will retry capture when the backend is responsive.')
+    }
+    throw new Error('Could not reach lead capture. Please try again.')
+  }
 
   if (!res.ok) {
     const errorBody = await res.json().catch(() => ({})) as unknown

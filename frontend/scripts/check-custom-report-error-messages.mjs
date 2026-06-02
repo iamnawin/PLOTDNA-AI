@@ -19,6 +19,11 @@ assert(modal.includes('Enter your name'), 'missing-name validation must show rea
 assert(api.includes('function formatApiErrorMessage'), 'API client must normalize non-string error details')
 assert(api.includes('Array.isArray(detail)'), 'API client must handle FastAPI validation detail arrays')
 assert(api.includes("throw new Error(formatApiErrorMessage"), 'custom report submit must throw a formatted Error message')
+assert(api.includes("isAbortTimeoutError"), 'API client must recognize browser abort timeout errors')
+assert(api.includes('Lead capture timed out'), 'API client must show a readable lead timeout message')
 assert(!api.includes("throw new Error(errorBody.detail ?? 'Could not submit request. Please try again.')"), 'custom report submit must not throw raw detail values')
+assert(modal.includes('canGenerateBrief && isLeadCaptureTimeout'), 'custom buyer brief preview must not block local PDF prep on lead timeout')
+assert(modal.includes('preview_'), 'custom buyer brief preview must create a local preview id when lead capture times out')
+assert(!modal.includes("setError(err instanceof Error ? err.message : 'Could not submit request. Please try again.')"), 'custom modal must not blindly show raw submit errors')
 
 console.log('Custom report error message check passed.')
