@@ -1396,6 +1396,9 @@ export default function AreaDetail() {
   const compareSlugs = [area.slug, 'adibatla', 'tukkuguda', 'kokapet']
     .filter((slug, index, slugs) => slugs.indexOf(slug) === index)
     .slice(0, 3)
+  const comparePreviewAreas = compareSlugs
+    .map(slug => (cityEntry?.areas ?? getAllAreas()).find(candidate => candidate.slug === slug))
+    .filter((candidate): candidate is MicroMarket => Boolean(candidate))
   const openCustomReportRequest = async (packageInterest: ReportPackage, source: string) => {
     setSelectedReportPackage(packageInterest)
     setSelectedReportSource(source)
@@ -1693,6 +1696,66 @@ export default function AreaDetail() {
             </section>
 
             <section
+              aria-label="Free area comparison"
+              className="mt-4 rounded-2xl border border-cyan-400/20 bg-cyan-400/[0.06] p-4"
+            >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-cyan-300">
+                    Free feature
+                  </p>
+                  <h2 className="mt-1 font-display text-xl font-extrabold text-slate-100">
+                    Compare this area for free
+                  </h2>
+                  <p className="mt-2 max-w-xl text-xs font-sans leading-relaxed text-slate-400">
+                    Check score, price band, growth, and verification risk against nearby options before you shortlist a site visit.
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    trackEvent('compare_started', {
+                      citySlug,
+                      areaSlug: area.slug,
+                      source: 'area_compare_highlight',
+                      dataConfidence: displayedConfidence ?? 'estimated',
+                    })
+                    navigate(`/compare?areas=${compareSlugs.join(',')}`)
+                  }}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-xs font-sans font-bold text-[#031118] transition-colors hover:bg-cyan-300 sm:w-auto"
+                >
+                  <TrendingUp size={13} />
+                  Open compare
+                </button>
+              </div>
+
+              <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
+                {comparePreviewAreas.map(compareArea => {
+                  const compareColor = getScoreColor(compareArea.score)
+                  return (
+                    <button
+                      key={compareArea.slug}
+                      onClick={() => navigate(`/area/${compareArea.slug}`)}
+                      className="min-w-0 rounded-xl border border-white/5 bg-slate-950/35 p-3 text-left transition-colors hover:bg-white/[0.04]"
+                    >
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-display font-bold text-slate-100">{compareArea.name}</p>
+                          <p className="mt-1 truncate text-[10px] font-sans text-slate-500">{compareArea.priceRange}</p>
+                        </div>
+                        <span
+                          className="shrink-0 rounded-full px-2 py-0.5 text-[10px] font-sans font-bold"
+                          style={{ color: compareColor, background: `${compareColor}1f`, border: `1px solid ${compareColor}35` }}
+                        >
+                          {compareArea.score}
+                        </span>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </section>
+
+            <section
               aria-label="Investment report options"
               className="mt-4 rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.04] p-4"
             >
@@ -1809,7 +1872,7 @@ export default function AreaDetail() {
             />
 
             {/* Stats row */}
-            <div className="grid grid-cols-3 gap-3 mt-4">
+            <div className="grid grid-cols-1 gap-3 mt-4 sm:grid-cols-3">
               <div className="p-3 rounded-2xl text-center glass-panel-light">
                 <div className="flex items-center justify-center gap-1 mb-1.5">
                   <TrendingUp size={12} style={{ color }} />
