@@ -1115,7 +1115,6 @@ export default function AreaDetail() {
   const openCustomReportRequest = async (packageInterest: ReportPackage, source: string) => {
     setSelectedReportPackage(packageInterest)
     setSelectedReportSource(source)
-    setCheckingReportPackage(packageInterest)
     trackEvent(packageInterest === 'instant_pdf_99' ? 'paid_report_clicked' : 'custom_report_pricing_clicked', {
       citySlug,
       areaSlug: area.slug,
@@ -1123,6 +1122,21 @@ export default function AreaDetail() {
       source,
       dataConfidence: displayedConfidence ?? 'estimated',
     })
+
+    if (packageInterest === 'custom_due_diligence_499') {
+      setSelectedReportPaymentRequired(false)
+      setCustomReportOpen(true)
+      trackEvent('custom_buyer_brief_preview_opened', {
+        citySlug,
+        areaSlug: area.slug,
+        packageInterest,
+        source,
+        dataConfidence: displayedConfidence ?? 'estimated',
+      })
+      return
+    }
+
+    setCheckingReportPackage(packageInterest)
 
     try {
       const reportAccess = await checkReportAccess(packageInterest)
@@ -1159,11 +1173,6 @@ export default function AreaDetail() {
       }
 
       setSelectedReportPaymentRequired(true)
-
-      if (packageInterest === 'custom_due_diligence_499') {
-        setCustomReportOpen(true)
-        return
-      }
 
       const openedPaymentLink = openReportPaymentLink(packageInterest)
       trackEvent('payment_link_clicked', {
@@ -1395,7 +1404,7 @@ export default function AreaDetail() {
                 disabled={checkingReportPackage === 'custom_due_diligence_499'}
                 className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-sans font-bold text-emerald-300 hover:bg-emerald-500/15 disabled:opacity-70 sm:w-auto"
               >
-                {checkingReportPackage === 'custom_due_diligence_499' ? 'Checking access...' : 'Request custom buyer verification brief'}
+                Preview custom buyer verification brief
               </button>
             </section>
 
@@ -1455,10 +1464,9 @@ export default function AreaDetail() {
                   </p>
                   <button
                     onClick={() => void openCustomReportRequest('custom_due_diligence_499', 'area_report_pricing')}
-                    disabled={checkingReportPackage === 'custom_due_diligence_499'}
                     className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-bold text-[#04110b] hover:bg-emerald-400 disabled:opacity-70"
                   >
-                    {checkingReportPackage === 'custom_due_diligence_499' ? 'Checking access...' : 'Pay Rs 499'}
+                    Preview Rs 499 brief
                   </button>
                 </article>
               </div>
@@ -1476,9 +1484,9 @@ export default function AreaDetail() {
                 areaName: area.name,
                 source: selectedReportSource,
               }}
-              paymentRequired={selectedReportPaymentRequired}
+              paymentRequired={selectedReportPackage === 'custom_due_diligence_499' ? false : selectedReportPaymentRequired}
               paymentAvailable={selectedReportPaymentRequired && Boolean(getReportPaymentLink(selectedReportPackage))}
-              canGenerateBrief={!selectedReportPaymentRequired && selectedReportPackage === 'custom_due_diligence_499'}
+              canGenerateBrief={selectedReportPackage === 'custom_due_diligence_499'}
               onProceedToPayment={() => {
                 const openedPaymentLink = openReportPaymentLink(selectedReportPackage)
                 trackEvent('payment_link_clicked', {

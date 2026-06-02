@@ -34,6 +34,9 @@ const DNA_STEPS = [
   },
 ]
 
+const STEP_READ_MS = 1200
+const COMPLETE_DELAY_MS = 500
+
 interface Props {
   active: boolean
   onComplete: () => void
@@ -50,11 +53,11 @@ export default function DnaRoutePreloader({ active, onComplete }: Props) {
       currentStep += 1
       if (currentStep >= DNA_STEPS.length) {
         window.clearInterval(interval)
-        window.setTimeout(onComplete, 300)
+        window.setTimeout(onComplete, COMPLETE_DELAY_MS)
         return
       }
       setStep(currentStep)
-    }, 380)
+    }, STEP_READ_MS)
 
     return () => window.clearInterval(interval)
   }, [active, onComplete])

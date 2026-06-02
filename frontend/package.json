@@ -11,6 +11,9 @@
     "test:hyderabad-production": "node scripts/check-hyderabad-production.mjs",
     "test:landing-rollout-copy": "node scripts/check-landing-rollout-copy.mjs",
     "test:area-report-loader": "node scripts/check-area-report-loader.mjs",
+    "test:dna-preloader-timing": "node scripts/check-dna-preloader-timing.mjs",
+    "test:custom-buyer-brief-preview": "node scripts/check-custom-buyer-brief-preview.mjs",
+    "test:custom-report-error-messages": "node scripts/check-custom-report-error-messages.mjs",
     "test:custom-buyer-brief": "node --experimental-strip-types scripts/check-custom-buyer-brief.mjs"
   },
   "dependencies": {

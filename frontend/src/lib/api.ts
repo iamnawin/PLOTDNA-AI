@@ -75,6 +75,36 @@ export interface CustomReportLeadResponse {
   message: string
 }
 
+function formatApiErrorMessage(errorBody: unknown, fallback = 'Could not submit request. Please try again.') {
+  if (!errorBody || typeof errorBody !== 'object') return fallback
+
+  const detail = (errorBody as { detail?: unknown }).detail
+  if (typeof detail === 'string') return detail
+
+  if (Array.isArray(detail)) {
+    const messages = detail
+      .map((issue) => {
+        if (!issue || typeof issue !== 'object') return null
+        const item = issue as { loc?: unknown; msg?: unknown }
+        const message = typeof item.msg === 'string' ? item.msg : null
+        if (!message) return null
+        const loc = Array.isArray(item.loc) ? item.loc : []
+        const field = loc.length ? String(loc[loc.length - 1]) : ''
+        return field ? `${field}: ${message}` : message
+      })
+      .filter((message): message is string => Boolean(message))
+
+    return messages.length ? messages.join(' ') : fallback
+  }
+
+  if (detail && typeof detail === 'object') {
+    const message = (detail as { message?: unknown; msg?: unknown }).message ?? (detail as { msg?: unknown }).msg
+    if (typeof message === 'string') return message
+  }
+
+  return fallback
+}
+
 // ── Map link resolution ───────────────────────────────────────────────────────
 
 /**
@@ -251,8 +281,8 @@ export async function submitCustomReportLead(
   })
 
   if (!res.ok) {
-    const errorBody = await res.json().catch(() => ({})) as { detail?: string }
-    throw new Error(errorBody.detail ?? 'Could not submit request. Please try again.')
+    const errorBody = await res.json().catch(() => ({})) as unknown
+    throw new Error(formatApiErrorMessage(errorBody))
   }
 
   return (await res.json()) as CustomReportLeadResponse

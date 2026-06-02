@@ -65,7 +65,7 @@ export default function CustomReportLeadModal({
       ? 'Contact captured. We will follow up with the custom report payment link and next verification steps.'
       : 'Contact captured. We will follow up with the PDF payment link or report link.'
   const submitLabel = isCustomReport
-    ? paymentAvailable ? 'Request report' : 'Request payment link'
+    ? canGenerateBrief ? 'Generate preview brief' : paymentAvailable ? 'Request report' : 'Request payment link'
     : paymentAvailable ? 'Send PDF link' : 'Request PDF link'
 
   useEffect(() => {
@@ -77,6 +77,10 @@ export default function CustomReportLeadModal({
 
   async function handleSubmit() {
     setError('')
+    if (!name.trim()) {
+      setError('Enter your name so we can prepare the buyer brief.')
+      return
+    }
     if (!contact.trim()) {
       setError('Enter an email or phone number so we can send the report or payment link.')
       return
@@ -100,6 +104,9 @@ export default function CustomReportLeadModal({
       setSubmittedLeadId(result.leadId)
       setSubmittedInput(leadInput)
       onSubmitted(result.leadId, leadInput)
+      if (isCustomReport && canGenerateBrief && onGenerateBrief) {
+        onGenerateBrief(leadInput)
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not submit request. Please try again.')
     } finally {
@@ -169,7 +176,7 @@ export default function CustomReportLeadModal({
             {submittedLeadId ? (
               <div className="mt-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4">
                 <p className="font-sans text-sm font-bold text-emerald-300">
-                  {paymentAvailable ? 'Contact saved' : 'Manual request received'}
+                  {canGenerateBrief ? 'Preview generated' : paymentAvailable ? 'Contact saved' : 'Manual request received'}
                 </p>
                 <p className="mt-2 text-xs font-sans leading-relaxed text-slate-300">
                   Lead ID {submittedLeadId}. {submittedMessage}
