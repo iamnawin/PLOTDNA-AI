@@ -16,6 +16,7 @@
     "test:custom-report-error-messages": "node scripts/check-custom-report-error-messages.mjs",
     "test:landing-live-metrics": "node scripts/check-landing-live-metrics.mjs",
     "test:pdf-report-quality": "node scripts/check-pdf-report-quality.mjs",
+    "test:area-dna-paywall": "node scripts/check-area-dna-paywall.mjs",
     "test:custom-buyer-brief": "node --experimental-strip-types scripts/check-custom-buyer-brief.mjs"
   },
   "dependencies": {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -324,6 +324,71 @@ function LivabilityTrendPanel({ livability, yoy }: { livability: Livability; yoy
             </div>
           )
         })}
+      </div>
+    </div>
+  )
+}
+
+function LockedDnaAnalysis({
+  children,
+  checking,
+  onUnlock,
+}: {
+  children: ReactNode
+  checking: boolean
+  onUnlock: () => void
+}) {
+  return (
+    <div className="relative">
+      <div
+        aria-hidden="true"
+        style={{
+          filter: 'blur(10px)',
+          userSelect: 'none',
+          pointerEvents: 'none',
+          maxHeight: 760,
+          overflow: 'hidden',
+          opacity: 0.48,
+        }}
+      >
+        {children}
+      </div>
+
+      <div
+        className="absolute inset-x-0 top-0 flex min-h-[760px] items-start justify-center px-3 pt-14"
+        style={{
+          background: 'linear-gradient(180deg, rgba(6,8,20,0.60), rgba(6,8,20,0.96) 38%, rgba(6,8,20,1))',
+        }}
+      >
+        <div
+          className="w-full max-w-lg rounded-3xl p-5 text-center"
+          style={{
+            background: 'rgba(2,6,23,0.92)',
+            border: '1px solid rgba(16,185,129,0.26)',
+            boxShadow: '0 24px 80px rgba(0,0,0,0.55)',
+          }}
+        >
+          <div
+            className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl"
+            style={{ background: 'rgba(16,185,129,0.12)', border: '1px solid rgba(16,185,129,0.28)' }}
+          >
+            <Shield size={18} className="text-emerald-300" />
+          </div>
+          <p className="font-display text-xl font-extrabold text-slate-100">Unlock full DNA analysis</p>
+          <p className="mx-auto mt-2 max-w-sm text-sm font-sans leading-relaxed text-slate-400">
+            The free preview shows the verdict and checklist. Satellite growth, weighted signal graphs, market pulse, development pipeline, and source links unlock with the Rs 99 report.
+          </p>
+          <button
+            onClick={onUnlock}
+            disabled={checking}
+            className="mt-5 inline-flex w-full items-center justify-center rounded-2xl bg-emerald-500 px-5 py-3 text-sm font-sans font-black text-[#04110b] hover:bg-emerald-400 disabled:opacity-60"
+          >
+            {checking ? 'Checking access...' : 'Pay Rs 99 and unlock'}
+          </button>
+          <p className="mt-3 text-[10px] font-sans leading-relaxed text-slate-500">
+            Browser screenshots cannot be technically blocked reliably, so the full data is not exposed until unlock.
+          </p>
+        </div>
       </div>
     </div>
   )
@@ -1756,6 +1821,10 @@ export default function AreaDetail() {
             </motion.section>
 
             {/* ── Satellite Growth ── */}
+            <LockedDnaAnalysis
+              checking={checkingReportPackage === 'instant_pdf_99'}
+              onUnlock={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_analysis_lock')}
+            >
             <motion.section
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
@@ -2141,6 +2210,7 @@ export default function AreaDetail() {
                 </div>
               </motion.section>
             )}
+            </LockedDnaAnalysis>
           </div>
 
           {/* Area browsing stays open. */}
