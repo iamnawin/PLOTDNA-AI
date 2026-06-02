@@ -60,12 +60,12 @@ export default function CustomReportLeadModal({
   const submittedMessage = paymentAvailable
     ? 'Contact captured. Continue to Razorpay payment to complete this request.'
     : canGenerateBrief
-      ? 'Contact captured. Download the custom buyer verification brief for testing or admin fulfilment.'
+      ? 'Contact captured. Your custom buyer verification brief is ready. Download it when you want the PDF file.'
     : isCustomReport
       ? 'Contact captured. We will follow up with the custom report payment link and next verification steps.'
       : 'Contact captured. We will follow up with the PDF payment link or report link.'
   const submitLabel = isCustomReport
-    ? canGenerateBrief ? 'Generate preview brief' : paymentAvailable ? 'Request report' : 'Request payment link'
+    ? canGenerateBrief ? 'Prepare preview brief' : paymentAvailable ? 'Request report' : 'Request payment link'
     : paymentAvailable ? 'Send PDF link' : 'Request PDF link'
 
   useEffect(() => {
@@ -104,9 +104,6 @@ export default function CustomReportLeadModal({
       setSubmittedLeadId(result.leadId)
       setSubmittedInput(leadInput)
       onSubmitted(result.leadId, leadInput)
-      if (isCustomReport && canGenerateBrief && onGenerateBrief) {
-        onGenerateBrief(leadInput)
-      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not submit request. Please try again.')
     } finally {
@@ -176,7 +173,7 @@ export default function CustomReportLeadModal({
             {submittedLeadId ? (
               <div className="mt-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4">
                 <p className="font-sans text-sm font-bold text-emerald-300">
-                  {canGenerateBrief ? 'Preview generated' : paymentAvailable ? 'Contact saved' : 'Manual request received'}
+                  {canGenerateBrief ? 'Brief ready' : paymentAvailable ? 'Contact saved' : 'Manual request received'}
                 </p>
                 <p className="mt-2 text-xs font-sans leading-relaxed text-slate-300">
                   Lead ID {submittedLeadId}. {submittedMessage}

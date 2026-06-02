@@ -26,6 +26,9 @@ assert(instant.includes('doc.textWithLink'), 'Rs 99 PDF source URLs must be clic
 assert(instant.includes('BUYER_DUE_DILIGENCE_CHECKLIST'), 'Rs 99 PDF must include buyer due-diligence checklist details')
 
 assert(custom.includes("section('DNA signal graph')"), 'Rs 499 PDF must include a DNA signal graph section')
+assert(custom.includes("section('Buyer context and notes')"), 'Rs 499 PDF must show the buyer-entered context near the start')
+assert(custom.includes("section('Price sanity graph')"), 'Rs 499 PDF must include a price sanity graph')
+assert(custom.includes("section('Document packet plan')"), 'Rs 499 PDF must include a document packet plan')
 assert(custom.includes("section('Growth timeline')"), 'Rs 499 PDF must include a growth timeline section')
 assert(custom.includes("section('Source links')"), 'Rs 499 PDF must include source links')
 assert(custom.includes('doc.textWithLink'), 'Rs 499 PDF source URLs must be clickable links')

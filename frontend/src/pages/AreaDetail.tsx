@@ -822,6 +822,22 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
     doc.text(doc.splitTextToSize(note, w - 8), x + 4, top + 21)
   }
 
+  const horizontalBar = (label: string, value: number, note: string, barColor: [number, number, number] = [cr, cg, cb]) => {
+    ensureSpace(13)
+    const safeValue = Math.max(0, Math.min(100, Math.round(value)))
+    setText(30, 41, 59, 7.4, 'bold')
+    doc.text(label, margin, y)
+    setText(100, 116, 139, 6.3)
+    doc.text(note, margin + 48, y)
+    doc.setFillColor(226, 232, 240)
+    doc.roundedRect(margin + 92, y - 3.2, 58, 3.8, 1.2, 1.2, 'F')
+    doc.setFillColor(...barColor)
+    doc.roundedRect(margin + 92, y - 3.2, safeValue * 0.58, 3.8, 1.2, 1.2, 'F')
+    setText(barColor[0], barColor[1], barColor[2], 8, 'bold')
+    doc.text(`${safeValue}%`, pageW - margin, y, { align: 'right' })
+    y += 9
+  }
+
   const section = (title: string) => {
     ensureSpace(18)
     setText(15, 23, 42, 9, 'bold')
@@ -864,6 +880,28 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   )
   y += 8
 
+  section('Buyer context and notes')
+  const contextRows = [
+    ['Buyer', input.name?.trim() || 'Not shared'],
+    ['Contact', input.contact?.trim() || 'Not shared'],
+    ['Budget', input.budgetRange?.trim() || 'Not shared'],
+    ['Timeline', input.timeline?.trim() || 'Not shared'],
+  ]
+  contextRows.forEach(([label, value]) => {
+    ensureSpace(8)
+    setText(100, 116, 139, 6.4, 'bold')
+    doc.text(label.toUpperCase(), margin, y)
+    setText(30, 41, 59, 8, 'bold')
+    doc.text(doc.splitTextToSize(value, pageW - margin * 2 - 38), margin + 34, y)
+    y += 7
+  })
+  ensureSpace(14)
+  setText(100, 116, 139, 6.4, 'bold')
+  doc.text('BUYER NOTES', margin, y)
+  setText(51, 65, 85, 8)
+  writeWrapped(input.notes?.trim() || 'No project notes were shared yet. Add project name, survey number, broker quote, and site-visit observations before final legal review.', margin + 34, pageW - margin * 2 - 38)
+  y += 4
+
   section('Decision snapshot')
   const snapshotRows = [brief.scoreLine, brief.priceLine, `Main location signal: ${area.highlights?.[0] ?? 'available area-level signals'}`]
   snapshotRows.forEach(row => {
@@ -881,6 +919,19 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   metricCard(margin + (col + 2) * 2, y, col, '5Y outlook', outlook.range, outlook.confidence)
   metricCard(margin + (col + 2) * 3, y, col, 'Coverage', confidence.label, 'Data status')
   y += 32
+
+  section('Price sanity graph')
+  const priceStrength = clampScore(52 + area.yoy * 1.7)
+  const quoteFit = area.score >= 70 ? 78 : area.score >= 55 ? 64 : 48
+  const reraSignal = area.signals.rera ?? 0
+  const infrastructureSignal = area.signals.infrastructure ?? 0
+  const negotiationRisk = clampScore(100 - Math.min(85, reraSignal * 0.45 + infrastructureSignal * 0.35 + area.score * 0.2))
+  horizontalBar('Area quote fit', quoteFit, area.priceRange, [5, 150, 105])
+  horizontalBar('Momentum support', priceStrength, `+${area.yoy}% YoY signal`, [14, 165, 233])
+  horizontalBar('Negotiation risk', negotiationRisk, 'Lower is safer; verify comps before token', [245, 158, 11])
+  setText(71, 85, 105, 7.2)
+  writeWrapped('Use this as a negotiation screen: ask the seller to justify any quote above the area band with registered comparables, approval quality, access, and possession status.', margin, pageW - margin * 2, 4)
+  y += 3
 
   section('DNA signal graph')
   SIGNAL_CONFIG.forEach(({ key, label: signalLabel }, index) => {
@@ -940,6 +991,30 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   doc.addPage()
   page += 1
   header()
+
+  section('Document packet plan')
+  const packetRows = [
+    ['Identity', 'Project name, plot number, survey number, seller authority letter'],
+    ['Title', 'Mother deed, link documents, current title holder proof, latest EC'],
+    ['Approvals', 'RERA registration or exemption, layout approval, building sanction if applicable'],
+    ['Access', 'Road width proof, public/private access status, utilities and drainage evidence'],
+    ['Pricing', 'Written quote breakup, registered comps, extra charges, payment milestones'],
+  ]
+  packetRows.forEach(([label, value], index) => {
+    ensureSpace(17)
+    const rowTop = y - 5
+    doc.setFillColor(index % 2 === 0 ? 255 : 248, index % 2 === 0 ? 255 : 250, index % 2 === 0 ? 255 : 252)
+    doc.setDrawColor(226, 232, 240)
+    doc.roundedRect(margin, rowTop, pageW - margin * 2, 14, 2, 2, 'FD')
+    setText(5, 150, 105, 7.4, 'bold')
+    doc.text(label, margin + 4, y)
+    setText(51, 65, 85, 7.2)
+    doc.text(doc.splitTextToSize(value, pageW - margin * 2 - 42), margin + 34, y)
+    y += 16
+  })
+  setText(71, 85, 105, 7.2)
+  writeWrapped('Attach these documents before a final paid verification pass. Missing identity, title, approval, access, or quote evidence should be treated as a buying risk, not a small paperwork gap.', margin, pageW - margin * 2, 4)
+  y += 5
 
   section('Source links')
   if (sources.length) {
@@ -1654,7 +1729,7 @@ export default function AreaDetail() {
                     disabled={checkingReportPackage === 'instant_pdf_99'}
                     className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-white/10 px-3 py-2 text-xs font-sans font-bold text-slate-200 hover:border-emerald-500/40 hover:text-emerald-300 disabled:opacity-70"
                   >
-                    {checkingReportPackage === 'instant_pdf_99' ? 'Checking access...' : 'Pay Rs 99'}
+                    {checkingReportPackage === 'instant_pdf_99' ? 'Checking access...' : 'Unlock instant PDF'}
                   </button>
                 </article>
 
@@ -1675,7 +1750,7 @@ export default function AreaDetail() {
                     onClick={() => void openCustomReportRequest('custom_due_diligence_499', 'area_report_pricing')}
                     className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-bold text-[#04110b] hover:bg-emerald-400 disabled:opacity-70"
                   >
-                    Preview Rs 499 brief
+                    Preview buyer brief
                   </button>
                 </article>
               </div>
