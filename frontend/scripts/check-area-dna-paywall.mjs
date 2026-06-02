@@ -19,7 +19,7 @@ assert(areaDetail.includes('Rs 99') && areaDetail.includes('Rs 499'), 'lock over
 assert(areaDetail.includes("filter: 'blur(14px) saturate(0.78)'"), 'locked analysis must be strongly blurred but still recognizable')
 assert(areaDetail.includes("userSelect: 'none'"), 'locked analysis must reduce easy copy from preview content')
 assert(areaDetail.includes('pointerEvents: \'none\''), 'locked analysis preview must not expose clickable links/actions')
-assert(areaDetail.includes('opacity: 0.28'), 'locked analysis preview must sit around 20-30% opacity')
+assert(areaDetail.includes('opacity: 0.5'), 'locked analysis preview must sit at 50% opacity')
 assert(areaDetail.includes('className="pointer-events-none absolute inset-0 z-20 px-3"'), 'lock overlay must span the full gated section without blocking page scroll')
 assert(areaDetail.includes('className="sticky top-5 flex min-h-[calc(100vh-40px)] items-center justify-center py-6 sm:top-8 sm:min-h-[calc(100vh-64px)]"'), 'unlock panel must float while users scroll the gated content')
 assert(areaDetail.includes("background: 'linear-gradient(180deg, rgba(6,8,20,0.04), rgba(6,8,20,0.16) 42%, rgba(6,8,20,0.28))'"), 'locked analysis must reveal a transparent preview instead of a flat black wall')
