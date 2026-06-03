@@ -125,30 +125,61 @@ Rules:
 """
 
 
+def _format_coords(coords: tuple[float, float] | None) -> str | None:
+    if not coords:
+        return None
+    return f"{coords[0]:.5f}, {coords[1]:.5f}"
+
+
+def _fallback_followups(ctx: ChatContext) -> list[str]:
+    if ctx.area_name:
+        return [
+            "Compare nearby areas",
+            "Explain the risk factors",
+            "Show the investment case in simple terms",
+        ]
+    return [
+        "Find nearest supported locality",
+        "Explain coordinate coverage",
+        "Compare city zones",
+    ]
+
+
 def _fallback_response(request: ChatRequest) -> ChatResponse:
     ctx = request.context or ChatContext()
     target = ctx.area_name or ctx.city_name or "this location"
+    coords = _format_coords(ctx.coords)
+    summary = (ctx.summary or "").strip()
+    tier = (ctx.resolution_tier or "").strip().lower()
+    question = request.question.strip().lower()
+
     if ctx.area_name:
+        detail = f" The current PlotDNA context says: {summary}" if summary else ""
+        comparison_hint = (
+            " For nearby comparison, use this as the base area and compare only supported micro-markets with visible DNA signals."
+            if "compare" in question or "nearby" in question
+            else " Treat this as an area-level guide, then verify the exact project, title, RERA, access, and pricing."
+        )
         answer = (
-            f"{target} is the right level for a local comparison view. "
-            "Use it to compare growth signals, infrastructure, and risk before you shortlist. "
-            "If you want, I can also compare this with nearby areas or explain the score in plain language."
+            f"For {target}, I can only use the current PlotDNA context shown on this page.{detail}"
+            f"{comparison_hint}"
         )
     else:
+        coverage_note = (
+            "This is an approximate coordinate context, not a verified micro-market score."
+            if tier in {"uncovered", "city_zone_cluster", "nearby_micro_market"} or coords
+            else "The current context is broad."
+        )
+        coordinate_note = f" Coordinates: {coords}." if coords else ""
         answer = (
-            f"I can help you scan {target}, but the current context is still broad. "
-            "Use the map, enter coordinates, or open a supported locality to get a tighter answer. "
-            "I can still compare the city, point out risks, or suggest the next best area to inspect."
+            f"I can help you scan {target}, but {coverage_note.lower()}{coordinate_note} "
+            "Open the nearest supported locality before using the answer for a purchase decision."
         )
 
     return ChatResponse(
         answer=answer,
         sources=["PlotDNA static context"],
-        followups=[
-            "Compare nearby areas",
-            "Explain the risk factors",
-            "Show the investment case in simple terms",
-        ],
+        followups=_fallback_followups(ctx),
         source="fallback",
         model=None,
         last_updated=_now_iso(),

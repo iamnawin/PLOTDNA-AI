@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion, useMotionValue } from 'framer-motion'
+import { AnimatePresence, motion, useDragControls, useMotionValue } from 'framer-motion'
 import {
   Loader2,
   MapPin,
@@ -13,6 +13,10 @@ import { askPlotDNA, type AssistantContext, type AssistantMessage } from '@/lib/
 interface Props {
   context: AssistantContext
 }
+
+const PANEL_MARGIN = 12
+const PANEL_MIN_HEIGHT = 420
+const PANEL_MAX_WIDTH = 440
 
 export default function AssistantDock({ context }: Props) {
   const [open, setOpen] = useState(false)
@@ -30,8 +34,13 @@ export default function AssistantDock({ context }: Props) {
 
   const listRef = useRef<HTMLDivElement>(null)
   const dockRef = useRef<HTMLDivElement>(null)
+  const dragControls = useDragControls()
   const x = useMotionValue(0)
   const y = useMotionValue(0)
+  const [viewport, setViewport] = useState(() => ({
+    width: typeof window === 'undefined' ? 1024 : window.innerWidth,
+    height: typeof window === 'undefined' ? 768 : window.innerHeight,
+  }))
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: 'smooth' })
@@ -93,6 +102,18 @@ export default function AssistantDock({ context }: Props) {
 
   const locationLabel = [context.areaName, context.cityName].filter(Boolean).join(', ')
 
+  const panelWidth = Math.min(PANEL_MAX_WIDTH, Math.max(280, viewport.width - PANEL_MARGIN * 2))
+  const panelHeight = Math.min(
+    Math.max(PANEL_MIN_HEIGHT, viewport.height - (context.page === 'map' ? 160 : 64)),
+    Math.max(360, viewport.height - (context.page === 'map' ? 120 : 32)),
+  )
+  const closedBottom = context.page === 'map'
+    ? 'calc(7.25rem + env(safe-area-inset-bottom))'
+    : 'calc(1rem + env(safe-area-inset-bottom))'
+  const openBottom = context.page === 'map'
+    ? 'calc(5.5rem + env(safe-area-inset-bottom))'
+    : 'calc(0.75rem + env(safe-area-inset-bottom))'
+
   const [dragConstraints, setDragConstraints] = useState({ left: -400, right: 10, top: -600, bottom: 10 })
 
   const keepDockInViewport = useCallback(() => {
@@ -100,8 +121,8 @@ export default function AssistantDock({ context }: Props) {
     if (!el || typeof window === 'undefined') return
 
     const rect = el.getBoundingClientRect()
-    const safeLeft = 12
-    const safeRight = 12
+    const safeLeft = PANEL_MARGIN
+    const safeRight = PANEL_MARGIN
     const safeTop = context.page === 'map' ? 88 : 16
     const safeBottom = context.page === 'map' ? 108 : 16
 
@@ -119,35 +140,43 @@ export default function AssistantDock({ context }: Props) {
 
   useEffect(() => {
     const handleResize = () => {
+      const visualViewport = window.visualViewport
+      const nextWidth = visualViewport?.width ?? window.innerWidth
+      const nextHeight = visualViewport?.height ?? window.innerHeight
+      setViewport({ width: nextWidth, height: nextHeight })
       setDragConstraints({
-        left: -window.innerWidth + 180,
+        left: -nextWidth + 180,
         right: 10,
-        top: -window.innerHeight + (context.page === 'map' ? 200 : 180),
+        top: -nextHeight + (context.page === 'map' ? 200 : 180),
         bottom: context.page === 'map' ? 60 : 10,
       })
       window.requestAnimationFrame(keepDockInViewport)
     }
     handleResize()
     window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+    window.visualViewport?.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      window.visualViewport?.removeEventListener('resize', handleResize)
+    }
   }, [context.page, keepDockInViewport])
 
   return (
     <motion.div
       ref={dockRef}
-      drag
+      drag={open}
+      dragControls={dragControls}
+      dragListener={false}
       dragConstraints={dragConstraints}
       dragElastic={0.1}
       dragMomentum={false}
       onDragEnd={() => window.requestAnimationFrame(keepDockInViewport)}
-      className="fixed z-[1200] pointer-events-auto cursor-grab active:cursor-grabbing touch-none"
+      className="fixed z-[1200] pointer-events-auto"
       style={{
         x,
         y,
         right: 'calc(1rem + env(safe-area-inset-right))',
-        bottom: context.page === 'map'
-          ? 'calc(7.25rem + env(safe-area-inset-bottom))'
-          : 'calc(1rem + env(safe-area-inset-bottom))',
+        bottom: open ? openBottom : closedBottom,
       }}
     >
       <AnimatePresence>
@@ -185,16 +214,25 @@ export default function AssistantDock({ context }: Props) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.98 }}
             transition={{ duration: 0.18 }}
-            className="pointer-events-auto w-[calc(100vw-1.5rem)] sm:w-[380px] max-h-[72dvh] overflow-hidden rounded-2xl"
+            className="pointer-events-auto flex overflow-hidden rounded-2xl"
             onAnimationComplete={keepDockInViewport}
             style={{
+              width: panelWidth,
+              height: panelHeight,
+              minHeight: 360,
+              maxHeight: `calc(100dvh - ${context.page === 'map' ? 6 : 2}rem)`,
+              resize: viewport.width >= 768 ? 'both' : 'none',
               background: 'rgba(5, 6, 12, 0.98)',
               border: '1px solid rgba(255,255,255,0.07)',
               boxShadow: '0 24px 56px rgba(0,0,0,0.54)',
               backdropFilter: 'blur(24px)',
             }}
           >
-            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 cursor-grab active:cursor-grabbing select-none">
+            <div className="flex min-h-0 w-full flex-col">
+            <div
+              className="flex items-center justify-between px-4 py-3 border-b border-white/5 cursor-grab active:cursor-grabbing select-none"
+              onPointerDown={(event) => dragControls.start(event)}
+            >
               <div className="min-w-0">
                 <div className="flex items-center gap-2">
                   <Sparkles size={13} className="text-[#00e676]" />
@@ -205,6 +243,7 @@ export default function AssistantDock({ context }: Props) {
                 </p>
               </div>
               <button
+                onPointerDown={(event) => event.stopPropagation()}
                 onClick={() => setOpen(false)}
                 className="flex items-center justify-center w-8 h-8 rounded-lg text-[#555566] hover:text-[#e8e8f0]"
                 style={{ background: 'rgba(255,255,255,0.03)' }}
@@ -237,8 +276,13 @@ export default function AssistantDock({ context }: Props) {
 
             <div
               ref={listRef}
-              className="px-4 overflow-y-auto space-y-3"
-              style={{ maxHeight: 'calc(72dvh - 214px)' }}
+              className="flex-1 px-4 overflow-y-auto space-y-3"
+              style={{
+                minHeight: 0,
+                overscrollBehavior: 'contain',
+                WebkitOverflowScrolling: 'touch',
+                paddingBottom: 8,
+              }}
             >
               {messages.map((message, index) => (
                 <div
@@ -288,7 +332,7 @@ export default function AssistantDock({ context }: Props) {
                       void sendQuestion(input)
                     }
                   }}
-                  placeholder="Ask about the area..."
+                  placeholder="Ask about this area, risk, or nearby zones"
                   className="flex-1 min-w-0 rounded-xl px-3 py-2.5 text-[12px] font-mono outline-none"
                   style={{
                     background: 'rgba(255,255,255,0.03)',
@@ -330,6 +374,7 @@ export default function AssistantDock({ context }: Props) {
                   Reset chat
                 </button>
               </div>
+            </div>
             </div>
           </motion.div>
         )}
