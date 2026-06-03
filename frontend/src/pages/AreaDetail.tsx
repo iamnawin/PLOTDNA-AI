@@ -346,10 +346,8 @@ function LivabilityTrendPanel({ livability, yoy }: { livability: Livability; yoy
 }
 
 function ReportExportPanel({
-  checking,
   onDownloadPdf,
 }: {
-  checking: boolean
   onDownloadPdf: () => void
 }) {
   return (
@@ -369,10 +367,10 @@ function ReportExportPanel({
             Don't buy on broker claims. Buy with PlotDNA.
           </p>
           <h2 className="mt-1 font-display text-xl font-extrabold text-slate-100">
-            Preview the DNA, then unlock lifetime app access and PDF.
+            Preview the DNA, then download the lifetime PDF.
           </h2>
           <p className="mt-2 max-w-2xl text-xs font-sans leading-relaxed text-slate-400">
-            The live app opens long enough to inspect the verdict and evidence. After the preview window, the one-time lifetime unlock opens the full UI analysis plus the printable source-of-truth PDF.
+            Payment is disabled for this test build. Use this button to download the printable source-of-truth PDF directly and inspect the report output.
           </p>
           <p className="mt-2 text-[11px] font-sans leading-relaxed text-slate-500">
             Regional PDF: English today, with Telugu-ready report wording planned for the language selector.
@@ -382,14 +380,13 @@ function ReportExportPanel({
         <div className="grid w-full grid-cols-1 gap-3 lg:max-w-[240px]">
           <button
             onClick={onDownloadPdf}
-            disabled={checking}
-            className="rounded-2xl border border-white/10 bg-slate-950/35 p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.05] disabled:opacity-60"
+            className="rounded-2xl border border-white/10 bg-slate-950/35 p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.05]"
           >
             <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Lifetime app + PDF</span>
             <span className="mt-1 block font-display text-2xl font-extrabold text-slate-100">Rs 99</span>
-            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime access for this account, full UI analysis, and the instant DNA report PDF.</span>
+            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime access package. In this test build, the instant DNA report PDF downloads without payment.</span>
             <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
-              {checking ? 'Checking access...' : 'Unlock lifetime access'}
+              Download test PDF
             </span>
           </button>
         </div>
@@ -401,12 +398,10 @@ function ReportExportPanel({
 function TimedDnaAccessGate({
   children,
   locked,
-  checking,
   onUnlock,
 }: {
   children: ReactNode
   locked: boolean
-  checking: boolean
   onUnlock: () => void
 }) {
   if (!locked) return <>{children}</>
@@ -448,24 +443,23 @@ function TimedDnaAccessGate({
               <Shield size={18} className="text-emerald-300" />
             </div>
             <p className="font-display text-xl font-extrabold text-slate-100">Preview time complete</p>
-            <p className="sr-only">Preview time complete. Unlock lifetime access and PDF.</p>
+            <p className="sr-only">Preview time complete. Download the lifetime PDF.</p>
             <p className="mt-2 text-xs font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
               Don't buy on broker claims. Buy with PlotDNA.
             </p>
             <p className="mx-auto mt-2 max-w-md text-sm font-sans leading-relaxed text-slate-400">
-              You have seen the live DNA preview. Unlock lifetime access to the complete in-app view, satellite evidence, growth graphs, market pulse, sources, and printable PDF.
+              You have seen the live DNA preview. Payment is disabled for this test build, so download the printable source-of-truth PDF directly.
             </p>
             <div className="mx-auto mt-5 grid max-w-sm grid-cols-1 gap-3">
               <button
                 onClick={onUnlock}
-                disabled={checking}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.07] disabled:opacity-60"
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.07]"
               >
                 <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Lifetime app + PDF</span>
                 <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
-                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime unlock for the full UI analysis and source-of-truth PDF with the verdict, source trail, and buyer checklist.</span>
+                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime access package. The test build downloads the source-of-truth PDF with the verdict, source trail, and buyer checklist.</span>
                 <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
-                  {checking ? 'Checking access...' : 'Unlock lifetime access'}
+                  Download test PDF
                 </span>
               </button>
             </div>
@@ -1287,9 +1281,9 @@ export default function AreaDetail() {
   const [selectedReportPackage, setSelectedReportPackage] = useState<ReportPackage>('instant_pdf_99')
   const [selectedReportSource, setSelectedReportSource] = useState('area_report_summary')
   const [selectedReportPaymentRequired, setSelectedReportPaymentRequired] = useState(true)
-  const [checkingReportPackage, setCheckingReportPackage] = useState<ReportPackage | null>(null)
   const [reportAccessUnlocked, setReportAccessUnlocked] = useState(false)
   const [reportPreviewLocked, setReportPreviewLocked] = useState(false)
+  const [reportPreviewLockedAreaSlug, setReportPreviewLockedAreaSlug] = useState<string | null>(null)
 
   function getMapReturnPath() {
     const coords = fallbackContext?.coords ?? searchCoords
@@ -1351,6 +1345,7 @@ export default function AreaDetail() {
       if (reportAccess?.canAccess) {
         setReportAccessUnlocked(true)
         setReportPreviewLocked(false)
+        setReportPreviewLockedAreaSlug(null)
       }
     }
 
@@ -1364,9 +1359,9 @@ export default function AreaDetail() {
   useEffect(() => {
     if (!area || reportAccessUnlocked) return
 
-    setReportPreviewLocked(false)
     const timer = window.setTimeout(() => {
       setReportPreviewLocked(true)
+      setReportPreviewLockedAreaSlug(area.slug)
       trackEvent('area_report_preview_locked', {
         citySlug: staticCitySlug,
         areaSlug: area.slug,
@@ -1696,99 +1691,30 @@ export default function AreaDetail() {
   const comparePreviewAreas = compareSlugs
     .map(slug => (cityEntry?.areas ?? getAllAreas()).find(candidate => candidate.slug === slug))
     .filter((candidate): candidate is MicroMarket => Boolean(candidate))
-  const openCustomReportRequest = async (packageInterest: ReportPackage, source: string) => {
-    setSelectedReportPackage(packageInterest)
+  const downloadInstantPdf = (source: string) => {
+    setSelectedReportPackage('instant_pdf_99')
     setSelectedReportSource(source)
-    trackEvent(packageInterest === 'instant_pdf_99' ? 'paid_report_clicked' : 'custom_report_pricing_clicked', {
+    setSelectedReportPaymentRequired(false)
+    setReportAccessUnlocked(true)
+    setReportPreviewLocked(false)
+    setReportPreviewLockedAreaSlug(null)
+    trackEvent('paid_report_clicked', {
       citySlug,
       areaSlug: area.slug,
-      packageInterest,
+      packageInterest: 'instant_pdf_99',
       source,
+      reason: 'pdf_test_payment_disabled',
       dataConfidence: displayedConfidence ?? 'estimated',
     })
-
-    if (packageInterest === 'custom_due_diligence_499') {
-      setSelectedReportPaymentRequired(false)
-      setReportAccessUnlocked(true)
-      setReportPreviewLocked(false)
-      setCustomReportOpen(true)
-      trackEvent('report_access_unlocked', {
-        citySlug,
-        areaSlug: area.slug,
-        packageInterest,
-        source,
-        reason: 'custom_buyer_brief_flow',
-        dataConfidence: displayedConfidence ?? 'estimated',
-      })
-      trackEvent('custom_buyer_brief_preview_opened', {
-        citySlug,
-        areaSlug: area.slug,
-        packageInterest,
-        source,
-        dataConfidence: displayedConfidence ?? 'estimated',
-      })
-      return
-    }
-
-    setCheckingReportPackage(packageInterest)
-
-    try {
-      const reportAccess = await checkReportAccess(packageInterest)
-
-      trackEvent('report_access_checked', {
-        citySlug,
-        areaSlug: area.slug,
-        packageInterest,
-        source,
-        canAccess: reportAccess?.canAccess ?? false,
-        requiresPayment: reportAccess?.requiresPayment ?? true,
-        reason: reportAccess?.reason ?? 'unavailable',
-        dataConfidence: displayedConfidence ?? 'estimated',
-      })
-
-      if (reportAccess?.canAccess) {
-        setSelectedReportPaymentRequired(false)
-        if (packageInterest === 'instant_pdf_99') {
-          setReportAccessUnlocked(true)
-          setReportPreviewLocked(false)
-        }
-        trackEvent('report_access_unlocked', {
-          citySlug,
-          areaSlug: area.slug,
-          packageInterest,
-          source,
-          reason: reportAccess.reason,
-          dataConfidence: displayedConfidence ?? 'estimated',
-        })
-
-        if (packageInterest === 'instant_pdf_99') {
-          void generatePDF(area)
-          return
-        }
-
-        setCustomReportOpen(true)
-        return
-      }
-
-      setSelectedReportPaymentRequired(true)
-
-      const openedPaymentLink = openReportPaymentLink(packageInterest)
-      trackEvent('payment_link_clicked', {
-        citySlug,
-        areaSlug: area.slug,
-        packageInterest,
-        source,
-        provider: 'razorpay_payment_link',
-        hasConfiguredLink: openedPaymentLink,
-        dataConfidence: displayedConfidence ?? 'estimated',
-      })
-
-      if (openedPaymentLink) return
-
-      setCustomReportOpen(true)
-    } finally {
-      setCheckingReportPackage(null)
-    }
+    trackEvent('report_access_unlocked', {
+      citySlug,
+      areaSlug: area.slug,
+      packageInterest: 'instant_pdf_99',
+      source,
+      reason: 'pdf_test_payment_disabled',
+      dataConfidence: displayedConfidence ?? 'estimated',
+    })
+    void generatePDF(area)
   }
 
   // Nearby areas — same city only, ±15 DNA score range
@@ -1865,14 +1791,14 @@ export default function AreaDetail() {
                 areaSlug: area.slug,
                 dataConfidence: displayedConfidence ?? 'estimated',
               })
-              void openCustomReportRequest('instant_pdf_99', 'area_nav_pdf')
+              downloadInstantPdf('area_nav_pdf')
             }}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 disabled:opacity-45 disabled:cursor-not-allowed"
             style={{ color, border: `1px solid ${color}40` }}
             title="Get PlotDNA PDF report"
           >
             <Download size={12} style={{ color }} />
-            <span className="hidden sm:inline">{checkingReportPackage === 'instant_pdf_99' ? 'Checking...' : 'Get PDF'}</span>
+            <span className="hidden sm:inline">Get PDF</span>
           </button>
         </div>
       </nav>
@@ -2168,14 +2094,12 @@ export default function AreaDetail() {
             </motion.div>
 
             <ReportExportPanel
-              checking={checkingReportPackage === 'instant_pdf_99'}
-              onDownloadPdf={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_export_cta')}
+              onDownloadPdf={() => downloadInstantPdf('area_dna_export_cta')}
             />
 
             <TimedDnaAccessGate
-              locked={reportPreviewLocked && !reportAccessUnlocked}
-              checking={checkingReportPackage === 'instant_pdf_99'}
-              onUnlock={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_timed_lock')}
+              locked={reportPreviewLocked && reportPreviewLockedAreaSlug === area.slug && !reportAccessUnlocked}
+              onUnlock={() => downloadInstantPdf('area_dna_timed_lock')}
             >
 
             {/* ── Buyer due diligence ── */}

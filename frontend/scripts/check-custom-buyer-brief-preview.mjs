@@ -14,20 +14,10 @@ function assert(condition, message) {
   }
 }
 
-const customBypassMatch = areaDetail.match(
-  /if\s*\(\s*packageInterest\s*===\s*'custom_due_diligence_499'\s*\)\s*{([\s\S]*?)\n\s*}/,
-)
-
-assert(customBypassMatch, 'AreaDetail must branch custom buyer brief requests before payment handling')
-
-const customBypass = customBypassMatch[1]
-
-assert(customBypass.includes('setSelectedReportPaymentRequired(false)'), 'Rs 499 preview must disable payment required')
-assert(customBypass.includes('setCustomReportOpen(true)'), 'Rs 499 preview must open the lead/context modal')
-assert(!customBypass.includes('checkReportAccess'), 'Rs 499 preview must not call entitlement access check')
-assert(!customBypass.includes('openReportPaymentLink'), 'Rs 499 preview must not open Razorpay')
-assert(areaDetail.includes("Unlock buyer brief"), 'Rs 499 pricing CTA must describe the buyer brief unlock action')
-assert(areaDetail.includes("Preview custom buyer verification brief"), 'summary CTA must clearly preview the custom brief')
+assert(!areaDetail.includes("openCustomReportRequest('instant_pdf_99'"), 'AreaDetail must not route instant PDF testing through the old payment request handler')
+assert(!areaDetail.includes("openCustomReportRequest('custom_due_diligence_499'"), 'AreaDetail must not expose the old custom buyer brief payment CTA in the standard report surface')
+assert(!areaDetail.includes("Unlock buyer brief"), 'standard report surface must not show the old buyer brief unlock action')
+assert(areaDetail.includes('Download test PDF'), 'standard report surface must expose direct PDF testing instead')
 assert(areaDetail.includes("paymentRequired={selectedReportPackage === 'custom_due_diligence_499' ? false : selectedReportPaymentRequired}"), 'Rs 499 modal must explicitly bypass payment-required state')
 assert(areaDetail.includes("canGenerateBrief={selectedReportPackage === 'custom_due_diligence_499'}"), 'Rs 499 modal must always enable preview generation')
 assert(modal.includes("canGenerateBrief ? 'Prepare preview brief'"), 'custom modal submit button must not ask for a payment link when preview generation is enabled')
