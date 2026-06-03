@@ -24,6 +24,8 @@ assert(areaDetail.includes('Preview the DNA, then download the lifetime PDF.'), 
 assert(areaDetail.includes('Preview time complete. Download the lifetime PDF.'), 'export panel must collapse into direct PDF test copy after preview')
 assert(areaDetail.includes('Lifetime app + PDF'), 'Rs 99 flow must unlock the app and PDF together for life')
 assert(areaDetail.includes('onDownloadPdf={() => downloadInstantPdf('), 'export CTA must download the Rs 99 PDF directly while payment is disabled for testing')
+assert(areaDetail.includes('void generateCustomBuyerBriefPDF(area'), 'test PDF flow must generate the detailed buyer verification PDF')
+assert(!areaDetail.includes('void generatePDF(area)\n  }'), 'test PDF flow must not generate the shorter instant report')
 assert(!areaDetail.includes("openCustomReportRequest('instant_pdf_99', 'area_dna_export_cta')"), 'export CTA must not route Rs 99 through the payment flow while PDF testing is enabled')
 assert(!areaDetail.includes("openCustomReportRequest('custom_due_diligence_499', 'area_dna_export_cta')"), 'export CTA must not route a second paid report package')
 const exportPanelMatch = areaDetail.match(/function ReportExportPanel[\s\S]*?function TimedDnaAccessGate/)

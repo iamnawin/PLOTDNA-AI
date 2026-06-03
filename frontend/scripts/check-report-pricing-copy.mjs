@@ -21,6 +21,7 @@ const rs499Count = (pricing.match(/Rs 499/g) ?? []).length
 assert(rs99Count === 1, `Rs 99 should appear once in the pricing section, found ${rs99Count}`)
 assert(rs499Count === 0, `Rs 499 must not appear in the standard pricing section, found ${rs499Count}`)
 assert(pricing.includes('Download test PDF'), 'Rs 99 CTA should download the PDF directly while payment is disabled for testing')
+assert(pricing.includes('complete buyer verification PDF'), 'pricing copy must explain that the test download is the detailed buyer verification PDF')
 assert(pricing.includes('Lifetime app + PDF'), 'Rs 99 package should unlock app viewing and PDF together for life')
 assert(pricing.includes('One-time lifetime access'), 'pricing copy must explain the one-time lifetime purchase without payment placeholder wording')
 assert(!pricing.includes('Checking access...'), 'testing flow must not show an entitlement/payment check placeholder on the Rs 99 card')

@@ -384,7 +384,7 @@ function ReportExportPanel({
           >
             <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Lifetime app + PDF</span>
             <span className="mt-1 block font-display text-2xl font-extrabold text-slate-100">Rs 99</span>
-            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime access package. In this test build, the instant DNA report PDF downloads without payment.</span>
+            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime access package. In this test build, the complete buyer verification PDF downloads without payment.</span>
             <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
               Download test PDF
             </span>
@@ -819,6 +819,8 @@ async function generatePDF(area: MicroMarket) {
 
   doc.save(`PlotDNA_${area.name.replace(/\s+/g, '_')}_Report.pdf`)
 }
+
+void generatePDF
 
 async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefInput = {}) {
   if (!area) return
@@ -1692,7 +1694,7 @@ export default function AreaDetail() {
     .map(slug => (cityEntry?.areas ?? getAllAreas()).find(candidate => candidate.slug === slug))
     .filter((candidate): candidate is MicroMarket => Boolean(candidate))
   const downloadInstantPdf = (source: string) => {
-    setSelectedReportPackage('instant_pdf_99')
+    setSelectedReportPackage('custom_due_diligence_499')
     setSelectedReportSource(source)
     setSelectedReportPaymentRequired(false)
     setReportAccessUnlocked(true)
@@ -1701,7 +1703,7 @@ export default function AreaDetail() {
     trackEvent('paid_report_clicked', {
       citySlug,
       areaSlug: area.slug,
-      packageInterest: 'instant_pdf_99',
+      packageInterest: 'custom_due_diligence_499',
       source,
       reason: 'pdf_test_payment_disabled',
       dataConfidence: displayedConfidence ?? 'estimated',
@@ -1709,12 +1711,14 @@ export default function AreaDetail() {
     trackEvent('report_access_unlocked', {
       citySlug,
       areaSlug: area.slug,
-      packageInterest: 'instant_pdf_99',
+      packageInterest: 'custom_due_diligence_499',
       source,
       reason: 'pdf_test_payment_disabled',
       dataConfidence: displayedConfidence ?? 'estimated',
     })
-    void generatePDF(area)
+    void generateCustomBuyerBriefPDF(area, {
+      notes: 'Generated from the direct PDF test flow. Add buyer name, budget, timeline, and project notes before final delivery.',
+    })
   }
 
   // Nearby areas — same city only, ±15 DNA score range
