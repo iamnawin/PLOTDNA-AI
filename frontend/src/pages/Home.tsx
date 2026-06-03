@@ -1,7 +1,7 @@
 import { useCallback, useRef, useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText } from 'lucide-react'
+import { Search, X, Zap, ChevronRight, Navigation, Layers, Map, Satellite, Globe, Sun, Box, Lock, ChevronUp, Car, Clock, Eye, Menu, HardHat, FileText, TrendingUp } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { getCityEntry, CITY_LIST } from '@/data/cities'
 import type { MicroMarket, RecommendationGoal } from '@/types'
@@ -33,8 +33,34 @@ const ANALYZE_STEPS = [
   'Mapping growth trajectory...',
 ]
 
+const LAST_MAP_STATE_KEY = 'plotdna:last-map-state'
+
+interface AreaReportNavigationState {
+  fallbackContext?: {
+    tier: 'exact_locality' | 'nearby_micro_market' | 'city_zone_cluster' | 'regional' | 'uncovered'
+    displayLabel: string
+    precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
+    coords?: [number, number]
+    districtSlug?: string | null
+    districtName?: string | null
+    stateSlug?: string | null
+  }
+}
+
+function parseMapState(search: string): { coords: [number, number] | null; citySlug: string | null } {
+  const params = new URLSearchParams(search)
+  const lat = Number(params.get('lat'))
+  const lng = Number(params.get('lng'))
+  const citySlug = params.get('city')
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+    return { coords: null, citySlug }
+  }
+  return { coords: [lat, lng], citySlug }
+}
+
 export default function Home() {
   const navigate = useNavigate()
+  const location = useLocation()
   const {
     selectedArea,
     highlightTier,
@@ -61,7 +87,7 @@ export default function Home() {
   const [searchError, setSearchError]         = useState('')
   const [resolvingUrl, setResolvingUrl]       = useState(false)
   const [locating, setLocating]               = useState(false)
-  const [viewMode, setViewMode]               = useState<ViewMode>('globe')
+  const [viewMode, setViewMode]               = useState<ViewMode>('map')
   const [globeSidebarExpanded, setGlobeSidebarExpanded] = useState(false)
   const [analyzingCoords, setAnalyzingCoords] = useState<[number, number] | null>(null)
   const [pendingCoords, setPendingCoords]     = useState<[number, number] | null>(null)
@@ -74,6 +100,7 @@ export default function Home() {
   const areaRailRef = useRef<HTMLDivElement>(null)
   const pendingAreaReportNavRef = useRef<(() => void) | null>(null)
   const resetInitialTierRef = useRef(false)
+  const restoredMapStateRef = useRef(false)
 
   useEffect(() => {
     if (resetInitialTierRef.current) return
@@ -82,6 +109,44 @@ export default function Home() {
       setHighlightTier(null)
     }
   }, [highlightTier, setHighlightTier])
+
+  useEffect(() => {
+    if (restoredMapStateRef.current) return
+    restoredMapStateRef.current = true
+
+    function restoreMapStateFromUrl() {
+      const fromUrl = parseMapState(location.search)
+      if (fromUrl.citySlug) {
+        setSelectedCitySlug(fromUrl.citySlug)
+      }
+      if (fromUrl.coords) {
+        setViewMode('map')
+        setMapStyleKey('satellite')
+        setIs3D(false)
+        setSelectedArea(null)
+        setSearchCoords(fromUrl.coords)
+        return true
+      }
+
+      try {
+        const raw = window.localStorage.getItem(LAST_MAP_STATE_KEY)
+        if (!raw) return false
+        const cached = JSON.parse(raw) as { coords?: [number, number]; citySlug?: string }
+        if (!cached.coords || !Array.isArray(cached.coords)) return false
+        if (cached.citySlug) setSelectedCitySlug(cached.citySlug)
+        setViewMode('map')
+        setMapStyleKey('satellite')
+        setIs3D(false)
+        setSelectedArea(null)
+        setSearchCoords(cached.coords)
+        return true
+      } catch {
+        return false
+      }
+    }
+
+    restoreMapStateFromUrl()
+  }, [location.search, setIs3D, setMapStyleKey, setSearchCoords, setSelectedArea, setSelectedCitySlug])
 
   useEffect(() => {
     if (!analyzingCoords) return
@@ -195,8 +260,53 @@ export default function Home() {
     setSearchError('')
   }
 
+  function persistMapStateToUrl(coords: [number, number], citySlug = selectedCitySlug) {
+    const params = new URLSearchParams()
+    params.set('lat', coords[0].toFixed(6))
+    params.set('lng', coords[1].toFixed(6))
+    params.set('city', citySlug)
+    navigate(`/map?${params.toString()}`, { replace: true })
+    try {
+      window.localStorage.setItem(LAST_MAP_STATE_KEY, JSON.stringify({ coords, citySlug }))
+    } catch {
+      // keep map usable if storage is unavailable
+    }
+  }
+
+  function clearMapStateFromUrl() {
+    if (location.search) {
+      navigate('/map', { replace: true })
+    }
+  }
+
+  const buildAreaReportState = useCallback((slug: string, state?: unknown) => {
+    const reportState = state as AreaReportNavigationState | undefined
+    const coords = reportState?.fallbackContext?.coords ?? searchCoords
+    if (!coords) return { pathname: `/area/${slug}` }
+
+    const params = new URLSearchParams()
+    params.set('fromLat', coords[0].toFixed(6))
+    params.set('fromLng', coords[1].toFixed(6))
+    params.set('fromCity', selectedCitySlug)
+    if (reportState?.fallbackContext?.displayLabel) {
+      params.set('fromLabel', reportState.fallbackContext.displayLabel)
+    }
+    if (reportState?.fallbackContext?.tier) {
+      params.set('fromTier', reportState.fallbackContext.tier)
+    }
+    if (reportState?.fallbackContext?.precisionLabel) {
+      params.set('fromPrecision', reportState.fallbackContext.precisionLabel)
+    }
+
+    return {
+      pathname: `/area/${slug}`,
+      search: `?${params.toString()}`,
+    }
+  }, [searchCoords, selectedCitySlug])
+
   function triggerCoordAnalysis(coords: [number, number]) {
     const analysis = findNearestArea(coords[0], coords[1])
+    const nextCitySlug = analysis.citySlug ?? selectedCitySlug
     if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
     setSearchQuery('')
     setSearchFocused(false)
@@ -214,7 +324,18 @@ export default function Home() {
       setAnalyzingCoords(null)
       if (res && res.tier === 'regional') {
         const districtSlug = res.districtSlug || 'warangal'
-        navigate(`/area/${districtSlug}`, {
+        persistMapStateToUrl(coords, nextCitySlug)
+        navigate(buildAreaReportState(districtSlug, {
+          fallbackContext: {
+            tier: res.tier,
+            displayLabel: `${res.districtName || 'Regional'} District Fallback`,
+            precisionLabel: 'broad',
+            coords,
+            districtSlug: res.districtSlug,
+            districtName: res.districtName,
+            stateSlug: res.stateSlug,
+          }
+        }), {
           state: {
             fallbackContext: {
               tier: res.tier,
@@ -232,6 +353,7 @@ export default function Home() {
         setMapStyleKey('satellite')
         setIs3D(false)
         setSearchCoords(coords)
+        persistMapStateToUrl(coords, nextCitySlug)
       }
     })
   }
@@ -245,11 +367,11 @@ export default function Home() {
 
   const openAreaReportWithLoader = useCallback((slug: string, state?: unknown) => {
     pendingAreaReportNavRef.current = () => {
-      navigate(`/area/${slug}`, state ? { state } : undefined)
+      navigate(buildAreaReportState(slug, state), state ? { state } : undefined)
     }
     setAreaReportLoaderRunId(id => id + 1)
     setAreaReportLoading(true)
-  }, [navigate])
+  }, [buildAreaReportState, navigate])
 
   const handleAreaReportLoaderComplete = useCallback(() => {
     setAreaReportLoading(false)
@@ -949,7 +1071,7 @@ export default function Home() {
             coords={searchCoords}
             fallback={coordAnalysis}
             onOpenAreaReport={openAreaReportWithLoader}
-            onClose={() => { setSearchCoords(null); setSelectedArea(null) }}
+            onClose={() => { setSearchCoords(null); setSelectedArea(null); clearMapStateFromUrl() }}
           />
         ) : selectedArea ? (
           <ScoreCard
@@ -982,6 +1104,24 @@ export default function Home() {
             <span>Globe</span>
           </button>
         </div>
+
+        <div className="w-px h-6 bg-white/10 mx-1" />
+
+        <button
+          onClick={() => {
+            const compareSeeds = [
+              selectedArea?.slug,
+              coordAnalysis?.area?.slug,
+              ...recommendedAreas.slice(0, 3).map(({ area }) => area.slug),
+            ].filter((slug, index, slugs): slug is string => Boolean(slug) && slugs.indexOf(slug) === index).slice(0, 3)
+            navigate(`/compare?areas=${compareSeeds.join(',')}`)
+          }}
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all duration-300 text-[10px] uppercase tracking-wider font-bold bg-cyan-400/12 border border-cyan-400/25 text-cyan-200 hover:bg-cyan-400/18"
+          title="Compare nearby areas"
+        >
+          <TrendingUp size={11} className="text-cyan-300" />
+          <span>Compare</span>
+        </button>
 
         <div className="w-px h-6 bg-white/10 mx-1" />
 

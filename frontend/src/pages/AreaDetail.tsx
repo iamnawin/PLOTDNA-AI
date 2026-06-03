@@ -56,6 +56,22 @@ interface AreaDetailLocationState {
   }
 }
 
+type AreaDetailFallbackContext = NonNullable<AreaDetailLocationState['fallbackContext']>
+
+function fallbackFromQuery(search: string): AreaDetailFallbackContext | undefined {
+  const params = new URLSearchParams(search)
+  const lat = Number(params.get('fromLat'))
+  const lng = Number(params.get('fromLng'))
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return undefined
+
+  return {
+    tier: (params.get('fromTier') as AreaDetailFallbackContext['tier'] | null) ?? 'nearby_micro_market',
+    displayLabel: params.get('fromLabel') ?? 'Searched coordinate',
+    precisionLabel: (params.get('fromPrecision') as AreaDetailFallbackContext['precisionLabel'] | null) ?? 'approximate',
+    coords: [lat, lng],
+  }
+}
+
 // ── Active project helpers ──────────────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
   metro: '#3b82f6', highway: '#f97316', flyover: '#fb923c',
@@ -330,17 +346,11 @@ function LivabilityTrendPanel({ livability, yoy }: { livability: Livability; yoy
 }
 
 function ReportExportPanel({
-  locked,
   checking,
-  checkingCustom,
   onDownloadPdf,
-  onCustomBrief,
 }: {
-  locked: boolean
   checking: boolean
-  checkingCustom: boolean
   onDownloadPdf: () => void
-  onCustomBrief: () => void
 }) {
   return (
     <section
@@ -359,41 +369,29 @@ function ReportExportPanel({
             Don't buy on broker claims. Buy with PlotDNA.
           </p>
           <h2 className="mt-1 font-display text-xl font-extrabold text-slate-100">
-            {locked ? 'Preview time complete. Unlock the full app view and PDF.' : 'Preview the DNA, then unlock the complete in-app view and PDF.'}
+            Preview the DNA, then unlock lifetime app access and PDF.
           </h2>
           <p className="mt-2 max-w-2xl text-xs font-sans leading-relaxed text-slate-400">
-            {locked
-              ? 'Screenshots are not reliable delivery copies. Unlock the source-of-truth PDF to keep the verdict, growth graphs, source trail, and buyer checklist together.'
-              : 'The live app opens long enough to inspect the verdict and evidence. After the preview window, either package unlocks the full UI analysis plus the printable source-of-truth PDF.'}
+            The live app opens long enough to inspect the verdict and evidence. After the preview window, the one-time lifetime unlock opens the full UI analysis plus the printable source-of-truth PDF.
+          </p>
+          <p className="mt-2 text-[11px] font-sans leading-relaxed text-slate-500">
+            Regional PDF: English today, with Telugu-ready report wording planned for the language selector.
           </p>
         </div>
 
-        <div className={`grid w-full grid-cols-1 gap-3 ${locked ? 'lg:max-w-xs' : 'sm:grid-cols-2 lg:max-w-md'}`}>
+        <div className="grid w-full grid-cols-1 gap-3 lg:max-w-[240px]">
           <button
             onClick={onDownloadPdf}
             disabled={checking}
             className="rounded-2xl border border-white/10 bg-slate-950/35 p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.05] disabled:opacity-60"
           >
-            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Full app + PDF</span>
+            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Lifetime app + PDF</span>
             <span className="mt-1 block font-display text-2xl font-extrabold text-slate-100">Rs 99</span>
-            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full UI analysis and save the instant DNA report as a PDF.</span>
+            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime access for this account, full UI analysis, and the instant DNA report PDF.</span>
             <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
-              {checking ? 'Checking access...' : 'Unlock full DNA'}
+              {checking ? 'Checking access...' : 'Unlock lifetime access'}
             </span>
           </button>
-          {!locked && (
-            <button
-              onClick={onCustomBrief}
-              className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-left transition-colors hover:bg-emerald-500/15"
-            >
-              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Full app + buyer brief</span>
-              <span className="mt-1 block font-display text-2xl font-extrabold text-slate-100">Rs 499</span>
-              <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-300">Unlock the UI, PDF, title, RERA, access, pricing, and seller-question checks.</span>
-              <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-400/35 px-3 py-2 text-xs font-sans font-black text-emerald-300">
-                {checkingCustom ? 'Checking access...' : 'Unlock buyer brief'}
-              </span>
-            </button>
-          )}
         </div>
       </div>
     </section>
@@ -450,28 +448,29 @@ function TimedDnaAccessGate({
               <Shield size={18} className="text-emerald-300" />
             </div>
             <p className="font-display text-xl font-extrabold text-slate-100">Preview time complete</p>
+            <p className="sr-only">Preview time complete. Unlock lifetime access and PDF.</p>
             <p className="mt-2 text-xs font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
               Don't buy on broker claims. Buy with PlotDNA.
             </p>
             <p className="mx-auto mt-2 max-w-md text-sm font-sans leading-relaxed text-slate-400">
-              You have seen the live DNA preview. Unlock the complete in-app view, satellite evidence, growth graphs, market pulse, sources, and printable PDF to continue.
+              You have seen the live DNA preview. Unlock lifetime access to the complete in-app view, satellite evidence, growth graphs, market pulse, sources, and printable PDF.
             </p>
-            <div className="mt-5">
+            <div className="mx-auto mt-5 grid max-w-sm grid-cols-1 gap-3">
               <button
                 onClick={onUnlock}
                 disabled={checking}
-                className="w-full rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.07] disabled:opacity-60"
+                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.07] disabled:opacity-60"
               >
-                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Full app + PDF</span>
+                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Lifetime app + PDF</span>
                 <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
-                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full UI analysis and source-of-truth PDF with the verdict, growth graphs, source trail, and buyer checklist.</span>
+                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime unlock for the full UI analysis and source-of-truth PDF with the verdict, source trail, and buyer checklist.</span>
                 <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
-                  {checking ? 'Checking access...' : 'Unlock full DNA'}
+                  {checking ? 'Checking access...' : 'Unlock lifetime access'}
                 </span>
               </button>
             </div>
             <p className="mt-3 text-[10px] font-sans leading-relaxed text-slate-500">
-              Screenshots are not reliable delivery copies; the source-of-truth report keeps the evidence trail together.
+              Screenshots are not reliable delivery copies. The source-of-truth report keeps the evidence trail together.
             </p>
           </div>
         </div>
@@ -809,6 +808,19 @@ async function generatePDF(area: MicroMarket) {
     doc.text(lines, margin + 5, y)
     y += lines.length * 4.2 + 2
   })
+
+  y += 4
+  section('Regional language note')
+  setText(15, 23, 42, 13, 'bold')
+  doc.text('English report now. Telugu-ready summary next.', margin, y)
+  y += 7
+  setText(51, 65, 85, 8.5)
+  const languageLines = doc.splitTextToSize(
+    'Use the English PDF as the source-of-truth report today. The report language selector should offer Telugu and other regional-language printouts once translated copy and font embedding are connected.',
+    pageW - margin * 2,
+  )
+  doc.text(languageLines, margin, y)
+  y += languageLines.length * 4.6 + 2
   footer(3)
 
   doc.save(`PlotDNA_${area.name.replace(/\s+/g, '_')}_Report.pdf`)
@@ -1079,7 +1091,7 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   doc.roundedRect(margin, y, pageW - margin * 2, 31, 3, 3, 'FD')
   y += 8
   setText(6, 95, 70, 11, 'bold')
-  doc.text('What this Rs 499 brief adds', margin + 5, y)
+  doc.text('What this custom brief adds', margin + 5, y)
   y += 6
   setText(51, 65, 85, 8)
   writeWrapped(
@@ -1266,18 +1278,30 @@ export default function AreaDetail() {
   const staticArea = getAllAreas().find((a) => a.slug === slug)
   const [backendArea, setBackendArea] = useState<MicroMarket | null>(null)
   const area = backendArea ?? staticArea
-  const fallbackContext = (location.state as AreaDetailLocationState | null)?.fallbackContext
+  const fallbackContext = (location.state as AreaDetailLocationState | null)?.fallbackContext ?? fallbackFromQuery(location.search)
   const staticCityEntry = staticArea ? getCityForArea(staticArea.slug) : undefined
   const staticCitySlug = staticCityEntry
     ? Object.entries(CITIES).find(([, v]) => v === staticCityEntry)?.[0] ?? 'hyderabad'
     : 'hyderabad'
   const [customReportOpen, setCustomReportOpen] = useState(false)
-  const [selectedReportPackage, setSelectedReportPackage] = useState<ReportPackage>('custom_due_diligence_499')
+  const [selectedReportPackage, setSelectedReportPackage] = useState<ReportPackage>('instant_pdf_99')
   const [selectedReportSource, setSelectedReportSource] = useState('area_report_summary')
   const [selectedReportPaymentRequired, setSelectedReportPaymentRequired] = useState(true)
   const [checkingReportPackage, setCheckingReportPackage] = useState<ReportPackage | null>(null)
   const [reportAccessUnlocked, setReportAccessUnlocked] = useState(false)
   const [reportPreviewLocked, setReportPreviewLocked] = useState(false)
+
+  function getMapReturnPath() {
+    const coords = fallbackContext?.coords ?? searchCoords
+    const fromCity = new URLSearchParams(location.search).get('fromCity') ?? staticCitySlug
+    if (!coords) return '/map'
+
+    const params = new URLSearchParams()
+    params.set('lat', coords[0].toFixed(6))
+    params.set('lng', coords[1].toFixed(6))
+    params.set('city', fromCity)
+    return `/map?${params.toString()}`
+  }
 
   useEffect(() => {
     let cancelled = false
@@ -1416,7 +1440,7 @@ export default function AreaDetail() {
         {/* ── Nav bar ── */}
         <nav className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 h-13 glass-panel border-b border-white/5">
           <button
-            onClick={() => navigate('/map')}
+            onClick={() => navigate(getMapReturnPath())}
             className="flex items-center gap-2 text-[#94a3b8] hover:text-slate-100 transition-colors text-sm font-sans flex-shrink-0"
           >
             <ArrowLeft size={15} />
@@ -1628,7 +1652,7 @@ export default function AreaDetail() {
       <div className="h-[100dvh] flex items-center justify-center body">
         <div className="text-center p-6 glass-panel rounded-2xl max-w-sm mx-4">
           <p className="text-slate-400 font-sans text-sm">Area not found</p>
-          <button onClick={() => navigate('/map')} className="mt-4 text-xs font-sans text-emerald-400 hover:text-emerald-300 transition-colors underline cursor-pointer">
+          <button onClick={() => navigate(getMapReturnPath())} className="mt-4 text-xs font-sans text-emerald-400 hover:text-emerald-300 transition-colors underline cursor-pointer">
             Back to map
           </button>
         </div>
@@ -1790,7 +1814,7 @@ export default function AreaDetail() {
         className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 h-13 glass-panel border-b border-white/5"
       >
         <button
-          onClick={() => navigate('/map')}
+          onClick={() => navigate(getMapReturnPath())}
           className="flex items-center gap-2 text-[#94a3b8] hover:text-slate-100 transition-colors text-sm font-sans flex-shrink-0"
         >
           <ArrowLeft size={15} />
@@ -1965,21 +1989,9 @@ export default function AreaDetail() {
                 ))}
               </div>
 
-              <button
-                onClick={() => {
-                  trackEvent('custom_report_requested', {
-                    citySlug,
-                    areaSlug: area.slug,
-                    dataConfidence: displayedConfidence ?? 'estimated',
-                    source: 'area_report_summary',
-                  })
-                  void openCustomReportRequest('custom_due_diligence_499', 'area_report_summary')
-                }}
-                disabled={checkingReportPackage === 'custom_due_diligence_499'}
-                className="mt-4 inline-flex w-full items-center justify-center rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-sans font-bold text-emerald-300 hover:bg-emerald-500/15 disabled:opacity-70 sm:w-auto"
-              >
-                Preview custom buyer verification brief
-              </button>
+              <p className="mt-4 text-[11px] font-sans leading-relaxed text-slate-500">
+                Full printable evidence and checklist unlock with the Rs 99 lifetime report.
+              </p>
             </section>
 
             <section
@@ -2156,11 +2168,8 @@ export default function AreaDetail() {
             </motion.div>
 
             <ReportExportPanel
-              locked={reportPreviewLocked && !reportAccessUnlocked}
               checking={checkingReportPackage === 'instant_pdf_99'}
-              checkingCustom={checkingReportPackage === 'custom_due_diligence_499'}
               onDownloadPdf={() => void openCustomReportRequest('instant_pdf_99', 'area_dna_export_cta')}
-              onCustomBrief={() => void openCustomReportRequest('custom_due_diligence_499', 'area_dna_export_cta')}
             />
 
             <TimedDnaAccessGate
@@ -2584,7 +2593,7 @@ export default function AreaDetail() {
             </TimedDnaAccessGate>
           </div>
 
-          {/* Deep area browsing reopens after the Rs 99 or Rs 499 unlock flow. */}
+          {/* Deep area browsing reopens after the Rs 99 lifetime unlock flow. */}
         </div>
       </div>
 

@@ -19,15 +19,15 @@ const rs99Count = (pricing.match(/Rs 99/g) ?? []).length
 const rs499Count = (pricing.match(/Rs 499/g) ?? []).length
 
 assert(rs99Count === 1, `Rs 99 should appear once in the pricing section, found ${rs99Count}`)
-assert(rs499Count === 1, `Rs 499 should appear once in the pricing section, found ${rs499Count}`)
-assert(pricing.includes('Unlock full DNA'), 'Rs 99 CTA should describe the action')
-assert(pricing.includes('Full app + PDF'), 'Rs 99 package should unlock app viewing and PDF together')
-assert(pricing.includes('Full app + buyer brief'), 'Rs 499 package should unlock app viewing and buyer brief together')
-assert(pricing.includes('Unlock buyer brief'), 'Rs 499 CTA should describe the action')
-assert(pricing.includes('Preview the DNA, then unlock the complete in-app view and PDF.'), 'pricing copy must explain timed preview access')
-assert(pricing.includes('{!locked && ('), 'Rs 499 pricing card must be conditionally hidden after the timed lock')
+assert(rs499Count === 0, `Rs 499 must not appear in the standard pricing section, found ${rs499Count}`)
+assert(pricing.includes('Unlock lifetime access'), 'Rs 99 CTA should describe lifetime access')
+assert(pricing.includes('Lifetime app + PDF'), 'Rs 99 package should unlock app viewing and PDF together for life')
+assert(pricing.includes('one-time lifetime unlock'), 'pricing copy must explain the one-time lifetime purchase')
+assert(pricing.includes('Regional PDF'), 'pricing section must expose language selection for printable reports')
 assert(pricing.includes('source-of-truth PDF'), 'locked pricing copy must preserve source-of-truth wording')
 assert(!areaDetail.includes('aria-label="Investment report options"'), 'paid report options must not be repeated as a separate section')
 assert(!areaDetail.includes('Unlock full DNA analysis'), 'pricing copy must not reintroduce the old full-DNA blocker')
+assert(!pricing.includes('Full app + buyer brief'), 'standard pricing must not promote a second package')
+assert(!pricing.includes('Unlock buyer brief'), 'standard pricing must not include the old buyer brief CTA')
 
 console.log('Report pricing copy check passed.')

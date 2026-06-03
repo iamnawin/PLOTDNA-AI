@@ -30,7 +30,13 @@ npm run dev
 npm run build        # tsc -b && vite build
 npm run lint         # eslint .
 
-# Backend (http://localhost:8000) — stubs only, not required for frontend dev
+# Frontend smoke tests (Node.js scripts, no test runner required)
+npm run test:hyderabad-production
+npm run test:area-dna-paywall
+npm run test:pdf-report-quality
+# Full list: see "scripts" in frontend/package.json (test:* entries)
+
+# Backend (http://localhost:8000)
 cd backend
 python -m venv venv
 venv\Scripts\activate          # Windows
@@ -38,14 +44,14 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-No test suite exists yet. TypeScript errors surface via `npm run build`.
+TypeScript errors surface via `npm run build`. Backend OpenAPI docs at `http://localhost:8000/docs`.
 
 ---
 
 ## Architecture
 
-### Current state: Frontend-only
-All real data lives in `frontend/src/data/` as TypeScript files. The FastAPI backend (`backend/`) exists but all routes return empty stubs — the frontend does not call it in production. API client is at `frontend/src/lib/api.ts` (unused in Phase 1).
+### Current state: Hybrid (frontend static data + live backend)
+Static area data lives in `frontend/src/data/` as TypeScript files. The FastAPI backend is **live at `https://plotdna-api.onrender.com`** and serves auth, entitlements, verdicts, AVM, market pulse, RERA, brochure parsing, and AI chat routes. In dev, `VITE_API_URL` overrides the default to `http://localhost:8000`. The app also runs as a Capacitor native mobile app — `frontend/src/lib/runtime.ts` detects the platform via `Capacitor.isNativePlatform()`.
 
 ### Data flow (current)
 ```
