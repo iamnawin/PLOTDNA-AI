@@ -49,10 +49,13 @@ interface AreaReportNavigationState {
 
 function parseMapState(search: string): { coords: [number, number] | null; citySlug: string | null } {
   const params = new URLSearchParams(search)
+  if (!params.has('lat') || !params.has('lng')) {
+    return { coords: null, citySlug: params.get('city') }
+  }
   const lat = Number(params.get('lat'))
   const lng = Number(params.get('lng'))
   const citySlug = params.get('city')
-  if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
     return { coords: null, citySlug }
   }
   return { coords: [lat, lng], citySlug }
@@ -1070,6 +1073,8 @@ export default function Home() {
             key={`plot-analysis-${searchCoords[0]}-${searchCoords[1]}`}
             coords={searchCoords}
             fallback={coordAnalysis}
+            fallbackReportSlug={recommendedAreas[0]?.area.slug ?? cityAreas[0]?.slug ?? 'adibatla'}
+            fallbackReportLabel={recommendedAreas[0]?.area.name ?? cityAreas[0]?.name ?? cityMeta.name}
             onOpenAreaReport={openAreaReportWithLoader}
             onClose={() => { setSearchCoords(null); setSelectedArea(null); clearMapStateFromUrl() }}
           />

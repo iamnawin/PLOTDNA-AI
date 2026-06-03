@@ -16,6 +16,8 @@ import { analyzeCoordinate, type LiveDNAResult } from '@/lib/api'
 interface Props {
   coords: [number, number]
   fallback: LocalityFallbackResult
+  fallbackReportSlug: string
+  fallbackReportLabel: string
   onOpenAreaReport: (slug: string, state?: unknown) => void
   onClose: () => void
 }
@@ -34,7 +36,7 @@ const PHASE_COLOR: Record<Milestone['phase'], string> = {
   now: '#00e676',
 }
 
-export default function PlotAnalysisCard({ coords, fallback, onOpenAreaReport, onClose }: Props) {
+export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug, fallbackReportLabel, onOpenAreaReport, onClose }: Props) {
   const [geo, setGeo] = useState<ReverseGeoResult | null>(null)
   const [liveData, setLiveData] = useState<LiveDNAResult | null>(null)
   const [liveLoading, setLiveLoading] = useState(true)
@@ -689,6 +691,41 @@ export default function PlotAnalysisCard({ coords, fallback, onOpenAreaReport, o
             </span>
             <span className="text-[9px] text-slate-400 font-sans mt-0.5">
               District: {resolvedFallback.districtName || 'Regional coverage'}
+            </span>
+          </button>
+        </div>
+      )}
+
+      {!hasStaticAreaContext && resolvedFallback.tier !== 'regional' && (
+        <div
+          className="p-4 flex-shrink-0"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
+        >
+          <button
+            onClick={() => onOpenAreaReport(fallbackReportSlug, {
+              fallbackContext: {
+                tier: resolvedFallback.tier,
+                displayLabel: fallbackDisplayLabel,
+                precisionLabel: resolvedFallback.precisionLabel,
+                coords,
+              },
+            })}
+            className="w-full flex flex-col items-center justify-center gap-1.5 py-4 px-4 rounded-2xl font-sans transition-all duration-200 btn-3d-reflective relative overflow-hidden"
+            style={{
+              background: 'linear-gradient(135deg, rgba(14,165,233,0.85) 0%, rgba(15,23,42,0.9) 100%)',
+              borderTop: '1px solid rgba(255,255,255,0.35)',
+              borderLeft: '1px solid rgba(255,255,255,0.18)',
+              borderRight: '1px solid rgba(0,0,0,0.2)',
+              borderBottom: '4px solid rgba(0,0,0,0.45)',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.35), 0 0 16px rgba(14,165,233,0.32)',
+            }}
+          >
+            <span className="flex items-center gap-2 text-sm font-black uppercase tracking-[0.08em] text-slate-50" style={{ textShadow: '0 0 12px rgba(14,165,233,0.9)' }}>
+              View Nearest DNA Report
+              <ArrowRight size={13} />
+            </span>
+            <span className="text-[9px] text-slate-300 font-sans mt-0.5">
+              Opens {fallbackReportLabel} coverage, not a score for this exact point
             </span>
           </button>
         </div>
