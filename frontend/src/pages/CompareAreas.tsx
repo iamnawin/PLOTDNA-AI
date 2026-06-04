@@ -18,7 +18,8 @@ export default function CompareAreas() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const cityEntry = CITIES[CITY_SLUG]
-  const selectedSlugs = parseAreaParams(searchParams.get('areas'))
+  const areasParam = searchParams.get('areas')
+  const selectedSlugs = useMemo(() => parseAreaParams(areasParam), [areasParam])
 
   const selectedAreas = useMemo(
     () => selectedSlugs.map(slug => cityEntry.areas.find(area => area.slug === slug) ?? cityEntry.areas[0]),
@@ -101,12 +102,12 @@ export default function CompareAreas() {
         </section>
 
         <section className="grid grid-cols-1 gap-4 lg:grid-cols-3" aria-label="Area comparison">
-          {selectedAreas.map(area => {
+          {selectedAreas.map((area, index) => {
             const verdict = getInvestmentReportSummary(area)
             const color = getScoreColor(area.score)
 
             return (
-              <article key={area.slug} className="rounded-2xl border border-white/5 glass-panel p-4">
+              <article key={`comparison-${index}`} className="rounded-2xl border border-white/5 glass-panel p-4">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <p className="text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">
