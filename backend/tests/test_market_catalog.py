@@ -7,7 +7,7 @@ from app.services.market_catalog import get_city_area, list_city_areas
 
 
 SUPPORTED_CITY_EXPECTATIONS = {
-    "hyderabad": ("adibatla", 200),
+    "hyderabad": ("adibatla", 216),
     "bangalore": ("devanahalli", 20),
     "mumbai": ("panvel", 20),
     "chennai": ("kelambakkam", 21),

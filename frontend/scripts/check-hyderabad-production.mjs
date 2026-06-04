@@ -26,8 +26,8 @@ function assert(condition, message) {
 const confidenceMentions = hyderabadSource.match(/"?dataConfidence"?:/g)?.length ?? 0
 
 assert(Array.isArray(localities), 'localities.json must contain an array')
-assert(localities.length === 204, `expected 204 Hyderabad localities, found ${localities.length}`)
-assert(confidenceMentions >= 204, `expected confidence metadata for 204 Hyderabad records, found ${confidenceMentions}`)
+assert(localities.length === 220, `expected 220 Hyderabad localities, found ${localities.length}`)
+assert(confidenceMentions >= 220, `expected confidence metadata for 220 Hyderabad records, found ${confidenceMentions}`)
 assert(productionHelper.includes('hyderabad'), 'city production helper must include a Hyderabad override')
 assert(productionHelper.includes('Flagship production city'), 'Hyderabad must be labeled as the flagship production city')
 
