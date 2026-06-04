@@ -6,7 +6,8 @@
  */
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { BarChart2, Info } from 'lucide-react'
+import { BarChart2, Calculator, Info, TrendingUp } from 'lucide-react'
+import { buildUserInvestmentEstimate, type UserInvestmentEstimate } from '@/lib/userInvestmentEstimate'
 
 interface YearProjection {
   year: number
@@ -33,6 +34,11 @@ function fmt(n: number, currency = '\u20B9') {
   return `${currency}${n.toLocaleString('en-IN')}`
 }
 
+function parseInputNumber(value: string) {
+  const normalized = Number(value.replace(/,/g, ''))
+  return Number.isFinite(normalized) ? normalized : 0
+}
+
 interface Props {
   areaSlug: string
   country?: string
@@ -47,6 +53,7 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
 
   const requestKey = `${country}/${areaSlug}`
   const [state, setState] = useState<AVMState>(null)
+  const [userInput, setUserInput] = useState<{ key: string; pricePerSqft: string; plotSizeSqft: string } | null>(null)
 
   const current = state?.key === requestKey ? state : null
   const loading = current === null
@@ -103,6 +110,21 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
   const proj = data.five_year_projection
   const maxVal = proj.length ? Math.max(...proj.map(p => p.value)) : data.confidence_high
   const assumedSqft = data.area_sqft_assumption ?? 1000
+  const userPricePerSqft = userInput?.key === requestKey ? userInput.pricePerSqft : String(data.estimated_value_per_sqft)
+  const userPlotSizeSqft = userInput?.key === requestKey ? userInput.plotSizeSqft : String(assumedSqft)
+  const updateUserPricePerSqft = (nextValue: string) => {
+    setUserInput({ key: requestKey, pricePerSqft: nextValue, plotSizeSqft: userPlotSizeSqft })
+  }
+  const updateUserPlotSizeSqft = (nextValue: string) => {
+    setUserInput({ key: requestKey, pricePerSqft: userPricePerSqft, plotSizeSqft: nextValue })
+  }
+  const userEstimate = buildUserInvestmentEstimate({
+    pricePerSqft: parseInputNumber(userPricePerSqft),
+    plotSizeSqft: parseInputNumber(userPlotSizeSqft),
+    baseEstimatedPricePerSqft: data.estimated_value_per_sqft,
+    fiveYearProjectedPricePerSqft: proj.at(-1)?.value,
+    yoy: proj.length >= 2 ? ((proj.at(-1)!.value - proj[0].value) / proj[0].value) * 20 : 12,
+  })
 
   return (
     <motion.section
@@ -230,6 +252,16 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
           </div>
         )}
 
+        <UserEstimationPanel
+          currency={currency}
+          accentColor={accentColor}
+          pricePerSqft={userPricePerSqft}
+          plotSizeSqft={userPlotSizeSqft}
+          onPricePerSqftChange={updateUserPricePerSqft}
+          onPlotSizeSqftChange={updateUserPlotSizeSqft}
+          estimate={userEstimate}
+        />
+
         {/* Footer */}
         <div
           className="flex items-center gap-1.5 px-5 py-2.5"
@@ -242,6 +274,113 @@ export default function AVMCard({ areaSlug, country = 'india', accentColor = '#1
         </div>
       </div>
     </motion.section>
+  )
+}
+
+function UserEstimationPanel({
+  currency,
+  accentColor,
+  pricePerSqft,
+  plotSizeSqft,
+  onPricePerSqftChange,
+  onPlotSizeSqftChange,
+  estimate,
+}: {
+  currency: string
+  accentColor: string
+  pricePerSqft: string
+  plotSizeSqft: string
+  onPricePerSqftChange: (value: string) => void
+  onPlotSizeSqftChange: (value: string) => void
+  estimate: UserInvestmentEstimate
+}) {
+  return (
+    <div className="px-5 py-5 border-t border-white/5" style={{ background: 'rgba(255,255,255,0.018)' }}>
+      <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between mb-5">
+        <div className="flex items-start gap-3">
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+            style={{ background: `${accentColor}14`, border: `1px solid ${accentColor}28` }}
+          >
+            <Calculator size={15} style={{ color: accentColor }} />
+          </div>
+          <div>
+            <p className="text-[9px] font-sans font-bold text-slate-400 uppercase tracking-wider">User Estimation</p>
+            <p className="text-sm font-sans font-bold text-slate-100 mt-1">Edit quote and plot size to model value and growth.</p>
+            <p className="text-[10px] font-sans text-slate-500 mt-1">Use the actual seller quote when you have it. This is directional, not a guaranteed return.</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 w-full lg:w-[320px]">
+          <label className="block">
+            <span className="block text-[8px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500 mb-1">Quote / sqft</span>
+            <input
+              type="number"
+              min="0"
+              inputMode="numeric"
+              value={pricePerSqft}
+              onChange={(event) => onPricePerSqftChange(event.target.value)}
+              className="w-full rounded-xl border border-white/10 bg-slate-950/55 px-3 py-2 text-sm font-display font-bold text-slate-100 outline-none focus:border-emerald-400/40"
+            />
+          </label>
+          <label className="block">
+            <span className="block text-[8px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500 mb-1">Plot sqft</span>
+            <input
+              type="number"
+              min="0"
+              inputMode="numeric"
+              value={plotSizeSqft}
+              onChange={(event) => onPlotSizeSqftChange(event.target.value)}
+              className="w-full rounded-xl border border-white/10 bg-slate-950/55 px-3 py-2 text-sm font-display font-bold text-slate-100 outline-none focus:border-emerald-400/40"
+            />
+          </label>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <EstimateTile label="Current Value" value={fmt(estimate.currentValue, currency)} caption="Quote x plot size" color="#e2e8f0" />
+        <EstimateTile
+          label="5Y Growth Estimate"
+          value={fmt(estimate.fiveYearValue, currency)}
+          caption={`+${estimate.fiveYearProfitPct}% margin | ${fmt(estimate.fiveYearProfit, currency)} profit`}
+          color={accentColor}
+        />
+        <EstimateTile
+          label="10Y Growth Estimate"
+          value={fmt(estimate.tenYearValue, currency)}
+          caption={`+${estimate.tenYearProfitPct}% margin | ${fmt(estimate.tenYearProfit, currency)} profit`}
+          color="#38bdf8"
+        />
+      </div>
+
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="rounded-xl bg-slate-950/35 border border-white/5 px-3 py-2.5">
+          <div className="flex items-center gap-2">
+            <TrendingUp size={12} style={{ color: accentColor }} />
+            <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Future Price / sqft</p>
+          </div>
+          <p className="text-xs font-sans text-slate-300 mt-1">
+            5Y <span className="font-display font-bold" style={{ color: accentColor }}>{currency}{estimate.fiveYearPricePerSqft.toLocaleString('en-IN')}</span>
+            <span className="text-slate-600"> | </span>
+            10Y <span className="font-display font-bold text-sky-300">{currency}{estimate.tenYearPricePerSqft.toLocaleString('en-IN')}</span>
+          </p>
+        </div>
+        <div className="rounded-xl bg-amber-500/[0.06] border border-amber-400/15 px-3 py-2.5">
+          <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-amber-300">Check before buying</p>
+          <p className="text-[10px] font-sans text-amber-100/80 mt-1 leading-relaxed">Profit depends on title, approvals, road access, liquidity, and actual resale demand.</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function EstimateTile({ label, value, caption, color }: { label: string; value: string; caption: string; color: string }) {
+  return (
+    <div className="rounded-xl bg-slate-950/35 border border-white/5 px-3 py-3">
+      <p className="text-[8px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500 mb-1">{label}</p>
+      <p className="text-lg sm:text-xl font-display font-black leading-tight" style={{ color }}>{value}</p>
+      <p className="text-[10px] font-sans text-slate-500 mt-1 leading-snug">{caption}</p>
+    </div>
   )
 }
 

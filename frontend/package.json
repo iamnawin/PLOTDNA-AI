@@ -23,6 +23,7 @@
     "test:assistant-dock-ux": "node scripts/check-assistant-dock-ux.mjs",
     "test:landing-search-redesign": "node scripts/check-landing-search-redesign.mjs",
     "test:brand-tagline": "node scripts/check-brand-tagline.mjs",
+    "test:user-investment-estimate": "node --experimental-strip-types scripts/check-user-investment-estimate.mjs",
     "test:custom-buyer-brief": "node --experimental-strip-types scripts/check-custom-buyer-brief.mjs"
   },
   "dependencies": {

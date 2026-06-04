@@ -2055,7 +2055,7 @@ export default function AreaDetail() {
               <div className="p-3 rounded-2xl text-center glass-panel-light">
                 <div className="flex items-center justify-center gap-1 mb-1.5">
                   <Zap size={12} className="text-amber-500" />
-                  <span className="text-[10px] font-sans font-semibold text-slate-400 uppercase tracking-wider">Signal</span>
+                  <span className="text-[10px] font-sans font-semibold text-slate-400 uppercase tracking-wider">Growth Signal</span>
                 </div>
                 <p className="text-sm font-display font-bold text-amber-500 mt-0.5">
                   {signals.reduce((best, [, v]) => v > best ? v : best, 0)}
@@ -2106,32 +2106,6 @@ export default function AreaDetail() {
               onUnlock={() => downloadInstantPdf('area_dna_timed_lock')}
             >
 
-            {/* ── Buyer due diligence ── */}
-            <motion.section
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.11 }}
-              className="mb-10"
-            >
-              <div className="flex items-center gap-2 mb-4">
-                <Shield size={14} style={{ color }} />
-                <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
-                  Buyer Due-Diligence Checklist
-                </h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {BUYER_DUE_DILIGENCE_CHECKLIST.map(item => (
-                  <div key={item} className="flex items-start gap-2.5 rounded-xl glass-panel-light border border-white/5 px-3 py-2.5">
-                    <AlertTriangle size={12} className="mt-0.5 flex-shrink-0 text-amber-400" />
-                    <p className="text-[12px] font-sans leading-relaxed text-slate-300">{item}</p>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-3 text-[11px] font-sans leading-relaxed text-slate-500">
-                PlotDNA narrows the area shortlist. These checks still need independent document, site, and professional verification before paying an advance.
-              </p>
-            </motion.section>
-
             {/* ── Satellite Growth ── */}
             <motion.section
               initial={{ opacity: 0, y: 24 }}
@@ -2156,14 +2130,14 @@ export default function AreaDetail() {
                 <span
                   className="text-[10px] font-sans text-slate-400 px-2.5 py-0.5 rounded-full glass-panel-light border border-white/5"
                 >
-                  Weighted composite
+                  Growth composite
                 </span>
               </div>
 
               <SignalTrendPanel area={area} accentColor={color} />
 
               <p className="text-[11px] font-sans text-slate-500 mt-4 leading-relaxed">
-                Weighted formula: Infrastructure (25%) + Population (20%) + Satellite (20%) + RERA (15%) + Employment (10%) + Price (5%) + Govt Scheme (5%)
+                Growth read: infrastructure, population movement, satellite expansion, RERA activity, jobs, price velocity, and government catalysts.
               </p>
             </motion.section>
 
@@ -2192,6 +2166,12 @@ export default function AreaDetail() {
 
             {/* ── Automated Valuation (AVM) ── */}
             <AVMCard areaSlug={area.slug} country="india" accentColor={color} />
+
+            <MarketPulseCard
+              citySlug={citySlug}
+              areaSlug={area.slug}
+              country="india"
+            />
 
             {/* ── Key Highlights ── */}
             <motion.section
@@ -2371,9 +2351,6 @@ export default function AreaDetail() {
               <NewsSection citySlug={citySlug} areaSlug={area.slug} areaName={area.name} accentColor={color} />
             </motion.div>
 
-            {/* ── Market Pulse ── */}
-            <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
-
             {/* ── Sources & Citations ── */}
             <motion.section
               initial={{ opacity: 0, y: 24 }}
@@ -2429,6 +2406,31 @@ export default function AreaDetail() {
               </p>
             </motion.section>
 
+            <motion.section
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.41 }}
+              className="mb-10"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Shield size={14} style={{ color }} />
+                <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
+                  Buyer Due-Diligence Checklist
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {BUYER_DUE_DILIGENCE_CHECKLIST.map(item => (
+                  <div key={item} className="flex items-start gap-2.5 rounded-xl glass-panel-light border border-white/5 px-3 py-2.5">
+                    <AlertTriangle size={12} className="mt-0.5 flex-shrink-0 text-amber-400" />
+                    <p className="text-[12px] font-sans leading-relaxed text-slate-300">{item}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-3 text-[11px] font-sans leading-relaxed text-slate-500">
+                PlotDNA narrows the area shortlist. These checks still need independent document, site, and professional verification before paying an advance.
+              </p>
+            </motion.section>
+
             {/* ── Nearby areas ── */}
             {nearby.length > 0 && (
               <motion.section
@@ -2456,33 +2458,40 @@ export default function AreaDetail() {
                       <button
                         key={nearArea.slug}
                         onClick={() => navigate(`/area/${nearArea.slug}`)}
-                        className="group relative w-full text-left rounded-2xl p-4 transition-all duration-300 cursor-pointer overflow-hidden"
+                        className="group relative w-full text-left rounded-2xl p-4 transition-all duration-300 cursor-pointer overflow-hidden bg-slate-950/35"
                         style={{
-                          background: `linear-gradient(145deg, ${nearColor}18, rgba(15,23,42,0.82) 38%, rgba(2,6,23,0.92))`,
-                          border: `1px solid ${nearColor}38`,
-                          boxShadow: `inset 0 1px 0 rgba(255,255,255,0.06), 0 18px 34px rgba(0,0,0,0.22)`,
+                          border: '1px solid rgba(255,255,255,0.08)',
+                          boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.05), 0 16px 30px rgba(0,0,0,0.18)',
                         }}
                       >
                         <div
-                          className="absolute inset-x-0 top-0 h-px opacity-80"
-                          style={{ background: `linear-gradient(90deg, transparent, ${nearColor}, transparent)` }}
+                          className="absolute inset-y-0 left-0 w-1 opacity-90"
+                          style={{ background: `linear-gradient(180deg, #38bdf8, ${nearColor})` }}
                         />
                         <div className="flex items-start justify-between gap-3 mb-3">
                           <div className="min-w-0">
+                            <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-sky-300 mb-1">
+                              Recommended area
+                            </p>
                             <p className="text-[15px] font-display font-black text-slate-50 truncate tracking-tight">
                               {nearArea.name}
                             </p>
                             <p className="text-[10px] font-sans text-slate-400 mt-1">
-                              {nearArea.category} · {nearTier}
+                              {nearArea.category} / {nearTier}
                             </p>
                           </div>
-                          <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                            <span className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">DNA</span>
-                            <span className="text-3xl font-display font-black leading-none" style={{ color: nearColor }}>
-                              {nearArea.score}
-                            </span>
+                          <div className="flex flex-col items-end gap-1 flex-shrink-0 rounded-xl bg-slate-900/70 border border-white/5 px-2.5 py-2">
+                            <span className="text-[8px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">DNA</span>
+                            <span className="text-base font-display font-black leading-none" style={{ color: nearColor }}>{nearArea.score}</span>
                           </div>
                         </div>
+
+                        {topReason && (
+                          <div className="rounded-xl border border-sky-400/15 bg-sky-400/[0.06] px-3 py-2.5 mb-3">
+                            <p className="text-[8px] font-sans font-bold uppercase tracking-[0.12em] text-sky-300">{topReason.label}</p>
+                            <p className="text-[11px] font-sans font-semibold text-slate-200 mt-1 leading-relaxed">{topReason.value}</p>
+                          </div>
+                        )}
 
                         <div className="grid grid-cols-3 gap-2 mb-3">
                           <div className="rounded-xl px-2.5 py-2 bg-slate-950/35 border border-white/5">
@@ -2499,11 +2508,6 @@ export default function AreaDetail() {
                           </div>
                         </div>
 
-                        {topReason && (
-                          <p className="text-[10px] font-sans text-slate-300 mt-1 leading-relaxed">
-                            <span className="font-bold" style={{ color: nearColor }}>{topReason.label}:</span> {topReason.value}
-                          </p>
-                        )}
                         {secondReason && (
                           <p className="text-[10px] font-sans text-slate-400 mt-1 leading-relaxed">
                             <span className="font-bold text-slate-300">{secondReason.label}:</span> {secondReason.value}
