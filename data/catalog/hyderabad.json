@@ -16206,6 +16206,1714 @@
       "dataConfidence": "estimated",
       "dataAsOf": "2026-06-04",
       "signalsAvailable": 3
+    },
+    {
+      "slug": "sangareddy",
+      "name": "Sangareddy",
+      "center": [
+        17.624,
+        78.09
+      ],
+      "polygon": [
+        [
+          17.65,
+          78.064
+        ],
+        [
+          17.653,
+          78.092
+        ],
+        [
+          17.646,
+          78.119
+        ],
+        [
+          17.624,
+          78.128
+        ],
+        [
+          17.6,
+          78.118
+        ],
+        [
+          17.589,
+          78.091
+        ],
+        [
+          17.594,
+          78.066
+        ],
+        [
+          17.616,
+          78.052
+        ],
+        [
+          17.64,
+          78.055
+        ]
+      ],
+      "score": 58,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 58,
+        "population": 42,
+        "satellite": 60,
+        "rera": 46,
+        "employment": 58,
+        "priceVelocity": 56,
+        "govtScheme": 62
+      },
+      "livability": {
+        "connectivity": 48,
+        "amenities": 38,
+        "ecommerce": 46,
+        "entertainment": 24,
+        "greenSpaces": 58
+      },
+      "highlights": [
+        "District-headquarter market anchoring the far-west Hyderabad corridor",
+        "NH-65, education and industrial spillover create land-led demand",
+        "Useful as the reference town for Kandi, Sadasivpet and Peddapur comparisons",
+        "Verify project approvals and resale depth before treating quotes as liquid"
+      ],
+      "priceRange": "Rs1,500-3,200/sqft",
+      "yoy": 14,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 5
+    },
+    {
+      "slug": "kandi",
+      "name": "Kandi",
+      "center": [
+        17.584,
+        78.124
+      ],
+      "polygon": [
+        [
+          17.606,
+          78.101
+        ],
+        [
+          17.61,
+          78.126
+        ],
+        [
+          17.602,
+          78.149
+        ],
+        [
+          17.584,
+          78.158
+        ],
+        [
+          17.563,
+          78.149
+        ],
+        [
+          17.555,
+          78.125
+        ],
+        [
+          17.561,
+          78.102
+        ],
+        [
+          17.58,
+          78.093
+        ]
+      ],
+      "score": 59,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 63,
+        "population": 46,
+        "satellite": 62,
+        "rera": 50,
+        "employment": 66,
+        "priceVelocity": 58,
+        "govtScheme": 64
+      },
+      "livability": {
+        "connectivity": 52,
+        "amenities": 42,
+        "ecommerce": 50,
+        "entertainment": 28,
+        "greenSpaces": 60
+      },
+      "highlights": [
+        "IIT Hyderabad and education ecosystem create a durable demand signal",
+        "NH-65 and Sangareddy proximity support west-corridor access",
+        "Institution-led absorption is stronger than general residential depth today",
+        "Verify layout approvals carefully because plotted supply quality varies by village pocket"
+      ],
+      "priceRange": "Rs1,800-3,800/sqft",
+      "yoy": 15,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 5
+    },
+    {
+      "slug": "sadasivpet",
+      "name": "Sadasivpet",
+      "center": [
+        17.619,
+        77.952
+      ],
+      "polygon": [
+        [
+          17.644,
+          77.926
+        ],
+        [
+          17.648,
+          77.954
+        ],
+        [
+          17.64,
+          77.981
+        ],
+        [
+          17.617,
+          77.99
+        ],
+        [
+          17.592,
+          77.98
+        ],
+        [
+          17.584,
+          77.952
+        ],
+        [
+          17.592,
+          77.926
+        ],
+        [
+          17.618,
+          77.915
+        ]
+      ],
+      "score": 55,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 58,
+        "population": 42,
+        "satellite": 60,
+        "rera": 46,
+        "employment": 55,
+        "priceVelocity": 58,
+        "govtScheme": 62
+      },
+      "livability": {
+        "connectivity": 50,
+        "amenities": 38,
+        "ecommerce": 46,
+        "entertainment": 26,
+        "greenSpaces": 62
+      },
+      "highlights": [
+        "NH-65 Mumbai Highway frontage makes it a visible far-west plotted market",
+        "Sangareddy district industrial and education corridor spillover supports land-banking interest",
+        "Entry prices remain materially below west Hyderabad micro-markets",
+        "Liquidity can be thin, so resale horizon and title checks matter more than headline appreciation"
+      ],
+      "priceRange": "Rs900-2,400/sqft",
+      "yoy": 13,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 5
+    },
+    {
+      "slug": "zaheerabad",
+      "name": "Zaheerabad",
+      "center": [
+        17.681,
+        77.607
+      ],
+      "polygon": [
+        [
+          17.71,
+          77.579
+        ],
+        [
+          17.714,
+          77.611
+        ],
+        [
+          17.704,
+          77.64
+        ],
+        [
+          17.68,
+          77.651
+        ],
+        [
+          17.653,
+          77.64
+        ],
+        [
+          17.644,
+          77.607
+        ],
+        [
+          17.654,
+          77.578
+        ],
+        [
+          17.682,
+          77.566
+        ]
+      ],
+      "score": 49,
+      "category": "Industrial",
+      "signals": {
+        "infrastructure": 52,
+        "population": 40,
+        "satellite": 54,
+        "rera": 38,
+        "employment": 62,
+        "priceVelocity": 45,
+        "govtScheme": 56
+      },
+      "livability": {
+        "connectivity": 46,
+        "amenities": 38,
+        "ecommerce": 42,
+        "entertainment": 24,
+        "greenSpaces": 58
+      },
+      "highlights": [
+        "Far-west industrial township on the Hyderabad-Mumbai highway axis",
+        "Manufacturing and logistics signals are stronger than residential end-user depth",
+        "Useful as a maximum-outer-ring watchlist area beyond Sangareddy and Sadasivpet",
+        "Only shortlist after verifying conversion status, access road quality and buyer exit depth"
+      ],
+      "priceRange": "Rs600-1,600/sqft",
+      "yoy": 9,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "indresham",
+      "name": "Indresham",
+      "center": [
+        17.498,
+        78.251
+      ],
+      "polygon": [
+        [
+          17.522,
+          78.251
+        ],
+        [
+          17.516,
+          78.27
+        ],
+        [
+          17.498,
+          78.277
+        ],
+        [
+          17.48,
+          78.27
+        ],
+        [
+          17.474,
+          78.251
+        ],
+        [
+          17.48,
+          78.232
+        ],
+        [
+          17.498,
+          78.225
+        ],
+        [
+          17.516,
+          78.232
+        ]
+      ],
+      "score": 60,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 60,
+        "population": 44,
+        "satellite": 64,
+        "rera": 48,
+        "employment": 58,
+        "priceVelocity": 62,
+        "govtScheme": 60
+      },
+      "livability": {
+        "connectivity": 48,
+        "amenities": 34,
+        "ecommerce": 46,
+        "entertainment": 20,
+        "greenSpaces": 58
+      },
+      "highlights": [
+        "Patancheru-Beeramguda connector with plotted and villa-led buyer interest",
+        "Useful for buyers comparing Isnapur, Muthangi and Beeramguda entry points",
+        "Industrial access is stronger than current social infrastructure depth",
+        "Verify access-road width and layout approvals before treating quotes as comparable"
+      ],
+      "priceRange": "Rs2,600-4,900/sqft",
+      "yoy": 15,
+      "dataConfidence": "partial",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 5
+    },
+    {
+      "slug": "rameshwar-banda",
+      "name": "Rameshwar Banda",
+      "center": [
+        17.469,
+        78.232
+      ],
+      "polygon": [
+        [
+          17.493,
+          78.232
+        ],
+        [
+          17.487,
+          78.251
+        ],
+        [
+          17.469,
+          78.258
+        ],
+        [
+          17.451,
+          78.251
+        ],
+        [
+          17.445,
+          78.232
+        ],
+        [
+          17.451,
+          78.213
+        ],
+        [
+          17.469,
+          78.206
+        ],
+        [
+          17.487,
+          78.213
+        ]
+      ],
+      "score": 62,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 62,
+        "population": 46,
+        "satellite": 66,
+        "rera": 50,
+        "employment": 58,
+        "priceVelocity": 64,
+        "govtScheme": 62
+      },
+      "livability": {
+        "connectivity": 50,
+        "amenities": 36,
+        "ecommerce": 48,
+        "entertainment": 22,
+        "greenSpaces": 62
+      },
+      "highlights": [
+        "West-Hyderabad connector between Kollur, Bhanur and Patancheru-side demand",
+        "Villa and plotted inventory makes it a useful affordability comparison pocket",
+        "Demand is still project-specific rather than uniformly mature",
+        "Check title chain, final access and quoted price carefully"
+      ],
+      "priceRange": "Rs3,200-5,800/sqft",
+      "yoy": 16,
+      "dataConfidence": "partial",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 5
+    },
+    {
+      "slug": "osman-nagar-west",
+      "name": "Osman Nagar West",
+      "center": [
+        17.455,
+        78.299
+      ],
+      "polygon": [
+        [
+          17.479,
+          78.299
+        ],
+        [
+          17.473,
+          78.319
+        ],
+        [
+          17.455,
+          78.325
+        ],
+        [
+          17.437,
+          78.319
+        ],
+        [
+          17.431,
+          78.299
+        ],
+        [
+          17.437,
+          78.28
+        ],
+        [
+          17.455,
+          78.273
+        ],
+        [
+          17.473,
+          78.28
+        ]
+      ],
+      "score": 66,
+      "category": "High Growth",
+      "signals": {
+        "infrastructure": 66,
+        "population": 52,
+        "satellite": 70,
+        "rera": 58,
+        "employment": 60,
+        "priceVelocity": 70,
+        "govtScheme": 66
+      },
+      "livability": {
+        "connectivity": 58,
+        "amenities": 46,
+        "ecommerce": 58,
+        "entertainment": 30,
+        "greenSpaces": 66
+      },
+      "highlights": [
+        "Tellapur-Kollur edge pocket with stronger west-corridor spillover",
+        "Useful where buyers need an alternative to Tellapur and Nallagandla pricing",
+        "Current livability is improving but remains uneven by project and road access",
+        "Compare project approvals and quoted base price before shortlisting"
+      ],
+      "priceRange": "Rs4,800-7,800/sqft",
+      "yoy": 18,
+      "dataConfidence": "partial",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 6
+    },
+    {
+      "slug": "kishan-nagar-patancheru",
+      "name": "Kishan Nagar Patancheru",
+      "center": [
+        17.545,
+        78.258
+      ],
+      "polygon": [
+        [
+          17.569,
+          78.258
+        ],
+        [
+          17.563,
+          78.277
+        ],
+        [
+          17.545,
+          78.284
+        ],
+        [
+          17.527,
+          78.277
+        ],
+        [
+          17.521,
+          78.258
+        ],
+        [
+          17.527,
+          78.239
+        ],
+        [
+          17.545,
+          78.232
+        ],
+        [
+          17.563,
+          78.239
+        ]
+      ],
+      "score": 56,
+      "category": "Industrial",
+      "signals": {
+        "infrastructure": 56,
+        "population": 38,
+        "satellite": 58,
+        "rera": 40,
+        "employment": 60,
+        "priceVelocity": 54,
+        "govtScheme": 56
+      },
+      "livability": {
+        "connectivity": 42,
+        "amenities": 30,
+        "ecommerce": 40,
+        "entertainment": 18,
+        "greenSpaces": 48
+      },
+      "highlights": [
+        "Patancheru northern edge coverage for industrial-adjacent land screens",
+        "Works better as a logistics and plotted-land watchlist than an end-user market",
+        "Buyer upside depends on local road quality and industrial spillover",
+        "Use document checks before comparing against Beeramguda or Ameenpur"
+      ],
+      "priceRange": "Rs2,200-4,200/sqft",
+      "yoy": 13,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "lakdaram",
+      "name": "Lakdaram",
+      "center": [
+        17.565,
+        78.225
+      ],
+      "polygon": [
+        [
+          17.589,
+          78.225
+        ],
+        [
+          17.583,
+          78.244
+        ],
+        [
+          17.565,
+          78.251
+        ],
+        [
+          17.547,
+          78.244
+        ],
+        [
+          17.541,
+          78.225
+        ],
+        [
+          17.547,
+          78.206
+        ],
+        [
+          17.565,
+          78.199
+        ],
+        [
+          17.583,
+          78.206
+        ]
+      ],
+      "score": 54,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 54,
+        "population": 36,
+        "satellite": 58,
+        "rera": 38,
+        "employment": 52,
+        "priceVelocity": 54,
+        "govtScheme": 56
+      },
+      "livability": {
+        "connectivity": 40,
+        "amenities": 28,
+        "ecommerce": 38,
+        "entertainment": 16,
+        "greenSpaces": 58
+      },
+      "highlights": [
+        "Connector between Patancheru, Rudraram and the Sangareddy approach",
+        "Mostly land-led demand with limited current residential depth",
+        "Useful for filling northwest map coverage and affordability comparisons",
+        "Verify conversion status and road frontage before treating pricing as investable"
+      ],
+      "priceRange": "Rs1,800-3,800/sqft",
+      "yoy": 12,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "bachuguda",
+      "name": "Bachuguda",
+      "center": [
+        17.548,
+        78.291
+      ],
+      "polygon": [
+        [
+          17.572,
+          78.291
+        ],
+        [
+          17.566,
+          78.31
+        ],
+        [
+          17.548,
+          78.317
+        ],
+        [
+          17.53,
+          78.31
+        ],
+        [
+          17.524,
+          78.291
+        ],
+        [
+          17.53,
+          78.272
+        ],
+        [
+          17.548,
+          78.265
+        ],
+        [
+          17.566,
+          78.272
+        ]
+      ],
+      "score": 55,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 55,
+        "population": 38,
+        "satellite": 58,
+        "rera": 40,
+        "employment": 54,
+        "priceVelocity": 55,
+        "govtScheme": 56
+      },
+      "livability": {
+        "connectivity": 42,
+        "amenities": 30,
+        "ecommerce": 40,
+        "entertainment": 18,
+        "greenSpaces": 52
+      },
+      "highlights": [
+        "North Patancheru-side filler pocket near Isnapur and Beeramguda",
+        "Gives coordinate searches a closer context than broad nearby fallbacks",
+        "Market evidence is early and should be treated as estimated",
+        "Access, title and local layout status drive buyer suitability"
+      ],
+      "priceRange": "Rs2,000-4,000/sqft",
+      "yoy": 13,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "jinnaram",
+      "name": "Jinnaram",
+      "center": [
+        17.535,
+        78.356
+      ],
+      "polygon": [
+        [
+          17.559,
+          78.356
+        ],
+        [
+          17.553,
+          78.375
+        ],
+        [
+          17.535,
+          78.382
+        ],
+        [
+          17.517,
+          78.375
+        ],
+        [
+          17.511,
+          78.356
+        ],
+        [
+          17.517,
+          78.337
+        ],
+        [
+          17.535,
+          78.33
+        ],
+        [
+          17.553,
+          78.337
+        ]
+      ],
+      "score": 57,
+      "category": "Industrial",
+      "signals": {
+        "infrastructure": 58,
+        "population": 38,
+        "satellite": 60,
+        "rera": 38,
+        "employment": 62,
+        "priceVelocity": 54,
+        "govtScheme": 56
+      },
+      "livability": {
+        "connectivity": 42,
+        "amenities": 28,
+        "ecommerce": 38,
+        "entertainment": 16,
+        "greenSpaces": 50
+      },
+      "highlights": [
+        "Industrial belt north of Ameenpur and Patancheru for logistics-led demand screens",
+        "Employment signal is stronger than residential amenity depth",
+        "Useful as a balanced alternative to Pashamylaram and Bollaram-side pockets",
+        "Check zoning, pollution buffers and access roads before shortlisting"
+      ],
+      "priceRange": "Rs1,800-3,800/sqft",
+      "yoy": 12,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "bollaram-industrial",
+      "name": "Bollaram Industrial",
+      "center": [
+        17.544,
+        78.346
+      ],
+      "polygon": [
+        [
+          17.568,
+          78.346
+        ],
+        [
+          17.562,
+          78.365
+        ],
+        [
+          17.544,
+          78.372
+        ],
+        [
+          17.526,
+          78.365
+        ],
+        [
+          17.52,
+          78.346
+        ],
+        [
+          17.526,
+          78.327
+        ],
+        [
+          17.544,
+          78.32
+        ],
+        [
+          17.562,
+          78.327
+        ]
+      ],
+      "score": 60,
+      "category": "Industrial",
+      "signals": {
+        "infrastructure": 60,
+        "population": 42,
+        "satellite": 62,
+        "rera": 42,
+        "employment": 66,
+        "priceVelocity": 56,
+        "govtScheme": 58
+      },
+      "livability": {
+        "connectivity": 46,
+        "amenities": 32,
+        "ecommerce": 42,
+        "entertainment": 18,
+        "greenSpaces": 48
+      },
+      "highlights": [
+        "Industrial and employment-heavy pocket between Miyapur, Ameenpur and Jinnaram",
+        "Good for understanding west-northwest employment spillover",
+        "Residential suitability varies sharply by buffer, access and project quality",
+        "Treat it as an industrial-adjacent comparison, not a pure livability market"
+      ],
+      "priceRange": "Rs2,200-4,400/sqft",
+      "yoy": 13,
+      "dataConfidence": "partial",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 5
+    },
+    {
+      "slug": "hathnoor",
+      "name": "Hathnoor",
+      "center": [
+        17.653,
+        78.286
+      ],
+      "polygon": [
+        [
+          17.677,
+          78.286
+        ],
+        [
+          17.671,
+          78.305
+        ],
+        [
+          17.653,
+          78.312
+        ],
+        [
+          17.635,
+          78.305
+        ],
+        [
+          17.629,
+          78.286
+        ],
+        [
+          17.635,
+          78.267
+        ],
+        [
+          17.653,
+          78.26
+        ],
+        [
+          17.671,
+          78.267
+        ]
+      ],
+      "score": 50,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 48,
+        "population": 34,
+        "satellite": 54,
+        "rera": 30,
+        "employment": 44,
+        "priceVelocity": 50,
+        "govtScheme": 54
+      },
+      "livability": {
+        "connectivity": 34,
+        "amenities": 22,
+        "ecommerce": 32,
+        "entertainment": 12,
+        "greenSpaces": 66
+      },
+      "highlights": [
+        "Northern Sangareddy-Medak approach area for maximum outskirts visibility",
+        "Primarily a land and plotted-development watchlist today",
+        "Not a near-term substitute for Patancheru or Sangareddy town",
+        "Use only after verifying land-use conversion, title and access quality"
+      ],
+      "priceRange": "Rs900-2,200/sqft",
+      "yoy": 10,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "shivampet",
+      "name": "Shivampet",
+      "center": [
+        17.626,
+        78.352
+      ],
+      "polygon": [
+        [
+          17.65,
+          78.352
+        ],
+        [
+          17.644,
+          78.371
+        ],
+        [
+          17.626,
+          78.378
+        ],
+        [
+          17.608,
+          78.371
+        ],
+        [
+          17.602,
+          78.352
+        ],
+        [
+          17.608,
+          78.333
+        ],
+        [
+          17.626,
+          78.326
+        ],
+        [
+          17.644,
+          78.333
+        ]
+      ],
+      "score": 51,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 50,
+        "population": 34,
+        "satellite": 56,
+        "rera": 30,
+        "employment": 44,
+        "priceVelocity": 50,
+        "govtScheme": 54
+      },
+      "livability": {
+        "connectivity": 34,
+        "amenities": 22,
+        "ecommerce": 32,
+        "entertainment": 12,
+        "greenSpaces": 68
+      },
+      "highlights": [
+        "Northwest rural-urban fringe coverage between Medak road and Hyderabad growth edges",
+        "Useful for long-horizon land screens rather than immediate end-user demand",
+        "Current amenities and resale depth are limited",
+        "Compare with Hathnoor and Narsapur Medak before assuming liquidity"
+      ],
+      "priceRange": "Rs900-2,300/sqft",
+      "yoy": 10,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "narsapur-medak",
+      "name": "Narsapur Medak",
+      "center": [
+        17.735,
+        78.277
+      ],
+      "polygon": [
+        [
+          17.759,
+          78.277
+        ],
+        [
+          17.753,
+          78.296
+        ],
+        [
+          17.735,
+          78.303
+        ],
+        [
+          17.717,
+          78.296
+        ],
+        [
+          17.711,
+          78.277
+        ],
+        [
+          17.717,
+          78.258
+        ],
+        [
+          17.735,
+          78.251
+        ],
+        [
+          17.753,
+          78.258
+        ]
+      ],
+      "score": 50,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 48,
+        "population": 34,
+        "satellite": 56,
+        "rera": 28,
+        "employment": 42,
+        "priceVelocity": 48,
+        "govtScheme": 54
+      },
+      "livability": {
+        "connectivity": 34,
+        "amenities": 22,
+        "ecommerce": 32,
+        "entertainment": 12,
+        "greenSpaces": 70
+      },
+      "highlights": [
+        "Outer Medak-side watchlist market for far-northwest Hyderabad-region coverage",
+        "Land affordability is the main signal, not current urban absorption",
+        "Best used as a maximum-radius comparison point",
+        "Due diligence should focus on title, access and conversion status"
+      ],
+      "priceRange": "Rs800-2,100/sqft",
+      "yoy": 9,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "gummadidala",
+      "name": "Gummadidala",
+      "center": [
+        17.628,
+        78.425
+      ],
+      "polygon": [
+        [
+          17.652,
+          78.425
+        ],
+        [
+          17.646,
+          78.444
+        ],
+        [
+          17.628,
+          78.451
+        ],
+        [
+          17.61,
+          78.444
+        ],
+        [
+          17.604,
+          78.425
+        ],
+        [
+          17.61,
+          78.406
+        ],
+        [
+          17.628,
+          78.399
+        ],
+        [
+          17.646,
+          78.406
+        ]
+      ],
+      "score": 52,
+      "category": "Industrial",
+      "signals": {
+        "infrastructure": 52,
+        "population": 34,
+        "satellite": 56,
+        "rera": 32,
+        "employment": 56,
+        "priceVelocity": 50,
+        "govtScheme": 54
+      },
+      "livability": {
+        "connectivity": 36,
+        "amenities": 24,
+        "ecommerce": 34,
+        "entertainment": 12,
+        "greenSpaces": 58
+      },
+      "highlights": [
+        "Industrial-adjacent northwest connector beyond Bollaram and Jinnaram",
+        "Employment and land-use signals are stronger than residential livability",
+        "Adds context for buyers searching outside the Ameenpur-Patancheru belt",
+        "Verify buffers, access-road width and project permissions carefully"
+      ],
+      "priceRange": "Rs1,000-2,500/sqft",
+      "yoy": 11,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "choutkur",
+      "name": "Choutkur",
+      "center": [
+        17.615,
+        78.176
+      ],
+      "polygon": [
+        [
+          17.639,
+          78.176
+        ],
+        [
+          17.633,
+          78.195
+        ],
+        [
+          17.615,
+          78.202
+        ],
+        [
+          17.597,
+          78.195
+        ],
+        [
+          17.591,
+          78.176
+        ],
+        [
+          17.597,
+          78.157
+        ],
+        [
+          17.615,
+          78.15
+        ],
+        [
+          17.633,
+          78.157
+        ]
+      ],
+      "score": 55,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 54,
+        "population": 36,
+        "satellite": 58,
+        "rera": 36,
+        "employment": 50,
+        "priceVelocity": 54,
+        "govtScheme": 58
+      },
+      "livability": {
+        "connectivity": 38,
+        "amenities": 26,
+        "ecommerce": 36,
+        "entertainment": 14,
+        "greenSpaces": 64
+      },
+      "highlights": [
+        "Connector between Kandi, Rudraram and the Patancheru-Sangareddy corridor",
+        "Useful for reducing gaps around the westward highway belt",
+        "Mostly early-stage land and plotted demand today",
+        "Validate road frontage and legal status before comparing quote levels"
+      ],
+      "priceRange": "Rs1,500-3,200/sqft",
+      "yoy": 12,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "malkapur-sangareddy",
+      "name": "Malkapur Sangareddy",
+      "center": [
+        17.586,
+        78.042
+      ],
+      "polygon": [
+        [
+          17.61,
+          78.042
+        ],
+        [
+          17.604,
+          78.061
+        ],
+        [
+          17.586,
+          78.068
+        ],
+        [
+          17.568,
+          78.061
+        ],
+        [
+          17.562,
+          78.042
+        ],
+        [
+          17.568,
+          78.023
+        ],
+        [
+          17.586,
+          78.016
+        ],
+        [
+          17.604,
+          78.023
+        ]
+      ],
+      "score": 52,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 50,
+        "population": 34,
+        "satellite": 56,
+        "rera": 34,
+        "employment": 46,
+        "priceVelocity": 52,
+        "govtScheme": 54
+      },
+      "livability": {
+        "connectivity": 36,
+        "amenities": 24,
+        "ecommerce": 34,
+        "entertainment": 12,
+        "greenSpaces": 62
+      },
+      "highlights": [
+        "Sangareddy-side filler pocket toward the Sadasivpet highway stretch",
+        "Adds local context where town and highway polygons otherwise leave gaps",
+        "Market is land-led and project-specific",
+        "Check layout approvals, access road and seller documents before shortlisting"
+      ],
+      "priceRange": "Rs1,100-2,800/sqft",
+      "yoy": 11,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "munipally",
+      "name": "Munipally",
+      "center": [
+        17.592,
+        77.887
+      ],
+      "polygon": [
+        [
+          17.616,
+          77.887
+        ],
+        [
+          17.61,
+          77.906
+        ],
+        [
+          17.592,
+          77.913
+        ],
+        [
+          17.574,
+          77.906
+        ],
+        [
+          17.568,
+          77.887
+        ],
+        [
+          17.574,
+          77.868
+        ],
+        [
+          17.592,
+          77.861
+        ],
+        [
+          17.61,
+          77.868
+        ]
+      ],
+      "score": 47,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 44,
+        "population": 30,
+        "satellite": 52,
+        "rera": 24,
+        "employment": 38,
+        "priceVelocity": 44,
+        "govtScheme": 50
+      },
+      "livability": {
+        "connectivity": 30,
+        "amenities": 20,
+        "ecommerce": 28,
+        "entertainment": 10,
+        "greenSpaces": 68
+      },
+      "highlights": [
+        "Far-west Sadasivpet-side watchlist for broad outskirts coverage",
+        "Current urban depth and resale liquidity are thin",
+        "Use only for long-horizon land comparisons",
+        "Legal and conversion checks matter more than projected appreciation"
+      ],
+      "priceRange": "Rs700-1,800/sqft",
+      "yoy": 8,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 3
+    },
+    {
+      "slug": "kohir",
+      "name": "Kohir",
+      "center": [
+        17.602,
+        77.722
+      ],
+      "polygon": [
+        [
+          17.626,
+          77.722
+        ],
+        [
+          17.62,
+          77.741
+        ],
+        [
+          17.602,
+          77.748
+        ],
+        [
+          17.584,
+          77.741
+        ],
+        [
+          17.578,
+          77.722
+        ],
+        [
+          17.584,
+          77.703
+        ],
+        [
+          17.602,
+          77.696
+        ],
+        [
+          17.62,
+          77.703
+        ]
+      ],
+      "score": 45,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 42,
+        "population": 28,
+        "satellite": 50,
+        "rera": 22,
+        "employment": 38,
+        "priceVelocity": 42,
+        "govtScheme": 48
+      },
+      "livability": {
+        "connectivity": 28,
+        "amenities": 18,
+        "ecommerce": 26,
+        "entertainment": 10,
+        "greenSpaces": 68
+      },
+      "highlights": [
+        "Maximum west-corridor watchlist beyond Sadasivpet toward Zaheerabad",
+        "Useful for map completeness, not for core-city recommendations",
+        "Demand is thin and documentation quality varies heavily",
+        "Treat as estimated until project-level evidence is verified"
+      ],
+      "priceRange": "Rs600-1,600/sqft",
+      "yoy": 7,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 3
+    },
+    {
+      "slug": "dharur",
+      "name": "Dharur",
+      "center": [
+        17.455,
+        77.755
+      ],
+      "polygon": [
+        [
+          17.479,
+          77.755
+        ],
+        [
+          17.473,
+          77.774
+        ],
+        [
+          17.455,
+          77.781
+        ],
+        [
+          17.437,
+          77.774
+        ],
+        [
+          17.431,
+          77.755
+        ],
+        [
+          17.437,
+          77.736
+        ],
+        [
+          17.455,
+          77.729
+        ],
+        [
+          17.473,
+          77.736
+        ]
+      ],
+      "score": 49,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 46,
+        "population": 32,
+        "satellite": 54,
+        "rera": 28,
+        "employment": 40,
+        "priceVelocity": 48,
+        "govtScheme": 52
+      },
+      "livability": {
+        "connectivity": 32,
+        "amenities": 20,
+        "ecommerce": 30,
+        "entertainment": 10,
+        "greenSpaces": 70
+      },
+      "highlights": [
+        "Vikarabad-side connector between Mominpet, Marpally and the west belt",
+        "Adds coverage to the visible western gaps around Vikarabad district",
+        "Mostly land-led interest with low current amenity depth",
+        "Use title, conversion and road-access checks as the main buyer filter"
+      ],
+      "priceRange": "Rs700-1,900/sqft",
+      "yoy": 9,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 4
+    },
+    {
+      "slug": "bantwaram",
+      "name": "Bantwaram",
+      "center": [
+        17.548,
+        77.667
+      ],
+      "polygon": [
+        [
+          17.572,
+          77.667
+        ],
+        [
+          17.566,
+          77.686
+        ],
+        [
+          17.548,
+          77.693
+        ],
+        [
+          17.53,
+          77.686
+        ],
+        [
+          17.524,
+          77.667
+        ],
+        [
+          17.53,
+          77.648
+        ],
+        [
+          17.548,
+          77.641
+        ],
+        [
+          17.566,
+          77.648
+        ]
+      ],
+      "score": 45,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 42,
+        "population": 28,
+        "satellite": 50,
+        "rera": 22,
+        "employment": 36,
+        "priceVelocity": 42,
+        "govtScheme": 48
+      },
+      "livability": {
+        "connectivity": 28,
+        "amenities": 18,
+        "ecommerce": 26,
+        "entertainment": 10,
+        "greenSpaces": 70
+      },
+      "highlights": [
+        "Far-west Vikarabad district watchlist for maximum coverage",
+        "Affordability is the main visible signal today",
+        "Do not treat as a mature residential market",
+        "Seller documents and exit depth need strict verification"
+      ],
+      "priceRange": "Rs600-1,600/sqft",
+      "yoy": 7,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 3
+    },
+    {
+      "slug": "peddemul",
+      "name": "Peddemul",
+      "center": [
+        17.345,
+        77.675
+      ],
+      "polygon": [
+        [
+          17.369,
+          77.675
+        ],
+        [
+          17.363,
+          77.694
+        ],
+        [
+          17.345,
+          77.701
+        ],
+        [
+          17.327,
+          77.694
+        ],
+        [
+          17.321,
+          77.675
+        ],
+        [
+          17.327,
+          77.656
+        ],
+        [
+          17.345,
+          77.649
+        ],
+        [
+          17.363,
+          77.656
+        ]
+      ],
+      "score": 44,
+      "category": "Emerging",
+      "signals": {
+        "infrastructure": 40,
+        "population": 28,
+        "satellite": 50,
+        "rera": 22,
+        "employment": 36,
+        "priceVelocity": 40,
+        "govtScheme": 48
+      },
+      "livability": {
+        "connectivity": 28,
+        "amenities": 18,
+        "ecommerce": 26,
+        "entertainment": 10,
+        "greenSpaces": 70
+      },
+      "highlights": [
+        "Outer Vikarabad-Tandur side coverage for low-entry land screens",
+        "Current market depth is thin and should be treated as estimated",
+        "Useful as a map coverage point rather than a recommendation leader",
+        "Verify title, access and conversion before comparing prices"
+      ],
+      "priceRange": "Rs600-1,500/sqft",
+      "yoy": 7,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 3
+    },
+    {
+      "slug": "tandur",
+      "name": "Tandur",
+      "center": [
+        17.248,
+        77.586
+      ],
+      "polygon": [
+        [
+          17.272,
+          77.586
+        ],
+        [
+          17.266,
+          77.605
+        ],
+        [
+          17.248,
+          77.612
+        ],
+        [
+          17.23,
+          77.605
+        ],
+        [
+          17.224,
+          77.586
+        ],
+        [
+          17.23,
+          77.567
+        ],
+        [
+          17.248,
+          77.56
+        ],
+        [
+          17.266,
+          77.567
+        ]
+      ],
+      "score": 46,
+      "category": "Industrial",
+      "signals": {
+        "infrastructure": 42,
+        "population": 30,
+        "satellite": 50,
+        "rera": 24,
+        "employment": 44,
+        "priceVelocity": 42,
+        "govtScheme": 48
+      },
+      "livability": {
+        "connectivity": 30,
+        "amenities": 20,
+        "ecommerce": 28,
+        "entertainment": 10,
+        "greenSpaces": 64
+      },
+      "highlights": [
+        "Far-southwest industrial-town watchlist beyond Vikarabad and Parigi",
+        "Industrial signal is stronger than residential end-user demand",
+        "Included for maximum Hyderabad-region outskirt visibility",
+        "Use only after checking project legality, access and resale depth"
+      ],
+      "priceRange": "Rs600-1,700/sqft",
+      "yoy": 8,
+      "dataConfidence": "estimated",
+      "dataAsOf": "2026-06-04",
+      "signalsAvailable": 3
     }
   ]
 }

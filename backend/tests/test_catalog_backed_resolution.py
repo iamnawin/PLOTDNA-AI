@@ -62,11 +62,19 @@ class CatalogBackedResolutionRouteTests(unittest.TestCase):
 
         frontier_points = [
             ("kollur", 17.425, 78.205),
+            ("beeramguda", 17.51527, 78.29213),
+            ("isnapur", 17.533, 78.276),
             ("bhanur", 17.477, 78.178),
+            ("sangareddy", 17.624, 78.09),
+            ("kandi", 17.584, 78.124),
             ("rudraram", 17.548, 78.189),
+            ("indresham", 17.498, 78.251),
+            ("rameshwar-banda", 17.469, 78.232),
             ("ghanpur", 17.506, 78.139),
+            ("hathnoor", 17.653, 78.286),
             ("jogipet", 17.837, 78.063),
             ("mominpet", 17.403, 77.767),
+            ("dharur", 17.455, 77.755),
         ]
 
         for expected_slug, lat, lng in frontier_points:

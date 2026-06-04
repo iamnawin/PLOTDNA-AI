@@ -1,4 +1,6 @@
+import json
 import unittest
+from pathlib import Path
 
 from fastapi.testclient import TestClient
 
@@ -7,7 +9,7 @@ from app.services.market_catalog import get_city_area, list_city_areas
 
 
 SUPPORTED_CITY_EXPECTATIONS = {
-    "hyderabad": ("adibatla", 216),
+    "hyderabad": ("adibatla", 240),
     "bangalore": ("devanahalli", 20),
     "mumbai": ("panvel", 20),
     "chennai": ("kelambakkam", 21),
@@ -38,6 +40,21 @@ class MarketCatalogServiceTests(unittest.TestCase):
         self.assertIsInstance(area.center, list)
         self.assertGreaterEqual(len(area.polygon), 4)
         self.assertEqual(area.signals.infrastructure, 92)
+
+    def test_hyderabad_catalog_matches_locality_polygons(self):
+        localities_path = (
+            Path(__file__).resolve().parents[2]
+            / "data"
+            / "cities"
+            / "hyderabad"
+            / "localities.json"
+        )
+        localities = json.loads(localities_path.read_text(encoding="utf-8-sig"))
+
+        locality_slugs = {locality["slug"] for locality in localities}
+        catalog_slugs = {area.slug for area in list_city_areas("hyderabad")}
+
+        self.assertSetEqual(catalog_slugs, locality_slugs)
 
     def test_unknown_city_returns_empty_list(self):
         self.assertEqual(list_city_areas("unknown-city"), [])
