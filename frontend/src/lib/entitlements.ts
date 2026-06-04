@@ -35,6 +35,35 @@ export type AttachEmailResult =
   | { status: 'ok'; entitlements: EntitlementsResponse }
   | { status: 'error'; message: string }
 
+export interface EmailOtpRequestResponse {
+  email: string
+  status: 'sent'
+  expiresAt: string
+  resendAfterSeconds: number
+  debugOtp?: string | null
+}
+
+export interface EmailOtpVerifyResponse {
+  email: string
+  status: 'verified'
+  entitlements: EntitlementsResponse
+}
+
+export type EmailOtpRequestResult =
+  | { status: 'ok'; otp: EmailOtpRequestResponse }
+  | { status: 'error'; message: string }
+
+export type EmailOtpVerifyResult =
+  | { status: 'ok'; verification: EmailOtpVerifyResponse }
+  | { status: 'error'; message: string }
+
+export interface UserEventPayload {
+  eventType: string
+  areaSlug?: string | null
+  packageInterest?: ReportPackage | string | null
+  metadata?: string | null
+}
+
 function getStoredToken(): string | null {
   try {
     return window.localStorage.getItem(TOKEN_KEY)
@@ -182,5 +211,53 @@ export async function attachEmail(email: string): Promise<AttachEmailResult> {
     return { status: 'ok', entitlements }
   } catch {
     return { status: 'error', message: 'Could not reach PlotDNA access service.' }
+  }
+}
+
+export async function requestEmailOtp(email: string): Promise<EmailOtpRequestResult> {
+  try {
+    const res = await authedFetch('/api/v1/auth/email-otp/request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email }),
+    })
+    if (!res.ok) {
+      const payload = await res.json().catch(() => null) as { detail?: string } | null
+      return { status: 'error', message: payload?.detail ?? 'Could not send verification code.' }
+    }
+    return { status: 'ok', otp: await res.json() as EmailOtpRequestResponse }
+  } catch {
+    return { status: 'error', message: 'Could not reach PlotDNA access service.' }
+  }
+}
+
+export async function verifyEmailOtp(email: string, otp: string): Promise<EmailOtpVerifyResult> {
+  try {
+    const res = await authedFetch('/api/v1/auth/email-otp/verify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, otp }),
+    })
+    if (!res.ok) {
+      const payload = await res.json().catch(() => null) as { detail?: string } | null
+      return { status: 'error', message: payload?.detail ?? 'Could not verify this code.' }
+    }
+    const verification = await res.json() as EmailOtpVerifyResponse
+    rememberEntitlements(verification.entitlements)
+    return { status: 'ok', verification }
+  } catch {
+    return { status: 'error', message: 'Could not reach PlotDNA access service.' }
+  }
+}
+
+export async function trackUserEvent(payload: UserEventPayload): Promise<void> {
+  try {
+    await authedFetch('/api/v1/entitlements/events', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+  } catch {
+    // User metrics must never block the product flow.
   }
 }

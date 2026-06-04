@@ -5,6 +5,9 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Literal
+import hashlib
+import hmac
+import secrets
 
 from app.core.config import settings
 
@@ -34,16 +37,54 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _parse_iso(value: str | None) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=timezone.utc)
+    return parsed
+
+
+def _hash_otp(email: str, otp: str) -> str:
+    message = f"{email.strip().lower()}:{otp.strip()}".encode("utf-8")
+    return hmac.new(settings.JWT_SECRET.encode("utf-8"), message, hashlib.sha256).hexdigest()
+
+
+def normalize_email(email: str) -> str:
+    normalized = email.strip().lower()
+    if len(normalized) < 6 or len(normalized) > 254:
+        raise ValueError("Invalid email")
+    if "@" not in normalized or "." not in normalized.rsplit("@", 1)[-1]:
+        raise ValueError("Invalid email")
+    if any(char.isspace() for char in normalized):
+        raise ValueError("Invalid email")
+    return normalized
+
+
 def _init(conn: sqlite3.Connection) -> None:
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS users (
           id TEXT PRIMARY KEY,
           email TEXT,
+          email_verified_at TEXT,
+          last_seen_at TEXT,
           created_at TEXT NOT NULL
         )
         """
     )
+    existing_columns = {
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(users)").fetchall()
+    }
+    if "email_verified_at" not in existing_columns:
+        conn.execute("ALTER TABLE users ADD COLUMN email_verified_at TEXT")
+    if "last_seen_at" not in existing_columns:
+        conn.execute("ALTER TABLE users ADD COLUMN last_seen_at TEXT")
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS usage (
@@ -65,6 +106,35 @@ def _init(conn: sqlite3.Connection) -> None:
         )
         """
     )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS email_otps (
+          user_id TEXT PRIMARY KEY,
+          email TEXT NOT NULL,
+          otp_hash TEXT NOT NULL,
+          attempts INTEGER NOT NULL,
+          expires_at TEXT NOT NULL,
+          last_sent_at TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY(user_id) REFERENCES users(id)
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS user_events (
+          id TEXT PRIMARY KEY,
+          user_id TEXT NOT NULL,
+          email TEXT,
+          event_type TEXT NOT NULL,
+          area_slug TEXT,
+          package_interest TEXT,
+          metadata TEXT,
+          created_at TEXT NOT NULL,
+          FOREIGN KEY(user_id) REFERENCES users(id)
+        )
+        """
+    )
     conn.commit()
 
 
@@ -74,6 +144,50 @@ class Entitlements:
     subscription_active: bool
     subscription_expires_at: str | None
     email: str | None
+
+
+@dataclass(frozen=True)
+class EmailOtpRequestResult:
+    email: str
+    status: Literal["sent"]
+    expires_at: str
+    resend_after_seconds: int
+    debug_otp: str | None
+
+
+@dataclass(frozen=True)
+class EmailOtpVerifyResult:
+    email: str
+    status: Literal["verified"]
+    entitlements: Entitlements
+
+
+@dataclass(frozen=True)
+class UserEvent:
+    event_type: str
+    area_slug: str | None = None
+    package_interest: str | None = None
+    metadata: str | None = None
+
+
+@dataclass(frozen=True)
+class TopAreaMetric:
+    area_slug: str
+    count: int
+
+
+@dataclass(frozen=True)
+class AdminMetrics:
+    total_users: int
+    verified_email_users: int
+    download_count: int
+    payment_started_count: int
+    paid_user_count: int
+    live_users: int
+    active_users_today: int
+    active_users_7d: int
+    active_users_30d: int
+    top_downloaded_areas: list[TopAreaMetric]
 
 
 ReportPackage = Literal["instant_pdf_99", "custom_due_diligence_499"]
@@ -122,12 +236,23 @@ def ensure_user(user_id: str) -> None:
         conn.close()
 
 
+def touch_user(user_id: str) -> None:
+    ensure_user(user_id)
+    conn = _connect()
+    try:
+        _init(conn)
+        conn.execute("UPDATE users SET last_seen_at = ? WHERE id = ?", (_now_iso(), user_id))
+        conn.commit()
+    finally:
+        conn.close()
+
+
 def get_entitlements(user_id: str) -> Entitlements:
     ensure_user(user_id)
     conn = _connect()
     try:
         _init(conn)
-        user = conn.execute("SELECT email FROM users WHERE id = ?", (user_id,)).fetchone()
+        user = conn.execute("SELECT email, email_verified_at FROM users WHERE id = ?", (user_id,)).fetchone()
         usage = conn.execute("SELECT free_used FROM usage WHERE user_id = ?", (user_id,)).fetchone()
         ent = conn.execute("SELECT is_active, expires_at FROM entitlements WHERE user_id = ?", (user_id,)).fetchone()
         free_used = int(usage["free_used"]) if usage else 0
@@ -150,7 +275,7 @@ def get_entitlements(user_id: str) -> Entitlements:
             free_remaining=free_remaining,
             subscription_active=active,
             subscription_expires_at=expires_at,
-            email=(user["email"] if user else None),
+            email=(user["email"] if user and user["email_verified_at"] else None),
         )
     finally:
         conn.close()
@@ -204,18 +329,193 @@ def dev_activate_subscription(user_id: str, *, days: int = 30) -> Entitlements:
 
 def set_email(user_id: str, email: str) -> Entitlements:
     ensure_user(user_id)
+    normalized = normalize_email(email)
     conn = _connect()
     try:
         _init(conn)
         conn.execute(
-            "UPDATE users SET email = ? WHERE id = ?",
-            (email.strip().lower(), user_id),
+            "UPDATE users SET email = ?, email_verified_at = ? WHERE id = ?",
+            (normalized, _now_iso(), user_id),
         )
         conn.commit()
     finally:
         conn.close()
 
     return get_entitlements(user_id)
+
+
+def request_email_otp(user_id: str, email: str) -> EmailOtpRequestResult:
+    ensure_user(user_id)
+    normalized = normalize_email(email)
+    now = datetime.now(timezone.utc)
+    conn = _connect()
+    try:
+        _init(conn)
+        existing = conn.execute(
+            "SELECT last_sent_at FROM email_otps WHERE user_id = ?",
+            (user_id,),
+        ).fetchone()
+        last_sent = _parse_iso(existing["last_sent_at"] if existing else None)
+        if last_sent:
+            elapsed = int((now - last_sent).total_seconds())
+            cooldown = int(settings.EMAIL_OTP_RESEND_COOLDOWN_SECONDS)
+            if elapsed < cooldown:
+                raise PermissionError(f"Wait {cooldown - elapsed} seconds before requesting another code.")
+
+        otp = f"{secrets.randbelow(1_000_000):06d}"
+        expires_at = (now + timedelta(minutes=int(settings.EMAIL_OTP_TTL_MINUTES))).isoformat()
+        conn.execute(
+            """
+            INSERT INTO email_otps (user_id, email, otp_hash, attempts, expires_at, last_sent_at, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(user_id) DO UPDATE SET
+              email = excluded.email,
+              otp_hash = excluded.otp_hash,
+              attempts = 0,
+              expires_at = excluded.expires_at,
+              last_sent_at = excluded.last_sent_at
+            """,
+            (user_id, normalized, _hash_otp(normalized, otp), 0, expires_at, now.isoformat(), now.isoformat()),
+        )
+        conn.commit()
+        debug_otp = otp if settings.APP_ENV.lower() != "production" else None
+        return EmailOtpRequestResult(
+            email=normalized,
+            status="sent",
+            expires_at=expires_at,
+            resend_after_seconds=int(settings.EMAIL_OTP_RESEND_COOLDOWN_SECONDS),
+            debug_otp=debug_otp,
+        )
+    finally:
+        conn.close()
+
+
+def verify_email_otp(user_id: str, email: str, otp: str) -> EmailOtpVerifyResult:
+    ensure_user(user_id)
+    normalized = normalize_email(email)
+    cleaned_otp = otp.strip()
+    if len(cleaned_otp) != 6 or not cleaned_otp.isdigit():
+        raise ValueError("Invalid code")
+
+    conn = _connect()
+    try:
+        _init(conn)
+        row = conn.execute(
+            "SELECT email, otp_hash, attempts, expires_at FROM email_otps WHERE user_id = ?",
+            (user_id,),
+        ).fetchone()
+        if not row or row["email"] != normalized:
+            raise ValueError("Invalid code")
+        if int(row["attempts"]) >= int(settings.EMAIL_OTP_MAX_ATTEMPTS):
+            raise ValueError("Too many attempts")
+        expires_at = _parse_iso(row["expires_at"])
+        if not expires_at or expires_at <= datetime.now(timezone.utc):
+            raise ValueError("Code expired")
+
+        if not hmac.compare_digest(row["otp_hash"], _hash_otp(normalized, cleaned_otp)):
+            conn.execute(
+                "UPDATE email_otps SET attempts = attempts + 1 WHERE user_id = ?",
+                (user_id,),
+            )
+            conn.commit()
+            raise ValueError("Invalid code")
+
+        now = _now_iso()
+        conn.execute(
+            "UPDATE users SET email = ?, email_verified_at = ?, last_seen_at = ? WHERE id = ?",
+            (normalized, now, now, user_id),
+        )
+        conn.execute("DELETE FROM email_otps WHERE user_id = ?", (user_id,))
+        conn.commit()
+    finally:
+        conn.close()
+
+    record_user_event(user_id, UserEvent(event_type="otp_verified"))
+    return EmailOtpVerifyResult(email=normalized, status="verified", entitlements=get_entitlements(user_id))
+
+
+def record_user_event(user_id: str, event: UserEvent) -> None:
+    ensure_user(user_id)
+    event_type = event.event_type.strip()
+    if not event_type:
+        raise ValueError("Event type is required")
+    now = _now_iso()
+    conn = _connect()
+    try:
+        _init(conn)
+        user = conn.execute(
+            "SELECT email, email_verified_at FROM users WHERE id = ?",
+            (user_id,),
+        ).fetchone()
+        email = user["email"] if user and user["email_verified_at"] else None
+        conn.execute("UPDATE users SET last_seen_at = ? WHERE id = ?", (now, user_id))
+        conn.execute(
+            """
+            INSERT INTO user_events (id, user_id, email, event_type, area_slug, package_interest, metadata, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                secrets.token_urlsafe(16),
+                user_id,
+                email,
+                event_type,
+                event.area_slug,
+                event.package_interest,
+                event.metadata,
+                now,
+            ),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+
+def get_admin_metrics() -> AdminMetrics:
+    conn = _connect()
+    try:
+        _init(conn)
+        now = datetime.now(timezone.utc)
+
+        def scalar(query: str, params: tuple[object, ...] = ()) -> int:
+            row = conn.execute(query, params).fetchone()
+            return int(row[0] if row else 0)
+
+        live_cutoff = (now - timedelta(minutes=5)).isoformat()
+        today_cutoff = (now - timedelta(days=1)).isoformat()
+        week_cutoff = (now - timedelta(days=7)).isoformat()
+        month_cutoff = (now - timedelta(days=30)).isoformat()
+        top_rows = conn.execute(
+            """
+            SELECT area_slug, COUNT(*) AS count
+            FROM user_events
+            WHERE event_type IN ('pdf_downloaded', 'custom_buyer_brief_downloaded') AND area_slug IS NOT NULL
+            GROUP BY area_slug
+            ORDER BY count DESC, area_slug ASC
+            LIMIT 5
+            """
+        ).fetchall()
+
+        return AdminMetrics(
+            total_users=scalar("SELECT COUNT(*) FROM users"),
+            verified_email_users=scalar("SELECT COUNT(*) FROM users WHERE email_verified_at IS NOT NULL"),
+            download_count=scalar(
+                "SELECT COUNT(*) FROM user_events WHERE event_type IN ('pdf_downloaded', 'custom_buyer_brief_downloaded')"
+            ),
+            payment_started_count=scalar("SELECT COUNT(*) FROM user_events WHERE event_type = 'payment_started'"),
+            paid_user_count=scalar(
+                "SELECT COUNT(DISTINCT user_id) FROM user_events WHERE event_type = 'payment_completed'"
+            ),
+            live_users=scalar("SELECT COUNT(*) FROM users WHERE last_seen_at >= ?", (live_cutoff,)),
+            active_users_today=scalar("SELECT COUNT(*) FROM users WHERE last_seen_at >= ?", (today_cutoff,)),
+            active_users_7d=scalar("SELECT COUNT(*) FROM users WHERE last_seen_at >= ?", (week_cutoff,)),
+            active_users_30d=scalar("SELECT COUNT(*) FROM users WHERE last_seen_at >= ?", (month_cutoff,)),
+            top_downloaded_areas=[
+                TopAreaMetric(area_slug=row["area_slug"], count=int(row["count"]))
+                for row in top_rows
+            ],
+        )
+    finally:
+        conn.close()
 
 
 def get_report_access(user_id: str, package_interest: ReportPackage) -> ReportAccess:
