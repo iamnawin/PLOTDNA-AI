@@ -4946,6 +4946,78 @@ export const hyderabadAreas: MicroMarket[] = [
     "dataConfidence": "partial",
     "dataAsOf": "2026-05-01",
     "signalsAvailable": 6
+  },
+  {
+    ...locality("sangareddy"),
+    "score": 57,
+    "category": "Emerging",
+    "signals": { "infrastructure": 62, "population": 50, "satellite": 60, "rera": 48, "employment": 58, "priceVelocity": 56, "govtScheme": 66 },
+    "livability": { "connectivity": 54, "amenities": 48, "ecommerce": 54, "entertainment": 36, "greenSpaces": 58 },
+    "highlights": [
+      "NH-65 west corridor anchor between Patancheru and Sadasivpet",
+      "Regional Ring Road northern and southern arcs use Sangareddy as a key edge node",
+      "District-headquarter depth supports administration, education and local services",
+      "Best treated as a long-horizon plotted-land screen, not a ready core-city substitute"
+    ],
+    "priceRange": "Rs1,500-3,200/sqft",
+    "yoy": 14,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("kandi"),
+    "score": 59,
+    "category": "Emerging",
+    "signals": { "infrastructure": 63, "population": 46, "satellite": 62, "rera": 50, "employment": 66, "priceVelocity": 58, "govtScheme": 64 },
+    "livability": { "connectivity": 52, "amenities": 42, "ecommerce": 50, "entertainment": 28, "greenSpaces": 60 },
+    "highlights": [
+      "IIT Hyderabad and education ecosystem create a durable non-residential demand signal",
+      "NH-65 and Sangareddy proximity support west-corridor access",
+      "Institution-led absorption is stronger than general residential depth today",
+      "Verify layout approvals carefully because plotted supply quality varies by village pocket"
+    ],
+    "priceRange": "Rs1,800-3,800/sqft",
+    "yoy": 15,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("sadasivpet"),
+    "score": 55,
+    "category": "Emerging",
+    "signals": { "infrastructure": 58, "population": 42, "satellite": 60, "rera": 46, "employment": 55, "priceVelocity": 58, "govtScheme": 62 },
+    "livability": { "connectivity": 50, "amenities": 38, "ecommerce": 46, "entertainment": 26, "greenSpaces": 62 },
+    "highlights": [
+      "NH-65 Mumbai Highway frontage makes it a visible far-west plotted-development market",
+      "Sangareddy district industrial and education corridor spillover supports land banking interest",
+      "Entry prices remain materially below west Hyderabad micro-markets",
+      "Liquidity can be thin, so resale horizon and title checks matter more than headline appreciation"
+    ],
+    "priceRange": "Rs900-2,400/sqft",
+    "yoy": 13,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("zaheerabad"),
+    "score": 49,
+    "category": "Industrial",
+    "signals": { "infrastructure": 52, "population": 40, "satellite": 54, "rera": 38, "employment": 62, "priceVelocity": 45, "govtScheme": 56 },
+    "livability": { "connectivity": 46, "amenities": 38, "ecommerce": 42, "entertainment": 24, "greenSpaces": 58 },
+    "highlights": [
+      "Far-west industrial township on the Hyderabad-Mumbai highway axis",
+      "Manufacturing and logistics signals are stronger than residential end-user depth",
+      "Useful as a maximum-outer-ring watchlist area beyond Sangareddy and Sadasivpet",
+      "Only shortlist after verifying conversion status, access road quality and buyer exit depth"
+    ],
+    "priceRange": "Rs600-1,600/sqft",
+    "yoy": 9,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-05-01",
+    "signalsAvailable": 4
   }
 ]
 

@@ -869,6 +869,26 @@ const HYDERABAD_SOURCE_OVERRIDES: Record<string, AreaSource[]> = {
     { title: 'Vanasthalipuram Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Vanasthalipuram/residential-real-estate-Vanasthalipuram', type: 'data' },
     { title: 'Vanasthalipuram Residential Updates - Hyderabad News', url: 'https://timesofindia.indiatimes.com/city/hyderabad', type: 'news' },
   ],
+  sangareddy: [
+    { title: 'Sangareddy District - Government of Telangana', url: 'https://sangareddy.telangana.gov.in/', type: 'gov' },
+    { title: 'Regional Ring Road Updates - Telangana State Portal', url: 'https://www.telangana.gov.in/news/press-releases/', type: 'gov' },
+    { title: 'Sangareddy Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Sangareddy/residential-real-estate-Sangareddy', type: 'data' },
+  ],
+  kandi: [
+    { title: 'IIT Hyderabad - Official Campus', url: 'https://www.iith.ac.in/', type: 'gov' },
+    { title: 'Sangareddy District Planning Context', url: 'https://sangareddy.telangana.gov.in/', type: 'gov' },
+    { title: 'Kandi and NH-65 Corridor Listings - 99acres', url: 'https://www.99acres.com/property-in-kandi-hyderabad-ffid', type: 'data' },
+  ],
+  sadasivpet: [
+    { title: 'Sadasivpet Municipality - Telangana', url: 'https://sangareddy.telangana.gov.in/', type: 'gov' },
+    { title: 'NH-65 Corridor Context - NHAI', url: 'https://nhai.gov.in/', type: 'gov' },
+    { title: 'Sadasivpet Property Market - MagicBricks', url: 'https://www.magicbricks.com/property-for-sale-rent-in-Sadasivpet/residential-real-estate-Sadasivpet', type: 'data' },
+  ],
+  zaheerabad: [
+    { title: 'Zaheerabad Industrial Context - TSIIC', url: 'https://www.tsiic.telangana.gov.in/', type: 'gov' },
+    { title: 'Sangareddy District - Government of Telangana', url: 'https://sangareddy.telangana.gov.in/', type: 'gov' },
+    { title: 'Zaheerabad Property Market - 99acres', url: 'https://www.99acres.com/property-in-zaheerabad-hyderabad-ffid', type: 'data' },
+  ],
 }
 
 // ── Exports ───────────────────────────────────────────────────────────────────
