@@ -5,25 +5,28 @@ import { CITIES } from '@/data/cities'
 import { getScoreColor } from '@/lib/utils'
 import { getInvestmentReportSummary } from '@/lib/investmentReport'
 import { trackEvent } from '@/lib/analytics'
+import { getSelectableCompareSlugs, parseCompareAreaParams } from '@/lib/compareSelection'
 
-const DEFAULT_AREAS = ['adibatla', 'tukkuguda', 'kokapet']
 const CITY_SLUG = 'hyderabad'
-
-function parseAreaParams(value: string | null) {
-  const slugs = value?.split(',').map(slug => slug.trim()).filter(Boolean) ?? []
-  return [...slugs, ...DEFAULT_AREAS].slice(0, 3)
-}
 
 export default function CompareAreas() {
   const navigate = useNavigate()
   const [searchParams, setSearchParams] = useSearchParams()
   const cityEntry = CITIES[CITY_SLUG]
   const areasParam = searchParams.get('areas')
-  const selectedSlugs = useMemo(() => parseAreaParams(areasParam), [areasParam])
+  const areaBySlug = useMemo(
+    () => new Map(cityEntry.areas.map(area => [area.slug, area])),
+    [cityEntry.areas],
+  )
+  const availableSlugs = useMemo(() => cityEntry.areas.map(area => area.slug), [cityEntry.areas])
+  const selectedSlugs = useMemo(
+    () => parseCompareAreaParams(areasParam, availableSlugs),
+    [areasParam, availableSlugs],
+  )
 
   const selectedAreas = useMemo(
-    () => selectedSlugs.map(slug => cityEntry.areas.find(area => area.slug === slug) ?? cityEntry.areas[0]),
-    [cityEntry.areas, selectedSlugs],
+    () => selectedSlugs.map(slug => areaBySlug.get(slug) ?? cityEntry.areas[0]),
+    [areaBySlug, cityEntry.areas, selectedSlugs],
   )
 
   useEffect(() => {
@@ -93,9 +96,12 @@ export default function CompareAreas() {
                 onChange={event => updateSelection(index, event.target.value)}
                 className="mt-2 w-full rounded-xl border border-white/10 bg-[#080a16] px-3 py-2 text-sm font-sans text-slate-100 outline-none focus:border-emerald-500/50"
               >
-                {cityEntry.areas.map(option => (
-                  <option key={option.slug} value={option.slug}>{option.name}</option>
-                ))}
+                {getSelectableCompareSlugs(selectedSlugs, index, availableSlugs).map(slug => {
+                  const option = areaBySlug.get(slug)
+                  if (!option) return null
+
+                  return <option key={option.slug} value={option.slug}>{option.name}</option>
+                })}
               </select>
             </label>
           ))}

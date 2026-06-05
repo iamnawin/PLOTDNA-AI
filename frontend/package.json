@@ -25,7 +25,8 @@
     "test:brand-tagline": "node scripts/check-brand-tagline.mjs",
     "test:user-investment-estimate": "node --experimental-strip-types scripts/check-user-investment-estimate.mjs",
     "test:custom-buyer-brief": "node --experimental-strip-types scripts/check-custom-buyer-brief.mjs",
-    "test:email-otp-contract": "node scripts/check-email-otp-contract.mjs"
+    "test:email-otp-contract": "node scripts/check-email-otp-contract.mjs",
+    "test:compare-selector-dedupe": "node --experimental-strip-types scripts/check-compare-selector-dedupe.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.3.4",
