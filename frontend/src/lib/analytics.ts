@@ -1,3 +1,5 @@
+import { track as trackVercelEvent } from '@vercel/analytics'
+
 type AnalyticsPayload = Record<string, string | number | boolean | null | undefined>
 
 const ANALYTICS_BASE_URL = (
@@ -8,9 +10,16 @@ const ANALYTICS_BASE_URL = (
 export function trackEvent(name: string, payload: AnalyticsPayload = {}) {
   if (typeof window === 'undefined') return
 
+  const cleanPayload = Object.fromEntries(
+    Object.entries(payload).filter((entry): entry is [string, string | number | boolean] => {
+      const value = entry[1]
+      return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean'
+    }),
+  )
+
   const event = {
     name,
-    payload,
+    payload: cleanPayload,
     at: new Date().toISOString(),
   }
 
@@ -19,6 +28,7 @@ export function trackEvent(name: string, payload: AnalyticsPayload = {}) {
   }
 
   window.dispatchEvent(new CustomEvent('plotdna:analytics', { detail: event }))
+  trackVercelEvent(name, cleanPayload)
 
   void fetch(`${ANALYTICS_BASE_URL}/api/analytics/events`, {
     method: 'POST',

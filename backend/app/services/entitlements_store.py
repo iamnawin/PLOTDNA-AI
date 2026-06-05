@@ -65,11 +65,23 @@ def normalize_email(email: str) -> str:
     return normalized
 
 
+def normalize_name(name: str | None) -> str | None:
+    if name is None:
+        return None
+    normalized = " ".join(name.strip().split())
+    if not normalized:
+        return None
+    if len(normalized) > 80:
+        raise ValueError("Name is too long")
+    return normalized
+
+
 def _init(conn: sqlite3.Connection) -> None:
     conn.execute(
         """
         CREATE TABLE IF NOT EXISTS users (
           id TEXT PRIMARY KEY,
+          name TEXT,
           email TEXT,
           email_verified_at TEXT,
           last_seen_at TEXT,
@@ -83,6 +95,8 @@ def _init(conn: sqlite3.Connection) -> None:
     }
     if "email_verified_at" not in existing_columns:
         conn.execute("ALTER TABLE users ADD COLUMN email_verified_at TEXT")
+    if "name" not in existing_columns:
+        conn.execute("ALTER TABLE users ADD COLUMN name TEXT")
     if "last_seen_at" not in existing_columns:
         conn.execute("ALTER TABLE users ADD COLUMN last_seen_at TEXT")
     conn.execute(
@@ -144,6 +158,7 @@ class Entitlements:
     subscription_active: bool
     subscription_expires_at: str | None
     email: str | None
+    name: str | None
 
 
 @dataclass(frozen=True)
@@ -190,6 +205,12 @@ class AdminMetrics:
     top_downloaded_areas: list[TopAreaMetric]
 
 
+@dataclass(frozen=True)
+class PublicMetrics:
+    live_users: int
+    active_users_today: int
+
+
 ReportPackage = Literal["instant_pdf_99", "custom_due_diligence_499"]
 
 
@@ -218,11 +239,14 @@ def _admin_access_user_ids() -> set[str]:
     }
 
 
-def ensure_user(user_id: str) -> None:
+def ensure_user(user_id: str, *, name: str | None = None) -> None:
+    normalized_name = normalize_name(name)
     conn = _connect()
     try:
         _init(conn)
         conn.execute("INSERT OR IGNORE INTO users (id, created_at) VALUES (?, ?)", (user_id, _now_iso()))
+        if normalized_name:
+            conn.execute("UPDATE users SET name = ? WHERE id = ?", (normalized_name, user_id))
         conn.execute(
             "INSERT OR IGNORE INTO usage (user_id, free_used, updated_at) VALUES (?, ?, ?)",
             (user_id, 0, _now_iso()),
@@ -252,7 +276,7 @@ def get_entitlements(user_id: str) -> Entitlements:
     conn = _connect()
     try:
         _init(conn)
-        user = conn.execute("SELECT email, email_verified_at FROM users WHERE id = ?", (user_id,)).fetchone()
+        user = conn.execute("SELECT name, email, email_verified_at FROM users WHERE id = ?", (user_id,)).fetchone()
         usage = conn.execute("SELECT free_used FROM usage WHERE user_id = ?", (user_id,)).fetchone()
         ent = conn.execute("SELECT is_active, expires_at FROM entitlements WHERE user_id = ?", (user_id,)).fetchone()
         free_used = int(usage["free_used"]) if usage else 0
@@ -276,6 +300,7 @@ def get_entitlements(user_id: str) -> Entitlements:
             subscription_active=active,
             subscription_expires_at=expires_at,
             email=(user["email"] if user and user["email_verified_at"] else None),
+            name=(user["name"] if user else None),
         )
     finally:
         conn.close()
@@ -344,8 +369,19 @@ def set_email(user_id: str, email: str) -> Entitlements:
     return get_entitlements(user_id)
 
 
-def request_email_otp(user_id: str, email: str) -> EmailOtpRequestResult:
-    ensure_user(user_id)
+def _debug_otp_allowed(normalized_email: str) -> bool:
+    if settings.APP_ENV.lower() != "production":
+        return True
+    allowed = {
+        email.strip().lower()
+        for email in settings.EMAIL_OTP_DEBUG_EMAILS.split(",")
+        if email.strip()
+    }
+    return normalized_email in allowed
+
+
+def request_email_otp(user_id: str, email: str, name: str | None = None) -> EmailOtpRequestResult:
+    ensure_user(user_id, name=name)
     normalized = normalize_email(email)
     now = datetime.now(timezone.utc)
     conn = _connect()
@@ -378,7 +414,7 @@ def request_email_otp(user_id: str, email: str) -> EmailOtpRequestResult:
             (user_id, normalized, _hash_otp(normalized, otp), 0, expires_at, now.isoformat(), now.isoformat()),
         )
         conn.commit()
-        debug_otp = otp if settings.APP_ENV.lower() != "production" else None
+        debug_otp = otp if _debug_otp_allowed(normalized) else None
         return EmailOtpRequestResult(
             email=normalized,
             status="sent",
@@ -513,6 +549,26 @@ def get_admin_metrics() -> AdminMetrics:
                 TopAreaMetric(area_slug=row["area_slug"], count=int(row["count"]))
                 for row in top_rows
             ],
+        )
+    finally:
+        conn.close()
+
+
+def get_public_metrics() -> PublicMetrics:
+    conn = _connect()
+    try:
+        _init(conn)
+        now = datetime.now(timezone.utc)
+        live_cutoff = (now - timedelta(minutes=5)).isoformat()
+        today_cutoff = (now - timedelta(days=1)).isoformat()
+
+        def scalar(query: str, params: tuple[object, ...] = ()) -> int:
+            row = conn.execute(query, params).fetchone()
+            return int(row[0] if row else 0)
+
+        return PublicMetrics(
+            live_users=scalar("SELECT COUNT(*) FROM users WHERE last_seen_at >= ?", (live_cutoff,)),
+            active_users_today=scalar("SELECT COUNT(*) FROM users WHERE last_seen_at >= ?", (today_cutoff,)),
         )
     finally:
         conn.close()

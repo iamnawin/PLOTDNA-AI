@@ -18,9 +18,11 @@ for (const needle of requiredEntitlementExports) {
 }
 
 const requiredUiSignals = [
+  'Full name',
   'Enter verification code',
   'Send code',
   'Verify code',
+  'requestEmailOtp(name.trim(), email.trim())',
   'setStep',
 ]
 

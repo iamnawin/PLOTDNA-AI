@@ -11,8 +11,10 @@ function assert(condition, message) {
   }
 }
 
-assert(landing.includes('const LIVE_NOW_COUNT = '), 'landing must define a small live-now constant')
 assert(landing.includes('const liveAreaCount = CITIES.hyderabad.areas.length'), 'live area count must come from the live Hyderabad dataset')
+assert(!landing.includes('const LIVE_NOW_COUNT = '), 'landing must not hardcode live-now user count')
+assert(landing.includes('getPublicMetrics'), 'landing must request public live user metrics')
+assert(landing.includes('liveMetrics?.liveUsers'), 'bottom strip must render live users from backend metrics when available')
 assert(landing.includes('LIVE NOW'), 'bottom strip must show live-now label')
 assert(landing.includes('AREAS LIVE'), 'bottom strip must show the accurate live area count label')
 assert(landing.includes('liveAreaCount.toLocaleString'), 'live area count must render from computed data')
