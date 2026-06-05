@@ -32,7 +32,7 @@ import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib
 import { buildCustomBuyerVerificationBrief, type BuyerBriefInput } from '@/lib/customBuyerBrief'
 import { trackEvent } from '@/lib/analytics'
 import { getReportPaymentLink, openReportPaymentLink, type ReportPackage } from '@/lib/paymentLinks'
-import { checkReportAccess, trackUserEvent } from '@/lib/entitlements'
+import { checkReportAccess, getCachedEntitlements, trackUserEvent } from '@/lib/entitlements'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
@@ -43,6 +43,7 @@ import MarketPulseCard from '@/components/ui/MarketPulseCard'
 import AVMCard from '@/components/ui/AVMCard'
 import AssistantDock from '@/components/ui/AssistantDock'
 import CustomReportLeadModal from '@/components/ui/CustomReportLeadModal'
+import EmailGateModal from '@/components/ui/EmailGateModal'
 
 interface AreaDetailLocationState {
   fallbackContext?: {
@@ -1286,6 +1287,9 @@ export default function AreaDetail() {
   const [reportAccessUnlocked, setReportAccessUnlocked] = useState(false)
   const [reportPreviewLocked, setReportPreviewLocked] = useState(false)
   const [reportPreviewLockedAreaSlug, setReportPreviewLockedAreaSlug] = useState<string | null>(null)
+  const [emailGateOpen, setEmailGateOpen] = useState(false)
+  const [emailGateEntitlements, setEmailGateEntitlements] = useState(() => getCachedEntitlements())
+  const [pendingReportDownloadSource, setPendingReportDownloadSource] = useState<string | null>(null)
 
   function getMapReturnPath() {
     const coords = fallbackContext?.coords ?? searchCoords
@@ -1727,6 +1731,25 @@ export default function AreaDetail() {
     })
   }
 
+  const openEmailGateForPdf = (source: string) => {
+    if (reportAccessUnlocked) {
+      downloadInstantPdf(source)
+      return
+    }
+
+    setPendingReportDownloadSource(source)
+    setEmailGateOpen(true)
+  }
+
+  const handleEmailGateUnlocked = (nextEntitlements: NonNullable<typeof emailGateEntitlements>) => {
+    setEmailGateEntitlements(nextEntitlements)
+    setEmailGateOpen(false)
+
+    const source = pendingReportDownloadSource ?? 'email_otp_verified'
+    setPendingReportDownloadSource(null)
+    downloadInstantPdf(source)
+  }
+
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
@@ -1801,7 +1824,7 @@ export default function AreaDetail() {
                 areaSlug: area.slug,
                 dataConfidence: displayedConfidence ?? 'estimated',
               })
-              downloadInstantPdf('area_nav_pdf')
+              openEmailGateForPdf('area_nav_pdf')
             }}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 disabled:opacity-45 disabled:cursor-not-allowed"
             style={{ color, border: `1px solid ${color}40` }}
@@ -2059,6 +2082,19 @@ export default function AreaDetail() {
               }}
             />
 
+            <EmailGateModal
+              open={emailGateOpen}
+              entitlements={emailGateEntitlements}
+              title="Verify email to download"
+              description="Add your name and email so PlotDNA can create your test user and unlock the report PDF for this session."
+              primaryLabel="Send code"
+              onClose={() => {
+                setEmailGateOpen(false)
+                setPendingReportDownloadSource(null)
+              }}
+              onUnlocked={handleEmailGateUnlocked}
+            />
+
             {/* Stats row */}
             <div className="grid grid-cols-1 gap-3 mt-4 sm:grid-cols-3">
               <div className="p-3 rounded-2xl text-center glass-panel-light">
@@ -2121,12 +2157,12 @@ export default function AreaDetail() {
             </motion.div>
 
             <ReportExportPanel
-              onDownloadPdf={() => downloadInstantPdf('area_dna_export_cta')}
+              onDownloadPdf={() => openEmailGateForPdf('area_dna_export_cta')}
             />
 
             <TimedDnaAccessGate
               locked={reportPreviewLocked && reportPreviewLockedAreaSlug === area.slug && !reportAccessUnlocked}
-              onUnlock={() => downloadInstantPdf('area_dna_timed_lock')}
+              onUnlock={() => openEmailGateForPdf('area_dna_timed_lock')}
             >
 
             {/* ── Satellite Growth ── */}

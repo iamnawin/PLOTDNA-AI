@@ -377,10 +377,10 @@ export default function Home() {
   }, [buildAreaReportState, navigate])
 
   const handleAreaReportLoaderComplete = useCallback(() => {
-    setAreaReportLoading(false)
     const pendingNav = pendingAreaReportNavRef.current
     pendingAreaReportNavRef.current = null
     pendingNav?.()
+    setAreaReportLoading(false)
   }, [])
 
   async function handleSearchSubmit() {
