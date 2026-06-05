@@ -1,6 +1,7 @@
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
@@ -78,17 +79,80 @@ class EmailOtpMetricsRouteTests(unittest.TestCase):
                 self.assertRegex(allowed_response.json()["debugOtp"], r"^\d{6}$")
 
                 other_client, other_headers = self._client_with_user("otp-normal-user")
-                normal_response = other_client.post(
-                    "/api/v1/auth/email-otp/request",
-                    json={"email": "real-buyer@example.com", "name": "Real Buyer"},
-                    headers=other_headers,
-                )
+                with patch("app.services.entitlements_store.send_email_otp") as send_email_otp:
+                    normal_response = other_client.post(
+                        "/api/v1/auth/email-otp/request",
+                        json={"email": "real-buyer@example.com", "name": "Real Buyer"},
+                        headers=other_headers,
+                    )
                 self.assertEqual(normal_response.status_code, 200)
                 self.assertIsNone(normal_response.json()["debugOtp"])
+                send_email_otp.assert_called_once()
             finally:
                 settings.ENTITLEMENTS_DB_PATH = previous_db_path
                 settings.APP_ENV = previous_env
                 settings.EMAIL_OTP_DEBUG_EMAILS = previous_debug_emails
+
+    def test_production_otp_request_sends_email(self):
+        with self._with_temp_db() as tmp:
+            previous_db_path = settings.ENTITLEMENTS_DB_PATH
+            previous_env = settings.APP_ENV
+            previous_debug_emails = settings.EMAIL_OTP_DEBUG_EMAILS
+            settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
+            settings.APP_ENV = "production"
+            settings.EMAIL_OTP_DEBUG_EMAILS = ""
+            try:
+                client, headers = self._client_with_user("otp-email-user")
+
+                with patch("app.services.entitlements_store.send_email_otp") as send_email_otp:
+                    response = client.post(
+                        "/api/v1/auth/email-otp/request",
+                        json={"email": " Buyer@Example.COM ", "name": " Naveen Buyer "},
+                        headers=headers,
+                    )
+
+                self.assertEqual(response.status_code, 200)
+                self.assertIsNone(response.json()["debugOtp"])
+                send_email_otp.assert_called_once()
+                call = send_email_otp.call_args
+                self.assertEqual(call.kwargs["email"], "buyer@example.com")
+                self.assertEqual(call.kwargs["name"], "Naveen Buyer")
+                self.assertRegex(call.kwargs["otp"], r"^\d{6}$")
+                self.assertEqual(call.kwargs["expires_in_minutes"], settings.EMAIL_OTP_TTL_MINUTES)
+            finally:
+                settings.ENTITLEMENTS_DB_PATH = previous_db_path
+                settings.APP_ENV = previous_env
+                settings.EMAIL_OTP_DEBUG_EMAILS = previous_debug_emails
+
+    def test_production_otp_request_rejects_normal_email_when_delivery_is_not_configured(self):
+        with self._with_temp_db() as tmp:
+            previous_db_path = settings.ENTITLEMENTS_DB_PATH
+            previous_env = settings.APP_ENV
+            previous_debug_emails = settings.EMAIL_OTP_DEBUG_EMAILS
+            previous_smtp_host = settings.EMAIL_SMTP_HOST
+            previous_smtp_from = settings.EMAIL_SMTP_FROM
+            settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
+            settings.APP_ENV = "production"
+            settings.EMAIL_OTP_DEBUG_EMAILS = ""
+            settings.EMAIL_SMTP_HOST = ""
+            settings.EMAIL_SMTP_FROM = ""
+            try:
+                client, headers = self._client_with_user("otp-missing-smtp-user")
+
+                response = client.post(
+                    "/api/v1/auth/email-otp/request",
+                    json={"email": "real-buyer@example.com", "name": "Real Buyer"},
+                    headers=headers,
+                )
+
+                self.assertEqual(response.status_code, 503)
+                self.assertEqual(response.json()["detail"], "Email delivery is not configured.")
+            finally:
+                settings.ENTITLEMENTS_DB_PATH = previous_db_path
+                settings.APP_ENV = previous_env
+                settings.EMAIL_OTP_DEBUG_EMAILS = previous_debug_emails
+                settings.EMAIL_SMTP_HOST = previous_smtp_host
+                settings.EMAIL_SMTP_FROM = previous_smtp_from
 
     def test_email_otp_rejects_wrong_code_and_does_not_unlock_entitlement(self):
         with self._with_temp_db() as tmp:
