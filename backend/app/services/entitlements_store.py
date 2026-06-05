@@ -10,6 +10,7 @@ import hmac
 import secrets
 
 from app.core.config import settings
+from app.services.email_delivery import email_delivery_configured, send_email_otp
 
 
 def _db_path() -> Path:
@@ -381,7 +382,8 @@ def _debug_otp_allowed(normalized_email: str) -> bool:
 
 
 def request_email_otp(user_id: str, email: str, name: str | None = None) -> EmailOtpRequestResult:
-    ensure_user(user_id, name=name)
+    clean_name = name.strip() if name and name.strip() else None
+    ensure_user(user_id, name=clean_name)
     normalized = normalize_email(email)
     now = datetime.now(timezone.utc)
     conn = _connect()
@@ -400,6 +402,7 @@ def request_email_otp(user_id: str, email: str, name: str | None = None) -> Emai
 
         otp = f"{secrets.randbelow(1_000_000):06d}"
         expires_at = (now + timedelta(minutes=int(settings.EMAIL_OTP_TTL_MINUTES))).isoformat()
+        debug_otp = otp if _debug_otp_allowed(normalized) else None
         conn.execute(
             """
             INSERT INTO email_otps (user_id, email, otp_hash, attempts, expires_at, last_sent_at, created_at)
@@ -413,8 +416,14 @@ def request_email_otp(user_id: str, email: str, name: str | None = None) -> Emai
             """,
             (user_id, normalized, _hash_otp(normalized, otp), 0, expires_at, now.isoformat(), now.isoformat()),
         )
+        if email_delivery_configured() or not debug_otp:
+            send_email_otp(
+                email=normalized,
+                name=clean_name,
+                otp=otp,
+                expires_in_minutes=int(settings.EMAIL_OTP_TTL_MINUTES),
+            )
         conn.commit()
-        debug_otp = otp if _debug_otp_allowed(normalized) else None
         return EmailOtpRequestResult(
             email=normalized,
             status="sent",

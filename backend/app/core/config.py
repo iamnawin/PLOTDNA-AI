@@ -25,6 +25,12 @@ class Settings(BaseSettings):
     EMAIL_OTP_RESEND_COOLDOWN_SECONDS: int = 60
     EMAIL_OTP_MAX_ATTEMPTS: int = 5
     EMAIL_OTP_DEBUG_EMAILS: str = ""
+    EMAIL_SMTP_HOST: str = ""
+    EMAIL_SMTP_PORT: int = 587
+    EMAIL_SMTP_USERNAME: str = ""
+    EMAIL_SMTP_PASSWORD: str = ""
+    EMAIL_SMTP_FROM: str = ""
+    EMAIL_SMTP_USE_TLS: bool = True
 
     # CORS (set "*" for public APIs, or comma-separated origins for production)
     ALLOWED_ORIGINS: str = "*"

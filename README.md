@@ -131,6 +131,29 @@ test user id to that environment variable when a trusted admin account should
 bypass payment. `ADMIN_ACCESS_EMAILS` is intentionally ignored in production so
 public users cannot self-declare an admin email to unlock paid reports.
 
+### Email OTP delivery
+
+Customer PDF downloads use email OTP verification. In local development the API
+returns a visible debug code; in production the code is hidden unless the email
+is explicitly allowlisted with `EMAIL_OTP_DEBUG_EMAILS`.
+
+Set these backend environment variables on Render before testing with real
+customer emails:
+
+```bash
+EMAIL_SMTP_HOST=
+EMAIL_SMTP_PORT=587
+EMAIL_SMTP_USERNAME=
+EMAIL_SMTP_PASSWORD=
+EMAIL_SMTP_FROM=
+EMAIL_SMTP_USE_TLS=true
+```
+
+If production SMTP is not configured, normal customer OTP requests return
+`503 Email delivery is not configured.` instead of incorrectly saying the code
+was sent. For internal production testing without SMTP, add the exact test email
+to `EMAIL_OTP_DEBUG_EMAILS`; the frontend will show `Dev code` for that email.
+
 ---
 
 ## Payments
