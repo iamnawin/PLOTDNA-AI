@@ -23,6 +23,7 @@ export default function EmailGateModal({
   primaryLabel = 'Continue',
 }: Props) {
   const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
   const [otp, setOtp] = useState('')
   const [step, setStep] = useState<'email' | 'otp'>('email')
   const [debugOtp, setDebugOtp] = useState<string | null>(null)
@@ -37,7 +38,7 @@ export default function EmailGateModal({
   async function handleRequestCode() {
     setError('')
     setSubmitting(true)
-    const result = await requestEmailOtp(email.trim())
+    const result = await requestEmailOtp(name.trim(), email.trim())
     setSubmitting(false)
 
     if (result.status === 'error') {
@@ -62,6 +63,7 @@ export default function EmailGateModal({
     }
 
     setEmail('')
+    setName('')
     setOtp('')
     setDebugOtp(null)
     setStep('email')
@@ -134,6 +136,18 @@ export default function EmailGateModal({
             <div className="mt-5">
               {step === 'email' ? (
                 <>
+                  <label className="mb-2 block text-[10px] font-mono uppercase tracking-[0.16em] text-[#444455]">
+                    Full name
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => { setName(e.target.value); setError('') }}
+                    onKeyDown={(e) => { if (e.key === 'Enter' && !submitting) void handleRequestCode() }}
+                    placeholder="Your name"
+                    className="mb-4 w-full rounded-2xl border bg-transparent px-4 py-3 font-mono text-sm text-[#e8e8f0] outline-none placeholder:text-[#3a3a52]"
+                    style={{ borderColor: 'rgba(255,255,255,0.09)' }}
+                  />
                   <label className="mb-2 block text-[10px] font-mono uppercase tracking-[0.16em] text-[#444455]">
                     Email
                   </label>

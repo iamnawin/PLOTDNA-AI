@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
@@ -15,6 +15,7 @@ import { resolveMapLink, analyzeBrochure, resolveLocation } from '@/lib/api'
 import { getGoalTopAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import { getCityProductionProfile } from '@/lib/cityProduction'
 import { trackEvent } from '@/lib/analytics'
+import { getPublicMetrics, trackUserEvent, type PublicMetricsResponse } from '@/lib/entitlements'
 import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
 
 const FEATURE_CARDS = [
@@ -40,8 +41,6 @@ const FEATURE_CARDS = [
   },
 ]
 
-const LIVE_NOW_COUNT = 27
-
 export default function Landing() {
   const navigate  = useNavigate()
   const {
@@ -61,6 +60,7 @@ export default function Landing() {
   const [inputError, setInputError]   = useState('')
   const [dnaLoading, setDnaLoading]   = useState(false)
   const [dnaLoaderRunId, setDnaLoaderRunId] = useState(0)
+  const [liveMetrics, setLiveMetrics] = useState<PublicMetricsResponse | null>(null)
   const inputRef      = useRef<HTMLInputElement>(null)
   const fileInputRef  = useRef<HTMLInputElement>(null)
   const pendingNavRef = useRef<(() => void) | null>(null)
@@ -81,6 +81,12 @@ export default function Landing() {
   const allAreas: (MicroMarket & { citySlug: string })[] = Object.entries(CITIES).flatMap(
     ([slug, { areas }]) => areas.map(a => ({ ...a, citySlug: slug }))
   )
+  useEffect(() => {
+    trackEvent('landing_viewed', { source: 'landing' })
+    void trackUserEvent({ eventType: 'landing_viewed' }).then(() => {
+      void getPublicMetrics().then(setLiveMetrics)
+    })
+  }, [])
 
   const parsedCoords  = parseCoords(query)
   const parsedMapUrl  = parseMapUrl(query)
@@ -1073,7 +1079,7 @@ export default function Landing() {
             />
             <div>
               <p className="text-[10px] font-sans font-black uppercase tracking-[0.32em] text-slate-500">LIVE NOW</p>
-              <p className="mt-1 font-display text-lg font-black text-slate-100">{LIVE_NOW_COUNT.toLocaleString('en-IN')}</p>
+              <p className="mt-1 font-display text-lg font-black text-slate-100">{(liveMetrics?.liveUsers ?? 1).toLocaleString('en-IN')}</p>
             </div>
           </div>
 

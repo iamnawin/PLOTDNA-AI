@@ -21,14 +21,16 @@ class EmailOtpMetricsRouteTests(unittest.TestCase):
         with self._with_temp_db() as tmp:
             previous_db_path = settings.ENTITLEMENTS_DB_PATH
             previous_env = settings.APP_ENV
+            previous_debug_emails = settings.EMAIL_OTP_DEBUG_EMAILS
             settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
             settings.APP_ENV = "development"
+            settings.EMAIL_OTP_DEBUG_EMAILS = ""
             try:
                 client, headers = self._client_with_user("otp-user")
 
                 request_response = client.post(
                     "/api/v1/auth/email-otp/request",
-                    json={"email": " Buyer@Example.COM "},
+                    json={"email": " Buyer@Example.COM ", "name": " Naveen Buyer "},
                     headers=headers,
                 )
 
@@ -50,9 +52,43 @@ class EmailOtpMetricsRouteTests(unittest.TestCase):
                 self.assertEqual(verify_body["status"], "verified")
                 self.assertIsNotNone(verify_body["entitlements"]["email"])
                 self.assertEqual(verify_body["entitlements"]["email"], "buyer@example.com")
+                self.assertEqual(verify_body["entitlements"]["name"], "Naveen Buyer")
             finally:
                 settings.ENTITLEMENTS_DB_PATH = previous_db_path
                 settings.APP_ENV = previous_env
+                settings.EMAIL_OTP_DEBUG_EMAILS = previous_debug_emails
+
+    def test_production_otp_debug_code_is_available_only_for_allowlisted_test_email(self):
+        with self._with_temp_db() as tmp:
+            previous_db_path = settings.ENTITLEMENTS_DB_PATH
+            previous_env = settings.APP_ENV
+            previous_debug_emails = settings.EMAIL_OTP_DEBUG_EMAILS
+            settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
+            settings.APP_ENV = "production"
+            settings.EMAIL_OTP_DEBUG_EMAILS = "internal-test@example.com"
+            try:
+                client, headers = self._client_with_user("otp-debug-user")
+
+                allowed_response = client.post(
+                    "/api/v1/auth/email-otp/request",
+                    json={"email": "internal-test@example.com", "name": "Internal Tester"},
+                    headers=headers,
+                )
+                self.assertEqual(allowed_response.status_code, 200)
+                self.assertRegex(allowed_response.json()["debugOtp"], r"^\d{6}$")
+
+                other_client, other_headers = self._client_with_user("otp-normal-user")
+                normal_response = other_client.post(
+                    "/api/v1/auth/email-otp/request",
+                    json={"email": "real-buyer@example.com", "name": "Real Buyer"},
+                    headers=other_headers,
+                )
+                self.assertEqual(normal_response.status_code, 200)
+                self.assertIsNone(normal_response.json()["debugOtp"])
+            finally:
+                settings.ENTITLEMENTS_DB_PATH = previous_db_path
+                settings.APP_ENV = previous_env
+                settings.EMAIL_OTP_DEBUG_EMAILS = previous_debug_emails
 
     def test_email_otp_rejects_wrong_code_and_does_not_unlock_entitlement(self):
         with self._with_temp_db() as tmp:
@@ -163,6 +199,27 @@ class EmailOtpMetricsRouteTests(unittest.TestCase):
             finally:
                 settings.ENTITLEMENTS_DB_PATH = previous_db_path
                 settings.ADMIN_ACCESS_USER_IDS = previous_admin_ids
+
+    def test_public_metrics_exposes_live_counts_without_admin_token(self):
+        with self._with_temp_db() as tmp:
+            previous_db_path = settings.ENTITLEMENTS_DB_PATH
+            settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
+            try:
+                client, buyer_headers = self._client_with_user("public-metrics-user")
+                event_response = client.post(
+                    "/api/v1/entitlements/events",
+                    json={"eventType": "landing_viewed"},
+                    headers=buyer_headers,
+                )
+                metrics_response = client.get("/api/v1/entitlements/public/metrics")
+
+                self.assertEqual(event_response.status_code, 200)
+                self.assertEqual(metrics_response.status_code, 200)
+                metrics = metrics_response.json()
+                self.assertGreaterEqual(metrics["liveUsers"], 1)
+                self.assertGreaterEqual(metrics["activeUsersToday"], 1)
+            finally:
+                settings.ENTITLEMENTS_DB_PATH = previous_db_path
 
 
 if __name__ == "__main__":

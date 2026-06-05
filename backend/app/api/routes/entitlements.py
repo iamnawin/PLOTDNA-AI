@@ -6,6 +6,7 @@ from app.core.config import settings
 from app.services.entitlements_store import (
     AdminMetrics,
     Entitlements,
+    PublicMetrics,
     ReportAccess,
     ReportPackage,
     UserEvent,
@@ -13,6 +14,7 @@ from app.services.entitlements_store import (
     dev_activate_subscription,
     get_admin_metrics,
     get_entitlements,
+    get_public_metrics,
     get_report_access,
     record_user_event,
     touch_user,
@@ -27,6 +29,7 @@ class EntitlementsResponse(BaseModel):
     subscription_active: bool
     subscription_expires_at: str | None
     email: str | None
+    name: str | None
 
 
 class ReportAccessResponse(BaseModel):
@@ -66,6 +69,11 @@ class AdminMetricsResponse(BaseModel):
     topDownloadedAreas: list[TopDownloadedAreaResponse]
 
 
+class PublicMetricsResponse(BaseModel):
+    liveUsers: int
+    activeUsersToday: int
+
+
 def _to_response(ent: Entitlements) -> EntitlementsResponse:
     return EntitlementsResponse(
         free_remaining=ent.free_remaining,
@@ -73,6 +81,7 @@ def _to_response(ent: Entitlements) -> EntitlementsResponse:
         subscription_active=ent.subscription_active,
         subscription_expires_at=ent.subscription_expires_at,
         email=ent.email,
+        name=ent.name,
     )
 
 
@@ -104,6 +113,13 @@ def _to_metrics_response(metrics: AdminMetrics) -> AdminMetricsResponse:
     )
 
 
+def _to_public_metrics_response(metrics: PublicMetrics) -> PublicMetricsResponse:
+    return PublicMetricsResponse(
+        liveUsers=metrics.live_users,
+        activeUsersToday=metrics.active_users_today,
+    )
+
+
 def _require_admin(user_id: str) -> None:
     allowed = {
         admin_id.strip()
@@ -117,6 +133,11 @@ def _require_admin(user_id: str) -> None:
 @router.get("", response_model=EntitlementsResponse)
 def me(user_id: str = Depends(require_user_id)):
     return _to_response(get_entitlements(user_id))
+
+
+@router.get("/public/metrics", response_model=PublicMetricsResponse)
+def public_metrics():
+    return _to_public_metrics_response(get_public_metrics())
 
 
 @router.get("/report-access", response_model=ReportAccessResponse)

@@ -16,6 +16,7 @@ export interface EntitlementsResponse {
   subscription_active: boolean
   subscription_expires_at: string | null
   email: string | null
+  name: string | null
 }
 
 export interface ReportAccessResponse {
@@ -62,6 +63,11 @@ export interface UserEventPayload {
   areaSlug?: string | null
   packageInterest?: ReportPackage | string | null
   metadata?: string | null
+}
+
+export interface PublicMetricsResponse {
+  liveUsers: number
+  activeUsersToday: number
 }
 
 function getStoredToken(): string | null {
@@ -214,12 +220,12 @@ export async function attachEmail(email: string): Promise<AttachEmailResult> {
   }
 }
 
-export async function requestEmailOtp(email: string): Promise<EmailOtpRequestResult> {
+export async function requestEmailOtp(name: string, email: string): Promise<EmailOtpRequestResult> {
   try {
     const res = await authedFetch('/api/v1/auth/email-otp/request', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
+      body: JSON.stringify({ name, email }),
     })
     if (!res.ok) {
       const payload = await res.json().catch(() => null) as { detail?: string } | null
@@ -228,6 +234,16 @@ export async function requestEmailOtp(email: string): Promise<EmailOtpRequestRes
     return { status: 'ok', otp: await res.json() as EmailOtpRequestResponse }
   } catch {
     return { status: 'error', message: 'Could not reach PlotDNA access service.' }
+  }
+}
+
+export async function getPublicMetrics(): Promise<PublicMetricsResponse | null> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/v1/entitlements/public/metrics`)
+    if (!res.ok) return null
+    return await res.json() as PublicMetricsResponse
+  } catch {
+    return null
   }
 }
 

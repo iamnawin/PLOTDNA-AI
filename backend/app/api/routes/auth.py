@@ -20,6 +20,7 @@ class AnonymousAuthResponse(BaseModel):
 
 class EmailOtpRequest(BaseModel):
     email: str
+    name: str | None = None
 
 
 class EmailOtpRequestResponse(BaseModel):
@@ -36,6 +37,7 @@ class EntitlementsResponse(BaseModel):
     subscription_active: bool
     subscription_expires_at: str | None
     email: str | None
+    name: str | None
 
 
 class EmailOtpVerifyRequest(BaseModel):
@@ -58,6 +60,7 @@ def _to_entitlements_response(entitlements: Entitlements) -> EntitlementsRespons
         subscription_active=entitlements.subscription_active,
         subscription_expires_at=entitlements.subscription_expires_at,
         email=entitlements.email,
+        name=entitlements.name,
     )
 
 
@@ -77,7 +80,7 @@ def anonymous_auth():
 @router.post("/email-otp/request", response_model=EmailOtpRequestResponse)
 def request_email_code(body: EmailOtpRequest, user_id: str = Depends(require_user_id)):
     try:
-        result = request_email_otp(user_id, body.email)
+        result = request_email_otp(user_id, body.email, body.name)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except PermissionError as exc:

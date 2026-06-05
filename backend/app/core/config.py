@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     EMAIL_OTP_TTL_MINUTES: int = 10
     EMAIL_OTP_RESEND_COOLDOWN_SECONDS: int = 60
     EMAIL_OTP_MAX_ATTEMPTS: int = 5
+    EMAIL_OTP_DEBUG_EMAILS: str = ""
 
     # CORS (set "*" for public APIs, or comma-separated origins for production)
     ALLOWED_ORIGINS: str = "*"
