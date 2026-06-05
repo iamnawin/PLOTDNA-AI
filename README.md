@@ -57,10 +57,10 @@ workflows.
 
 ### Production Deployment State
 
-As of 2026-06-04, the public Vercel production deployment reflects `main`
-through PR #45. Open or draft PRs, including PR #46 and PR #47, deploy only to
-preview until they are merged into `main` and Vercel completes a production
-deployment.
+Before 2026-06-05, the public Vercel production deployment reflected `main`
+through PR #45, so PR #46 and PR #47 were visible only in preview deployments.
+As of 2026-06-05, PR #46 and PR #47 have been merged into `main`; production
+visibility now depends on the latest Vercel production deployment for `main`.
 
 If a new feature, polygon, or data update is visible in a PR preview but not on
 the public site, first confirm:

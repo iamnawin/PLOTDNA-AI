@@ -8,9 +8,10 @@ until project-level evidence improves.
 
 ## Deployment Note
 
-Production Vercel currently reflects `main` through PR #45. PR #46 and PR #47
-must be merged into `main` before the public Vercel site can show email OTP,
-user metrics, expanded polygons, and updated Hyderabad catalog coverage.
+Before 2026-06-05, production Vercel reflected `main` through PR #45. PR #46
+and PR #47 were preview-only until they were merged into `main`. As of
+2026-06-05, both PRs are merged; the public site should update after the latest
+Vercel production deployment for `main` completes.
 
 Preview deployments are not production deployments. If a change appears in a PR
 preview but not on the public site, check that the PR is merged, the `main`
