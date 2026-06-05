@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Mail, X } from 'lucide-react'
-import { attachEmail, type EntitlementsResponse } from '@/lib/entitlements'
+import { KeyRound, Mail, X } from 'lucide-react'
+import { requestEmailOtp, verifyEmailOtp, type EntitlementsResponse } from '@/lib/entitlements'
 
 interface Props {
   open: boolean
@@ -23,6 +23,9 @@ export default function EmailGateModal({
   primaryLabel = 'Continue',
 }: Props) {
   const [email, setEmail] = useState('')
+  const [otp, setOtp] = useState('')
+  const [step, setStep] = useState<'email' | 'otp'>('email')
+  const [debugOtp, setDebugOtp] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
@@ -31,10 +34,26 @@ export default function EmailGateModal({
     return `${entitlements.free_limit} free searches`
   }, [entitlements])
 
-  async function handleSubmit() {
+  async function handleRequestCode() {
     setError('')
     setSubmitting(true)
-    const result = await attachEmail(email.trim())
+    const result = await requestEmailOtp(email.trim())
+    setSubmitting(false)
+
+    if (result.status === 'error') {
+      setError(result.message)
+      return
+    }
+
+    setEmail(result.otp.email)
+    setDebugOtp(result.otp.debugOtp ?? null)
+    setStep('otp')
+  }
+
+  async function handleVerifyCode() {
+    setError('')
+    setSubmitting(true)
+    const result = await verifyEmailOtp(email.trim(), otp.trim())
     setSubmitting(false)
 
     if (result.status === 'error') {
@@ -43,7 +62,23 @@ export default function EmailGateModal({
     }
 
     setEmail('')
-    onUnlocked(result.entitlements)
+    setOtp('')
+    setDebugOtp(null)
+    setStep('email')
+    onUnlocked(result.verification.entitlements)
+  }
+
+  function handleClose() {
+    setError('')
+    onClose()
+  }
+
+  function handlePrimaryAction() {
+    if (step === 'otp') {
+      void handleVerifyCode()
+      return
+    }
+    void handleRequestCode()
   }
 
   return (
@@ -77,15 +112,19 @@ export default function EmailGateModal({
                     border: '1px solid rgba(0,230,118,0.24)',
                   }}
                 >
-                  <Mail size={16} className="text-[#00e676]" />
+                  {step === 'otp'
+                    ? <KeyRound size={16} className="text-[#00e676]" />
+                    : <Mail size={16} className="text-[#00e676]" />}
                 </div>
                 <h2 className="font-display text-lg font-bold text-[#f4f4fb]">{title}</h2>
                 <p className="mt-2 text-sm font-mono text-[#7d7d92]">
-                  {description ?? `You've used ${searchesLabel}. Add your email to keep searching in PlotDNA.`}
+                  {step === 'otp'
+                    ? `Enter verification code sent to ${email}.`
+                    : description ?? `You've used ${searchesLabel}. Add your email to keep searching in PlotDNA.`}
                 </p>
               </div>
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="rounded-xl p-2 text-[#666680] transition-colors hover:text-[#e8e8f0]"
               >
                 <X size={14} />
@@ -93,18 +132,47 @@ export default function EmailGateModal({
             </div>
 
             <div className="mt-5">
-              <label className="mb-2 block text-[10px] font-mono uppercase tracking-[0.16em] text-[#444455]">
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => { setEmail(e.target.value); setError('') }}
-                onKeyDown={(e) => { if (e.key === 'Enter' && !submitting) void handleSubmit() }}
-                placeholder="you@example.com"
-                className="w-full rounded-2xl border bg-transparent px-4 py-3 font-mono text-sm text-[#e8e8f0] outline-none placeholder:text-[#3a3a52]"
-                style={{ borderColor: 'rgba(255,255,255,0.09)' }}
-              />
+              {step === 'email' ? (
+                <>
+                  <label className="mb-2 block text-[10px] font-mono uppercase tracking-[0.16em] text-[#444455]">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => { setEmail(e.target.value); setError('') }}
+                    onKeyDown={(e) => { if (e.key === 'Enter' && !submitting) void handleRequestCode() }}
+                    placeholder="you@example.com"
+                    className="w-full rounded-2xl border bg-transparent px-4 py-3 font-mono text-sm text-[#e8e8f0] outline-none placeholder:text-[#3a3a52]"
+                    style={{ borderColor: 'rgba(255,255,255,0.09)' }}
+                  />
+                </>
+              ) : (
+                <>
+                  <label className="mb-2 block text-[10px] font-mono uppercase tracking-[0.16em] text-[#444455]">
+                    Verification code
+                  </label>
+                  <input
+                    inputMode="numeric"
+                    value={otp}
+                    onChange={(e) => { setOtp(e.target.value.replace(/\D/g, '').slice(0, 6)); setError('') }}
+                    onKeyDown={(e) => { if (e.key === 'Enter' && !submitting) void handleVerifyCode() }}
+                    placeholder="Enter verification code"
+                    className="w-full rounded-2xl border bg-transparent px-4 py-3 font-mono text-sm text-[#e8e8f0] outline-none placeholder:text-[#3a3a52]"
+                    style={{ borderColor: 'rgba(255,255,255,0.09)' }}
+                  />
+                  {debugOtp && (
+                    <p className="mt-2 text-[11px] font-mono text-[#7d7d92]">Dev code: {debugOtp}</p>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => { setStep('email'); setOtp(''); setError('') }}
+                    className="mt-3 text-[11px] font-mono text-[#00e676]"
+                  >
+                    Change email
+                  </button>
+                </>
+              )}
               {error && (
                 <p className="mt-2 text-[11px] font-mono text-[#ef4444]">{error}</p>
               )}
@@ -112,7 +180,7 @@ export default function EmailGateModal({
 
             <div className="mt-5 flex gap-3">
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 className="flex-1 rounded-2xl px-4 py-3 text-sm font-mono text-[#888899]"
                 style={{
                   background: 'rgba(255,255,255,0.03)',
@@ -122,7 +190,7 @@ export default function EmailGateModal({
                 Later
               </button>
               <button
-                onClick={() => void handleSubmit()}
+                onClick={handlePrimaryAction}
                 disabled={submitting}
                 className="flex-1 rounded-2xl px-4 py-3 text-sm font-mono font-semibold text-black disabled:opacity-60"
                 style={{
@@ -130,7 +198,7 @@ export default function EmailGateModal({
                   boxShadow: '0 0 24px rgba(0,230,118,0.18)',
                 }}
               >
-                {submitting ? 'Saving...' : primaryLabel}
+                {submitting ? 'Working...' : step === 'otp' ? 'Verify code' : primaryLabel === 'Continue' ? 'Send code' : primaryLabel}
               </button>
             </div>
           </motion.div>

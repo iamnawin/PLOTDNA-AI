@@ -21,6 +21,9 @@ class Settings(BaseSettings):
     DEBUG:    bool = True
     JWT_SECRET: str = "plotdna-dev-only-change-me"
     FREE_SEARCH_LIMIT: int = 5
+    EMAIL_OTP_TTL_MINUTES: int = 10
+    EMAIL_OTP_RESEND_COOLDOWN_SECONDS: int = 60
+    EMAIL_OTP_MAX_ATTEMPTS: int = 5
 
     # CORS (set "*" for public APIs, or comma-separated origins for production)
     ALLOWED_ORIGINS: str = "*"

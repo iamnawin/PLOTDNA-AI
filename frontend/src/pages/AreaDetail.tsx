@@ -32,7 +32,7 @@ import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib
 import { buildCustomBuyerVerificationBrief, type BuyerBriefInput } from '@/lib/customBuyerBrief'
 import { trackEvent } from '@/lib/analytics'
 import { getReportPaymentLink, openReportPaymentLink, type ReportPackage } from '@/lib/paymentLinks'
-import { checkReportAccess } from '@/lib/entitlements'
+import { checkReportAccess, trackUserEvent } from '@/lib/entitlements'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
@@ -1716,6 +1716,12 @@ export default function AreaDetail() {
       reason: 'pdf_test_payment_disabled',
       dataConfidence: displayedConfidence ?? 'estimated',
     })
+    trackUserEvent({
+      eventType: 'pdf_downloaded',
+      areaSlug: area.slug,
+      packageInterest: 'custom_due_diligence_499',
+      metadata: JSON.stringify({ source, citySlug, reason: 'pdf_test_payment_disabled' }),
+    })
     void generateCustomBuyerBriefPDF(area, {
       notes: 'Generated from the direct PDF test flow. Add buyer name, budget, timeline, and project notes before final delivery.',
     })
@@ -2010,6 +2016,17 @@ export default function AreaDetail() {
                   hasConfiguredLink: openedPaymentLink,
                   dataConfidence: displayedConfidence ?? 'estimated',
                 })
+                trackUserEvent({
+                  eventType: 'payment_started',
+                  areaSlug: area.slug,
+                  packageInterest: selectedReportPackage,
+                  metadata: JSON.stringify({
+                    source: selectedReportSource,
+                    citySlug,
+                    provider: 'razorpay_payment_link',
+                    hasConfiguredLink: openedPaymentLink,
+                  }),
+                })
               }}
               onGenerateBrief={(input) => {
                 void generateCustomBuyerBriefPDF(area, input)
@@ -2019,6 +2036,12 @@ export default function AreaDetail() {
                   dataConfidence: displayedConfidence ?? 'estimated',
                   source: selectedReportSource,
                   packageInterest: selectedReportPackage,
+                })
+                trackUserEvent({
+                  eventType: 'custom_buyer_brief_downloaded',
+                  areaSlug: area.slug,
+                  packageInterest: selectedReportPackage,
+                  metadata: JSON.stringify({ source: selectedReportSource, citySlug }),
                 })
               }}
               onClose={() => setCustomReportOpen(false)}
