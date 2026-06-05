@@ -200,7 +200,39 @@ class LocationResolverStore:
                     "reason": "Coordinate falls inside a supported locality polygon." if best_matched_by == "polygon" else "Resolved locality alias is close enough to a supported locality centroid."
                 }
 
-        # 2. NEARBY match check (closest locality within safety radius)
+        # 2. Exact polygon match for raw coordinates without a locality hint.
+        # Choose the closest centroid if adjacent approximate polygons overlap.
+        best_polygon = None
+        best_polygon_dist = float("inf")
+        best_polygon_city = None
+
+        for city_slug, city_data in self.cities.items():
+            localities = city_data["localities"]
+
+            for loc in localities:
+                if point_in_polygon(lat, lng, loc["polygon"]):
+                    distance = dist_km(lat, lng, loc["center"][0], loc["center"][1])
+                    if distance < best_polygon_dist:
+                        best_polygon_dist = distance
+                        best_polygon = loc
+                        best_polygon_city = city_slug
+
+        if best_polygon:
+            return {
+                "tier": "exact",
+                "citySlug": best_polygon_city,
+                "localitySlug": best_polygon["slug"],
+                "localityName": best_polygon["name"],
+                "clusterId": None,
+                "districtSlug": None,
+                "districtName": None,
+                "stateSlug": None,
+                "distanceKm": round(best_polygon_dist, 1),
+                "matchedBy": "polygon",
+                "reason": "Coordinate falls inside a supported locality polygon."
+            }
+
+        # 3. NEARBY match check (closest locality within safety radius)
         best_nearby = None
         best_nearby_dist = float("inf")
         best_nearby_city = None

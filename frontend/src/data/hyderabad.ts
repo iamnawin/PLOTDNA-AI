@@ -5018,6 +5018,654 @@ export const hyderabadAreas: MicroMarket[] = [
     "dataConfidence": "estimated",
     "dataAsOf": "2026-05-01",
     "signalsAvailable": 4
+  },
+  {
+    ...locality("kollur"),
+    "score": 70,
+    "category": "High Growth",
+    "signals": {"infrastructure":72,"population":58,"satellite":74,"rera":64,"employment":64,"priceVelocity":74,"govtScheme":72},
+    "livability": {"connectivity":62,"amenities":52,"ecommerce":66,"entertainment":36,"greenSpaces":68},
+    "highlights": [
+          "ORR-west growth pocket between Tellapur, Mokila and the Mumbai Highway belt",
+          "Large-format villa and plotted layouts make project-level approval checks important",
+          "Kollur is a practical connector market for buyers priced out of Kokapet and Tellapur",
+          "Treat road frontage and final access quality as the main shortlist filter"
+    ],
+    "priceRange": "Rs5,200-8,800/sqft",
+    "yoy": 20,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("velimela"),
+    "score": 68,
+    "category": "Emerging",
+    "signals": {"infrastructure":68,"population":50,"satellite":74,"rera":56,"employment":58,"priceVelocity":72,"govtScheme":70},
+    "livability": {"connectivity":56,"amenities":42,"ecommerce":58,"entertainment":28,"greenSpaces":72},
+    "highlights": [
+          "Fast-emerging west-Hyderabad villa and plotted-development belt near Bhanur and Kollur",
+          "Demand is infrastructure-led, with stronger upside than current daily-use depth",
+          "Best suited to long-horizon buyers who can verify roads, title and layout approvals",
+          "Useful as a lower-entry alternative to Tellapur and Mokila"
+    ],
+    "priceRange": "Rs4,200-7,200/sqft",
+    "yoy": 19,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("bhanur"),
+    "score": 67,
+    "category": "Emerging",
+    "signals": {"infrastructure":66,"population":48,"satellite":72,"rera":54,"employment":60,"priceVelocity":70,"govtScheme":68},
+    "livability": {"connectivity":54,"amenities":40,"ecommerce":56,"entertainment":26,"greenSpaces":74},
+    "highlights": [
+          "Bhanur bridges the Kollur-Velimela belt and the Patancheru industrial edge",
+          "Villa and plotted inventory is expanding faster than social infrastructure",
+          "Buyer upside depends heavily on road widening and final-mile access quality",
+          "Good watchlist area for west-corridor affordability screens"
+    ],
+    "priceRange": "Rs3,800-6,800/sqft",
+    "yoy": 18,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("edulanagulapally"),
+    "score": 66,
+    "category": "Emerging",
+    "signals": {"infrastructure":64,"population":48,"satellite":70,"rera":54,"employment":58,"priceVelocity":68,"govtScheme":66},
+    "livability": {"connectivity":54,"amenities":40,"ecommerce":56,"entertainment":26,"greenSpaces":68},
+    "highlights": [
+          "Connector pocket between Kollur, Bhanur and Patancheru",
+          "Useful for plotted and villa screens where buyer entry price matters",
+          "Market depth is still uneven, so project documents need close checks",
+          "Likely to benefit from broader west-corridor spillover rather than one single catalyst"
+    ],
+    "priceRange": "Rs3,600-6,200/sqft",
+    "yoy": 17,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("rudraram"),
+    "score": 63,
+    "category": "Industrial",
+    "signals": {"infrastructure":64,"population":44,"satellite":66,"rera":48,"employment":66,"priceVelocity":60,"govtScheme":62},
+    "livability": {"connectivity":50,"amenities":36,"ecommerce":48,"entertainment":22,"greenSpaces":58},
+    "highlights": [
+          "Industrial and education-influenced pocket between Patancheru and Sangareddy",
+          "Works better as a logistics and land-appreciation screen than a mature residential market",
+          "NH-65 access is the main infrastructure signal",
+          "Verify zoning, conversion and access-road status before shortlisting"
+    ],
+    "priceRange": "Rs2,800-5,200/sqft",
+    "yoy": 15,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("ghanpur"),
+    "score": 61,
+    "category": "Emerging",
+    "signals": {"infrastructure":62,"population":42,"satellite":66,"rera":46,"employment":56,"priceVelocity":62,"govtScheme":64},
+    "livability": {"connectivity":48,"amenities":34,"ecommerce":46,"entertainment":20,"greenSpaces":64},
+    "highlights": [
+          "Westward connector between Bhanur, Kandi and Sangareddy",
+          "Land-led demand is stronger than apartment-market depth today",
+          "Useful for very early-stage growth screens where holding period is longer",
+          "Road access and clean title are more important than headline price per sqft"
+    ],
+    "priceRange": "Rs2,400-4,800/sqft",
+    "yoy": 15,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("nandigama-west"),
+    "score": 58,
+    "category": "Emerging",
+    "signals": {"infrastructure":58,"population":40,"satellite":62,"rera":44,"employment":52,"priceVelocity":60,"govtScheme":62},
+    "livability": {"connectivity":46,"amenities":32,"ecommerce":44,"entertainment":20,"greenSpaces":60},
+    "highlights": [
+          "Southwest connector near Shadnagar and Farooknagar expansion pockets",
+          "Affordable plotted supply is the main buyer signal",
+          "Works best as a long-horizon screen, not a ready end-user substitute",
+          "Confirm HMDA or local layout approval before comparing quoted prices"
+    ],
+    "priceRange": "Rs1,800-3,800/sqft",
+    "yoy": 14,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("peddapur-sangareddy"),
+    "score": 56,
+    "category": "Emerging",
+    "signals": {"infrastructure":56,"population":38,"satellite":60,"rera":42,"employment":52,"priceVelocity":56,"govtScheme":60},
+    "livability": {"connectivity":44,"amenities":30,"ecommerce":42,"entertainment":18,"greenSpaces":62},
+    "highlights": [
+          "Outer Sangareddy connector pocket on the Kandi-Sadasivpet side",
+          "Mostly plotted and land-led demand with limited current urban depth",
+          "Useful for maximum-affordability west-corridor comparisons",
+          "Liquidity and documentation checks should drive buyer decisions"
+    ],
+    "priceRange": "Rs1,600-3,200/sqft",
+    "yoy": 13,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("pulkal"),
+    "score": 53,
+    "category": "Emerging",
+    "signals": {"infrastructure":52,"population":36,"satellite":58,"rera":36,"employment":46,"priceVelocity":52,"govtScheme":58},
+    "livability": {"connectivity":38,"amenities":26,"ecommerce":36,"entertainment":16,"greenSpaces":66},
+    "highlights": [
+          "Northern Sangareddy hinterland pocket for very early land-watchlist coverage",
+          "Agricultural conversion and access-road quality dominate the risk profile",
+          "Not a core-city replacement; use only for long-horizon affordability screens",
+          "Best compared with Jogipet, Andole and Sadasivpet rather than Tellapur/Kokapet"
+    ],
+    "priceRange": "Rs900-2,300/sqft",
+    "yoy": 11,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("andole"),
+    "score": 52,
+    "category": "Emerging",
+    "signals": {"infrastructure":50,"population":36,"satellite":58,"rera":34,"employment":44,"priceVelocity":52,"govtScheme":56},
+    "livability": {"connectivity":38,"amenities":26,"ecommerce":36,"entertainment":16,"greenSpaces":66},
+    "highlights": [
+          "Far-northwest district corridor beyond Sangareddy",
+          "Primarily a plotted-land and agricultural-conversion watchlist market",
+          "Entry pricing can look attractive but exit depth is still thin",
+          "Use due diligence on title, land use and road access before comparing returns"
+    ],
+    "priceRange": "Rs800-2,200/sqft",
+    "yoy": 10,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("jogipet"),
+    "score": 51,
+    "category": "Emerging",
+    "signals": {"infrastructure":50,"population":34,"satellite":58,"rera":32,"employment":44,"priceVelocity":50,"govtScheme":56},
+    "livability": {"connectivity":38,"amenities":26,"ecommerce":34,"entertainment":16,"greenSpaces":68},
+    "highlights": [
+          "Far-northwest Sangareddy-side watchlist area for max-outskirts coverage",
+          "Mostly long-horizon land demand rather than immediate residential absorption",
+          "Strongest use in the app is as an outer comparison card, not a DNA-score leader",
+          "Confirm conversion, road access and seller documents before any negotiation"
+    ],
+    "priceRange": "Rs700-2,000/sqft",
+    "yoy": 10,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("mominpet"),
+    "score": 52,
+    "category": "Emerging",
+    "signals": {"infrastructure":48,"population":34,"satellite":58,"rera":32,"employment":42,"priceVelocity":52,"govtScheme":56},
+    "livability": {"connectivity":36,"amenities":24,"ecommerce":34,"entertainment":14,"greenSpaces":70},
+    "highlights": [
+          "Vikarabad-side outskirts pocket for westward expansion visibility",
+          "Good for low-entry land screens, not mature apartment demand",
+          "Upside is tied to regional road access and buyer patience",
+          "Title, conversion and resale depth checks are mandatory here"
+    ],
+    "priceRange": "Rs800-2,200/sqft",
+    "yoy": 10,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("marpally"),
+    "score": 50,
+    "category": "Emerging",
+    "signals": {"infrastructure":46,"population":34,"satellite":56,"rera":30,"employment":42,"priceVelocity":48,"govtScheme":54},
+    "livability": {"connectivity":34,"amenities":24,"ecommerce":32,"entertainment":14,"greenSpaces":72},
+    "highlights": [
+          "Far-west Vikarabad district watchlist area with low current urban intensity",
+          "Land affordability is the main signal, not near-term livability",
+          "Use only for long holding periods and verified legal paperwork",
+          "Compare against Mominpet and Vikarabad before assuming liquidity"
+    ],
+    "priceRange": "Rs700-1,900/sqft",
+    "yoy": 9,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("nawabpet-vikarabad"),
+    "score": 53,
+    "category": "Emerging",
+    "signals": {"infrastructure":50,"population":36,"satellite":58,"rera":34,"employment":44,"priceVelocity":54,"govtScheme":58},
+    "livability": {"connectivity":38,"amenities":26,"ecommerce":36,"entertainment":16,"greenSpaces":68},
+    "highlights": [
+          "Connector between Vikarabad town, Mominpet and the Hyderabad west belt",
+          "Useful for filling the Chevella-Vikarabad coverage gap on map analysis",
+          "Demand is early and land-led, so price quotes need strong verification",
+          "Better suited to watchlists than immediate end-user recommendations"
+    ],
+    "priceRange": "Rs900-2,400/sqft",
+    "yoy": 11,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("parigi"),
+    "score": 51,
+    "category": "Emerging",
+    "signals": {"infrastructure":48,"population":34,"satellite":56,"rera":32,"employment":42,"priceVelocity":50,"govtScheme":56},
+    "livability": {"connectivity":36,"amenities":24,"ecommerce":34,"entertainment":14,"greenSpaces":70},
+    "highlights": [
+          "Southwest Vikarabad-side outer market for maximum outskirts coverage",
+          "Mostly land-banking and low-ticket plotted interest today",
+          "Do not compare directly with ORR micro-markets without adjusting holding period",
+          "Legal verification matters more than projected appreciation here"
+    ],
+    "priceRange": "Rs700-2,000/sqft",
+    "yoy": 10,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("basheerabad"),
+    "score": 48,
+    "category": "Emerging",
+    "signals": {"infrastructure":44,"population":32,"satellite":54,"rera":28,"employment":40,"priceVelocity":46,"govtScheme":52},
+    "livability": {"connectivity":32,"amenities":22,"ecommerce":30,"entertainment":12,"greenSpaces":72},
+    "highlights": [
+          "Far-southwest edge case added for broad Hyderabad-region outskirt visibility",
+          "Coverage is intentionally estimated because active residential market depth is thin",
+          "Useful only as a maximum-radius comparison point",
+          "Verify title, land-use conversion and local access before treating quotes as investable"
+    ],
+    "priceRange": "Rs600-1,700/sqft",
+    "yoy": 8,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 3
+  },
+  {
+    ...locality("indresham"),
+    "score": 60,
+    "category": "Emerging",
+    "signals": { "infrastructure": 60, "population": 44, "satellite": 64, "rera": 48, "employment": 58, "priceVelocity": 62, "govtScheme": 60 },
+    "livability": { "connectivity": 48, "amenities": 34, "ecommerce": 46, "entertainment": 20, "greenSpaces": 58 },
+    "highlights": [
+      "Patancheru-Beeramguda connector with plotted and villa-led buyer interest",
+      "Useful for buyers comparing Isnapur, Muthangi and Beeramguda entry points",
+      "Industrial access is stronger than current social infrastructure depth",
+      "Verify access-road width and layout approvals before treating quotes as comparable"
+    ],
+    "priceRange": "Rs2,600-4,900/sqft",
+    "yoy": 15,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("rameshwar-banda"),
+    "score": 62,
+    "category": "Emerging",
+    "signals": { "infrastructure": 62, "population": 46, "satellite": 66, "rera": 50, "employment": 58, "priceVelocity": 64, "govtScheme": 62 },
+    "livability": { "connectivity": 50, "amenities": 36, "ecommerce": 48, "entertainment": 22, "greenSpaces": 62 },
+    "highlights": [
+      "West-Hyderabad connector between Kollur, Bhanur and Patancheru-side demand",
+      "Villa and plotted inventory makes it a useful affordability comparison pocket",
+      "Demand is still project-specific rather than uniformly mature",
+      "Check title chain, final access and quoted price carefully"
+    ],
+    "priceRange": "Rs3,200-5,800/sqft",
+    "yoy": 16,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("osman-nagar-west"),
+    "score": 66,
+    "category": "High Growth",
+    "signals": { "infrastructure": 66, "population": 52, "satellite": 70, "rera": 58, "employment": 60, "priceVelocity": 70, "govtScheme": 66 },
+    "livability": { "connectivity": 58, "amenities": 46, "ecommerce": 58, "entertainment": 30, "greenSpaces": 66 },
+    "highlights": [
+      "Tellapur-Kollur edge pocket with stronger west-corridor spillover",
+      "Useful where buyers need an alternative to Tellapur and Nallagandla pricing",
+      "Current livability is improving but remains uneven by project and road access",
+      "Compare project approvals and quoted base price before shortlisting"
+    ],
+    "priceRange": "Rs4,800-7,800/sqft",
+    "yoy": 18,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 6
+  },
+  {
+    ...locality("kishan-nagar-patancheru"),
+    "score": 56,
+    "category": "Industrial",
+    "signals": { "infrastructure": 56, "population": 38, "satellite": 58, "rera": 40, "employment": 60, "priceVelocity": 54, "govtScheme": 56 },
+    "livability": { "connectivity": 42, "amenities": 30, "ecommerce": 40, "entertainment": 18, "greenSpaces": 48 },
+    "highlights": [
+      "Patancheru northern edge coverage for industrial-adjacent land screens",
+      "Works better as a logistics and plotted-land watchlist than an end-user market",
+      "Buyer upside depends on local road quality and industrial spillover",
+      "Use document checks before comparing against Beeramguda or Ameenpur"
+    ],
+    "priceRange": "Rs2,200-4,200/sqft",
+    "yoy": 13,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("lakdaram"),
+    "score": 54,
+    "category": "Emerging",
+    "signals": { "infrastructure": 54, "population": 36, "satellite": 58, "rera": 38, "employment": 52, "priceVelocity": 54, "govtScheme": 56 },
+    "livability": { "connectivity": 40, "amenities": 28, "ecommerce": 38, "entertainment": 16, "greenSpaces": 58 },
+    "highlights": [
+      "Connector between Patancheru, Rudraram and the Sangareddy approach",
+      "Mostly land-led demand with limited current residential depth",
+      "Useful for filling northwest map coverage and affordability comparisons",
+      "Verify conversion status and road frontage before treating pricing as investable"
+    ],
+    "priceRange": "Rs1,800-3,800/sqft",
+    "yoy": 12,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("bachuguda"),
+    "score": 55,
+    "category": "Emerging",
+    "signals": { "infrastructure": 55, "population": 38, "satellite": 58, "rera": 40, "employment": 54, "priceVelocity": 55, "govtScheme": 56 },
+    "livability": { "connectivity": 42, "amenities": 30, "ecommerce": 40, "entertainment": 18, "greenSpaces": 52 },
+    "highlights": [
+      "North Patancheru-side filler pocket near Isnapur and Beeramguda",
+      "Gives coordinate searches a closer context than broad nearby fallbacks",
+      "Market evidence is early and should be treated as estimated",
+      "Access, title and local layout status drive buyer suitability"
+    ],
+    "priceRange": "Rs2,000-4,000/sqft",
+    "yoy": 13,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("jinnaram"),
+    "score": 57,
+    "category": "Industrial",
+    "signals": { "infrastructure": 58, "population": 38, "satellite": 60, "rera": 38, "employment": 62, "priceVelocity": 54, "govtScheme": 56 },
+    "livability": { "connectivity": 42, "amenities": 28, "ecommerce": 38, "entertainment": 16, "greenSpaces": 50 },
+    "highlights": [
+      "Industrial belt north of Ameenpur and Patancheru for logistics-led demand screens",
+      "Employment signal is stronger than residential amenity depth",
+      "Useful as a balanced alternative to Pashamylaram and Bollaram-side pockets",
+      "Check zoning, pollution buffers and access roads before shortlisting"
+    ],
+    "priceRange": "Rs1,800-3,800/sqft",
+    "yoy": 12,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("bollaram-industrial"),
+    "score": 60,
+    "category": "Industrial",
+    "signals": { "infrastructure": 60, "population": 42, "satellite": 62, "rera": 42, "employment": 66, "priceVelocity": 56, "govtScheme": 58 },
+    "livability": { "connectivity": 46, "amenities": 32, "ecommerce": 42, "entertainment": 18, "greenSpaces": 48 },
+    "highlights": [
+      "Industrial and employment-heavy pocket between Miyapur, Ameenpur and Jinnaram",
+      "Good for understanding west-northwest employment spillover",
+      "Residential suitability varies sharply by buffer, access and project quality",
+      "Treat it as an industrial-adjacent comparison, not a pure livability market"
+    ],
+    "priceRange": "Rs2,200-4,400/sqft",
+    "yoy": 13,
+    "dataConfidence": "partial",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 5
+  },
+  {
+    ...locality("hathnoor"),
+    "score": 50,
+    "category": "Emerging",
+    "signals": { "infrastructure": 48, "population": 34, "satellite": 54, "rera": 30, "employment": 44, "priceVelocity": 50, "govtScheme": 54 },
+    "livability": { "connectivity": 34, "amenities": 22, "ecommerce": 32, "entertainment": 12, "greenSpaces": 66 },
+    "highlights": [
+      "Northern Sangareddy-Medak approach area for maximum outskirts visibility",
+      "Primarily a land and plotted-development watchlist today",
+      "Not a near-term substitute for Patancheru or Sangareddy town",
+      "Use only after verifying land-use conversion, title and access quality"
+    ],
+    "priceRange": "Rs900-2,200/sqft",
+    "yoy": 10,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("shivampet"),
+    "score": 51,
+    "category": "Emerging",
+    "signals": { "infrastructure": 50, "population": 34, "satellite": 56, "rera": 30, "employment": 44, "priceVelocity": 50, "govtScheme": 54 },
+    "livability": { "connectivity": 34, "amenities": 22, "ecommerce": 32, "entertainment": 12, "greenSpaces": 68 },
+    "highlights": [
+      "Northwest rural-urban fringe coverage between Medak road and Hyderabad growth edges",
+      "Useful for long-horizon land screens rather than immediate end-user demand",
+      "Current amenities and resale depth are limited",
+      "Compare with Hathnoor and Narsapur Medak before assuming liquidity"
+    ],
+    "priceRange": "Rs900-2,300/sqft",
+    "yoy": 10,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("narsapur-medak"),
+    "score": 50,
+    "category": "Emerging",
+    "signals": { "infrastructure": 48, "population": 34, "satellite": 56, "rera": 28, "employment": 42, "priceVelocity": 48, "govtScheme": 54 },
+    "livability": { "connectivity": 34, "amenities": 22, "ecommerce": 32, "entertainment": 12, "greenSpaces": 70 },
+    "highlights": [
+      "Outer Medak-side watchlist market for far-northwest Hyderabad-region coverage",
+      "Land affordability is the main signal, not current urban absorption",
+      "Best used as a maximum-radius comparison point",
+      "Due diligence should focus on title, access and conversion status"
+    ],
+    "priceRange": "Rs800-2,100/sqft",
+    "yoy": 9,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("gummadidala"),
+    "score": 52,
+    "category": "Industrial",
+    "signals": { "infrastructure": 52, "population": 34, "satellite": 56, "rera": 32, "employment": 56, "priceVelocity": 50, "govtScheme": 54 },
+    "livability": { "connectivity": 36, "amenities": 24, "ecommerce": 34, "entertainment": 12, "greenSpaces": 58 },
+    "highlights": [
+      "Industrial-adjacent northwest connector beyond Bollaram and Jinnaram",
+      "Employment and land-use signals are stronger than residential livability",
+      "Adds context for buyers searching outside the Ameenpur-Patancheru belt",
+      "Verify buffers, access-road width and project permissions carefully"
+    ],
+    "priceRange": "Rs1,000-2,500/sqft",
+    "yoy": 11,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("choutkur"),
+    "score": 55,
+    "category": "Emerging",
+    "signals": { "infrastructure": 54, "population": 36, "satellite": 58, "rera": 36, "employment": 50, "priceVelocity": 54, "govtScheme": 58 },
+    "livability": { "connectivity": 38, "amenities": 26, "ecommerce": 36, "entertainment": 14, "greenSpaces": 64 },
+    "highlights": [
+      "Connector between Kandi, Rudraram and the Patancheru-Sangareddy corridor",
+      "Useful for reducing gaps around the westward highway belt",
+      "Mostly early-stage land and plotted demand today",
+      "Validate road frontage and legal status before comparing quote levels"
+    ],
+    "priceRange": "Rs1,500-3,200/sqft",
+    "yoy": 12,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("malkapur-sangareddy"),
+    "score": 52,
+    "category": "Emerging",
+    "signals": { "infrastructure": 50, "population": 34, "satellite": 56, "rera": 34, "employment": 46, "priceVelocity": 52, "govtScheme": 54 },
+    "livability": { "connectivity": 36, "amenities": 24, "ecommerce": 34, "entertainment": 12, "greenSpaces": 62 },
+    "highlights": [
+      "Sangareddy-side filler pocket toward the Sadasivpet highway stretch",
+      "Adds local context where town and highway polygons otherwise leave gaps",
+      "Market is land-led and project-specific",
+      "Check layout approvals, access road and seller documents before shortlisting"
+    ],
+    "priceRange": "Rs1,100-2,800/sqft",
+    "yoy": 11,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("munipally"),
+    "score": 47,
+    "category": "Emerging",
+    "signals": { "infrastructure": 44, "population": 30, "satellite": 52, "rera": 24, "employment": 38, "priceVelocity": 44, "govtScheme": 50 },
+    "livability": { "connectivity": 30, "amenities": 20, "ecommerce": 28, "entertainment": 10, "greenSpaces": 68 },
+    "highlights": [
+      "Far-west Sadasivpet-side watchlist for broad outskirts coverage",
+      "Current urban depth and resale liquidity are thin",
+      "Use only for long-horizon land comparisons",
+      "Legal and conversion checks matter more than projected appreciation"
+    ],
+    "priceRange": "Rs700-1,800/sqft",
+    "yoy": 8,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 3
+  },
+  {
+    ...locality("kohir"),
+    "score": 45,
+    "category": "Emerging",
+    "signals": { "infrastructure": 42, "population": 28, "satellite": 50, "rera": 22, "employment": 38, "priceVelocity": 42, "govtScheme": 48 },
+    "livability": { "connectivity": 28, "amenities": 18, "ecommerce": 26, "entertainment": 10, "greenSpaces": 68 },
+    "highlights": [
+      "Maximum west-corridor watchlist beyond Sadasivpet toward Zaheerabad",
+      "Useful for map completeness, not for core-city recommendations",
+      "Demand is thin and documentation quality varies heavily",
+      "Treat as estimated until project-level evidence is verified"
+    ],
+    "priceRange": "Rs600-1,600/sqft",
+    "yoy": 7,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 3
+  },
+  {
+    ...locality("dharur"),
+    "score": 49,
+    "category": "Emerging",
+    "signals": { "infrastructure": 46, "population": 32, "satellite": 54, "rera": 28, "employment": 40, "priceVelocity": 48, "govtScheme": 52 },
+    "livability": { "connectivity": 32, "amenities": 20, "ecommerce": 30, "entertainment": 10, "greenSpaces": 70 },
+    "highlights": [
+      "Vikarabad-side connector between Mominpet, Marpally and the west belt",
+      "Adds coverage to the visible western gaps around Vikarabad district",
+      "Mostly land-led interest with low current amenity depth",
+      "Use title, conversion and road-access checks as the main buyer filter"
+    ],
+    "priceRange": "Rs700-1,900/sqft",
+    "yoy": 9,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 4
+  },
+  {
+    ...locality("bantwaram"),
+    "score": 45,
+    "category": "Emerging",
+    "signals": { "infrastructure": 42, "population": 28, "satellite": 50, "rera": 22, "employment": 36, "priceVelocity": 42, "govtScheme": 48 },
+    "livability": { "connectivity": 28, "amenities": 18, "ecommerce": 26, "entertainment": 10, "greenSpaces": 70 },
+    "highlights": [
+      "Far-west Vikarabad district watchlist for maximum coverage",
+      "Affordability is the main visible signal today",
+      "Do not treat as a mature residential market",
+      "Seller documents and exit depth need strict verification"
+    ],
+    "priceRange": "Rs600-1,600/sqft",
+    "yoy": 7,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 3
+  },
+  {
+    ...locality("peddemul"),
+    "score": 44,
+    "category": "Emerging",
+    "signals": { "infrastructure": 40, "population": 28, "satellite": 50, "rera": 22, "employment": 36, "priceVelocity": 40, "govtScheme": 48 },
+    "livability": { "connectivity": 28, "amenities": 18, "ecommerce": 26, "entertainment": 10, "greenSpaces": 70 },
+    "highlights": [
+      "Outer Vikarabad-Tandur side coverage for low-entry land screens",
+      "Current market depth is thin and should be treated as estimated",
+      "Useful as a map coverage point rather than a recommendation leader",
+      "Verify title, access and conversion before comparing prices"
+    ],
+    "priceRange": "Rs600-1,500/sqft",
+    "yoy": 7,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 3
+  },
+  {
+    ...locality("tandur"),
+    "score": 46,
+    "category": "Industrial",
+    "signals": { "infrastructure": 42, "population": 30, "satellite": 50, "rera": 24, "employment": 44, "priceVelocity": 42, "govtScheme": 48 },
+    "livability": { "connectivity": 30, "amenities": 20, "ecommerce": 28, "entertainment": 10, "greenSpaces": 64 },
+    "highlights": [
+      "Far-southwest industrial-town watchlist beyond Vikarabad and Parigi",
+      "Industrial signal is stronger than residential end-user demand",
+      "Included for maximum Hyderabad-region outskirt visibility",
+      "Use only after checking project legality, access and resale depth"
+    ],
+    "priceRange": "Rs600-1,700/sqft",
+    "yoy": 8,
+    "dataConfidence": "estimated",
+    "dataAsOf": "2026-06-04",
+    "signalsAvailable": 3
   }
 ]
 

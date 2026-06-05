@@ -55,6 +55,20 @@ optimized around Hyderabad micro-markets, including map search, coordinate
 analysis, area reports, compare view, report downloads, and buyer verification
 workflows.
 
+### Production Deployment State
+
+As of 2026-06-04, the public Vercel production deployment reflects `main`
+through PR #45. Open or draft PRs, including PR #46 and PR #47, deploy only to
+preview until they are merged into `main` and Vercel completes a production
+deployment.
+
+If a new feature, polygon, or data update is visible in a PR preview but not on
+the public site, first confirm:
+
+1. the PR has been merged into `main`
+2. Vercel production deployment for `main` completed successfully
+3. the browser is not serving a cached production bundle
+
 Coming-soon markets:
 
 | Market | Public status |
