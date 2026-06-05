@@ -34,8 +34,8 @@ const DNA_STEPS = [
   },
 ]
 
-const STEP_READ_MS = 1200
-const COMPLETE_DELAY_MS = 500
+const STEP_READ_MS = 1100
+const COMPLETE_DELAY_MS = 450
 
 interface Props {
   active: boolean

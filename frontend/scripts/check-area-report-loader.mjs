@@ -20,6 +20,7 @@ function assert(condition, message) {
 assert(fs.existsSync(preloaderPath), 'shared DNA route preloader component must exist')
 assert(home.includes('DnaRoutePreloader'), 'map page must render the DNA preloader')
 assert(home.includes('openAreaReportWithLoader'), 'map page must route area reports through the loader')
+assert(home.includes('pendingNav?.()\n    setAreaReportLoading(false)'), 'loader completion must navigate before hiding the overlay to prevent a map flash')
 assert(scoreCard.includes('onOpenAreaReport'), 'selected-area score card must receive an area-report loader callback')
 assert(plotAnalysis.includes('onOpenAreaReport'), 'coordinate analysis card must receive an area-report loader callback')
 assert(!scoreCard.includes('navigate(`/area/${area.slug}`)'), 'score card must not navigate directly without preloader')
