@@ -365,13 +365,13 @@ function ReportExportPanel({
             <Download size={16} className="text-emerald-300" />
           </div>
           <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
-            Don't buy on broker claims. Buy with PlotDNA.
+            Lifetime access
           </p>
-          <h2 className="mt-1 font-display text-xl font-extrabold text-slate-100">
-            Preview the DNA, then download the lifetime PDF.
+          <h2 className="mt-1 font-display text-2xl font-extrabold text-slate-100">
+            Unlock this PlotDNA report for Rs 99.
           </h2>
           <p className="mt-2 max-w-2xl text-xs font-sans leading-relaxed text-slate-400">
-            Payment is disabled for this test build. Use this button to download the printable source-of-truth PDF directly and inspect the report output.
+            One-time lifetime access for the area report, printable buyer PDF, source trail, and verification checklist.
           </p>
           <p className="mt-2 text-[11px] font-sans leading-relaxed text-slate-500">
             Regional PDF: English today, with Telugu-ready report wording planned for the language selector.
@@ -383,11 +383,11 @@ function ReportExportPanel({
             onClick={onDownloadPdf}
             className="rounded-2xl border border-white/10 bg-slate-950/35 p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.05]"
           >
-            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Lifetime app + PDF</span>
-            <span className="mt-1 block font-display text-2xl font-extrabold text-slate-100">Rs 99</span>
-            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime access package. In this test build, the complete buyer verification PDF downloads without payment.</span>
+            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Lifetime access</span>
+            <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
+            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full area DNA, buyer checklist, and printable PDF without paying again.</span>
             <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
-              Download test PDF
+              Get lifetime access
             </span>
           </button>
         </div>
@@ -1819,7 +1819,7 @@ export default function AreaDetail() {
             Brochure AI
           </button>
 
-          {/* Download PDF button */}
+          {/* Lifetime access button */}
           <button
             onClick={() => {
               trackEvent('area_pdf_download_clicked', {
@@ -1831,10 +1831,10 @@ export default function AreaDetail() {
             }}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 disabled:opacity-45 disabled:cursor-not-allowed"
             style={{ color, border: `1px solid ${color}40` }}
-            title="Get PlotDNA PDF report"
+            title="Get lifetime PlotDNA access"
           >
             <Download size={12} style={{ color }} />
-            <span className="hidden sm:inline">Get PDF</span>
+            <span className="hidden sm:inline font-bold">Lifetime Rs 99</span>
           </button>
         </div>
       </nav>
@@ -2033,7 +2033,6 @@ export default function AreaDetail() {
               canGenerateBrief={selectedReportPackage === 'custom_due_diligence_499'}
               onProceedToPayment={() => {
                 const openedPaymentLink = openReportPaymentLink(selectedReportPackage)
-                setCustomReportOpen(false)
                 trackEvent('payment_link_clicked', {
                   citySlug,
                   areaSlug: area.slug,

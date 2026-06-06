@@ -10,7 +10,7 @@
  */
 
 import type { LocalityResolution } from '@/lib/location/contracts'
-import { getAccessToken } from '@/lib/entitlements'
+import { getAccessToken, type EntitlementsResponse } from '@/lib/entitlements'
 import type { CityMeta, MicroMarket } from '@/types'
 
 export const BASE_URL = (
@@ -74,7 +74,15 @@ export interface CustomReportLeadResponse {
   status: 'success'
   leadId: string
   leadType: 'email' | 'phone'
+  paymentStatus: 'pending'
   message: string
+}
+
+export interface SelfConfirmPaymentResponse {
+  leadId: string
+  paymentStatus: 'paid'
+  paidAt: string
+  entitlements: EntitlementsResponse
 }
 
 function formatApiErrorMessage(errorBody: unknown, fallback = 'Could not submit request. Please try again.') {
@@ -307,4 +315,34 @@ export async function submitCustomReportLead(
   }
 
   return (await res.json()) as CustomReportLeadResponse
+}
+
+export async function selfConfirmCustomReportPayment(
+  leadId: string,
+  paymentReference?: string,
+): Promise<SelfConfirmPaymentResponse> {
+  let res: Response
+  try {
+    res = await fetch(`${BASE_URL}/api/leads/custom-report/${encodeURIComponent(leadId)}/self-confirm-payment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+      body: JSON.stringify({ paymentReference }),
+      signal: AbortSignal.timeout(10_000),
+    })
+  } catch (error) {
+    if (isAbortTimeoutError(error)) {
+      throw new Error('Payment confirmation timed out. Please try again.')
+    }
+    throw new Error('Could not confirm payment. Please try again.')
+  }
+
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({})) as unknown
+    throw new Error(formatApiErrorMessage(errorBody, 'Could not unlock payment access.'))
+  }
+
+  return (await res.json()) as SelfConfirmPaymentResponse
 }

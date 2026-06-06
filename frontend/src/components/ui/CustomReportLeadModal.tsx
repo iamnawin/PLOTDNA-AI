@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FileText, X } from 'lucide-react'
-import { submitCustomReportLead } from '@/lib/api'
+import { selfConfirmCustomReportPayment, submitCustomReportLead } from '@/lib/api'
 import type { CustomReportLeadPayload } from '@/lib/api'
 import type { BuyerBriefInput } from '@/lib/customBuyerBrief'
 import { claimPaidAccess, type EntitlementsResponse } from '@/lib/entitlements'
@@ -51,17 +51,19 @@ export default function CustomReportLeadModal({
   const [error, setError] = useState('')
   const [submittedLeadId, setSubmittedLeadId] = useState('')
   const [submittedInput, setSubmittedInput] = useState<BuyerBriefInput | null>(null)
+  const [paymentOpened, setPaymentOpened] = useState(false)
+  const [paymentReference, setPaymentReference] = useState('')
   const isCustomReport = packageInterest === 'custom_due_diligence_499'
   const isManualFallback = paymentRequired && !paymentAvailable
-  const packageLabel = isCustomReport ? 'Rs 499 buyer brief' : 'Rs 99 screening PDF'
+  const packageLabel = isCustomReport ? 'Rs 499 buyer brief' : 'Lifetime access - Rs 99'
   const title = isCustomReport
     ? 'Request custom buyer verification brief'
-    : 'Get instant screening PDF'
+    : 'Get lifetime access'
   const description = isCustomReport
     ? `Share your buying context for ${areaName}, ${cityName}. PlotDNA will use this to prioritize RERA, access, approvals, pricing, seller questions, and risk checks.`
-    : `Enter the same email and phone you will use for payment. If you return later, PlotDNA can match your paid access without asking you to pay again.`
+    : `One-time Rs 99 lifetime access for this PlotDNA report. Enter the same email and phone you will use for Razorpay.`
   const submittedMessage = paymentAvailable
-    ? 'Contact captured. Continue to Razorpay payment to complete this request.'
+    ? 'Payment details saved. Continue to Razorpay, then return here to unlock access.'
     : canGenerateBrief
       ? 'Contact captured. Your custom buyer verification brief is ready. Download it when you want the PDF file.'
     : isCustomReport
@@ -69,12 +71,14 @@ export default function CustomReportLeadModal({
       : 'Contact captured. We will follow up with the PDF payment link or report link.'
   const submitLabel = isCustomReport
     ? canGenerateBrief ? 'Prepare preview brief' : paymentAvailable ? 'Request report' : 'Request payment link'
-    : paymentAvailable ? 'Continue' : 'Request PDF link'
+    : paymentAvailable ? 'Get lifetime access' : 'Request PDF link'
 
   useEffect(() => {
     if (open) return
     setSubmittedLeadId('')
     setSubmittedInput(null)
+    setPaymentOpened(false)
+    setPaymentReference('')
     setError('')
   }, [open])
 
@@ -143,6 +147,26 @@ export default function CustomReportLeadModal({
     onClose()
   }
 
+  function handleProceedToPayment() {
+    setError('')
+    onProceedToPayment?.()
+    setPaymentOpened(true)
+  }
+
+  async function handleConfirmPayment() {
+    if (!submittedLeadId) return
+    setError('')
+    setSubmitting(true)
+    try {
+      const result = await selfConfirmCustomReportPayment(submittedLeadId, paymentReference.trim() || undefined)
+      onPaidAccessClaimed?.(result.entitlements, result.leadId)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not unlock payment access.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <AnimatePresence>
       {open && (
@@ -205,11 +229,25 @@ export default function CustomReportLeadModal({
             {submittedLeadId ? (
               <div className="mt-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4">
                 <p className="font-sans text-sm font-bold text-emerald-300">
-                  {canGenerateBrief ? 'Brief ready' : paymentAvailable ? 'Contact saved' : 'Manual request received'}
+                  {canGenerateBrief ? 'Brief ready' : paymentOpened ? 'Finish lifetime access' : paymentAvailable ? 'Payment details saved' : 'Manual request received'}
                 </p>
                 <p className="mt-2 text-xs font-sans leading-relaxed text-slate-300">
-                  Lead ID {submittedLeadId}. {submittedMessage}
+                  Lead ID {submittedLeadId}. {paymentOpened ? 'After Razorpay shows the paid screen, return here and unlock lifetime access.' : submittedMessage}
                 </p>
+                {paymentOpened && paymentAvailable && (
+                  <label className="mt-4 block">
+                    <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
+                      Payment ID optional
+                    </span>
+                    <input
+                      value={paymentReference}
+                      onChange={(event) => { setPaymentReference(event.target.value); setError('') }}
+                      placeholder="pay_..."
+                      className="w-full rounded-2xl border border-white/10 bg-slate-950/35 px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/40"
+                    />
+                  </label>
+                )}
+                {error && <p className="mt-3 text-[11px] font-sans text-red-400">{error}</p>}
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                   <button
                     onClick={handleClose}
@@ -217,12 +255,29 @@ export default function CustomReportLeadModal({
                   >
                     Close
                   </button>
-                  {paymentAvailable && onProceedToPayment && (
+                  {paymentAvailable && onProceedToPayment && !paymentOpened && (
                     <button
-                      onClick={onProceedToPayment}
+                      onClick={handleProceedToPayment}
                       className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b]"
                     >
-                      Continue to payment
+                      Pay Rs 99 on Razorpay
+                    </button>
+                  )}
+                  {paymentAvailable && onProceedToPayment && paymentOpened && (
+                    <button
+                      onClick={handleProceedToPayment}
+                      className="flex-1 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-sans font-bold text-emerald-200"
+                    >
+                      Open Razorpay again
+                    </button>
+                  )}
+                  {paymentAvailable && paymentOpened && (
+                    <button
+                      onClick={() => void handleConfirmPayment()}
+                      disabled={submitting}
+                      className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b] disabled:opacity-60"
+                    >
+                      {submitting ? 'Unlocking...' : 'I completed payment'}
                     </button>
                   )}
                   {isCustomReport && canGenerateBrief && onGenerateBrief && submittedInput && (

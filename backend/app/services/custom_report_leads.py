@@ -101,6 +101,15 @@ class PaidCustomReportLead(BaseModel):
     paidAt: str | None = None
 
 
+class PaymentConfirmedLead(BaseModel):
+    leadId: str
+    email: str
+    phone: str
+    packageInterest: str | None = None
+    paymentStatus: Literal["paid"]
+    paidAt: str
+
+
 def custom_report_leads_path() -> Path:
     configured = os.getenv("CUSTOM_REPORT_LEADS_PATH")
     if configured:
@@ -140,6 +149,59 @@ def store_custom_report_lead(payload: CustomReportLeadCreate, *, user_id: str | 
         leadType=lead_type,
         paymentStatus="pending",
         message="Custom report request received.",
+    )
+
+
+def self_confirm_custom_report_payment(
+    *,
+    lead_id: str,
+    user_id: str,
+    payment_reference: str | None = None,
+) -> PaymentConfirmedLead | None:
+    path = custom_report_leads_path()
+    if not path.exists():
+        return None
+
+    paid_at = datetime.datetime.now(datetime.UTC).isoformat()
+    updated_record: dict | None = None
+    records: list[dict] = []
+
+    with path.open(encoding="utf-8") as f:
+        for line in f:
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                records.append({"raw": line.rstrip("\n")})
+                continue
+
+            if record.get("leadId") == lead_id and record.get("userId") == user_id:
+                record["paymentStatus"] = "paid"
+                record["paidAt"] = paid_at
+                if payment_reference and payment_reference.strip():
+                    record["paymentReference"] = payment_reference.strip()
+                updated_record = record
+            records.append(record)
+
+    if not updated_record:
+        return None
+
+    with path.open("w", encoding="utf-8") as f:
+        for record in records:
+            if "raw" in record:
+                f.write(record["raw"])
+            else:
+                f.write(json.dumps(record, ensure_ascii=False, sort_keys=True))
+            f.write("\n")
+
+    return PaymentConfirmedLead(
+        leadId=updated_record["leadId"],
+        email=updated_record["email"],
+        phone=updated_record["phone"],
+        packageInterest=updated_record.get("packageInterest"),
+        paymentStatus="paid",
+        paidAt=paid_at,
     )
 
 
