@@ -353,6 +353,49 @@ def dev_activate_subscription(user_id: str, *, days: int = 30) -> Entitlements:
     return get_entitlements(user_id)
 
 
+def activate_paid_subscription(
+    user_id: str,
+    *,
+    email: str,
+    name: str | None = None,
+    days: int = 3650,
+) -> Entitlements:
+    """
+    Activates report access after an externally confirmed payment.
+
+    This is used by the manual Razorpay-link bridge until webhooks can confirm
+    payment automatically.
+    """
+    normalized = normalize_email(email)
+    clean_name = normalize_name(name)
+    ensure_user(user_id, name=clean_name)
+    now = _now_iso()
+    expires_at = (datetime.now(timezone.utc) + timedelta(days=days)).isoformat()
+    conn = _connect()
+    try:
+        _init(conn)
+        conn.execute(
+            "UPDATE users SET email = ?, email_verified_at = ?, last_seen_at = ? WHERE id = ?",
+            (normalized, now, now, user_id),
+        )
+        conn.execute(
+            "UPDATE entitlements SET is_active = 1, expires_at = ?, updated_at = ? WHERE user_id = ?",
+            (expires_at, now, user_id),
+        )
+        conn.commit()
+    finally:
+        conn.close()
+
+    record_user_event(
+        user_id,
+        UserEvent(
+            event_type="payment_completed",
+            metadata='{"source":"manual_paid_lead_claim"}',
+        ),
+    )
+    return get_entitlements(user_id)
+
+
 def set_email(user_id: str, email: str) -> Entitlements:
     ensure_user(user_id)
     normalized = normalize_email(email)
@@ -607,6 +650,23 @@ def get_report_access(user_id: str, package_interest: ReportPackage) -> ReportAc
         )
 
     if ent.subscription_active:
+        return ReportAccess(
+            package_interest=package_interest,
+            can_access=True,
+            requires_payment=False,
+            reason="subscription_active",
+            email=normalized_email,
+        )
+
+    from app.services.custom_report_leads import find_paid_custom_report_lead_for_user
+
+    paid_lead = find_paid_custom_report_lead_for_user(
+        user_id=user_id,
+        package_interest=package_interest,
+    )
+    if paid_lead:
+        ent = activate_paid_subscription(user_id, email=paid_lead.email)
+        normalized_email = ent.email.strip().lower() if ent.email else None
         return ReportAccess(
             package_interest=package_interest,
             can_access=True,

@@ -1102,7 +1102,8 @@ async function generateCustomBuyerBriefPDF(area: MicroMarket, input: BuyerBriefI
   section('Buyer context and notes')
   const contextRows = [
     ['Buyer', input.name?.trim() || 'Not shared'],
-    ['Contact', input.contact?.trim() || 'Not shared'],
+    ['Email', input.email?.trim() || input.contact?.trim() || 'Not shared'],
+    ['Phone', input.phone?.trim() || 'Not shared'],
     ['Budget', input.budgetRange?.trim() || 'Not shared'],
     ['Timeline', input.timeline?.trim() || 'Not shared'],
   ]
@@ -1737,8 +1738,10 @@ export default function AreaDetail() {
       return
     }
 
-    setPendingReportDownloadSource(source)
-    setEmailGateOpen(true)
+    setSelectedReportPackage('instant_pdf_99')
+    setSelectedReportSource(source)
+    setSelectedReportPaymentRequired(true)
+    setCustomReportOpen(true)
   }
 
   const handleEmailGateUnlocked = (nextEntitlements: NonNullable<typeof emailGateEntitlements>) => {
@@ -2030,6 +2033,7 @@ export default function AreaDetail() {
               canGenerateBrief={selectedReportPackage === 'custom_due_diligence_499'}
               onProceedToPayment={() => {
                 const openedPaymentLink = openReportPaymentLink(selectedReportPackage)
+                setCustomReportOpen(false)
                 trackEvent('payment_link_clicked', {
                   citySlug,
                   areaSlug: area.slug,
@@ -2050,6 +2054,28 @@ export default function AreaDetail() {
                     hasConfiguredLink: openedPaymentLink,
                   }),
                 })
+              }}
+              onPaidAccessClaimed={(entitlements, leadId) => {
+                setEmailGateEntitlements(entitlements)
+                setReportAccessUnlocked(true)
+                setReportPreviewLocked(false)
+                setReportPreviewLockedAreaSlug(null)
+                setCustomReportOpen(false)
+                trackEvent('paid_access_claimed', {
+                  citySlug,
+                  areaSlug: area.slug,
+                  packageInterest: selectedReportPackage,
+                  source: selectedReportSource,
+                  leadId,
+                  dataConfidence: displayedConfidence ?? 'estimated',
+                })
+                trackUserEvent({
+                  eventType: 'paid_access_claimed',
+                  areaSlug: area.slug,
+                  packageInterest: selectedReportPackage,
+                  metadata: JSON.stringify({ source: selectedReportSource, citySlug, leadId }),
+                })
+                downloadInstantPdf('paid_access_claimed')
               }}
               onGenerateBrief={(input) => {
                 void generateCustomBuyerBriefPDF(area, input)

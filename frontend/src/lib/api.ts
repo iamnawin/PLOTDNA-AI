@@ -10,6 +10,7 @@
  */
 
 import type { LocalityResolution } from '@/lib/location/contracts'
+import { getAccessToken } from '@/lib/entitlements'
 import type { CityMeta, MicroMarket } from '@/types'
 
 export const BASE_URL = (
@@ -56,7 +57,8 @@ export interface BackendAreaList {
 
 export interface CustomReportLeadPayload {
   name: string
-  contact: string
+  email: string
+  phone: string
   citySlug: string
   cityName: string
   areaSlug: string
@@ -279,9 +281,16 @@ export async function submitCustomReportLead(
 ): Promise<CustomReportLeadResponse> {
   let res: Response
   try {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' }
+    try {
+      headers.Authorization = `Bearer ${await getAccessToken()}`
+    } catch {
+      // Lead capture should still work if anonymous session creation is unavailable.
+    }
+
     res = await fetch(`${BASE_URL}/api/leads/custom-report`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers,
       body: JSON.stringify(payload),
       signal: AbortSignal.timeout(10_000),
     })

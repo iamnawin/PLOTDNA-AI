@@ -4,18 +4,21 @@ import { FileText, X } from 'lucide-react'
 import { submitCustomReportLead } from '@/lib/api'
 import type { CustomReportLeadPayload } from '@/lib/api'
 import type { BuyerBriefInput } from '@/lib/customBuyerBrief'
+import { claimPaidAccess, type EntitlementsResponse } from '@/lib/entitlements'
+import type { ReportPackage } from '@/lib/paymentLinks'
 
 interface Props {
   open: boolean
   areaName: string
   cityName: string
   payloadBase: Pick<CustomReportLeadPayload, 'citySlug' | 'cityName' | 'areaSlug' | 'areaName' | 'source'>
-  packageInterest?: string
+  packageInterest?: ReportPackage
   paymentRequired?: boolean
   paymentAvailable?: boolean
   canGenerateBrief?: boolean
   onProceedToPayment?: () => void
   onGenerateBrief?: (input: BuyerBriefInput) => void
+  onPaidAccessClaimed?: (entitlements: EntitlementsResponse, leadId: string | null) => void
   onClose: () => void
   onSubmitted: (leadId: string, input: BuyerBriefInput) => void
 }
@@ -34,11 +37,13 @@ export default function CustomReportLeadModal({
   canGenerateBrief = false,
   onProceedToPayment,
   onGenerateBrief,
+  onPaidAccessClaimed,
   onClose,
   onSubmitted,
 }: Props) {
   const [name, setName] = useState('')
-  const [contact, setContact] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
   const [budgetRange, setBudgetRange] = useState('')
   const [timeline, setTimeline] = useState('')
   const [notes, setNotes] = useState('')
@@ -51,12 +56,10 @@ export default function CustomReportLeadModal({
   const packageLabel = isCustomReport ? 'Rs 499 buyer brief' : 'Rs 99 screening PDF'
   const title = isCustomReport
     ? 'Request custom buyer verification brief'
-    : paymentAvailable ? 'Get instant screening PDF' : 'Request instant PDF payment link'
+    : 'Get instant screening PDF'
   const description = isCustomReport
     ? `Share your buying context for ${areaName}, ${cityName}. PlotDNA will use this to prioritize RERA, access, approvals, pricing, seller questions, and risk checks.`
-    : paymentAvailable
-      ? `The instant PDF for ${areaName}, ${cityName} should normally open through Razorpay. Leave your contact only if checkout is unavailable and we need to send the PDF link manually.`
-      : `Razorpay checkout is temporarily unavailable for ${areaName}, ${cityName}. Leave your contact and we will send the payment link or PDF link manually.`
+    : `Enter the same email and phone you will use for payment. If you return later, PlotDNA can match your paid access without asking you to pay again.`
   const submittedMessage = paymentAvailable
     ? 'Contact captured. Continue to Razorpay payment to complete this request.'
     : canGenerateBrief
@@ -66,7 +69,7 @@ export default function CustomReportLeadModal({
       : 'Contact captured. We will follow up with the PDF payment link or report link.'
   const submitLabel = isCustomReport
     ? canGenerateBrief ? 'Prepare preview brief' : paymentAvailable ? 'Request report' : 'Request payment link'
-    : paymentAvailable ? 'Send PDF link' : 'Request PDF link'
+    : paymentAvailable ? 'Continue' : 'Request PDF link'
 
   useEffect(() => {
     if (open) return
@@ -81,24 +84,39 @@ export default function CustomReportLeadModal({
       setError('Enter your name so we can prepare the buyer brief.')
       return
     }
-    if (!contact.trim()) {
-      setError('Enter an email or phone number so we can send the report or payment link.')
+    if (!email.trim()) {
+      setError('Enter a valid email. We use it to match paid access if you return later.')
+      return
+    }
+    if (!phone.trim()) {
+      setError('Enter a valid phone number. Use the same number you will use in Razorpay.')
       return
     }
     setSubmitting(true)
     const leadInput: BuyerBriefInput = {
       name,
-      contact,
+      email,
+      phone,
+      contact: `${email} / ${phone}`,
       budgetRange: budgetRange || undefined,
       timeline: timeline || undefined,
       notes: notes || undefined,
     }
     try {
+      if (paymentRequired && packageInterest) {
+        const claimResult = await claimPaidAccess(name.trim(), email.trim(), phone.trim(), packageInterest)
+        if (claimResult.status === 'ok' && claimResult.claim.matched) {
+          onPaidAccessClaimed?.(claimResult.claim.entitlements, claimResult.claim.leadId)
+          return
+        }
+      }
+
       const result = await submitCustomReportLead({
         ...payloadBase,
         ...leadInput,
         name,
-        contact,
+        email,
+        phone,
         packageInterest,
       })
       setSubmittedLeadId(result.leadId)
@@ -233,12 +251,25 @@ export default function CustomReportLeadModal({
                   </label>
                   <label>
                     <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
-                      Email or phone
+                      Email
                     </span>
                     <input
-                      value={contact}
-                      onChange={(event) => { setContact(event.target.value); setError('') }}
+                      type="email"
+                      value={email}
+                      onChange={(event) => { setEmail(event.target.value); setError('') }}
                       placeholder="you@example.com"
+                      className="w-full rounded-2xl border border-white/10 bg-transparent px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/40"
+                    />
+                  </label>
+                  <label>
+                    <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
+                      Phone
+                    </span>
+                    <input
+                      inputMode="tel"
+                      value={phone}
+                      onChange={(event) => { setPhone(event.target.value); setError('') }}
+                      placeholder="+91 98765 43210"
                       className="w-full rounded-2xl border border-white/10 bg-transparent px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/40"
                     />
                   </label>

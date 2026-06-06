@@ -70,6 +70,16 @@ export interface PublicMetricsResponse {
   activeUsersToday: number
 }
 
+export interface PaidAccessClaimResponse {
+  matched: boolean
+  leadId: string | null
+  entitlements: EntitlementsResponse
+}
+
+export type PaidAccessClaimResult =
+  | { status: 'ok'; claim: PaidAccessClaimResponse }
+  | { status: 'error'; message: string }
+
 function getStoredToken(): string | null {
   try {
     return window.localStorage.getItem(TOKEN_KEY)
@@ -129,7 +139,7 @@ async function createAnonymousSession(): Promise<string> {
   return payload.access_token
 }
 
-async function getAccessToken(): Promise<string> {
+export async function getAccessToken(): Promise<string> {
   const existing = getStoredToken()
   if (existing) return existing
   return createAnonymousSession()
@@ -261,6 +271,30 @@ export async function verifyEmailOtp(email: string, otp: string): Promise<EmailO
     const verification = await res.json() as EmailOtpVerifyResponse
     rememberEntitlements(verification.entitlements)
     return { status: 'ok', verification }
+  } catch {
+    return { status: 'error', message: 'Could not reach PlotDNA access service.' }
+  }
+}
+
+export async function claimPaidAccess(
+  name: string,
+  email: string,
+  phone: string,
+  packageInterest: ReportPackage,
+): Promise<PaidAccessClaimResult> {
+  try {
+    const res = await authedFetch('/api/v1/entitlements/claim-paid-access', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, phone, packageInterest }),
+    })
+    if (!res.ok) {
+      const payload = await res.json().catch(() => null) as { detail?: string } | null
+      return { status: 'error', message: payload?.detail ?? 'Could not check paid access.' }
+    }
+    const claim = await res.json() as PaidAccessClaimResponse
+    rememberEntitlements(claim.entitlements)
+    return { status: 'ok', claim }
   } catch {
     return { status: 'error', message: 'Could not reach PlotDNA access service.' }
   }

@@ -3,6 +3,8 @@ import type { MicroMarket } from '@/types'
 export interface BuyerBriefInput {
   name?: string
   contact?: string
+  email?: string
+  phone?: string
   budgetRange?: string
   timeline?: string
   notes?: string

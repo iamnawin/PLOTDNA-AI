@@ -10,6 +10,7 @@ from app.services.entitlements_store import (
     ReportAccess,
     ReportPackage,
     UserEvent,
+    activate_paid_subscription,
     consume_search,
     dev_activate_subscription,
     get_admin_metrics,
@@ -19,6 +20,7 @@ from app.services.entitlements_store import (
     record_user_event,
     touch_user,
 )
+from app.services.custom_report_leads import find_paid_custom_report_lead
 
 router = APIRouter()
 
@@ -49,6 +51,19 @@ class UserEventRequest(BaseModel):
 
 class UserEventResponse(BaseModel):
     status: str
+
+
+class PaidAccessClaimRequest(BaseModel):
+    email: str
+    phone: str
+    packageInterest: ReportPackage
+    name: str | None = None
+
+
+class PaidAccessClaimResponse(BaseModel):
+    matched: bool
+    leadId: str | None
+    entitlements: EntitlementsResponse
 
 
 class TopDownloadedAreaResponse(BaseModel):
@@ -177,6 +192,36 @@ def record_event(body: UserEventRequest, user_id: str = Depends(require_user_id)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     return UserEventResponse(status="recorded")
+
+
+@router.post("/claim-paid-access", response_model=PaidAccessClaimResponse)
+def claim_paid_access(body: PaidAccessClaimRequest, user_id: str = Depends(require_user_id)):
+    try:
+        paid_lead = find_paid_custom_report_lead(
+            email=body.email,
+            phone=body.phone,
+            package_interest=body.packageInterest,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    if not paid_lead:
+        return PaidAccessClaimResponse(
+            matched=False,
+            leadId=None,
+            entitlements=_to_response(get_entitlements(user_id)),
+        )
+
+    entitlements = activate_paid_subscription(
+        user_id,
+        email=paid_lead.email,
+        name=body.name,
+    )
+    return PaidAccessClaimResponse(
+        matched=True,
+        leadId=paid_lead.leadId,
+        entitlements=_to_response(entitlements),
+    )
 
 
 @router.get("/admin/metrics", response_model=AdminMetricsResponse)
