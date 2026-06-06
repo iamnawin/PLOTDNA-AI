@@ -205,6 +205,72 @@ def self_confirm_custom_report_payment(
     )
 
 
+def recover_custom_report_payment(
+    *,
+    email: str,
+    phone: str,
+    package_interest: str,
+    payment_reference: str,
+    user_id: str,
+) -> PaymentConfirmedLead | None:
+    normalized_email = normalize_email(email)
+    normalized_phone = normalize_phone(phone)
+    clean_reference = payment_reference.strip()
+    if not clean_reference.startswith("pay_"):
+        raise ValueError("Enter the Razorpay payment ID starting with pay_.")
+
+    path = custom_report_leads_path()
+    if not path.exists():
+        return None
+
+    paid_at = datetime.datetime.now(datetime.UTC).isoformat()
+    updated_record: dict | None = None
+    records: list[dict] = []
+
+    with path.open(encoding="utf-8") as f:
+        for line in f:
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError:
+                records.append({"raw": line.rstrip("\n")})
+                continue
+
+            if (
+                updated_record is None
+                and record.get("email") == normalized_email
+                and record.get("phone") == normalized_phone
+                and record.get("packageInterest") == package_interest
+            ):
+                record["paymentStatus"] = "paid"
+                record["paidAt"] = paid_at
+                record["paymentReference"] = clean_reference
+                record["recoveredByUserId"] = user_id
+                updated_record = record
+            records.append(record)
+
+    if not updated_record:
+        return None
+
+    with path.open("w", encoding="utf-8") as f:
+        for record in records:
+            if "raw" in record:
+                f.write(record["raw"])
+            else:
+                f.write(json.dumps(record, ensure_ascii=False, sort_keys=True))
+            f.write("\n")
+
+    return PaymentConfirmedLead(
+        leadId=updated_record["leadId"],
+        email=updated_record["email"],
+        phone=updated_record["phone"],
+        packageInterest=updated_record.get("packageInterest"),
+        paymentStatus="paid",
+        paidAt=paid_at,
+    )
+
+
 def find_paid_custom_report_lead(
     *,
     email: str,

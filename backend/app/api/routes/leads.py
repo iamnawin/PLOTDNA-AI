@@ -5,6 +5,7 @@ from app.core.auth import get_user_id_from_token, require_user_id
 from app.services.custom_report_leads import (
     CustomReportLeadCreate,
     CustomReportLeadResponse,
+    recover_custom_report_payment,
     self_confirm_custom_report_payment,
     store_custom_report_lead,
 )
@@ -24,6 +25,14 @@ class EntitlementsResponse(BaseModel):
 
 class SelfConfirmPaymentRequest(BaseModel):
     paymentReference: str | None = None
+
+
+class RecoverPaymentRequest(BaseModel):
+    name: str | None = None
+    email: str
+    phone: str
+    packageInterest: str
+    paymentReference: str
 
 
 class SelfConfirmPaymentResponse(BaseModel):
@@ -64,6 +73,34 @@ def create_custom_report_lead(
     user_id: str | None = Depends(optional_user_id),
 ) -> CustomReportLeadResponse:
     return store_custom_report_lead(payload, user_id=user_id)
+
+
+@router.post("/custom-report/recover-payment", response_model=SelfConfirmPaymentResponse)
+def recover_payment(
+    body: RecoverPaymentRequest,
+    user_id: str = Depends(require_user_id),
+) -> SelfConfirmPaymentResponse:
+    try:
+        confirmed = recover_custom_report_payment(
+            email=body.email,
+            phone=body.phone,
+            package_interest=body.packageInterest,
+            payment_reference=body.paymentReference,
+            user_id=user_id,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    if not confirmed:
+        raise HTTPException(status_code=404, detail="Paid lead not found")
+
+    entitlements = activate_paid_subscription(user_id, email=confirmed.email, name=body.name)
+    return SelfConfirmPaymentResponse(
+        leadId=confirmed.leadId,
+        paymentStatus=confirmed.paymentStatus,
+        paidAt=confirmed.paidAt,
+        entitlements=_to_entitlements_response(entitlements),
+    )
 
 
 @router.post("/custom-report/{lead_id}/self-confirm-payment", response_model=SelfConfirmPaymentResponse)

@@ -346,3 +346,38 @@ export async function selfConfirmCustomReportPayment(
 
   return (await res.json()) as SelfConfirmPaymentResponse
 }
+
+export async function recoverCustomReportPayment(
+  payload: {
+    name: string
+    email: string
+    phone: string
+    packageInterest: string
+    paymentReference: string
+  },
+): Promise<SelfConfirmPaymentResponse> {
+  let res: Response
+  try {
+    res = await fetch(`${BASE_URL}/api/leads/custom-report/recover-payment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${await getAccessToken()}`,
+      },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(10_000),
+    })
+  } catch (error) {
+    if (isAbortTimeoutError(error)) {
+      throw new Error('Payment recovery timed out. Please try again.')
+    }
+    throw new Error('Could not recover paid access. Please try again.')
+  }
+
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({})) as unknown
+    throw new Error(formatApiErrorMessage(errorBody, 'Could not find a paid access record for these details.'))
+  }
+
+  return (await res.json()) as SelfConfirmPaymentResponse
+}

@@ -206,6 +206,95 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                 else:
                     os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
 
+    def test_authenticated_user_can_recover_existing_payment_by_email_phone_and_payment_id(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
+            previous_path = os.environ.get("CUSTOM_REPORT_LEADS_PATH")
+            previous_db_path = settings.ENTITLEMENTS_DB_PATH
+            os.environ["CUSTOM_REPORT_LEADS_PATH"] = leads_path
+            settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
+            try:
+                client = TestClient(app)
+                original_headers = {"Authorization": f"Bearer {create_access_token('old-browser-user')}"}
+                lead_response = client.post(
+                    "/api/leads/custom-report",
+                    json={
+                        "name": "Naveen",
+                        "email": "naveen.naidu21@gmail.com",
+                        "phone": "9701797999",
+                        "citySlug": "hyderabad",
+                        "cityName": "Hyderabad",
+                        "areaSlug": "adibatla",
+                        "areaName": "Adibatla",
+                        "packageInterest": "instant_pdf_99",
+                        "source": "area_report_summary",
+                    },
+                    headers=original_headers,
+                )
+                self.assertEqual(lead_response.status_code, 200)
+
+                recovery_headers = {"Authorization": f"Bearer {create_access_token('new-browser-user')}"}
+                response = client.post(
+                    "/api/leads/custom-report/recover-payment",
+                    json={
+                        "name": "naveen",
+                        "email": "NAVEEN.NAIDU21@gmail.com",
+                        "phone": "+91 97017 97999",
+                        "packageInterest": "instant_pdf_99",
+                        "paymentReference": "pay_SyMkoiN7OOLawT",
+                    },
+                    headers=recovery_headers,
+                )
+
+                self.assertEqual(response.status_code, 200)
+                body = response.json()
+                self.assertEqual(body["leadId"], lead_response.json()["leadId"])
+                self.assertEqual(body["paymentStatus"], "paid")
+                self.assertTrue(body["entitlements"]["subscription_active"])
+                self.assertEqual(body["entitlements"]["email"], "naveen.naidu21@gmail.com")
+
+                with open(leads_path, encoding="utf-8") as f:
+                    record = json.loads(f.readline())
+                self.assertEqual(record["paymentStatus"], "paid")
+                self.assertEqual(record["paymentReference"], "pay_SyMkoiN7OOLawT")
+            finally:
+                settings.ENTITLEMENTS_DB_PATH = previous_db_path
+                if previous_path is None:
+                    os.environ.pop("CUSTOM_REPORT_LEADS_PATH", None)
+                else:
+                    os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
+
+    def test_recover_payment_requires_razorpay_payment_id(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
+            previous_path = os.environ.get("CUSTOM_REPORT_LEADS_PATH")
+            previous_db_path = settings.ENTITLEMENTS_DB_PATH
+            os.environ["CUSTOM_REPORT_LEADS_PATH"] = leads_path
+            settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
+            try:
+                client = TestClient(app)
+                headers = {"Authorization": f"Bearer {create_access_token('recovery-user')}"}
+
+                response = client.post(
+                    "/api/leads/custom-report/recover-payment",
+                    json={
+                        "name": "naveen",
+                        "email": "naveen.naidu21@gmail.com",
+                        "phone": "9701797999",
+                        "packageInterest": "instant_pdf_99",
+                        "paymentReference": "not-a-payment-id",
+                    },
+                    headers=headers,
+                )
+
+                self.assertEqual(response.status_code, 400)
+            finally:
+                settings.ENTITLEMENTS_DB_PATH = previous_db_path
+                if previous_path is None:
+                    os.environ.pop("CUSTOM_REPORT_LEADS_PATH", None)
+                else:
+                    os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
+
 
 if __name__ == "__main__":
     unittest.main()

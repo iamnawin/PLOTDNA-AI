@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FileText, X } from 'lucide-react'
-import { selfConfirmCustomReportPayment, submitCustomReportLead } from '@/lib/api'
+import { recoverCustomReportPayment, selfConfirmCustomReportPayment, submitCustomReportLead } from '@/lib/api'
 import type { CustomReportLeadPayload } from '@/lib/api'
 import type { BuyerBriefInput } from '@/lib/customBuyerBrief'
 import { claimPaidAccess, type EntitlementsResponse } from '@/lib/entitlements'
@@ -53,6 +53,7 @@ export default function CustomReportLeadModal({
   const [submittedInput, setSubmittedInput] = useState<BuyerBriefInput | null>(null)
   const [paymentOpened, setPaymentOpened] = useState(false)
   const [paymentReference, setPaymentReference] = useState('')
+  const [recoveryReference, setRecoveryReference] = useState('')
   const isCustomReport = packageInterest === 'custom_due_diligence_499'
   const isManualFallback = paymentRequired && !paymentAvailable
   const packageLabel = isCustomReport ? 'Rs 499 buyer brief' : 'Lifetime access - Rs 99'
@@ -79,6 +80,7 @@ export default function CustomReportLeadModal({
     setSubmittedInput(null)
     setPaymentOpened(false)
     setPaymentReference('')
+    setRecoveryReference('')
     setError('')
   }, [open])
 
@@ -111,6 +113,17 @@ export default function CustomReportLeadModal({
         const claimResult = await claimPaidAccess(name.trim(), email.trim(), phone.trim(), packageInterest)
         if (claimResult.status === 'ok' && claimResult.claim.matched) {
           onPaidAccessClaimed?.(claimResult.claim.entitlements, claimResult.claim.leadId)
+          return
+        }
+        if (recoveryReference.trim()) {
+          const recoveryResult = await recoverCustomReportPayment({
+            name: name.trim(),
+            email: email.trim(),
+            phone: phone.trim(),
+            packageInterest,
+            paymentReference: recoveryReference.trim(),
+          })
+          onPaidAccessClaimed?.(recoveryResult.entitlements, recoveryResult.leadId)
           return
         }
       }
@@ -377,6 +390,23 @@ export default function CustomReportLeadModal({
                   </label>
                 )}
 
+                {paymentAvailable && !isCustomReport && (
+                  <label className="mt-3 block">
+                    <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
+                      Already paid? Razorpay payment ID
+                    </span>
+                    <input
+                      value={recoveryReference}
+                      onChange={(event) => { setRecoveryReference(event.target.value); setError('') }}
+                      placeholder="pay_..."
+                      className="w-full rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.05] px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/50"
+                    />
+                    <p className="mt-2 text-[11px] font-sans leading-relaxed text-slate-500">
+                      Paste the Payment ID from your Razorpay success screen to recover an earlier Rs 99 payment.
+                    </p>
+                  </label>
+                )}
+
                 {error && <p className="mt-3 text-[11px] font-sans text-red-400">{error}</p>}
 
                 <div className="mt-5 flex gap-3">
@@ -391,7 +421,7 @@ export default function CustomReportLeadModal({
                     disabled={submitting}
                     className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b] disabled:opacity-60"
                   >
-                    {submitting ? 'Submitting...' : submitLabel}
+                    {submitting ? 'Working...' : recoveryReference.trim() ? 'Unlock paid access' : submitLabel}
                   </button>
                 </div>
               </>
