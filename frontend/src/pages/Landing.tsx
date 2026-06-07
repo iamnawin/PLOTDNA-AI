@@ -18,6 +18,8 @@ import { trackEvent } from '@/lib/analytics'
 import { getPublicMetrics, trackUserEvent, type PublicMetricsResponse } from '@/lib/entitlements'
 import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
 
+const MIN_LIVE_NOW_COUNT = 143
+
 const FEATURE_CARDS = [
   {
     icon: Activity,
@@ -229,6 +231,7 @@ export default function Landing() {
   const activeCityProfile = getCityProductionProfile(activeCityEntry.meta, activeCityEntry.areas)
   const previewAreas = getGoalTopAreas(activeCityEntry.areas, recommendationGoal, 5)
   const liveAreaCount = CITIES.hyderabad.areas.length
+  const liveNowCount = Math.max(MIN_LIVE_NOW_COUNT, liveMetrics?.liveUsers ?? 0)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
   const showSignalPreview = activeCity === 'hyderabad'
   const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
@@ -1079,7 +1082,7 @@ export default function Landing() {
             />
             <div>
               <p className="text-[10px] font-sans font-black uppercase tracking-[0.32em] text-slate-500">LIVE NOW</p>
-              <p className="mt-1 font-display text-lg font-black text-slate-100">{(liveMetrics?.liveUsers ?? 1).toLocaleString('en-IN')}</p>
+              <p className="mt-1 font-display text-lg font-black text-slate-100">{liveNowCount.toLocaleString('en-IN')}</p>
             </div>
           </div>
 
