@@ -368,10 +368,10 @@ function ReportExportPanel({
             Lifetime access
           </p>
           <h2 className="mt-1 font-display text-2xl font-extrabold text-slate-100">
-            Unlock this PlotDNA report for Rs 99.
+            Unlock this PlotDNA report.
           </h2>
           <p className="mt-2 max-w-2xl text-xs font-sans leading-relaxed text-slate-400">
-            One-time lifetime access for the area report, printable buyer PDF, source trail, and verification checklist.
+            One-time lifetime access for the complete buyer verification PDF, source-of-truth PDF, source trail, and verification checklist.
           </p>
           <p className="mt-2 text-[11px] font-sans leading-relaxed text-slate-500">
             Regional PDF: English today, with Telugu-ready report wording planned for the language selector.
@@ -449,19 +449,26 @@ function TimedDnaAccessGate({
               Don't buy on broker claims. Buy with PlotDNA.
             </p>
             <p className="mx-auto mt-2 max-w-md text-sm font-sans leading-relaxed text-slate-400">
-              You have seen the live DNA preview. Payment is disabled for this test build, so download the printable source-of-truth PDF directly.
+              You have seen the live DNA preview. Continue with lifetime source-of-truth PDF and app access.
             </p>
-            <div className="mx-auto mt-5 grid max-w-sm grid-cols-1 gap-3">
+            <div className="mx-auto mt-5 grid max-w-sm grid-cols-1 gap-2 text-left sm:grid-cols-3">
+              {['DNA verdict', 'Source trail', 'Buyer checklist'].map(item => (
+                <div key={item} className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-3">
+                  <span className="block text-[9px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">
+                    Included
+                  </span>
+                  <span className="mt-1 block text-[11px] font-sans font-bold leading-snug text-slate-200">
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="mx-auto mt-4 max-w-sm">
               <button
                 onClick={onUnlock}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.07]"
+                className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-black text-[#04110b] transition-colors hover:bg-emerald-400"
               >
-                <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Lifetime app + PDF</span>
-                <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
-                <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">One-time lifetime access package. The test build downloads the source-of-truth PDF with the verdict, source trail, and buyer checklist.</span>
-                <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
-                  Download test PDF
-                </span>
+                Continue for Rs 99 lifetime access
               </button>
             </div>
             <p className="mt-3 text-[10px] font-sans leading-relaxed text-slate-500">
@@ -1699,7 +1706,7 @@ export default function AreaDetail() {
     .map(slug => (cityEntry?.areas ?? getAllAreas()).find(candidate => candidate.slug === slug))
     .filter((candidate): candidate is MicroMarket => Boolean(candidate))
   const downloadInstantPdf = (source: string) => {
-    setSelectedReportPackage('custom_due_diligence_499')
+    setSelectedReportPackage('instant_pdf_99')
     setSelectedReportSource(source)
     setSelectedReportPaymentRequired(false)
     setReportAccessUnlocked(true)
@@ -1708,24 +1715,24 @@ export default function AreaDetail() {
     trackEvent('paid_report_clicked', {
       citySlug,
       areaSlug: area.slug,
-      packageInterest: 'custom_due_diligence_499',
+      packageInterest: 'instant_pdf_99',
       source,
-      reason: 'pdf_test_payment_disabled',
+      reason: 'instant_pdf_lifetime_access',
       dataConfidence: displayedConfidence ?? 'estimated',
     })
     trackEvent('report_access_unlocked', {
       citySlug,
       areaSlug: area.slug,
-      packageInterest: 'custom_due_diligence_499',
+      packageInterest: 'instant_pdf_99',
       source,
-      reason: 'pdf_test_payment_disabled',
+      reason: 'instant_pdf_lifetime_access',
       dataConfidence: displayedConfidence ?? 'estimated',
     })
     trackUserEvent({
       eventType: 'pdf_downloaded',
       areaSlug: area.slug,
-      packageInterest: 'custom_due_diligence_499',
-      metadata: JSON.stringify({ source, citySlug, reason: 'pdf_test_payment_disabled' }),
+      packageInterest: 'instant_pdf_99',
+      metadata: JSON.stringify({ source, citySlug, reason: 'instant_pdf_lifetime_access' }),
     })
     void generateCustomBuyerBriefPDF(area, {
       notes: 'Generated from the direct PDF test flow. Add buyer name, budget, timeline, and project notes before final delivery.',

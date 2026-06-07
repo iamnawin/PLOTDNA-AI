@@ -82,6 +82,7 @@ def recover_payment(
 ) -> SelfConfirmPaymentResponse:
     try:
         confirmed = recover_custom_report_payment(
+            name=body.name,
             email=body.email,
             phone=body.phone,
             package_interest=body.packageInterest,

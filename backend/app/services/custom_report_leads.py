@@ -207,6 +207,7 @@ def self_confirm_custom_report_payment(
 
 def recover_custom_report_payment(
     *,
+    name: str | None = None,
     email: str,
     phone: str,
     package_interest: str,
@@ -220,39 +221,56 @@ def recover_custom_report_payment(
         raise ValueError("Enter the Razorpay payment ID starting with pay_.")
 
     path = custom_report_leads_path()
-    if not path.exists():
-        return None
 
     paid_at = datetime.datetime.now(datetime.UTC).isoformat()
     updated_record: dict | None = None
     records: list[dict] = []
 
-    with path.open(encoding="utf-8") as f:
-        for line in f:
-            if not line.strip():
-                continue
-            try:
-                record = json.loads(line)
-            except json.JSONDecodeError:
-                records.append({"raw": line.rstrip("\n")})
-                continue
+    if path.exists():
+        with path.open(encoding="utf-8") as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                try:
+                    record = json.loads(line)
+                except json.JSONDecodeError:
+                    records.append({"raw": line.rstrip("\n")})
+                    continue
 
-            if (
-                updated_record is None
-                and record.get("email") == normalized_email
-                and record.get("phone") == normalized_phone
-                and record.get("packageInterest") == package_interest
-            ):
-                record["paymentStatus"] = "paid"
-                record["paidAt"] = paid_at
-                record["paymentReference"] = clean_reference
-                record["recoveredByUserId"] = user_id
-                updated_record = record
-            records.append(record)
+                if (
+                    updated_record is None
+                    and record.get("email") == normalized_email
+                    and record.get("phone") == normalized_phone
+                    and record.get("packageInterest") == package_interest
+                ):
+                    record["paymentStatus"] = "paid"
+                    record["paidAt"] = paid_at
+                    record["paymentReference"] = clean_reference
+                    record["recoveredByUserId"] = user_id
+                    updated_record = record
+                records.append(record)
 
     if not updated_record:
-        return None
+        recovered_hash = hashlib.sha256(
+            f"{normalized_email}|{normalized_phone}|{package_interest}|{clean_reference}".encode("utf-8")
+        ).hexdigest()[:12]
+        updated_record = {
+            "leadId": f"cr_recovered_{recovered_hash}",
+            "leadType": "email",
+            "name": name.strip() if name and name.strip() else None,
+            "email": normalized_email,
+            "phone": normalized_phone,
+            "packageInterest": package_interest,
+            "paymentStatus": "paid",
+            "paymentReference": clean_reference,
+            "paidAt": paid_at,
+            "createdAt": paid_at,
+            "source": "razorpay_payment_id_recovery",
+            "recoveredByUserId": user_id,
+        }
+        records.append(updated_record)
 
+    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as f:
         for record in records:
             if "raw" in record:

@@ -264,6 +264,51 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                 else:
                     os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
 
+    def test_authenticated_user_can_recover_direct_razorpay_payment_without_existing_lead(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
+            previous_path = os.environ.get("CUSTOM_REPORT_LEADS_PATH")
+            previous_db_path = settings.ENTITLEMENTS_DB_PATH
+            os.environ["CUSTOM_REPORT_LEADS_PATH"] = leads_path
+            settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
+            try:
+                client = TestClient(app)
+                headers = {"Authorization": f"Bearer {create_access_token('direct-razorpay-user')}"}
+
+                response = client.post(
+                    "/api/leads/custom-report/recover-payment",
+                    json={
+                        "name": "Naveen",
+                        "email": "naveen.naidu21@gmail.com",
+                        "phone": "9701797999",
+                        "packageInterest": "instant_pdf_99",
+                        "paymentReference": "pay_SyMkoiN7OOLawT",
+                    },
+                    headers=headers,
+                )
+
+                self.assertEqual(response.status_code, 200)
+                body = response.json()
+                self.assertTrue(body["leadId"].startswith("cr_recovered_"))
+                self.assertEqual(body["paymentStatus"], "paid")
+                self.assertTrue(body["entitlements"]["subscription_active"])
+                self.assertEqual(body["entitlements"]["email"], "naveen.naidu21@gmail.com")
+
+                with open(leads_path, encoding="utf-8") as f:
+                    records = [json.loads(line) for line in f if line.strip()]
+                self.assertEqual(len(records), 1)
+                self.assertEqual(records[0]["leadId"], body["leadId"])
+                self.assertEqual(records[0]["paymentStatus"], "paid")
+                self.assertEqual(records[0]["paymentReference"], "pay_SyMkoiN7OOLawT")
+                self.assertEqual(records[0]["source"], "razorpay_payment_id_recovery")
+                self.assertEqual(records[0]["recoveredByUserId"], "direct-razorpay-user")
+            finally:
+                settings.ENTITLEMENTS_DB_PATH = previous_db_path
+                if previous_path is None:
+                    os.environ.pop("CUSTOM_REPORT_LEADS_PATH", None)
+                else:
+                    os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
+
     def test_recover_payment_requires_razorpay_payment_id(self):
         with tempfile.TemporaryDirectory() as tmp:
             leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
