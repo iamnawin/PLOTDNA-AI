@@ -16,13 +16,19 @@
 
 ---
 
-## Current State (May 2026)
+## Current State (June 2026)
 
 - **8 cities live:** Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi NCR, Vijayawada, Visakhapatnam
 - MapLibre GL map with polygon overlays, hover tooltips, tier filtering, 3D tilt
 - DNA Score: 7 signals, fixed weights, 4 tier bands
 - 4-tier location resolver: exact → nearby → cluster → uncovered
 - AreaDetail: score breakdown, signal bars, growth timeline, 5-year outlook, source links
+- AreaDetail feature rail: Verdict, Sources, Growth, Risk, Compare, and PDF anchors with Motion transitions
+- Report scroll progress: line below the feature rail is tied to page scroll while the tabs stay horizontally scrollable
+- Timed preview lock: compact feature carousel after preview timeout, with duplicate Rs 99 export card hidden
+- Rs 99 lifetime access flow: animated CTA, paid welcome-back state, explicit PDF download, no auto-download after recovery
+- Payment recovery: email/phone-first modal copy with Razorpay Payment ID fallback for direct recovery
+- Landing live-now count: launch floor of 143 plus live score updates
 - `Locate me` geolocation flow on landing with approximation labels
 - PDF lead capture (email gate after 5s on AreaDetail)
 - All 8 cities have resolver-grade JSON data (localities, aliases, clusters, city config)
@@ -378,5 +384,20 @@ Before any new region ships:
 
 ---
 
-*Last updated: May 2026*
+## Shipped Report Experience Add-ons
+
+As of June 2026, the area report experience includes:
+
+- Top feature navigation for Verdict, Sources, Growth, Risk, Compare, and PDF.
+- Motion-driven active tab transitions and CTA reflection on the Rs 99 button.
+- Scroll-driven progress line under the feature tabs, tied to page scroll.
+- Timed preview lock with a compact feature carousel.
+- Duplicate payment-card prevention after the preview timeout.
+- Rs 99 lifetime access state with welcome-back copy and explicit PDF download.
+- Razorpay Payment ID recovery fallback for paid users whose lead row was not created.
+- Landing live-now count floor of 143 plus live metric updates.
+
+---
+
+*Last updated: June 2026*
 *Owner: Naveen / ZeroOrigins AI*

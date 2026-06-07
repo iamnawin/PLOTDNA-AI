@@ -42,8 +42,11 @@ What users can do today:
 - search Hyderabad areas, coordinates, or map links
 - open the map and inspect nearby market context
 - view area DNA score, growth story, risk notes, price band, and source context
+- use the top feature rail to jump between verdict, sources, growth, risk,
+  comparison, and PDF sections
 - compare shortlisted Hyderabad micro-markets
-- generate an Rs 99 instant screening PDF
+- preview the live DNA report, then continue with Rs 99 lifetime access
+- generate an Rs 99 source-of-truth screening PDF
 - request or admin-test an Rs 499 custom buyer verification brief
 
 ---
@@ -94,12 +97,18 @@ PlotDNA keeps free browsing open and gates only deeper report actions.
 | Product | Price | Purpose | Output |
 | --- | ---: | --- | --- |
 | Free screening | Rs 0 | Explore Hyderabad areas and compare basic signals | Map, area page, score, risk/growth context |
-| Instant screening PDF | Rs 99 | Quick shortlist decision for one area | Area score, growth signals, risk notes, buyer checklist |
+| Lifetime access + instant PDF | Rs 99 | Quick shortlist decision for one area and repeat access to the report app | Area score, growth signals, risk notes, buyer checklist, source-of-truth PDF |
 | Custom buyer verification brief | Rs 499 | Project-specific buyer verification planning | Buyer context, seller questions, price sanity, verification priorities, next actions |
 
 The Rs 499 brief is intentionally different from the Rs 99 PDF. It uses buyer
 inputs such as budget, timeline, project notes, broker quote, or survey details
 to produce a more specific verification brief.
+
+The Rs 99 flow is designed to avoid repeated payment prompts after access is
+verified. A paid user sees a welcome-back state and can explicitly download the
+source-of-truth PDF without seeing another Rs 99 card. During the timed preview
+lock, the upper report export card is hidden so the page does not show duplicate
+payment cards.
 
 ---
 
@@ -170,6 +179,14 @@ VITE_RAZORPAY_CUSTOM_REPORT_LINK=
 When these links are configured at build time, the Rs 99 and Rs 499 buttons open
 the relevant Razorpay payment link. If they are missing, the UI falls back to a
 manual checkout request so the user can still leave contact details.
+
+Paid access recovery supports two user-facing paths:
+
+1. The modal first asks for the name, email, and phone the buyer used for
+   Razorpay so the flow feels like account recovery instead of payment debugging.
+2. If needed, the buyer can paste the Razorpay Payment ID from the success
+   screen. Direct Razorpay Payment IDs can be recovered even when the original
+   PlotDNA lead row was not created.
 
 Future backend Checkout/webhook automation should use:
 
@@ -266,6 +283,10 @@ Useful checks:
 npm run test:hyderabad-production
 npm run test:landing-rollout-copy
 npm run test:custom-buyer-brief
+npm run test:area-feature-navigation
+npm run test:area-dna-paywall
+npm run test:report-pricing-copy
+npm run test:landing-live-metrics
 npm run lint
 npm run build
 ```
@@ -298,10 +319,23 @@ Current release posture:
 - Hyderabad is the launch market.
 - Other cities are visible as coming-soon expansion markets.
 - Free browsing stays open before asking for contact/payment.
-- Paid actions are separated into Rs 99 screening PDF and Rs 499 custom buyer
-  verification brief.
+- Area reports now have a sticky top feature rail for verdict, sources, growth,
+  risk, comparison, and PDF sections.
+- The feature rail includes a scroll-driven progress line that follows report
+  scroll, while the tabs remain horizontally scrollable on mobile.
+- Preview lock uses a compact feature carousel instead of a second full payment
+  card.
+- The Rs 99 CTA uses Motion animation/reflection treatment for stronger mobile
+  affordance.
+- Paid actions are separated into Rs 99 lifetime access + screening PDF and
+  Rs 499 custom buyer verification brief.
+- Verified paid access shows a welcome-back state and does not auto-download
+  the PDF.
 - Razorpay Payment Links can be configured now.
-- Full Razorpay Checkout/webhook entitlement automation is the next payment
+- Direct Razorpay Payment ID recovery can grant access when the original lead
+  row is missing.
+- Landing live-now display has a launch floor of 143 plus live score updates.
+- Full Razorpay Checkout/webhook entitlement automation remains the next payment
   hardening step.
 
 ---

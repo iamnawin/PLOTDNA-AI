@@ -76,7 +76,7 @@ The wedge is not "search property listings." The wedge is:
 > Location and micro-market due diligence before property selection.
 
 First paid product:
-- Area investment report.
+- Rs 99 lifetime area access with source-of-truth PDF.
 - Compare-3-areas report.
 - Custom location due-diligence request.
 
@@ -160,9 +160,16 @@ Fields:
 ### Stage 4: Monetization
 
 Start with one-time purchases:
-- Rs 99 to Rs 199: single detailed area report.
+- Rs 99 to Rs 199: single detailed area report, lifetime app access, and source-of-truth PDF.
 - Rs 499 to Rs 999: compare 3 to 5 areas with PDF.
 - Rs 2,999 to Rs 9,999: custom due-diligence pack for a specific location.
+
+Current launch implementation:
+- The area page shows a top feature rail so users understand the report as a workflow: Verdict, Sources, Growth, Risk, Compare, and PDF.
+- The preview timeout uses a compact locked-feature carousel instead of another full payment card.
+- The Rs 99 CTA is animated and reflective to make the payment action clearer on mobile.
+- Paid users see welcome-back access and choose when to download the PDF; the app does not auto-download after recovery.
+- Payment recovery is framed around matching name, email, and phone first, with Razorpay Payment ID as the fallback.
 
 Add subscriptions only after repeat usage is proven:
 - Broker/advisor tier: Rs 1,999 to Rs 4,999/month.
@@ -221,6 +228,8 @@ Ship:
 - Report request workflow.
 - Manual payment or early payment link.
 - Custom due-diligence request form.
+- Paid-access recovery for users who completed Razorpay payment before the app recorded the lead.
+- Duplicate payment-card prevention after the report preview timeout.
 
 Success metric:
 - 10 custom report requests.

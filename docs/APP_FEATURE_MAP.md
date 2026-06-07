@@ -7,6 +7,7 @@ This file maps the current app behavior to the main files and components that im
 - `frontend/src/pages/Landing.tsx`
   - Public landing page.
   - Shows the core value proposition, buyer pain points, and entry points into the map flow.
+  - Displays live-now social proof with a launch floor of 143 plus live metric updates.
 
 - `frontend/src/pages/Home.tsx`
   - Main map workspace.
@@ -25,6 +26,10 @@ This file maps the current app behavior to the main files and components that im
 - `frontend/src/pages/AreaDetail.tsx`
   - Detailed locality page for a supported micro-market.
   - Shows score, growth story, active projects, news, market pulse, AVM, sources, and alternatives.
+  - Renders the sticky feature rail for Verdict, Sources, Growth, Risk, Compare, and PDF sections.
+  - Uses Motion for active feature tab transitions, CTA reflection, and report scroll progress.
+  - Hides the upper PDF/payment card when the timed preview lock is visible to avoid duplicate Rs 99 cards.
+  - Shows a welcome-back card after paid access recovery instead of auto-downloading the PDF.
   - Hosts the floating assistant dock with area-level context.
 
 - `frontend/src/components/ui/VerdictCard.tsx`
@@ -39,7 +44,34 @@ This file maps the current app behavior to the main files and components that im
   - Coordinate-level analysis drawer.
   - Resolves live OSM scoring and falls back to supported locality context.
 
-## 3. Brochure Analysis
+## 3. Paid Access, Preview Lock, and Reports
+
+- `frontend/src/pages/AreaDetail.tsx`
+  - Owns the Rs 99 lifetime access CTA, timed preview lock, compact locked-feature carousel, and PDF download entry point.
+  - Keeps the feature navigator above the main area card so users can understand the report workflow before scanning every section.
+  - Uses `useScroll()` and `useTransform()` from Motion to drive the progress line below the top feature tabs from page scroll.
+
+- `frontend/src/components/ui/CustomReportLeadModal.tsx`
+  - Collects name, email, and phone first so payment recovery feels like account matching.
+  - Keeps Razorpay Payment ID as the fallback field for users who have the success screen open.
+
+- `backend/app/services/custom_report_leads.py`
+  - Stores and recovers paid lead state.
+  - Supports direct Razorpay Payment ID recovery when the payment exists but the PlotDNA lead row was not created earlier.
+
+- `backend/app/api/routes/leads.py`
+  - Exposes the custom report lead and payment recovery route contracts used by the frontend.
+
+- `frontend/scripts/check-area-feature-navigation.mjs`
+  - Guards the top feature rail, section anchors, Motion transitions, preview carousel, and scroll-driven progress line.
+
+- `frontend/scripts/check-area-dna-paywall.mjs`
+  - Guards the timed preview lock and verifies duplicate payment-card behavior does not return.
+
+- `frontend/scripts/check-report-pricing-copy.mjs`
+  - Guards Rs 99 lifetime access and report pricing copy.
+
+## 4. Brochure Analysis
 
 - `frontend/src/pages/BrochurePage.tsx`
   - Full-page brochure upload workflow.
@@ -51,7 +83,7 @@ This file maps the current app behavior to the main files and components that im
 - `frontend/src/lib/api.ts`
   - Contains `analyzeBrochure()` and the shared backend base URL.
 
-## 4. Assistant / Chat
+## 5. Assistant / Chat
 
 - `frontend/src/components/ui/AssistantDock.tsx`
   - Floating chat entry point used on the map and area pages.
@@ -70,7 +102,7 @@ This file maps the current app behavior to the main files and components that im
   - Shared text model wrapper.
   - Tries Gemini first, then NVIDIA, then a deterministic fallback.
 
-## 5. Scoring and Market Intelligence
+## 6. Scoring and Market Intelligence
 
 - `frontend/src/components/score/ScoreCard.tsx`
   - DNA score and growth summary presentation.
@@ -90,7 +122,7 @@ This file maps the current app behavior to the main files and components that im
 - `frontend/src/lib/utils.ts`
   - Shared score labels, colors, and signal helpers.
 
-## 6. Backend Routes
+## 7. Backend Routes
 
 - `backend/app/main.py`
   - FastAPI app setup and router registration.
@@ -113,7 +145,10 @@ This file maps the current app behavior to the main files and components that im
 - `backend/app/api/routes/avm.py`
   - Automated valuation model API.
 
-## 7. Key Environment Variables
+- `backend/app/api/routes/leads.py`
+  - Custom buyer brief lead capture and paid access recovery routes.
+
+## 8. Key Environment Variables
 
 - `VITE_API_URL`
   - Frontend backend base URL.
@@ -136,11 +171,20 @@ This file maps the current app behavior to the main files and components that im
 - `NVIDIA_CHAT_MODELS`
   - Ordered NVIDIA model names for chat.
 
-## 8. Current Product Flow
+- `VITE_RAZORPAY_PDF_LINK`
+  - Payment Link used by the Rs 99 lifetime access and instant PDF CTA.
+
+- `VITE_RAZORPAY_CUSTOM_REPORT_LINK`
+  - Payment Link used by the Rs 499 custom buyer verification brief CTA.
+
+## 9. Current Product Flow
 
 1. User opens the landing page.
 2. User enters the map workspace.
 3. User searches by area name, coordinates, or map link.
 4. User can upload a brochure, inspect an area, or open the assistant dock.
 5. User can move from city-level view to area-level detail for analysis.
+6. User uses the top feature rail to jump between report sections.
+7. After the live preview period, the page shows a compact locked-feature carousel and the Rs 99 lifetime access CTA.
+8. Paid users see a welcome-back state and can explicitly download the source-of-truth PDF.
 
