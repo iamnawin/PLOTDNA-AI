@@ -23,12 +23,6 @@ export function RainbowBordersButton({
         className={`plotdna-rainbow-border group relative isolate overflow-visible border-2 border-transparent text-slate-50 shadow-[0_0_28px_rgba(16,185,129,0.22)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_0_44px_rgba(16,185,129,0.34)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300 ${className}`}
         {...props}
       >
-        <motion.span
-          aria-hidden="true"
-          className="cta-reflection-sheen pointer-events-none absolute inset-y-0 -left-1/2 z-0 w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/24 to-transparent"
-          animate={{ x: ['-120%', '360%'], opacity: [0, 1, 0] }}
-          transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        />
         <span className="relative z-10 block w-full">{children}</span>
       </motion.button>
       <style>{`
