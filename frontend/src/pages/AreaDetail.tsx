@@ -2002,6 +2002,7 @@ export default function AreaDetail() {
   const displayedConfidence = citySlug === 'hyderabad' && HYDERABAD_VERIFIED_PRIORITY_SET.has(area.slug)
     ? 'verified'
     : area.dataConfidence
+  const isTimedPreviewLocked = reportPreviewLocked && reportPreviewLockedAreaSlug === area.slug && !reportAccessUnlocked
   const confidenceMeta = getConfidenceMeta(displayedConfidence)
   const reportSummary = getInvestmentReportSummary({
     ...area,
@@ -2534,19 +2535,21 @@ export default function AreaDetail() {
               />
             </motion.div>
 
-            <div
-              id="area-feature-pdf"
-              data-highlighted-feature={highlightedFeatureId === 'pdf' ? 'true' : undefined}
-              className={`scroll-mt-28 rounded-[1.25rem] transition-shadow ${highlightedFeatureId === 'pdf' ? 'shadow-[0_0_0_1px_rgba(52,211,153,0.45),0_0_32px_rgba(16,185,129,0.18)]' : ''}`}
-            >
-              <ReportExportPanel
-                accessUnlocked={reportAccessUnlocked}
-                onDownloadPdf={reportAccessUnlocked ? () => downloadInstantPdf('area_dna_verified_download') : () => openEmailGateForPdf('area_dna_export_cta')}
-              />
-            </div>
+            {!isTimedPreviewLocked && (
+              <div
+                id="area-feature-pdf"
+                data-highlighted-feature={highlightedFeatureId === 'pdf' ? 'true' : undefined}
+                className={`scroll-mt-28 rounded-[1.25rem] transition-shadow ${highlightedFeatureId === 'pdf' ? 'shadow-[0_0_0_1px_rgba(52,211,153,0.45),0_0_32px_rgba(16,185,129,0.18)]' : ''}`}
+              >
+                <ReportExportPanel
+                  accessUnlocked={reportAccessUnlocked}
+                  onDownloadPdf={reportAccessUnlocked ? () => downloadInstantPdf('area_dna_verified_download') : () => openEmailGateForPdf('area_dna_export_cta')}
+                />
+              </div>
+            )}
 
             <TimedDnaAccessGate
-              locked={reportPreviewLocked && reportPreviewLockedAreaSlug === area.slug && !reportAccessUnlocked}
+              locked={isTimedPreviewLocked}
               onUnlock={() => openEmailGateForPdf('area_dna_timed_lock')}
             >
 
