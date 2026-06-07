@@ -44,6 +44,7 @@ import AVMCard from '@/components/ui/AVMCard'
 import AssistantDock from '@/components/ui/AssistantDock'
 import CustomReportLeadModal from '@/components/ui/CustomReportLeadModal'
 import EmailGateModal from '@/components/ui/EmailGateModal'
+import { RainbowBordersButton } from '@/components/ui/rainbow-borders-button'
 
 interface AreaDetailLocationState {
   fallbackContext?: {
@@ -477,28 +478,17 @@ function ReportExportPanel({
 
         <div className="grid w-full grid-cols-1 gap-3 lg:max-w-[240px]">
           <AnimatePresence>
-            <motion.button
+            <RainbowBordersButton
               onClick={onDownloadPdf}
-              initial={{ scale: 0.96, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.96, opacity: 0 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative overflow-hidden rounded-2xl border border-emerald-400/25 bg-slate-950/35 p-4 text-left transition-colors hover:border-emerald-300/55 hover:bg-white/[0.06]"
+              className="w-full rounded-2xl p-4 text-left"
             >
-              <motion.span
-                aria-hidden="true"
-                className="cta-reflection-sheen pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/24 to-transparent"
-                animate={{ x: ['-120%', '360%'], opacity: [0, 1, 0] }}
-                transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-              />
-              <span className="relative text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Lifetime access</span>
-              <span className="relative mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
-              <span className="relative mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full area DNA, buyer checklist, and printable PDF without paying again.</span>
-              <span className="relative mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b] shadow-[0_0_24px_rgba(16,185,129,0.28)] transition-colors group-hover:bg-emerald-400">
+              <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Lifetime access</span>
+              <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
+              <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full area DNA, buyer checklist, and printable PDF without paying again.</span>
+              <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b] shadow-[0_0_24px_rgba(16,185,129,0.28)] transition-colors group-hover:bg-emerald-400">
                 Get lifetime access
               </span>
-            </motion.button>
+            </RainbowBordersButton>
           </AnimatePresence>
         </div>
       </div>
@@ -777,12 +767,14 @@ function TimedDnaAccessGate({
             </p>
             <PreviewFeatureCarousel />
             <div className="mx-auto mt-4 max-w-sm">
-              <button
+              <RainbowBordersButton
                 onClick={onUnlock}
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-black text-[#04110b] transition-colors hover:bg-emerald-400"
+                className="w-full rounded-2xl px-4 py-3 text-center text-sm font-sans font-black text-white"
               >
-                Continue for Rs 99 lifetime access
-              </button>
+                <span className="inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-[#04110b] transition-colors group-hover:bg-emerald-400">
+                  Continue for Rs 99 lifetime access
+                </span>
+              </RainbowBordersButton>
             </div>
             <p className="mt-3 text-[10px] font-sans leading-relaxed text-slate-500">
               Screenshots are not reliable delivery copies. The source-of-truth report keeps the evidence trail together.

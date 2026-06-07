@@ -2,7 +2,9 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 const areaDetailPath = path.join(process.cwd(), 'src', 'pages', 'AreaDetail.tsx')
+const rainbowButtonPath = path.join(process.cwd(), 'src', 'components', 'ui', 'rainbow-borders-button.tsx')
 const areaDetail = fs.readFileSync(areaDetailPath, 'utf8')
+const rainbowButton = fs.readFileSync(rainbowButtonPath, 'utf8')
 
 function assert(condition, message) {
   if (!condition) {
@@ -20,10 +22,15 @@ assert(areaDetail.includes('function ReportExportPanel'), 'area detail must defi
 assert(areaDetail.includes('accessUnlocked'), 'export panel must know when lifetime access is already active')
 assert(areaDetail.includes('Welcome back'), 'paid users must see a welcome-back access state instead of another Rs 99 card')
 assert(areaDetail.includes('Download source-of-truth PDF'), 'paid users must be able to download the PDF intentionally')
-assert(areaDetail.includes('motion.button'), 'Rs 99 CTA must use Framer Motion for animated tap/entry feedback')
-assert(areaDetail.includes('cta-reflection-sheen'), 'Rs 99 CTA must include a reflective animated sheen layer')
-assert(areaDetail.includes('initial={{ scale: 0.96, opacity: 0 }}'), 'Rs 99 CTA must animate in from a smaller scale')
-assert(areaDetail.includes('whileTap={{ scale: 0.98 }}'), 'Rs 99 CTA must have press feedback')
+assert(rainbowButton.includes('export function RainbowBordersButton'), 'rainbow border button must be a reusable UI component')
+assert(rainbowButton.includes('motion.button'), 'rainbow CTA must use Framer Motion for animated tap/entry feedback')
+assert(rainbowButton.includes('plotdna-rainbow-border'), 'rainbow button must include the animated rainbow border class')
+assert(rainbowButton.includes('@keyframes plotdna-rainbow-border'), 'rainbow button must define the border animation')
+assert(rainbowButton.includes('cta-reflection-sheen'), 'rainbow CTA must include a reflective animated sheen layer')
+assert(rainbowButton.includes('initial={{ scale: 0.96, opacity: 0 }}'), 'rainbow CTA must animate in from a smaller scale')
+assert(rainbowButton.includes('whileTap={{ scale: 0.98 }}'), 'rainbow CTA must have press feedback')
+assert(areaDetail.includes("import { RainbowBordersButton } from '@/components/ui/rainbow-borders-button'"), 'area detail must use the shared rainbow border CTA component')
+assert((areaDetail.match(/<RainbowBordersButton/g) ?? []).length >= 2, 'both lifetime CTAs must use the shared rainbow border button')
 assert(!areaDetail.includes('function ReportDownloadNudge'), '30-second lock replaces the delayed PDF reminder popup')
 assert(areaDetail.includes('function TimedDnaAccessGate'), 'area detail must define the timed access gate')
 assert(areaDetail.includes('aria-label="Download and print report options"'), 'export panel must be identifiable')

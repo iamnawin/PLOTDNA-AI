@@ -51,6 +51,10 @@ This file maps the current app behavior to the main files and components that im
   - Keeps the feature navigator above the main area card so users can understand the report workflow before scanning every section.
   - Uses `useScroll({ container })` and `useTransform()` from Motion to drive the progress line below the top feature tabs from the report scroll container.
 
+- `frontend/src/components/ui/rainbow-borders-button.tsx`
+  - Shared Motion CTA used by both Rs 99 lifetime actions.
+  - Adds the animated rainbow border, glow, and reflection treatment without duplicating button styling inside report sections.
+
 - `frontend/src/components/ui/CustomReportLeadModal.tsx`
   - Collects name, email, and phone first so payment recovery feels like account matching.
   - Keeps Razorpay Payment ID as the fallback field for users who have the success screen open.
