@@ -182,13 +182,18 @@ manual checkout request so the user can still leave contact details.
 
 Paid access recovery supports two user-facing paths:
 
-1. The modal first asks for the name, email, and phone the buyer used for
-   Razorpay so the flow feels like account recovery instead of payment debugging.
-2. If needed, the buyer can paste the Razorpay Payment ID from the success
-   screen. Direct Razorpay Payment IDs can be recovered even when the original
-   PlotDNA lead row was not created.
+1. Razorpay webhooks are the primary production recognition path. Configure
+   `RAZORPAY_WEBHOOK_SECRET` and subscribe Razorpay to
+   `POST /api/leads/razorpay/webhook`; a signed `payment_link.paid` event marks
+   the matching PlotDNA lead as paid.
+2. The frontend remembers when a user leaves for Razorpay and re-checks paid
+   access when the browser tab or mobile webview becomes active again.
+3. Returning users can recover access with the same email and phone used for
+   Razorpay; this is the normal cross-device path.
+4. Payment ID entry is hidden behind a fallback disclosure and should be used
+   only for direct Razorpay payments that cannot be matched automatically.
 
-Future backend Checkout/webhook automation should use:
+Backend Checkout/webhook automation uses:
 
 ```bash
 RAZORPAY_KEY_ID=

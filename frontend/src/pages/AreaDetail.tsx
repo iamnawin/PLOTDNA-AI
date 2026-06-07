@@ -1593,6 +1593,8 @@ export default function AreaDetail() {
   const staticCitySlug = staticCityEntry
     ? Object.entries(CITIES).find(([, v]) => v === staticCityEntry)?.[0] ?? 'hyderabad'
     : 'hyderabad'
+  const currentAreaSlug = area?.slug ?? null
+  const currentAreaDataConfidence = area?.dataConfidence ?? 'estimated'
   const [customReportOpen, setCustomReportOpen] = useState(false)
   const [selectedReportPackage, setSelectedReportPackage] = useState<ReportPackage>('instant_pdf_99')
   const [selectedReportSource, setSelectedReportSource] = useState('area_report_summary')
@@ -1601,6 +1603,7 @@ export default function AreaDetail() {
   const [reportPreviewLocked, setReportPreviewLocked] = useState(false)
   const [reportPreviewLockedAreaSlug, setReportPreviewLockedAreaSlug] = useState<string | null>(null)
   const [paidAccessWelcomeOpen, setPaidAccessWelcomeOpen] = useState(false)
+  const [paymentReturnCheckPending, setPaymentReturnCheckPending] = useState(false)
   const [activeAreaFeatureId, setActiveAreaFeatureId] = useState<AreaFeatureId>('verdict')
   const [highlightedFeatureId, setHighlightedFeatureId] = useState<AreaFeatureId | null>(null)
   const [emailGateOpen, setEmailGateOpen] = useState(false)
@@ -1660,26 +1663,71 @@ export default function AreaDetail() {
   }, [area, staticCitySlug])
 
   useEffect(() => {
-    if (!area) return
+    if (!currentAreaSlug) return
     let cancelled = false
 
-    async function verifyReportAccess() {
+    async function verifyInitialReportAccess() {
       const reportAccess = await checkReportAccess('instant_pdf_99')
-      if (cancelled) return
+      if (cancelled || !reportAccess?.canAccess) return
 
-      if (reportAccess?.canAccess) {
-        setReportAccessUnlocked(true)
-        setReportPreviewLocked(false)
-        setReportPreviewLockedAreaSlug(null)
-      }
+      setReportAccessUnlocked(true)
+      setReportPreviewLocked(false)
+      setReportPreviewLockedAreaSlug(null)
+      setPaymentReturnCheckPending(false)
+      trackEvent('report_access_recognized', {
+        citySlug: staticCitySlug,
+        areaSlug: currentAreaSlug,
+        packageInterest: 'instant_pdf_99',
+        source: 'area_load',
+        dataConfidence: currentAreaDataConfidence,
+      })
     }
 
-    void verifyReportAccess()
+    void verifyInitialReportAccess()
 
     return () => {
       cancelled = true
     }
-  }, [area])
+  }, [currentAreaDataConfidence, currentAreaSlug, staticCitySlug])
+
+  useEffect(() => {
+    if (!paymentReturnCheckPending || !currentAreaSlug) return
+    let cancelled = false
+
+    function checkReturnedPaymentAccess() {
+      if (document.visibilityState === 'hidden') return
+      void (async () => {
+        const reportAccess = await checkReportAccess('instant_pdf_99')
+        if (cancelled || !reportAccess?.canAccess) return
+
+        setReportAccessUnlocked(true)
+        setReportPreviewLocked(false)
+        setReportPreviewLockedAreaSlug(null)
+        setPaymentReturnCheckPending(false)
+        setCustomReportOpen(false)
+        setPaidAccessWelcomeOpen(true)
+        trackEvent('report_access_recognized', {
+          citySlug: staticCitySlug,
+          areaSlug: currentAreaSlug,
+          packageInterest: 'instant_pdf_99',
+          source: 'razorpay_return_check',
+          dataConfidence: currentAreaDataConfidence,
+        })
+      })()
+    }
+
+    window.addEventListener('focus', checkReturnedPaymentAccess)
+    document.addEventListener('visibilitychange', checkReturnedPaymentAccess)
+    const interval = window.setInterval(checkReturnedPaymentAccess, 5000)
+    checkReturnedPaymentAccess()
+
+    return () => {
+      cancelled = true
+      window.removeEventListener('focus', checkReturnedPaymentAccess)
+      document.removeEventListener('visibilitychange', checkReturnedPaymentAccess)
+      window.clearInterval(interval)
+    }
+  }, [currentAreaDataConfidence, currentAreaSlug, paymentReturnCheckPending, staticCitySlug])
 
   useEffect(() => {
     if (!area || reportAccessUnlocked) return
@@ -2398,6 +2446,9 @@ export default function AreaDetail() {
               canGenerateBrief={selectedReportPackage === 'custom_due_diligence_499'}
               onProceedToPayment={() => {
                 const openedPaymentLink = openReportPaymentLink(selectedReportPackage)
+                if (openedPaymentLink) {
+                  setPaymentReturnCheckPending(true)
+                }
                 trackEvent('payment_link_clicked', {
                   citySlug,
                   areaSlug: area.slug,

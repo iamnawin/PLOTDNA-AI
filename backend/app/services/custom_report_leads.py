@@ -110,6 +110,12 @@ class PaymentConfirmedLead(BaseModel):
     paidAt: str
 
 
+class RazorpayWebhookResult(BaseModel):
+    status: Literal["recorded", "ignored"]
+    leadId: str | None = None
+    paymentReference: str | None = None
+
+
 def custom_report_leads_path() -> Path:
     configured = os.getenv("CUSTOM_REPORT_LEADS_PATH")
     if configured:
@@ -286,6 +292,141 @@ def recover_custom_report_payment(
         packageInterest=updated_record.get("packageInterest"),
         paymentStatus="paid",
         paidAt=paid_at,
+    )
+
+
+def _first_str(*values: object) -> str | None:
+    for value in values:
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+    return None
+
+
+def _safe_dict(value: object) -> dict:
+    return value if isinstance(value, dict) else {}
+
+
+def confirm_custom_report_payment_from_razorpay(payload: dict) -> RazorpayWebhookResult:
+    event = str(payload.get("event") or "").strip()
+    if event not in {"payment_link.paid", "payment.captured", "order.paid"}:
+        return RazorpayWebhookResult(status="ignored")
+
+    payload_body = _safe_dict(payload.get("payload"))
+    payment_entity = _safe_dict(_safe_dict(payload_body.get("payment")).get("entity"))
+    payment_link_entity = _safe_dict(_safe_dict(payload_body.get("payment_link")).get("entity"))
+    order_entity = _safe_dict(_safe_dict(payload_body.get("order")).get("entity"))
+    payment_notes = _safe_dict(payment_entity.get("notes"))
+    payment_link_notes = _safe_dict(payment_link_entity.get("notes"))
+    order_notes = _safe_dict(order_entity.get("notes"))
+    customer = _safe_dict(payment_link_entity.get("customer"))
+
+    lead_id = _first_str(
+        payment_link_notes.get("plotdna_lead_id"),
+        payment_notes.get("plotdna_lead_id"),
+        order_notes.get("plotdna_lead_id"),
+        payment_link_entity.get("reference_id"),
+    )
+    package_interest = _first_str(
+        payment_link_notes.get("package_interest"),
+        payment_notes.get("package_interest"),
+        order_notes.get("package_interest"),
+    )
+    payment_reference = _first_str(payment_entity.get("id"), payment_link_entity.get("id"), order_entity.get("id"))
+    payment_link_id = _first_str(payment_link_entity.get("id"))
+    email = _first_str(customer.get("email"), payment_entity.get("email"))
+    phone = _first_str(customer.get("contact"), payment_entity.get("contact"))
+
+    normalized_email: str | None = None
+    normalized_phone: str | None = None
+    if email:
+        try:
+            normalized_email = normalize_email(email)
+        except ValueError:
+            normalized_email = None
+    if phone:
+        try:
+            normalized_phone = normalize_phone(phone)
+        except ValueError:
+            normalized_phone = None
+
+    if not lead_id and not (normalized_email and normalized_phone):
+        return RazorpayWebhookResult(status="ignored", paymentReference=payment_reference)
+
+    paid_at = datetime.datetime.now(datetime.UTC).isoformat()
+    updated_record: dict | None = None
+    records: list[dict] = []
+    path = custom_report_leads_path()
+
+    if path.exists():
+        with path.open(encoding="utf-8") as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                try:
+                    record = json.loads(line)
+                except json.JSONDecodeError:
+                    records.append({"raw": line.rstrip("\n")})
+                    continue
+
+                matches_lead = bool(lead_id and record.get("leadId") == lead_id)
+                matches_identity = (
+                    updated_record is None
+                    and package_interest
+                    and normalized_email
+                    and normalized_phone
+                    and record.get("email") == normalized_email
+                    and record.get("phone") == normalized_phone
+                    and record.get("packageInterest") == package_interest
+                )
+                if updated_record is None and (matches_lead or matches_identity):
+                    record["paymentStatus"] = "paid"
+                    record["paidAt"] = paid_at
+                    record["paymentSource"] = "razorpay_webhook"
+                    if payment_reference:
+                        record["paymentReference"] = payment_reference
+                    if payment_link_id:
+                        record["razorpayPaymentLinkId"] = payment_link_id
+                    updated_record = record
+                records.append(record)
+
+    if not updated_record and package_interest and normalized_email and normalized_phone:
+        recovered_hash = hashlib.sha256(
+            f"{normalized_email}|{normalized_phone}|{package_interest or ''}|{payment_reference or ''}".encode("utf-8")
+        ).hexdigest()[:12]
+        updated_record = {
+            "leadId": lead_id or f"cr_razorpay_{recovered_hash}",
+            "leadType": "email",
+            "email": normalized_email,
+            "phone": normalized_phone,
+            "packageInterest": package_interest,
+            "paymentStatus": "paid",
+            "paymentSource": "razorpay_webhook",
+            "paidAt": paid_at,
+            "createdAt": paid_at,
+            "source": "razorpay_webhook",
+        }
+        if payment_reference:
+            updated_record["paymentReference"] = payment_reference
+        if payment_link_id:
+            updated_record["razorpayPaymentLinkId"] = payment_link_id
+        records.append(updated_record)
+
+    if not updated_record:
+        return RazorpayWebhookResult(status="ignored", paymentReference=payment_reference)
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        for record in records:
+            if "raw" in record:
+                f.write(record["raw"])
+            else:
+                f.write(json.dumps(record, ensure_ascii=False, sort_keys=True))
+            f.write("\n")
+
+    return RazorpayWebhookResult(
+        status="recorded",
+        leadId=updated_record.get("leadId"),
+        paymentReference=payment_reference,
     )
 
 

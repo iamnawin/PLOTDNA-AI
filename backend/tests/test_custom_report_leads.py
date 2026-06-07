@@ -1,5 +1,7 @@
 import json
 import os
+import hmac
+import hashlib
 import tempfile
 import unittest
 
@@ -308,6 +310,117 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                     os.environ.pop("CUSTOM_REPORT_LEADS_PATH", None)
                 else:
                     os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
+
+    def test_razorpay_webhook_marks_existing_lead_paid_for_auto_access(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
+            previous_path = os.environ.get("CUSTOM_REPORT_LEADS_PATH")
+            previous_db_path = settings.ENTITLEMENTS_DB_PATH
+            previous_secret = settings.RAZORPAY_WEBHOOK_SECRET
+            os.environ["CUSTOM_REPORT_LEADS_PATH"] = leads_path
+            settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
+            settings.RAZORPAY_WEBHOOK_SECRET = "test-webhook-secret"
+            try:
+                client = TestClient(app)
+                user_id = "paid-webhook-user"
+                headers = {"Authorization": f"Bearer {create_access_token(user_id)}"}
+                lead_response = client.post(
+                    "/api/leads/custom-report",
+                    json={
+                        "name": "Naveen",
+                        "email": "buyer@example.com",
+                        "phone": "9876543210",
+                        "citySlug": "hyderabad",
+                        "cityName": "Hyderabad",
+                        "areaSlug": "adibatla",
+                        "areaName": "Adibatla",
+                        "packageInterest": "instant_pdf_99",
+                        "source": "area_report_summary",
+                    },
+                    headers=headers,
+                )
+                lead_id = lead_response.json()["leadId"]
+                payload = {
+                    "event": "payment_link.paid",
+                    "payload": {
+                        "payment_link": {
+                            "entity": {
+                                "id": "plink_test_123",
+                                "reference_id": lead_id,
+                                "notes": {
+                                    "plotdna_lead_id": lead_id,
+                                    "package_interest": "instant_pdf_99",
+                                },
+                                "customer": {
+                                    "email": "buyer@example.com",
+                                    "contact": "9876543210",
+                                },
+                            }
+                        },
+                        "payment": {
+                            "entity": {
+                                "id": "pay_webhook_123",
+                                "email": "buyer@example.com",
+                                "contact": "9876543210",
+                                "amount": 9900,
+                                "currency": "INR",
+                            }
+                        },
+                    },
+                }
+                body = json.dumps(payload, separators=(",", ":")).encode("utf-8")
+                signature = hmac.new(
+                    b"test-webhook-secret",
+                    body,
+                    hashlib.sha256,
+                ).hexdigest()
+
+                webhook_response = client.post(
+                    "/api/leads/razorpay/webhook",
+                    content=body,
+                    headers={
+                        "Content-Type": "application/json",
+                        "X-Razorpay-Signature": signature,
+                    },
+                )
+
+                self.assertEqual(webhook_response.status_code, 200)
+                self.assertEqual(webhook_response.json()["status"], "recorded")
+
+                access_response = client.get(
+                    "/api/v1/entitlements/report-access?packageInterest=instant_pdf_99",
+                    headers=headers,
+                )
+                self.assertEqual(access_response.status_code, 200)
+                self.assertTrue(access_response.json()["canAccess"])
+                self.assertFalse(access_response.json()["requiresPayment"])
+
+                with open(leads_path, encoding="utf-8") as f:
+                    record = json.loads(f.readline())
+                self.assertEqual(record["paymentStatus"], "paid")
+                self.assertEqual(record["paymentReference"], "pay_webhook_123")
+                self.assertEqual(record["razorpayPaymentLinkId"], "plink_test_123")
+            finally:
+                settings.RAZORPAY_WEBHOOK_SECRET = previous_secret
+                settings.ENTITLEMENTS_DB_PATH = previous_db_path
+                if previous_path is None:
+                    os.environ.pop("CUSTOM_REPORT_LEADS_PATH", None)
+                else:
+                    os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
+
+    def test_razorpay_webhook_requires_valid_signature(self):
+        previous_secret = settings.RAZORPAY_WEBHOOK_SECRET
+        settings.RAZORPAY_WEBHOOK_SECRET = "test-webhook-secret"
+        try:
+            client = TestClient(app)
+            response = client.post(
+                "/api/leads/razorpay/webhook",
+                json={"event": "payment_link.paid", "payload": {}},
+                headers={"X-Razorpay-Signature": "bad-signature"},
+            )
+            self.assertEqual(response.status_code, 400)
+        finally:
+            settings.RAZORPAY_WEBHOOK_SECRET = previous_secret
 
     def test_recover_payment_requires_razorpay_payment_id(self):
         with tempfile.TemporaryDirectory() as tmp:

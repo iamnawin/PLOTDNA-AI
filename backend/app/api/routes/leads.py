@@ -1,10 +1,17 @@
-from fastapi import APIRouter, Depends, Header, HTTPException
+import hashlib
+import hmac
+import json
+
+from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from pydantic import BaseModel
 
 from app.core.auth import get_user_id_from_token, require_user_id
+from app.core.config import settings
 from app.services.custom_report_leads import (
     CustomReportLeadCreate,
     CustomReportLeadResponse,
+    RazorpayWebhookResult,
+    confirm_custom_report_payment_from_razorpay,
     recover_custom_report_payment,
     self_confirm_custom_report_payment,
     store_custom_report_lead,
@@ -42,6 +49,12 @@ class SelfConfirmPaymentResponse(BaseModel):
     entitlements: EntitlementsResponse
 
 
+class RazorpayWebhookResponse(BaseModel):
+    status: str
+    leadId: str | None = None
+    paymentReference: str | None = None
+
+
 def _to_entitlements_response(entitlements: Entitlements) -> EntitlementsResponse:
     from app.core.config import settings
 
@@ -67,12 +80,44 @@ def optional_user_id(authorization: str | None = Header(default=None)) -> str | 
     return get_user_id_from_token(token)
 
 
+def _verify_razorpay_signature(body: bytes, signature: str | None) -> None:
+    secret = settings.RAZORPAY_WEBHOOK_SECRET.strip()
+    if not secret:
+        raise HTTPException(status_code=503, detail="Razorpay webhook is not configured")
+    if not signature:
+        raise HTTPException(status_code=400, detail="Missing Razorpay webhook signature")
+
+    expected = hmac.new(secret.encode("utf-8"), body, hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(expected, signature):
+        raise HTTPException(status_code=400, detail="Invalid Razorpay webhook signature")
+
+
 @router.post("/custom-report", response_model=CustomReportLeadResponse)
 def create_custom_report_lead(
     payload: CustomReportLeadCreate,
     user_id: str | None = Depends(optional_user_id),
 ) -> CustomReportLeadResponse:
     return store_custom_report_lead(payload, user_id=user_id)
+
+
+@router.post("/razorpay/webhook", response_model=RazorpayWebhookResponse)
+async def razorpay_webhook(
+    request: Request,
+    x_razorpay_signature: str | None = Header(default=None),
+) -> RazorpayWebhookResponse:
+    body = await request.body()
+    _verify_razorpay_signature(body, x_razorpay_signature)
+    try:
+        payload = json.loads(body.decode("utf-8"))
+    except json.JSONDecodeError as exc:
+        raise HTTPException(status_code=400, detail="Invalid Razorpay webhook payload") from exc
+
+    result: RazorpayWebhookResult = confirm_custom_report_payment_from_razorpay(payload)
+    return RazorpayWebhookResponse(
+        status=result.status,
+        leadId=result.leadId,
+        paymentReference=result.paymentReference,
+    )
 
 
 @router.post("/custom-report/recover-payment", response_model=SelfConfirmPaymentResponse)

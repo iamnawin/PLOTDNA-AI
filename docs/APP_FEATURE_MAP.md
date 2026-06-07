@@ -65,6 +65,7 @@ This file maps the current app behavior to the main files and components that im
 
 - `backend/app/api/routes/leads.py`
   - Exposes the custom report lead and payment recovery route contracts used by the frontend.
+  - Verifies signed Razorpay webhooks at `POST /api/leads/razorpay/webhook` before marking a lead paid.
 
 - `frontend/scripts/check-area-feature-navigation.mjs`
   - Guards the top feature rail, section anchors, Motion transitions, preview carousel, and scroll-driven progress line.
@@ -74,6 +75,9 @@ This file maps the current app behavior to the main files and components that im
 
 - `frontend/scripts/check-report-pricing-copy.mjs`
   - Guards Rs 99 lifetime access and report pricing copy.
+
+- `frontend/scripts/check-payment-recognition.mjs`
+  - Guards the Razorpay-return access re-check and keeps Payment ID entry as a hidden fallback.
 
 ## 4. Brochure Analysis
 
@@ -181,6 +185,9 @@ This file maps the current app behavior to the main files and components that im
 - `VITE_RAZORPAY_CUSTOM_REPORT_LINK`
   - Payment Link used by the Rs 499 custom buyer verification brief CTA.
 
+- `RAZORPAY_WEBHOOK_SECRET`
+  - Secret used to verify Razorpay webhook signatures before paid access is activated.
+
 ## 9. Current Product Flow
 
 1. User opens the landing page.
@@ -190,5 +197,6 @@ This file maps the current app behavior to the main files and components that im
 5. User can move from city-level view to area-level detail for analysis.
 6. User uses the top feature rail to jump between report sections.
 7. After the live preview period, the page shows a compact locked-feature carousel and the Rs 99 lifetime access CTA.
-8. Paid users see a welcome-back state and can explicitly download the source-of-truth PDF.
+8. After Razorpay payment, the app re-checks access when the user returns and unlocks the report once the signed webhook has marked the lead paid.
+9. Paid users see a welcome-back state and can explicitly download the source-of-truth PDF.
 

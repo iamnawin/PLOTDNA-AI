@@ -409,20 +409,25 @@ export default function CustomReportLeadModal({
                 )}
 
                 {paymentAvailable && !isCustomReport && (
-                  <label className="mt-3 block">
-                    <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
-                      Payment ID fallback
-                    </span>
-                    <input
-                      value={recoveryReference}
-                      onChange={(event) => { setRecoveryReference(event.target.value); setError('') }}
-                      placeholder="pay_..."
-                      className="w-full rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.05] px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/50"
-                    />
-                    <p className="mt-2 text-[11px] font-sans leading-relaxed text-slate-500">
-                      Optional. Paste the Payment ID only if email and phone matching cannot find your earlier Rs 99 payment.
-                    </p>
-                  </label>
+                  <details className="mt-3 rounded-2xl border border-white/10 bg-white/[0.03] p-3">
+                    <summary className="cursor-pointer text-[11px] font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
+                      Having trouble? Use Payment ID fallback
+                    </summary>
+                    <label className="mt-3 block">
+                      <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
+                        Payment ID fallback
+                      </span>
+                      <input
+                        value={recoveryReference}
+                        onChange={(event) => { setRecoveryReference(event.target.value); setError('') }}
+                        placeholder="pay_..."
+                        className="w-full rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.05] px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/50"
+                      />
+                      <p className="mt-2 text-[11px] font-sans leading-relaxed text-slate-500">
+                        Payment ID is only for direct Razorpay payments we cannot match automatically. Try the normal email and phone check first.
+                      </p>
+                    </label>
+                  </details>
                 )}
 
                 {error && <p className="mt-3 text-[11px] font-sans text-red-400">{error}</p>}

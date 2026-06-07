@@ -17,6 +17,7 @@
     "test:landing-live-metrics": "node scripts/check-landing-live-metrics.mjs",
     "test:pdf-report-quality": "node scripts/check-pdf-report-quality.mjs",
     "test:area-dna-paywall": "node scripts/check-area-dna-paywall.mjs",
+    "test:payment-recognition": "node scripts/check-payment-recognition.mjs",
     "test:area-feature-navigation": "node scripts/check-area-feature-navigation.mjs",
     "test:report-pricing-copy": "node scripts/check-report-pricing-copy.mjs",
     "test:area-compare-highlight": "node scripts/check-area-compare-highlight.mjs",

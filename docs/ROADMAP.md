@@ -394,7 +394,8 @@ As of June 2026, the area report experience includes:
 - Timed preview lock with a compact feature carousel.
 - Duplicate payment-card prevention after the preview timeout.
 - Rs 99 lifetime access state with welcome-back copy and explicit PDF download.
-- Razorpay Payment ID recovery fallback for paid users whose lead row was not created.
+- Razorpay webhook recognition for paid leads, with Payment ID kept as a fallback for unmatched direct payments.
+- Return-from-Razorpay access re-check on browser focus and mobile visibility changes.
 - Landing live-now count floor of 143 plus live metric updates.
 
 ---
