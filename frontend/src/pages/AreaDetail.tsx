@@ -1,6 +1,6 @@
 import { useState, useEffect, type ReactNode } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   Bar,
   BarChart,
@@ -15,7 +15,7 @@ import {
 import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
   Hammer, Users, Globe, Shield, Briefcase, Landmark, AlertTriangle,
-  Navigation, ShoppingBag, Package, Film, Leaf, Sparkles,
+  Navigation, ShoppingBag, Package, Film, Leaf, Sparkles, ChevronLeft, ChevronRight,
   HardHat, Train, Car, Home, Building, Plane, Factory, Wifi,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -58,6 +58,65 @@ interface AreaDetailLocationState {
 }
 
 type AreaDetailFallbackContext = NonNullable<AreaDetailLocationState['fallbackContext']>
+type AreaFeatureId = 'verdict' | 'sources' | 'growth' | 'risk' | 'compare' | 'pdf'
+
+const AREA_FEATURE_GUIDE: Array<{
+  id: AreaFeatureId
+  label: string
+  targetId: string
+  promise: string
+  preview: string
+  icon: LucideIcon
+}> = [
+  {
+    id: 'verdict',
+    label: 'Verdict',
+    targetId: 'area-feature-verdict',
+    promise: 'Decision-grade score',
+    preview: 'See the DNA verdict before reading the evidence.',
+    icon: Shield,
+  },
+  {
+    id: 'sources',
+    label: 'Sources',
+    targetId: 'area-feature-sources',
+    promise: 'Source trail',
+    preview: 'Open the public links and source trail behind the report.',
+    icon: FileText,
+  },
+  {
+    id: 'growth',
+    label: 'Growth',
+    targetId: 'area-feature-growth',
+    promise: 'Signal movement',
+    preview: 'Compare infrastructure, satellite, jobs, RERA, and price velocity.',
+    icon: TrendingUp,
+  },
+  {
+    id: 'risk',
+    label: 'Risk',
+    targetId: 'area-feature-risk',
+    promise: 'Buyer checklist',
+    preview: 'Turn the area view into site-visit and document checks.',
+    icon: AlertTriangle,
+  },
+  {
+    id: 'compare',
+    label: 'Compare',
+    targetId: 'area-feature-compare',
+    promise: 'Avoid tunnel vision',
+    preview: 'Check nearby alternatives before committing to one locality.',
+    icon: Globe,
+  },
+  {
+    id: 'pdf',
+    label: 'PDF',
+    targetId: 'area-feature-pdf',
+    promise: 'Source of truth',
+    preview: 'Download the printable report instead of relying on screenshots.',
+    icon: Download,
+  },
+]
 
 function fallbackFromQuery(search: string): AreaDetailFallbackContext | undefined {
   const params = new URLSearchParams(search)
@@ -396,6 +455,141 @@ function ReportExportPanel({
   )
 }
 
+function AreaFeatureNavigator({
+  activeFeatureId,
+  onSelectFeature,
+}: {
+  activeFeatureId: AreaFeatureId
+  onSelectFeature: (feature: (typeof AREA_FEATURE_GUIDE)[number]) => void
+}) {
+  return (
+    <nav
+      aria-label="PlotDNA feature navigation"
+      className="sticky top-14 z-30 -mx-4 mb-6 border-y border-white/5 bg-slate-950/82 px-4 py-3 backdrop-blur-xl sm:mx-0 sm:rounded-2xl sm:border sm:px-3"
+    >
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {AREA_FEATURE_GUIDE.map(feature => {
+          const Icon = feature.icon
+          const active = activeFeatureId === feature.id
+          return (
+            <button
+              key={feature.id}
+              onClick={() => onSelectFeature(feature)}
+              className="relative min-w-[132px] overflow-hidden rounded-2xl border border-white/8 px-3 py-2.5 text-left transition-colors hover:border-emerald-400/35 hover:bg-white/[0.05]"
+              style={{
+                background: active ? 'rgba(16,185,129,0.12)' : 'rgba(15,23,42,0.48)',
+              }}
+            >
+              {active && (
+                <motion.span
+                  layoutId="area-feature-active-pill"
+                  className="absolute inset-0 rounded-2xl border border-emerald-400/35"
+                  style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)' }}
+                />
+              )}
+              <span className="relative flex items-center gap-2">
+                <Icon size={13} className={active ? 'text-emerald-300' : 'text-slate-500'} />
+                <span className="text-[11px] font-sans font-black text-slate-100">{feature.label}</span>
+              </span>
+              <span className="relative mt-1 block text-[9px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">
+                {feature.promise}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+    </nav>
+  )
+}
+
+function PreviewFeatureCarousel() {
+  const [previewFeatureIndex, setPreviewFeatureIndex] = useState(0)
+  const [direction, setDirection] = useState(1)
+  const feature = AREA_FEATURE_GUIDE[previewFeatureIndex]
+  const Icon = feature.icon
+
+  function movePreview(delta: 1 | -1) {
+    setDirection(delta)
+    setPreviewFeatureIndex((current) => {
+      const next = (current + delta + AREA_FEATURE_GUIDE.length) % AREA_FEATURE_GUIDE.length
+      trackEvent(delta > 0 ? 'area_preview_feature_next' : 'area_preview_feature_previous', {
+        featureId: AREA_FEATURE_GUIDE[next].id,
+        source: 'timed_preview_lock',
+      })
+      return next
+    })
+  }
+
+  return (
+    <div
+      aria-label="Preview locked feature carousel"
+      data-motion="direction-aware"
+      className="mx-auto mt-5 max-w-sm rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left"
+    >
+      <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
+        Buyer decision workflow
+      </p>
+      <div className="relative mt-3 min-h-[112px] overflow-hidden">
+        {/* direction-aware transitions keep next/back movement spatially understandable */}
+        <AnimatePresence initial={false} custom={direction} mode="popLayout">
+          <motion.div
+            key={feature.id}
+            custom={direction}
+            initial={{ opacity: 0, x: direction > 0 ? 28 : -28 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: direction > 0 ? -28 : 28 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="absolute inset-0"
+          >
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-emerald-400/20 bg-emerald-400/10">
+                <Icon size={16} className="text-emerald-300" />
+              </div>
+              <div className="min-w-0">
+                <p className="font-display text-lg font-extrabold text-slate-100">{feature.label}</p>
+                <p className="mt-1 text-[10px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">
+                  {feature.promise}
+                </p>
+                <p className="mt-2 text-xs font-sans leading-relaxed text-slate-400">
+                  {feature.preview}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <div className="mt-4 flex items-center justify-between gap-3">
+        <button
+          onClick={() => movePreview(-1)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-slate-950/35 text-slate-300 transition-colors hover:border-emerald-400/35"
+          aria-label="Previous PlotDNA feature"
+        >
+          <ChevronLeft size={16} />
+        </button>
+        <div className="flex gap-1.5" aria-hidden="true">
+          {AREA_FEATURE_GUIDE.map((item, index) => (
+            <span
+              key={item.id}
+              className="h-1.5 rounded-full transition-all"
+              style={{
+                width: index === previewFeatureIndex ? 18 : 6,
+                background: index === previewFeatureIndex ? '#34d399' : 'rgba(148,163,184,0.32)',
+              }}
+            />
+          ))}
+        </div>
+        <button
+          onClick={() => movePreview(1)}
+          className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-slate-950/35 text-slate-300 transition-colors hover:border-emerald-400/35"
+          aria-label="Next PlotDNA feature"
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
+    </div>
+  )
+}
+
 function TimedDnaAccessGate({
   children,
   locked,
@@ -451,18 +645,7 @@ function TimedDnaAccessGate({
             <p className="mx-auto mt-2 max-w-md text-sm font-sans leading-relaxed text-slate-400">
               You have seen the live DNA preview. Continue with lifetime source-of-truth PDF and app access.
             </p>
-            <div className="mx-auto mt-5 grid max-w-sm grid-cols-1 gap-2 text-left sm:grid-cols-3">
-              {['DNA verdict', 'Source trail', 'Buyer checklist'].map(item => (
-                <div key={item} className="rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-3">
-                  <span className="block text-[9px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">
-                    Included
-                  </span>
-                  <span className="mt-1 block text-[11px] font-sans font-bold leading-snug text-slate-200">
-                    {item}
-                  </span>
-                </div>
-              ))}
-            </div>
+            <PreviewFeatureCarousel />
             <div className="mx-auto mt-4 max-w-sm">
               <button
                 onClick={onUnlock}
@@ -1295,6 +1478,8 @@ export default function AreaDetail() {
   const [reportAccessUnlocked, setReportAccessUnlocked] = useState(false)
   const [reportPreviewLocked, setReportPreviewLocked] = useState(false)
   const [reportPreviewLockedAreaSlug, setReportPreviewLockedAreaSlug] = useState<string | null>(null)
+  const [activeAreaFeatureId, setActiveAreaFeatureId] = useState<AreaFeatureId>('verdict')
+  const [highlightedFeatureId, setHighlightedFeatureId] = useState<AreaFeatureId | null>(null)
   const [emailGateOpen, setEmailGateOpen] = useState(false)
   const [emailGateEntitlements, setEmailGateEntitlements] = useState(() => getCachedEntitlements())
   const [pendingReportDownloadSource, setPendingReportDownloadSource] = useState<string | null>(null)
@@ -1387,6 +1572,13 @@ export default function AreaDetail() {
 
     return () => window.clearTimeout(timer)
   }, [area, reportAccessUnlocked, staticCitySlug])
+
+  useEffect(() => {
+    if (!highlightedFeatureId) return
+
+    const timer = window.setTimeout(() => setHighlightedFeatureId(null), 1400)
+    return () => window.clearTimeout(timer)
+  }, [highlightedFeatureId])
 
   useEffect(() => {
     if (!area) return
@@ -1751,6 +1943,19 @@ export default function AreaDetail() {
     setCustomReportOpen(true)
   }
 
+  const handleAreaFeatureSelect = (feature: (typeof AREA_FEATURE_GUIDE)[number]) => {
+    setActiveAreaFeatureId(feature.id)
+    setHighlightedFeatureId(feature.id)
+    trackEvent('area_feature_navigation_clicked', {
+      citySlug,
+      areaSlug: area.slug,
+      featureId: feature.id,
+      source: 'area_feature_navigator',
+      dataConfidence: displayedConfidence ?? 'estimated',
+    })
+    document.getElementById(feature.targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   const handleEmailGateUnlocked = (nextEntitlements: NonNullable<typeof emailGateEntitlements>) => {
     setEmailGateEntitlements(nextEntitlements)
     setEmailGateOpen(false)
@@ -1964,8 +2169,10 @@ export default function AreaDetail() {
             </section>
 
             <section
+              id="area-feature-compare"
+              data-highlighted-feature={highlightedFeatureId === 'compare' ? 'true' : undefined}
               aria-label="Free area comparison"
-              className="mt-4 rounded-2xl border border-cyan-400/20 bg-cyan-400/[0.06] p-4"
+              className={`mt-4 scroll-mt-28 rounded-2xl border border-cyan-400/20 bg-cyan-400/[0.06] p-4 transition-shadow ${highlightedFeatureId === 'compare' ? 'shadow-[0_0_0_1px_rgba(34,211,238,0.45),0_0_32px_rgba(34,211,238,0.16)]' : ''}`}
             >
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
@@ -2158,14 +2365,21 @@ export default function AreaDetail() {
         </motion.div>
 
         {/* Full DNA report sections */}
+        <AreaFeatureNavigator
+          activeFeatureId={activeAreaFeatureId}
+          onSelectFeature={handleAreaFeatureSelect}
+        />
+
         <div className="relative mt-8">
           <div className="transition-all duration-500">
             {/* ── AI Verdict ── */}
             <motion.div
+              id="area-feature-verdict"
+              data-highlighted-feature={highlightedFeatureId === 'verdict' ? 'true' : undefined}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="mb-10"
+              className={`mb-10 scroll-mt-28 rounded-[1.25rem] transition-shadow ${highlightedFeatureId === 'verdict' ? 'shadow-[0_0_0_1px_rgba(52,211,153,0.45),0_0_32px_rgba(16,185,129,0.18)]' : ''}`}
             >
               {fallbackContext && fallbackContext.tier !== 'exact_locality' && (
                 <div
@@ -2188,9 +2402,15 @@ export default function AreaDetail() {
               />
             </motion.div>
 
-            <ReportExportPanel
-              onDownloadPdf={() => openEmailGateForPdf('area_dna_export_cta')}
-            />
+            <div
+              id="area-feature-pdf"
+              data-highlighted-feature={highlightedFeatureId === 'pdf' ? 'true' : undefined}
+              className={`scroll-mt-28 rounded-[1.25rem] transition-shadow ${highlightedFeatureId === 'pdf' ? 'shadow-[0_0_0_1px_rgba(52,211,153,0.45),0_0_32px_rgba(16,185,129,0.18)]' : ''}`}
+            >
+              <ReportExportPanel
+                onDownloadPdf={() => openEmailGateForPdf('area_dna_export_cta')}
+              />
+            </div>
 
             <TimedDnaAccessGate
               locked={reportPreviewLocked && reportPreviewLockedAreaSlug === area.slug && !reportAccessUnlocked}
@@ -2199,10 +2419,12 @@ export default function AreaDetail() {
 
             {/* ── Satellite Growth ── */}
             <motion.section
+              id="area-feature-growth"
+              data-highlighted-feature={highlightedFeatureId === 'growth' ? 'true' : undefined}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.12 }}
-              className="mb-10"
+              className={`mb-10 scroll-mt-28 rounded-[1.25rem] transition-shadow ${highlightedFeatureId === 'growth' ? 'shadow-[0_0_0_1px_rgba(52,211,153,0.45),0_0_32px_rgba(16,185,129,0.18)]' : ''}`}
             >
               <SatelliteCompare area={area} coords={searchCoords ?? undefined} />
             </motion.section>
@@ -2444,10 +2666,12 @@ export default function AreaDetail() {
 
             {/* ── Sources & Citations ── */}
             <motion.section
+              id="area-feature-sources"
+              data-highlighted-feature={highlightedFeatureId === 'sources' ? 'true' : undefined}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="mb-10"
+              className={`mb-10 scroll-mt-28 rounded-[1.25rem] transition-shadow ${highlightedFeatureId === 'sources' ? 'shadow-[0_0_0_1px_rgba(52,211,153,0.45),0_0_32px_rgba(16,185,129,0.18)]' : ''}`}
             >
               <div className="flex items-center gap-2.5 mb-5">
                 <FileText size={11} className="text-slate-500" />
@@ -2498,10 +2722,12 @@ export default function AreaDetail() {
             </motion.section>
 
             <motion.section
+              id="area-feature-risk"
+              data-highlighted-feature={highlightedFeatureId === 'risk' ? 'true' : undefined}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.41 }}
-              className="mb-10"
+              className={`mb-10 scroll-mt-28 rounded-[1.25rem] transition-shadow ${highlightedFeatureId === 'risk' ? 'shadow-[0_0_0_1px_rgba(251,191,36,0.45),0_0_32px_rgba(251,191,36,0.14)]' : ''}`}
             >
               <div className="flex items-center gap-2 mb-4">
                 <Shield size={14} style={{ color }} />
