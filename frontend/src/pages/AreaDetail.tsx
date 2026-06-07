@@ -407,9 +407,47 @@ function LivabilityTrendPanel({ livability, yoy }: { livability: Livability; yoy
 
 function ReportExportPanel({
   onDownloadPdf,
+  accessUnlocked = false,
 }: {
   onDownloadPdf: () => void
+  accessUnlocked?: boolean
 }) {
+  if (accessUnlocked) {
+    return (
+      <section
+        aria-label="Download and print report options"
+        className="mb-10 rounded-2xl border border-emerald-500/24 bg-emerald-500/[0.08] p-4 sm:p-5"
+      >
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <div
+              className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl"
+              style={{ background: 'rgba(16,185,129,0.14)', border: '1px solid rgba(16,185,129,0.32)' }}
+            >
+              <Shield size={16} className="text-emerald-300" />
+            </div>
+            <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
+              Welcome back
+            </p>
+            <h2 className="mt-1 font-display text-2xl font-extrabold text-slate-100">
+              Lifetime access is active.
+            </h2>
+            <p className="mt-2 max-w-2xl text-xs font-sans leading-relaxed text-slate-400">
+              No more payment cards for this session. Continue through the app or download the source-of-truth PDF when you need a copy.
+            </p>
+          </div>
+          <button
+            onClick={onDownloadPdf}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-black text-[#04110b] transition-colors hover:bg-emerald-400 sm:w-auto"
+          >
+            <Download size={15} />
+            Download source-of-truth PDF
+          </button>
+        </div>
+      </section>
+    )
+  }
+
   return (
     <section
       aria-label="Download and print report options"
@@ -452,6 +490,65 @@ function ReportExportPanel({
         </div>
       </div>
     </section>
+  )
+}
+
+function PaidAccessWelcomeCard({
+  open,
+  onContinue,
+  onDownloadPdf,
+}: {
+  open: boolean
+  onContinue: () => void
+  onDownloadPdf: () => void
+}) {
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[3100] flex items-center justify-center px-4 py-4"
+          style={{ background: 'rgba(4,4,10,0.78)', backdropFilter: 'blur(16px)' }}
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 12, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="w-full max-w-md rounded-3xl border border-emerald-500/24 bg-slate-950 p-5 text-center shadow-2xl"
+          >
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-emerald-400/24 bg-emerald-400/12">
+              <Shield size={20} className="text-emerald-300" />
+            </div>
+            <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
+              Welcome back
+            </p>
+            <h2 className="mt-2 font-display text-2xl font-extrabold text-slate-100">
+              Your lifetime access is ready.
+            </h2>
+            <p className="mx-auto mt-2 max-w-sm text-sm font-sans leading-relaxed text-slate-400">
+              We matched your paid access. Continue into the report without seeing payment cards again.
+            </p>
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              <button
+                onClick={onContinue}
+                className="rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-black text-[#04110b] transition-colors hover:bg-emerald-400"
+              >
+                Continue to app
+              </button>
+              <button
+                onClick={onDownloadPdf}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-sans font-bold text-slate-200 transition-colors hover:border-emerald-400/35"
+              >
+                Download PDF
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }
 
@@ -1478,6 +1575,7 @@ export default function AreaDetail() {
   const [reportAccessUnlocked, setReportAccessUnlocked] = useState(false)
   const [reportPreviewLocked, setReportPreviewLocked] = useState(false)
   const [reportPreviewLockedAreaSlug, setReportPreviewLockedAreaSlug] = useState<string | null>(null)
+  const [paidAccessWelcomeOpen, setPaidAccessWelcomeOpen] = useState(false)
   const [activeAreaFeatureId, setActiveAreaFeatureId] = useState<AreaFeatureId>('verdict')
   const [highlightedFeatureId, setHighlightedFeatureId] = useState<AreaFeatureId | null>(null)
   const [emailGateOpen, setEmailGateOpen] = useState(false)
@@ -2274,6 +2372,7 @@ export default function AreaDetail() {
                 setReportPreviewLocked(false)
                 setReportPreviewLockedAreaSlug(null)
                 setCustomReportOpen(false)
+                setPaidAccessWelcomeOpen(true)
                 trackEvent('paid_access_claimed', {
                   citySlug,
                   areaSlug: area.slug,
@@ -2288,7 +2387,6 @@ export default function AreaDetail() {
                   packageInterest: selectedReportPackage,
                   metadata: JSON.stringify({ source: selectedReportSource, citySlug, leadId }),
                 })
-                downloadInstantPdf('paid_access_claimed')
               }}
               onGenerateBrief={(input) => {
                 void generateCustomBuyerBriefPDF(area, input)
@@ -2332,6 +2430,15 @@ export default function AreaDetail() {
                 setPendingReportDownloadSource(null)
               }}
               onUnlocked={handleEmailGateUnlocked}
+            />
+
+            <PaidAccessWelcomeCard
+              open={paidAccessWelcomeOpen}
+              onContinue={() => setPaidAccessWelcomeOpen(false)}
+              onDownloadPdf={() => {
+                setPaidAccessWelcomeOpen(false)
+                downloadInstantPdf('paid_access_welcome_download')
+              }}
             />
 
             {/* Stats row */}
@@ -2408,7 +2515,8 @@ export default function AreaDetail() {
               className={`scroll-mt-28 rounded-[1.25rem] transition-shadow ${highlightedFeatureId === 'pdf' ? 'shadow-[0_0_0_1px_rgba(52,211,153,0.45),0_0_32px_rgba(16,185,129,0.18)]' : ''}`}
             >
               <ReportExportPanel
-                onDownloadPdf={() => openEmailGateForPdf('area_dna_export_cta')}
+                accessUnlocked={reportAccessUnlocked}
+                onDownloadPdf={reportAccessUnlocked ? () => downloadInstantPdf('area_dna_verified_download') : () => openEmailGateForPdf('area_dna_export_cta')}
               />
             </div>
 

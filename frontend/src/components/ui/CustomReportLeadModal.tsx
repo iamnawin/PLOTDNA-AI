@@ -54,15 +54,16 @@ export default function CustomReportLeadModal({
   const [paymentOpened, setPaymentOpened] = useState(false)
   const [paymentReference, setPaymentReference] = useState('')
   const [recoveryReference, setRecoveryReference] = useState('')
+  const [paidAccessMatched, setPaidAccessMatched] = useState(false)
   const isCustomReport = packageInterest === 'custom_due_diligence_499'
   const isManualFallback = paymentRequired && !paymentAvailable
   const packageLabel = isCustomReport ? 'Rs 499 buyer brief' : 'Lifetime access - Rs 99'
   const title = isCustomReport
     ? 'Request custom buyer verification brief'
-    : 'Get lifetime access'
+    : 'Check paid access'
   const description = isCustomReport
     ? `Share your buying context for ${areaName}, ${cityName}. PlotDNA will use this to prioritize RERA, access, approvals, pricing, seller questions, and risk checks.`
-    : `One-time Rs 99 lifetime access for this PlotDNA report. Enter the same email and phone you will use for Razorpay.`
+    : `We check your email and phone first. If they match a paid Razorpay access record, you go straight back into PlotDNA.`
   const submittedMessage = paymentAvailable
     ? 'Payment details saved. Continue to Razorpay, then return here to unlock access.'
     : canGenerateBrief
@@ -72,7 +73,7 @@ export default function CustomReportLeadModal({
       : 'Contact captured. We will follow up with the PDF payment link or report link.'
   const submitLabel = isCustomReport
     ? canGenerateBrief ? 'Prepare preview brief' : paymentAvailable ? 'Request report' : 'Request payment link'
-    : paymentAvailable ? 'Get lifetime access' : 'Request PDF link'
+    : paymentAvailable ? 'Check paid access' : 'Request PDF link'
 
   useEffect(() => {
     if (open) return
@@ -81,6 +82,7 @@ export default function CustomReportLeadModal({
     setPaymentOpened(false)
     setPaymentReference('')
     setRecoveryReference('')
+    setPaidAccessMatched(false)
     setError('')
   }, [open])
 
@@ -112,6 +114,7 @@ export default function CustomReportLeadModal({
       if (paymentRequired && packageInterest) {
         const claimResult = await claimPaidAccess(name.trim(), email.trim(), phone.trim(), packageInterest)
         if (claimResult.status === 'ok' && claimResult.claim.matched) {
+          setPaidAccessMatched(true)
           onPaidAccessClaimed?.(claimResult.claim.entitlements, claimResult.claim.leadId)
           return
         }
@@ -123,6 +126,7 @@ export default function CustomReportLeadModal({
             packageInterest,
             paymentReference: recoveryReference.trim(),
           })
+          setPaidAccessMatched(true)
           onPaidAccessClaimed?.(recoveryResult.entitlements, recoveryResult.leadId)
           return
         }
@@ -172,6 +176,7 @@ export default function CustomReportLeadModal({
     setSubmitting(true)
     try {
       const result = await selfConfirmCustomReportPayment(submittedLeadId, paymentReference.trim() || undefined)
+      setPaidAccessMatched(true)
       onPaidAccessClaimed?.(result.entitlements, result.leadId)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Could not unlock payment access.')
@@ -222,6 +227,11 @@ export default function CustomReportLeadModal({
                 {packageInterest && (
                   <p className="mt-2 inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-emerald-300">
                     {packageLabel}
+                  </p>
+                )}
+                {paymentAvailable && !isCustomReport && (
+                  <p className="mt-2 rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.06] px-3 py-2 text-[11px] font-sans leading-relaxed text-slate-300">
+                    We check your email and phone first. Payment ID fallback is only for direct Razorpay payments we cannot match automatically.
                   </p>
                 )}
                 {isManualFallback && (
@@ -305,6 +315,14 @@ export default function CustomReportLeadModal({
               </div>
             ) : (
               <>
+                {paidAccessMatched && (
+                  <div className="mt-5 rounded-2xl border border-emerald-500/24 bg-emerald-500/10 p-4">
+                    <p className="font-sans text-sm font-bold text-emerald-300">Welcome back</p>
+                    <p className="mt-2 text-xs font-sans leading-relaxed text-slate-300">
+                      Your payment matched by email and phone. PlotDNA access is active.
+                    </p>
+                  </div>
+                )}
                 <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <label>
                     <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">
@@ -393,7 +411,7 @@ export default function CustomReportLeadModal({
                 {paymentAvailable && !isCustomReport && (
                   <label className="mt-3 block">
                     <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
-                      Already paid? Razorpay payment ID
+                      Payment ID fallback
                     </span>
                     <input
                       value={recoveryReference}
@@ -402,7 +420,7 @@ export default function CustomReportLeadModal({
                       className="w-full rounded-2xl border border-emerald-500/20 bg-emerald-500/[0.05] px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/50"
                     />
                     <p className="mt-2 text-[11px] font-sans leading-relaxed text-slate-500">
-                      Paste the Payment ID from your Razorpay success screen to recover an earlier Rs 99 payment.
+                      Optional. Paste the Payment ID only if email and phone matching cannot find your earlier Rs 99 payment.
                     </p>
                   </label>
                 )}
