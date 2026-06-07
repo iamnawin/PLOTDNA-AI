@@ -19,10 +19,16 @@ for (const label of ['Verdict', 'Sources', 'Growth', 'Risk', 'Compare', 'PDF']) 
 assert(areaDetail.includes('function AreaFeatureNavigator'), 'area page must render a feature navigator')
 assert(areaDetail.includes('aria-label="PlotDNA feature navigation"'), 'feature navigator must be discoverable')
 assert(areaDetail.includes('sticky top-14'), 'feature navigator must stay available while scanning the report')
+const normalAreaBranch = areaDetail.indexOf('const displayedConfidence')
+const featureNavigatorRender = areaDetail.indexOf('<AreaFeatureNavigator', normalAreaBranch)
+const heroRender = areaDetail.indexOf('className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12"', normalAreaBranch)
+assert(featureNavigatorRender > -1 && heroRender > -1 && featureNavigatorRender < heroRender, 'feature navigator must render before the main hero card')
 assert(areaDetail.includes('scrollIntoView({ behavior: \'smooth\''), 'feature nav clicks must smoothly scroll to sections')
 assert(areaDetail.includes("trackEvent('area_feature_navigation_clicked'"), 'feature nav clicks must be tracked')
 assert(areaDetail.includes('setHighlightedFeatureId(feature.id)'), 'feature nav must briefly highlight the target section')
 assert(areaDetail.includes('layoutId="area-feature-active-pill"'), 'active feature pill must use shared layout motion')
+assert(areaDetail.includes('layoutId="area-feature-reflection"'), 'feature navigator must include a reflective active sheen')
+assert(areaDetail.includes('ease: [0.22, 1, 0.36, 1]'), 'feature navigator motion must use a smooth premium easing curve')
 
 for (const id of [
   'id="area-feature-verdict"',

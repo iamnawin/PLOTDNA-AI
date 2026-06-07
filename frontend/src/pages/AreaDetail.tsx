@@ -476,17 +476,30 @@ function ReportExportPanel({
         </div>
 
         <div className="grid w-full grid-cols-1 gap-3 lg:max-w-[240px]">
-          <button
-            onClick={onDownloadPdf}
-            className="rounded-2xl border border-white/10 bg-slate-950/35 p-4 text-left transition-colors hover:border-emerald-400/45 hover:bg-white/[0.05]"
-          >
-            <span className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Lifetime access</span>
-            <span className="mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
-            <span className="mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full area DNA, buyer checklist, and printable PDF without paying again.</span>
-            <span className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b]">
-              Get lifetime access
-            </span>
-          </button>
+          <AnimatePresence>
+            <motion.button
+              onClick={onDownloadPdf}
+              initial={{ scale: 0.96, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.96, opacity: 0 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative overflow-hidden rounded-2xl border border-emerald-400/25 bg-slate-950/35 p-4 text-left transition-colors hover:border-emerald-300/55 hover:bg-white/[0.06]"
+            >
+              <motion.span
+                aria-hidden="true"
+                className="cta-reflection-sheen pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/24 to-transparent"
+                animate={{ x: ['-120%', '360%'], opacity: [0, 1, 0] }}
+                transition={{ duration: 2.2, repeat: Infinity, repeatDelay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              />
+              <span className="relative text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">Lifetime access</span>
+              <span className="relative mt-1 block font-display text-3xl font-extrabold text-slate-100">Rs 99</span>
+              <span className="relative mt-2 block text-xs font-sans leading-relaxed text-slate-400">Unlock the full area DNA, buyer checklist, and printable PDF without paying again.</span>
+              <span className="relative mt-4 inline-flex w-full items-center justify-center rounded-xl bg-emerald-500 px-3 py-2 text-xs font-sans font-black text-[#04110b] shadow-[0_0_24px_rgba(16,185,129,0.28)] transition-colors group-hover:bg-emerald-400">
+                Get lifetime access
+              </span>
+            </motion.button>
+          </AnimatePresence>
         </div>
       </div>
     </section>
@@ -564,15 +577,17 @@ function AreaFeatureNavigator({
       aria-label="PlotDNA feature navigation"
       className="sticky top-14 z-30 -mx-4 mb-6 border-y border-white/5 bg-slate-950/82 px-4 py-3 backdrop-blur-xl sm:mx-0 sm:rounded-2xl sm:border sm:px-3"
     >
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <div className="flex snap-x gap-2 overflow-x-auto scroll-smooth pb-1">
         {AREA_FEATURE_GUIDE.map(feature => {
           const Icon = feature.icon
           const active = activeFeatureId === feature.id
           return (
-            <button
+            <motion.button
+              layout
               key={feature.id}
               onClick={() => onSelectFeature(feature)}
-              className="relative min-w-[132px] overflow-hidden rounded-2xl border border-white/8 px-3 py-2.5 text-left transition-colors hover:border-emerald-400/35 hover:bg-white/[0.05]"
+              transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
+              className="relative min-w-[132px] snap-start overflow-hidden rounded-2xl border border-white/8 px-3 py-2.5 text-left transition-colors hover:border-emerald-400/35 hover:bg-white/[0.05]"
               style={{
                 background: active ? 'rgba(16,185,129,0.12)' : 'rgba(15,23,42,0.48)',
               }}
@@ -584,6 +599,16 @@ function AreaFeatureNavigator({
                   style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)' }}
                 />
               )}
+              {active && (
+                <motion.span
+                  layoutId="area-feature-reflection"
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/18 to-transparent"
+                  initial={{ x: '-80%', opacity: 0 }}
+                  animate={{ x: '340%', opacity: [0, 1, 0] }}
+                  transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                />
+              )}
               <span className="relative flex items-center gap-2">
                 <Icon size={13} className={active ? 'text-emerald-300' : 'text-slate-500'} />
                 <span className="text-[11px] font-sans font-black text-slate-100">{feature.label}</span>
@@ -591,7 +616,7 @@ function AreaFeatureNavigator({
               <span className="relative mt-1 block text-[9px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">
                 {feature.promise}
               </span>
-            </button>
+            </motion.button>
           )
         })}
       </div>
@@ -2151,6 +2176,11 @@ export default function AreaDetail() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
 
+        <AreaFeatureNavigator
+          activeFeatureId={activeAreaFeatureId}
+          onSelectFeature={handleAreaFeatureSelect}
+        />
+
         {/* ── Hero ── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -2472,11 +2502,6 @@ export default function AreaDetail() {
         </motion.div>
 
         {/* Full DNA report sections */}
-        <AreaFeatureNavigator
-          activeFeatureId={activeAreaFeatureId}
-          onSelectFeature={handleAreaFeatureSelect}
-        />
-
         <div className="relative mt-8">
           <div className="transition-all duration-500">
             {/* ── AI Verdict ── */}
