@@ -27,10 +27,13 @@ This file maps the current app behavior to the main files and components that im
   - Detailed locality page for a supported micro-market.
   - Shows score, growth story, active projects, news, market pulse, AVM, sources, and alternatives.
   - Renders the sticky feature rail for Verdict, Sources, Growth, Risk, Compare, and PDF sections.
-  - Uses Motion for active feature tab transitions, CTA reflection, and report scroll progress.
+  - Uses Motion for active feature tab transitions, rainbow-border CTA entry, and report scroll progress.
   - Hides the upper PDF/payment card when the timed preview lock is visible to avoid duplicate Rs 99 cards.
   - Shows a welcome-back card after paid access recovery instead of auto-downloading the PDF.
   - Hosts the floating assistant dock with area-level context.
+
+- `frontend/src/index.css`
+  - Owns the shared visual tokens: Manrope/Inter typography, neutral ink background, subtle grid texture, elevated glass panels, and emerald/cyan/amber support accents.
 
 - `frontend/src/components/ui/VerdictCard.tsx`
   - AI verdict summary card.
@@ -53,7 +56,7 @@ This file maps the current app behavior to the main files and components that im
 
 - `frontend/src/components/ui/rainbow-borders-button.tsx`
   - Shared Motion CTA used by both Rs 99 lifetime actions.
-  - Adds the animated rainbow border, glow, and reflection treatment without duplicating button styling inside report sections.
+  - Adds the animated rainbow border and glow without the older white reflection sweep or duplicate button styling inside report sections.
 
 - `frontend/src/components/ui/CustomReportLeadModal.tsx`
   - Collects name, email, and phone first so payment recovery feels like account matching.
@@ -78,6 +81,9 @@ This file maps the current app behavior to the main files and components that im
 
 - `frontend/scripts/check-payment-recognition.mjs`
   - Guards the Razorpay-return access re-check and keeps Payment ID entry as a hidden fallback.
+
+- `frontend/scripts/check-visual-design-tokens.mjs`
+  - Guards the shared UI styling decisions so future visual edits keep the refined typography, background, surfaces, accents, and reflection-free rainbow CTA.
 
 ## 4. Brochure Analysis
 

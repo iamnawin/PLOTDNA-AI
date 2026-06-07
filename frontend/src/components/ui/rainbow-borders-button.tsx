@@ -27,8 +27,9 @@ export function RainbowBordersButton({
       </motion.button>
       <style>{`
         .plotdna-rainbow-border {
+          background: rgba(5, 7, 17, 0.96);
           background:
-            linear-gradient(#020617, #020617) padding-box,
+            linear-gradient(rgba(5, 7, 17, 0.96), rgba(5, 7, 17, 0.96)) padding-box,
             linear-gradient(45deg, #10b981, #22d3ee, #a78bfa, #f59e0b, #ef4444, #10b981, #22d3ee, #a78bfa, #f59e0b, #ef4444) border-box;
           background-size: 100% 100%, 400% 100%;
           animation: plotdna-rainbow-border 20s linear infinite;

@@ -3,29 +3,36 @@
 
 /* ── Custom fonts for Tailwind v4 ── */
 @theme {
-  --font-display: 'Sansation', 'Manrope', 'Inter Tight', system-ui, sans-serif;
+  --font-display: 'Manrope', 'Inter', system-ui, sans-serif;
   --font-sans: 'Inter', 'Manrope', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
 :root {
-  --font-heading: 'Sansation', 'Manrope', 'Inter Tight', system-ui, sans-serif;
+  --font-heading: 'Manrope', 'Inter', system-ui, sans-serif;
   --font-body: 'Inter', 'Manrope', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-  --bg-main: #060814;
-  --bg-card: rgba(10, 15, 30, 0.65);
-  --bg-card-soft: rgba(15, 23, 42, 0.45);
-  --border-soft: rgba(255, 255, 255, 0.07);
-  --border-green: rgba(16, 185, 129, 0.35);
+  --bg-main: #050711;
+  --bg-elevated: #090e1b;
+  --surface-strong: rgba(9, 14, 27, 0.82);
+  --surface-medium: rgba(13, 20, 38, 0.66);
+  --surface-soft: rgba(18, 27, 48, 0.48);
+  --bg-card: var(--surface-medium);
+  --bg-card-soft: var(--surface-soft);
+  --border-soft: rgba(203, 213, 225, 0.10);
+  --border-green: rgba(52, 211, 153, 0.34);
   --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --text-soft: #64748b;
+  --text-muted: #a6b3c8;
+  --text-soft: #74849c;
   --green: #10b981;
   --green-soft: rgba(16, 185, 129, 0.12);
-  --blue: #3b82f6;
-  --blue-soft: rgba(59, 130, 246, 0.12);
-  --amber: #f59e0b;
-  --amber-soft: rgba(245, 158, 11, 0.12);
+  --accent-cyan: #22d3ee;
+  --accent-blue: #60a5fa;
+  --accent-amber: #fbbf24;
+  --blue: var(--accent-blue);
+  --blue-soft: rgba(96, 165, 250, 0.12);
+  --amber: var(--accent-amber);
+  --amber-soft: rgba(251, 191, 36, 0.12);
   --red: #ef4444;
   --red-soft: rgba(239, 68, 68, 0.12);
 }
@@ -45,33 +52,38 @@ body,
 
 body {
   background-color: var(--bg-main);
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.06) 0px, transparent 50%), 
-    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, rgba(59, 130, 246, 0.04) 0px, transparent 60%);
+  background-image:
+    linear-gradient(135deg, rgba(5, 7, 17, 0.98) 0%, rgba(7, 13, 25, 0.96) 42%, rgba(3, 12, 18, 0.98) 100%),
+    linear-gradient(rgba(148, 163, 184, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.02) 1px, transparent 1px);
+  background-size: auto, 44px 44px, 44px 44px;
   background-attachment: fixed;
   color: var(--text-main);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: 0;
 }
 
 /* ── Glassmorphism Utility Classes ── */
 .glass-panel {
-  background: rgba(13, 20, 38, 0.55);
-  backdrop-filter: blur(28px) saturate(145%);
-  -webkit-backdrop-filter: blur(28px) saturate(145%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.78), var(--surface-strong));
+  backdrop-filter: blur(24px) saturate(128%);
+  -webkit-backdrop-filter: blur(24px) saturate(128%);
+  border: 1px solid var(--border-soft);
   box-shadow: 
-    0 10px 38px 0 rgba(0, 0, 0, 0.45), 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.15);
+    0 18px 48px rgba(0, 0, 0, 0.34), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
 }
 
 .glass-panel-light {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(20px) saturate(130%);
-  -webkit-backdrop-filter: blur(20px) saturate(130%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  background: linear-gradient(180deg, rgba(18, 27, 48, 0.56), rgba(8, 13, 26, 0.48));
+  backdrop-filter: blur(18px) saturate(118%);
+  -webkit-backdrop-filter: blur(18px) saturate(118%);
+  border: 1px solid rgba(203, 213, 225, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 24px rgba(0, 0, 0, 0.16);
 }
 
 .glass-panel-hover {
@@ -79,11 +91,11 @@ body {
 }
 
 .glass-panel-hover:hover {
-  background: rgba(20, 30, 55, 0.72);
-  border-color: rgba(255, 255, 255, 0.22);
+  background: linear-gradient(180deg, rgba(22, 34, 58, 0.78), rgba(10, 18, 34, 0.72));
+  border-color: rgba(148, 163, 184, 0.22);
   box-shadow: 
-    0 16px 48px 0 rgba(16, 185, 129, 0.08), 
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.20);
+    0 18px 52px rgba(16, 185, 129, 0.09), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
   transform: translateY(-2px);
 }
 
@@ -119,11 +131,11 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(148, 163, 184, 0.18);
   border-radius: 99px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(148, 163, 184, 0.34);
 }
 
 /* ── Premium 3D Reflective Button style ── */
