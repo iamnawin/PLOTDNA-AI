@@ -1,6 +1,6 @@
-import { useState, useEffect, type ReactNode } from 'react'
+import { useState, useEffect, useRef, type ReactNode } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import {
   Bar,
   BarChart,
@@ -572,12 +572,16 @@ function AreaFeatureNavigator({
   activeFeatureId: AreaFeatureId
   onSelectFeature: (feature: (typeof AREA_FEATURE_GUIDE)[number]) => void
 }) {
+  const featureTabsRef = useRef<HTMLDivElement>(null)
+  const { scrollXProgress } = useScroll({ container: featureTabsRef })
+  const tabProgressWidth = useTransform(scrollXProgress, [0, 1], ['0%', '100%'])
+
   return (
     <nav
       aria-label="PlotDNA feature navigation"
       className="sticky top-14 z-30 -mx-4 mb-6 border-y border-white/5 bg-slate-950/82 px-4 py-3 backdrop-blur-xl sm:mx-0 sm:rounded-2xl sm:border sm:px-3"
     >
-      <div className="flex snap-x gap-2 overflow-x-auto scroll-smooth pb-1">
+      <div ref={featureTabsRef} className="flex snap-x gap-2 overflow-x-auto scroll-smooth pb-1">
         {AREA_FEATURE_GUIDE.map(feature => {
           const Icon = feature.icon
           const active = activeFeatureId === feature.id
@@ -619,6 +623,12 @@ function AreaFeatureNavigator({
             </motion.button>
           )
         })}
+      </div>
+      <div aria-hidden="true" className="mt-2 h-1 overflow-hidden rounded-full bg-slate-800/80">
+        <motion.div
+          className="h-full rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.42)]"
+          style={{ width: tabProgressWidth }}
+        />
       </div>
     </nav>
   )
