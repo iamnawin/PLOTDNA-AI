@@ -22,6 +22,7 @@
     "test:area-feature-navigation": "node scripts/check-area-feature-navigation.mjs",
     "test:report-pricing-copy": "node scripts/check-report-pricing-copy.mjs",
     "test:area-compare-highlight": "node scripts/check-area-compare-highlight.mjs",
+    "test:compare-return-navigation": "node scripts/check-compare-return-navigation.mjs",
     "test:map-navigation-state": "node scripts/check-map-navigation-state.mjs",
     "test:assistant-dock-ux": "node scripts/check-assistant-dock-ux.mjs",
     "test:landing-search-redesign": "node scripts/check-landing-search-redesign.mjs",

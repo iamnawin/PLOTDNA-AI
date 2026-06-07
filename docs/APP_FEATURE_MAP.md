@@ -48,6 +48,10 @@ This file maps the current app behavior to the main files and components that im
   - Coordinate-level analysis drawer.
   - Resolves live OSM scoring and falls back to supported locality context.
 
+- `frontend/src/pages/CompareAreas.tsx`
+  - Compares three Hyderabad micro-markets.
+  - Provides Back and top-right close controls that return to the originating full DNA report, falling back to the first compared area.
+
 ## 3. Paid Access, Preview Lock, and Reports
 
 - `frontend/src/pages/AreaDetail.tsx`
