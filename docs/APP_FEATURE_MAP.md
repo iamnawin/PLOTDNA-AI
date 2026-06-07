@@ -28,6 +28,7 @@ This file maps the current app behavior to the main files and components that im
   - Shows score, growth story, active projects, news, market pulse, AVM, sources, and alternatives.
   - Renders the sticky feature rail for Verdict, Sources, Growth, Risk, Compare, and PDF sections.
   - Uses Motion for active feature tab transitions, rainbow-border CTA entry, and report scroll progress.
+  - Routes AreaDetail compare CTAs back to the map workspace with `getMapReturnPath()` instead of sending users to the standalone compare route.
   - Hides the upper PDF/payment card when the timed preview lock is visible to avoid duplicate Rs 99 cards.
   - Shows a welcome-back card after paid access recovery instead of auto-downloading the PDF.
   - Hosts the floating assistant dock with area-level context.

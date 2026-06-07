@@ -2206,7 +2206,7 @@ export default function AreaDetail() {
                 source: 'area_nav',
                 dataConfidence: displayedConfidence ?? 'estimated',
               })
-              navigate(`/compare?areas=${compareSlugs.join(',')}`)
+              navigate(getMapReturnPath())
             }}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 text-slate-300"
             style={{ border: '1px solid rgba(255,255,255,0.10)' }}
@@ -2393,7 +2393,7 @@ export default function AreaDetail() {
                       source: 'area_compare_highlight',
                       dataConfidence: displayedConfidence ?? 'estimated',
                     })
-                    navigate(`/compare?areas=${compareSlugs.join(',')}`)
+                    navigate(getMapReturnPath())
                   }}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-400 px-4 py-2.5 text-xs font-sans font-bold text-[#031118] transition-colors hover:bg-cyan-300 sm:w-auto"
                 >
