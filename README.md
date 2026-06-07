@@ -321,8 +321,9 @@ Current release posture:
 - Free browsing stays open before asking for contact/payment.
 - Area reports now have a sticky top feature rail for verdict, sources, growth,
   risk, comparison, and PDF sections.
-- The feature rail includes a scroll-driven progress line that follows report
-  scroll, while the tabs remain horizontally scrollable on mobile.
+- The feature rail includes a scroll-driven progress line that follows the
+  report scroll container, while the tabs remain horizontally scrollable on
+  mobile.
 - Preview lock uses a compact feature carousel instead of a second full payment
   card.
 - The Rs 99 CTA uses Motion animation/reflection treatment for stronger mobile

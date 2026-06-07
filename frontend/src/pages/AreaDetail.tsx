@@ -1,6 +1,6 @@
-import { useState, useEffect, type ReactNode } from 'react'
+import { useState, useEffect, useRef, type ReactNode } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useTransform, type MotionValue } from 'framer-motion'
 import {
   Bar,
   BarChart,
@@ -568,13 +568,12 @@ function PaidAccessWelcomeCard({
 function AreaFeatureNavigator({
   activeFeatureId,
   onSelectFeature,
+  progressWidth,
 }: {
   activeFeatureId: AreaFeatureId
   onSelectFeature: (feature: (typeof AREA_FEATURE_GUIDE)[number]) => void
+  progressWidth: MotionValue<string>
 }) {
-  const { scrollYProgress } = useScroll()
-  const reportProgressWidth = useTransform(scrollYProgress, [0, 1], ['14%', '100%'])
-
   return (
     <nav
       aria-label="PlotDNA feature navigation"
@@ -626,7 +625,7 @@ function AreaFeatureNavigator({
       <div aria-hidden="true" className="mt-2 h-1 overflow-hidden rounded-full bg-slate-800/80">
         <motion.div
           className="h-full rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.42)]"
-          style={{ width: reportProgressWidth }}
+          style={{ width: progressWidth }}
         />
       </div>
     </nav>
@@ -1615,6 +1614,9 @@ export default function AreaDetail() {
   const [emailGateOpen, setEmailGateOpen] = useState(false)
   const [emailGateEntitlements, setEmailGateEntitlements] = useState(() => getCachedEntitlements())
   const [pendingReportDownloadSource, setPendingReportDownloadSource] = useState<string | null>(null)
+  const container = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ container })
+  const reportProgressWidth = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   function getMapReturnPath() {
     const coords = fallbackContext?.coords ?? searchCoords
@@ -1714,14 +1716,19 @@ export default function AreaDetail() {
 
   useEffect(() => {
     if (!area) return
+    const scrollContainer = container.current
     const areaSlug = area.slug
     const dataConfidence = area.dataConfidence ?? 'estimated'
     let tracked = false
 
     function trackPreviewEngagement() {
       if (tracked) return
-      const scrollable = document.documentElement.scrollHeight - window.innerHeight
-      const scrollDepth = scrollable > 0 ? window.scrollY / scrollable : 0
+      const scrollable = scrollContainer
+        ? scrollContainer.scrollHeight - scrollContainer.clientHeight
+        : document.documentElement.scrollHeight - window.innerHeight
+      const scrollDepth = scrollable > 0
+        ? (scrollContainer ? scrollContainer.scrollTop : window.scrollY) / scrollable
+        : 0
       if (scrollDepth < 0.35) return
 
       tracked = true
@@ -1732,13 +1739,27 @@ export default function AreaDetail() {
         source: 'area_detail_scroll',
         dataConfidence,
       })
-      window.removeEventListener('scroll', trackPreviewEngagement)
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', trackPreviewEngagement)
+      } else {
+        window.removeEventListener('scroll', trackPreviewEngagement)
+      }
     }
 
-    window.addEventListener('scroll', trackPreviewEngagement, { passive: true })
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', trackPreviewEngagement, { passive: true })
+    } else {
+      window.addEventListener('scroll', trackPreviewEngagement, { passive: true })
+    }
     trackPreviewEngagement()
 
-    return () => window.removeEventListener('scroll', trackPreviewEngagement)
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', trackPreviewEngagement)
+      } else {
+        window.removeEventListener('scroll', trackPreviewEngagement)
+      }
+    }
   }, [area, staticCitySlug])
   const isRegionalFallback = fallbackContext?.tier === 'regional' || slug === 'warangal'
 
@@ -2112,9 +2133,8 @@ export default function AreaDetail() {
     resolutionLabel: fallbackContext?.displayLabel ?? area.name,
     summary: `${area.name} has a ${area.score}/100 DNA score, ${area.priceRange} price range, and ${area.yoy}% YoY growth.`,
   }
-
   return (
-    <div className="min-h-screen body text-slate-100">
+    <div ref={container} className="h-screen overflow-y-auto body text-slate-100">
 
       {/* ── Nav bar ── */}
       <nav
@@ -2189,6 +2209,7 @@ export default function AreaDetail() {
         <AreaFeatureNavigator
           activeFeatureId={activeAreaFeatureId}
           onSelectFeature={handleAreaFeatureSelect}
+          progressWidth={reportProgressWidth}
         />
 
         {/* ── Hero ── */}

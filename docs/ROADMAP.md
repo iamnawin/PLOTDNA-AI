@@ -24,7 +24,7 @@
 - 4-tier location resolver: exact → nearby → cluster → uncovered
 - AreaDetail: score breakdown, signal bars, growth timeline, 5-year outlook, source links
 - AreaDetail feature rail: Verdict, Sources, Growth, Risk, Compare, and PDF anchors with Motion transitions
-- Report scroll progress: line below the feature rail is tied to page scroll while the tabs stay horizontally scrollable
+- Report scroll progress: line below the feature rail is tied to the report scroll container while the tabs stay horizontally scrollable
 - Timed preview lock: compact feature carousel after preview timeout, with duplicate Rs 99 export card hidden
 - Rs 99 lifetime access flow: animated CTA, paid welcome-back state, explicit PDF download, no auto-download after recovery
 - Payment recovery: email/phone-first modal copy with Razorpay Payment ID fallback for direct recovery
@@ -390,7 +390,7 @@ As of June 2026, the area report experience includes:
 
 - Top feature navigation for Verdict, Sources, Growth, Risk, Compare, and PDF.
 - Motion-driven active tab transitions and CTA reflection on the Rs 99 button.
-- Scroll-driven progress line under the feature tabs, tied to page scroll.
+- Scroll-driven progress line under the feature tabs, tied to the report scroll container.
 - Timed preview lock with a compact feature carousel.
 - Duplicate payment-card prevention after the preview timeout.
 - Rs 99 lifetime access state with welcome-back copy and explicit PDF download.

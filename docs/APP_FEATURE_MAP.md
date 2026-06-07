@@ -49,7 +49,7 @@ This file maps the current app behavior to the main files and components that im
 - `frontend/src/pages/AreaDetail.tsx`
   - Owns the Rs 99 lifetime access CTA, timed preview lock, compact locked-feature carousel, and PDF download entry point.
   - Keeps the feature navigator above the main area card so users can understand the report workflow before scanning every section.
-  - Uses `useScroll()` and `useTransform()` from Motion to drive the progress line below the top feature tabs from page scroll.
+  - Uses `useScroll({ container })` and `useTransform()` from Motion to drive the progress line below the top feature tabs from the report scroll container.
 
 - `frontend/src/components/ui/CustomReportLeadModal.tsx`
   - Collects name, email, and phone first so payment recovery feels like account matching.
