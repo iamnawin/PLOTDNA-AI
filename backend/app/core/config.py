@@ -74,6 +74,8 @@ class Settings(BaseSettings):
     ENTITLEMENTS_DB_PATH: str = ""
     ADMIN_ACCESS_EMAILS: str = ""
     ADMIN_ACCESS_USER_IDS: str = ""
+    RAZORPAY_KEY_ID: str = ""
+    RAZORPAY_KEY_SECRET: str = ""
     RAZORPAY_WEBHOOK_SECRET: str = ""
 
     @field_validator("DEBUG", mode="before")

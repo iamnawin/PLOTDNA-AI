@@ -317,36 +317,6 @@ export async function submitCustomReportLead(
   return (await res.json()) as CustomReportLeadResponse
 }
 
-export async function selfConfirmCustomReportPayment(
-  leadId: string,
-  paymentReference?: string,
-): Promise<SelfConfirmPaymentResponse> {
-  let res: Response
-  try {
-    res = await fetch(`${BASE_URL}/api/leads/custom-report/${encodeURIComponent(leadId)}/self-confirm-payment`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await getAccessToken()}`,
-      },
-      body: JSON.stringify({ paymentReference }),
-      signal: AbortSignal.timeout(10_000),
-    })
-  } catch (error) {
-    if (isAbortTimeoutError(error)) {
-      throw new Error('Payment confirmation timed out. Please try again.')
-    }
-    throw new Error('Could not confirm payment. Please try again.')
-  }
-
-  if (!res.ok) {
-    const errorBody = await res.json().catch(() => ({})) as unknown
-    throw new Error(formatApiErrorMessage(errorBody, 'Could not unlock payment access.'))
-  }
-
-  return (await res.json()) as SelfConfirmPaymentResponse
-}
-
 export async function recoverCustomReportPayment(
   payload: {
     name: string

@@ -6,12 +6,74 @@ import re
 from pathlib import Path
 from typing import Literal
 
+import httpx
 from pydantic import BaseModel, Field, field_validator
+
+from app.core.config import settings
 
 
 CONTACT_EMAIL_RE = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 CONTACT_PHONE_RE = re.compile(r"^[6-9]\d{9}$")
 PAID_PAYMENT_STATUSES = {"paid", "completed", "payment_completed"}
+PACKAGE_AMOUNT_PAISE = {
+    "instant_pdf_99": 9_900,
+    "custom_due_diligence_499": 49_900,
+}
+
+
+def verify_razorpay_payment(
+    payment_reference: str,
+    *,
+    expected_email: str,
+    expected_phone: str,
+    package_interest: str,
+) -> dict:
+    key_id = settings.RAZORPAY_KEY_ID.strip()
+    key_secret = settings.RAZORPAY_KEY_SECRET.strip()
+    if not key_id or not key_secret:
+        raise RuntimeError("Razorpay payment verification is not configured.")
+
+    expected_amount = PACKAGE_AMOUNT_PAISE.get(package_interest)
+    if expected_amount is None:
+        raise ValueError("Unsupported report package.")
+
+    try:
+        response = httpx.get(
+            f"https://api.razorpay.com/v1/payments/{payment_reference}",
+            auth=(key_id, key_secret),
+            timeout=10.0,
+        )
+        response.raise_for_status()
+        payment = response.json()
+    except httpx.HTTPStatusError as exc:
+        if exc.response.status_code == 404:
+            raise ValueError("Razorpay payment was not found.") from exc
+        raise RuntimeError("Razorpay payment verification failed.") from exc
+    except (httpx.HTTPError, ValueError) as exc:
+        raise RuntimeError("Razorpay payment verification failed.") from exc
+
+    if not isinstance(payment, dict) or payment.get("id") != payment_reference:
+        raise ValueError("Razorpay returned an unexpected payment record.")
+    if payment.get("status") != "captured":
+        raise ValueError("Razorpay payment was not captured.")
+    if payment.get("currency") != "INR" or payment.get("amount") != expected_amount:
+        raise ValueError("Razorpay payment amount or currency does not match this package.")
+
+    try:
+        payment_email = normalize_email(str(payment.get("email") or ""))
+        payment_phone = normalize_phone(str(payment.get("contact") or ""))
+    except ValueError as exc:
+        raise ValueError("Razorpay payment is missing matching buyer contact details.") from exc
+
+    if payment_email != expected_email or payment_phone != expected_phone:
+        raise ValueError("Razorpay payment contact details do not match this request.")
+
+    notes = payment.get("notes") if isinstance(payment.get("notes"), dict) else {}
+    noted_package = notes.get("package_interest")
+    if noted_package and noted_package != package_interest:
+        raise ValueError("Razorpay payment package does not match this request.")
+
+    return payment
 
 
 def classify_contact(contact: str) -> Literal["email", "phone"]:
@@ -225,6 +287,13 @@ def recover_custom_report_payment(
     clean_reference = payment_reference.strip()
     if not clean_reference.startswith("pay_"):
         raise ValueError("Enter the Razorpay payment ID starting with pay_.")
+
+    verify_razorpay_payment(
+        clean_reference,
+        expected_email=normalized_email,
+        expected_phone=normalized_phone,
+        package_interest=package_interest,
+    )
 
     path = custom_report_leads_path()
 

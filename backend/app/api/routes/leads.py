@@ -13,7 +13,6 @@ from app.services.custom_report_leads import (
     RazorpayWebhookResult,
     confirm_custom_report_payment_from_razorpay,
     recover_custom_report_payment,
-    self_confirm_custom_report_payment,
     store_custom_report_lead,
 )
 from app.services.entitlements_store import Entitlements, activate_paid_subscription
@@ -136,6 +135,8 @@ def recover_payment(
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     if not confirmed:
         raise HTTPException(status_code=404, detail="Paid lead not found")
@@ -155,18 +156,7 @@ def self_confirm_payment(
     body: SelfConfirmPaymentRequest,
     user_id: str = Depends(require_user_id),
 ) -> SelfConfirmPaymentResponse:
-    confirmed = self_confirm_custom_report_payment(
-        lead_id=lead_id,
-        user_id=user_id,
-        payment_reference=body.paymentReference,
-    )
-    if not confirmed:
-        raise HTTPException(status_code=404, detail="Lead not found")
-
-    entitlements = activate_paid_subscription(user_id, email=confirmed.email)
-    return SelfConfirmPaymentResponse(
-        leadId=confirmed.leadId,
-        paymentStatus=confirmed.paymentStatus,
-        paidAt=confirmed.paidAt,
-        entitlements=_to_entitlements_response(entitlements),
+    raise HTTPException(
+        status_code=410,
+        detail="Client payment confirmation is disabled. Access activates after Razorpay verification.",
     )
