@@ -8,8 +8,9 @@ import type { MicroMarket, RecommendationGoal } from '@/types'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { getRecommendationGoalMeta, rankAreasForGoal } from '@/lib/recommendations'
-import { resolveMapLink, resolveLocation } from '@/lib/api'
+import { resolveMapLink, resolveLocation, searchLocationAddress } from '@/lib/api'
 import type { LocalityResolution } from '@/lib/location/contracts'
+import { searchLocalAreas } from '@/lib/location/search'
 import { getCityProductionProfile } from '@/lib/cityProduction'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
@@ -89,6 +90,7 @@ export default function Home() {
   const [showMobileSidebar, setShowMobileSidebar] = useState(false)
   const [searchError, setSearchError]         = useState('')
   const [resolvingUrl, setResolvingUrl]       = useState(false)
+  const [resolvingSearch, setResolvingSearch] = useState(false)
   const [locating, setLocating]               = useState(false)
   const [viewMode, setViewMode]               = useState<ViewMode>('map')
   const [globeSidebarExpanded, setGlobeSidebarExpanded] = useState(false)
@@ -193,19 +195,9 @@ export default function Home() {
   const isUrl          = isMapUrl(searchQuery)
   const backendMapUrl  = isUrl && !parsedMapUrl
   const searchResults: MicroMarket[] = searchQuery.trim() && !parsedCoords && !isUrl
-    ? cityAreas
-        .map((area) => {
-          const query = searchQuery.trim().toLowerCase()
-          const name = area.name.toLowerCase()
-          const rank = recommendedAreas.findIndex(({ area: rankedArea }) => rankedArea.slug === area.slug)
-          const matchRank = name === query ? 0 : name.startsWith(query) ? 1 : name.includes(query) ? 2 : 99
-          return { area, matchRank, rank: rank === -1 ? 999 : rank }
-        })
-        .filter(({ matchRank }) => matchRank < 99)
-        .sort((a, b) => a.matchRank - b.matchRank || a.rank - b.rank || b.area.score - a.area.score)
-        .map(({ area }) => area)
+    ? searchLocalAreas(searchQuery, cityAreas, selectedCitySlug)
     : []
-  const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
+  const showDropdown   = searchFocused && (searchResults.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl || resolvingSearch)
   const coordAnalysis  = searchCoords ? findNearestArea(searchCoords[0], searchCoords[1], {}, backendResolution) : null
   const isGlobeMode = viewMode === 'globe'
   const assistantContext = {
@@ -412,6 +404,23 @@ export default function Home() {
     }
     if (searchResults.length > 0) {
       selectArea(searchResults[0])
+      return
+    }
+    if (searchQuery.trim()) {
+      setResolvingSearch(true)
+      const response = await searchLocationAddress(searchQuery.trim())
+      setResolvingSearch(false)
+      const result = response?.results[0]
+      if (!result) {
+        setSearchError('No matching Hyderabad locality or address was found. Try a landmark, PIN code, map link, or coordinates.')
+        return
+      }
+      if (result.precision === 'outside_market') {
+        setSearchError(`${result.displayName} is outside the Hyderabad market coverage. PlotDNA will not substitute a nearby Hyderabad score.`)
+        return
+      }
+      if (result.resolution) setBackendResolution(result.resolution)
+      triggerCoordAnalysis([result.lat, result.lng])
     }
   }
 
@@ -583,7 +592,7 @@ export default function Home() {
               <Search
                 size={14}
                 style={{
-                  color: resolvingUrl ? '#10b981' : searchFocused ? '#10b981' : '#64748b',
+                  color: resolvingUrl || resolvingSearch ? '#10b981' : searchFocused ? '#10b981' : '#64748b',
                   transition: 'color 0.2s',
                   flexShrink: 0,
                 }}
@@ -608,14 +617,14 @@ export default function Home() {
                 <button
                   title="Locate me"
                   onClick={handleLocateMe}
-                  disabled={resolvingUrl || locating}
+                  disabled={resolvingUrl || resolvingSearch || locating}
                   className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[10px] transition-all cursor-pointer font-sans"
                   style={{
                     background: 'rgba(255, 255, 255, 0.05)',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                     color: locating ? '#10b981' : '#94a3b8',
                     flexShrink: 0,
-                    opacity: resolvingUrl || locating ? 0.5 : 1,
+                    opacity: resolvingUrl || resolvingSearch || locating ? 0.5 : 1,
                     fontWeight: 600,
                   }}
                 >

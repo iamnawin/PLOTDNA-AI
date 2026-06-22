@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 
 from app.core.config import settings
 from app.services.location_resolver import resolver
+from app.services.location_search import search_location
 from app.services.market_catalog import get_city_area
 
 
@@ -25,6 +26,16 @@ _GENERIC_LOCATION_TEXT = {
     "google maps",
     "find local businesses, view maps and get driving directions in google maps.",
 }
+
+
+class LocationSearchRequest(BaseModel):
+    query: str = Field(..., min_length=2, max_length=300)
+    limit: int = Field(default=5, ge=1, le=10)
+
+
+@router.post("/search-location")
+async def search_location_route(payload: LocationSearchRequest):
+    return await search_location(payload.query, payload.limit)
 
 # ── Shared helper ─────────────────────────────────────────────────────────────
 

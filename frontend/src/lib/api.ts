@@ -55,6 +55,25 @@ export interface BackendAreaList {
   areas: MicroMarket[]
 }
 
+export type LocationSearchPrecision = 'exact_boundary' | 'landmark' | 'geocoded_point' | 'outside_market'
+
+export interface LocationSearchResult {
+  displayName: string
+  localitySlug: string | null
+  lat: number
+  lng: number
+  source: 'local_index' | 'geocoder'
+  matchKind: 'exact' | 'prefix' | 'fuzzy' | 'landmark' | 'address'
+  precision: LocationSearchPrecision
+  resolution: LocalityResolution | null
+}
+
+export interface LocationSearchResponse {
+  query: string
+  reason: 'ok' | 'no_result' | 'outside_market'
+  results: LocationSearchResult[]
+}
+
 export interface CustomReportLeadPayload {
   name: string
   email: string
@@ -252,6 +271,21 @@ export async function resolveLocation(
     })
     if (!res.ok) return null
     return (await res.json()) as LocalityResolution
+  } catch {
+    return null
+  }
+}
+
+export async function searchLocationAddress(query: string): Promise<LocationSearchResponse | null> {
+  try {
+    const res = await fetch(`${BASE_URL}/api/utils/search-location`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, limit: 5 }),
+      signal: AbortSignal.timeout(10_000),
+    })
+    if (!res.ok) return null
+    return (await res.json()) as LocationSearchResponse
   } catch {
     return null
   }
