@@ -14,5 +14,10 @@ export interface LocalityResolution {
   distanceKm: number | null
   matchedBy: 'polygon' | 'alias' | 'radius' | 'cluster' | 'district' | 'none'
   reason: string
+  resolvedPlaceSlug?: string | null
+  analysisSlug?: string | null
+  boundaryKind?: string | null
+  boundaryConfidence?: string | null
+  scorePrecision?: string | null
   catalogArea?: MicroMarket | null
 }

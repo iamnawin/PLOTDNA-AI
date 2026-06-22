@@ -1,0 +1,47 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "rajiv-gandhi-international-airport",
+      "properties": {
+        "slug": "rajiv-gandhi-international-airport",
+        "name": "Rajiv Gandhi International Airport operational area",
+        "kind": "airport_operational_land",
+        "marketable": false,
+        "boundaryConfidence": "broad",
+        "source": "OpenStreetMap Nominatim relation 10734455 bounding envelope",
+        "sourceUrl": "https://www.openstreetmap.org/relation/10734455",
+        "retrievedAt": "2026-06-22",
+        "license": "ODbL-1.0"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.398943,
+              17.22469
+            ],
+            [
+              78.46538,
+              17.22469
+            ],
+            [
+              78.46538,
+              17.237948
+            ],
+            [
+              78.398943,
+              17.237948
+            ],
+            [
+              78.398943,
+              17.22469
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

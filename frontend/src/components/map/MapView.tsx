@@ -12,6 +12,7 @@ import { getCityEntry } from '@/data/cities'
 import { useAppStore, type MapStyleKey } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import type { ActiveProject } from '@/types'
+import hyderabadSpecialUseRaw from '../../../../data/cities/hyderabad/special-use-areas.geojson?raw'
 
 // ── Construction marker helpers ───────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
@@ -48,6 +49,17 @@ const STATUS_OPACITY: Record<string, number> = {
 }
 
 interface ConstructionHover { x: number; y: number; project: ActiveProject }
+interface SpecialUseHover { x: number; y: number; name: string; kind: string }
+
+const EMPTY_FEATURE_COLLECTION = { type: 'FeatureCollection' as const, features: [] }
+const HYDERABAD_SPECIAL_USE = JSON.parse(hyderabadSpecialUseRaw) as {
+  type: 'FeatureCollection'
+  features: Array<{
+    type: 'Feature'
+    properties: { slug: string; name: string; kind: string; marketable: boolean }
+    geometry: { type: 'Polygon'; coordinates: number[][][] }
+  }>
+}
 
 // ── Basemap style definitions (all free, no API key) ─────────────────────────
 
@@ -182,11 +194,15 @@ export default function MapView() {
 
   const [hoverInfo, setHoverInfo]             = useState<HoverInfo | null>(null)
   const [constructionHover, setConstructionHover] = useState<ConstructionHover | null>(null)
+  const [specialUseHover, setSpecialUseHover] = useState<SpecialUseHover | null>(null)
 
   const constructionProjects = useMemo(() =>
     showConstruction ? areas.flatMap(a => a.activeProjects ?? []) : [],
     [areas, showConstruction],
   )
+  const specialUseGeojson = selectedCitySlug === 'hyderabad'
+    ? HYDERABAD_SPECIAL_USE
+    : EMPTY_FEATURE_COLLECTION
 
   // ── Fly to coordinate pin ─────────────────────────────────────────────────
   useEffect(() => {
@@ -258,6 +274,7 @@ export default function MapView() {
           selected: selectedArea?.slug === area.slug ? 1 : 0,
           hovered:  hoveredSlug === area.slug ? 1 : 0,
           dimmed:   tierMatch ? 0 : 1,
+          boundaryKind: area.boundaryKind ?? 'locality_boundary',
         },
       }
     }),
@@ -267,18 +284,36 @@ export default function MapView() {
   const handleClick = useCallback((e: MapLayerMouseEvent) => {
     const feat = e.features?.[0]
     if (!feat) return
+    if (feat.layer.id === 'special-use-fill') {
+      setSelectedArea(null)
+      return
+    }
     const slug = feat.properties?.slug as string
     const area = areas.find(a => a.slug === slug)
     if (area) setSelectedArea(area)
   }, [setSelectedArea, areas])
 
   const handleDblClick = useCallback((e: MapLayerMouseEvent) => {
+    if (e.features?.[0]?.layer.id === 'special-use-fill') return
     const slug = e.features?.[0]?.properties?.slug as string | undefined
     if (slug) navigate(`/area/${slug}`)
   }, [navigate])
 
   const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {
-    const slug = e.features?.[0]?.properties?.slug ?? null
+    const feature = e.features?.[0]
+    if (feature?.layer.id === 'special-use-fill') {
+      setHoveredSlug(null)
+      setHoverInfo(null)
+      setSpecialUseHover({
+        x: e.point.x,
+        y: e.point.y,
+        name: String(feature.properties?.name ?? 'Special-use area'),
+        kind: String(feature.properties?.kind ?? 'non_marketable'),
+      })
+      return
+    }
+    setSpecialUseHover(null)
+    const slug = feature?.properties?.slug ?? null
     setHoveredSlug(slug)
     if (slug) {
       setHoverInfo({ x: e.point.x, y: e.point.y, slug })
@@ -290,6 +325,7 @@ export default function MapView() {
   const handleMouseLeave = useCallback(() => {
     setHoveredSlug(null)
     setHoverInfo(null)
+    setSpecialUseHover(null)
   }, [setHoveredSlug])
 
   // ── Compute hover tooltip area ───────────────────────────────────────────────
@@ -312,8 +348,8 @@ export default function MapView() {
         onDblClick={handleDblClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        interactiveLayerIds={['area-fill']}
-        cursor={hoveredSlug ? 'pointer' : 'grab'}
+        interactiveLayerIds={['special-use-fill', 'area-fill']}
+        cursor={hoveredSlug || specialUseHover ? 'pointer' : 'grab'}
         doubleClickZoom={false}
       >
         {/* ── Area polygons ── */}
@@ -330,6 +366,7 @@ export default function MapView() {
                 ['==', ['get', 'dimmed'],   1], 0.04,
                 ['==', ['get', 'selected'], 1], 0.48,
                 ['==', ['get', 'hovered'],  1], 0.36,
+                ['==', ['get', 'boundaryKind'], 'generated_market_cell'], 0.16,
                 0.22,
               ],
             }}
@@ -369,6 +406,25 @@ export default function MapView() {
                 0,
               ],
               'line-blur': 6,
+            }}
+          />
+        </Source>
+
+        {/* Classified land overlays market cells so it is not mistaken for a residential hole. */}
+        <Source id="special-use" type="geojson" data={specialUseGeojson}>
+          <Layer
+            id="special-use-fill"
+            type="fill"
+            paint={{ 'fill-color': '#38bdf8', 'fill-opacity': 0.22 }}
+          />
+          <Layer
+            id="special-use-border"
+            type="line"
+            paint={{
+              'line-color': '#7dd3fc',
+              'line-width': 1.5,
+              'line-dasharray': [2, 1.5],
+              'line-opacity': 0.9,
             }}
           />
         </Source>
@@ -465,6 +521,29 @@ export default function MapView() {
           </Marker>
         )}
       </Map>
+
+      {specialUseHover && (
+        <div style={{
+          position: 'absolute',
+          left: Math.max(8, Math.min(specialUseHover.x + 16, window.innerWidth - 248)),
+          top: Math.max(10, specialUseHover.y - 32),
+          width: 232,
+          pointerEvents: 'none',
+          zIndex: 220,
+          padding: '11px 13px',
+          borderRadius: 10,
+          border: '1px solid rgba(125,211,252,0.38)',
+          background: 'rgba(5,12,20,0.96)',
+          boxShadow: '0 14px 36px rgba(0,0,0,0.55)',
+        }}>
+          <p style={{ margin: 0, color: '#e0f2fe', fontSize: 12, fontWeight: 700 }}>
+            {specialUseHover.name}
+          </p>
+          <p style={{ margin: '5px 0 0', color: '#7dd3fc', fontSize: 9, fontFamily: 'IBM Plex Mono, monospace' }}>
+            {specialUseHover.kind.replaceAll('_', ' ')} · not scored as residential market land
+          </p>
+        </div>
+      )}
 
       {/* ── Construction project tooltip ── */}
       {constructionHover && (() => {

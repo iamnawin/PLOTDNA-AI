@@ -1,638 +1,758 @@
-﻿{
-    "afzalgunj":  [
-                      "afzalgunj"
-                  ],
-    "dilsukhnagar":  [
-                         "dilsukhnagar",
-                         "dilsukh nagar"
-                     ],
-    "moinabad":  [
-                     "moinabad"
-                 ],
-    "adibatla":  [
-                     "adibatla"
-                 ],
-    "aghapura":  [
-                     "aghapura"
-                 ],
-    "koti":  [
-                 "koti"
-             ],
-    "west-marredpally":  [
-                             "west marredpally"
-                         ],
-    "lakdikapul":  [
-                       "lakdikapul"
-                   ],
-    "keesaragutta":  [
-                         "keesaragutta"
-                     ],
-    "mir-alam":  [
-                     "mir alam"
-                 ],
-    "balapur":  [
-                    "balapur"
-                ],
-    "chandrayangutta":  [
-                            "chandrayangutta"
-                        ],
-    "abids":  [
-                  "abids"
-              ],
-    "rajendra-nagar":  [
-                           "rajendra nagar",
-                           "rajendranagar"
-                       ],
-    "turkayamjal":  [
-                        "turkayamjal"
-                    ],
-    "gajularamaram":  [
-                          "gajularamaram"
-                      ],
-    "serilingampally":  [
-                            "serilingampally"
-                        ],
-    "shamshabad":  [
-                       "shamshabad",
-                       "rajiv gandhi airport area",
-                       "rgia"
-                   ],
-    "rajapally":  [
-                      "rajapally"
-                  ],
-    "narsingi":  [
-                     "narsingi"
-                 ],
-    "kandukur-rr":  [
-                        "kandukur (rr)",
-                        "kandukur rr"
-                    ],
-    "hakimpet":  [
-                     "hakimpet"
-                 ],
-    "boduppal":  [
-                     "boduppal"
-                 ],
-    "osmansagar":  [
-                       "osmansagar"
-                   ],
-    "khajaguda":  [
-                      "khajaguda"
-                  ],
-    "raviryala":  [
-                      "raviryala"
-                  ],
-    "isnapur":  [
-                    "isnapur"
-                ],
-    "yapral":  [
-                   "yapral"
-               ],
-    "ramachandrapuram":  [
-                             "ramachandrapuram"
-                         ],
-    "medipally":  [
-                      "medipally"
-                  ],
-    "moula-ali":  [
-                      "moula ali"
-                  ],
-    "habsiguda":  [
-                      "habsiguda"
-                  ],
-    "rampally":  [
-                     "rampally"
-                 ],
-    "pedda-shankarampet":  [
-                               "pedda shankarampet"
-                           ],
-    "chilukur":  [
-                     "chilukur"
-                 ],
-    "nampally":  [
-                     "nampally"
-                 ],
-    "annojiguda":  [
-                       "annojiguda"
-                   ],
-    "pedda-golconda":  [
-                           "pedda golconda"
-                       ],
-    "lalaguda":  [
-                     "lalaguda"
-                 ],
-    "bibinagar":  [
-                      "bibinagar"
-                  ],
-    "lingampally":  [
-                        "lingampally"
-                    ],
-    "hayathnagar":  [
-                        "hayathnagar",
-                        "hayath nagar"
-                    ],
-    "neredmet":  [
-                     "neredmet"
-                 ],
-    "kukatpally":  [
-                       "kukatpally",
-                       "kphb colony"
-                   ],
-    "yousufguda":  [
-                       "yousufguda"
-                   ],
-    "abdullapurmet":  [
-                          "abdullapurmet"
-                      ],
-    "bahadurpally":  [
-                         "bahadurpally"
-                     ],
-    "tarnaka":  [
-                    "tarnaka"
-                ],
-    "nallagandla":  [
-                        "nallagandla"
-                    ],
-    "sanath-nagar":  [
-                         "sanath nagar"
-                     ],
-    "dabirpura":  [
-                      "dabirpura"
-                  ],
-    "puppalaguda":  [
-                        "puppalaguda"
-                    ],
-    "tilak-nagar":  [
-                        "tilak nagar"
-                    ],
-    "yacharam":  [
-                     "yacharam"
-                 ],
-    "quthbullapur":  [
-                         "quthbullapur"
-                     ],
-    "himayathnagar":  [
-                          "himayathnagar"
-                      ],
-    "maredpally":  [
-                       "maredpally"
-                   ],
-    "beeramguda":  [
-                       "beeramguda"
-                   ],
-    "ferozguda":  [
-                      "ferozguda"
-                  ],
-    "warasiguda":  [
-                       "warasiguda"
-                   ],
-    "karkhana":  [
-                     "karkhana"
-                 ],
-    "ecil":  [
-                 "ecil"
-             ],
-    "bonthapally":  [
-                        "bonthapally"
-                    ],
-    "nacharam":  [
-                     "nacharam"
-                 ],
-    "koheda":  [
-                   "koheda"
-               ],
-    "musarambagh":  [
-                        "musarambagh"
-                    ],
-    "shabad":  [
-                   "shabad"
-               ],
-    "yakutpura":  [
-                      "yakutpura"
-                  ],
-    "secunderabad":  [
-                         "secunderabad"
-                     ],
-    "nagaram":  [
-                    "nagaram"
-                ],
-    "uppal":  [
-                  "uppal"
-              ],
-    "hussaini-alam":  [
-                          "hussaini alam"
-                      ],
-    "nallakunta":  [
-                       "nallakunta"
-                   ],
-    "kokapet":  [
-                    "kokapet"
-                ],
-    "dundigal":  [
-                     "dundigal",
-                     "dundigal iaf"
-                 ],
-    "malakpet":  [
-                     "malakpet"
-                 ],
-    "attapur":  [
-                    "attapur"
-                ],
-    "shivrampally":  [
-                         "shivrampally"
-                     ],
-    "falaknuma":  [
-                      "falaknuma"
-                  ],
-    "bandlaguda-jagir":  [
-                             "bandlaguda jagir"
-                         ],
-    "kondapur":  [
-                     "kondapur"
-                 ],
-    "upparpally":  [
-                       "upparpally"
-                   ],
-    "mettuguda":  [
-                      "mettuguda"
-                  ],
-    "suraram":  [
-                    "suraram"
-                ],
-    "charminar":  [
-                      "charminar"
-                  ],
-    "langar-houz":  [
-                        "langar houz"
-                    ],
-    "karmanghat":  [
-                       "karmanghat"
-                   ],
-    "jntu-kphb":  [
-                      "jntu kphb",
-                      "jntu colony",
-                      "kphb",
-                      "jntu"
-                  ],
-    "balanagar":  [
-                      "balanagar",
-                      "bal anagar industrial area"
-                  ],
-    "parsigutta":  [
-                       "parsigutta"
-                   ],
-    "hafeezpet":  [
-                      "hafeezpet",
-                      "hafeez pet"
-                  ],
-    "saroornagar":  [
-                        "saroornagar"
-                    ],
-    "golconda":  [
-                     "golconda"
-                 ],
-    "film-nagar":  [
-                       "film nagar"
-                   ],
-    "turkapally":  [
-                       "turkapally"
-                   ],
-    "pashamylaram":  [
-                         "pashamylaram"
-                     ],
-    "uppal-kalan":  [
-                        "uppal kalan"
-                    ],
-    "shaikpet":  [
-                     "shaikpet"
-                 ],
-    "manchirevula":  [
-                         "manchirevula"
-                     ],
-    "dullapally":  [
-                       "dullapally"
-                   ],
-    "muthangi":  [
-                     "muthangi"
-                 ],
-    "dammaiguda":  [
-                       "dammaiguda"
-                   ],
-    "lb-nagar":  [
-                     "lb nagar",
-                     "lbnagar"
-                 ],
-    "sultan-bazaar":  [
-                          "sultan bazaar"
-                      ],
-    "financial-district":  [
-                               "financial district",
-                               "nanakramguda financial district",
-                               "nfd"
-                           ],
-    "vidyanagar":  [
-                       "vidyanagar"
-                   ],
-    "moti-nagar":  [
-                       "moti nagar"
-                   ],
-    "peerancheru":  [
-                        "peerancheru"
-                    ],
-    "manikonda":  [
-                      "manikonda"
-                  ],
-    "champapet":  [
-                      "champapet"
-                  ],
-    "ibrahimpatnam":  [
-                          "ibrahimpatnam"
-                      ],
-    "mallapur":  [
-                     "mallapur"
-                 ],
-    "bowenpally":  [
-                       "bowenpally",
-                       "bowen pally"
-                   ],
-    "sainikpuri":  [
-                       "sainikpuri"
-                   ],
-    "kismatpur":  [
-                      "kismatpur"
-                  ],
-    "chanchalguda":  [
-                         "chanchalguda"
-                     ],
-    "maheshwaram":  [
-                        "maheshwaram"
-                    ],
-    "rein-bazaar":  [
-                        "rein bazaar"
-                    ],
-    "lalapet":  [
-                    "lalapet"
-                ],
-    "mailardevpally":  [
-                           "mailardevpally"
-                       ],
-    "nanakramguda":  [
-                         "nanakramguda",
-                         "nanakaramguda",
-                         "nanakram guda"
-                     ],
-    "mokila":  [
-                   "mokila"
-               ],
-    "pochampally":  [
-                        "pochampally"
-                    ],
-    "medchal":  [
-                    "medchal"
-                ],
-    "ameenpur":  [
-                     "ameenpur"
-                 ],
-    "safilguda":  [
-                      "safilguda"
-                  ],
-    "bollaram":  [
-                     "bollaram"
-                 ],
-    "farooknagar":  [
-                        "farooknagar"
-                    ],
-    "gandipet":  [
-                     "gandipet"
-                 ],
-    "thumkunta":  [
-                      "thumkunta"
-                  ],
-    "raidurgam":  [
-                      "raidurgam"
-                  ],
-    "jawaharnagar":  [
-                         "jawaharnagar"
-                     ],
-    "ameerpet":  [
-                     "ameerpet"
-                 ],
-    "lal-darwaza":  [
-                        "lal darwaza"
-                    ],
-    "amberpet":  [
-                     "amberpet"
-                 ],
-    "somajiguda":  [
-                       "somajiguda"
-                   ],
-    "sultanpur-jagir":  [
-                            "sultanpur jagir"
-                        ],
-    "bahadurpura":  [
-                        "bahadurpura"
-                    ],
-    "humayun-nagar":  [
-                          "humayun nagar"
-                      ],
-    "peerzadiguda":  [
-                         "peerzadiguda"
-                     ],
-    "begumpet":  [
-                     "begumpet"
-                 ],
-    "alwal":  [
-                  "alwal"
-              ],
-    "shadnagar":  [
-                      "shadnagar"
-                  ],
-    "masab-tank":  [
-                       "masab tank"
-                   ],
-    "pedda-amberpet":  [
-                           "pedda amberpet"
-                       ],
-    "srinagar-colony":  [
-                            "srinagar colony"
-                        ],
-    "ghatkesar":  [
-                      "ghatkesar"
-                  ],
-    "kompally":  [
-                     "kompally"
-                 ],
-    "barkatpura":  [
-                       "barkatpura"
-                   ],
-    "mehdipatnam":  [
-                        "mehdipatnam",
-                        "mehdi patnam"
-                    ],
-    "madinaguda":  [
-                       "madinaguda"
-                   ],
-    "pocharam":  [
-                     "pocharam"
-                 ],
-    "kushaiguda":  [
-                       "kushaiguda"
-                   ],
-    "nizampet":  [
-                     "nizampet"
-                 ],
-    "chevella":  [
-                     "chevella"
-                 ],
-    "mallampet":  [
-                      "mallampet"
-                  ],
-    "jeedimetla":  [
-                       "jeedimetla"
-                   ],
-    "chandanagar":  [
-                        "chandanagar",
-                        "chanda nagar"
-                    ],
-    "khairatabad":  [
-                        "khairatabad"
-                    ],
-    "trimulgherry":  [
-                         "trimulgherry"
-                     ],
-    "musheerabad":  [
-                        "musheerabad"
-                    ],
-    "tellapur":  [
-                     "tellapur"
-                 ],
-    "bachupally":  [
-                       "bachupally"
-                   ],
-    "patancheru":  [
-                       "patancheru",
-                       "patancheru iie",
-                       "iie patancheru"
-                   ],
-    "shamirpet":  [
-                      "shamirpet"
-                  ],
-    "punjagutta":  [
-                       "punjagutta"
-                   ],
-    "himayat-sagar":  [
-                          "himayat sagar"
-                      ],
-    "gachibowli":  [
-                       "gachibowli"
-                   ],
-    "nagole":  [
-                   "nagole"
-               ],
-    "narsapur-ts":  [
-                        "narsapur (ts)",
-                        "narsapur ts"
-                    ],
-    "tukkuguda":  [
-                      "tukkuguda"
-                  ],
-    "tirumalagiri":  [
-                         "tirumalagiri"
-                     ],
-    "tolichowki":  [
-                       "tolichowki",
-                       "toli chowki"
-                   ],
-    "madhapur":  [
-                     "madhapur"
-                 ],
-    "moghalpura":  [
-                       "moghalpura"
-                   ],
-    "kothur":  [
-                   "kothur"
-               ],
-    "mahendra-hills":  [
-                           "mahendra hills"
-                       ],
-    "gopanpally":  [
-                       "gopanpally"
-                   ],
-    "kapra":  [
-                  "kapra"
-              ],
-    "malkajgiri":  [
-                       "malkajgiri",
-                       "malka jgiri",
-                       "malkajiri"
-                   ],
-    "kavadiguda":  [
-                       "kavadiguda"
-                   ],
-    "saidabad":  [
-                     "saidabad"
-                 ],
-    "narayanguda":  [
-                        "narayanguda"
-                    ],
-    "banjara-hills":  [
-                          "banjara hills",
-                          "banjara"
-                      ],
-    "kothapet":  [
-                     "kothapet",
-                     "kotha pet"
-                 ],
-    "miyapur":  [
-                    "miyapur"
-                ],
-    "shankarpally":  [
-                         "shankarpally"
-                     ],
-    "moosapet":  [
-                     "moosapet"
-                 ],
-    "bandlaguda":  [
-                       "bandlaguda"
-                   ],
-    "hitec-city":  [
-                       "hitec city",
-                       "hitech city",
-                       "cyberabad",
-                       "cyber towers",
-                       "nasscom"
-                   ],
-    "gundlapochampally":  [
-                              "gundlapochampally"
-                          ],
-    "ramanthapur":  [
-                        "ramanthapur"
-                    ],
-    "vikarabad":  [
-                      "vikarabad"
-                  ],
-    "azamabad":  [
-                     "azamabad"
-                 ],
-    "jubilee-hills":  [
-                          "jubilee hills",
-                          "jubilee"
-                      ],
-    "vanasthalipuram":  [
-                            "vanasthalipuram",
-                            "vanasthali puram",
-                            "vanastahlipuram"
-                        ],
-    "chaderghat":  [
-                       "chaderghat"
-                   ],
-    "santosh-nagar":  [
-                          "santosh nagar"
-                      ],
-    "rethibowli":  [
-                       "rethibowli"
-                   ],
-    "keesara":  [
-                    "keesara"
-                ]
+{
+  "abdullapurmet": [
+    "abdullapurmet"
+  ],
+  "abids": [
+    "abids"
+  ],
+  "adibatla": [
+    "adibatla"
+  ],
+  "afzalgunj": [
+    "afzalgunj"
+  ],
+  "aghapura": [
+    "aghapura"
+  ],
+  "alwal": [
+    "alwal"
+  ],
+  "amberpet": [
+    "amberpet"
+  ],
+  "ameenpur": [
+    "ameenpur"
+  ],
+  "ameerpet": [
+    "ameerpet"
+  ],
+  "andole": [
+    "andole"
+  ],
+  "annojiguda": [
+    "annojiguda"
+  ],
+  "attapur": [
+    "attapur"
+  ],
+  "azamabad": [
+    "azamabad"
+  ],
+  "bachuguda": [
+    "bachuguda"
+  ],
+  "bachupally": [
+    "bachupally"
+  ],
+  "bahadurpally": [
+    "bahadurpally"
+  ],
+  "bahadurpura": [
+    "bahadurpura"
+  ],
+  "balanagar": [
+    "balanagar",
+    "bal anagar industrial area"
+  ],
+  "balapur": [
+    "balapur"
+  ],
+  "bandlaguda": [
+    "bandlaguda"
+  ],
+  "bandlaguda-jagir": [
+    "bandlaguda jagir"
+  ],
+  "banjara-hills": [
+    "banjara hills",
+    "banjara"
+  ],
+  "bantwaram": [
+    "bantwaram"
+  ],
+  "barkatpura": [
+    "barkatpura"
+  ],
+  "basheerabad": [
+    "basheerabad"
+  ],
+  "beeramguda": [
+    "beeramguda"
+  ],
+  "begumpet": [
+    "begumpet"
+  ],
+  "bhanur": [
+    "bhanur"
+  ],
+  "bibinagar": [
+    "bibinagar"
+  ],
+  "boduppal": [
+    "boduppal"
+  ],
+  "bollaram": [
+    "bollaram"
+  ],
+  "bollaram-industrial": [
+    "bollaram industrial"
+  ],
+  "bonthapally": [
+    "bonthapally"
+  ],
+  "bowenpally": [
+    "bowenpally",
+    "bowen pally"
+  ],
+  "chaderghat": [
+    "chaderghat"
+  ],
+  "champapet": [
+    "champapet"
+  ],
+  "chanchalguda": [
+    "chanchalguda"
+  ],
+  "chandanagar": [
+    "chandanagar",
+    "chanda nagar"
+  ],
+  "chandrayangutta": [
+    "chandrayangutta"
+  ],
+  "charminar": [
+    "charminar"
+  ],
+  "chevella": [
+    "chevella"
+  ],
+  "chilukur": [
+    "chilukur"
+  ],
+  "choutkur": [
+    "choutkur"
+  ],
+  "dabirpura": [
+    "dabirpura"
+  ],
+  "dammaiguda": [
+    "dammaiguda"
+  ],
+  "dharur": [
+    "dharur"
+  ],
+  "dilsukhnagar": [
+    "dilsukhnagar",
+    "dilsukh nagar"
+  ],
+  "dullapally": [
+    "dullapally"
+  ],
+  "dundigal": [
+    "dundigal",
+    "dundigal iaf"
+  ],
+  "ecil": [
+    "ecil"
+  ],
+  "edulanagulapally": [
+    "edulanagulapally"
+  ],
+  "falaknuma": [
+    "falaknuma"
+  ],
+  "farooknagar": [
+    "farooknagar"
+  ],
+  "ferozguda": [
+    "ferozguda"
+  ],
+  "film-nagar": [
+    "film nagar"
+  ],
+  "financial-district": [
+    "financial district",
+    "nanakramguda financial district",
+    "nfd"
+  ],
+  "gachibowli": [
+    "gachibowli"
+  ],
+  "gajularamaram": [
+    "gajularamaram"
+  ],
+  "gandipet": [
+    "gandipet"
+  ],
+  "ghanpur": [
+    "ghanpur"
+  ],
+  "ghatkesar": [
+    "ghatkesar"
+  ],
+  "golconda": [
+    "golconda"
+  ],
+  "gopanpally": [
+    "gopanpally"
+  ],
+  "gummadidala": [
+    "gummadidala"
+  ],
+  "gundlapochampally": [
+    "gundlapochampally"
+  ],
+  "habsiguda": [
+    "habsiguda"
+  ],
+  "hafeezpet": [
+    "hafeezpet",
+    "hafeez pet"
+  ],
+  "hakimpet": [
+    "hakimpet"
+  ],
+  "hathnoor": [
+    "hathnoor"
+  ],
+  "hayathnagar": [
+    "hayathnagar",
+    "hayath nagar"
+  ],
+  "himayat-sagar": [
+    "himayat sagar"
+  ],
+  "himayathnagar": [
+    "himayathnagar"
+  ],
+  "hitec-city": [
+    "hitec city",
+    "hitech city",
+    "cyberabad",
+    "cyber towers",
+    "nasscom"
+  ],
+  "humayun-nagar": [
+    "humayun nagar"
+  ],
+  "hussaini-alam": [
+    "hussaini alam"
+  ],
+  "ibrahimpatnam": [
+    "ibrahimpatnam"
+  ],
+  "indresham": [
+    "indresham"
+  ],
+  "isnapur": [
+    "isnapur"
+  ],
+  "jawaharnagar": [
+    "jawaharnagar"
+  ],
+  "jeedimetla": [
+    "jeedimetla"
+  ],
+  "jinnaram": [
+    "jinnaram"
+  ],
+  "jntu-kphb": [
+    "jntu kphb",
+    "jntu colony",
+    "kphb",
+    "jntu"
+  ],
+  "jogipet": [
+    "jogipet"
+  ],
+  "jubilee-hills": [
+    "jubilee hills",
+    "jubilee"
+  ],
+  "kandi": [
+    "kandi"
+  ],
+  "kandukur-rr": [
+    "kandukur (rr)",
+    "kandukur rr"
+  ],
+  "kapra": [
+    "kapra"
+  ],
+  "karkhana": [
+    "karkhana"
+  ],
+  "karmanghat": [
+    "karmanghat"
+  ],
+  "kavadiguda": [
+    "kavadiguda"
+  ],
+  "keesara": [
+    "keesara"
+  ],
+  "keesaragutta": [
+    "keesaragutta"
+  ],
+  "khairatabad": [
+    "khairatabad"
+  ],
+  "khajaguda": [
+    "khajaguda"
+  ],
+  "kishan-nagar-patancheru": [
+    "kishan nagar patancheru"
+  ],
+  "kismatpur": [
+    "kismatpur"
+  ],
+  "koheda": [
+    "koheda"
+  ],
+  "kohir": [
+    "kohir"
+  ],
+  "kokapet": [
+    "kokapet"
+  ],
+  "kollur": [
+    "kollur"
+  ],
+  "kompally": [
+    "kompally"
+  ],
+  "kondapur": [
+    "kondapur"
+  ],
+  "kothapet": [
+    "kothapet",
+    "kotha pet"
+  ],
+  "kothur": [
+    "kothur"
+  ],
+  "koti": [
+    "koti"
+  ],
+  "kukatpally": [
+    "kukatpally",
+    "kphb colony"
+  ],
+  "kushaiguda": [
+    "kushaiguda"
+  ],
+  "lakdaram": [
+    "lakdaram"
+  ],
+  "lakdikapul": [
+    "lakdikapul"
+  ],
+  "lal-darwaza": [
+    "lal darwaza"
+  ],
+  "lalaguda": [
+    "lalaguda"
+  ],
+  "lalapet": [
+    "lalapet"
+  ],
+  "langar-houz": [
+    "langar houz"
+  ],
+  "lb-nagar": [
+    "lb nagar",
+    "lbnagar"
+  ],
+  "lingampally": [
+    "lingampally"
+  ],
+  "madhapur": [
+    "madhapur"
+  ],
+  "madinaguda": [
+    "madinaguda"
+  ],
+  "mahendra-hills": [
+    "mahendra hills"
+  ],
+  "maheshwaram": [
+    "maheshwaram"
+  ],
+  "mailardevpally": [
+    "mailardevpally"
+  ],
+  "malakpet": [
+    "malakpet"
+  ],
+  "malkajgiri": [
+    "malkajgiri",
+    "malka jgiri",
+    "malkajiri"
+  ],
+  "malkapur-sangareddy": [
+    "malkapur sangareddy"
+  ],
+  "mallampet": [
+    "mallampet"
+  ],
+  "mallapur": [
+    "mallapur"
+  ],
+  "manchirevula": [
+    "manchirevula"
+  ],
+  "manikonda": [
+    "manikonda"
+  ],
+  "maredpally": [
+    "maredpally"
+  ],
+  "marpally": [
+    "marpally"
+  ],
+  "masab-tank": [
+    "masab tank"
+  ],
+  "medchal": [
+    "medchal"
+  ],
+  "medipally": [
+    "medipally"
+  ],
+  "mehdipatnam": [
+    "mehdipatnam",
+    "mehdi patnam"
+  ],
+  "mettuguda": [
+    "mettuguda"
+  ],
+  "mir-alam": [
+    "mir alam"
+  ],
+  "miyapur": [
+    "miyapur"
+  ],
+  "moghalpura": [
+    "moghalpura"
+  ],
+  "moinabad": [
+    "moinabad"
+  ],
+  "mokila": [
+    "mokila"
+  ],
+  "mominpet": [
+    "mominpet"
+  ],
+  "moosapet": [
+    "moosapet"
+  ],
+  "moti-nagar": [
+    "moti nagar"
+  ],
+  "moula-ali": [
+    "moula ali"
+  ],
+  "munipally": [
+    "munipally"
+  ],
+  "musarambagh": [
+    "musarambagh"
+  ],
+  "musheerabad": [
+    "musheerabad"
+  ],
+  "muthangi": [
+    "muthangi"
+  ],
+  "nacharam": [
+    "nacharam"
+  ],
+  "nagaram": [
+    "nagaram"
+  ],
+  "nagole": [
+    "nagole"
+  ],
+  "nallagandla": [
+    "nallagandla"
+  ],
+  "nallakunta": [
+    "nallakunta"
+  ],
+  "nampally": [
+    "nampally"
+  ],
+  "nanakramguda": [
+    "nanakramguda",
+    "nanakaramguda",
+    "nanakram guda"
+  ],
+  "nandigama-west": [
+    "nandigama west"
+  ],
+  "narayanguda": [
+    "narayanguda"
+  ],
+  "narsapur-medak": [
+    "narsapur medak"
+  ],
+  "narsapur-ts": [
+    "narsapur (ts)",
+    "narsapur ts"
+  ],
+  "narsingi": [
+    "narsingi"
+  ],
+  "nawabpet-vikarabad": [
+    "nawabpet vikarabad"
+  ],
+  "neredmet": [
+    "neredmet"
+  ],
+  "nizampet": [
+    "nizampet"
+  ],
+  "osman-nagar-west": [
+    "osman nagar west"
+  ],
+  "osmansagar": [
+    "osmansagar"
+  ],
+  "parigi": [
+    "parigi"
+  ],
+  "parsigutta": [
+    "parsigutta"
+  ],
+  "pashamylaram": [
+    "pashamylaram"
+  ],
+  "patancheru": [
+    "patancheru",
+    "patancheru iie",
+    "iie patancheru"
+  ],
+  "pedda-amberpet": [
+    "pedda amberpet"
+  ],
+  "pedda-golconda": [
+    "pedda golconda"
+  ],
+  "pedda-shankarampet": [
+    "pedda shankarampet"
+  ],
+  "peddapur-sangareddy": [
+    "peddapur sangareddy"
+  ],
+  "peddemul": [
+    "peddemul"
+  ],
+  "peerancheru": [
+    "peerancheru"
+  ],
+  "peerzadiguda": [
+    "peerzadiguda"
+  ],
+  "pochampally": [
+    "pochampally"
+  ],
+  "pocharam": [
+    "pocharam"
+  ],
+  "pulkal": [
+    "pulkal"
+  ],
+  "punjagutta": [
+    "punjagutta"
+  ],
+  "puppalaguda": [
+    "puppalaguda"
+  ],
+  "quthbullapur": [
+    "quthbullapur"
+  ],
+  "raidurgam": [
+    "raidurgam"
+  ],
+  "rajapally": [
+    "rajapally"
+  ],
+  "rajendra-nagar": [
+    "rajendra nagar",
+    "rajendranagar"
+  ],
+  "ramachandrapuram": [
+    "ramachandrapuram"
+  ],
+  "ramanthapur": [
+    "ramanthapur"
+  ],
+  "rameshwar-banda": [
+    "rameshwar banda"
+  ],
+  "rampally": [
+    "rampally"
+  ],
+  "raviryala": [
+    "raviryala"
+  ],
+  "rein-bazaar": [
+    "rein bazaar"
+  ],
+  "rethibowli": [
+    "rethibowli"
+  ],
+  "rudraram": [
+    "rudraram"
+  ],
+  "sadasivpet": [
+    "sadasivpet"
+  ],
+  "safilguda": [
+    "safilguda"
+  ],
+  "saidabad": [
+    "saidabad"
+  ],
+  "sainikpuri": [
+    "sainikpuri"
+  ],
+  "sanath-nagar": [
+    "sanath nagar"
+  ],
+  "sangareddy": [
+    "sangareddy"
+  ],
+  "santosh-nagar": [
+    "santosh nagar"
+  ],
+  "saroornagar": [
+    "saroornagar"
+  ],
+  "secunderabad": [
+    "secunderabad"
+  ],
+  "serilingampally": [
+    "serilingampally"
+  ],
+  "shabad": [
+    "shabad"
+  ],
+  "shadnagar": [
+    "shadnagar"
+  ],
+  "shaikpet": [
+    "shaikpet"
+  ],
+  "shamirpet": [
+    "shamirpet"
+  ],
+  "shamshabad": [
+    "shamshabad",
+    "rajiv gandhi airport area",
+    "rgia"
+  ],
+  "shankarpally": [
+    "shankarpally"
+  ],
+  "shivampet": [
+    "shivampet"
+  ],
+  "shivrampally": [
+    "shivrampally"
+  ],
+  "somajiguda": [
+    "somajiguda"
+  ],
+  "srinagar-colony": [
+    "srinagar colony"
+  ],
+  "sultan-bazaar": [
+    "sultan bazaar"
+  ],
+  "sultanpur-jagir": [
+    "sultanpur jagir"
+  ],
+  "suraram": [
+    "suraram"
+  ],
+  "tandur": [
+    "tandur"
+  ],
+  "tarnaka": [
+    "tarnaka"
+  ],
+  "tellapur": [
+    "tellapur"
+  ],
+  "thumkunta": [
+    "thumkunta"
+  ],
+  "tilak-nagar": [
+    "tilak nagar"
+  ],
+  "tirumalagiri": [
+    "tirumalagiri"
+  ],
+  "tolichowki": [
+    "tolichowki",
+    "toli chowki"
+  ],
+  "trimulgherry": [
+    "trimulgherry"
+  ],
+  "tukkuguda": [
+    "tukkuguda"
+  ],
+  "turkapally": [
+    "turkapally"
+  ],
+  "turkayamjal": [
+    "turkayamjal"
+  ],
+  "uppal": [
+    "uppal"
+  ],
+  "uppal-kalan": [
+    "uppal kalan"
+  ],
+  "upparpally": [
+    "upparpally"
+  ],
+  "vanasthalipuram": [
+    "vanasthalipuram",
+    "vanasthali puram",
+    "vanastahlipuram"
+  ],
+  "velimela": [
+    "velimela"
+  ],
+  "vidyanagar": [
+    "vidyanagar"
+  ],
+  "vikarabad": [
+    "vikarabad"
+  ],
+  "warasiguda": [
+    "warasiguda"
+  ],
+  "west-marredpally": [
+    "west marredpally"
+  ],
+  "yacharam": [
+    "yacharam"
+  ],
+  "yakutpura": [
+    "yakutpura"
+  ],
+  "yapral": [
+    "yapral"
+  ],
+  "yousufguda": [
+    "yousufguda"
+  ],
+  "zaheerabad": [
+    "zaheerabad"
+  ]
 }

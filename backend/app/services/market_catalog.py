@@ -79,6 +79,9 @@ class MarketArea(BaseModel):
     dataConfidence: DataConfidence | None = None
     dataAsOf: str | None = None
     signalsAvailable: int | None = None
+    boundaryKind: str | None = None
+    boundaryConfidence: str | None = None
+    scorePrecision: str | None = None
 
 
 class CityCatalog(BaseModel):

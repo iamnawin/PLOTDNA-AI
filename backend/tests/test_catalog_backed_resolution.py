@@ -27,6 +27,11 @@ class CatalogBackedResolutionRouteTests(unittest.TestCase):
         self.assertEqual(body["catalogArea"]["slug"], "adibatla")
         self.assertEqual(body["catalogArea"]["score"], 88)
         self.assertEqual(body["catalogArea"]["signals"]["infrastructure"], 92)
+        self.assertEqual(body["boundaryKind"], "generated_market_cell")
+        self.assertEqual(body["boundaryConfidence"], "broad")
+        self.assertEqual(body["scorePrecision"], "locality_model")
+        self.assertEqual(body["resolvedPlaceSlug"], "adibatla")
+        self.assertEqual(body["analysisSlug"], "adibatla")
 
     def test_nearby_resolution_includes_catalog_area(self):
         client = TestClient(app)

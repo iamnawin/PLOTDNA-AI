@@ -414,5 +414,13 @@ async def resolve_coordinate(payload: ResolveRequest):
         if area is not None:
             catalog_area = area.model_dump()
 
-    return {**resolution, "catalogArea": catalog_area}
+    return {
+        **resolution,
+        "resolvedPlaceSlug": resolution["localitySlug"],
+        "analysisSlug": catalog_area.get("slug") if catalog_area else None,
+        "boundaryKind": catalog_area.get("boundaryKind") if catalog_area else None,
+        "boundaryConfidence": catalog_area.get("boundaryConfidence") if catalog_area else None,
+        "scorePrecision": catalog_area.get("scorePrecision") if catalog_area else None,
+        "catalogArea": catalog_area,
+    }
 
