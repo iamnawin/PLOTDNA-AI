@@ -13,6 +13,7 @@ import { useAppStore, type MapStyleKey } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import type { ActiveProject } from '@/types'
 import hyderabadSpecialUseRaw from '../../../../data/cities/hyderabad/special-use-areas.geojson?raw'
+import hyderabadCoverageRaw from '../../../../data/cities/hyderabad/coverage-areas.geojson?raw'
 
 // ── Construction marker helpers ───────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
@@ -57,6 +58,17 @@ const HYDERABAD_SPECIAL_USE = JSON.parse(hyderabadSpecialUseRaw) as {
   features: Array<{
     type: 'Feature'
     properties: { slug: string; name: string; kind: string; marketable: boolean }
+    geometry: { type: 'Polygon'; coordinates: number[][][] }
+  }>
+}
+
+// Voronoi coverage cells — [lng, lat] GeoJSON format, contiguous across 65 km market boundary
+const HYDERABAD_COVERAGE = JSON.parse(hyderabadCoverageRaw) as {
+  type: 'FeatureCollection'
+  features: Array<{
+    type: 'Feature'
+    id: string
+    properties: { slug: string; name: string; boundaryKind: string; marketable: boolean }
     geometry: { type: 'Polygon'; coordinates: number[][][] }
   }>
 }
@@ -264,30 +276,60 @@ export default function MapView() {
   }, [selectedCitySlug]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── GeoJSON: rebuild when selection / hover / filter changes ──────────────
-  const geojson = useMemo(() => ({
-    type: 'FeatureCollection' as const,
-    features: areas.map(area => {
-      const tierMatch = highlightTier === null || getScoreLabel(area.score) === highlightTier
-      return {
-        type: 'Feature' as const,
-        id: area.slug,
-        geometry: {
-          type: 'Polygon' as const,
-          // GeoJSON is [lng, lat] — our data stores [lat, lng], so flip
-          coordinates: [closePolygonRing(area.polygon)],
-        },
-        properties: {
-          slug:     area.slug,
-          score:    area.score,
-          color:    tierMatch ? getScoreColor(area.score) : '#252535',
-          selected: selectedArea?.slug === area.slug ? 1 : 0,
-          hovered:  hoveredSlug === area.slug ? 1 : 0,
-          dimmed:   tierMatch ? 0 : 1,
-          boundaryKind: area.boundaryKind ?? 'locality_boundary',
-        },
-      }
-    }),
-  }), [selectedArea, hoveredSlug, highlightTier, areas])
+  const geojson = useMemo(() => {
+    // Hyderabad: use Voronoi coverage cells so the entire 65 km market boundary is filled
+    if (selectedCitySlug === 'hyderabad') {
+      const areaBySlug: Record<string, typeof areas[0]> = Object.fromEntries(areas.map(a => [a.slug, a]))
+      const features = HYDERABAD_COVERAGE.features.map(feature => {
+        const slug = feature.id as string
+        const area = areaBySlug[slug]
+        const tierMatch = highlightTier === null || (area ? getScoreLabel(area.score) === highlightTier : false)
+        const color = area
+          ? (tierMatch ? getScoreColor(area.score) : '#252535')
+          : '#1e293b'
+        return {
+          type: 'Feature' as const,
+          id: slug,
+          geometry: feature.geometry, // already [lng, lat] GeoJSON format
+          properties: {
+            slug,
+            score:    area?.score ?? -1,
+            color,
+            selected: selectedArea?.slug === slug ? 1 : 0,
+            hovered:  hoveredSlug === slug ? 1 : 0,
+            dimmed:   !area || !tierMatch ? 1 : 0,
+            boundaryKind: 'generated_market_cell',
+          },
+        }
+      })
+      return { type: 'FeatureCollection' as const, features }
+    }
+
+    // All other cities: existing behaviour using area.polygon from static data
+    return {
+      type: 'FeatureCollection' as const,
+      features: areas.map(area => {
+        const tierMatch = highlightTier === null || getScoreLabel(area.score) === highlightTier
+        return {
+          type: 'Feature' as const,
+          id: area.slug,
+          geometry: {
+            type: 'Polygon' as const,
+            coordinates: [closePolygonRing(area.polygon)],
+          },
+          properties: {
+            slug:     area.slug,
+            score:    area.score,
+            color:    tierMatch ? getScoreColor(area.score) : '#252535',
+            selected: selectedArea?.slug === area.slug ? 1 : 0,
+            hovered:  hoveredSlug === area.slug ? 1 : 0,
+            dimmed:   tierMatch ? 0 : 1,
+            boundaryKind: area.boundaryKind ?? 'locality_boundary',
+          },
+        }
+      }),
+    }
+  }, [selectedArea, hoveredSlug, highlightTier, areas, selectedCitySlug])
 
   // ── Event handlers ────────────────────────────────────────────────────────
   const handleClick = useCallback((e: MapLayerMouseEvent) => {
