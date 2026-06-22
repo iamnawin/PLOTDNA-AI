@@ -4,7 +4,7 @@ import hmac
 import hashlib
 import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from fastapi.testclient import TestClient
 
@@ -14,6 +14,66 @@ from app.main import app
 
 
 class CustomReportLeadRouteTests(unittest.TestCase):
+    def test_server_created_payment_link_carries_purchase_identity(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
+            previous_path = os.environ.get("CUSTOM_REPORT_LEADS_PATH")
+            previous_key_id = settings.RAZORPAY_KEY_ID
+            previous_key_secret = settings.RAZORPAY_KEY_SECRET
+            os.environ["CUSTOM_REPORT_LEADS_PATH"] = leads_path
+            settings.RAZORPAY_KEY_ID = "rzp_test_key"
+            settings.RAZORPAY_KEY_SECRET = "rzp_test_secret"
+            try:
+                client = TestClient(app)
+                headers = {"Authorization": f"Bearer {create_access_token('payment-link-user')}"}
+                lead = client.post(
+                    "/api/leads/custom-report",
+                    headers=headers,
+                    json={
+                        "name": "Naveen",
+                        "email": "buyer@example.com",
+                        "phone": "9876543210",
+                        "citySlug": "hyderabad",
+                        "cityName": "Hyderabad",
+                        "areaSlug": "isnapur",
+                        "areaName": "Isnapur",
+                        "packageInterest": "instant_pdf_99",
+                        "source": "area_report_summary",
+                    },
+                )
+                lead_id = lead.json()["leadId"]
+                provider_response = Mock()
+                provider_response.raise_for_status.return_value = None
+                provider_response.json.return_value = {
+                    "id": "plink_verified_123",
+                    "short_url": "https://rzp.io/i/verified123",
+                    "status": "created",
+                }
+
+                with patch("app.services.custom_report_leads.httpx.post", return_value=provider_response) as post:
+                    response = client.post(
+                        f"/api/leads/custom-report/{lead_id}/payment-link",
+                        headers=headers,
+                    )
+
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.json()["paymentLinkId"], "plink_verified_123")
+                self.assertEqual(response.json()["url"], "https://rzp.io/i/verified123")
+                request_body = post.call_args.kwargs["json"]
+                self.assertEqual(request_body["reference_id"], lead_id)
+                self.assertEqual(request_body["amount"], 9900)
+                self.assertEqual(request_body["currency"], "INR")
+                self.assertEqual(request_body["notes"]["plotdna_lead_id"], lead_id)
+                self.assertEqual(request_body["notes"]["package_interest"], "instant_pdf_99")
+                self.assertEqual(request_body["customer"]["email"], "buyer@example.com")
+            finally:
+                settings.RAZORPAY_KEY_ID = previous_key_id
+                settings.RAZORPAY_KEY_SECRET = previous_key_secret
+                if previous_path is None:
+                    os.environ.pop("CUSTOM_REPORT_LEADS_PATH", None)
+                else:
+                    os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
+
     def test_custom_report_lead_is_validated_and_stored(self):
         with tempfile.TemporaryDirectory() as tmp:
             leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
@@ -412,6 +472,7 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                         "payment": {
                             "entity": {
                                 "id": "pay_webhook_123",
+                                "status": "captured",
                                 "email": "buyer@example.com",
                                 "contact": "9876543210",
                                 "amount": 9900,

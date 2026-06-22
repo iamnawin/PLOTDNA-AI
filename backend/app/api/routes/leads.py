@@ -10,8 +10,10 @@ from app.core.config import settings
 from app.services.custom_report_leads import (
     CustomReportLeadCreate,
     CustomReportLeadResponse,
+    PaymentLinkResult,
     RazorpayWebhookResult,
     confirm_custom_report_payment_from_razorpay,
+    create_razorpay_payment_link,
     recover_custom_report_payment,
     store_custom_report_lead,
 )
@@ -52,6 +54,13 @@ class RazorpayWebhookResponse(BaseModel):
     status: str
     leadId: str | None = None
     paymentReference: str | None = None
+
+
+class PaymentLinkResponse(BaseModel):
+    leadId: str
+    paymentLinkId: str
+    url: str
+    status: str
 
 
 def _to_entitlements_response(entitlements: Entitlements) -> EntitlementsResponse:
@@ -97,6 +106,20 @@ def create_custom_report_lead(
     user_id: str | None = Depends(optional_user_id),
 ) -> CustomReportLeadResponse:
     return store_custom_report_lead(payload, user_id=user_id)
+
+
+@router.post("/custom-report/{lead_id}/payment-link", response_model=PaymentLinkResponse)
+def create_payment_link(
+    lead_id: str,
+    user_id: str = Depends(require_user_id),
+) -> PaymentLinkResponse:
+    try:
+        result: PaymentLinkResult = create_razorpay_payment_link(lead_id=lead_id, user_id=user_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    return PaymentLinkResponse(**result.model_dump())
 
 
 @router.post("/razorpay/webhook", response_model=RazorpayWebhookResponse)

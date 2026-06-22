@@ -276,6 +276,13 @@ export async function resolveLocation(
   }
 }
 
+export interface ReportPaymentLinkResponse {
+  leadId: string
+  paymentLinkId: string
+  url: string
+  status: string
+}
+
 export async function searchLocationAddress(query: string): Promise<LocationSearchResponse | null> {
   try {
     const res = await fetch(`${BASE_URL}/api/utils/search-location`, {
@@ -349,6 +356,25 @@ export async function submitCustomReportLead(
   }
 
   return (await res.json()) as CustomReportLeadResponse
+}
+
+export async function createReportPaymentLink(leadId: string): Promise<ReportPaymentLinkResponse> {
+  let res: Response
+  try {
+    res = await fetch(`${BASE_URL}/api/leads/custom-report/${encodeURIComponent(leadId)}/payment-link`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${await getAccessToken()}` },
+      signal: AbortSignal.timeout(10_000),
+    })
+  } catch (error) {
+    if (isAbortTimeoutError(error)) throw new Error('Payment link creation timed out. Please try again.')
+    throw new Error('Could not create a secure payment link. Please try again.')
+  }
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({})) as unknown
+    throw new Error(formatApiErrorMessage(errorBody, 'Could not create a secure payment link.'))
+  }
+  return (await res.json()) as ReportPaymentLinkResponse
 }
 
 export async function recoverCustomReportPayment(

@@ -31,7 +31,8 @@ import { getConfidenceMeta } from '@/lib/cityProduction'
 import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib/investmentReport'
 import { buildCustomBuyerVerificationBrief, type BuyerBriefInput } from '@/lib/customBuyerBrief'
 import { trackEvent } from '@/lib/analytics'
-import { getReportPaymentLink, openReportPaymentLink, type ReportPackage } from '@/lib/paymentLinks'
+import type { ReportPackage } from '@/lib/paymentLinks'
+import { createReportPaymentLink } from '@/lib/api'
 import { checkReportAccess, getCachedEntitlements, trackUserEvent } from '@/lib/entitlements'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
@@ -2442,10 +2443,22 @@ export default function AreaDetail() {
                 source: selectedReportSource,
               }}
               paymentRequired={selectedReportPackage === 'custom_due_diligence_499' ? false : selectedReportPaymentRequired}
-              paymentAvailable={selectedReportPaymentRequired && Boolean(getReportPaymentLink(selectedReportPackage))}
+              paymentAvailable={selectedReportPaymentRequired}
               canGenerateBrief={selectedReportPackage === 'custom_due_diligence_499'}
-              onProceedToPayment={() => {
-                const openedPaymentLink = openReportPaymentLink(selectedReportPackage)
+              onProceedToPayment={async (leadId) => {
+                const paymentWindow = window.open('', '_blank')
+                let paymentLink
+                try {
+                  paymentLink = await createReportPaymentLink(leadId)
+                } catch (error) {
+                  paymentWindow?.close()
+                  throw error
+                }
+                const openedPaymentLink = Boolean(paymentWindow)
+                if (paymentWindow) {
+                  paymentWindow.opener = null
+                  paymentWindow.location.href = paymentLink.url
+                }
                 if (openedPaymentLink) {
                   setPaymentReturnCheckPending(true)
                 }
@@ -2469,6 +2482,7 @@ export default function AreaDetail() {
                     hasConfiguredLink: openedPaymentLink,
                   }),
                 })
+                return openedPaymentLink
               }}
               onPaidAccessClaimed={(entitlements, leadId) => {
                 setEmailGateEntitlements(entitlements)

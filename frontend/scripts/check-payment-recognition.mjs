@@ -5,6 +5,7 @@ const root = process.cwd()
 const areaDetail = fs.readFileSync(path.join(root, 'src', 'pages', 'AreaDetail.tsx'), 'utf8')
 const modal = fs.readFileSync(path.join(root, 'src', 'components', 'ui', 'CustomReportLeadModal.tsx'), 'utf8')
 const api = fs.readFileSync(path.join(root, 'src', 'lib', 'api.ts'), 'utf8')
+const paymentLinks = fs.readFileSync(path.join(root, 'src', 'lib', 'paymentLinks.ts'), 'utf8')
 
 function assert(condition, message) {
   if (!condition) {
@@ -25,5 +26,8 @@ assert(!modal.includes('I completed payment'), 'client must not claim that payme
 assert(!modal.includes('selfConfirmCustomReportPayment'), 'payment modal must not call the disabled self-confirm endpoint')
 assert(!api.includes('export async function selfConfirmCustomReportPayment'), 'API client must not expose unverified payment activation')
 assert(modal.includes('Waiting for verified payment'), 'payment return state must explain that server verification controls access')
+assert(api.includes('/payment-link'), 'API client must request a traceable server-created Razorpay payment link')
+assert(areaDetail.includes('createReportPaymentLink'), 'area page must open the server-created link tied to the lead')
+assert(!paymentLinks.includes('razorpay.me/@'), 'generic untraceable Razorpay fallback links must not be used')
 
 console.log('Payment recognition check passed.')

@@ -16,7 +16,7 @@ interface Props {
   paymentRequired?: boolean
   paymentAvailable?: boolean
   canGenerateBrief?: boolean
-  onProceedToPayment?: () => void
+  onProceedToPayment?: (leadId: string) => Promise<boolean>
   onGenerateBrief?: (input: BuyerBriefInput) => void
   onPaidAccessClaimed?: (entitlements: EntitlementsResponse, leadId: string | null) => void
   onClose: () => void
@@ -162,10 +162,19 @@ export default function CustomReportLeadModal({
     onClose()
   }
 
-  function handleProceedToPayment() {
+  async function handleProceedToPayment() {
+    if (!submittedLeadId || !onProceedToPayment) return
     setError('')
-    onProceedToPayment?.()
-    setPaymentOpened(true)
+    setSubmitting(true)
+    try {
+      const opened = await onProceedToPayment(submittedLeadId)
+      if (opened) setPaymentOpened(true)
+      else setError('The secure payment link could not be opened. Please try again.')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not create a secure payment link.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -250,7 +259,7 @@ export default function CustomReportLeadModal({
                   </button>
                   {paymentAvailable && onProceedToPayment && !paymentOpened && (
                     <button
-                      onClick={handleProceedToPayment}
+                      onClick={() => void handleProceedToPayment()}
                       className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b]"
                     >
                       Pay Rs 99 on Razorpay
@@ -258,7 +267,7 @@ export default function CustomReportLeadModal({
                   )}
                   {paymentAvailable && onProceedToPayment && paymentOpened && (
                     <button
-                      onClick={handleProceedToPayment}
+                      onClick={() => void handleProceedToPayment()}
                       className="flex-1 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-sans font-bold text-emerald-200"
                     >
                       Open Razorpay again
