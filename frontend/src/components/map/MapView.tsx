@@ -172,6 +172,15 @@ function getPolygonBounds(polygon: [number, number][]): [[number, number], [numb
   ]
 }
 
+function closePolygonRing(polygon: [number, number][]): [number, number][] {
+  const ring = polygon.map(([lat, lng]) => [lng, lat] as [number, number])
+  if (ring.length === 0) return ring
+  const first = ring[0]
+  const last = ring[ring.length - 1]
+  if (first[0] !== last[0] || first[1] !== last[1]) ring.push([...first])
+  return ring
+}
+
 export default function MapView() {
   const mapRef      = useRef<MapRef>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -265,7 +274,7 @@ export default function MapView() {
         geometry: {
           type: 'Polygon' as const,
           // GeoJSON is [lng, lat] — our data stores [lat, lng], so flip
-          coordinates: [area.polygon.map(([lat, lng]) => [lng, lat])],
+          coordinates: [closePolygonRing(area.polygon)],
         },
         properties: {
           slug:     area.slug,
@@ -348,6 +357,7 @@ export default function MapView() {
         onDblClick={handleDblClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onError={(event) => console.error('[maplibre]', event.error)}
         interactiveLayerIds={['special-use-fill', 'area-fill']}
         cursor={hoveredSlug || specialUseHover ? 'pointer' : 'grab'}
         doubleClickZoom={false}

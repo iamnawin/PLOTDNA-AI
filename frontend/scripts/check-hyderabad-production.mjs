@@ -60,5 +60,6 @@ const missingSourceDecks = prioritySlugs.filter(slug => {
 assert(missingSourceDecks.length === 0, `priority slugs missing area-specific source decks: ${missingSourceDecks.join(', ')}`)
 assert(mapView.includes('special-use-fill'), 'map must render classified Hyderabad special-use areas')
 assert(mapView.includes('generated_market_cell'), 'map must visibly distinguish broad generated coverage cells')
+assert(mapView.includes('closePolygonRing(area.polygon)'), 'MapLibre coverage polygons must use closed GeoJSON rings')
 
 console.log(`Hyderabad production check passed: ${localities.length} localities, ${coverage.features.length} contiguous cells, ${confidenceMentions} confidence records, ${prioritySlugs.length} verified priority slugs.`)
