@@ -62,4 +62,7 @@ export interface MicroMarket {
   dataConfidence?: DataConfidence
   dataAsOf?: string
   signalsAvailable?: number
+  boundaryKind?: 'administrative' | 'locality_boundary' | 'generated_market_cell'
+  boundaryConfidence?: 'exact' | 'approximate' | 'broad'
+  scorePrecision?: 'verified' | 'locality_model' | 'estimated'
 }

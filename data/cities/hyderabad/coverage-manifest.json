@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-22",
+  "processingVersion": "product-circle-voronoi-v1",
+  "crs": "EPSG:4326",
+  "metricProjection": "local equirectangular kilometers centered on Hyderabad",
+  "marketBoundary": {
+    "definition": "65 km product investment-market radius",
+    "center": [
+      17.385,
+      78.487
+    ],
+    "radiusKm": 65.0,
+    "areaKm2": 13267.899,
+    "notAdministrativeBoundary": true
+  },
+  "coverage": {
+    "selectableCellCount": 227,
+    "selectableAreaKm2": 13267.899,
+    "areaCoverageRatio": 1.00000002,
+    "boundaryKind": "generated_market_cell",
+    "boundaryConfidence": "broad"
+  },
+  "anchors": {
+    "sadasivpet": [
+      17.619,
+      77.952
+    ],
+    "sangareddy": [
+      17.624,
+      78.09
+    ],
+    "isnapur": [
+      17.524,
+      78.268
+    ],
+    "rgia": [
+      17.231,
+      78.432
+    ],
+    "farooqnagar": [
+      17.077,
+      78.203
+    ],
+    "lb-nagar": [
+      17.345,
+      78.545
+    ],
+    "vikarabad": [
+      17.338,
+      77.906
+    ],
+    "medchal": [
+      17.63,
+      78.485
+    ]
+  },
+  "specialUseSources": [
+    {
+      "slug": "rajiv-gandhi-international-airport",
+      "url": "https://www.openstreetmap.org/relation/10734455",
+      "retrievedAt": "2026-06-22",
+      "license": "ODbL-1.0"
+    }
+  ]
+}

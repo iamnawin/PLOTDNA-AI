@@ -12,6 +12,8 @@ import { getCityEntry } from '@/data/cities'
 import { useAppStore, type MapStyleKey } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import type { ActiveProject } from '@/types'
+import hyderabadSpecialUseRaw from '../../../../data/cities/hyderabad/special-use-areas.geojson?raw'
+import hyderabadCoverageRaw from '../../../../data/cities/hyderabad/coverage-areas.geojson?raw'
 
 // ── Construction marker helpers ───────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
@@ -48,6 +50,28 @@ const STATUS_OPACITY: Record<string, number> = {
 }
 
 interface ConstructionHover { x: number; y: number; project: ActiveProject }
+interface SpecialUseHover { x: number; y: number; name: string; kind: string }
+
+const EMPTY_FEATURE_COLLECTION = { type: 'FeatureCollection' as const, features: [] }
+const HYDERABAD_SPECIAL_USE = JSON.parse(hyderabadSpecialUseRaw) as {
+  type: 'FeatureCollection'
+  features: Array<{
+    type: 'Feature'
+    properties: { slug: string; name: string; kind: string; marketable: boolean }
+    geometry: { type: 'Polygon'; coordinates: number[][][] }
+  }>
+}
+
+// Voronoi coverage cells — [lng, lat] GeoJSON format, contiguous across 65 km market boundary
+const HYDERABAD_COVERAGE = JSON.parse(hyderabadCoverageRaw) as {
+  type: 'FeatureCollection'
+  features: Array<{
+    type: 'Feature'
+    id: string
+    properties: { slug: string; name: string; boundaryKind: string; marketable: boolean }
+    geometry: { type: 'Polygon'; coordinates: number[][][] }
+  }>
+}
 
 // ── Basemap style definitions (all free, no API key) ─────────────────────────
 
@@ -160,6 +184,15 @@ function getPolygonBounds(polygon: [number, number][]): [[number, number], [numb
   ]
 }
 
+function closePolygonRing(polygon: [number, number][]): [number, number][] {
+  const ring = polygon.map(([lat, lng]) => [lng, lat] as [number, number])
+  if (ring.length === 0) return ring
+  const first = ring[0]
+  const last = ring[ring.length - 1]
+  if (first[0] !== last[0] || first[1] !== last[1]) ring.push([...first])
+  return ring
+}
+
 export default function MapView() {
   const mapRef      = useRef<MapRef>(null)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -182,11 +215,15 @@ export default function MapView() {
 
   const [hoverInfo, setHoverInfo]             = useState<HoverInfo | null>(null)
   const [constructionHover, setConstructionHover] = useState<ConstructionHover | null>(null)
+  const [specialUseHover, setSpecialUseHover] = useState<SpecialUseHover | null>(null)
 
   const constructionProjects = useMemo(() =>
     showConstruction ? areas.flatMap(a => a.activeProjects ?? []) : [],
     [areas, showConstruction],
   )
+  const specialUseGeojson = selectedCitySlug === 'hyderabad'
+    ? HYDERABAD_SPECIAL_USE
+    : EMPTY_FEATURE_COLLECTION
 
   // ── Fly to coordinate pin ─────────────────────────────────────────────────
   useEffect(() => {
@@ -239,46 +276,97 @@ export default function MapView() {
   }, [selectedCitySlug]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── GeoJSON: rebuild when selection / hover / filter changes ──────────────
-  const geojson = useMemo(() => ({
-    type: 'FeatureCollection' as const,
-    features: areas.map(area => {
-      const tierMatch = highlightTier === null || getScoreLabel(area.score) === highlightTier
-      return {
-        type: 'Feature' as const,
-        id: area.slug,
-        geometry: {
-          type: 'Polygon' as const,
-          // GeoJSON is [lng, lat] — our data stores [lat, lng], so flip
-          coordinates: [area.polygon.map(([lat, lng]) => [lng, lat])],
-        },
-        properties: {
-          slug:     area.slug,
-          score:    area.score,
-          color:    tierMatch ? getScoreColor(area.score) : '#252535',
-          selected: selectedArea?.slug === area.slug ? 1 : 0,
-          hovered:  hoveredSlug === area.slug ? 1 : 0,
-          dimmed:   tierMatch ? 0 : 1,
-        },
-      }
-    }),
-  }), [selectedArea, hoveredSlug, highlightTier, areas])
+  const geojson = useMemo(() => {
+    // Hyderabad: use Voronoi coverage cells so the entire 65 km market boundary is filled
+    if (selectedCitySlug === 'hyderabad') {
+      const areaBySlug: Record<string, typeof areas[0]> = Object.fromEntries(areas.map(a => [a.slug, a]))
+      const features = HYDERABAD_COVERAGE.features.map(feature => {
+        const slug = feature.id as string
+        const area = areaBySlug[slug]
+        const hasScore = !!area
+        const tierMatch = highlightTier === null || (area ? getScoreLabel(area.score) === highlightTier : false)
+        const color = hasScore
+          ? (tierMatch ? getScoreColor(area!.score) : '#252535')
+          : '#1e3a5f' // dim blue-gray for coverage cells with no score data yet
+        return {
+          type: 'Feature' as const,
+          id: slug,
+          geometry: feature.geometry, // already [lng, lat] GeoJSON format
+          properties: {
+            slug,
+            score:    area?.score ?? -1,
+            color,
+            selected: selectedArea?.slug === slug ? 1 : 0,
+            hovered:  hoveredSlug === slug ? 1 : 0,
+            dimmed:   hasScore && !tierMatch ? 1 : 0, // only dim scored cells that don't match the tier filter
+            noData:   !hasScore ? 1 : 0,              // coverage cells that have no score data yet
+            boundaryKind: 'generated_market_cell',
+          },
+        }
+      })
+      return { type: 'FeatureCollection' as const, features }
+    }
+
+    // All other cities: existing behaviour using area.polygon from static data
+    return {
+      type: 'FeatureCollection' as const,
+      features: areas.map(area => {
+        const tierMatch = highlightTier === null || getScoreLabel(area.score) === highlightTier
+        return {
+          type: 'Feature' as const,
+          id: area.slug,
+          geometry: {
+            type: 'Polygon' as const,
+            coordinates: [closePolygonRing(area.polygon)],
+          },
+          properties: {
+            slug:     area.slug,
+            score:    area.score,
+            color:    tierMatch ? getScoreColor(area.score) : '#252535',
+            selected: selectedArea?.slug === area.slug ? 1 : 0,
+            hovered:  hoveredSlug === area.slug ? 1 : 0,
+            dimmed:   tierMatch ? 0 : 1,
+            boundaryKind: area.boundaryKind ?? 'locality_boundary',
+          },
+        }
+      }),
+    }
+  }, [selectedArea, hoveredSlug, highlightTier, areas, selectedCitySlug])
 
   // ── Event handlers ────────────────────────────────────────────────────────
   const handleClick = useCallback((e: MapLayerMouseEvent) => {
     const feat = e.features?.[0]
     if (!feat) return
+    if (feat.layer.id === 'special-use-fill') {
+      setSelectedArea(null)
+      return
+    }
     const slug = feat.properties?.slug as string
     const area = areas.find(a => a.slug === slug)
     if (area) setSelectedArea(area)
   }, [setSelectedArea, areas])
 
   const handleDblClick = useCallback((e: MapLayerMouseEvent) => {
+    if (e.features?.[0]?.layer.id === 'special-use-fill') return
     const slug = e.features?.[0]?.properties?.slug as string | undefined
     if (slug) navigate(`/area/${slug}`)
   }, [navigate])
 
   const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {
-    const slug = e.features?.[0]?.properties?.slug ?? null
+    const feature = e.features?.[0]
+    if (feature?.layer.id === 'special-use-fill') {
+      setHoveredSlug(null)
+      setHoverInfo(null)
+      setSpecialUseHover({
+        x: e.point.x,
+        y: e.point.y,
+        name: String(feature.properties?.name ?? 'Special-use area'),
+        kind: String(feature.properties?.kind ?? 'non_marketable'),
+      })
+      return
+    }
+    setSpecialUseHover(null)
+    const slug = feature?.properties?.slug ?? null
     setHoveredSlug(slug)
     if (slug) {
       setHoverInfo({ x: e.point.x, y: e.point.y, slug })
@@ -290,6 +378,7 @@ export default function MapView() {
   const handleMouseLeave = useCallback(() => {
     setHoveredSlug(null)
     setHoverInfo(null)
+    setSpecialUseHover(null)
   }, [setHoveredSlug])
 
   // ── Compute hover tooltip area ───────────────────────────────────────────────
@@ -312,8 +401,9 @@ export default function MapView() {
         onDblClick={handleDblClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        interactiveLayerIds={['area-fill']}
-        cursor={hoveredSlug ? 'pointer' : 'grab'}
+        onError={(event) => console.error('[maplibre]', event.error)}
+        interactiveLayerIds={['special-use-fill', 'area-fill']}
+        cursor={hoveredSlug || specialUseHover ? 'pointer' : 'grab'}
         doubleClickZoom={false}
       >
         {/* ── Area polygons ── */}
@@ -328,6 +418,7 @@ export default function MapView() {
               'fill-opacity': [
                 'case',
                 ['==', ['get', 'dimmed'],   1], 0.04,
+                ['==', ['get', 'noData'],   1], 0.20,
                 ['==', ['get', 'selected'], 1], 0.48,
                 ['==', ['get', 'hovered'],  1], 0.36,
                 0.22,
@@ -350,6 +441,7 @@ export default function MapView() {
               'line-opacity': [
                 'case',
                 ['==', ['get', 'dimmed'], 1], 0.15,
+                ['==', ['get', 'noData'], 1], 0.25,
                 0.9,
               ],
             }}
@@ -369,6 +461,25 @@ export default function MapView() {
                 0,
               ],
               'line-blur': 6,
+            }}
+          />
+        </Source>
+
+        {/* Classified land overlays market cells so it is not mistaken for a residential hole. */}
+        <Source id="special-use" type="geojson" data={specialUseGeojson}>
+          <Layer
+            id="special-use-fill"
+            type="fill"
+            paint={{ 'fill-color': '#38bdf8', 'fill-opacity': 0.22 }}
+          />
+          <Layer
+            id="special-use-border"
+            type="line"
+            paint={{
+              'line-color': '#7dd3fc',
+              'line-width': 1.5,
+              'line-dasharray': [2, 1.5],
+              'line-opacity': 0.9,
             }}
           />
         </Source>
@@ -465,6 +576,29 @@ export default function MapView() {
           </Marker>
         )}
       </Map>
+
+      {specialUseHover && (
+        <div style={{
+          position: 'absolute',
+          left: Math.max(8, Math.min(specialUseHover.x + 16, window.innerWidth - 248)),
+          top: Math.max(10, specialUseHover.y - 32),
+          width: 232,
+          pointerEvents: 'none',
+          zIndex: 220,
+          padding: '11px 13px',
+          borderRadius: 10,
+          border: '1px solid rgba(125,211,252,0.38)',
+          background: 'rgba(5,12,20,0.96)',
+          boxShadow: '0 14px 36px rgba(0,0,0,0.55)',
+        }}>
+          <p style={{ margin: 0, color: '#e0f2fe', fontSize: 12, fontWeight: 700 }}>
+            {specialUseHover.name}
+          </p>
+          <p style={{ margin: '5px 0 0', color: '#7dd3fc', fontSize: 9, fontFamily: 'IBM Plex Mono, monospace' }}>
+            {specialUseHover.kind.replaceAll('_', ' ')} · not scored as residential market land
+          </p>
+        </div>
+      )}
 
       {/* ── Construction project tooltip ── */}
       {constructionHover && (() => {

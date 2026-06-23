@@ -150,6 +150,34 @@ def _init(conn: sqlite3.Connection) -> None:
         )
         """
     )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS payments (
+          provider_payment_id TEXT PRIMARY KEY,
+          email TEXT NOT NULL,
+          phone TEXT NOT NULL,
+          package_interest TEXT NOT NULL,
+          amount INTEGER NOT NULL,
+          currency TEXT NOT NULL,
+          status TEXT NOT NULL,
+          lead_id TEXT,
+          paid_at TEXT NOT NULL,
+          created_at TEXT NOT NULL
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS identity_entitlements (
+          email TEXT PRIMARY KEY,
+          is_active INTEGER NOT NULL,
+          expires_at TEXT,
+          provider_payment_id TEXT NOT NULL,
+          updated_at TEXT NOT NULL,
+          FOREIGN KEY(provider_payment_id) REFERENCES payments(provider_payment_id)
+        )
+        """
+    )
     conn.commit()
 
 
@@ -296,11 +324,29 @@ def get_entitlements(user_id: str) -> Entitlements:
                 # If expires_at is corrupted, fail closed.
                 active = False
 
+        verified_email = user["email"] if user and user["email_verified_at"] else None
+        if not active and verified_email:
+            identity = conn.execute(
+                "SELECT is_active, expires_at FROM identity_entitlements WHERE email = ?",
+                (verified_email,),
+            ).fetchone()
+            identity_active = bool(int(identity["is_active"])) if identity else False
+            identity_expires_at = identity["expires_at"] if identity else None
+            parsed_identity_expiry = _parse_iso(identity_expires_at)
+            if identity_active and (parsed_identity_expiry is None or parsed_identity_expiry > datetime.now(timezone.utc)):
+                active = True
+                expires_at = identity_expires_at
+                conn.execute(
+                    "UPDATE entitlements SET is_active = 1, expires_at = ?, updated_at = ? WHERE user_id = ?",
+                    (expires_at, _now_iso(), user_id),
+                )
+                conn.commit()
+
         return Entitlements(
             free_remaining=free_remaining,
             subscription_active=active,
             subscription_expires_at=expires_at,
-            email=(user["email"] if user and user["email_verified_at"] else None),
+            email=verified_email,
             name=(user["name"] if user else None),
         )
     finally:

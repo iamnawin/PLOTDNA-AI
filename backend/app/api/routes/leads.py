@@ -10,10 +10,11 @@ from app.core.config import settings
 from app.services.custom_report_leads import (
     CustomReportLeadCreate,
     CustomReportLeadResponse,
+    PaymentLinkResult,
     RazorpayWebhookResult,
     confirm_custom_report_payment_from_razorpay,
+    create_razorpay_payment_link,
     recover_custom_report_payment,
-    self_confirm_custom_report_payment,
     store_custom_report_lead,
 )
 from app.services.entitlements_store import Entitlements, activate_paid_subscription
@@ -53,6 +54,13 @@ class RazorpayWebhookResponse(BaseModel):
     status: str
     leadId: str | None = None
     paymentReference: str | None = None
+
+
+class PaymentLinkResponse(BaseModel):
+    leadId: str
+    paymentLinkId: str
+    url: str
+    status: str
 
 
 def _to_entitlements_response(entitlements: Entitlements) -> EntitlementsResponse:
@@ -100,6 +108,20 @@ def create_custom_report_lead(
     return store_custom_report_lead(payload, user_id=user_id)
 
 
+@router.post("/custom-report/{lead_id}/payment-link", response_model=PaymentLinkResponse)
+def create_payment_link(
+    lead_id: str,
+    user_id: str = Depends(require_user_id),
+) -> PaymentLinkResponse:
+    try:
+        result: PaymentLinkResult = create_razorpay_payment_link(lead_id=lead_id, user_id=user_id)
+    except ValueError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
+    return PaymentLinkResponse(**result.model_dump())
+
+
 @router.post("/razorpay/webhook", response_model=RazorpayWebhookResponse)
 async def razorpay_webhook(
     request: Request,
@@ -136,6 +158,8 @@ def recover_payment(
         )
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=503, detail=str(exc)) from exc
 
     if not confirmed:
         raise HTTPException(status_code=404, detail="Paid lead not found")
@@ -155,18 +179,7 @@ def self_confirm_payment(
     body: SelfConfirmPaymentRequest,
     user_id: str = Depends(require_user_id),
 ) -> SelfConfirmPaymentResponse:
-    confirmed = self_confirm_custom_report_payment(
-        lead_id=lead_id,
-        user_id=user_id,
-        payment_reference=body.paymentReference,
-    )
-    if not confirmed:
-        raise HTTPException(status_code=404, detail="Lead not found")
-
-    entitlements = activate_paid_subscription(user_id, email=confirmed.email)
-    return SelfConfirmPaymentResponse(
-        leadId=confirmed.leadId,
-        paymentStatus=confirmed.paymentStatus,
-        paidAt=confirmed.paidAt,
-        entitlements=_to_entitlements_response(entitlements),
+    raise HTTPException(
+        status_code=410,
+        detail="Client payment confirmation is disabled. Access activates after Razorpay verification.",
     )

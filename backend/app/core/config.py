@@ -53,6 +53,8 @@ class Settings(BaseSettings):
     # External data providers
     DLD_API_KEY: str = ""
     API_SETU_KEY: str = ""
+    GEOCODER_BASE_URL: str = "https://nominatim.openstreetmap.org"
+    GEOCODER_USER_AGENT: str = "PlotDNA/1.0 (location search)"
 
     # Database (Supabase) — Phase 2
     DATABASE_URL:  str = ""
@@ -74,6 +76,8 @@ class Settings(BaseSettings):
     ENTITLEMENTS_DB_PATH: str = ""
     ADMIN_ACCESS_EMAILS: str = ""
     ADMIN_ACCESS_USER_IDS: str = ""
+    RAZORPAY_KEY_ID: str = ""
+    RAZORPAY_KEY_SECRET: str = ""
     RAZORPAY_WEBHOOK_SECRET: str = ""
 
     @field_validator("DEBUG", mode="before")

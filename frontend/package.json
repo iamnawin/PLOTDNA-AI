@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test:hyderabad-production": "node scripts/check-hyderabad-production.mjs",
+    "test:hyderabad-location-search": "node scripts/check-hyderabad-location-search.mjs",
     "test:landing-rollout-copy": "node scripts/check-landing-rollout-copy.mjs",
     "test:area-report-loader": "node scripts/check-area-report-loader.mjs",
     "test:dna-preloader-timing": "node scripts/check-dna-preloader-timing.mjs",

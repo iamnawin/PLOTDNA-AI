@@ -55,6 +55,25 @@ export interface BackendAreaList {
   areas: MicroMarket[]
 }
 
+export type LocationSearchPrecision = 'exact_boundary' | 'landmark' | 'geocoded_point' | 'outside_market'
+
+export interface LocationSearchResult {
+  displayName: string
+  localitySlug: string | null
+  lat: number
+  lng: number
+  source: 'local_index' | 'geocoder'
+  matchKind: 'exact' | 'prefix' | 'fuzzy' | 'landmark' | 'address'
+  precision: LocationSearchPrecision
+  resolution: LocalityResolution | null
+}
+
+export interface LocationSearchResponse {
+  query: string
+  reason: 'ok' | 'no_result' | 'outside_market'
+  results: LocationSearchResult[]
+}
+
 export interface CustomReportLeadPayload {
   name: string
   email: string
@@ -257,6 +276,28 @@ export async function resolveLocation(
   }
 }
 
+export interface ReportPaymentLinkResponse {
+  leadId: string
+  paymentLinkId: string
+  url: string
+  status: string
+}
+
+export async function searchLocationAddress(query: string): Promise<LocationSearchResponse | null> {
+  try {
+    const res = await fetch(`${BASE_URL}/api/utils/search-location`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, limit: 5 }),
+      signal: AbortSignal.timeout(10_000),
+    })
+    if (!res.ok) return null
+    return (await res.json()) as LocationSearchResponse
+  } catch {
+    return null
+  }
+}
+
 // ── Backend-owned area catalog ──
 
 export async function fetchBackendAreas(citySlug = 'hyderabad'): Promise<BackendAreaList | null> {
@@ -317,34 +358,23 @@ export async function submitCustomReportLead(
   return (await res.json()) as CustomReportLeadResponse
 }
 
-export async function selfConfirmCustomReportPayment(
-  leadId: string,
-  paymentReference?: string,
-): Promise<SelfConfirmPaymentResponse> {
+export async function createReportPaymentLink(leadId: string): Promise<ReportPaymentLinkResponse> {
   let res: Response
   try {
-    res = await fetch(`${BASE_URL}/api/leads/custom-report/${encodeURIComponent(leadId)}/self-confirm-payment`, {
+    res = await fetch(`${BASE_URL}/api/leads/custom-report/${encodeURIComponent(leadId)}/payment-link`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${await getAccessToken()}`,
-      },
-      body: JSON.stringify({ paymentReference }),
+      headers: { Authorization: `Bearer ${await getAccessToken()}` },
       signal: AbortSignal.timeout(10_000),
     })
   } catch (error) {
-    if (isAbortTimeoutError(error)) {
-      throw new Error('Payment confirmation timed out. Please try again.')
-    }
-    throw new Error('Could not confirm payment. Please try again.')
+    if (isAbortTimeoutError(error)) throw new Error('Payment link creation timed out. Please try again.')
+    throw new Error('Could not create a secure payment link. Please try again.')
   }
-
   if (!res.ok) {
     const errorBody = await res.json().catch(() => ({})) as unknown
-    throw new Error(formatApiErrorMessage(errorBody, 'Could not unlock payment access.'))
+    throw new Error(formatApiErrorMessage(errorBody, 'Could not create a secure payment link.'))
   }
-
-  return (await res.json()) as SelfConfirmPaymentResponse
+  return (await res.json()) as ReportPaymentLinkResponse
 }
 
 export async function recoverCustomReportPayment(

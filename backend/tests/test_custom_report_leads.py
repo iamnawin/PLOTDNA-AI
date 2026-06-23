@@ -4,6 +4,7 @@ import hmac
 import hashlib
 import tempfile
 import unittest
+from unittest.mock import Mock, patch
 
 from fastapi.testclient import TestClient
 
@@ -13,6 +14,66 @@ from app.main import app
 
 
 class CustomReportLeadRouteTests(unittest.TestCase):
+    def test_server_created_payment_link_carries_purchase_identity(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
+            previous_path = os.environ.get("CUSTOM_REPORT_LEADS_PATH")
+            previous_key_id = settings.RAZORPAY_KEY_ID
+            previous_key_secret = settings.RAZORPAY_KEY_SECRET
+            os.environ["CUSTOM_REPORT_LEADS_PATH"] = leads_path
+            settings.RAZORPAY_KEY_ID = "rzp_test_key"
+            settings.RAZORPAY_KEY_SECRET = "rzp_test_secret"
+            try:
+                client = TestClient(app)
+                headers = {"Authorization": f"Bearer {create_access_token('payment-link-user')}"}
+                lead = client.post(
+                    "/api/leads/custom-report",
+                    headers=headers,
+                    json={
+                        "name": "Naveen",
+                        "email": "buyer@example.com",
+                        "phone": "9876543210",
+                        "citySlug": "hyderabad",
+                        "cityName": "Hyderabad",
+                        "areaSlug": "isnapur",
+                        "areaName": "Isnapur",
+                        "packageInterest": "instant_pdf_99",
+                        "source": "area_report_summary",
+                    },
+                )
+                lead_id = lead.json()["leadId"]
+                provider_response = Mock()
+                provider_response.raise_for_status.return_value = None
+                provider_response.json.return_value = {
+                    "id": "plink_verified_123",
+                    "short_url": "https://rzp.io/i/verified123",
+                    "status": "created",
+                }
+
+                with patch("app.services.custom_report_leads.httpx.post", return_value=provider_response) as post:
+                    response = client.post(
+                        f"/api/leads/custom-report/{lead_id}/payment-link",
+                        headers=headers,
+                    )
+
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(response.json()["paymentLinkId"], "plink_verified_123")
+                self.assertEqual(response.json()["url"], "https://rzp.io/i/verified123")
+                request_body = post.call_args.kwargs["json"]
+                self.assertEqual(request_body["reference_id"], lead_id)
+                self.assertEqual(request_body["amount"], 9900)
+                self.assertEqual(request_body["currency"], "INR")
+                self.assertEqual(request_body["notes"]["plotdna_lead_id"], lead_id)
+                self.assertEqual(request_body["notes"]["package_interest"], "instant_pdf_99")
+                self.assertEqual(request_body["customer"]["email"], "buyer@example.com")
+            finally:
+                settings.RAZORPAY_KEY_ID = previous_key_id
+                settings.RAZORPAY_KEY_SECRET = previous_key_secret
+                if previous_path is None:
+                    os.environ.pop("CUSTOM_REPORT_LEADS_PATH", None)
+                else:
+                    os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
+
     def test_custom_report_lead_is_validated_and_stored(self):
         with tempfile.TemporaryDirectory() as tmp:
             leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
@@ -117,7 +178,7 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                 else:
                     os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
 
-    def test_authenticated_user_can_self_confirm_payment_for_own_lead(self):
+    def test_client_self_confirmation_is_disabled(self):
         with tempfile.TemporaryDirectory() as tmp:
             leads_path = os.path.join(tmp, "custom-report-leads.jsonl")
             previous_path = os.environ.get("CUSTOM_REPORT_LEADS_PATH")
@@ -149,17 +210,13 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                     headers=headers,
                 )
 
-                self.assertEqual(response.status_code, 200)
-                body = response.json()
-                self.assertEqual(body["paymentStatus"], "paid")
-                self.assertTrue(body["entitlements"]["subscription_active"])
-                self.assertEqual(body["entitlements"]["email"], "buyer@example.com")
+                self.assertEqual(response.status_code, 410)
 
                 with open(leads_path, encoding="utf-8") as f:
                     record = json.loads(f.readline())
-                self.assertEqual(record["paymentStatus"], "paid")
-                self.assertEqual(record["paymentReference"], "pay_test_123")
-                self.assertIn("paidAt", record)
+                self.assertEqual(record["paymentStatus"], "pending")
+                self.assertNotIn("paymentReference", record)
+                self.assertNotIn("paidAt", record)
             finally:
                 settings.ENTITLEMENTS_DB_PATH = previous_db_path
                 if previous_path is None:
@@ -200,7 +257,7 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                     headers=other_headers,
                 )
 
-                self.assertEqual(response.status_code, 404)
+                self.assertEqual(response.status_code, 410)
             finally:
                 settings.ENTITLEMENTS_DB_PATH = previous_db_path
                 if previous_path is None:
@@ -236,17 +293,29 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                 self.assertEqual(lead_response.status_code, 200)
 
                 recovery_headers = {"Authorization": f"Bearer {create_access_token('new-browser-user')}"}
-                response = client.post(
-                    "/api/leads/custom-report/recover-payment",
-                    json={
-                        "name": "naveen",
-                        "email": "NAVEEN.NAIDU21@gmail.com",
-                        "phone": "+91 97017 97999",
-                        "packageInterest": "instant_pdf_99",
-                        "paymentReference": "pay_SyMkoiN7OOLawT",
+                with patch(
+                    "app.services.custom_report_leads.verify_razorpay_payment",
+                    return_value={
+                        "id": "pay_SyMkoiN7OOLawT",
+                        "status": "captured",
+                        "amount": 9900,
+                        "currency": "INR",
+                        "email": "naveen.naidu21@gmail.com",
+                        "contact": "+91 97017 97999",
+                        "notes": {"package_interest": "instant_pdf_99"},
                     },
-                    headers=recovery_headers,
-                )
+                ):
+                    response = client.post(
+                        "/api/leads/custom-report/recover-payment",
+                        json={
+                            "name": "naveen",
+                            "email": "NAVEEN.NAIDU21@gmail.com",
+                            "phone": "+91 97017 97999",
+                            "packageInterest": "instant_pdf_99",
+                            "paymentReference": "pay_SyMkoiN7OOLawT",
+                        },
+                        headers=recovery_headers,
+                    )
 
                 self.assertEqual(response.status_code, 200)
                 body = response.json()
@@ -277,17 +346,29 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                 client = TestClient(app)
                 headers = {"Authorization": f"Bearer {create_access_token('direct-razorpay-user')}"}
 
-                response = client.post(
-                    "/api/leads/custom-report/recover-payment",
-                    json={
-                        "name": "Naveen",
+                with patch(
+                    "app.services.custom_report_leads.verify_razorpay_payment",
+                    return_value={
+                        "id": "pay_SyMkoiN7OOLawT",
+                        "status": "captured",
+                        "amount": 9900,
+                        "currency": "INR",
                         "email": "naveen.naidu21@gmail.com",
-                        "phone": "9701797999",
-                        "packageInterest": "instant_pdf_99",
-                        "paymentReference": "pay_SyMkoiN7OOLawT",
+                        "contact": "9701797999",
+                        "notes": {"package_interest": "instant_pdf_99"},
                     },
-                    headers=headers,
-                )
+                ):
+                    response = client.post(
+                        "/api/leads/custom-report/recover-payment",
+                        json={
+                            "name": "Naveen",
+                            "email": "naveen.naidu21@gmail.com",
+                            "phone": "9701797999",
+                            "packageInterest": "instant_pdf_99",
+                            "paymentReference": "pay_SyMkoiN7OOLawT",
+                        },
+                        headers=headers,
+                    )
 
                 self.assertEqual(response.status_code, 200)
                 body = response.json()
@@ -310,6 +391,37 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                     os.environ.pop("CUSTOM_REPORT_LEADS_PATH", None)
                 else:
                     os.environ["CUSTOM_REPORT_LEADS_PATH"] = previous_path
+
+    def test_fabricated_payment_id_cannot_activate_access(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            previous_db_path = settings.ENTITLEMENTS_DB_PATH
+            settings.ENTITLEMENTS_DB_PATH = os.path.join(tmp, "entitlements.sqlite3")
+            try:
+                client = TestClient(app)
+                headers = {"Authorization": f"Bearer {create_access_token('fabricated-payment-user')}"}
+
+                with patch(
+                    "app.services.custom_report_leads.verify_razorpay_payment",
+                    side_effect=ValueError("Razorpay payment was not captured."),
+                ):
+                    response = client.post(
+                        "/api/leads/custom-report/recover-payment",
+                        json={
+                            "name": "Attacker",
+                            "email": "attacker@example.com",
+                            "phone": "9876543210",
+                            "packageInterest": "instant_pdf_99",
+                            "paymentReference": "pay_fake123",
+                        },
+                        headers=headers,
+                    )
+
+                self.assertEqual(response.status_code, 400)
+                entitlements = client.get("/api/v1/entitlements", headers=headers).json()
+                self.assertFalse(entitlements["subscription_active"])
+                self.assertIsNone(entitlements["email"])
+            finally:
+                settings.ENTITLEMENTS_DB_PATH = previous_db_path
 
     def test_razorpay_webhook_marks_existing_lead_paid_for_auto_access(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -360,6 +472,7 @@ class CustomReportLeadRouteTests(unittest.TestCase):
                         "payment": {
                             "entity": {
                                 "id": "pay_webhook_123",
+                                "status": "captured",
                                 "email": "buyer@example.com",
                                 "contact": "9876543210",
                                 "amount": 9900,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FileText, X } from 'lucide-react'
-import { recoverCustomReportPayment, selfConfirmCustomReportPayment, submitCustomReportLead } from '@/lib/api'
+import { recoverCustomReportPayment, submitCustomReportLead } from '@/lib/api'
 import type { CustomReportLeadPayload } from '@/lib/api'
 import type { BuyerBriefInput } from '@/lib/customBuyerBrief'
 import { claimPaidAccess, type EntitlementsResponse } from '@/lib/entitlements'
@@ -16,7 +16,7 @@ interface Props {
   paymentRequired?: boolean
   paymentAvailable?: boolean
   canGenerateBrief?: boolean
-  onProceedToPayment?: () => void
+  onProceedToPayment?: (leadId: string) => Promise<boolean>
   onGenerateBrief?: (input: BuyerBriefInput) => void
   onPaidAccessClaimed?: (entitlements: EntitlementsResponse, leadId: string | null) => void
   onClose: () => void
@@ -52,7 +52,6 @@ export default function CustomReportLeadModal({
   const [submittedLeadId, setSubmittedLeadId] = useState('')
   const [submittedInput, setSubmittedInput] = useState<BuyerBriefInput | null>(null)
   const [paymentOpened, setPaymentOpened] = useState(false)
-  const [paymentReference, setPaymentReference] = useState('')
   const [recoveryReference, setRecoveryReference] = useState('')
   const [paidAccessMatched, setPaidAccessMatched] = useState(false)
   const isCustomReport = packageInterest === 'custom_due_diligence_499'
@@ -80,7 +79,6 @@ export default function CustomReportLeadModal({
     setSubmittedLeadId('')
     setSubmittedInput(null)
     setPaymentOpened(false)
-    setPaymentReference('')
     setRecoveryReference('')
     setPaidAccessMatched(false)
     setError('')
@@ -164,22 +162,16 @@ export default function CustomReportLeadModal({
     onClose()
   }
 
-  function handleProceedToPayment() {
-    setError('')
-    onProceedToPayment?.()
-    setPaymentOpened(true)
-  }
-
-  async function handleConfirmPayment() {
-    if (!submittedLeadId) return
+  async function handleProceedToPayment() {
+    if (!submittedLeadId || !onProceedToPayment) return
     setError('')
     setSubmitting(true)
     try {
-      const result = await selfConfirmCustomReportPayment(submittedLeadId, paymentReference.trim() || undefined)
-      setPaidAccessMatched(true)
-      onPaidAccessClaimed?.(result.entitlements, result.leadId)
+      const opened = await onProceedToPayment(submittedLeadId)
+      if (opened) setPaymentOpened(true)
+      else setError('The secure payment link could not be opened. Please try again.')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not unlock payment access.')
+      setError(err instanceof Error ? err.message : 'Could not create a secure payment link.')
     } finally {
       setSubmitting(false)
     }
@@ -252,24 +244,11 @@ export default function CustomReportLeadModal({
             {submittedLeadId ? (
               <div className="mt-5 rounded-2xl border border-emerald-500/20 bg-emerald-500/10 p-4">
                 <p className="font-sans text-sm font-bold text-emerald-300">
-                  {canGenerateBrief ? 'Brief ready' : paymentOpened ? 'Finish lifetime access' : paymentAvailable ? 'Payment details saved' : 'Manual request received'}
+                  {canGenerateBrief ? 'Brief ready' : paymentOpened ? 'Waiting for verified payment' : paymentAvailable ? 'Payment details saved' : 'Manual request received'}
                 </p>
                 <p className="mt-2 text-xs font-sans leading-relaxed text-slate-300">
-                  Lead ID {submittedLeadId}. {paymentOpened ? 'After Razorpay shows the paid screen, return here and unlock lifetime access.' : submittedMessage}
+                  Lead ID {submittedLeadId}. {paymentOpened ? 'Access activates after Razorpay verifies the payment. You can close this window while PlotDNA checks automatically.' : submittedMessage}
                 </p>
-                {paymentOpened && paymentAvailable && (
-                  <label className="mt-4 block">
-                    <span className="mb-2 block text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
-                      Payment ID optional
-                    </span>
-                    <input
-                      value={paymentReference}
-                      onChange={(event) => { setPaymentReference(event.target.value); setError('') }}
-                      placeholder="pay_..."
-                      className="w-full rounded-2xl border border-white/10 bg-slate-950/35 px-4 py-3 font-sans text-sm text-slate-100 outline-none placeholder:text-slate-600 focus:border-emerald-500/40"
-                    />
-                  </label>
-                )}
                 {error && <p className="mt-3 text-[11px] font-sans text-red-400">{error}</p>}
                 <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                   <button
@@ -280,7 +259,7 @@ export default function CustomReportLeadModal({
                   </button>
                   {paymentAvailable && onProceedToPayment && !paymentOpened && (
                     <button
-                      onClick={handleProceedToPayment}
+                      onClick={() => void handleProceedToPayment()}
                       className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b]"
                     >
                       Pay Rs 99 on Razorpay
@@ -288,19 +267,10 @@ export default function CustomReportLeadModal({
                   )}
                   {paymentAvailable && onProceedToPayment && paymentOpened && (
                     <button
-                      onClick={handleProceedToPayment}
+                      onClick={() => void handleProceedToPayment()}
                       className="flex-1 rounded-2xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm font-sans font-bold text-emerald-200"
                     >
                       Open Razorpay again
-                    </button>
-                  )}
-                  {paymentAvailable && paymentOpened && (
-                    <button
-                      onClick={() => void handleConfirmPayment()}
-                      disabled={submitting}
-                      className="flex-1 rounded-2xl bg-emerald-500 px-4 py-3 text-sm font-sans font-bold text-[#04110b] disabled:opacity-60"
-                    >
-                      {submitting ? 'Unlocking...' : 'I completed payment'}
                     </button>
                   )}
                   {isCustomReport && canGenerateBrief && onGenerateBrief && submittedInput && (
