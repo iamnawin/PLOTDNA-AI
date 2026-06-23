@@ -287,7 +287,7 @@ export default function MapView() {
         const tierMatch = highlightTier === null || (area ? getScoreLabel(area.score) === highlightTier : false)
         const color = hasScore
           ? (tierMatch ? getScoreColor(area!.score) : '#252535')
-          : '#1e3a5f' // dim blue-gray for coverage cells with no score data yet
+          : '#3b82f6' // bright blue for coverage cells with no score data yet
         return {
           type: 'Feature' as const,
           id: slug,
@@ -418,7 +418,7 @@ export default function MapView() {
               'fill-opacity': [
                 'case',
                 ['==', ['get', 'dimmed'],   1], 0.04,
-                ['==', ['get', 'noData'],   1], 0.20,
+                ['==', ['get', 'noData'],   1], 0.38,
                 ['==', ['get', 'selected'], 1], 0.48,
                 ['==', ['get', 'hovered'],  1], 0.36,
                 0.22,
@@ -441,7 +441,7 @@ export default function MapView() {
               'line-opacity': [
                 'case',
                 ['==', ['get', 'dimmed'], 1], 0.15,
-                ['==', ['get', 'noData'], 1], 0.25,
+                ['==', ['get', 'noData'], 1], 0.60,
                 0.9,
               ],
             }}
