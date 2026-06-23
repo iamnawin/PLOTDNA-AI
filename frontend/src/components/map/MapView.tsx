@@ -283,10 +283,11 @@ export default function MapView() {
       const features = HYDERABAD_COVERAGE.features.map(feature => {
         const slug = feature.id as string
         const area = areaBySlug[slug]
+        const hasScore = !!area
         const tierMatch = highlightTier === null || (area ? getScoreLabel(area.score) === highlightTier : false)
-        const color = area
-          ? (tierMatch ? getScoreColor(area.score) : '#252535')
-          : '#1e293b'
+        const color = hasScore
+          ? (tierMatch ? getScoreColor(area!.score) : '#252535')
+          : '#1e3a5f' // dim blue-gray for coverage cells with no score data yet
         return {
           type: 'Feature' as const,
           id: slug,
@@ -297,7 +298,8 @@ export default function MapView() {
             color,
             selected: selectedArea?.slug === slug ? 1 : 0,
             hovered:  hoveredSlug === slug ? 1 : 0,
-            dimmed:   !area || !tierMatch ? 1 : 0,
+            dimmed:   hasScore && !tierMatch ? 1 : 0, // only dim scored cells that don't match the tier filter
+            noData:   !hasScore ? 1 : 0,              // coverage cells that have no score data yet
             boundaryKind: 'generated_market_cell',
           },
         }
@@ -416,9 +418,9 @@ export default function MapView() {
               'fill-opacity': [
                 'case',
                 ['==', ['get', 'dimmed'],   1], 0.04,
+                ['==', ['get', 'noData'],   1], 0.20,
                 ['==', ['get', 'selected'], 1], 0.48,
                 ['==', ['get', 'hovered'],  1], 0.36,
-                ['==', ['get', 'boundaryKind'], 'generated_market_cell'], 0.16,
                 0.22,
               ],
             }}
@@ -439,6 +441,7 @@ export default function MapView() {
               'line-opacity': [
                 'case',
                 ['==', ['get', 'dimmed'], 1], 0.15,
+                ['==', ['get', 'noData'], 1], 0.25,
                 0.9,
               ],
             }}
