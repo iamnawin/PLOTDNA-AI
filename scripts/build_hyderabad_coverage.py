@@ -39,6 +39,14 @@ ANCHORS = {
     "medchal": [17.630, 78.485],
 }
 
+# Phantom grid rings added to the Voronoi seed set to break up large outer cells.
+# Cells from these seeds have no locality data — they render as blue noData tiles.
+PHANTOM_RINGS = [
+    (38.0, 24),   # 38 km ring, 24 seeds (every 15°)
+    (50.0, 30),   # 50 km ring, 30 seeds (every 12°)
+    (60.0, 45),   # 60 km ring, 45 seeds (every 8°) — makes boundary edge granular
+]
+
 
 def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -89,6 +97,27 @@ def boundary_xy() -> list[tuple[float, float]]:
         )
         for index in range(BOUNDARY_SEGMENTS)
     ]
+
+
+def boundary_xy_organic() -> list[tuple[float, float]]:
+    """Organic market boundary using harmonic radius variation.
+
+    Base radius 66.5 km ± 1 km (min ~65.5 km), ensuring all localities filtered
+    to MARKET_RADIUS_KM=65 remain inside. The harmonic wobble makes the boundary
+    edge look like an irregular administrative polygon rather than a GIS buffer.
+    """
+    n = BOUNDARY_SEGMENTS
+    result = []
+    for i in range(n):
+        angle = 2 * math.pi * i / n
+        r = (
+            66.5
+            + 0.5 * math.cos(3 * angle + 0.7)
+            + 0.3 * math.cos(7 * angle + 1.5)
+            + 0.2 * math.cos(11 * angle + 2.1)
+        )
+        result.append((r * math.cos(angle), r * math.sin(angle)))
+    return result
 
 
 def clip_half_plane(
@@ -193,13 +222,29 @@ def main() -> None:
     ]
     active.sort(key=lambda locality: locality["slug"])
     seeds = [to_xy(*locality["center"]) for locality in active]
-    boundary = boundary_xy()
+    boundary = boundary_xy_organic()
     cluster_by_slug = cluster_lookup(clusters)
+
+    # Phantom outer ring seeds — break up large Voronoi cells and make the
+    # boundary edge look granular rather than a smooth GIS circle.
+    phantom_xy: list[tuple[float, float]] = []
+    phantom_meta: list[dict] = []
+    for ring_radius, ring_count in PHANTOM_RINGS:
+        for i in range(ring_count):
+            angle = 2 * math.pi * i / ring_count
+            xy = (ring_radius * math.cos(angle), ring_radius * math.sin(angle))
+            phantom_xy.append(xy)
+            phantom_meta.append({
+                "slug": f"phantom-r{int(ring_radius)}-{i:02d}",
+                "name": f"Coverage grid {int(ring_radius)}km/{i * 360 // ring_count}°",
+            })
+
+    all_seeds = seeds + phantom_xy
 
     features: list[dict] = []
     cell_by_slug: dict[str, list[list[float]]] = {}
     for locality, seed in zip(active, seeds):
-        cell_xy = voronoi_cell(seed, seeds, boundary)
+        cell_xy = voronoi_cell(seed, all_seeds, boundary)
         cell_lat_lng = [to_lat_lng(x, y) for x, y in cell_xy]
         cell_by_slug[locality["slug"]] = cell_lat_lng
         cluster = cluster_by_slug.get(locality["slug"], {})
@@ -215,6 +260,31 @@ def main() -> None:
                     "marketable": True,
                     "source": "legacy_locality_centroid_voronoi",
                     **cluster,
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [close_geojson_ring(cell_lat_lng)],
+                },
+            }
+        )
+
+    # Append phantom noData cells (blue fill, no score data)
+    for meta, xy in zip(phantom_meta, phantom_xy):
+        try:
+            cell_xy = voronoi_cell(xy, all_seeds, boundary)
+        except ValueError:
+            continue
+        cell_lat_lng = [to_lat_lng(x, y) for x, y in cell_xy]
+        features.append(
+            {
+                "type": "Feature",
+                "id": meta["slug"],
+                "properties": {
+                    "slug": meta["slug"],
+                    "name": meta["name"],
+                    "boundaryKind": "generated_coverage_grid",
+                    "boundaryConfidence": "broad",
+                    "marketable": False,
                 },
                 "geometry": {
                     "type": "Polygon",
@@ -257,8 +327,8 @@ def main() -> None:
                 "properties": {
                     "slug": "hyderabad-investment-market",
                     "name": "Hyderabad Investment Market",
-                    "definition": "product_market_boundary_65km",
-                    "radiusKm": MARKET_RADIUS_KM,
+                    "definition": "product_market_boundary_organic_66km",
+                    "seedRadiusKm": MARKET_RADIUS_KM,
                     "boundaryConfidence": "product_defined",
                     "notAdministrativeBoundary": True,
                 },
@@ -309,7 +379,7 @@ def main() -> None:
     manifest = {
         "schemaVersion": 1,
         "generatedAt": "2026-06-22",
-        "processingVersion": "product-circle-voronoi-v1",
+        "processingVersion": "organic-boundary-phantom-rings-v2",
         "crs": "EPSG:4326",
         "metricProjection": "local equirectangular kilometers centered on Hyderabad",
         "marketBoundary": {
