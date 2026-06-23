@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "generatedAt": "2026-06-22",
-  "processingVersion": "organic-boundary-phantom-rings-v2",
+  "processingVersion": "organic-boundary-phantom-seeds-no-fill-v3",
   "crs": "EPSG:4326",
   "metricProjection": "local equirectangular kilometers centered on Hyderabad",
   "marketBoundary": {
@@ -15,7 +15,7 @@
     "notAdministrativeBoundary": true
   },
   "coverage": {
-    "selectableCellCount": 326,
+    "selectableCellCount": 227,
     "selectableAreaKm2": 4107.21,
     "areaCoverageRatio": 0.2957401,
     "boundaryKind": "generated_market_cell",

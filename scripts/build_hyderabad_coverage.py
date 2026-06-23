@@ -268,30 +268,9 @@ def main() -> None:
             }
         )
 
-    # Append phantom noData cells (blue fill, no score data)
-    for meta, xy in zip(phantom_meta, phantom_xy):
-        try:
-            cell_xy = voronoi_cell(xy, all_seeds, boundary)
-        except ValueError:
-            continue
-        cell_lat_lng = [to_lat_lng(x, y) for x, y in cell_xy]
-        features.append(
-            {
-                "type": "Feature",
-                "id": meta["slug"],
-                "properties": {
-                    "slug": meta["slug"],
-                    "name": meta["name"],
-                    "boundaryKind": "generated_coverage_grid",
-                    "boundaryConfidence": "broad",
-                    "marketable": False,
-                },
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [close_geojson_ring(cell_lat_lng)],
-                },
-            }
-        )
+    # Phantom seeds are used only for Voronoi geometry (to prevent outer locality cells
+    # from growing unrealistically large), but are NOT emitted as map features.
+    # The outer area beyond real localities shows the basemap — no blue fill ring pattern.
 
     for locality in localities:
         generated = cell_by_slug.get(locality["slug"])
@@ -379,7 +358,7 @@ def main() -> None:
     manifest = {
         "schemaVersion": 1,
         "generatedAt": "2026-06-22",
-        "processingVersion": "organic-boundary-phantom-rings-v2",
+        "processingVersion": "organic-boundary-phantom-seeds-no-fill-v3",
         "crs": "EPSG:4326",
         "metricProjection": "local equirectangular kilometers centered on Hyderabad",
         "marketBoundary": {
