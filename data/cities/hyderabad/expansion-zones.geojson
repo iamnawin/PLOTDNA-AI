@@ -1,0 +1,182 @@
+{
+  "type": "FeatureCollection",
+  "_comment": "Named expansion zones for the outer Hyderabad flagship market area (beyond 28 km from center). These are hand-defined irregular polygons based on real market/locality clusters — NOT Voronoi cells, NOT circles, NOT pizza slices. They fill the gap between the dense inner locality Voronoi area and the rough flagship boundary sketched in the product brief. Replace individual zones with verified admin/locality boundaries as real data becomes available.",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "hyd_exp_kompally_dundigal_north",
+      "properties": {
+        "id": "hyd_exp_kompally_dundigal_north",
+        "name": "Kompally – Dundigal – Medchal North Belt",
+        "city": "hyderabad",
+        "coverage_type": "generated_expansion",
+        "source": "manual_flagship_boundary_fill",
+        "status": "draft_review",
+        "confidence": "medium",
+        "notes": "North Hyderabad growth belt: Kompally township, Dundigal pharma corridor, Medchal IT/logistics hub, TSRTC depot area, Shivampet mandal"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [78.32, 17.57], [78.52, 17.57], [78.60, 17.63],
+          [78.55, 17.73], [78.40, 17.75], [78.27, 17.68],
+          [78.24, 17.60], [78.32, 17.57]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hyd_exp_patancheru_narsapur_nw",
+      "properties": {
+        "id": "hyd_exp_patancheru_narsapur_nw",
+        "name": "Patancheru – Narsapur – Ameenpur NW Corridor",
+        "city": "hyderabad",
+        "coverage_type": "generated_expansion",
+        "source": "manual_flagship_boundary_fill",
+        "status": "draft_review",
+        "confidence": "medium",
+        "notes": "North-west industrial and residential expansion: BHEL township, Patancheru MIDC, Narsapur bulk drug cluster, Ameenpur layout growth"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [78.08, 17.48], [78.30, 17.47], [78.37, 17.55],
+          [78.30, 17.65], [78.13, 17.66], [78.00, 17.57],
+          [77.98, 17.51], [78.08, 17.48]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hyd_exp_sangareddy_sadasivpet_far_nw",
+      "properties": {
+        "id": "hyd_exp_sangareddy_sadasivpet_far_nw",
+        "name": "Sangareddy – Sadasivpet Far North-West Corridor",
+        "city": "hyderabad",
+        "coverage_type": "generated_expansion",
+        "source": "manual_flagship_boundary_fill",
+        "status": "draft_review",
+        "confidence": "low",
+        "notes": "Far north-west market fringe: Sangareddy district HQ, Sadasivpet municipality, Isnapur, Pulkal — pharma SEZ and emerging township growth"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [77.88, 17.58], [78.10, 17.56], [78.20, 17.63],
+          [78.13, 17.74], [77.95, 17.76], [77.77, 17.68],
+          [77.74, 17.60], [77.88, 17.58]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hyd_exp_bhongir_bibinagar_east",
+      "properties": {
+        "id": "hyd_exp_bhongir_bibinagar_east",
+        "name": "Bhongir – Bibinagar – Ghanpur Eastern Expansion",
+        "city": "hyderabad",
+        "coverage_type": "generated_expansion",
+        "source": "manual_flagship_boundary_fill",
+        "status": "draft_review",
+        "confidence": "low",
+        "notes": "Eastern fringe of Hyderabad market: Bibinagar HMDA township, Ghanpur transit corridor, Bhongir-facing logistics and affordable housing"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [78.63, 17.40], [78.83, 17.37], [78.90, 17.47],
+          [78.84, 17.58], [78.68, 17.63], [78.52, 17.58],
+          [78.48, 17.47], [78.63, 17.40]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hyd_exp_hayathnagar_adibatla_se",
+      "properties": {
+        "id": "hyd_exp_hayathnagar_adibatla_se",
+        "name": "Hayathnagar – Adibatla – Choutkur SE Belt",
+        "city": "hyderabad",
+        "coverage_type": "generated_expansion",
+        "source": "manual_flagship_boundary_fill",
+        "status": "draft_review",
+        "confidence": "medium",
+        "notes": "South-east growth corridor: Hayathnagar HMDA zone, Adibatla aerospace SEZ overspill, Choutkur logistics, ORR Node 13 catchment"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [78.55, 17.27], [78.74, 17.26], [78.80, 17.36],
+          [78.73, 17.46], [78.55, 17.46], [78.47, 17.36],
+          [78.55, 17.27]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hyd_exp_farooqnagar_shadnagar_south",
+      "properties": {
+        "id": "hyd_exp_farooqnagar_shadnagar_south",
+        "name": "Farooqnagar – Shadnagar – Kandukur South Belt",
+        "city": "hyderabad",
+        "coverage_type": "generated_expansion",
+        "source": "manual_flagship_boundary_fill",
+        "status": "draft_review",
+        "confidence": "low",
+        "notes": "Southern Hyderabad market fringe: Farooqnagar SBI training campus area, Shadnagar residential growth, Kandukur highway corridor"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [78.10, 17.04], [78.40, 17.02], [78.50, 17.13],
+          [78.38, 17.24], [78.12, 17.24], [78.01, 17.13],
+          [78.10, 17.04]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hyd_exp_moinabad_shankarpally_sw",
+      "properties": {
+        "id": "hyd_exp_moinabad_shankarpally_sw",
+        "name": "Moinabad – Shankarpally – Velimela South-West Approach",
+        "city": "hyderabad",
+        "coverage_type": "generated_expansion",
+        "source": "manual_flagship_boundary_fill",
+        "status": "draft_review",
+        "confidence": "low",
+        "notes": "South-west eco and highway corridor: Shankarpally HMDA growth zone, Moinabad luxury township cluster, Velimela/Bhanur highway belt"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [77.93, 17.28], [78.17, 17.25], [78.28, 17.35],
+          [78.22, 17.47], [78.05, 17.53], [77.87, 17.46],
+          [77.83, 17.35], [77.93, 17.28]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "hyd_exp_vikarabad_western_frontier",
+      "properties": {
+        "id": "hyd_exp_vikarabad_western_frontier",
+        "name": "Vikarabad – Western Frontier Corridor",
+        "city": "hyderabad",
+        "coverage_type": "generated_expansion",
+        "source": "manual_flagship_boundary_fill",
+        "status": "draft_review",
+        "confidence": "low",
+        "notes": "Far western Hyderabad market edge: Vikarabad municipality, Nawabpet corridor — highway NH65 investment zone and weekend home market"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [77.77, 17.28], [77.95, 17.25], [78.02, 17.37],
+          [77.97, 17.50], [77.80, 17.53], [77.68, 17.43],
+          [77.70, 17.33], [77.77, 17.28]
+        ]]
+      }
+    }
+  ]
+}

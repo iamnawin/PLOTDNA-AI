@@ -241,6 +241,11 @@ def main() -> None:
 
     all_seeds = seeds + phantom_xy
 
+    # Localities within this radius are shown as dense inner Voronoi cells on the map.
+    # Outer localities (beyond this radius) have large Voronoi cells that look like
+    # pizza slices — those are hidden and replaced by named expansion zones instead.
+    INNER_DISPLAY_RADIUS_KM = 28.0
+
     features: list[dict] = []
     cell_by_slug: dict[str, list[list[float]]] = {}
     for locality, seed in zip(active, seeds):
@@ -248,6 +253,7 @@ def main() -> None:
         cell_lat_lng = [to_lat_lng(x, y) for x, y in cell_xy]
         cell_by_slug[locality["slug"]] = cell_lat_lng
         cluster = cluster_by_slug.get(locality["slug"], {})
+        dist_km = round(haversine_km(locality["center"][0], locality["center"][1]), 1)
         features.append(
             {
                 "type": "Feature",
@@ -259,6 +265,10 @@ def main() -> None:
                     "boundaryConfidence": "broad",
                     "marketable": True,
                     "source": "legacy_locality_centroid_voronoi",
+                    "distKm": dist_km,
+                    # outerZone=true → MapView hides the fill for this cell (cell is
+                    # too large to look meaningful; covered by named expansion zones)
+                    "outerZone": dist_km > INNER_DISPLAY_RADIUS_KM,
                     **cluster,
                 },
                 "geometry": {
@@ -358,7 +368,7 @@ def main() -> None:
     manifest = {
         "schemaVersion": 1,
         "generatedAt": "2026-06-22",
-        "processingVersion": "organic-boundary-phantom-seeds-no-fill-v3",
+        "processingVersion": "inner-display-radius-outer-zones-v4",
         "crs": "EPSG:4326",
         "metricProjection": "local equirectangular kilometers centered on Hyderabad",
         "marketBoundary": {
