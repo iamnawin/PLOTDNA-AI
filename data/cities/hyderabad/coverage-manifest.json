@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "generatedAt": "2026-06-22",
-  "processingVersion": "organic-boundary-phantom-seeds-no-fill-v3",
+  "processingVersion": "inner-display-radius-outer-zones-v4",
   "crs": "EPSG:4326",
   "metricProjection": "local equirectangular kilometers centered on Hyderabad",
   "marketBoundary": {

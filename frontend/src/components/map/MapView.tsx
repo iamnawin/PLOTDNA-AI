@@ -14,6 +14,8 @@ import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import type { ActiveProject } from '@/types'
 import hyderabadSpecialUseRaw from '../../../../data/cities/hyderabad/special-use-areas.geojson?raw'
 import hyderabadCoverageRaw from '../../../../data/cities/hyderabad/coverage-areas.geojson?raw'
+import hyderabadExpansionZonesRaw from '../../../../data/cities/hyderabad/expansion-zones.geojson?raw'
+import hyderabadFlagshipBoundaryRaw from '../../../../data/cities/hyderabad/flagship-boundary.geojson?raw'
 
 // ── Construction marker helpers ───────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
@@ -68,7 +70,28 @@ const HYDERABAD_COVERAGE = JSON.parse(hyderabadCoverageRaw) as {
   features: Array<{
     type: 'Feature'
     id: string
-    properties: { slug: string; name: string; boundaryKind: string; marketable: boolean }
+    properties: { slug: string; name: string; boundaryKind: string; marketable: boolean; outerZone?: boolean; distKm?: number }
+    geometry: { type: 'Polygon'; coordinates: number[][][] }
+  }>
+}
+
+// Hand-crafted named expansion zones for outer Hyderabad market belt (beyond 28 km from center)
+const HYDERABAD_EXPANSION_ZONES = JSON.parse(hyderabadExpansionZonesRaw) as {
+  type: 'FeatureCollection'
+  features: Array<{
+    type: 'Feature'
+    id: string
+    properties: { id: string; name: string; coverage_type: string; confidence: string; notes: string }
+    geometry: { type: 'Polygon'; coordinates: number[][][] }
+  }>
+}
+
+// Irregular product-defined flagship boundary polygon (NOT a GIS circle)
+const HYDERABAD_FLAGSHIP_BOUNDARY = JSON.parse(hyderabadFlagshipBoundaryRaw) as {
+  type: 'FeatureCollection'
+  features: Array<{
+    type: 'Feature'
+    properties: Record<string, unknown>
     geometry: { type: 'Polygon'; coordinates: number[][][] }
   }>
 }
@@ -224,6 +247,12 @@ export default function MapView() {
   const specialUseGeojson = selectedCitySlug === 'hyderabad'
     ? HYDERABAD_SPECIAL_USE
     : EMPTY_FEATURE_COLLECTION
+  const expansionZonesGeojson = selectedCitySlug === 'hyderabad'
+    ? HYDERABAD_EXPANSION_ZONES
+    : EMPTY_FEATURE_COLLECTION
+  const flagshipBoundaryGeojson = selectedCitySlug === 'hyderabad'
+    ? HYDERABAD_FLAGSHIP_BOUNDARY
+    : EMPTY_FEATURE_COLLECTION
 
   // ── Fly to coordinate pin ─────────────────────────────────────────────────
   useEffect(() => {
@@ -294,12 +323,13 @@ export default function MapView() {
           geometry: feature.geometry, // already [lng, lat] GeoJSON format
           properties: {
             slug,
-            score:    area?.score ?? -1,
+            score:     area?.score ?? -1,
             color,
-            selected: selectedArea?.slug === slug ? 1 : 0,
-            hovered:  hoveredSlug === slug ? 1 : 0,
-            dimmed:   hasScore && !tierMatch ? 1 : 0, // only dim scored cells that don't match the tier filter
-            noData:   !hasScore ? 1 : 0,              // coverage cells that have no score data yet
+            selected:  selectedArea?.slug === slug ? 1 : 0,
+            hovered:   hoveredSlug === slug ? 1 : 0,
+            dimmed:    hasScore && !tierMatch ? 1 : 0,
+            noData:    !hasScore ? 1 : 0,
+            outerZone: feature.properties.outerZone ? 1 : 0,
             boundaryKind: 'generated_market_cell',
           },
         }
@@ -417,10 +447,11 @@ export default function MapView() {
               'fill-color':   ['get', 'color'],
               'fill-opacity': [
                 'case',
-                ['==', ['get', 'dimmed'],   1], 0.04,
-                ['==', ['get', 'noData'],   1], 0.38,
-                ['==', ['get', 'selected'], 1], 0.48,
-                ['==', ['get', 'hovered'],  1], 0.36,
+                ['==', ['get', 'outerZone'], 1], 0,    // outer cells hidden; expansion zones shown instead
+                ['==', ['get', 'dimmed'],    1], 0.04,
+                ['==', ['get', 'noData'],    1], 0.38,
+                ['==', ['get', 'selected'],  1], 0.48,
+                ['==', ['get', 'hovered'],   1], 0.36,
                 0.22,
               ],
             }}
@@ -440,8 +471,9 @@ export default function MapView() {
               ],
               'line-opacity': [
                 'case',
-                ['==', ['get', 'dimmed'], 1], 0.15,
-                ['==', ['get', 'noData'], 1], 0.60,
+                ['==', ['get', 'outerZone'], 1], 0,
+                ['==', ['get', 'dimmed'],    1], 0.15,
+                ['==', ['get', 'noData'],    1], 0.60,
                 0.9,
               ],
             }}
@@ -461,6 +493,39 @@ export default function MapView() {
                 0,
               ],
               'line-blur': 6,
+            }}
+          />
+        </Source>
+
+        {/* Outer market expansion zones — named, hand-crafted irregular polygons for areas beyond 28 km */}
+        <Source id="expansion-zones" type="geojson" data={expansionZonesGeojson}>
+          <Layer
+            id="expansion-zones-fill"
+            type="fill"
+            paint={{ 'fill-color': '#f59e0b', 'fill-opacity': 0.10 }}
+          />
+          <Layer
+            id="expansion-zones-border"
+            type="line"
+            paint={{
+              'line-color': '#f59e0b',
+              'line-width': 1.5,
+              'line-dasharray': [3, 2],
+              'line-opacity': 0.55,
+            }}
+          />
+        </Source>
+
+        {/* Flagship boundary — irregular product-defined outer limit (not a GIS circle) */}
+        <Source id="flagship-boundary" type="geojson" data={flagshipBoundaryGeojson}>
+          <Layer
+            id="flagship-boundary-line"
+            type="line"
+            paint={{
+              'line-color': '#6366f1',
+              'line-width': 1.2,
+              'line-dasharray': [4, 3],
+              'line-opacity': 0.40,
             }}
           />
         </Source>
