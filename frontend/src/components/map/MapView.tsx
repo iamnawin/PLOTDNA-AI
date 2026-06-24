@@ -14,7 +14,6 @@ import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import type { ActiveProject } from '@/types'
 import hyderabadSpecialUseRaw from '../../../../data/cities/hyderabad/special-use-areas.geojson?raw'
 import hyderabadCoverageRaw from '../../../../data/cities/hyderabad/coverage-areas.geojson?raw'
-import hyderabadExpansionZonesRaw from '../../../../data/cities/hyderabad/expansion-zones.geojson?raw'
 import hyderabadFlagshipBoundaryRaw from '../../../../data/cities/hyderabad/flagship-boundary.geojson?raw'
 
 // ── Construction marker helpers ───────────────────────────────────────────────
@@ -71,17 +70,6 @@ const HYDERABAD_COVERAGE = JSON.parse(hyderabadCoverageRaw) as {
     type: 'Feature'
     id: string
     properties: { slug: string; name: string; boundaryKind: string; marketable: boolean; outerZone?: boolean; distKm?: number }
-    geometry: { type: 'Polygon'; coordinates: number[][][] }
-  }>
-}
-
-// Hand-crafted named expansion zones for outer Hyderabad market belt (beyond 28 km from center)
-const HYDERABAD_EXPANSION_ZONES = JSON.parse(hyderabadExpansionZonesRaw) as {
-  type: 'FeatureCollection'
-  features: Array<{
-    type: 'Feature'
-    id: string
-    properties: { id: string; name: string; coverage_type: string; confidence: string; notes: string }
     geometry: { type: 'Polygon'; coordinates: number[][][] }
   }>
 }
@@ -246,9 +234,6 @@ export default function MapView() {
   )
   const specialUseGeojson = selectedCitySlug === 'hyderabad'
     ? HYDERABAD_SPECIAL_USE
-    : EMPTY_FEATURE_COLLECTION
-  const expansionZonesGeojson = selectedCitySlug === 'hyderabad'
-    ? HYDERABAD_EXPANSION_ZONES
     : EMPTY_FEATURE_COLLECTION
   const flagshipBoundaryGeojson = selectedCitySlug === 'hyderabad'
     ? HYDERABAD_FLAGSHIP_BOUNDARY
@@ -493,25 +478,6 @@ export default function MapView() {
                 0,
               ],
               'line-blur': 6,
-            }}
-          />
-        </Source>
-
-        {/* Outer market expansion zones — named, hand-crafted irregular polygons for areas beyond 28 km */}
-        <Source id="expansion-zones" type="geojson" data={expansionZonesGeojson}>
-          <Layer
-            id="expansion-zones-fill"
-            type="fill"
-            paint={{ 'fill-color': '#f59e0b', 'fill-opacity': 0.10 }}
-          />
-          <Layer
-            id="expansion-zones-border"
-            type="line"
-            paint={{
-              'line-color': '#f59e0b',
-              'line-width': 1.5,
-              'line-dasharray': [3, 2],
-              'line-opacity': 0.55,
             }}
           />
         </Source>
