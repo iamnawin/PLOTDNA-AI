@@ -31,10 +31,14 @@ npm run build        # tsc -b && vite build
 npm run lint         # eslint .
 
 # Frontend smoke tests (Node.js scripts, no test runner required)
+# Run individual checks:
 npm run test:hyderabad-production
 npm run test:area-dna-paywall
 npm run test:pdf-report-quality
-# Full list: see "scripts" in frontend/package.json (test:* entries)
+npm run test:payment-recognition
+npm run test:email-otp-contract
+npm run test:landing-search-redesign
+# Full list: see all "test:*" entries in frontend/package.json
 
 # Backend (http://localhost:8000)
 cd backend
@@ -42,6 +46,15 @@ python -m venv venv
 venv\Scripts\activate          # Windows
 pip install -r requirements.txt
 uvicorn app.main:app --reload
+
+# Backend tests
+python -m unittest discover -s tests -v
+# Run a single test module:
+python -m unittest tests.test_custom_report_leads -v
+
+# Hyderabad coverage build + spatial validation
+python scripts\build_hyderabad_coverage.py
+python scripts\validate_hyderabad_coverage.py
 ```
 
 TypeScript errors surface via `npm run build`. Backend OpenAPI docs at `http://localhost:8000/docs`.
@@ -91,7 +104,21 @@ UI render
 | `frontend/src/lib/location/resolver.ts` | Coordinate → locality resolution (5-tier fallback) |
 | `frontend/src/lib/location/classifier.ts` | Converts `ResolutionCandidates` → `LocalityResolution` with tier + reason |
 | `frontend/src/lib/location/contracts.ts` | `LocalityResolution`, `ResolutionTier`, `DataConfidence` types |
+| `frontend/src/lib/entitlements.ts` | Client-side entitlement state, local cache, and backend sync logic |
+| `frontend/src/lib/paymentLinks.ts` | Razorpay payment link generation and payment status polling |
+| `frontend/src/lib/analytics.ts` | Vercel Analytics event helpers |
+| `frontend/src/lib/customBuyerBrief.ts` | Custom buyer brief form state and submission logic |
 | `frontend/src/components/map/MapView.tsx` | MapLibre GL map with polygon layers, hover tooltip, coordinate pin |
+| `frontend/src/components/ui/CustomReportLeadModal.tsx` | Rs 99/Rs 499 payment capture modal |
+| `frontend/src/components/ui/EmailGateModal.tsx` | OTP email gate for access restoration |
+| `backend/app/services/location_resolver.py` | Backend coordinate → locality resolver (mirrors frontend resolver) |
+| `backend/app/services/custom_report_leads.py` | Lead/payment JSONL store, Razorpay webhook handling, entitlement activation |
+| `backend/app/services/entitlements_store.py` | Server-side entitlement CRUD keyed by `user_id` |
+| `backend/app/services/market_catalog.py` | Loads and queries the area/locality catalog for backend resolution |
+| `backend/app/services/scoring_engine.py` | Weighted signal aggregation → deterministic DNA score |
+| `backend/app/api/routes/leads.py` | `/api/leads/*` — Razorpay webhook, self-confirm (being disabled), recovery |
+| `backend/app/api/routes/entitlements.py` | `/api/entitlements/*` — check/grant/restore entitlements |
+| `backend/app/api/routes/auth.py` | `/api/auth/*` — OTP send/verify, session identity |
 
 ### Map library
 The map uses **MapLibre GL** via `react-map-gl` (NOT Leaflet). Basemaps are free tiles (CartoCDN dark/light, ArcGIS satellite, OpenTopoMap terrain) — no API key needed.
@@ -208,9 +235,17 @@ User input (text)
 
 ### Phase 1 (current): 8 major cities — static data
 - Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi, Vijayawada, Vizag
-- Data: manual TypeScript files, polygon GeoJSON
-- Resolver: 4-tier (exact / nearby / cluster / uncovered)
-- Status: live, frontend-only
+- Data: static JSON/GeoJSON and TypeScript city entries
+- Resolver: coordinate and address fallback through exact / nearby / cluster / uncovered paths
+- Status: live frontend with backend services for auth, entitlements, search, and reports
+
+### Hyderabad flagship coverage status
+- Hyderabad now uses an irregular product boundary, not a circular/radius disk.
+- Generated coverage contains 294 contiguous cells across about 11,947 sq km, including the 65-70 km outskirts belt.
+- Scored market cells currently cover 235 locality catalog entries with verified/partial score data; the full Hyderabad locality catalog remains the source for address aliases and scored market records.
+- Extra context-only cells subdivide the outer belt using OSM place centroids plus supplemental backlog centroids. These cells are deliberately marked `contextOnly: true`, `marketable: false`, and `boundaryConfidence: approximate`.
+- Context-only cells must not be shown as official village, ward, cadastral, HMDA, or GHMC boundaries. They are only temporary subdivisions to avoid giant fake chunks while official/sourced polygons are pending.
+- Remaining Hyderabad data work: replace approximate context cells with sourced village/admin polygons, add aliases for newly sourced places, attach verified signals before scoring them, and make context-cell address search return honest "data pending" results instead of pretending each context cell is a scored market.
 
 ### Phase 2: Complete Telangana
 - All 33 districts of Telangana
@@ -310,10 +345,11 @@ interface MicroMarket {
 
 ## Routing
 
-Four routes (current):
+Five routes (current):
 - `/` — Landing page
 - `/map` — Home (full map + sidebar)
 - `/area/:slug` — AreaDetail; slug must match `MicroMarket.slug`
+- `/compare` — CompareAreas side-by-side micro-market comparison
 - `/brochure` — BrochurePage
 
 Planned routes:
@@ -354,7 +390,7 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 
 ---
 
-## Current State (May 2026)
+## Current State (June 2026)
 
 - 8 cities live with static data: Hyderabad, Bangalore, Mumbai, Chennai, Pune, Delhi, Vijayawada, Vizag
 - All 8 cities have resolver-grade JSON data under `data/cities/`
@@ -362,12 +398,16 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 - Home Layout: unified control capsule (Map/Globe/Layers) centered bottom-center; upward Layers dropdown centered
 - Assistant Chat: fully draggable FAB (`AssistantDock.tsx`) with Framer Motion, viewport-bound constraints, passive grab cursor cues, and z-index pass-through.
 - AreaDetail: full score breakdown, signal bars, growth timeline, 5-year outlook, source links, PDF export, regional fallback view support.
-- Gating / Paywall: frosted lead modal gates access to AreaDetail dashboards after 2 unique free searches (3rd unique check triggers lock).
+- CompareAreas: side-by-side comparison of 2 selected micro-markets (`/compare` route).
+- Gating / Paywall: frosted lead modal gates access to AreaDetail dashboards after 2 unique free searches (3rd unique check triggers lock). Rs 99 basic / Rs 499 compliance report tiers.
+- Razorpay: webhook signature verification exists (`leads.py:83-115`); however, client self-confirm and prefix-only payment recovery remain as unverified unlock paths that should be removed before hard production enforcement.
+- Email OTP: `EmailGateModal.tsx` → `auth.py` → OTP verify → session-bound entitlement.
 - Offline Resiliency: lead gate unlocks locally if backend collection throws TypeError (e.g. offline/dev env).
 - Location resolver: 4-tier coordinate → locality resolution (exact/nearby/cluster/uncovered)
-- Backend routes: all stubs — not used by frontend yet
-- No test suite
-- Landing `Locate me`: browser geolocation → coordinate-led analysis with approximation labels
+- Backend live at `https://plotdna-api.onrender.com` serving auth, entitlements, verdicts, AVM, market pulse, RERA, brochure parsing, and AI chat routes.
+- Hyderabad has 294 contiguous coverage cells: 235 scored market cells plus 59 context-only subdivisions for the outer flagship area. The map no longer relies on a circular disk or hidden outer pizza-slice zones, but the context cells are still approximate until sourced village/admin boundaries replace them.
+- Frontend smoke tests: 27 `test:*` scripts under `frontend/scripts/` (Node.js, no test runner required).
+- Active deployment branch: `main`
 
 ---
 
@@ -412,9 +452,4 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 - **Do not hardcode API keys** — always use `.env`.
 - **Do not cache stale satellite data** beyond 30 days without refresh flag.
 - **Do not store user PII** without explicit consent and privacy policy coverage.
-
-
-##tip: 
- **Resume this session with:
-claude --resume 1c8a4213-0d28-41b6-9881-34909ceed08f
 

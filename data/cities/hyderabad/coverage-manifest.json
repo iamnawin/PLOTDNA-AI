@@ -1,23 +1,25 @@
 {
   "schemaVersion": 1,
   "generatedAt": "2026-06-22",
-  "processingVersion": "inner-display-radius-outer-zones-v4",
+  "processingVersion": "irregular-boundary-osm-context-v6",
   "crs": "EPSG:4326",
   "metricProjection": "local equirectangular kilometers centered on Hyderabad",
   "marketBoundary": {
-    "definition": "65 km product investment-market radius",
+    "definition": "irregular Hyderabad flagship product boundary with OSM place context subdivision",
     "center": [
       17.385,
       78.487
     ],
-    "radiusKm": 65.0,
-    "areaKm2": 13887.905,
+    "radiusKm": 70.0,
+    "areaKm2": 11947.084,
     "notAdministrativeBoundary": true
   },
   "coverage": {
-    "selectableCellCount": 227,
-    "selectableAreaKm2": 4107.21,
-    "areaCoverageRatio": 0.2957401,
+    "selectableCellCount": 294,
+    "marketAreaCellCount": 235,
+    "contextCellCount": 59,
+    "selectableAreaKm2": 11947.086,
+    "areaCoverageRatio": 1.00000018,
     "boundaryKind": "generated_market_cell",
     "boundaryConfidence": "broad"
   },
@@ -56,6 +58,18 @@
     ]
   },
   "specialUseSources": [
+    {
+      "slug": "osm-place-seeds",
+      "url": "https://overpass.kumi.systems/api/interpreter",
+      "retrievedAt": "2026-06-25",
+      "license": "ODbL-1.0"
+    },
+    {
+      "slug": "supplemental-place-seeds",
+      "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+      "retrievedAt": "2026-06-25",
+      "license": "internal-derived"
+    },
     {
       "slug": "rajiv-gandhi-international-airport",
       "url": "https://www.openstreetmap.org/relation/10734455",

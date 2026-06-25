@@ -14,7 +14,7 @@ import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import type { ActiveProject } from '@/types'
 import hyderabadSpecialUseRaw from '../../../../data/cities/hyderabad/special-use-areas.geojson?raw'
 import hyderabadCoverageRaw from '../../../../data/cities/hyderabad/coverage-areas.geojson?raw'
-import hyderabadFlagshipBoundaryRaw from '../../../../data/cities/hyderabad/flagship-boundary.geojson?raw'
+import hyderabadCoverageBoundaryRaw from '../../../../data/cities/hyderabad/coverage-boundary.geojson?raw'
 
 // ── Construction marker helpers ───────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
@@ -63,7 +63,7 @@ const HYDERABAD_SPECIAL_USE = JSON.parse(hyderabadSpecialUseRaw) as {
   }>
 }
 
-// Voronoi coverage cells — [lng, lat] GeoJSON format, contiguous across 65 km market boundary
+// Voronoi coverage cells — [lng, lat] GeoJSON format, contiguous across the Hyderabad market boundary
 const HYDERABAD_COVERAGE = JSON.parse(hyderabadCoverageRaw) as {
   type: 'FeatureCollection'
   features: Array<{
@@ -75,7 +75,7 @@ const HYDERABAD_COVERAGE = JSON.parse(hyderabadCoverageRaw) as {
 }
 
 // Irregular product-defined flagship boundary polygon (NOT a GIS circle)
-const HYDERABAD_FLAGSHIP_BOUNDARY = JSON.parse(hyderabadFlagshipBoundaryRaw) as {
+const HYDERABAD_FLAGSHIP_BOUNDARY = JSON.parse(hyderabadCoverageBoundaryRaw) as {
   type: 'FeatureCollection'
   features: Array<{
     type: 'Feature'
@@ -291,7 +291,7 @@ export default function MapView() {
 
   // ── GeoJSON: rebuild when selection / hover / filter changes ──────────────
   const geojson = useMemo(() => {
-    // Hyderabad: use Voronoi coverage cells so the entire 65 km market boundary is filled
+    // Hyderabad: use Voronoi coverage cells so the entire market boundary is filled
     if (selectedCitySlug === 'hyderabad') {
       const areaBySlug: Record<string, typeof areas[0]> = Object.fromEntries(areas.map(a => [a.slug, a]))
       const features = HYDERABAD_COVERAGE.features.map(feature => {
@@ -432,7 +432,6 @@ export default function MapView() {
               'fill-color':   ['get', 'color'],
               'fill-opacity': [
                 'case',
-                ['==', ['get', 'outerZone'], 1], 0,    // outer cells hidden; expansion zones shown instead
                 ['==', ['get', 'dimmed'],    1], 0.04,
                 ['==', ['get', 'noData'],    1], 0.38,
                 ['==', ['get', 'selected'],  1], 0.48,
@@ -456,7 +455,6 @@ export default function MapView() {
               ],
               'line-opacity': [
                 'case',
-                ['==', ['get', 'outerZone'], 1], 0,
                 ['==', ['get', 'dimmed'],    1], 0.15,
                 ['==', ['get', 'noData'],    1], 0.60,
                 0.9,

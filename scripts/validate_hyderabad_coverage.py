@@ -74,11 +74,16 @@ def main() -> None:
     slugs = [feature["properties"]["slug"] for feature in coverage["features"]]
     if len(slugs) != len(set(slugs)):
         fail("selectable polygon slugs are not unique")
-    missing_aliases = sorted(set(slugs) - set(aliases))
+    market_slugs = {
+        feature["properties"]["slug"]
+        for feature in coverage["features"]
+        if not feature["properties"].get("contextOnly")
+    }
+    missing_aliases = sorted(market_slugs - set(aliases))
     if missing_aliases:
         fail(f"missing aliases for {', '.join(missing_aliases)}")
     catalog_slugs = {area["slug"] for area in catalog}
-    missing_catalog = sorted(set(slugs) - catalog_slugs)
+    missing_catalog = sorted(market_slugs - catalog_slugs)
     if missing_catalog:
         fail(f"missing catalog records for {', '.join(missing_catalog)}")
 

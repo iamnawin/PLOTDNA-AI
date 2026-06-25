@@ -18,7 +18,7 @@ CITY_DIR = REPO_ROOT / "data" / "cities" / "hyderabad"
 CATALOG_PATH = REPO_ROOT / "data" / "catalog" / "hyderabad.json"
 CENTER_LAT = 17.385
 CENTER_LNG = 78.487
-MARKET_RADIUS_KM = 65.0
+MARKET_RADIUS_KM = 70.0
 BOUNDARY_SEGMENTS = 128
 COORDINATE_PRECISION = 6
 
@@ -38,15 +38,6 @@ ANCHORS = {
     "vikarabad": [17.338, 77.906],
     "medchal": [17.630, 78.485],
 }
-
-# Phantom grid rings added to the Voronoi seed set to break up large outer cells.
-# Cells from these seeds have no locality data — they render as blue noData tiles.
-PHANTOM_RINGS = [
-    (38.0, 24),   # 38 km ring, 24 seeds (every 15°)
-    (50.0, 30),   # 50 km ring, 30 seeds (every 12°)
-    (60.0, 45),   # 60 km ring, 45 seeds (every 8°) — makes boundary edge granular
-]
-
 
 def load_json(path: Path):
     return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -102,8 +93,8 @@ def boundary_xy() -> list[tuple[float, float]]:
 def boundary_xy_organic() -> list[tuple[float, float]]:
     """Organic market boundary using harmonic radius variation.
 
-    Base radius 66.5 km ± 1 km (min ~65.5 km), ensuring all localities filtered
-    to MARKET_RADIUS_KM=65 remain inside. The harmonic wobble makes the boundary
+    Base radius 69.5 km +/- 1 km (min ~68.5 km), ensuring all localities filtered
+    to MARKET_RADIUS_KM remain inside. The harmonic wobble makes the boundary
     edge look like an irregular administrative polygon rather than a GIS buffer.
     """
     n = BOUNDARY_SEGMENTS
@@ -111,13 +102,34 @@ def boundary_xy_organic() -> list[tuple[float, float]]:
     for i in range(n):
         angle = 2 * math.pi * i / n
         r = (
-            66.5
+            69.5
             + 0.5 * math.cos(3 * angle + 0.7)
             + 0.3 * math.cos(7 * angle + 1.5)
             + 0.2 * math.cos(11 * angle + 2.1)
         )
         result.append((r * math.cos(angle), r * math.sin(angle)))
     return result
+
+
+def point_in_xy_ring(x: float, y: float, ring: list[tuple[float, float]]) -> bool:
+    inside = False
+    previous = len(ring) - 1
+    for current in range(len(ring)):
+        x_i, y_i = ring[current]
+        x_j, y_j = ring[previous]
+        intersects = ((y_i > y) != (y_j > y)) and (
+            x < (x_j - x_i) * (y - y_i) / ((y_j - y_i) or 1e-12) + x_i
+        )
+        if intersects:
+            inside = not inside
+        previous = current
+    return inside
+
+
+def load_flagship_boundary_xy() -> list[tuple[float, float]]:
+    boundary = load_json(CITY_DIR / "flagship-boundary.geojson")
+    ring = boundary["features"][0]["geometry"]["coordinates"][0]
+    return [to_xy(lat, lng) for lng, lat in ring]
 
 
 def clip_half_plane(
@@ -210,45 +222,48 @@ def main() -> None:
     clusters = load_json(CITY_DIR / "clusters.json")
     city = load_json(CITY_DIR / "city.json")
     catalog = load_json(CATALOG_PATH)
+    osm_seed_payload = load_json(CITY_DIR / "osm-place-seeds.json")
+    supplemental_seed_payload = load_json(CITY_DIR / "supplemental-place-seeds.json")
 
     by_slug = {locality["slug"]: locality for locality in localities}
     for slug, center in KNOWN_CENTER_CORRECTIONS.items():
         by_slug[slug]["center"] = center
 
+    boundary = load_flagship_boundary_xy()
     active = [
         locality
         for locality in localities
-        if haversine_km(locality["center"][0], locality["center"][1]) <= MARKET_RADIUS_KM
+        if point_in_xy_ring(*to_xy(locality["center"][0], locality["center"][1]), boundary)
     ]
     active.sort(key=lambda locality: locality["slug"])
-    seeds = [to_xy(*locality["center"]) for locality in active]
-    boundary = boundary_xy_organic()
+    locality_seeds = [to_xy(*locality["center"]) for locality in active]
+    active_names = {locality["name"].casefold() for locality in active}
+    active_slugs = {locality["slug"] for locality in active}
+    context_seed_candidates = [
+        {**seed, "seedSource": "openstreetmap_place_centroid"}
+        for seed in osm_seed_payload.get("seeds", [])
+    ] + [
+        {**seed, "seedSource": "supplemental_backlog_centroid"}
+        for seed in supplemental_seed_payload.get("seeds", [])
+    ]
+    context_places = [
+        seed
+        for seed in context_seed_candidates
+        if seed["name"].casefold() not in active_names
+        and seed["slug"] not in active_slugs
+        and point_in_xy_ring(*to_xy(seed["center"][0], seed["center"][1]), boundary)
+    ]
+    context_seeds = [to_xy(*seed["center"]) for seed in context_places]
     cluster_by_slug = cluster_lookup(clusters)
 
-    # Phantom outer ring seeds — break up large Voronoi cells and make the
-    # boundary edge look granular rather than a smooth GIS circle.
-    phantom_xy: list[tuple[float, float]] = []
-    phantom_meta: list[dict] = []
-    for ring_radius, ring_count in PHANTOM_RINGS:
-        for i in range(ring_count):
-            angle = 2 * math.pi * i / ring_count
-            xy = (ring_radius * math.cos(angle), ring_radius * math.sin(angle))
-            phantom_xy.append(xy)
-            phantom_meta.append({
-                "slug": f"phantom-r{int(ring_radius)}-{i:02d}",
-                "name": f"Coverage grid {int(ring_radius)}km/{i * 360 // ring_count}°",
-            })
+    all_seeds = locality_seeds + context_seeds
 
-    all_seeds = seeds + phantom_xy
-
-    # Localities within this radius are shown as dense inner Voronoi cells on the map.
-    # Outer localities (beyond this radius) have large Voronoi cells that look like
-    # pizza slices — those are hidden and replaced by named expansion zones instead.
+    # Preserve an outer edge flag for UI/context, but all cells remain visible.
     INNER_DISPLAY_RADIUS_KM = 28.0
 
     features: list[dict] = []
     cell_by_slug: dict[str, list[list[float]]] = {}
-    for locality, seed in zip(active, seeds):
+    for locality, seed in zip(active, locality_seeds):
         cell_xy = voronoi_cell(seed, all_seeds, boundary)
         cell_lat_lng = [to_lat_lng(x, y) for x, y in cell_xy]
         cell_by_slug[locality["slug"]] = cell_lat_lng
@@ -266,8 +281,6 @@ def main() -> None:
                     "marketable": True,
                     "source": "legacy_locality_centroid_voronoi",
                     "distKm": dist_km,
-                    # outerZone=true → MapView hides the fill for this cell (cell is
-                    # too large to look meaningful; covered by named expansion zones)
                     "outerZone": dist_km > INNER_DISPLAY_RADIUS_KM,
                     **cluster,
                 },
@@ -278,9 +291,32 @@ def main() -> None:
             }
         )
 
-    # Phantom seeds are used only for Voronoi geometry (to prevent outer locality cells
-    # from growing unrealistically large), but are NOT emitted as map features.
-    # The outer area beyond real localities shows the basemap — no blue fill ring pattern.
+    for place, seed in zip(context_places, context_seeds):
+        cell_xy = voronoi_cell(seed, all_seeds, boundary)
+        cell_lat_lng = [to_lat_lng(x, y) for x, y in cell_xy]
+        features.append(
+            {
+                "type": "Feature",
+                "id": place["slug"],
+                "properties": {
+                    "slug": place["slug"],
+                    "name": place["name"],
+                    "place": place["place"],
+                    "boundaryKind": "place_context_cell",
+                    "boundaryConfidence": "approximate",
+                    "marketable": False,
+                    "source": f"{place['seedSource']}_voronoi",
+                    "sourceOsmType": place.get("osm", {}).get("type"),
+                    "sourceOsmId": place.get("osm", {}).get("id"),
+                    "distKm": round(haversine_km(place["center"][0], place["center"][1]), 1),
+                    "contextOnly": True,
+                },
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [close_geojson_ring(cell_lat_lng)],
+                },
+            }
+        )
 
     for locality in localities:
         generated = cell_by_slug.get(locality["slug"])
@@ -316,7 +352,7 @@ def main() -> None:
                 "properties": {
                     "slug": "hyderabad-investment-market",
                     "name": "Hyderabad Investment Market",
-                    "definition": "product_market_boundary_organic_66km",
+                    "definition": "product_flagship_boundary_irregular",
                     "seedRadiusKm": MARKET_RADIUS_KM,
                     "boundaryConfidence": "product_defined",
                     "notAdministrativeBoundary": True,
@@ -362,17 +398,17 @@ def main() -> None:
 
     boundary_area = polygon_area_km2(boundary)
     cell_area = sum(
-        polygon_area_km2([to_xy(lat, lng) for lat, lng in polygon])
-        for polygon in cell_by_slug.values()
+        polygon_area_km2([to_xy(lat, lng) for lng, lat in feature["geometry"]["coordinates"][0]])
+        for feature in features
     )
     manifest = {
         "schemaVersion": 1,
         "generatedAt": "2026-06-22",
-        "processingVersion": "inner-display-radius-outer-zones-v4",
+        "processingVersion": "irregular-boundary-osm-context-v6",
         "crs": "EPSG:4326",
         "metricProjection": "local equirectangular kilometers centered on Hyderabad",
         "marketBoundary": {
-            "definition": "65 km product investment-market radius",
+            "definition": "irregular Hyderabad flagship product boundary with OSM place context subdivision",
             "center": [CENTER_LAT, CENTER_LNG],
             "radiusKm": MARKET_RADIUS_KM,
             "areaKm2": round(boundary_area, 3),
@@ -380,6 +416,8 @@ def main() -> None:
         },
         "coverage": {
             "selectableCellCount": len(features),
+            "marketAreaCellCount": len(active),
+            "contextCellCount": len(context_places),
             "selectableAreaKm2": round(cell_area, 3),
             "areaCoverageRatio": round(cell_area / boundary_area, 8),
             "boundaryKind": "generated_market_cell",
@@ -387,6 +425,18 @@ def main() -> None:
         },
         "anchors": ANCHORS,
         "specialUseSources": [
+            {
+                "slug": "osm-place-seeds",
+                "url": osm_seed_payload.get("sourceUrl"),
+                "retrievedAt": osm_seed_payload.get("retrievedAt"),
+                "license": osm_seed_payload.get("license"),
+            },
+            {
+                "slug": "supplemental-place-seeds",
+                "url": supplemental_seed_payload.get("sourceDoc"),
+                "retrievedAt": supplemental_seed_payload.get("retrievedAt"),
+                "license": supplemental_seed_payload.get("license"),
+            },
             {
                 "slug": "rajiv-gandhi-international-airport",
                 "url": "https://www.openstreetmap.org/relation/10734455",

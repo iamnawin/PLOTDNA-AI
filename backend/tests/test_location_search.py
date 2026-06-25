@@ -61,6 +61,27 @@ class LocationSearchRouteTests(unittest.TestCase):
         self.assertEqual(result["precision"], "geocoded_point")
         self.assertEqual(result["resolution"]["resolvedPlaceSlug"], "lb-nagar")
 
+    def test_outskirt_address_inside_68km_market_resolves_to_containing_polygon(self):
+        provider_result = {
+            "lat": 17.592,
+            "lng": 77.887,
+            "display_name": "Munipally, Sangareddy district, Telangana",
+            "locality": "Munipally",
+            "city": "Sangareddy",
+        }
+        with patch(
+            "app.services.location_search.geocode_address",
+            new=AsyncMock(return_value=provider_result),
+        ):
+            response = self.search("Munipally Sangareddy Telangana")
+
+        self.assertEqual(response.status_code, 200)
+        result = response.json()["results"][0]
+        self.assertEqual(result["source"], "geocoder")
+        self.assertEqual(result["localitySlug"], "munipally")
+        self.assertEqual(result["precision"], "geocoded_point")
+        self.assertEqual(result["resolution"]["resolvedPlaceSlug"], "munipally")
+
     def test_outside_market_address_is_not_substituted_with_nearest_hyderabad_area(self):
         provider_result = {
             "lat": 12.9716,

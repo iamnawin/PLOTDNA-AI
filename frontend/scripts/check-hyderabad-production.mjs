@@ -38,7 +38,10 @@ assert(localities.length >= 240, `expected at least 240 Hyderabad localities, fo
 assert(confidenceMentions >= localities.length, `expected confidence metadata for every Hyderabad record, found ${confidenceMentions}`)
 assert(coverage.type === 'FeatureCollection' && coverage.features.length >= 220, 'contiguous Hyderabad coverage must contain at least 220 selectable cells')
 assert(boundary.type === 'FeatureCollection' && boundary.features.length === 1, 'Hyderabad must have one product market boundary')
-const coverageSlugs = new Set(coverage.features.map(feature => feature.properties?.slug).filter(Boolean))
+const coverageSlugs = new Set(coverage.features
+  .filter(feature => !feature.properties?.contextOnly)
+  .map(feature => feature.properties?.slug)
+  .filter(Boolean))
 const missingAliases = [...coverageSlugs].filter(slug => !Object.hasOwn(aliases, slug))
 assert(missingAliases.length === 0, `coverage cells missing aliases: ${missingAliases.join(', ')}`)
 assert(productionHelper.includes('hyderabad'), 'city production helper must include a Hyderabad override')

@@ -2,10 +2,12 @@
 
 ## Market boundary
 
-The flagship coverage boundary is a PlotDNA product boundary: a 65 km radius
-around `[17.385, 78.487]`. It is designed to contain the market scope requested
-for the Hyderabad release, including Sadasivpet, Vikarabad, Sangareddy, Isnapur,
-Medchal, LB Nagar, Rajiv Gandhi International Airport, and Farooqnagar.
+The flagship coverage boundary is a PlotDNA product boundary: an irregular
+Hyderabad investment-market polygon around `[17.385, 78.487]`. It is designed to
+contain the market scope requested for the Hyderabad release, including
+Sadasivpet, Vikarabad, Sangareddy, Isnapur, Medchal, LB Nagar, Rajiv Gandhi
+International Airport, Farooqnagar/Shadnagar, Bhongir-side east growth pockets,
+and selected 65-70 km outskirts.
 
 It is not an HMDA, GHMC, district, mandal, ward, village, cadastral, zoning, or
 title boundary. The product must not describe it as one.
@@ -13,8 +15,10 @@ title boundary. The product must not describe it as one.
 ## Selectable market cells
 
 `scripts/build_hyderabad_coverage.py` partitions the product boundary using the
-existing locality centroids as Voronoi seeds. These cells remove unexplained map
-holes and give every point one deterministic resolver identity. They are marked:
+existing market locality centroids plus context-only named place seeds from
+OpenStreetMap and the Hyderabad uncovered-area backlog. These cells remove
+unexplained map holes and avoid large fake outer wedges while keeping generated
+geometry clearly labelled. Scored market cells are marked:
 
 - `boundaryKind: generated_market_cell`
 - `boundaryConfidence: broad`
@@ -22,6 +26,15 @@ holes and give every point one deterministic resolver identity. They are marked:
 The cells are market-resolution geometry, not claims about administrative
 limits. A cell can be replaced by a sourced locality boundary later without
 changing its stable slug or catalog identity.
+
+Context-only subdivision cells are marked:
+
+- `boundaryKind: place_context_cell`
+- `boundaryConfidence: approximate`
+- `contextOnly: true`
+
+They are not scored market records and must not be presented as legal village,
+ward, cadastral, or administrative polygons.
 
 ## Airport special-use area
 

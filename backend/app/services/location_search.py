@@ -10,7 +10,6 @@ from app.services.market_catalog import get_city_area
 
 
 HYDERABAD_CENTER = (17.385, 78.487)
-HYDERABAD_MARKET_RADIUS_KM = 65.0
 LANDMARK_ALIASES = {
     "rajiv gandhi international airport": "shamshabad",
     "rgia": "shamshabad",
@@ -148,7 +147,9 @@ async def search_location(query: str, limit: int = 5) -> dict:
 
     lat = geocoded["lat"]
     lng = geocoded["lng"]
-    in_market = dist_km(lat, lng, *HYDERABAD_CENTER) <= HYDERABAD_MARKET_RADIUS_KM
+    hyderabad_meta = resolver.cities.get("hyderabad", {}).get("meta", {})
+    market_radius_km = float(hyderabad_meta.get("coverageRadiusKm", 68.0))
+    in_market = dist_km(lat, lng, *HYDERABAD_CENTER) <= market_radius_km
     if not in_market:
         return {
             "query": clean_query,

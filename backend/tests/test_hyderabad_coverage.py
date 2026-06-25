@@ -69,6 +69,7 @@ class HyderabadCoverageTests(unittest.TestCase):
             "lb-nagar": (17.345, 78.545),
             "vikarabad": (17.338, 77.906),
             "medchal": (17.630, 78.485),
+            "munipally": (17.592, 77.887),
         }
         for name, (lat, lng) in anchors.items():
             with self.subTest(anchor=name):
@@ -85,7 +86,11 @@ class HyderabadCoverageTests(unittest.TestCase):
         self.assertAlmostEqual(cell_area / boundary_area, 1.0, delta=0.001)
 
     def test_every_coverage_cell_has_alias_and_catalog_record(self):
-        coverage_slugs = {feature["properties"]["slug"] for feature in self.coverage["features"]}
+        coverage_slugs = {
+            feature["properties"]["slug"]
+            for feature in self.coverage["features"]
+            if not feature["properties"].get("contextOnly")
+        }
         catalog_slugs = {area["slug"] for area in self.catalog}
         self.assertEqual(coverage_slugs - set(self.aliases), set())
         self.assertEqual(coverage_slugs - catalog_slugs, set())
@@ -99,6 +104,7 @@ class HyderabadCoverageTests(unittest.TestCase):
             "lb-nagar": (17.345, 78.545),
             "vikarabad": (17.338, 77.906),
             "medchal": (17.630, 78.485),
+            "munipally": (17.592, 77.887),
         }
         features = self.coverage["features"]
         for expected_slug, (lat, lng) in fixtures.items():
