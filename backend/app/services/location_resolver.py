@@ -74,6 +74,35 @@ class LocalityResolution(TypedDict):
     reason: str
 
 # ── Resolver Store ───────────────────────────────────────────────────────────
+def coverage_context_cells(coverage: dict) -> List[dict]:
+    cells = []
+    for feature in coverage.get("features", []):
+        props = feature.get("properties") or {}
+        geometry = feature.get("geometry") or {}
+        coordinates = geometry.get("coordinates") or []
+        if not props.get("contextOnly") or geometry.get("type") != "Polygon" or not coordinates:
+            continue
+
+        polygon = [(point[1], point[0]) for point in coordinates[0] if len(point) >= 2]
+        if len(polygon) < 3:
+            continue
+
+        center_points = polygon[:-1] if polygon[0] == polygon[-1] else polygon
+        cells.append({
+            "slug": props.get("slug"),
+            "name": props.get("name"),
+            "center": [
+                sum(point[0] for point in center_points) / len(center_points),
+                sum(point[1] for point in center_points) / len(center_points),
+            ],
+            "polygon": polygon,
+            "boundaryKind": props.get("boundaryKind"),
+            "boundaryConfidence": props.get("boundaryConfidence"),
+            "scorePrecision": "unscored_context",
+        })
+    return cells
+
+
 class LocationResolverStore:
     def __init__(self):
         self.data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "data"))
@@ -110,6 +139,7 @@ class LocationResolverStore:
             localities_path = os.path.join(city_path, "localities.json")
             aliases_path = os.path.join(city_path, "aliases.json")
             clusters_path = os.path.join(city_path, "clusters.json")
+            coverage_path = os.path.join(city_path, "coverage-areas.geojson")
             
             if os.path.exists(city_config_path) and os.path.exists(localities_path):
                 city_meta = load_json_file(city_config_path)
@@ -122,12 +152,17 @@ class LocationResolverStore:
                 clusters = []
                 if os.path.exists(clusters_path):
                     clusters = load_json_file(clusters_path)
+
+                context_cells = []
+                if os.path.exists(coverage_path):
+                    context_cells = coverage_context_cells(load_json_file(coverage_path))
                         
                 self.cities[slug] = {
                     "meta": city_meta,
                     "localities": localities,
                     "aliases": aliases,
-                    "clusters": clusters
+                    "clusters": clusters,
+                    "contextCells": context_cells,
                 }
 
     def zone_for_point(self, city_center: List[float], lat: float, lng: float, central_radius_km: float) -> str:
@@ -232,7 +267,40 @@ class LocationResolverStore:
                 "reason": "Coordinate falls inside a supported locality polygon."
             }
 
-        # 3. NEARBY match check (closest locality within safety radius)
+        # 3. Context-only coverage cell check.
+        # These cells identify outer-belt places without unlocking scored market data.
+        best_context = None
+        best_context_dist = float("inf")
+        best_context_city = None
+
+        for city_slug, city_data in self.cities.items():
+            for cell in city_data.get("contextCells", []):
+                if point_in_polygon(lat, lng, cell["polygon"]):
+                    distance = dist_km(lat, lng, cell["center"][0], cell["center"][1])
+                    if distance < best_context_dist:
+                        best_context_dist = distance
+                        best_context = cell
+                        best_context_city = city_slug
+
+        if best_context:
+            return {
+                "tier": "context",
+                "citySlug": best_context_city,
+                "localitySlug": best_context["slug"],
+                "localityName": best_context["name"],
+                "clusterId": None,
+                "districtSlug": None,
+                "districtName": None,
+                "stateSlug": None,
+                "distanceKm": round(best_context_dist, 1),
+                "matchedBy": "context",
+                "reason": "Coordinate falls inside an identified Hyderabad context area, but scored micro-market data is pending.",
+                "boundaryKind": best_context.get("boundaryKind"),
+                "boundaryConfidence": best_context.get("boundaryConfidence"),
+                "scorePrecision": best_context.get("scorePrecision"),
+            }
+
+        # 4. NEARBY match check (closest locality within safety radius)
         best_nearby = None
         best_nearby_dist = float("inf")
         best_nearby_city = None

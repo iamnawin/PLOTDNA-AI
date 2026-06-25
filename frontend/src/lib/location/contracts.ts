@@ -1,6 +1,6 @@
 import type { MicroMarket } from '@/types'
 
-export type ResolutionTier = 'exact' | 'nearby' | 'cluster' | 'regional' | 'uncovered'
+export type ResolutionTier = 'exact' | 'nearby' | 'context' | 'cluster' | 'regional' | 'uncovered'
 
 export interface LocalityResolution {
   tier: ResolutionTier
@@ -12,7 +12,7 @@ export interface LocalityResolution {
   districtName: string | null
   stateSlug: string | null
   distanceKm: number | null
-  matchedBy: 'polygon' | 'alias' | 'radius' | 'cluster' | 'district' | 'none'
+  matchedBy: 'polygon' | 'alias' | 'radius' | 'context' | 'cluster' | 'district' | 'none'
   reason: string
   resolvedPlaceSlug?: string | null
   analysisSlug?: string | null

@@ -16,7 +16,7 @@ interface VerdictData {
   suitable_for: 'investment' | 'end-use' | 'both'
   last_updated: string
   source: 'gemini' | 'fallback'
-  resolution_tier: 'exact_locality' | 'nearby_micro_market' | 'city_zone_cluster' | 'uncovered'
+  resolution_tier: 'exact_locality' | 'nearby_micro_market' | 'context_area' | 'city_zone_cluster' | 'regional' | 'uncovered'
   resolution_label: string
 }
 

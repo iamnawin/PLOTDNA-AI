@@ -59,6 +59,7 @@ export function parseCoords(query: string): [number, number] | null {
 export type LocalityFallbackTier =
   | 'exact_locality'
   | 'nearby_micro_market'
+  | 'context_area'
   | 'city_zone_cluster'
   | 'regional'
   | 'uncovered'
@@ -85,6 +86,7 @@ export interface LocalityFallbackResult {
 function mapTier(tier: ResolutionTier): LocalityFallbackTier {
   if (tier === 'exact') return 'exact_locality'
   if (tier === 'nearby') return 'nearby_micro_market'
+  if (tier === 'context') return 'context_area'
   if (tier === 'cluster') return 'city_zone_cluster'
   if (tier === 'regional') return 'regional'
   return 'uncovered'
@@ -116,6 +118,22 @@ export function resolveLocalityFallback(
       displayLabel: resolution.localityName ?? 'Supported locality',
       precisionLabel: resolution.tier === 'exact' ? 'exact' : 'approximate',
       shouldSelectArea: true,
+    }
+  }
+
+  if (resolution.tier === 'context') {
+    return {
+      tier,
+      area: null,
+      distKm: resolution.distanceKm,
+      withinCoverage: true,
+      citySlug: resolution.citySlug,
+      cityName,
+      clusterLabel: null,
+      matchedLocality: options.locality ?? resolution.localityName,
+      displayLabel: resolution.localityName ?? 'Hyderabad context area',
+      precisionLabel: 'broad',
+      shouldSelectArea: false,
     }
   }
 

@@ -245,7 +245,8 @@ User input (text)
 - Scored market cells currently cover 235 locality catalog entries with verified/partial score data; the full Hyderabad locality catalog remains the source for address aliases and scored market records.
 - Extra context-only cells subdivide the outer belt using OSM place centroids plus supplemental backlog centroids. These cells are deliberately marked `contextOnly: true`, `marketable: false`, and `boundaryConfidence: approximate`.
 - Context-only cells must not be shown as official village, ward, cadastral, HMDA, or GHMC boundaries. They are only temporary subdivisions to avoid giant fake chunks while official/sourced polygons are pending.
-- Remaining Hyderabad data work: replace approximate context cells with sourced village/admin polygons, add aliases for newly sourced places, attach verified signals before scoring them, and make context-cell address search return honest "data pending" results instead of pretending each context cell is a scored market.
+- Context-cell coordinate/address search now returns an honest non-scored context result (`tier: "context"`, `precision: "context_area"`, `scorePrecision: "unscored_context"`) instead of substituting a nearby scored market.
+- Remaining Hyderabad data work: replace approximate context cells with sourced village/admin polygons, add aliases for newly sourced places, and attach verified signals before scoring them.
 
 ### Phase 2: Complete Telangana
 - All 33 districts of Telangana
@@ -405,7 +406,7 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 - Offline Resiliency: lead gate unlocks locally if backend collection throws TypeError (e.g. offline/dev env).
 - Location resolver: 4-tier coordinate → locality resolution (exact/nearby/cluster/uncovered)
 - Backend live at `https://plotdna-api.onrender.com` serving auth, entitlements, verdicts, AVM, market pulse, RERA, brochure parsing, and AI chat routes.
-- Hyderabad has 294 contiguous coverage cells: 235 scored market cells plus 59 context-only subdivisions for the outer flagship area. The map no longer relies on a circular disk or hidden outer pizza-slice zones, but the context cells are still approximate until sourced village/admin boundaries replace them.
+- Hyderabad has 294 contiguous coverage cells: 235 scored market cells plus 59 context-only subdivisions for the outer flagship area. The map and search path no longer rely on a circular disk, hidden outer pizza-slice zones, or nearby-score substitution for context-only areas; context cells remain approximate until sourced village/admin boundaries replace them.
 - Frontend smoke tests: 27 `test:*` scripts under `frontend/scripts/` (Node.js, no test runner required).
 - Active deployment branch: `main`
 

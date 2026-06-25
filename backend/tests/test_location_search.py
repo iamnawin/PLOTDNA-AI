@@ -82,6 +82,32 @@ class LocationSearchRouteTests(unittest.TestCase):
         self.assertEqual(result["precision"], "geocoded_point")
         self.assertEqual(result["resolution"]["resolvedPlaceSlug"], "munipally")
 
+    def test_context_only_outskirt_address_returns_data_pending_not_nearby_score(self):
+        provider_result = {
+            "lat": 16.982074,
+            "lng": 78.293363,
+            "display_name": "Sangam, Rangareddy district, Telangana",
+            "locality": "Sangam",
+            "city": "Hyderabad",
+        }
+        with patch(
+            "app.services.location_search.geocode_address",
+            new=AsyncMock(return_value=provider_result),
+        ):
+            response = self.search("Sangam Rangareddy Telangana")
+
+        self.assertEqual(response.status_code, 200)
+        result = response.json()["results"][0]
+        self.assertEqual(result["source"], "geocoder")
+        self.assertEqual(result["precision"], "context_area")
+        self.assertEqual(result["localitySlug"], "osm-sangam-245639412")
+        self.assertEqual(result["resolution"]["tier"], "context")
+        self.assertEqual(result["resolution"]["resolvedPlaceSlug"], "osm-sangam-245639412")
+        self.assertIsNone(result["resolution"]["analysisSlug"])
+        self.assertIsNone(result["resolution"]["catalogArea"])
+        self.assertEqual(result["resolution"]["boundaryKind"], "place_context_cell")
+        self.assertEqual(result["resolution"]["scorePrecision"], "unscored_context")
+
     def test_outside_market_address_is_not_substituted_with_nearest_hyderabad_area(self):
         provider_result = {
             "lat": 12.9716,

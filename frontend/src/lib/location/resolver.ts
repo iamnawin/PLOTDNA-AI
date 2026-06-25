@@ -9,6 +9,7 @@ import bangLocalitiesJson from '../../../../data/cities/bangalore/localities.jso
 import hydAliasesJson from '../../../../data/cities/hyderabad/aliases.json'
 import hydCityJson from '../../../../data/cities/hyderabad/city.json'
 import hydClustersJson from '../../../../data/cities/hyderabad/clusters.json'
+import hyderabadCoverageRaw from '../../../../data/cities/hyderabad/coverage-areas.geojson?raw'
 import hydLocalitiesJson from '../../../../data/cities/hyderabad/localities.json'
 import mumAliasesJson from '../../../../data/cities/mumbai/aliases.json'
 import mumCityJson from '../../../../data/cities/mumbai/city.json'
@@ -62,6 +63,17 @@ export interface NearbyMatchCandidate {
   matchedBy: 'radius'
 }
 
+export interface ContextMatchCandidate {
+  citySlug: string
+  localitySlug: string
+  localityName: string
+  distanceKm: number
+  matchedBy: 'context'
+  boundaryKind: string | null
+  boundaryConfidence: string | null
+  scorePrecision: 'unscored_context'
+}
+
 export interface ClusterCandidate {
   citySlug: string
   cityName: string
@@ -79,6 +91,7 @@ export interface DistrictCandidate {
 export interface ResolutionCandidates {
   exact: ExactMatchCandidate | null
   nearby: NearbyMatchCandidate | null
+  context: ContextMatchCandidate | null
   cluster: ClusterCandidate | null
   district: DistrictCandidate | null
 }
@@ -130,6 +143,16 @@ interface ResolverLocalityData {
   polygon: [number, number][]
 }
 
+interface ResolverContextCell {
+  slug: string
+  name: string
+  center: [number, number]
+  polygon: [number, number][]
+  boundaryKind: string | null
+  boundaryConfidence: string | null
+  scorePrecision: 'unscored_context'
+}
+
 interface ResolverClusterData {
   id: string
   label: string
@@ -145,6 +168,7 @@ interface SpecialResolverDataset {
   localities: ResolverLocalityData[]
   aliases: ResolverAliasData
   clusters: ResolverClusterData[]
+  contextCells: ResolverContextCell[]
   cityMeta: CityMeta
   areasBySlug: Map<string, MicroMarket>
   clustersById: Map<string, ResolverClusterData>
@@ -160,6 +184,7 @@ function buildSpecialResolverDataset(
   localitiesJson: ResolverLocalityData[],
   aliasesJson: ResolverAliasData,
   clustersJson: ResolverClusterData[],
+  contextCells: ResolverContextCell[] = [],
 ): SpecialResolverDataset {
   const cityEntry = CITIES[cityJson.slug]
   const areasBySlug = new Map(cityEntry.areas.map(area => [area.slug, area]))
@@ -169,6 +194,7 @@ function buildSpecialResolverDataset(
     localities: localitiesJson,
     aliases: aliasesJson,
     clusters: clustersJson,
+    contextCells,
     cityMeta: {
       slug: cityJson.slug,
       name: cityJson.name,
@@ -181,12 +207,59 @@ function buildSpecialResolverDataset(
   }
 }
 
+interface CoverageFeature {
+  properties?: {
+    slug?: string
+    name?: string
+    contextOnly?: boolean
+    boundaryKind?: string
+    boundaryConfidence?: string
+  }
+  geometry?: {
+    type?: string
+    coordinates?: number[][][]
+  }
+}
+
+function parseContextCells(raw: string): ResolverContextCell[] {
+  const featureCollection = JSON.parse(raw) as { features?: CoverageFeature[] }
+  return (featureCollection.features ?? []).flatMap(feature => {
+    const props = feature.properties
+    const ring = feature.geometry?.coordinates?.[0]
+    if (!props?.contextOnly || feature.geometry?.type !== 'Polygon' || !props.slug || !props.name || !ring) return []
+
+    const polygon = ring
+      .filter(point => point.length >= 2)
+      .map(point => [point[1], point[0]] as [number, number])
+    if (polygon.length < 3) return []
+
+    const centerPoints = polygon[0][0] === polygon[polygon.length - 1][0] && polygon[0][1] === polygon[polygon.length - 1][1]
+      ? polygon.slice(0, -1)
+      : polygon
+    const center: [number, number] = [
+      centerPoints.reduce((total, point) => total + point[0], 0) / centerPoints.length,
+      centerPoints.reduce((total, point) => total + point[1], 0) / centerPoints.length,
+    ]
+
+    return [{
+      slug: props.slug,
+      name: props.name,
+      center,
+      polygon,
+      boundaryKind: props.boundaryKind ?? null,
+      boundaryConfidence: props.boundaryConfidence ?? null,
+      scorePrecision: 'unscored_context' as const,
+    }]
+  })
+}
+
 const SPECIAL_CITY_DATASETS: Record<string, SpecialResolverDataset> = {
   hyderabad: buildSpecialResolverDataset(
     hydCityJson as ResolverCityData,
     hydLocalitiesJson as ResolverLocalityData[],
     hydAliasesJson as ResolverAliasData,
     hydClustersJson as ResolverClusterData[],
+    parseContextCells(hyderabadCoverageRaw),
   ),
   bangalore: buildSpecialResolverDataset(
     bangCityJson as ResolverCityData,
@@ -568,6 +641,26 @@ export function resolveLocalityCandidates(
       }
     : null
 
+  let context: ContextMatchCandidate | null = null
+  for (const dataset of Object.values(SPECIAL_CITY_DATASETS)) {
+    for (const cell of dataset.contextCells) {
+      if (!pointInPolygon(lat, lng, cell.polygon)) continue
+      const distance = distKm(lat, lng, cell.center[0], cell.center[1])
+      if (!context || distance < context.distanceKm) {
+        context = {
+          citySlug: dataset.city.slug,
+          localitySlug: cell.slug,
+          localityName: cell.name,
+          distanceKm: roundKm(distance),
+          matchedBy: 'context',
+          boundaryKind: cell.boundaryKind,
+          boundaryConfidence: cell.boundaryConfidence,
+          scorePrecision: cell.scorePrecision,
+        }
+      }
+    }
+  }
+
   const city = resolveCityCandidate(lat, lng, cityHint)
   const cluster = city
     ? (() => {
@@ -639,5 +732,5 @@ export function resolveLocalityCandidates(
     }
   }
 
-  return { exact, nearby, cluster, district }
+  return { exact, nearby, context, cluster, district }
 }

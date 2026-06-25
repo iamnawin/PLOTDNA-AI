@@ -115,6 +115,8 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
       ? 'Exact Locality Match'
       : resolvedFallback.tier === 'nearby_micro_market'
         ? 'Nearby Locality Match'
+        : resolvedFallback.tier === 'context_area'
+          ? 'Context Area Identified'
         : resolvedFallback.tier === 'city_zone_cluster'
           ? 'Broad Region Match'
           : resolvedFallback.tier === 'regional'
@@ -124,6 +126,8 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
   const fallbackDisplayLabel =
     resolvedFallback.tier === 'nearby_micro_market'
         ? `Nearby: ${resolvedFallback.displayLabel}`
+      : resolvedFallback.tier === 'context_area'
+        ? `Data pending: ${resolvedFallback.displayLabel}`
       : resolvedFallback.tier === 'regional'
         ? `Regional: ${resolvedFallback.displayLabel}`
       : resolvedFallback.tier === 'uncovered'
@@ -135,6 +139,8 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
       ? 'Exact locality'
       : resolvedFallback.precisionLabel === 'approximate'
         ? 'Approximate'
+        : resolvedFallback.tier === 'context_area'
+          ? 'Data pending'
         : resolvedFallback.precisionLabel === 'broad' && resolvedFallback.tier === 'regional'
           ? 'Regional only'
         : resolvedFallback.precisionLabel === 'broad'
@@ -226,7 +232,9 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
               <div className="flex items-start gap-2 px-3 py-2.5">
                 <Info size={9} className="text-slate-500 flex-shrink-0 mt-1" />
                 <p className="text-[9px] font-sans text-slate-400 leading-relaxed">
-                  Area DNA score uses the supported micro-market shown below. Live coordinate signals are used only as nearby context.
+                  {resolvedFallback.tier === 'context_area'
+                    ? 'This place is inside the Hyderabad flagship boundary, but verified micro-market scoring is not available yet for this exact area.'
+                    : 'Area DNA score uses the supported micro-market shown below. Live coordinate signals are used only as nearby context.'}
                 </p>
               </div>
             </>
@@ -268,6 +276,13 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
                 Analyzing coordinate via OpenStreetMap...
               </p>
             </div>
+          ) : resolvedFallback.tier === 'context_area' ? (
+            <div className="flex items-center gap-2.5 px-3 py-3">
+              <Info size={11} className="text-amber-500 flex-shrink-0" />
+              <p className="text-[9px] font-sans text-slate-400 leading-relaxed">
+                {fallbackDisplayLabel} is inside Hyderabad flagship coverage, but PlotDNA has not verified enough signals to score this exact place yet.
+              </p>
+            </div>
           ) : resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional' ? (
             <div className="flex items-center gap-2.5 px-3 py-3">
               <Info size={11} className="text-amber-500 flex-shrink-0" />
@@ -294,7 +309,9 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
             className="text-center font-sans"
             style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', lineHeight: 1.7 }}
           >
-            {resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional'
+            {resolvedFallback.tier === 'context_area'
+              ? `${fallbackDisplayLabel} is identified, but scored micro-market data is pending.`
+              : resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional'
               ? `${fallbackDisplayLabel} is supported only at a broad region level right now.`
               : 'Coverage for this location is not available yet.'}
             <br />

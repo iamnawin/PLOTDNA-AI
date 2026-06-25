@@ -38,7 +38,7 @@ const LAST_MAP_STATE_KEY = 'plotdna:last-map-state'
 
 interface AreaReportNavigationState {
   fallbackContext?: {
-    tier: 'exact_locality' | 'nearby_micro_market' | 'city_zone_cluster' | 'regional' | 'uncovered'
+    tier: 'exact_locality' | 'nearby_micro_market' | 'context_area' | 'city_zone_cluster' | 'regional' | 'uncovered'
     displayLabel: string
     precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
     coords?: [number, number]

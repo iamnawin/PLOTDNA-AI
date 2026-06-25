@@ -21,6 +21,28 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
     }
   }
 
+  if (candidates.context) {
+    return {
+      tier: 'context',
+      citySlug: candidates.context.citySlug,
+      localitySlug: candidates.context.localitySlug,
+      localityName: candidates.context.localityName,
+      clusterId: null,
+      districtSlug: null,
+      districtName: null,
+      stateSlug: null,
+      distanceKm: candidates.context.distanceKm,
+      matchedBy: 'context',
+      reason: 'Coordinate falls inside an identified Hyderabad context area, but scored micro-market data is pending.',
+      resolvedPlaceSlug: candidates.context.localitySlug,
+      analysisSlug: null,
+      boundaryKind: candidates.context.boundaryKind,
+      boundaryConfidence: candidates.context.boundaryConfidence,
+      scorePrecision: candidates.context.scorePrecision,
+      catalogArea: null,
+    }
+  }
+
   if (candidates.nearby) {
     return {
       tier: 'nearby',

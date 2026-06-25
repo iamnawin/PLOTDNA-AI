@@ -29,9 +29,9 @@ def _resolution_payload(lat: float, lng: float, locality: str | None, city: str 
         **resolution,
         "resolvedPlaceSlug": resolution["localitySlug"],
         "analysisSlug": catalog_area.get("slug") if catalog_area else None,
-        "boundaryKind": catalog_area.get("boundaryKind") if catalog_area else None,
-        "boundaryConfidence": catalog_area.get("boundaryConfidence") if catalog_area else None,
-        "scorePrecision": catalog_area.get("scorePrecision") if catalog_area else None,
+        "boundaryKind": catalog_area.get("boundaryKind") if catalog_area else resolution.get("boundaryKind"),
+        "boundaryConfidence": catalog_area.get("boundaryConfidence") if catalog_area else resolution.get("boundaryConfidence"),
+        "scorePrecision": catalog_area.get("scorePrecision") if catalog_area else resolution.get("scorePrecision"),
         "catalogArea": catalog_area,
     }
 
@@ -167,6 +167,7 @@ async def search_location(query: str, limit: int = 5) -> dict:
         }
 
     resolution = _resolution_payload(lat, lng, geocoded.get("locality"), geocoded.get("city"))
+    precision = "context_area" if resolution["tier"] == "context" else "geocoded_point"
     return {
         "query": clean_query,
         "reason": "ok",
@@ -177,7 +178,7 @@ async def search_location(query: str, limit: int = 5) -> dict:
             "lng": lng,
             "source": "geocoder",
             "matchKind": "address",
-            "precision": "geocoded_point",
+            "precision": precision,
             "resolution": resolution,
         }],
     }

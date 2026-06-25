@@ -55,7 +55,7 @@ export interface BackendAreaList {
   areas: MicroMarket[]
 }
 
-export type LocationSearchPrecision = 'exact_boundary' | 'landmark' | 'geocoded_point' | 'outside_market'
+export type LocationSearchPrecision = 'exact_boundary' | 'landmark' | 'geocoded_point' | 'context_area' | 'outside_market'
 
 export interface LocationSearchResult {
   displayName: string

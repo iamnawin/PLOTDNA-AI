@@ -70,10 +70,21 @@ MapLibre source IDs in `frontend/src/components/map/MapView.tsx`:
 
 The map should not hide outer generated cells as zero-opacity artifacts. Instead, every generated coverage cell should be visible with styling that distinguishes scored markets from context-only/no-data subdivisions.
 
+## Search and Resolver Behavior
+
+Context-only cells are now part of the frontend and backend location resolver flow. When a searched address or coordinate lands inside one of these cells, the result is:
+
+- `tier: "context"`
+- `precision: "context_area"` for backend address search results
+- `scorePrecision: "unscored_context"`
+- `analysisSlug: null`
+- `catalogArea: null`
+
+This is intentional. The app can identify that the place is inside the Hyderabad flagship boundary, but it must not open a scored AreaDetail page or reuse a nearby market score for that exact place.
+
 ## Remaining Data Work
 
 1. Replace context-only Voronoi cells with sourced village/admin polygons from HMDA, GHMC, Telangana open data, or OSM relations where license and quality are acceptable.
 2. Add aliases for newly sourced villages/localities so address search resolves by common names, apartment names, and spelling variants.
 3. Attach verified signal data before any context-only cell becomes a scored market.
-4. Update backend and frontend location search to return a clear "data pending for this exact place" result when an address falls inside a context-only cell.
-5. Reduce any remaining oversized cells by importing more real place seeds or sourced boundaries, not by drawing circular/ring geometry.
+4. Reduce any remaining oversized cells by importing more real place seeds or sourced boundaries, not by drawing circular/ring geometry.
