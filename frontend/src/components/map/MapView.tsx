@@ -244,6 +244,7 @@ export default function MapView() {
 
   const [hoverInfo, setHoverInfo]             = useState<HoverInfo | null>(null)
   const [contextHover, setContextHover]       = useState<ContextHoverInfo | null>(null)
+  const [contextHoverSlug, setContextHoverSlug] = useState<string | null>(null)
   const [constructionHover, setConstructionHover] = useState<ConstructionHover | null>(null)
   const [specialUseHover, setSpecialUseHover] = useState<SpecialUseHover | null>(null)
 
@@ -340,7 +341,7 @@ export default function MapView() {
             score:     area?.score ?? -1,
             color,
             selected:  selectedArea?.slug === slug ? 1 : 0,
-            hovered:   hoveredSlug === slug ? 1 : 0,
+            hovered:   hoveredSlug === slug || contextHoverSlug === slug ? 1 : 0,
             dimmed:    hasScore && !tierMatch ? 1 : 0,
             noData:    !hasScore ? 1 : 0,
             contextOnly: isContext ? 1 : 0,
@@ -379,7 +380,23 @@ export default function MapView() {
         }
       }),
     }
-  }, [selectedArea, hoveredSlug, highlightTier, areas, selectedCitySlug])
+  }, [selectedArea, hoveredSlug, contextHoverSlug, highlightTier, areas, selectedCitySlug])
+
+  const showContextHover = useCallback((feature: NonNullable<MapLayerMouseEvent['features']>[number], point: { x: number; y: number }) => {
+    setHoveredSlug(null)
+    setHoverInfo(null)
+    setContextHoverSlug(String(feature.properties?.slug ?? ''))
+    setContextHover({
+      x: point.x,
+      y: point.y,
+      name: String(feature.properties?.name ?? 'Hyderabad context area'),
+      boundaryKind: String(feature.properties?.boundaryKind ?? 'place_context_cell'),
+      boundaryConfidence: String(feature.properties?.boundaryConfidence ?? 'approximate'),
+      areaKm2: typeof feature.properties?.areaKm2 === 'number'
+        ? feature.properties.areaKm2
+        : null,
+    })
+  }, [setHoveredSlug])
 
   // ── Event handlers ────────────────────────────────────────────────────────
   const handleClick = useCallback((e: MapLayerMouseEvent) => {
@@ -388,12 +405,22 @@ export default function MapView() {
     if (feat.layer.id === 'special-use-fill') {
       setSelectedArea(null)
       setContextHover(null)
+      setContextHoverSlug(null)
       return
     }
     const slug = feat.properties?.slug as string
     const area = areas.find(a => a.slug === slug)
-    if (area) setSelectedArea(area)
-  }, [setSelectedArea, areas])
+    if (area) {
+      setSelectedArea(area)
+      setContextHover(null)
+      setContextHoverSlug(null)
+      return
+    }
+    if (feat.properties?.dataState === 'data-pending') {
+      setSelectedArea(null)
+      showContextHover(feat, e.point)
+    }
+  }, [setSelectedArea, areas, showContextHover])
 
   const handleDblClick = useCallback((e: MapLayerMouseEvent) => {
     if (e.features?.[0]?.layer.id === 'special-use-fill') return
@@ -408,6 +435,7 @@ export default function MapView() {
       setHoveredSlug(null)
       setHoverInfo(null)
       setContextHover(null)
+      setContextHoverSlug(null)
       setSpecialUseHover({
         x: e.point.x,
         y: e.point.y,
@@ -423,30 +451,22 @@ export default function MapView() {
       setHoveredSlug(slug)
       setHoverInfo({ x: e.point.x, y: e.point.y, slug })
       setContextHover(null)
+      setContextHoverSlug(null)
     } else if (slug && feature?.properties?.dataState === 'data-pending') {
-      setHoveredSlug(null)
-      setHoverInfo(null)
-      setContextHover({
-        x: e.point.x,
-        y: e.point.y,
-        name: String(feature.properties?.name ?? 'Hyderabad context area'),
-        boundaryKind: String(feature.properties?.boundaryKind ?? 'place_context_cell'),
-        boundaryConfidence: String(feature.properties?.boundaryConfidence ?? 'approximate'),
-        areaKm2: typeof feature.properties?.areaKm2 === 'number'
-          ? feature.properties.areaKm2
-          : null,
-      })
+      showContextHover(feature, e.point)
     } else {
       setHoveredSlug(null)
       setHoverInfo(null)
       setContextHover(null)
+      setContextHoverSlug(null)
     }
-  }, [areas, setHoveredSlug])
+  }, [areas, setHoveredSlug, showContextHover])
 
   const handleMouseLeave = useCallback(() => {
     setHoveredSlug(null)
     setHoverInfo(null)
     setContextHover(null)
+    setContextHoverSlug(null)
     setSpecialUseHover(null)
   }, [setHoveredSlug])
 
@@ -486,10 +506,11 @@ export default function MapView() {
               'fill-color': ['get', 'color'],
               'fill-opacity': [
                 'case',
+                ['all', ['==', ['get', 'dataState'], 'data-pending'], ['==', ['get', 'hovered'], 1]], 0.18,
                 ['==', ['get', 'selected'], 1], 0.52,
                 ['==', ['get', 'hovered'], 1], 0.40,
                 ['==', ['get', 'dimmed'], 1], 0.18,
-                ['==', ['get', 'dataState'], 'data-pending'], 0.12,
+                ['==', ['get', 'dataState'], 'data-pending'], 0.07,
                 0.30,
               ],
             }}
@@ -509,12 +530,13 @@ export default function MapView() {
                 'case',
                 ['==', ['get', 'selected'], 1], 3.0,
                 ['==', ['get', 'hovered'], 1], 2.4,
-                ['==', ['get', 'dataState'], 'data-pending'], 1.25,
+                ['==', ['get', 'dataState'], 'data-pending'], 1.05,
                 1.75,
               ],
               'line-opacity': [
                 'case',
-                ['==', ['get', 'dataState'], 'data-pending'], 0.66,
+                ['all', ['==', ['get', 'dataState'], 'data-pending'], ['==', ['get', 'hovered'], 1]], 0.82,
+                ['==', ['get', 'dataState'], 'data-pending'], 0.42,
                 ['==', ['get', 'dimmed'], 1], 0.55,
                 0.96,
               ],
