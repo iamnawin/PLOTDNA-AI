@@ -69,7 +69,17 @@ const HYDERABAD_COVERAGE = JSON.parse(hyderabadCoverageRaw) as {
   features: Array<{
     type: 'Feature'
     id: string
-    properties: { slug: string; name: string; boundaryKind: string; marketable: boolean; outerZone?: boolean; distKm?: number }
+    properties: {
+      slug: string
+      name: string
+      boundaryKind: string
+      boundaryConfidence?: string
+      marketable: boolean
+      contextOnly?: boolean
+      outerZone?: boolean
+      distKm?: number
+      areaKm2?: number
+    }
     geometry: { type: 'Polygon'; coordinates: number[][][] }
   }>
 }
@@ -185,6 +195,14 @@ const MAP_STYLES: Record<MapStyleKey, string | StyleSpecification> = {
 }
 
 interface HoverInfo { x: number; y: number; slug: string }
+interface ContextHoverInfo {
+  x: number
+  y: number
+  name: string
+  boundaryKind: string
+  boundaryConfidence: string
+  areaKm2: number | null
+}
 
 function getPolygonBounds(polygon: [number, number][]): [[number, number], [number, number]] {
   const lngs = polygon.map(([, lng]) => lng)
@@ -225,6 +243,7 @@ export default function MapView() {
   const { areas, meta: cityMeta } = getCityEntry(selectedCitySlug)
 
   const [hoverInfo, setHoverInfo]             = useState<HoverInfo | null>(null)
+  const [contextHover, setContextHover]       = useState<ContextHoverInfo | null>(null)
   const [constructionHover, setConstructionHover] = useState<ConstructionHover | null>(null)
   const [specialUseHover, setSpecialUseHover] = useState<SpecialUseHover | null>(null)
 
@@ -296,9 +315,12 @@ export default function MapView() {
       const areaBySlug: Record<string, typeof areas[0]> = Object.fromEntries(areas.map(a => [a.slug, a]))
       const features = HYDERABAD_COVERAGE.features.map(feature => {
         const coverageProps = feature.properties as {
+          name?: string
           contextOnly?: boolean
           outerZone?: boolean
           boundaryKind?: string
+          boundaryConfidence?: string
+          areaKm2?: number
         }
         const slug = feature.id as string
         const area = areaBySlug[slug]
@@ -307,13 +329,14 @@ export default function MapView() {
         const isContext = !!coverageProps.contextOnly
         const color = hasScore
           ? getScoreColor(area!.score)
-          : '#60a5fa'
+          : '#64748b'
         return {
           type: 'Feature' as const,
           id: slug,
           geometry: feature.geometry, // already [lng, lat] GeoJSON format
           properties: {
             slug,
+            name:      coverageProps.name ?? area?.name ?? slug.replaceAll('-', ' '),
             score:     area?.score ?? -1,
             color,
             selected:  selectedArea?.slug === slug ? 1 : 0,
@@ -323,6 +346,9 @@ export default function MapView() {
             contextOnly: isContext ? 1 : 0,
             outerZone: coverageProps.outerZone ? 1 : 0,
             boundaryKind: coverageProps.boundaryKind ?? 'generated_market_cell',
+            boundaryConfidence: coverageProps.boundaryConfidence ?? (isContext ? 'approximate' : 'broad'),
+            areaKm2: coverageProps.areaKm2 ?? null,
+            dataState: isContext || !hasScore ? 'data-pending' : 'scored',
           },
         }
       })
@@ -361,6 +387,7 @@ export default function MapView() {
     if (!feat) return
     if (feat.layer.id === 'special-use-fill') {
       setSelectedArea(null)
+      setContextHover(null)
       return
     }
     const slug = feat.properties?.slug as string
@@ -371,14 +398,16 @@ export default function MapView() {
   const handleDblClick = useCallback((e: MapLayerMouseEvent) => {
     if (e.features?.[0]?.layer.id === 'special-use-fill') return
     const slug = e.features?.[0]?.properties?.slug as string | undefined
-    if (slug) navigate(`/area/${slug}`)
-  }, [navigate])
+    const area = slug ? areas.find(a => a.slug === slug) : null
+    if (area) navigate(`/area/${slug}`)
+  }, [areas, navigate])
 
   const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {
     const feature = e.features?.[0]
     if (feature?.layer.id === 'special-use-fill') {
       setHoveredSlug(null)
       setHoverInfo(null)
+      setContextHover(null)
       setSpecialUseHover({
         x: e.point.x,
         y: e.point.y,
@@ -389,17 +418,35 @@ export default function MapView() {
     }
     setSpecialUseHover(null)
     const slug = feature?.properties?.slug ?? null
-    setHoveredSlug(slug)
-    if (slug) {
+    const area = slug ? areas.find(a => a.slug === slug) : null
+    if (slug && area) {
+      setHoveredSlug(slug)
       setHoverInfo({ x: e.point.x, y: e.point.y, slug })
-    } else {
+      setContextHover(null)
+    } else if (slug && feature?.properties?.dataState === 'data-pending') {
+      setHoveredSlug(null)
       setHoverInfo(null)
+      setContextHover({
+        x: e.point.x,
+        y: e.point.y,
+        name: String(feature.properties?.name ?? 'Hyderabad context area'),
+        boundaryKind: String(feature.properties?.boundaryKind ?? 'place_context_cell'),
+        boundaryConfidence: String(feature.properties?.boundaryConfidence ?? 'approximate'),
+        areaKm2: typeof feature.properties?.areaKm2 === 'number'
+          ? feature.properties.areaKm2
+          : null,
+      })
+    } else {
+      setHoveredSlug(null)
+      setHoverInfo(null)
+      setContextHover(null)
     }
-  }, [setHoveredSlug])
+  }, [areas, setHoveredSlug])
 
   const handleMouseLeave = useCallback(() => {
     setHoveredSlug(null)
     setHoverInfo(null)
+    setContextHover(null)
     setSpecialUseHover(null)
   }, [setHoveredSlug])
 
@@ -425,7 +472,7 @@ export default function MapView() {
         onMouseLeave={handleMouseLeave}
         onError={(event) => console.error('[maplibre]', event.error)}
         interactiveLayerIds={['special-use-fill', 'area-fill']}
-        cursor={hoveredSlug || specialUseHover ? 'pointer' : 'grab'}
+        cursor={hoveredSlug || specialUseHover || contextHover ? 'pointer' : 'grab'}
         doubleClickZoom={false}
       >
         {/* ── Area polygons ── */}
@@ -442,8 +489,7 @@ export default function MapView() {
                 ['==', ['get', 'selected'], 1], 0.52,
                 ['==', ['get', 'hovered'], 1], 0.40,
                 ['==', ['get', 'dimmed'], 1], 0.18,
-                ['==', ['get', 'contextOnly'], 1], 0.16,
-                ['==', ['get', 'noData'], 1], 0.18,
+                ['==', ['get', 'dataState'], 'data-pending'], 0.12,
                 0.30,
               ],
             }}
@@ -456,20 +502,19 @@ export default function MapView() {
             paint={{
               'line-color': [
                 'case',
-                ['==', ['get', 'contextOnly'], 1], '#38bdf8',
+                ['==', ['get', 'dataState'], 'data-pending'], '#94a3b8',
                 ['get', 'color'],
               ],
               'line-width': [
                 'case',
                 ['==', ['get', 'selected'], 1], 3.0,
                 ['==', ['get', 'hovered'], 1], 2.4,
-                ['==', ['get', 'contextOnly'], 1], 1.35,
+                ['==', ['get', 'dataState'], 'data-pending'], 1.25,
                 1.75,
               ],
               'line-opacity': [
                 'case',
-                ['==', ['get', 'contextOnly'], 1], 0.62,
-                ['==', ['get', 'noData'], 1], 0.58,
+                ['==', ['get', 'dataState'], 'data-pending'], 0.66,
                 ['==', ['get', 'dimmed'], 1], 0.55,
                 0.96,
               ],
@@ -640,6 +685,56 @@ export default function MapView() {
           <p style={{ margin: '5px 0 0', color: '#7dd3fc', fontSize: 9, fontFamily: 'IBM Plex Mono, monospace' }}>
             {specialUseHover.kind.replaceAll('_', ' ')} · not scored as residential market land
           </p>
+        </div>
+      )}
+
+      {contextHover && (
+        <div style={{
+          position: 'absolute',
+          left: Math.max(8, Math.min(contextHover.x + 16, window.innerWidth - 260)),
+          top: Math.max(10, contextHover.y - 44),
+          width: 244,
+          pointerEvents: 'none',
+          zIndex: 220,
+          padding: '12px 14px',
+          borderRadius: 10,
+          border: '1px solid rgba(148,163,184,0.40)',
+          background: 'rgba(8,12,18,0.96)',
+          boxShadow: '0 14px 36px rgba(0,0,0,0.55)',
+        }}>
+          <p style={{ margin: 0, color: '#e5e7eb', fontSize: 12, fontWeight: 700 }}>
+            {contextHover.name}
+          </p>
+          <p style={{ margin: '6px 0 0', color: '#94a3b8', fontSize: 9, fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.45 }}>
+            Data pending - inside Hyderabad flagship coverage, but no verified PlotDNA score is available for this exact area yet.
+          </p>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 9 }}>
+            <span style={{
+              color: '#cbd5e1',
+              background: 'rgba(148,163,184,0.12)',
+              border: '1px solid rgba(148,163,184,0.24)',
+              borderRadius: 5,
+              padding: '2px 6px',
+              fontSize: 8,
+              fontFamily: 'IBM Plex Mono, monospace',
+              textTransform: 'uppercase',
+            }}>
+              {contextHover.boundaryConfidence}
+            </span>
+            {contextHover.areaKm2 !== null && (
+              <span style={{
+                color: '#cbd5e1',
+                background: 'rgba(148,163,184,0.12)',
+                border: '1px solid rgba(148,163,184,0.24)',
+                borderRadius: 5,
+                padding: '2px 6px',
+                fontSize: 8,
+                fontFamily: 'IBM Plex Mono, monospace',
+              }}>
+                ~{contextHover.areaKm2.toFixed(1)} km2
+              </span>
+            )}
+          </div>
         </div>
       )}
 
