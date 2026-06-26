@@ -71,5 +71,8 @@ assert(mapView.includes('generated_market_cell'), 'map must visibly distinguish 
 assert(mapView.includes('closePolygonRing(area.polygon)'), 'MapLibre coverage polygons must use closed GeoJSON rings')
 assert(!mapView.includes(': 0.38'), 'context/no-data polygons must not use the old high-opacity fill')
 assert(!mapView.includes("'#3b82f6' // bright blue"), 'context/no-data polygons must not render as bright blue primary coverage')
+assert(mapView.includes("['==', ['get', 'contextOnly'], 1], 0.16"), 'context fills must remain visible at overview zoom')
+assert(mapView.includes("['==', ['get', 'contextOnly'], 1], 0.62"), 'context borders must remain readable at overview zoom')
+assert(mapView.includes('1.75'), 'scored polygon borders must remain readable over satellite basemap')
 
 console.log(`Hyderabad production check passed: ${localities.length} localities, ${coverage.features.length} contiguous cells, ${confidenceMentions} confidence records, ${prioritySlugs.length} verified priority slugs.`)

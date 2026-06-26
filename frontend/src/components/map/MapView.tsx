@@ -307,7 +307,7 @@ export default function MapView() {
         const isContext = !!coverageProps.contextOnly
         const color = hasScore
           ? (tierMatch ? getScoreColor(area!.score) : '#252535')
-          : '#94a3b8'
+          : '#60a5fa'
         return {
           type: 'Feature' as const,
           id: slug,
@@ -436,15 +436,15 @@ export default function MapView() {
             id="area-fill"
             type="fill"
             paint={{
-              'fill-color':   ['get', 'color'],
+              'fill-color': ['get', 'color'],
               'fill-opacity': [
                 'case',
-                ['==', ['get', 'dimmed'],    1], 0.04,
-                ['==', ['get', 'contextOnly'], 1], 0.12,
-                ['==', ['get', 'noData'],    1], 0.16,
-                ['==', ['get', 'selected'],  1], 0.48,
-                ['==', ['get', 'hovered'],   1], 0.36,
-                0.22,
+                ['==', ['get', 'dimmed'], 1], 0.06,
+                ['==', ['get', 'selected'], 1], 0.52,
+                ['==', ['get', 'hovered'], 1], 0.40,
+                ['==', ['get', 'contextOnly'], 1], 0.16,
+                ['==', ['get', 'noData'], 1], 0.18,
+                0.30,
               ],
             }}
           />
@@ -454,20 +454,24 @@ export default function MapView() {
             id="area-border"
             type="line"
             paint={{
-              'line-color': ['get', 'color'],
+              'line-color': [
+                'case',
+                ['==', ['get', 'contextOnly'], 1], '#38bdf8',
+                ['get', 'color'],
+              ],
               'line-width': [
                 'case',
-                ['==', ['get', 'selected'], 1], 2.5,
-                ['==', ['get', 'hovered'],  1], 2.0,
-                ['==', ['get', 'contextOnly'], 1], 0.8,
-                1.2,
+                ['==', ['get', 'selected'], 1], 3.0,
+                ['==', ['get', 'hovered'], 1], 2.4,
+                ['==', ['get', 'contextOnly'], 1], 1.35,
+                1.75,
               ],
               'line-opacity': [
                 'case',
-                ['==', ['get', 'dimmed'],    1], 0.15,
-                ['==', ['get', 'contextOnly'], 1], 0.34,
-                ['==', ['get', 'noData'],    1], 0.45,
-                0.9,
+                ['==', ['get', 'dimmed'], 1], 0.28,
+                ['==', ['get', 'contextOnly'], 1], 0.62,
+                ['==', ['get', 'noData'], 1], 0.58,
+                0.96,
               ],
             }}
           />
