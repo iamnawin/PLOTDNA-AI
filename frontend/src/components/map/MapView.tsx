@@ -735,7 +735,7 @@ export default function MapView() {
             {contextHover.name}
           </p>
           <p style={{ margin: '6px 0 0', color: '#94a3b8', fontSize: 9, fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.45 }}>
-            Data pending - inside Hyderabad flagship coverage, but no verified PlotDNA score is available for this exact area yet.
+            Data pending - inside Hyderabad flagship coverage. PlotDNA will start validation for this area before assigning an exact score.
           </p>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 9 }}>
             <span style={{

@@ -87,6 +87,7 @@ assert(mapView.includes('ContextHoverInfo'), 'context-only polygons must expose 
 assert(mapView.includes('showContextHover'), 'context-only polygons must share click and hover pending-data messaging')
 assert(mapView.includes('setContextHoverSlug'), 'context-only polygons must visibly highlight the specific pending cell under the cursor')
 assert(mapView.includes('Data pending'), 'context-only polygon hover must explain why no score is available')
+assert(mapView.includes('PlotDNA will start validation for this area'), 'context-only pending message must tell users that exact-area validation is the next step')
 assert(mapView.includes('boundaryConfidence'), 'context-only hover metadata must preserve boundary confidence')
 assert(mapView.includes('areaKm2'), 'context-only hover metadata must preserve approximate area size')
 assert(mapView.includes('data-pending'), 'context/no-data polygon styling must use a pending-data visual token')

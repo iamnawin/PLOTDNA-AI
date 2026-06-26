@@ -280,7 +280,7 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
             <div className="flex items-center gap-2.5 px-3 py-3">
               <Info size={11} className="text-amber-500 flex-shrink-0" />
               <p className="text-[9px] font-sans text-slate-400 leading-relaxed">
-                {fallbackDisplayLabel} is inside Hyderabad flagship coverage, but PlotDNA has not verified enough signals to score this exact place yet.
+                {fallbackDisplayLabel} is inside Hyderabad flagship coverage. PlotDNA will start validation for this area before assigning an exact score.
               </p>
             </div>
           ) : resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional' ? (
@@ -310,7 +310,7 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
             style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', lineHeight: 1.7 }}
           >
             {resolvedFallback.tier === 'context_area'
-              ? `${fallbackDisplayLabel} is identified, but scored micro-market data is pending.`
+              ? `${fallbackDisplayLabel} is identified. PlotDNA will start validation for this area before assigning an exact score.`
               : resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional'
               ? `${fallbackDisplayLabel} is supported only at a broad region level right now.`
               : 'Coverage for this location is not available yet.'}

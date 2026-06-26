@@ -33,7 +33,7 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
       stateSlug: null,
       distanceKm: candidates.context.distanceKm,
       matchedBy: 'context',
-      reason: 'Coordinate falls inside an identified Hyderabad context area, but scored micro-market data is pending.',
+      reason: 'Coordinate falls inside an identified Hyderabad context area. PlotDNA will start validation for this area before assigning an exact score.',
       resolvedPlaceSlug: candidates.context.localitySlug,
       analysisSlug: null,
       boundaryKind: candidates.context.boundaryKind,
