@@ -12,6 +12,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 16.3,
+        "areaKm2": 25.3,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -67,6 +68,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 0.9,
+        "areaKm2": 1.6,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -118,6 +120,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 16.3,
+        "areaKm2": 19.9,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -165,6 +168,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 1.6,
+        "areaKm2": 0.5,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -212,6 +216,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 1.6,
+        "areaKm2": 1.4,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -259,6 +264,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 13.9,
+        "areaKm2": 12.1,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -310,6 +316,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 3.0,
+        "areaKm2": 6.5,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -373,6 +380,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 24.7,
+        "areaKm2": 4.4,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -420,6 +428,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.0,
+        "areaKm2": 2.1,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -467,6 +476,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 11.6,
+        "areaKm2": 11.1,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -526,6 +536,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 5.9,
+        "areaKm2": 9.0,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -577,6 +588,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.1,
+        "areaKm2": 1.3,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -624,6 +636,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 27.6,
+        "areaKm2": 36.2,
         "outerZone": false
       },
       "geometry": {
@@ -681,6 +694,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 20.5,
+        "areaKm2": 13.1,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -736,6 +750,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 25.7,
+        "areaKm2": 15.2,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -787,6 +802,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 3.9,
+        "areaKm2": 1.0,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -834,6 +850,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 10.9,
+        "areaKm2": 9.6,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -893,6 +910,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 13.0,
+        "areaKm2": 17.5,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -944,6 +962,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.6,
+        "areaKm2": 10.2,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -987,6 +1006,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 10.0,
+        "areaKm2": 7.3,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -1034,6 +1054,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.5,
+        "areaKm2": 2.7,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -1089,6 +1110,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 88.8,
+        "areaKm2": 81.8,
         "outerZone": true
       },
       "geometry": {
@@ -1138,6 +1160,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 2.6,
+        "areaKm2": 2.2,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -1181,6 +1204,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 25.4,
+        "areaKm2": 4.7,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -1232,6 +1256,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.0,
+        "areaKm2": 5.4,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -1295,6 +1320,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 34.3,
+        "areaKm2": 15.9,
         "outerZone": true
       },
       "geometry": {
@@ -1336,6 +1362,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 35.9,
+        "areaKm2": 191.0,
         "outerZone": true,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -1395,6 +1422,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.9,
+        "areaKm2": 8.7,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -1446,6 +1474,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 16.6,
+        "areaKm2": 14.3,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -1501,6 +1530,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 23.2,
+        "areaKm2": 23.2,
         "outerZone": false
       },
       "geometry": {
@@ -1550,6 +1580,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 28.3,
+        "areaKm2": 18.3,
         "outerZone": true,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -1601,6 +1632,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 10.2,
+        "areaKm2": 13.9,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -1656,6 +1688,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 1.3,
+        "areaKm2": 1.5,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -1711,6 +1744,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 3.4,
+        "areaKm2": 1.6,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -1762,6 +1796,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 1.0,
+        "areaKm2": 0.3,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -1809,6 +1844,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 21.8,
+        "areaKm2": 4.0,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -1860,6 +1896,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 4.5,
+        "areaKm2": 2.1,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -1903,6 +1940,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 3.2,
+        "areaKm2": 1.4,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -1958,6 +1996,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 74.2,
+        "areaKm2": 130.4,
         "outerZone": true,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -1967,12 +2006,8 @@
         "coordinates": [
           [
             [
-              77.745007,
-              17.307883
-            ],
-            [
-              77.746169,
-              17.308352
+              77.773122,
+              17.304159
             ],
             [
               77.813265,
@@ -1995,12 +2030,12 @@
               17.15
             ],
             [
-              77.696448,
-              17.245328
+              77.711261,
+              17.223109
             ],
             [
-              77.745007,
-              17.307883
+              77.773122,
+              17.304159
             ]
           ]
         ]
@@ -2017,6 +2052,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 20.6,
+        "areaKm2": 40.2,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -2072,6 +2108,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 41.7,
+        "areaKm2": 76.2,
         "outerZone": true
       },
       "geometry": {
@@ -2125,6 +2162,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 2.2,
+        "areaKm2": 1.0,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -2172,6 +2210,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 20.2,
+        "areaKm2": 59.2,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -2227,6 +2266,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 78.1,
+        "areaKm2": 105.1,
         "outerZone": true
       },
       "geometry": {
@@ -2276,6 +2316,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 4.6,
+        "areaKm2": 7.5,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -2339,6 +2380,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 21.5,
+        "areaKm2": 7.2,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -2386,6 +2428,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 32.0,
+        "areaKm2": 48.5,
         "outerZone": true,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -2437,6 +2480,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 11.1,
+        "areaKm2": 2.0,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -2484,6 +2528,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 30.5,
+        "areaKm2": 11.8,
         "outerZone": true
       },
       "geometry": {
@@ -2529,6 +2574,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.7,
+        "areaKm2": 11.3,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -2584,6 +2630,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 30.2,
+        "areaKm2": 120.9,
         "outerZone": true,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -2597,12 +2644,16 @@
               17.177348
             ],
             [
-              78.301094,
-              17.16087
+              78.306187,
+              17.168661
             ],
             [
-              78.281801,
-              17.162866
+              78.302624,
+              17.168039
+            ],
+            [
+              78.186457,
+              17.230801
             ],
             [
               78.181796,
@@ -2643,6 +2694,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.1,
+        "areaKm2": 3.6,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -2702,6 +2754,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.3,
+        "areaKm2": 4.7,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -2757,6 +2810,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 14.0,
+        "areaKm2": 4.5,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -2808,6 +2862,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 15.9,
+        "areaKm2": 6.3,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -2859,6 +2914,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 18.7,
+        "areaKm2": 7.3,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -2902,6 +2958,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 20.8,
+        "areaKm2": 10.4,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -2949,6 +3006,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 39.3,
+        "areaKm2": 98.3,
         "outerZone": true
       },
       "geometry": {
@@ -3006,6 +3064,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 27.9,
+        "areaKm2": 18.3,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -3053,6 +3112,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.6,
+        "areaKm2": 7.1,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -3100,6 +3160,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 15.2,
+        "areaKm2": 2.8,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -3147,6 +3208,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 27.8,
+        "areaKm2": 7.7,
         "outerZone": false
       },
       "geometry": {
@@ -3188,6 +3250,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 18.7,
+        "areaKm2": 18.5,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -3243,6 +3306,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 5.3,
+        "areaKm2": 1.7,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -3286,6 +3350,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 17.8,
+        "areaKm2": 9.2,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -3337,6 +3402,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 15.3,
+        "areaKm2": 15.3,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -3388,6 +3454,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 36.6,
+        "areaKm2": 93.9,
         "outerZone": true
       },
       "geometry": {
@@ -3441,6 +3508,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 13.1,
+        "areaKm2": 20.6,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -3500,6 +3568,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 21.8,
+        "areaKm2": 47.2,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -3547,6 +3616,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 2.0,
+        "areaKm2": 1.6,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -3598,6 +3668,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 13.8,
+        "areaKm2": 5.9,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -3649,6 +3720,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 5.3,
+        "areaKm2": 2.6,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -3700,6 +3772,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 3.7,
+        "areaKm2": 0.6,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -3743,6 +3816,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 22.0,
+        "areaKm2": 28.4,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -3756,12 +3830,12 @@
               17.228118
             ],
             [
-              78.60422,
-              17.21326
+              78.628108,
+              17.22061
             ],
             [
-              78.600106,
-              17.215468
+              78.598844,
+              17.222022
             ],
             [
               78.594418,
@@ -3794,6 +3868,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 28.0,
+        "areaKm2": 11.3,
         "outerZone": false
       },
       "geometry": {
@@ -3847,6 +3922,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 27.9,
+        "areaKm2": 7.4,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -3898,6 +3974,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 15.7,
+        "areaKm2": 16.7,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -3953,6 +4030,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 14.7,
+        "areaKm2": 13.5,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -4004,6 +4082,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 21.7,
+        "areaKm2": 4.4,
         "outerZone": false
       },
       "geometry": {
@@ -4045,6 +4124,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 16.2,
+        "areaKm2": 6.0,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -4096,6 +4176,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 10.0,
+        "areaKm2": 6.1,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -4147,6 +4228,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 44.4,
+        "areaKm2": 50.3,
         "outerZone": true
       },
       "geometry": {
@@ -4192,6 +4274,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 40.1,
+        "areaKm2": 38.9,
         "outerZone": true,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -4201,32 +4284,36 @@
         "coordinates": [
           [
             [
-              78.322529,
-              17.099213
+              78.273141,
+              17.149295
             ],
             [
-              78.266709,
-              17.06286
+              78.257531,
+              17.078797
             ],
             [
-              78.194822,
-              17.109154
+              78.248524,
+              17.074571
+            ],
+            [
+              78.207389,
+              17.101062
+            ],
+            [
+              78.195505,
+              17.118163
             ],
             [
               78.19573,
               17.121122
             ],
             [
-              78.281801,
-              17.162866
+              78.239151,
+              17.14218
             ],
             [
-              78.301094,
-              17.16087
-            ],
-            [
-              78.322529,
-              17.099213
+              78.273141,
+              17.149295
             ]
           ]
         ]
@@ -4243,6 +4330,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 12.9,
+        "areaKm2": 6.4,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -4298,6 +4386,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.6,
+        "areaKm2": 0.9,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -4349,6 +4438,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 5.8,
+        "areaKm2": 5.7,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -4400,6 +4490,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.7,
+        "areaKm2": 3.3,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -4451,6 +4542,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 21.0,
+        "areaKm2": 159.5,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -4510,6 +4602,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 15.9,
+        "areaKm2": 16.6,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -4569,6 +4662,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 5.1,
+        "areaKm2": 1.1,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -4616,6 +4710,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 11.0,
+        "areaKm2": 3.4,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -4667,6 +4762,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 30.1,
+        "areaKm2": 13.7,
         "outerZone": true
       },
       "geometry": {
@@ -4712,6 +4808,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 12.7,
+        "areaKm2": 34.2,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -4771,6 +4868,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 21.5,
+        "areaKm2": 9.1,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -4830,6 +4928,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 84.6,
+        "areaKm2": 111.4,
         "outerZone": true
       },
       "geometry": {
@@ -4875,6 +4974,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 16.5,
+        "areaKm2": 20.6,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -4930,6 +5030,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 30.3,
+        "areaKm2": 24.2,
         "outerZone": true
       },
       "geometry": {
@@ -4979,6 +5080,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 17.8,
+        "areaKm2": 6.1,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -5022,6 +5124,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 15.8,
+        "areaKm2": 7.3,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -5073,6 +5176,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.5,
+        "areaKm2": 4.7,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -5128,6 +5232,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 24.2,
+        "areaKm2": 62.2,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -5137,12 +5242,16 @@
         "coordinates": [
           [
             [
-              78.441599,
-              17.10542
+              78.45977,
+              17.115131
             ],
             [
-              78.436942,
-              17.134439
+              78.452807,
+              17.115617
+            ],
+            [
+              78.442974,
+              17.143793
             ],
             [
               78.490524,
@@ -5161,8 +5270,8 @@
               17.158461
             ],
             [
-              78.441599,
-              17.10542
+              78.45977,
+              17.115131
             ]
           ]
         ]
@@ -5179,6 +5288,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 0.8,
+        "areaKm2": 1.2,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -5226,6 +5336,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 15.3,
+        "areaKm2": 12.6,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -5285,6 +5396,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.9,
+        "areaKm2": 2.2,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -5336,6 +5448,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 34.2,
+        "areaKm2": 20.5,
         "outerZone": true
       },
       "geometry": {
@@ -5385,6 +5498,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 3.0,
+        "areaKm2": 3.3,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -5440,6 +5554,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 1.8,
+        "areaKm2": 1.0,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -5491,6 +5606,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.8,
+        "areaKm2": 4.4,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -5546,6 +5662,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.3,
+        "areaKm2": 4.0,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -5589,6 +5706,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 3.0,
+        "areaKm2": 3.4,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -5648,6 +5766,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.6,
+        "areaKm2": 6.4,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -5695,6 +5814,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 22.6,
+        "areaKm2": 5.6,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -5746,6 +5866,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 12.7,
+        "areaKm2": 10.3,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -5801,6 +5922,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 20.0,
+        "areaKm2": 4.3,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -5848,6 +5970,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.8,
+        "areaKm2": 4.2,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -5907,6 +6030,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 17.6,
+        "areaKm2": 38.3,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -5970,6 +6094,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.6,
+        "areaKm2": 5.8,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -6017,6 +6142,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 2.2,
+        "areaKm2": 1.7,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -6064,6 +6190,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.8,
+        "areaKm2": 1.4,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -6115,6 +6242,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 52.2,
+        "areaKm2": 77.1,
         "outerZone": true
       },
       "geometry": {
@@ -6160,6 +6288,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 22.9,
+        "areaKm2": 25.0,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -6215,6 +6344,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.8,
+        "areaKm2": 2.5,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -6262,6 +6392,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 17.9,
+        "areaKm2": 20.4,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -6309,6 +6440,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 11.4,
+        "areaKm2": 6.6,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -6356,6 +6488,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.6,
+        "areaKm2": 0.5,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -6395,6 +6528,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 78.0,
+        "areaKm2": 126.8,
         "outerZone": true
       },
       "geometry": {
@@ -6440,6 +6574,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 4.3,
+        "areaKm2": 1.9,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -6483,6 +6618,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 27.2,
+        "areaKm2": 21.6,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -6530,6 +6666,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 13.1,
+        "areaKm2": 9.6,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -6577,6 +6714,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 5.1,
+        "areaKm2": 5.4,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -6640,6 +6778,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.0,
+        "areaKm2": 0.7,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -6683,6 +6822,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 3.8,
+        "areaKm2": 3.2,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -6730,6 +6870,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 19.2,
+        "areaKm2": 6.7,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -6789,6 +6930,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 2.4,
+        "areaKm2": 3.2,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -6836,6 +6978,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 42.8,
+        "areaKm2": 233.6,
         "outerZone": true,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -6895,6 +7038,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 26.5,
+        "areaKm2": 21.6,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -6946,6 +7090,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 76.4,
+        "areaKm2": 31.4,
         "outerZone": true
       },
       "geometry": {
@@ -6987,6 +7132,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 11.1,
+        "areaKm2": 9.6,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -7038,6 +7184,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.0,
+        "areaKm2": 3.4,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -7085,6 +7232,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.4,
+        "areaKm2": 6.8,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -7144,6 +7292,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 67.7,
+        "areaKm2": 126.3,
         "outerZone": true
       },
       "geometry": {
@@ -7193,6 +7342,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 2.4,
+        "areaKm2": 4.2,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -7248,6 +7398,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 3.1,
+        "areaKm2": 3.4,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -7303,6 +7454,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 26.7,
+        "areaKm2": 5.0,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -7346,6 +7498,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.3,
+        "areaKm2": 3.0,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -7397,6 +7550,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 14.3,
+        "areaKm2": 7.0,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -7440,6 +7594,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.2,
+        "areaKm2": 11.4,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -7499,6 +7654,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 16.4,
+        "areaKm2": 12.5,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -7550,6 +7706,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 5.1,
+        "areaKm2": 2.7,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -7597,6 +7754,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 1.8,
+        "areaKm2": 1.5,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -7644,6 +7802,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 14.7,
+        "areaKm2": 6.4,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -7695,12 +7854,17 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 37.8,
+        "areaKm2": 56.3,
         "outerZone": true
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
+            [
+              78.239151,
+              17.14218
+            ],
             [
               78.19573,
               17.121122
@@ -7718,12 +7882,12 @@
               17.234122
             ],
             [
-              78.281801,
-              17.162866
+              78.186457,
+              17.230801
             ],
             [
-              78.19573,
-              17.121122
+              78.239151,
+              17.14218
             ]
           ]
         ]
@@ -7740,6 +7904,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 2.0,
+        "areaKm2": 1.4,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -7787,6 +7952,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 44.8,
+        "areaKm2": 220.1,
         "outerZone": true
       },
       "geometry": {
@@ -7840,6 +8006,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 33.0,
+        "areaKm2": 21.0,
         "outerZone": true,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -7895,6 +8062,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 13.9,
+        "areaKm2": 19.8,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -7946,6 +8114,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 60.3,
+        "areaKm2": 165.0,
         "outerZone": true
       },
       "geometry": {
@@ -7995,6 +8164,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.0,
+        "areaKm2": 4.7,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -8050,6 +8220,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 20.1,
+        "areaKm2": 5.9,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -8097,6 +8268,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 21.4,
+        "areaKm2": 18.0,
         "outerZone": false
       },
       "geometry": {
@@ -8154,6 +8326,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 28.6,
+        "areaKm2": 35.8,
         "outerZone": true,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -8205,6 +8378,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 68.4,
+        "areaKm2": 236.2,
         "outerZone": true
       },
       "geometry": {
@@ -8254,6 +8428,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 4.8,
+        "areaKm2": 3.0,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -8313,6 +8488,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 20.9,
+        "areaKm2": 3.7,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -8356,6 +8532,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 30.6,
+        "areaKm2": 10.2,
         "outerZone": true,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -8407,6 +8584,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 5.3,
+        "areaKm2": 4.0,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -8458,6 +8636,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 17.4,
+        "areaKm2": 39.5,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -8509,6 +8688,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 25.2,
+        "areaKm2": 12.0,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -8564,6 +8744,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 50.4,
+        "areaKm2": 31.0,
         "outerZone": true
       },
       "geometry": {
@@ -8609,6 +8790,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 86.3,
+        "areaKm2": 96.6,
         "outerZone": true
       },
       "geometry": {
@@ -8624,12 +8806,12 @@
               17.430697
             ],
             [
-              77.745007,
-              17.307883
+              77.715422,
+              17.35586
             ],
             [
-              77.696448,
-              17.245328
+              77.664737,
+              17.292894
             ],
             [
               77.62,
@@ -8658,6 +8840,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.9,
+        "areaKm2": 26.3,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -8713,6 +8896,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 17.0,
+        "areaKm2": 41.2,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -8764,6 +8948,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 22.6,
+        "areaKm2": 41.4,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -8777,12 +8962,12 @@
               17.358787
             ],
             [
-              78.752543,
-              17.316675
+              78.729786,
+              17.338771
             ],
             [
-              78.732021,
-              17.281436
+              78.682085,
+              17.285994
             ],
             [
               78.655898,
@@ -8823,6 +9008,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 17.7,
+        "areaKm2": 13.1,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -8870,6 +9056,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 51.6,
+        "areaKm2": 92.1,
         "outerZone": true
       },
       "geometry": {
@@ -8915,6 +9102,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.1,
+        "areaKm2": 1.5,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -8966,6 +9154,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 12.5,
+        "areaKm2": 12.0,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -9017,6 +9206,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 17.1,
+        "areaKm2": 7.2,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -9068,6 +9258,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 11.0,
+        "areaKm2": 4.9,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -9119,6 +9310,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 21.9,
+        "areaKm2": 50.5,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -9132,8 +9324,12 @@
               17.21753
             ],
             [
-              78.436942,
-              17.134439
+              78.442974,
+              17.143793
+            ],
+            [
+              78.413473,
+              17.169311
             ],
             [
               78.400756,
@@ -9170,6 +9366,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 11.7,
+        "areaKm2": 24.8,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -9225,6 +9422,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 25.6,
+        "areaKm2": 4.4,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -9272,6 +9470,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.7,
+        "areaKm2": 2.6,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -9319,6 +9518,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 28.6,
+        "areaKm2": 12.4,
         "outerZone": true
       },
       "geometry": {
@@ -9372,6 +9572,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 15.3,
+        "areaKm2": 23.5,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -9423,6 +9624,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 10.5,
+        "areaKm2": 13.1,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -9470,6 +9672,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 1.2,
+        "areaKm2": 0.3,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -9521,6 +9724,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.4,
+        "areaKm2": 6.0,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -9580,6 +9784,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 36.4,
+        "areaKm2": 31.5,
         "outerZone": true
       },
       "geometry": {
@@ -9637,6 +9842,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 62.4,
+        "areaKm2": 101.4,
         "outerZone": true
       },
       "geometry": {
@@ -9682,6 +9888,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 10.0,
+        "areaKm2": 3.7,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -9725,6 +9932,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 4.3,
+        "areaKm2": 3.7,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -9776,6 +9984,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 14.1,
+        "areaKm2": 8.8,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -9823,6 +10032,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 10.0,
+        "areaKm2": 1.8,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -9866,6 +10076,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 49.8,
+        "areaKm2": 43.8,
         "outerZone": true
       },
       "geometry": {
@@ -9911,6 +10122,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 4.2,
+        "areaKm2": 3.1,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -9966,6 +10178,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.5,
+        "areaKm2": 10.3,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -10017,6 +10230,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.2,
+        "areaKm2": 1.6,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -10072,6 +10286,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 21.9,
+        "areaKm2": 3.0,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -10119,6 +10334,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 22.2,
+        "areaKm2": 64.6,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -10170,6 +10386,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 45.8,
+        "areaKm2": 23.9,
         "outerZone": true,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -10179,28 +10396,24 @@
         "coordinates": [
           [
             [
-              78.149682,
-              17.05082
+              78.242535,
+              17.050767
             ],
             [
-              78.194822,
-              17.109154
+              78.194299,
+              17.036223
             ],
             [
-              78.266709,
-              17.06286
+              78.207389,
+              17.101062
             ],
             [
-              78.187612,
-              16.896119
+              78.248524,
+              17.074571
             ],
             [
-              78.131802,
-              16.913292
-            ],
-            [
-              78.149682,
-              17.05082
+              78.242535,
+              17.050767
             ]
           ]
         ]
@@ -10217,6 +10430,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.6,
+        "areaKm2": 1.2,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -10256,6 +10470,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 23.4,
+        "areaKm2": 77.2,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -10307,6 +10522,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 17.6,
+        "areaKm2": 33.0,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -10350,6 +10566,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 33.5,
+        "areaKm2": 170.4,
         "outerZone": true,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -10409,6 +10626,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 30.4,
+        "areaKm2": 43.5,
         "outerZone": true
       },
       "geometry": {
@@ -10462,6 +10680,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.2,
+        "areaKm2": 12.7,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -10517,6 +10736,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.7,
+        "areaKm2": 1.0,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -10560,6 +10780,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.1,
+        "areaKm2": 2.2,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -10611,6 +10832,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 1.7,
+        "areaKm2": 1.8,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -10662,6 +10884,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 28.4,
+        "areaKm2": 56.0,
         "outerZone": true,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -10671,20 +10894,16 @@
         "coordinates": [
           [
             [
-              78.431044,
-              17.071912
+              78.3481,
+              17.108545
             ],
             [
-              78.396557,
-              17.057032
+              78.327016,
+              17.131431
             ],
             [
-              78.322529,
-              17.099213
-            ],
-            [
-              78.301094,
-              17.16087
+              78.306187,
+              17.168661
             ],
             [
               78.311865,
@@ -10695,16 +10914,12 @@
               17.188208
             ],
             [
-              78.436942,
-              17.134439
+              78.413473,
+              17.169311
             ],
             [
-              78.441599,
-              17.10542
-            ],
-            [
-              78.431044,
-              17.071912
+              78.3481,
+              17.108545
             ]
           ]
         ]
@@ -10721,6 +10936,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 16.9,
+        "areaKm2": 7.0,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -10768,6 +10984,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.0,
+        "areaKm2": 2.8,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -10815,6 +11032,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 22.8,
+        "areaKm2": 28.4,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -10866,6 +11084,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 18.0,
+        "areaKm2": 10.7,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -10913,6 +11132,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.4,
+        "areaKm2": 3.6,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -10968,6 +11188,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.0,
+        "areaKm2": 1.5,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -11019,6 +11240,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 6.7,
+        "areaKm2": 1.6,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -11070,6 +11292,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 11.5,
+        "areaKm2": 2.2,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -11117,6 +11340,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 20.1,
+        "areaKm2": 13.8,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -11125,6 +11349,10 @@
         "type": "Polygon",
         "coordinates": [
           [
+            [
+              78.595245,
+              17.212904
+            ],
             [
               78.59478,
               17.212658
@@ -11146,12 +11374,12 @@
               17.245
             ],
             [
-              78.600106,
-              17.215468
+              78.598844,
+              17.222022
             ],
             [
-              78.59478,
-              17.212658
+              78.595245,
+              17.212904
             ]
           ]
         ]
@@ -11168,6 +11396,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 20.9,
+        "areaKm2": 10.0,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -11223,6 +11452,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 15.3,
+        "areaKm2": 33.3,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -11278,6 +11508,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.1,
+        "areaKm2": 4.3,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -11329,6 +11560,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 12.4,
+        "areaKm2": 11.0,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -11380,6 +11612,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.9,
+        "areaKm2": 9.7,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -11435,6 +11668,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.3,
+        "areaKm2": 7.4,
         "outerZone": false,
         "clusterId": "hyderabad:east",
         "zone": "East"
@@ -11486,6 +11720,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 33.8,
+        "areaKm2": 53.2,
         "outerZone": true
       },
       "geometry": {
@@ -11535,6 +11770,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 5.1,
+        "areaKm2": 3.0,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -11590,6 +11826,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 61.9,
+        "areaKm2": 128.7,
         "outerZone": true,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -11645,6 +11882,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 9.6,
+        "areaKm2": 5.3,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -11696,6 +11934,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 7.0,
+        "areaKm2": 1.2,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -11743,6 +11982,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 23.3,
+        "areaKm2": 25.2,
         "outerZone": false,
         "clusterId": "hyderabad:south",
         "zone": "South"
@@ -11752,8 +11992,12 @@
         "coordinates": [
           [
             [
-              78.568664,
-              17.140339
+              78.580892,
+              17.174201
+            ],
+            [
+              78.557406,
+              17.147675
             ],
             [
               78.540852,
@@ -11772,8 +12016,8 @@
               17.212658
             ],
             [
-              78.568664,
-              17.140339
+              78.580892,
+              17.174201
             ]
           ]
         ]
@@ -11790,6 +12034,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 4.3,
+        "areaKm2": 3.2,
         "outerZone": false,
         "clusterId": "hyderabad:central",
         "zone": "Central"
@@ -11845,6 +12090,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 11.9,
+        "areaKm2": 5.3,
         "outerZone": false,
         "clusterId": "hyderabad:north",
         "zone": "North"
@@ -11896,6 +12142,7 @@
         "marketable": true,
         "source": "legacy_locality_centroid_voronoi",
         "distKm": 8.2,
+        "areaKm2": 4.5,
         "outerZone": false,
         "clusterId": "hyderabad:west",
         "zone": "West"
@@ -11946,6 +12193,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 245639412,
         "distKm": 44.4,
+        "areaKm2": 104.2,
         "contextOnly": true
       },
       "geometry": {
@@ -11953,32 +12201,36 @@
         "coordinates": [
           [
             [
-              78.266709,
-              17.06286
+              78.265777,
+              17.015155
             ],
             [
-              78.322529,
-              17.099213
+              78.265775,
+              17.015196
             ],
             [
-              78.396557,
-              17.057032
+              78.303466,
+              17.055562
             ],
             [
-              78.346773,
-              16.897221
+              78.379256,
+              17.057787
             ],
             [
-              78.24,
-              16.88
+              78.389228,
+              17.050178
             ],
             [
-              78.187612,
-              16.896119
+              78.391283,
+              17.040102
             ],
             [
-              78.266709,
-              17.06286
+              78.359105,
+              16.936808
+            ],
+            [
+              78.265777,
+              17.015155
             ]
           ]
         ]
@@ -11998,6 +12250,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 245639706,
         "distKm": 48.5,
+        "areaKm2": 76.2,
         "contextOnly": true
       },
       "geometry": {
@@ -12046,12 +12299,17 @@
         "sourceOsmType": "node",
         "sourceOsmId": 245640512,
         "distKm": 78.8,
+        "areaKm2": 59.9,
         "contextOnly": true
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
+            [
+              77.715422,
+              17.35586
+            ],
             [
               77.669273,
               17.430697
@@ -12065,16 +12323,12 @@
               17.364992
             ],
             [
-              77.746169,
-              17.308352
+              77.763738,
+              17.336446
             ],
             [
-              77.745007,
-              17.307883
-            ],
-            [
-              77.669273,
-              17.430697
+              77.715422,
+              17.35586
             ]
           ]
         ]
@@ -12094,6 +12348,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 245640522,
         "distKm": 56.7,
+        "areaKm2": 196.0,
         "contextOnly": true
       },
       "geometry": {
@@ -12142,6 +12397,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 245641025,
         "distKm": 50.8,
+        "areaKm2": 119.6,
         "contextOnly": true
       },
       "geometry": {
@@ -12190,6 +12446,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 571350232,
         "distKm": 22.2,
+        "areaKm2": 9.8,
         "contextOnly": true
       },
       "geometry": {
@@ -12238,6 +12495,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 571358646,
         "distKm": 35.1,
+        "areaKm2": 128.3,
         "contextOnly": true
       },
       "geometry": {
@@ -12265,12 +12523,12 @@
               17.229192
             ],
             [
-              78.732021,
-              17.281436
+              78.74393,
+              17.245239
             ],
             [
-              78.752543,
-              17.316675
+              78.780301,
+              17.331644
             ],
             [
               78.81771,
@@ -12298,6 +12556,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 660146124,
         "distKm": 19.6,
+        "areaKm2": 26.5,
         "contextOnly": true
       },
       "geometry": {
@@ -12342,6 +12601,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 660551588,
         "distKm": 24.6,
+        "areaKm2": 30.9,
         "contextOnly": true
       },
       "geometry": {
@@ -12398,6 +12658,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 660552232,
         "distKm": 26.7,
+        "areaKm2": 46.1,
         "contextOnly": true
       },
       "geometry": {
@@ -12409,8 +12670,12 @@
               17.351818
             ],
             [
-              78.752543,
-              17.316675
+              78.780301,
+              17.331644
+            ],
+            [
+              78.729786,
+              17.338771
             ],
             [
               78.709171,
@@ -12442,6 +12707,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 660553458,
         "distKm": 29.4,
+        "areaKm2": 56.5,
         "contextOnly": true
       },
       "geometry": {
@@ -12494,6 +12760,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 662734738,
         "distKm": 27.8,
+        "areaKm2": 96.1,
         "contextOnly": true
       },
       "geometry": {
@@ -12550,6 +12817,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 981868945,
         "distKm": 15.7,
+        "areaKm2": 20.1,
         "contextOnly": true
       },
       "geometry": {
@@ -12594,6 +12862,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 1291368180,
         "distKm": 54.0,
+        "areaKm2": 226.6,
         "contextOnly": true
       },
       "geometry": {
@@ -12654,6 +12923,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 1428934700,
         "distKm": 16.8,
+        "areaKm2": 6.3,
         "contextOnly": true
       },
       "geometry": {
@@ -12706,6 +12976,7 @@
         "sourceOsmType": "node",
         "sourceOsmId": 1428934704,
         "distKm": 16.2,
+        "areaKm2": 1.5,
         "contextOnly": true
       },
       "geometry": {
@@ -12746,6 +13017,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 70.0,
+        "areaKm2": 77.6,
         "contextOnly": true
       },
       "geometry": {
@@ -12790,12 +13062,17 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 71.3,
+        "areaKm2": 65.9,
         "contextOnly": true
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
+            [
+              77.763738,
+              17.336446
+            ],
             [
               77.78159,
               17.364992
@@ -12821,12 +13098,12 @@
               17.297914
             ],
             [
-              77.746169,
-              17.308352
+              77.773122,
+              17.304159
             ],
             [
-              77.78159,
-              17.364992
+              77.763738,
+              17.336446
             ]
           ]
         ]
@@ -12846,6 +13123,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 70.5,
+        "areaKm2": 114.5,
         "contextOnly": true
       },
       "geometry": {
@@ -12902,6 +13180,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 67.3,
+        "areaKm2": 55.1,
         "contextOnly": true
       },
       "geometry": {
@@ -12946,6 +13225,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 51.5,
+        "areaKm2": 48.6,
         "contextOnly": true
       },
       "geometry": {
@@ -12994,6 +13274,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 59.4,
+        "areaKm2": 224.7,
         "contextOnly": true
       },
       "geometry": {
@@ -13042,6 +13323,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 53.9,
+        "areaKm2": 112.2,
         "contextOnly": true
       },
       "geometry": {
@@ -13090,6 +13372,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 43.3,
+        "areaKm2": 122.0,
         "contextOnly": true
       },
       "geometry": {
@@ -13097,8 +13380,12 @@
         "coordinates": [
           [
             [
-              78.482572,
-              17.048874
+              78.490151,
+              17.015645
+            ],
+            [
+              78.53856,
+              17.055334
             ],
             [
               78.547786,
@@ -13117,8 +13404,8 @@
               16.923728
             ],
             [
-              78.482572,
-              17.048874
+              78.490151,
+              17.015645
             ]
           ]
         ]
@@ -13138,6 +13425,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 44.9,
+        "areaKm2": 178.5,
         "contextOnly": true
       },
       "geometry": {
@@ -13145,28 +13433,28 @@
         "coordinates": [
           [
             [
-              78.396557,
-              17.057032
+              78.359105,
+              16.936808
             ],
             [
-              78.431044,
-              17.071912
+              78.391283,
+              17.040102
             ],
             [
-              78.482572,
-              17.048874
+              78.490151,
+              17.015645
             ],
             [
               78.511115,
               16.923728
             ],
             [
-              78.346773,
-              16.897221
+              78.359755,
+              16.899315
             ],
             [
-              78.396557,
-              17.057032
+              78.359105,
+              16.936808
             ]
           ]
         ]
@@ -13186,6 +13474,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 46.7,
+        "areaKm2": 55.6,
         "contextOnly": true
       },
       "geometry": {
@@ -13193,8 +13482,12 @@
         "coordinates": [
           [
             [
-              78.107131,
-              17.112541
+              78.112291,
+              17.115433
+            ],
+            [
+              78.100605,
+              17.116174
             ],
             [
               78.098959,
@@ -13213,8 +13506,8 @@
               17.1493
             ],
             [
-              78.107131,
-              17.112541
+              78.112291,
+              17.115433
             ]
           ]
         ]
@@ -13234,6 +13527,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 19.9,
+        "areaKm2": 19.3,
         "contextOnly": true
       },
       "geometry": {
@@ -13286,6 +13580,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 17.8,
+        "areaKm2": 11.1,
         "contextOnly": true
       },
       "geometry": {
@@ -13338,6 +13633,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 24.5,
+        "areaKm2": 6.2,
         "contextOnly": true
       },
       "geometry": {
@@ -13345,32 +13641,24 @@
         "coordinates": [
           [
             [
-              78.646811,
-              17.129719
+              78.614083,
+              17.191243
             ],
             [
-              78.588155,
-              17.123472
-            ],
-            [
-              78.568664,
-              17.140339
+              78.580892,
+              17.174201
             ],
             [
               78.59478,
               17.212658
             ],
             [
-              78.600106,
-              17.215468
+              78.595245,
+              17.212904
             ],
             [
-              78.60422,
-              17.21326
-            ],
-            [
-              78.646811,
-              17.129719
+              78.614083,
+              17.191243
             ]
           ]
         ]
@@ -13390,6 +13678,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 25.0,
+        "areaKm2": 38.5,
         "contextOnly": true
       },
       "geometry": {
@@ -13397,16 +13686,16 @@
         "coordinates": [
           [
             [
-              78.671935,
-              17.126701
+              78.67668,
+              17.140268
             ],
             [
-              78.646811,
-              17.129719
+              78.618009,
+              17.189413
             ],
             [
-              78.60422,
-              17.21326
+              78.628108,
+              17.22061
             ],
             [
               78.652509,
@@ -13417,8 +13706,8 @@
               17.174917
             ],
             [
-              78.671935,
-              17.126701
+              78.67668,
+              17.140268
             ]
           ]
         ]
@@ -13438,6 +13727,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 19.1,
+        "areaKm2": 17.6,
         "contextOnly": true
       },
       "geometry": {
@@ -13482,12 +13772,17 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 26.3,
+        "areaKm2": 80.0,
         "contextOnly": true
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
+            [
+              78.74393,
+              17.245239
+            ],
             [
               78.749209,
               17.229192
@@ -13509,12 +13804,12 @@
               17.288385
             ],
             [
-              78.732021,
-              17.281436
+              78.682085,
+              17.285994
             ],
             [
-              78.749209,
-              17.229192
+              78.74393,
+              17.245239
             ]
           ]
         ]
@@ -13534,6 +13829,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 37.6,
+        "areaKm2": 209.8,
         "contextOnly": true
       },
       "geometry": {
@@ -13541,8 +13837,12 @@
         "coordinates": [
           [
             [
-              78.671935,
-              17.126701
+              78.675215,
+              17.122492
+            ],
+            [
+              78.67668,
+              17.140268
             ],
             [
               78.688798,
@@ -13569,8 +13869,8 @@
               17.036699
             ],
             [
-              78.671935,
-              17.126701
+              78.675215,
+              17.122492
             ]
           ]
         ]
@@ -13590,6 +13890,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 53.5,
+        "areaKm2": 133.4,
         "contextOnly": true
       },
       "geometry": {
@@ -13638,6 +13939,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 42.9,
+        "areaKm2": 202.8,
         "contextOnly": true
       },
       "geometry": {
@@ -13694,6 +13996,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 43.6,
+        "areaKm2": 103.1,
         "contextOnly": true
       },
       "geometry": {
@@ -13750,6 +14053,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 32.1,
+        "areaKm2": 130.7,
         "contextOnly": true
       },
       "geometry": {
@@ -13802,6 +14106,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 31.6,
+        "areaKm2": 23.3,
         "contextOnly": true
       },
       "geometry": {
@@ -13854,6 +14159,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 21.1,
+        "areaKm2": 8.1,
         "contextOnly": true
       },
       "geometry": {
@@ -13906,6 +14212,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 26.8,
+        "areaKm2": 19.4,
         "contextOnly": true
       },
       "geometry": {
@@ -13962,6 +14269,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 36.9,
+        "areaKm2": 30.3,
         "contextOnly": true
       },
       "geometry": {
@@ -14006,6 +14314,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 32.1,
+        "areaKm2": 8.5,
         "contextOnly": true
       },
       "geometry": {
@@ -14050,6 +14359,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 25.6,
+        "areaKm2": 9.1,
         "contextOnly": true
       },
       "geometry": {
@@ -14102,6 +14412,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 68.0,
+        "areaKm2": 182.4,
         "contextOnly": true
       },
       "geometry": {
@@ -14154,6 +14465,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 48.0,
+        "areaKm2": 191.1,
         "contextOnly": true
       },
       "geometry": {
@@ -14214,6 +14526,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 46.3,
+        "areaKm2": 110.1,
         "contextOnly": true
       },
       "geometry": {
@@ -14262,6 +14575,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 43.6,
+        "areaKm2": 77.0,
         "contextOnly": true
       },
       "geometry": {
@@ -14306,6 +14620,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 47.1,
+        "areaKm2": 28.6,
         "contextOnly": true
       },
       "geometry": {
@@ -14313,8 +14628,16 @@
         "coordinates": [
           [
             [
-              78.107131,
-              17.112541
+              78.182438,
+              17.107007
+            ],
+            [
+              78.144807,
+              17.093702
+            ],
+            [
+              78.112291,
+              17.115433
             ],
             [
               78.172723,
@@ -14325,16 +14648,12 @@
               17.121122
             ],
             [
-              78.194822,
-              17.109154
+              78.195505,
+              17.118163
             ],
             [
-              78.149682,
-              17.05082
-            ],
-            [
-              78.107131,
-              17.112541
+              78.182438,
+              17.107007
             ]
           ]
         ]
@@ -14354,6 +14673,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 54.1,
+        "areaKm2": 192.0,
         "contextOnly": true
       },
       "geometry": {
@@ -14369,16 +14689,20 @@
               17.117091
             ],
             [
-              78.107131,
-              17.112541
+              78.100605,
+              17.116174
             ],
             [
-              78.149682,
-              17.05082
+              78.121953,
+              17.006406
             ],
             [
-              78.131802,
-              16.913292
+              78.121844,
+              17.003495
+            ],
+            [
+              78.055244,
+              16.936848
             ],
             [
               77.98,
@@ -14410,6 +14734,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 38.4,
+        "areaKm2": 210.3,
         "contextOnly": true
       },
       "geometry": {
@@ -14421,16 +14746,12 @@
               17.056398
             ],
             [
-              78.588155,
-              17.123472
+              78.584276,
+              17.117028
             ],
             [
-              78.646811,
-              17.129719
-            ],
-            [
-              78.671935,
-              17.126701
+              78.675215,
+              17.122492
             ],
             [
               78.742059,
@@ -14462,6 +14783,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 30.8,
+        "areaKm2": 79.7,
         "contextOnly": true
       },
       "geometry": {
@@ -14469,36 +14791,32 @@
         "coordinates": [
           [
             [
-              78.588155,
-              17.123472
+              78.584276,
+              17.117028
             ],
             [
               78.547786,
               17.056398
             ],
             [
-              78.482572,
-              17.048874
+              78.53856,
+              17.055334
             ],
             [
-              78.431044,
-              17.071912
-            ],
-            [
-              78.441599,
-              17.10542
+              78.45977,
+              17.115131
             ],
             [
               78.540852,
               17.158461
             ],
             [
-              78.568664,
-              17.140339
+              78.557406,
+              17.147675
             ],
             [
-              78.588155,
-              17.123472
+              78.584276,
+              17.117028
             ]
           ]
         ]
@@ -14518,6 +14836,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 45.6,
+        "areaKm2": 153.8,
         "contextOnly": true
       },
       "geometry": {
@@ -14570,6 +14889,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 45.5,
+        "areaKm2": 78.1,
         "contextOnly": true
       },
       "geometry": {
@@ -14614,6 +14934,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 60.6,
+        "areaKm2": 204.3,
         "contextOnly": true
       },
       "geometry": {
@@ -14674,6 +14995,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 57.8,
+        "areaKm2": 181.1,
         "contextOnly": true
       },
       "geometry": {
@@ -14722,6 +15044,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 37.5,
+        "areaKm2": 72.5,
         "contextOnly": true
       },
       "geometry": {
@@ -14774,6 +15097,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 29.0,
+        "areaKm2": 12.7,
         "contextOnly": true
       },
       "geometry": {
@@ -14826,6 +15150,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 45.1,
+        "areaKm2": 156.4,
         "contextOnly": true
       },
       "geometry": {
@@ -14874,6 +15199,7 @@
         "sourceOsmType": null,
         "sourceOsmId": null,
         "distKm": 31.7,
+        "areaKm2": 52.7,
         "contextOnly": true
       },
       "geometry": {
@@ -14903,6 +15229,818 @@
             [
               78.867895,
               17.382753
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-batasingaram",
+      "properties": {
+        "slug": "ctx-batasingaram",
+        "name": "Batasingaram",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 27.1,
+        "areaKm2": 57.7,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.780301,
+              17.331644
+            ],
+            [
+              78.74393,
+              17.245239
+            ],
+            [
+              78.682085,
+              17.285994
+            ],
+            [
+              78.729786,
+              17.338771
+            ],
+            [
+              78.780301,
+              17.331644
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-pocharam-ibrahimpatnam",
+      "properties": {
+        "slug": "ctx-pocharam-ibrahimpatnam",
+        "name": "Pocharam Ibrahimpatnam",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 26.2,
+        "areaKm2": 66.1,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.675215,
+              17.122492
+            ],
+            [
+              78.584276,
+              17.117028
+            ],
+            [
+              78.557406,
+              17.147675
+            ],
+            [
+              78.580892,
+              17.174201
+            ],
+            [
+              78.614083,
+              17.191243
+            ],
+            [
+              78.618009,
+              17.189413
+            ],
+            [
+              78.67668,
+              17.140268
+            ],
+            [
+              78.675215,
+              17.122492
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-sheriguda",
+      "properties": {
+        "slug": "ctx-sheriguda",
+        "name": "Sheriguda",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 24.0,
+        "areaKm2": 7.5,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.618009,
+              17.189413
+            ],
+            [
+              78.614083,
+              17.191243
+            ],
+            [
+              78.595245,
+              17.212904
+            ],
+            [
+              78.598844,
+              17.222022
+            ],
+            [
+              78.628108,
+              17.22061
+            ],
+            [
+              78.618009,
+              17.189413
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-mansanpally",
+      "properties": {
+        "slug": "ctx-mansanpally",
+        "name": "Mansanpally",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 82.3,
+        "areaKm2": 92.3,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              77.715422,
+              17.35586
+            ],
+            [
+              77.763738,
+              17.336446
+            ],
+            [
+              77.773122,
+              17.304159
+            ],
+            [
+              77.711261,
+              17.223109
+            ],
+            [
+              77.664737,
+              17.292894
+            ],
+            [
+              77.715422,
+              17.35586
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-kandukur-rangareddy",
+      "properties": {
+        "slug": "ctx-kandukur-rangareddy",
+        "name": "Kandukur Rangareddy",
+        "place": "mandal",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 36.1,
+        "areaKm2": 96.6,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.53856,
+              17.055334
+            ],
+            [
+              78.490151,
+              17.015645
+            ],
+            [
+              78.391283,
+              17.040102
+            ],
+            [
+              78.389228,
+              17.050178
+            ],
+            [
+              78.452807,
+              17.115617
+            ],
+            [
+              78.45977,
+              17.115131
+            ],
+            [
+              78.53856,
+              17.055334
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-chegur",
+      "properties": {
+        "slug": "ctx-chegur",
+        "name": "Chegur",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 35.9,
+        "areaKm2": 43.6,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.273141,
+              17.149295
+            ],
+            [
+              78.239151,
+              17.14218
+            ],
+            [
+              78.186457,
+              17.230801
+            ],
+            [
+              78.302624,
+              17.168039
+            ],
+            [
+              78.273141,
+              17.149295
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-burgula",
+      "properties": {
+        "slug": "ctx-burgula",
+        "name": "Burgula",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 54.6,
+        "areaKm2": 177.6,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.121844,
+              17.003495
+            ],
+            [
+              78.156217,
+              17.017047
+            ],
+            [
+              78.17502,
+              17.020066
+            ],
+            [
+              78.229871,
+              16.992919
+            ],
+            [
+              78.235857,
+              16.881275
+            ],
+            [
+              78.055244,
+              16.936848
+            ],
+            [
+              78.121844,
+              17.003495
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-mekaguda",
+      "properties": {
+        "slug": "ctx-mekaguda",
+        "name": "Mekaguda",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 38.4,
+        "areaKm2": 40.6,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.275924,
+              17.076192
+            ],
+            [
+              78.257531,
+              17.078797
+            ],
+            [
+              78.273141,
+              17.149295
+            ],
+            [
+              78.302624,
+              17.168039
+            ],
+            [
+              78.306187,
+              17.168661
+            ],
+            [
+              78.327016,
+              17.131431
+            ],
+            [
+              78.275924,
+              17.076192
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-inmulnarva",
+      "properties": {
+        "slug": "ctx-inmulnarva",
+        "name": "Inmulnarva",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 38.9,
+        "areaKm2": 50.7,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.379256,
+              17.057787
+            ],
+            [
+              78.303466,
+              17.055562
+            ],
+            [
+              78.275924,
+              17.076192
+            ],
+            [
+              78.327016,
+              17.131431
+            ],
+            [
+              78.3481,
+              17.108545
+            ],
+            [
+              78.379256,
+              17.057787
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-mogiligidda",
+      "properties": {
+        "slug": "ctx-mogiligidda",
+        "name": "Mogiligidda",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 50.9,
+        "areaKm2": 27.0,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.121953,
+              17.006406
+            ],
+            [
+              78.100605,
+              17.116174
+            ],
+            [
+              78.112291,
+              17.115433
+            ],
+            [
+              78.144807,
+              17.093702
+            ],
+            [
+              78.121953,
+              17.006406
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-kammadanam",
+      "properties": {
+        "slug": "ctx-kammadanam",
+        "name": "Kammadanam",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 48.6,
+        "areaKm2": 34.1,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.229871,
+              16.992919
+            ],
+            [
+              78.17502,
+              17.020066
+            ],
+            [
+              78.194299,
+              17.036223
+            ],
+            [
+              78.242535,
+              17.050767
+            ],
+            [
+              78.265775,
+              17.015196
+            ],
+            [
+              78.265777,
+              17.015155
+            ],
+            [
+              78.229871,
+              16.992919
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-kondannaguda",
+      "properties": {
+        "slug": "ctx-kondannaguda",
+        "name": "Kondannaguda",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 43.5,
+        "areaKm2": 25.9,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.275924,
+              17.076192
+            ],
+            [
+              78.303466,
+              17.055562
+            ],
+            [
+              78.265775,
+              17.015196
+            ],
+            [
+              78.242535,
+              17.050767
+            ],
+            [
+              78.248524,
+              17.074571
+            ],
+            [
+              78.257531,
+              17.078797
+            ],
+            [
+              78.275924,
+              17.076192
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-madhurapur-shadnagar",
+      "properties": {
+        "slug": "ctx-madhurapur-shadnagar",
+        "name": "Madhurapur Shadnagar",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 51.3,
+        "areaKm2": 140.2,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.229871,
+              16.992919
+            ],
+            [
+              78.265777,
+              17.015155
+            ],
+            [
+              78.359105,
+              16.936808
+            ],
+            [
+              78.359755,
+              16.899315
+            ],
+            [
+              78.24,
+              16.88
+            ],
+            [
+              78.235857,
+              16.881275
+            ],
+            [
+              78.229871,
+              16.992919
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-elikatta-south",
+      "properties": {
+        "slug": "ctx-elikatta-south",
+        "name": "Elikatta South",
+        "place": "locality",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 48.8,
+        "areaKm2": 34.6,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.156217,
+              17.017047
+            ],
+            [
+              78.121844,
+              17.003495
+            ],
+            [
+              78.121953,
+              17.006406
+            ],
+            [
+              78.144807,
+              17.093702
+            ],
+            [
+              78.182438,
+              17.107007
+            ],
+            [
+              78.156217,
+              17.017047
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-pargi-road-shadnagar",
+      "properties": {
+        "slug": "ctx-pargi-road-shadnagar",
+        "name": "Pargi Road Shadnagar",
+        "place": "locality",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 47.4,
+        "areaKm2": 30.7,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.17502,
+              17.020066
+            ],
+            [
+              78.156217,
+              17.017047
+            ],
+            [
+              78.182438,
+              17.107007
+            ],
+            [
+              78.195505,
+              17.118163
+            ],
+            [
+              78.207389,
+              17.101062
+            ],
+            [
+              78.194299,
+              17.036223
+            ],
+            [
+              78.17502,
+              17.020066
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ctx-mansanpally-maheshwaram",
+      "properties": {
+        "slug": "ctx-mansanpally-maheshwaram",
+        "name": "Mansanpally Maheshwaram",
+        "place": "village",
+        "boundaryKind": "place_context_cell",
+        "boundaryConfidence": "approximate",
+        "marketable": false,
+        "source": "supplemental_backlog_centroid_voronoi",
+        "sourceOsmType": null,
+        "sourceOsmId": null,
+        "distKm": 29.3,
+        "areaKm2": 77.2,
+        "contextOnly": true
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              78.389228,
+              17.050178
+            ],
+            [
+              78.379256,
+              17.057787
+            ],
+            [
+              78.3481,
+              17.108545
+            ],
+            [
+              78.413473,
+              17.169311
+            ],
+            [
+              78.442974,
+              17.143793
+            ],
+            [
+              78.452807,
+              17.115617
+            ],
+            [
+              78.389228,
+              17.050178
             ]
           ]
         ]

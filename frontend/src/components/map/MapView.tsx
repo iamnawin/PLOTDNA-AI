@@ -295,13 +295,19 @@ export default function MapView() {
     if (selectedCitySlug === 'hyderabad') {
       const areaBySlug: Record<string, typeof areas[0]> = Object.fromEntries(areas.map(a => [a.slug, a]))
       const features = HYDERABAD_COVERAGE.features.map(feature => {
+        const coverageProps = feature.properties as {
+          contextOnly?: boolean
+          outerZone?: boolean
+          boundaryKind?: string
+        }
         const slug = feature.id as string
         const area = areaBySlug[slug]
         const hasScore = !!area
         const tierMatch = highlightTier === null || (area ? getScoreLabel(area.score) === highlightTier : false)
+        const isContext = !!coverageProps.contextOnly
         const color = hasScore
           ? (tierMatch ? getScoreColor(area!.score) : '#252535')
-          : '#3b82f6' // bright blue for coverage cells with no score data yet
+          : '#94a3b8'
         return {
           type: 'Feature' as const,
           id: slug,
@@ -314,8 +320,9 @@ export default function MapView() {
             hovered:   hoveredSlug === slug ? 1 : 0,
             dimmed:    hasScore && !tierMatch ? 1 : 0,
             noData:    !hasScore ? 1 : 0,
-            outerZone: feature.properties.outerZone ? 1 : 0,
-            boundaryKind: 'generated_market_cell',
+            contextOnly: isContext ? 1 : 0,
+            outerZone: coverageProps.outerZone ? 1 : 0,
+            boundaryKind: coverageProps.boundaryKind ?? 'generated_market_cell',
           },
         }
       })
@@ -433,7 +440,8 @@ export default function MapView() {
               'fill-opacity': [
                 'case',
                 ['==', ['get', 'dimmed'],    1], 0.04,
-                ['==', ['get', 'noData'],    1], 0.38,
+                ['==', ['get', 'contextOnly'], 1], 0.12,
+                ['==', ['get', 'noData'],    1], 0.16,
                 ['==', ['get', 'selected'],  1], 0.48,
                 ['==', ['get', 'hovered'],   1], 0.36,
                 0.22,
@@ -451,12 +459,14 @@ export default function MapView() {
                 'case',
                 ['==', ['get', 'selected'], 1], 2.5,
                 ['==', ['get', 'hovered'],  1], 2.0,
+                ['==', ['get', 'contextOnly'], 1], 0.8,
                 1.2,
               ],
               'line-opacity': [
                 'case',
                 ['==', ['get', 'dimmed'],    1], 0.15,
-                ['==', ['get', 'noData'],    1], 0.60,
+                ['==', ['get', 'contextOnly'], 1], 0.34,
+                ['==', ['get', 'noData'],    1], 0.45,
                 0.9,
               ],
             }}

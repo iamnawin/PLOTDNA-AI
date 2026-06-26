@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "source": "PlotDNA Hyderabad uncovered-area backlog approximate centroids",
+  "source": "PlotDNA Hyderabad uncovered-area backlog approximate centroids with OSM/Nominatim coordinate lookup",
   "sourceDoc": "docs/HYDERABAD_UNCOVERED_AREAS.md",
   "retrievedAt": "2026-06-25",
   "license": "internal-derived",
-  "note": "Approximate named centroids used to split oversized outer generated cells. Replace with sourced administrative/village polygons when available.",
+  "note": "Approximate named centroids used to split oversized outer generated cells. Several coordinates were checked against OSM/Nominatim place search. Replace with sourced administrative/village polygons when available.",
   "seeds": [
     { "slug": "ctx-doma", "name": "Doma", "place": "village", "center": [17.236, 77.846] },
     { "slug": "ctx-pudur-vikarabad", "name": "Pudur Vikarabad", "place": "village", "center": [17.343, 77.817] },
@@ -51,6 +51,26 @@
     { "slug": "ctx-narsapur-road", "name": "Narsapur Road", "place": "locality", "center": [17.700, 78.360] },
     { "slug": "ctx-shivampet-east", "name": "Shivampet East", "place": "locality", "center": [17.640, 78.430] },
     { "slug": "ctx-bibinagar-east", "name": "Bibinagar East", "place": "locality", "center": [17.480, 78.900] },
-    { "slug": "ctx-ghatkesar-east", "name": "Ghatkesar East", "place": "locality", "center": [17.440, 78.780] }
+    { "slug": "ctx-ghatkesar-east", "name": "Ghatkesar East", "place": "locality", "center": [17.440, 78.780] },
+    { "slug": "ctx-tupran", "name": "Tupran", "place": "town", "center": [17.8406731, 78.4777406] },
+    { "slug": "ctx-kowdipally", "name": "Kowdipally", "place": "mandal", "center": [17.8620245, 78.2077105] },
+    { "slug": "ctx-jharasangam", "name": "Jharasangam", "place": "village", "center": [17.7636480, 77.7135994] },
+    { "slug": "ctx-kohir", "name": "Kohir", "place": "mandal", "center": [17.5996678, 77.7169218] },
+    { "slug": "ctx-batasingaram", "name": "Batasingaram", "place": "village", "center": [17.3017369, 78.7270758] },
+    { "slug": "ctx-pocharam-ibrahimpatnam", "name": "Pocharam Ibrahimpatnam", "place": "village", "center": [17.1766905, 78.6024034] },
+    { "slug": "ctx-sheriguda", "name": "Sheriguda", "place": "village", "center": [17.2090633, 78.6187488] },
+    { "slug": "ctx-mansanpally", "name": "Mansanpally", "place": "village", "center": [17.3155416, 77.7146470] },
+    { "slug": "ctx-kandukur-rangareddy", "name": "Kandukur Rangareddy", "place": "mandal", "center": [17.0600247, 78.4789097] },
+    { "slug": "ctx-chegur", "name": "Chegur", "place": "village", "center": [17.1756013, 78.2296717] },
+    { "slug": "ctx-burgula", "name": "Burgula", "place": "village", "center": [16.9760405, 78.2027042] },
+    { "slug": "ctx-mekaguda", "name": "Mekaguda", "place": "village", "center": [17.1005709, 78.2813500] },
+    { "slug": "ctx-inmulnarva", "name": "Inmulnarva", "place": "village", "center": [17.0842342, 78.3004851] },
+    { "slug": "ctx-mogiligidda", "name": "Mogiligidda", "place": "village", "center": [17.0861197, 78.1240904] },
+    { "slug": "ctx-kammadanam", "name": "Kammadanam", "place": "village", "center": [17.0239701, 78.2284028] },
+    { "slug": "ctx-kondannaguda", "name": "Kondannaguda", "place": "village", "center": [17.0513458, 78.2737970] },
+    { "slug": "ctx-madhurapur-shadnagar", "name": "Madhurapur Shadnagar", "place": "village", "center": [16.9788118, 78.2586986] },
+    { "slug": "ctx-elikatta-south", "name": "Elikatta South", "place": "locality", "center": [17.0776054, 78.1593238] },
+    { "slug": "ctx-pargi-road-shadnagar", "name": "Pargi Road Shadnagar", "place": "locality", "center": [17.0703486, 78.1862969] },
+    { "slug": "ctx-mansanpally-maheshwaram", "name": "Mansanpally Maheshwaram", "place": "village", "center": [17.1368136, 78.3932857] }
   ]
 }

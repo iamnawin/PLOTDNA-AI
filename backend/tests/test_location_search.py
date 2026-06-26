@@ -100,9 +100,9 @@ class LocationSearchRouteTests(unittest.TestCase):
         result = response.json()["results"][0]
         self.assertEqual(result["source"], "geocoder")
         self.assertEqual(result["precision"], "context_area")
-        self.assertEqual(result["localitySlug"], "osm-sangam-245639412")
+        self.assertEqual(result["localitySlug"], "ctx-madhurapur-shadnagar")
         self.assertEqual(result["resolution"]["tier"], "context")
-        self.assertEqual(result["resolution"]["resolvedPlaceSlug"], "osm-sangam-245639412")
+        self.assertEqual(result["resolution"]["resolvedPlaceSlug"], "ctx-madhurapur-shadnagar")
         self.assertIsNone(result["resolution"]["analysisSlug"])
         self.assertIsNone(result["resolution"]["catalogArea"])
         self.assertEqual(result["resolution"]["boundaryKind"], "place_context_cell")

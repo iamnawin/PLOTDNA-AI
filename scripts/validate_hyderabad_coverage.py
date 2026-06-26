@@ -87,6 +87,29 @@ def main() -> None:
     if missing_catalog:
         fail(f"missing catalog records for {', '.join(missing_catalog)}")
 
+    missing_area = [
+        feature["properties"]["slug"]
+        for feature in coverage["features"]
+        if "areaKm2" not in feature["properties"]
+    ]
+    if missing_area:
+        fail(f"coverage cells missing areaKm2: {', '.join(missing_area[:10])}")
+
+    oversized_context = sorted(
+        (
+            (feature["properties"]["areaKm2"], feature["properties"]["slug"])
+            for feature in coverage["features"]
+            if feature["properties"].get("contextOnly")
+            and feature["properties"]["areaKm2"] > 250
+        ),
+        reverse=True,
+    )
+    if oversized_context:
+        fail(
+            "context cells over 250 km2: "
+            + ", ".join(f"{slug}={area:.1f}" for area, slug in oversized_context[:10])
+        )
+
     projected_boundary = [project(lng, lat) for lng, lat in boundary_ring]
     projected_cells = [[project(lng, lat) for lng, lat in ring] for ring in cell_rings]
     sample_step_km = 1.0
@@ -126,6 +149,11 @@ def main() -> None:
         "overlapSampleCount": 0,
         "missingAliasCount": 0,
         "missingCatalogCount": 0,
+        "maxContextAreaKm2": max(
+            feature["properties"]["areaKm2"]
+            for feature in coverage["features"]
+            if feature["properties"].get("contextOnly")
+        ),
     }
     ARTIFACT_PATH.parent.mkdir(parents=True, exist_ok=True)
     ARTIFACT_PATH.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")

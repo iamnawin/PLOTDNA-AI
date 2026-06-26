@@ -266,6 +266,7 @@ def main() -> None:
     for locality, seed in zip(active, locality_seeds):
         cell_xy = voronoi_cell(seed, all_seeds, boundary)
         cell_lat_lng = [to_lat_lng(x, y) for x, y in cell_xy]
+        area_km2 = round(polygon_area_km2(cell_xy), 1)
         cell_by_slug[locality["slug"]] = cell_lat_lng
         cluster = cluster_by_slug.get(locality["slug"], {})
         dist_km = round(haversine_km(locality["center"][0], locality["center"][1]), 1)
@@ -281,6 +282,7 @@ def main() -> None:
                     "marketable": True,
                     "source": "legacy_locality_centroid_voronoi",
                     "distKm": dist_km,
+                    "areaKm2": area_km2,
                     "outerZone": dist_km > INNER_DISPLAY_RADIUS_KM,
                     **cluster,
                 },
@@ -294,6 +296,7 @@ def main() -> None:
     for place, seed in zip(context_places, context_seeds):
         cell_xy = voronoi_cell(seed, all_seeds, boundary)
         cell_lat_lng = [to_lat_lng(x, y) for x, y in cell_xy]
+        area_km2 = round(polygon_area_km2(cell_xy), 1)
         features.append(
             {
                 "type": "Feature",
@@ -309,6 +312,7 @@ def main() -> None:
                     "sourceOsmType": place.get("osm", {}).get("type"),
                     "sourceOsmId": place.get("osm", {}).get("id"),
                     "distKm": round(haversine_km(place["center"][0], place["center"][1]), 1),
+                    "areaKm2": area_km2,
                     "contextOnly": True,
                 },
                 "geometry": {

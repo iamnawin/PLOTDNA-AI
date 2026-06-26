@@ -44,6 +44,11 @@ const coverageSlugs = new Set(coverage.features
   .filter(Boolean))
 const missingAliases = [...coverageSlugs].filter(slug => !Object.hasOwn(aliases, slug))
 assert(missingAliases.length === 0, `coverage cells missing aliases: ${missingAliases.join(', ')}`)
+const contextFeatures = coverage.features.filter(feature => feature.properties?.contextOnly)
+const missingAreaMetric = coverage.features.filter(feature => typeof feature.properties?.areaKm2 !== 'number')
+const oversizedContext = contextFeatures.filter(feature => feature.properties.areaKm2 > 250)
+assert(missingAreaMetric.length === 0, 'all Hyderabad coverage cells must include areaKm2')
+assert(oversizedContext.length === 0, `context-only cells over 250 sq km: ${oversizedContext.map(feature => `${feature.properties.slug}:${feature.properties.areaKm2}`).join(', ')}`)
 assert(productionHelper.includes('hyderabad'), 'city production helper must include a Hyderabad override')
 assert(productionHelper.includes('Flagship production city'), 'Hyderabad must be labeled as the flagship production city')
 
@@ -64,5 +69,7 @@ assert(missingSourceDecks.length === 0, `priority slugs missing area-specific so
 assert(mapView.includes('special-use-fill'), 'map must render classified Hyderabad special-use areas')
 assert(mapView.includes('generated_market_cell'), 'map must visibly distinguish broad generated coverage cells')
 assert(mapView.includes('closePolygonRing(area.polygon)'), 'MapLibre coverage polygons must use closed GeoJSON rings')
+assert(!mapView.includes(': 0.38'), 'context/no-data polygons must not use the old high-opacity fill')
+assert(!mapView.includes("'#3b82f6' // bright blue"), 'context/no-data polygons must not render as bright blue primary coverage')
 
 console.log(`Hyderabad production check passed: ${localities.length} localities, ${coverage.features.length} contiguous cells, ${confidenceMentions} confidence records, ${prioritySlugs.length} verified priority slugs.`)

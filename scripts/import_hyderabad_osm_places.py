@@ -18,10 +18,13 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 CITY_DIR = REPO_ROOT / "data" / "cities" / "hyderabad"
 OUTPUT_PATH = CITY_DIR / "osm-place-seeds.json"
 OVERPASS_URLS = [
-    "https://overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.openstreetmap.ru/api/interpreter",
 ]
 BBOX = (16.75, 77.55, 18.05, 79.15)
+GRID_ROWS = 8
+GRID_COLS = 8
 
 
 def load_json(path: Path):
@@ -54,13 +57,17 @@ def point_in_ring(lng: float, lat: float, ring: list[list[float]]) -> bool:
 
 def bbox_tiles() -> list[tuple[float, float, float, float]]:
     south, west, north, east = BBOX
-    mid_lat = (south + north) / 2
-    mid_lng = (west + east) / 2
+    lat_step = (north - south) / GRID_ROWS
+    lng_step = (east - west) / GRID_COLS
     return [
-        (south, west, mid_lat, mid_lng),
-        (south, mid_lng, mid_lat, east),
-        (mid_lat, west, north, mid_lng),
-        (mid_lat, mid_lng, north, east),
+        (
+            south + row * lat_step,
+            west + col * lng_step,
+            south + (row + 1) * lat_step,
+            west + (col + 1) * lng_step,
+        )
+        for row in range(GRID_ROWS)
+        for col in range(GRID_COLS)
     ]
 
 
@@ -71,7 +78,7 @@ def build_query(tile: tuple[float, float, float, float]) -> str:
 (
   node["place"~"^(town|village|suburb|neighbourhood|locality|hamlet)$"]({bbox});
 );
-out tags center 2500;"""
+out tags center;"""
 
 
 def fetch_overpass_tile(tile: tuple[float, float, float, float]) -> dict:
@@ -87,7 +94,7 @@ def fetch_overpass_tile(tile: tuple[float, float, float, float]) -> dict:
             },
         )
         try:
-            with urllib.request.urlopen(request, timeout=90) as response:
+            with urllib.request.urlopen(request, timeout=45) as response:
                 return json.load(response)
         except Exception as exc:
             last_error = exc
@@ -105,8 +112,15 @@ def main() -> None:
     seen_names: set[str] = set()
     seeds: list[dict] = []
     elements: list[dict] = []
+    failed_tiles: list[tuple[float, float, float, float]] = []
     for tile in bbox_tiles():
-        elements.extend(fetch_overpass_tile(tile).get("elements", []))
+        try:
+            elements.extend(fetch_overpass_tile(tile).get("elements", []))
+        except RuntimeError:
+            failed_tiles.append(tile)
+
+    if not elements:
+        raise RuntimeError("Overpass import returned no place elements")
 
     for element in elements:
         tags = element.get("tags", {})
@@ -148,6 +162,8 @@ def main() -> None:
         "license": "ODbL-1.0",
         "note": "Place centroids used only to subdivide broad generated Hyderabad coverage cells; not legal boundaries.",
         "bbox": list(BBOX),
+        "tileGrid": [GRID_ROWS, GRID_COLS],
+        "failedTileCount": len(failed_tiles),
         "count": len(seeds),
         "seeds": seeds,
     }

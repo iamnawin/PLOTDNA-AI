@@ -15,11 +15,11 @@
     "notAdministrativeBoundary": true
   },
   "coverage": {
-    "selectableCellCount": 294,
+    "selectableCellCount": 310,
     "marketAreaCellCount": 235,
-    "contextCellCount": 59,
-    "selectableAreaKm2": 11947.086,
-    "areaCoverageRatio": 1.00000018,
+    "contextCellCount": 75,
+    "selectableAreaKm2": 11947.085,
+    "areaCoverageRatio": 1.00000015,
     "boundaryKind": "generated_market_cell",
     "boundaryConfidence": "broad"
   },

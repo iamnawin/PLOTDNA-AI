@@ -26,9 +26,9 @@ The Hyderabad map must cover the city and the surrounding investment belt withou
 ### Layer 2: Contiguous Coverage Cells
 
 - File: `data/cities/hyderabad/coverage-areas.geojson`
-- Current output: 294 contiguous cells across about 11,947 sq km.
+- Current output: 310 contiguous cells across about 11,947 sq km.
 - Scored market cells: 235 cells tied to catalog locality records and score/confidence data.
-- Context-only cells: 59 cells using OSM place centroids plus supplemental backlog centroids.
+- Context-only cells: 75 cells using OSM place centroids plus supplemental backlog/Nominatim-checked centroids.
 - Build script: `scripts/build_hyderabad_coverage.py`
 - Validation script: `scripts/validate_hyderabad_coverage.py`
 
@@ -88,3 +88,5 @@ This is intentional. The app can identify that the place is inside the Hyderabad
 2. Add aliases for newly sourced villages/localities so address search resolves by common names, apartment names, and spelling variants.
 3. Attach verified signal data before any context-only cell becomes a scored market.
 4. Reduce any remaining oversized cells by importing more real place seeds or sourced boundaries, not by drawing circular/ring geometry.
+
+Current guardrail: context-only generated cells must stay below 250 sq km. The latest generated set has no 250+ sq km context cells; larger remaining broad cells should be replaced with sourced village/admin boundaries rather than geometric splitters.
