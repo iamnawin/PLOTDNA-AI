@@ -1,0 +1,2718 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-26",
+  "citySlug": "hyderabad",
+  "purpose": "source audit for context-only data-pending Hyderabad coverage cells",
+  "sourcePolicy": "Do not promote pending cells to scored areas until boundaries and score signals are verified.",
+  "primaryOfficialSource": {
+    "name": "HMDA ORR GHMC Village Boundary",
+    "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+    "fields": [
+      "V_Name",
+      "Mandal_Nam",
+      "Dist_Name",
+      "N_Revenue",
+      "DMV_Code"
+    ]
+  },
+  "summary": {
+    "pendingContextCellCount": 75,
+    "tgracVillageMatchedCount": 47,
+    "needsNonHmdaBoundarySourceCount": 28
+  },
+  "sourceAudits": [
+    {
+      "slug": "ctx-ananthagiri-hills",
+      "name": "Ananthagiri Hills",
+      "place": "locality",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.3025775,
+        77.863173
+      ],
+      "generatedCellAreaKm2": 55.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-andole-south",
+      "name": "Andole South",
+      "place": "locality",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.7736524,
+        78.1241331
+      ],
+      "generatedCellAreaKm2": 181.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-burgula",
+      "name": "Burgula",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        16.9533724,
+        78.1637601
+      ],
+      "generatedCellAreaKm2": 177.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "osm-chakrampally-1291368180",
+      "name": "Chakrampally",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.4791253,
+        77.9931821
+      ],
+      "generatedCellAreaKm2": 226.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/1291368180",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-chaudergudem",
+      "name": "Chaudergudem",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.2017476,
+        78.014854
+      ],
+      "generatedCellAreaKm2": 112.2,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-dandumalkapur",
+      "name": "Dandumalkapur",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.1852704,
+        78.8302223
+      ],
+      "generatedCellAreaKm2": 77.0,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-doma",
+      "name": "Doma",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.2333256,
+        77.8584248
+      ],
+      "generatedCellAreaKm2": 77.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-elikatta-south",
+      "name": "Elikatta South",
+      "place": "locality",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.0558559,
+        78.1512703
+      ],
+      "generatedCellAreaKm2": 34.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-farooqnagar-west",
+      "name": "Farooqnagar West",
+      "place": "locality",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.0212529,
+        78.0549803
+      ],
+      "generatedCellAreaKm2": 192.0,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-kadthal",
+      "name": "Kadthal",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        16.9866769,
+        78.5471244
+      ],
+      "generatedCellAreaKm2": 122.0,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-kammadanam",
+      "name": "Kammadanam",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.021985,
+        78.2241427
+      ],
+      "generatedCellAreaKm2": 34.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-keshampet",
+      "name": "Keshampet",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.1479697,
+        78.0744857
+      ],
+      "generatedCellAreaKm2": 48.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-kondurg",
+      "name": "Kondurg",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.0804511,
+        77.9662481
+      ],
+      "generatedCellAreaKm2": 224.7,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "osm-kotepalli-245640512",
+      "name": "Kotepalli",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.3852649,
+        77.7289396
+      ],
+      "generatedCellAreaKm2": 59.9,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/245640512",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-madhurapur-shadnagar",
+      "name": "Madhurapur Shadnagar",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        16.9395636,
+        78.2854684
+      ],
+      "generatedCellAreaKm2": 140.2,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-mansanpally",
+      "name": "Mansanpally",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.2961426,
+        77.7199392
+      ],
+      "generatedCellAreaKm2": 92.3,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-mucharla",
+      "name": "Mucharla",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.0544568,
+        78.6399159
+      ],
+      "generatedCellAreaKm2": 210.3,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "osm-narayanpur-245639706",
+      "name": "Narayanpur",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.1551162,
+        78.8795969
+      ],
+      "generatedCellAreaKm2": 76.2,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/245639706",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-pargi-road-shadnagar",
+      "name": "Pargi Road Shadnagar",
+      "place": "locality",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.0649315,
+        78.1842662
+      ],
+      "generatedCellAreaKm2": 30.7,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-pudur-vikarabad",
+      "name": "Pudur Vikarabad",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.3429954,
+        77.8110407
+      ],
+      "generatedCellAreaKm2": 65.9,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-pulkal-west",
+      "name": "Pulkal West",
+      "place": "locality",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.723167,
+        77.9910103
+      ],
+      "generatedCellAreaKm2": 204.3,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-raipole",
+      "name": "Raipole",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.1330791,
+        78.7494887
+      ],
+      "generatedCellAreaKm2": 209.8,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-sadasivpet-west",
+      "name": "Sadasivpet West",
+      "place": "locality",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.6783413,
+        77.8668633
+      ],
+      "generatedCellAreaKm2": 182.4,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "osm-sangam-245639412",
+      "name": "Sangam",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.0109657,
+        78.3361129
+      ],
+      "generatedCellAreaKm2": 104.2,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/245639412",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-talakondapally",
+      "name": "Talakondapally",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        16.9655063,
+        78.430859
+      ],
+      "generatedCellAreaKm2": 178.5,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "osm-valigonda-245640522",
+      "name": "Valigonda",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.3942191,
+        79.0119788
+      ],
+      "generatedCellAreaKm2": 196.0,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/245640522",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-yadagirigutta",
+      "name": "Yadagirigutta",
+      "place": "town",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.61288,
+        78.8661681
+      ],
+      "generatedCellAreaKm2": 133.4,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "ctx-yenkepally",
+      "name": "Yenkepally",
+      "place": "village",
+      "status": "needs_non_hmda_boundary_source",
+      "centroid": [
+        17.4398565,
+        77.8435153
+      ],
+      "generatedCellAreaKm2": 114.5,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        }
+      ],
+      "officialMatches": [],
+      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+    },
+    {
+      "slug": "osm-ankral-660553458",
+      "name": "Ankral",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.3915279,
+        78.7929145
+      ],
+      "generatedCellAreaKm2": 56.5,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/660553458",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Julur",
+          "mandalName": "B.Pochampally",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Choutuppal",
+          "divisionName": "Bhuvanagiri",
+          "admin": "HMDA",
+          "dmvCode": "2318003",
+          "fid": 947
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-aushapur-662734738",
+      "name": "Aushapur",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.4994268,
+        78.7220846
+      ],
+      "generatedCellAreaKm2": 96.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/662734738",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Jameelapet",
+          "mandalName": "Bibinagar",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Bhongiri",
+          "divisionName": "Bhuvanagiri",
+          "admin": "HMDA",
+          "dmvCode": "2317002",
+          "fid": 876
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-aziznagar",
+      "name": "Aziznagar",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.346571,
+        78.3273934
+      ],
+      "generatedCellAreaKm2": 11.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Himayathnagar",
+          "mandalName": "Moinabad",
+          "districtName": "Rangareddy",
+          "revenueName": "Chevella",
+          "divisionName": "Chevella",
+          "admin": "HMDA",
+          "dmvCode": "1517007",
+          "fid": 422
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-bandaravirala-660551588",
+      "name": "Bandaravirala",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.4006856,
+        78.7101834
+      ],
+      "generatedCellAreaKm2": 30.9,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/660551588",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Edulabad",
+          "mandalName": "Ghatkesar",
+          "districtName": "Medchal_Malkajgiri",
+          "revenueName": "Keesara",
+          "divisionName": "Malkajgiri",
+          "admin": "ORR",
+          "dmvCode": "1512020",
+          "fid": 289
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-batasingaram",
+      "name": "Batasingaram",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.2971577,
+        78.7339972
+      ],
+      "generatedCellAreaKm2": 57.7,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Batasingaram",
+          "mandalName": "Abdullapurmet",
+          "districtName": "Rangareddy",
+          "revenueName": "Ibrahimpatnam",
+          "divisionName": "Saroornagar",
+          "admin": "HMDA",
+          "dmvCode": "1514036",
+          "fid": 330
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-bibinagar-east",
+      "name": "Bibinagar East",
+      "place": "locality",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.4566936,
+        78.904662
+      ],
+      "generatedCellAreaKm2": 156.4,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Anajipuram",
+          "mandalName": "Bhongiri",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Bhongiri",
+          "divisionName": "Bhuvanagiri",
+          "admin": "HMDA",
+          "dmvCode": "2316025",
+          "fid": 847
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-bongloor",
+      "name": "Bongloor",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.2094594,
+        78.5430223
+      ],
+      "generatedCellAreaKm2": 17.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "KongaraKalan",
+          "mandalName": "Ibrahimpatnam",
+          "districtName": "Rangareddy",
+          "revenueName": "Ibrahimpatnam",
+          "divisionName": "Saroornagar",
+          "admin": "ORR",
+          "dmvCode": "1534001",
+          "fid": 654
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-chegur",
+      "name": "Chegur",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.1787742,
+        78.2444092
+      ],
+      "generatedCellAreaKm2": 43.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Mallapur",
+          "mandalName": "Kothur",
+          "districtName": "Rangareddy",
+          "revenueName": "Shadhnagar",
+          "divisionName": "Mahbubnagar",
+          "admin": "HMDA",
+          "dmvCode": "1413004",
+          "fid": 16
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-chilkur",
+      "name": "Chilkur",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.3682584,
+        78.2930297
+      ],
+      "generatedCellAreaKm2": 19.3,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Gandipet",
+          "mandalName": "Gandipet",
+          "districtName": "Rangareddy",
+          "revenueName": "Rajendranagar",
+          "divisionName": "Rajendranagar",
+          "admin": "HMDA",
+          "dmvCode": "1516005",
+          "fid": 456
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-chitkul",
+      "name": "Chitkul",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.5460564,
+        78.2307426
+      ],
+      "generatedCellAreaKm2": 8.5,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Muthangi",
+          "mandalName": "Patancheruvu",
+          "districtName": "Sangareddy",
+          "revenueName": "Sangareddy",
+          "divisionName": "Sangareddy",
+          "admin": "ORR",
+          "dmvCode": "1737020",
+          "fid": 76
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-choutuppal",
+      "name": "Choutuppal",
+      "place": "town",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.2404659,
+        78.9120218
+      ],
+      "generatedCellAreaKm2": 110.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Choutuppal",
+          "mandalName": "Choutuppal",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Choutuppal",
+          "divisionName": "Bhuvanagiri",
+          "admin": "HMDA",
+          "dmvCode": "2319006",
+          "fid": 860
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-elkatta",
+      "name": "Elkatta",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.162443,
+        78.1310696
+      ],
+      "generatedCellAreaKm2": 55.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Shabad",
+          "mandalName": "Shabad",
+          "districtName": "Rangareddy",
+          "revenueName": "Chevella",
+          "divisionName": "Chevella",
+          "admin": "HMDA",
+          "dmvCode": "1531020",
+          "fid": 502
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-gajwel-south",
+      "name": "Gajwel South",
+      "place": "locality",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.6900357,
+        78.7185632
+      ],
+      "generatedCellAreaKm2": 153.8,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Karkapatla",
+          "mandalName": "Markook",
+          "districtName": "Siddipet",
+          "revenueName": "Gajwel",
+          "divisionName": "Siddipet",
+          "admin": "HMDA",
+          "dmvCode": "1745014",
+          "fid": 171
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-gandimaisamma-571350232",
+      "name": "Gandimaisamma",
+      "place": "suburb",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.5804572,
+        78.41724
+      ],
+      "generatedCellAreaKm2": 9.8,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/571350232",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Dommarapochampally",
+          "mandalName": "Dundigal_Gandimaisamma",
+          "districtName": "Medchal_Malkajgiri",
+          "revenueName": "Malkajgiri",
+          "divisionName": "Malkajgiri",
+          "admin": "ORR",
+          "dmvCode": "1507004",
+          "fid": 445
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-ghatkesar-east",
+      "name": "Ghatkesar East",
+      "place": "locality",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.4253878,
+        78.8104465
+      ],
+      "generatedCellAreaKm2": 52.7,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Raghavapuram",
+          "mandalName": "Bibinagar",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Bhongiri",
+          "divisionName": "Bhuvanagiri",
+          "admin": "HMDA",
+          "dmvCode": "2317022",
+          "fid": 952
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-girmapur",
+      "name": "Girmapur",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.6570637,
+        78.3783936
+      ],
+      "generatedCellAreaKm2": 23.3,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Domadugu",
+          "mandalName": "Gummadidala",
+          "districtName": "Sangareddy",
+          "revenueName": "Sangareddy",
+          "divisionName": "Medak",
+          "admin": "HMDA",
+          "dmvCode": "1739011",
+          "fid": 143
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-gorelli-660146124",
+      "name": "Gorelli",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.3770951,
+        78.6745415
+      ],
+      "generatedCellAreaKm2": 26.5,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/660146124",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Gowrelly",
+          "mandalName": "Abdullapurmet",
+          "districtName": "Rangareddy",
+          "revenueName": "Ibrahimpatnam",
+          "divisionName": "Saroornagar",
+          "admin": "ORR",
+          "dmvCode": "1514009",
+          "fid": 313
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-hydernagar-1428934700",
+      "name": "Hydernagar",
+      "place": "neighbourhood",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.5059882,
+        78.3803038
+      ],
+      "generatedCellAreaKm2": 6.3,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/1428934700",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Hydernagar",
+          "mandalName": "Kukatpally",
+          "districtName": "Medchal_Malkajgiri",
+          "revenueName": "Malkajgiri",
+          "divisionName": "Rajendranagar",
+          "admin": "GHMC",
+          "dmvCode": "1506001",
+          "fid": 742
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-inmulnarva",
+      "name": "Inmulnarva",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.084155,
+        78.3269164
+      ],
+      "generatedCellAreaKm2": 50.7,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Kodicherla",
+          "mandalName": "Kothur",
+          "districtName": "Rangareddy",
+          "revenueName": "Shadhnagar",
+          "divisionName": "Mahbubnagar",
+          "admin": "HMDA",
+          "dmvCode": "1413014",
+          "fid": 14
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-kandlakoya",
+      "name": "Kandlakoya",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.6167469,
+        78.4732978
+      ],
+      "generatedCellAreaKm2": 19.4,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Gowdavelli",
+          "mandalName": "Medchal",
+          "districtName": "Medchal_Malkajgiri",
+          "revenueName": "Keesara",
+          "divisionName": "Malkajgiri",
+          "admin": "ORR",
+          "dmvCode": "1508019",
+          "fid": 678
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-kandukur-rangareddy",
+      "name": "Kandukur Rangareddy",
+      "place": "mandal",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.0604947,
+        78.4629284
+      ],
+      "generatedCellAreaKm2": 96.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Nednur",
+          "mandalName": "Kandukur",
+          "districtName": "Rangareddy",
+          "revenueName": "Kandukur",
+          "divisionName": "Saroornagar",
+          "admin": "HMDA",
+          "dmvCode": "1537022",
+          "fid": 347
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-kardhanur",
+      "name": "Kardhanur",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.5202387,
+        78.2962576
+      ],
+      "generatedCellAreaKm2": 9.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Bandalguda",
+          "mandalName": "Ramachandrapuram",
+          "districtName": "Sangareddy",
+          "revenueName": "Sangareddy",
+          "divisionName": "Sangareddy",
+          "admin": "GHMC",
+          "dmvCode": "1738001",
+          "fid": 698
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-kondannaguda",
+      "name": "Kondannaguda",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.0516203,
+        78.2692548
+      ],
+      "generatedCellAreaKm2": 25.9,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Kondannaguda",
+          "mandalName": "Farooqnagar",
+          "districtName": "Rangareddy",
+          "revenueName": "Shadhnagar",
+          "divisionName": "Mahbubnagar",
+          "admin": "HMDA",
+          "dmvCode": "1412009",
+          "fid": 1
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-kongara-kalan",
+      "name": "Kongara Kalan",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.1928806,
+        78.5966517
+      ],
+      "generatedCellAreaKm2": 6.2,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Ibrahimpatnam(Khalsa)",
+          "mandalName": "Ibrahimpatnam",
+          "districtName": "Rangareddy",
+          "revenueName": "Ibrahimpatnam",
+          "divisionName": "Saroornagar",
+          "admin": "HMDA",
+          "dmvCode": "1534007",
+          "fid": 728
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-kuntloor-981868945",
+      "name": "Kuntloor",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.3275747,
+        78.6361617
+      ],
+      "generatedCellAreaKm2": 20.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/981868945",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "PeddaAmberpet",
+          "mandalName": "Abdullapurmet",
+          "districtName": "Rangareddy",
+          "revenueName": "Ibrahimpatnam",
+          "divisionName": "Saroornagar",
+          "admin": "GHMC",
+          "dmvCode": "1514028",
+          "fid": 714
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-lemur",
+      "name": "Lemur",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.109078,
+        78.5294892
+      ],
+      "generatedCellAreaKm2": 79.7,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Rachloor",
+          "mandalName": "Kandukur",
+          "districtName": "Rangareddy",
+          "revenueName": "Kandukur",
+          "divisionName": "Saroornagar",
+          "admin": "HMDA",
+          "dmvCode": "1537011",
+          "fid": 351
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-maisammaguda",
+      "name": "Maisammaguda",
+      "place": "suburb",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.5578169,
+        78.426327
+      ],
+      "generatedCellAreaKm2": 8.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Bahadurpally",
+          "mandalName": "Dundigal_Gandimaisamma",
+          "districtName": "Medchal_Malkajgiri",
+          "revenueName": "Malkajgiri",
+          "divisionName": "Malkajgiri",
+          "admin": "GHMC",
+          "dmvCode": "1507005",
+          "fid": 443
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-malkapur-571358646",
+      "name": "Malkapur",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.2838477,
+        78.8062365
+      ],
+      "generatedCellAreaKm2": 128.3,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/571358646",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Malkapur",
+          "mandalName": "Choutuppal",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Choutuppal",
+          "divisionName": "Bhuvanagiri",
+          "admin": "HMDA",
+          "dmvCode": "2319002",
+          "fid": 892
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-mangalpally",
+      "name": "Mangalpally",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.1873314,
+        78.6542209
+      ],
+      "generatedCellAreaKm2": 38.5,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Ibrahimpatnam(Khalsa)",
+          "mandalName": "Ibrahimpatnam",
+          "districtName": "Rangareddy",
+          "revenueName": "Ibrahimpatnam",
+          "divisionName": "Saroornagar",
+          "admin": "HMDA",
+          "dmvCode": "1534007",
+          "fid": 728
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-manneguda",
+      "name": "Manneguda",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.236936,
+        78.6919448
+      ],
+      "generatedCellAreaKm2": 80.0,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Naganpally",
+          "mandalName": "Ibrahimpatnam",
+          "districtName": "Rangareddy",
+          "revenueName": "Ibrahimpatnam",
+          "divisionName": "Saroornagar",
+          "admin": "HMDA",
+          "dmvCode": "1534008",
+          "fid": 657
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-manoharabad",
+      "name": "Manoharabad",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.7839845,
+        78.4233487
+      ],
+      "generatedCellAreaKm2": 202.8,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Gangaipally",
+          "mandalName": "Shivampet",
+          "districtName": "Medak",
+          "revenueName": "Narsapur",
+          "divisionName": "Medak",
+          "admin": "HMDA",
+          "dmvCode": "1742019",
+          "fid": 207
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-mansanpally-maheshwaram",
+      "name": "Mansanpally Maheshwaram",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.1111382,
+        78.4015876
+      ],
+      "generatedCellAreaKm2": 77.2,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Ghatpalle",
+          "mandalName": "Maheswaram",
+          "districtName": "Rangareddy",
+          "revenueName": "Kandukur",
+          "divisionName": "Saroornagar",
+          "admin": "HMDA",
+          "dmvCode": "1533027",
+          "fid": 365
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-mekaguda",
+      "name": "Mekaguda",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.1231672,
+        78.2899425
+      ],
+      "generatedCellAreaKm2": 40.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Nandigama",
+          "mandalName": "Nandigama",
+          "districtName": "Rangareddy",
+          "revenueName": "Shadhnagar",
+          "divisionName": "Mahbubnagar",
+          "admin": "HMDA",
+          "dmvCode": "1413010",
+          "fid": 18
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-mogiligidda",
+      "name": "Mogiligidda",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.0739091,
+        78.1222941
+      ],
+      "generatedCellAreaKm2": 27.0,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Mogalagidda",
+          "mandalName": "Farooqnagar",
+          "districtName": "Rangareddy",
+          "revenueName": "Shadhnagar",
+          "divisionName": "Mahbubnagar",
+          "admin": "HMDA",
+          "dmvCode": "1412002",
+          "fid": 2
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-nallavalli",
+      "name": "Nallavalli",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.5958019,
+        78.2135682
+      ],
+      "generatedCellAreaKm2": 30.3,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Lakdaram",
+          "mandalName": "Patancheruvu",
+          "districtName": "Sangareddy",
+          "revenueName": "Sangareddy",
+          "divisionName": "Sangareddy",
+          "admin": "HMDA",
+          "dmvCode": "1737002",
+          "fid": 75
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-narsapur-road",
+      "name": "Narsapur Road",
+      "place": "locality",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.7108373,
+        78.3561387
+      ],
+      "generatedCellAreaKm2": 72.5,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Nallavally",
+          "mandalName": "Gummadidala",
+          "districtName": "Sangareddy",
+          "revenueName": "Sangareddy",
+          "divisionName": "Medak",
+          "admin": "HMDA",
+          "dmvCode": "1739004",
+          "fid": 155
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-peddakaparthy",
+      "name": "Peddakaparthy",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.3134043,
+        78.9371507
+      ],
+      "generatedCellAreaKm2": 191.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Nelapatla",
+          "mandalName": "Choutuppal",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Choutuppal",
+          "divisionName": "Bhuvanagiri",
+          "admin": "HMDA",
+          "dmvCode": "2319008",
+          "fid": 906
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-pillai-palle-660552232",
+      "name": "Pillai Palle",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.3597773,
+        78.7584654
+      ],
+      "generatedCellAreaKm2": 46.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/660552232",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "JagatthPalle",
+          "mandalName": "B.Pochampally",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Choutuppal",
+          "divisionName": "Bhuvanagiri",
+          "admin": "HMDA",
+          "dmvCode": "2318011",
+          "fid": 870
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-pocharam-ibrahimpatnam",
+      "name": "Pocharam Ibrahimpatnam",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.1479764,
+        78.6159888
+      ],
+      "generatedCellAreaKm2": 66.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Kappapahad",
+          "mandalName": "Ibrahimpatnam",
+          "districtName": "Rangareddy",
+          "revenueName": "Ibrahimpatnam",
+          "divisionName": "Saroornagar",
+          "admin": "HMDA",
+          "dmvCode": "1534027",
+          "fid": 653
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-pragnapur",
+      "name": "Pragnapur",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.7706935,
+        78.5571502
+      ],
+      "generatedCellAreaKm2": 78.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Tunkikhalsa",
+          "mandalName": "Wargal",
+          "districtName": "Siddipet",
+          "revenueName": "Gajwel",
+          "divisionName": "Siddipet",
+          "admin": "HMDA",
+          "dmvCode": "1744022",
+          "fid": 281
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-ravalkole",
+      "name": "Ravalkole",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.6902005,
+        78.52838
+      ],
+      "generatedCellAreaKm2": 130.7,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Ravalkole",
+          "mandalName": "Medchal",
+          "districtName": "Medchal_Malkajgiri",
+          "revenueName": "Keesara",
+          "divisionName": "Malkajgiri",
+          "admin": "HMDA",
+          "dmvCode": "1508007",
+          "fid": 691
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-rayagiri-245641025",
+      "name": "Rayagiri",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.5219887,
+        78.9527741
+      ],
+      "generatedCellAreaKm2": 119.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/245641025",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Kesaram",
+          "mandalName": "Bhongiri",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Bhongiri",
+          "divisionName": "Bhuvanagiri",
+          "admin": "HMDA",
+          "dmvCode": "2316008",
+          "fid": 880
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-sheriguda",
+      "name": "Sheriguda",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.20958,
+        78.6122333
+      ],
+      "generatedCellAreaKm2": 7.5,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Ibrahimpatnam(Khalsa)",
+          "mandalName": "Ibrahimpatnam",
+          "districtName": "Rangareddy",
+          "revenueName": "Ibrahimpatnam",
+          "divisionName": "Saroornagar",
+          "admin": "HMDA",
+          "dmvCode": "1534007",
+          "fid": 728
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-shivampet-east",
+      "name": "Shivampet East",
+      "place": "locality",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.6433264,
+        78.436251
+      ],
+      "generatedCellAreaKm2": 12.7,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Bandamadaram",
+          "mandalName": "Medchal",
+          "districtName": "Medchal_Malkajgiri",
+          "revenueName": "Keesara",
+          "divisionName": "Malkajgiri",
+          "admin": "HMDA",
+          "dmvCode": "1508014",
+          "fid": 673
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-solipur",
+      "name": "Solipur",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.119365,
+        78.1576844
+      ],
+      "generatedCellAreaKm2": 28.6,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "Ananthawaram",
+          "mandalName": "Shabad",
+          "districtName": "Rangareddy",
+          "revenueName": "Chevella",
+          "divisionName": "Chevella",
+          "admin": "HMDA",
+          "dmvCode": "1531023",
+          "fid": 481
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "osm-vasanth-nagar-1428934704",
+      "name": "Vasanth Nagar",
+      "place": "neighbourhood",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.4918653,
+        78.3900227
+      ],
+      "generatedCellAreaKm2": 1.5,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "OpenStreetMap place centroid",
+          "url": "https://www.openstreetmap.org/node/1428934704",
+          "license": "ODbL-1.0",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "KPHBColony-0117",
+          "mandalName": "Kukatpally",
+          "districtName": "Medchal_Malkajgiri",
+          "revenueName": "Malkajgiri",
+          "divisionName": "Rajendranagar",
+          "admin": "GHMC",
+          "dmvCode": "1506004",
+          "fid": 743
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    },
+    {
+      "slug": "ctx-wargal",
+      "name": "Wargal",
+      "place": "village",
+      "status": "tgrac_village_matched",
+      "centroid": [
+        17.7014966,
+        78.6270675
+      ],
+      "generatedCellAreaKm2": 103.1,
+      "boundaryKind": "place_context_cell",
+      "boundaryConfidence": "approximate",
+      "sources": [
+        {
+          "kind": "place_centroid",
+          "name": "PlotDNA supplemental uncovered-area centroid",
+          "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
+          "license": "internal-derived",
+          "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "HMDA ORR GHMC Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "retrievedAt": "2026-06-26",
+          "license": "public ArcGIS REST service"
+        }
+      ],
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "villageName": "ChillaSagar",
+          "mandalName": "Mulug",
+          "districtName": "Siddipet",
+          "revenueName": "Gajwel",
+          "divisionName": "Siddipet",
+          "admin": "HMDA",
+          "dmvCode": "1745019",
+          "fid": 28
+        }
+      ],
+      "nextAction": "Use official village match to source geometry and then attach verified score signals."
+    }
+  ]
+}

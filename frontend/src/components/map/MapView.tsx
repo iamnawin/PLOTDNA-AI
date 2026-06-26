@@ -15,6 +15,7 @@ import type { ActiveProject } from '@/types'
 import hyderabadSpecialUseRaw from '../../../../data/cities/hyderabad/special-use-areas.geojson?raw'
 import hyderabadCoverageRaw from '../../../../data/cities/hyderabad/coverage-areas.geojson?raw'
 import hyderabadCoverageBoundaryRaw from '../../../../data/cities/hyderabad/coverage-boundary.geojson?raw'
+import hyderabadPendingSourcesRaw from '../../../../data/cities/hyderabad/pending-context-sources.json?raw'
 
 // ── Construction marker helpers ───────────────────────────────────────────────
 const PROJECT_TYPE_COLOR: Record<string, string> = {
@@ -93,6 +94,22 @@ const HYDERABAD_FLAGSHIP_BOUNDARY = JSON.parse(hyderabadCoverageBoundaryRaw) as 
     geometry: { type: 'Polygon'; coordinates: number[][][] }
   }>
 }
+
+const HYDERABAD_PENDING_SOURCES = JSON.parse(hyderabadPendingSourcesRaw) as {
+  sourceAudits: Array<{
+    slug: string
+    status: string
+    officialMatches?: Array<{
+      villageName?: string
+      mandalName?: string
+      districtName?: string
+    }>
+  }>
+}
+
+const HYDERABAD_PENDING_SOURCE_BY_SLUG = Object.fromEntries(
+  HYDERABAD_PENDING_SOURCES.sourceAudits.map(audit => [audit.slug, audit]),
+)
 
 // ── Basemap style definitions (all free, no API key) ─────────────────────────
 
@@ -202,6 +219,8 @@ interface ContextHoverInfo {
   boundaryKind: string
   boundaryConfidence: string
   areaKm2: number | null
+  sourceStatus: string | null
+  officialMatchLabel: string | null
 }
 
 function getPolygonBounds(polygon: [number, number][]): [[number, number], [number, number]] {
@@ -387,9 +406,15 @@ export default function MapView() {
   }, [selectedArea, hoveredSlug, contextHoverSlug, highlightTier, areas, selectedCitySlug])
 
   const showContextHover = useCallback((feature: NonNullable<MapLayerMouseEvent['features']>[number], point: { x: number; y: number }) => {
+    const slug = String(feature.properties?.slug ?? '')
+    const audit = HYDERABAD_PENDING_SOURCE_BY_SLUG[slug]
+    const officialMatch = audit?.officialMatches?.[0]
+    const officialMatchLabel = officialMatch
+      ? [officialMatch.villageName, officialMatch.mandalName, officialMatch.districtName].filter(Boolean).join(' / ')
+      : null
     setHoveredSlug(null)
     setHoverInfo(null)
-    setContextHoverSlug(String(feature.properties?.slug ?? ''))
+    setContextHoverSlug(slug)
     setContextHover({
       x: point.x,
       y: point.y,
@@ -399,6 +424,8 @@ export default function MapView() {
       areaKm2: typeof feature.properties?.areaKm2 === 'number'
         ? feature.properties.areaKm2
         : null,
+      sourceStatus: audit?.status ?? null,
+      officialMatchLabel,
     })
   }, [setHoveredSlug])
 
@@ -737,6 +764,11 @@ export default function MapView() {
           <p style={{ margin: '6px 0 0', color: '#94a3b8', fontSize: 9, fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.45 }}>
             Data pending - inside Hyderabad flagship coverage. PlotDNA will start validation for this area before assigning an exact score.
           </p>
+          {contextHover.officialMatchLabel && (
+            <p style={{ margin: '7px 0 0', color: '#cbd5e1', fontSize: 9, fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.45 }}>
+              TGRAC village match: {contextHover.officialMatchLabel}
+            </p>
+          )}
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 9 }}>
             <span style={{
               color: '#cbd5e1',
@@ -750,6 +782,20 @@ export default function MapView() {
             }}>
               {contextHover.boundaryConfidence}
             </span>
+            {contextHover.sourceStatus && (
+              <span style={{
+                color: '#cbd5e1',
+                background: 'rgba(148,163,184,0.12)',
+                border: '1px solid rgba(148,163,184,0.24)',
+                borderRadius: 5,
+                padding: '2px 6px',
+                fontSize: 8,
+                fontFamily: 'IBM Plex Mono, monospace',
+                textTransform: 'uppercase',
+              }}>
+                {contextHover.sourceStatus.replaceAll('_', ' ')}
+              </span>
+            )}
             {contextHover.areaKm2 !== null && (
               <span style={{
                 color: '#cbd5e1',
