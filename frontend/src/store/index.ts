@@ -27,7 +27,7 @@ interface AppStore {
 export const useAppStore = create<AppStore>((set) => ({
   selectedArea: null,
   hoveredSlug: null,
-  highlightTier: 'Good Growth',
+  highlightTier: null,
   searchCoords: null,
   is3D: false,
   mapStyleKey: 'satellite',
@@ -40,7 +40,7 @@ export const useAppStore = create<AppStore>((set) => ({
   setSearchCoords: (coords) => set({ searchCoords: coords }),
   setIs3D: (v) => set({ is3D: v }),
   setMapStyleKey: (key) => set({ mapStyleKey: key }),
-  setSelectedCitySlug: (slug) => set({ selectedCitySlug: slug, selectedArea: null, highlightTier: 'Good Growth', searchCoords: null }),
+  setSelectedCitySlug: (slug) => set({ selectedCitySlug: slug, selectedArea: null, highlightTier: null, searchCoords: null }),
   setShowConstruction: (v) => set({ showConstruction: v }),
   setRecommendationGoal: (goal) => set({ recommendationGoal: goal }),
 }))

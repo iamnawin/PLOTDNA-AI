@@ -11,6 +11,7 @@ const productionHelperPath = path.join(process.cwd(), 'src', 'lib', 'cityProduct
 const priorityPath = path.join(process.cwd(), 'src', 'data', 'hyderabadPriority.ts')
 const areaSourcesPath = path.join(process.cwd(), 'src', 'lib', 'areaSources.ts')
 const mapViewPath = path.join(process.cwd(), 'src', 'components', 'map', 'MapView.tsx')
+const storePath = path.join(process.cwd(), 'src', 'store', 'index.ts')
 
 const localities = JSON.parse(fs.readFileSync(localitiesPath, 'utf8').replace(/^\uFEFF/, ''))
 const coverage = JSON.parse(fs.readFileSync(coveragePath, 'utf8'))
@@ -23,6 +24,7 @@ const productionHelper = fs.existsSync(productionHelperPath)
 const prioritySource = fs.existsSync(priorityPath) ? fs.readFileSync(priorityPath, 'utf8') : ''
 const areaSources = fs.readFileSync(areaSourcesPath, 'utf8')
 const mapView = fs.readFileSync(mapViewPath, 'utf8')
+const storeSource = fs.readFileSync(storePath, 'utf8')
 
 function assert(condition, message) {
   if (!condition) {
@@ -74,5 +76,11 @@ assert(!mapView.includes("'#3b82f6' // bright blue"), 'context/no-data polygons 
 assert(mapView.includes("['==', ['get', 'contextOnly'], 1], 0.16"), 'context fills must remain visible at overview zoom')
 assert(mapView.includes("['==', ['get', 'contextOnly'], 1], 0.62"), 'context borders must remain readable at overview zoom')
 assert(mapView.includes('1.75'), 'scored polygon borders must remain readable over satellite basemap')
+assert(!storeSource.includes("highlightTier: 'Good Growth'"), 'Hyderabad map must not boot into a filtered tier view')
+assert(storeSource.includes('highlightTier: null'), 'Hyderabad map must show all scored coverage by default')
+assert(!mapView.includes("color: '#252535'"), 'dimmed scored polygons must not become near-black holes on satellite')
+assert(!mapView.includes("['==', ['get', 'dimmed'], 1], 0.06"), 'dimmed scored polygon fills must remain visibly covered')
+assert(mapView.includes("['==', ['get', 'dimmed'], 1], 0.18"), 'dimmed scored polygon fills must stay readable when filters are active')
+assert(mapView.includes("['==', ['get', 'dimmed'], 1], 0.55"), 'dimmed scored polygon borders must stay readable when filters are active')
 
 console.log(`Hyderabad production check passed: ${localities.length} localities, ${coverage.features.length} contiguous cells, ${confidenceMentions} confidence records, ${prioritySlugs.length} verified priority slugs.`)

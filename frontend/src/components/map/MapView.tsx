@@ -306,7 +306,7 @@ export default function MapView() {
         const tierMatch = highlightTier === null || (area ? getScoreLabel(area.score) === highlightTier : false)
         const isContext = !!coverageProps.contextOnly
         const color = hasScore
-          ? (tierMatch ? getScoreColor(area!.score) : '#252535')
+          ? getScoreColor(area!.score)
           : '#60a5fa'
         return {
           type: 'Feature' as const,
@@ -439,9 +439,9 @@ export default function MapView() {
               'fill-color': ['get', 'color'],
               'fill-opacity': [
                 'case',
-                ['==', ['get', 'dimmed'], 1], 0.06,
                 ['==', ['get', 'selected'], 1], 0.52,
                 ['==', ['get', 'hovered'], 1], 0.40,
+                ['==', ['get', 'dimmed'], 1], 0.18,
                 ['==', ['get', 'contextOnly'], 1], 0.16,
                 ['==', ['get', 'noData'], 1], 0.18,
                 0.30,
@@ -468,9 +468,9 @@ export default function MapView() {
               ],
               'line-opacity': [
                 'case',
-                ['==', ['get', 'dimmed'], 1], 0.28,
                 ['==', ['get', 'contextOnly'], 1], 0.62,
                 ['==', ['get', 'noData'], 1], 0.58,
+                ['==', ['get', 'dimmed'], 1], 0.55,
                 0.96,
               ],
             }}
