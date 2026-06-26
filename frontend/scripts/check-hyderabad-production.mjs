@@ -90,5 +90,9 @@ assert(mapView.includes('Data pending'), 'context-only polygon hover must explai
 assert(mapView.includes('boundaryConfidence'), 'context-only hover metadata must preserve boundary confidence')
 assert(mapView.includes('areaKm2'), 'context-only hover metadata must preserve approximate area size')
 assert(mapView.includes('data-pending'), 'context/no-data polygon styling must use a pending-data visual token')
+assert(mapView.includes('broadGenerated'), 'large generated scored cells must be explicitly flagged instead of treated as precise polygons')
+assert(mapView.includes("['==', ['get', 'broadGenerated'], 1], 0.16"), 'large generated scored cells must stay below primary scored fill strength')
+assert(mapView.includes("['==', ['get', 'broadGenerated'], 1], 0.74"), 'large generated scored cell borders must be readable without dominating')
+assert(mapView.includes('Generated broad market cell'), 'large generated scored cell tooltip must explain the boundary precision limit')
 
 console.log(`Hyderabad production check passed: ${localities.length} localities, ${coverage.features.length} contiguous cells, ${confidenceMentions} confidence records, ${prioritySlugs.length} verified priority slugs.`)

@@ -328,6 +328,9 @@ export default function MapView() {
         const hasScore = !!area
         const tierMatch = highlightTier === null || (area ? getScoreLabel(area.score) === highlightTier : false)
         const isContext = !!coverageProps.contextOnly
+        const areaKm2 = coverageProps.areaKm2 ?? null
+        const boundaryConfidence = coverageProps.boundaryConfidence ?? (isContext ? 'approximate' : 'broad')
+        const broadGenerated = hasScore && !isContext && boundaryConfidence === 'broad' && typeof areaKm2 === 'number' && areaKm2 > 50
         const color = hasScore
           ? getScoreColor(area!.score)
           : '#64748b'
@@ -345,10 +348,11 @@ export default function MapView() {
             dimmed:    hasScore && !tierMatch ? 1 : 0,
             noData:    !hasScore ? 1 : 0,
             contextOnly: isContext ? 1 : 0,
+            broadGenerated: broadGenerated ? 1 : 0,
             outerZone: coverageProps.outerZone ? 1 : 0,
             boundaryKind: coverageProps.boundaryKind ?? 'generated_market_cell',
-            boundaryConfidence: coverageProps.boundaryConfidence ?? (isContext ? 'approximate' : 'broad'),
-            areaKm2: coverageProps.areaKm2 ?? null,
+            boundaryConfidence,
+            areaKm2,
             dataState: isContext || !hasScore ? 'data-pending' : 'scored',
           },
         }
@@ -511,6 +515,7 @@ export default function MapView() {
                 ['==', ['get', 'hovered'], 1], 0.40,
                 ['==', ['get', 'dimmed'], 1], 0.18,
                 ['==', ['get', 'dataState'], 'data-pending'], 0.07,
+                ['==', ['get', 'broadGenerated'], 1], 0.16,
                 0.30,
               ],
             }}
@@ -531,6 +536,7 @@ export default function MapView() {
                 ['==', ['get', 'selected'], 1], 3.0,
                 ['==', ['get', 'hovered'], 1], 2.4,
                 ['==', ['get', 'dataState'], 'data-pending'], 1.05,
+                ['==', ['get', 'broadGenerated'], 1], 1.35,
                 1.75,
               ],
               'line-opacity': [
@@ -538,6 +544,7 @@ export default function MapView() {
                 ['all', ['==', ['get', 'dataState'], 'data-pending'], ['==', ['get', 'hovered'], 1]], 0.82,
                 ['==', ['get', 'dataState'], 'data-pending'], 0.42,
                 ['==', ['get', 'dimmed'], 1], 0.55,
+                ['==', ['get', 'broadGenerated'], 1], 0.74,
                 0.96,
               ],
             }}
@@ -840,6 +847,13 @@ export default function MapView() {
           : Math.min(hoverInfo.x + 16, window.innerWidth - TW - 8)
         const top  = Math.max(10, Math.min(hoverInfo.y - 24, window.innerHeight - 260))
         const signalEntries = Object.entries(tooltipArea.signals)
+        const tooltipCoverage = selectedCitySlug === 'hyderabad'
+          ? HYDERABAD_COVERAGE.features.find(feature => feature.properties.slug === tooltipArea.slug)
+          : null
+        const tooltipAreaKm2 = tooltipCoverage?.properties.areaKm2
+        const isTooltipBroadGenerated = tooltipCoverage?.properties.boundaryConfidence === 'broad'
+          && typeof tooltipAreaKm2 === 'number'
+          && tooltipAreaKm2 > 50
 
         return (
           <div
@@ -891,6 +905,21 @@ export default function MapView() {
             }}>
               {lbl}
             </span>
+            {isTooltipBroadGenerated && (
+              <p style={{
+                fontFamily: 'IBM Plex Mono, monospace',
+                fontSize: 8,
+                color: '#fbbf24',
+                background: 'rgba(251,191,36,0.10)',
+                border: '1px solid rgba(251,191,36,0.22)',
+                borderRadius: 5,
+                padding: '5px 7px',
+                lineHeight: 1.35,
+                margin: '0 0 8px',
+              }}>
+                Generated broad market cell - score is available, but the displayed polygon is not a precise locality boundary.
+              </p>
+            )}
 
             {/* ── Divider ── */}
             <div style={{ height: 1, background: 'rgba(255,255,255,0.05)', marginBottom: 8 }} />

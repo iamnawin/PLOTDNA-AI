@@ -248,6 +248,7 @@ User input (text)
 - Context-cell coordinate/address search now returns an honest non-scored context result (`tier: "context"`, `precision: "context_area"`, `scorePrecision: "unscored_context"`) instead of substituting a nearby scored market.
 - The map must open with all Hyderabad scored coverage visible. Tier filters are optional user actions; when a filter is active, non-matching scored polygons must remain visibly filled/bordered instead of becoming dark satellite holes.
 - Context-only/no-score polygons must be styled as muted pending-data areas, not saturated primary coverage. They should stay visually subordinate at overview zoom, highlight only the specific pending cell under the cursor, and show a "Data pending" card on hover or click with the approximate area name, boundary confidence, and area size; double-clicking them must not route to a scored AreaDetail page.
+- Large scored cells with `boundaryConfidence: "broad"` are generated market cells, not precise locality boundaries. They must render below primary scored polygon strength and their tooltip must explicitly say the polygon is a generated broad market cell until sourced boundaries replace them.
 - Remaining Hyderabad data work: replace approximate context cells with sourced village/admin polygons, add aliases for newly sourced places, and attach verified signals before scoring them.
 
 ### Phase 2: Complete Telangana
