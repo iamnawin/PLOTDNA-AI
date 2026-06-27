@@ -45,6 +45,10 @@ export interface HyderabadPendingSignalInventory {
       apartmentValueMinPerSqft?: number
       apartmentValueMaxPerSqft?: number
       effectiveDates?: string[]
+      projectName?: string
+      evidenceLabel?: string
+      annexureVillageName?: string
+      annexureMandalName?: string
     }
   }>
 }
@@ -142,20 +146,27 @@ export function getIdentifiedSignalSourceLabels(inventory: HyderabadPendingSigna
 
 export function getVerifiedSignalLabels(inventory: HyderabadPendingSignalInventory | null | undefined): string[] {
   if (!inventory) return []
+  const labels: string[] = []
   const price = inventory.signals.price_band
-  if (price?.status !== 'verified' || !price.summary) return []
-  const apartmentMin = price.summary.apartmentValueMinPerSqft
-  const apartmentMax = price.summary.apartmentValueMaxPerSqft
-  const landMin = price.summary.landValueMinPerSqYard
-  const landMax = price.summary.landValueMaxPerSqYard
-  const effectiveDate = price.summary.effectiveDates?.[0]
-  if (
-    typeof apartmentMin !== 'number' ||
-    typeof apartmentMax !== 'number' ||
-    typeof landMin !== 'number' ||
-    typeof landMax !== 'number'
-  ) return []
-  return [
-    `Price verified: apt Rs${apartmentMin.toLocaleString('en-IN')}-${apartmentMax.toLocaleString('en-IN')}/sqft, land Rs${landMin.toLocaleString('en-IN')}-${landMax.toLocaleString('en-IN')}/sqyd${effectiveDate ? ` eff. ${effectiveDate}` : ''}`,
-  ]
+  if (price?.status === 'verified' && price.summary) {
+    const apartmentMin = price.summary.apartmentValueMinPerSqft
+    const apartmentMax = price.summary.apartmentValueMaxPerSqft
+    const landMin = price.summary.landValueMinPerSqYard
+    const landMax = price.summary.landValueMaxPerSqYard
+    const effectiveDate = price.summary.effectiveDates?.[0]
+    if (
+      typeof apartmentMin === 'number' &&
+      typeof apartmentMax === 'number' &&
+      typeof landMin === 'number' &&
+      typeof landMax === 'number'
+    ) {
+      labels.push(`Price verified: apt Rs${apartmentMin.toLocaleString('en-IN')}-${apartmentMax.toLocaleString('en-IN')}/sqft, land Rs${landMin.toLocaleString('en-IN')}-${landMax.toLocaleString('en-IN')}/sqyd${effectiveDate ? ` eff. ${effectiveDate}` : ''}`)
+    }
+  }
+  const infrastructure = inventory.signals.infrastructure
+  if (infrastructure?.status === 'verified' && infrastructure.summary?.projectName) {
+    const areaLabel = [infrastructure.summary.annexureVillageName, infrastructure.summary.annexureMandalName].filter(Boolean).join(' / ')
+    labels.push(`Infrastructure verified: ${infrastructure.summary.projectName}${areaLabel ? ` (${areaLabel})` : ''}`)
+  }
+  return labels
 }

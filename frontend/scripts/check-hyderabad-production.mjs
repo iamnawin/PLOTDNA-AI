@@ -11,6 +11,7 @@ const pendingBoundariesPath = path.join(repoRoot, 'data', 'cities', 'hyderabad',
 const pendingScoringReadinessPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-scoring-readiness.json')
 const pendingSignalInventoryPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-signal-inventory.json')
 const pendingPriceSignalsPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-price-signals.json')
+const pendingInfrastructureSignalsPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-infrastructure-signals.json')
 const hyderabadDataPath = path.join(process.cwd(), 'src', 'data', 'hyderabad.ts')
 const productionHelperPath = path.join(process.cwd(), 'src', 'lib', 'cityProduction.ts')
 const priorityPath = path.join(process.cwd(), 'src', 'data', 'hyderabadPriority.ts')
@@ -39,6 +40,9 @@ const pendingSignalInventory = fs.existsSync(pendingSignalInventoryPath)
   : null
 const pendingPriceSignals = fs.existsSync(pendingPriceSignalsPath)
   ? JSON.parse(fs.readFileSync(pendingPriceSignalsPath, 'utf8').replace(/^\uFEFF/, ''))
+  : null
+const pendingInfrastructureSignals = fs.existsSync(pendingInfrastructureSignalsPath)
+  ? JSON.parse(fs.readFileSync(pendingInfrastructureSignalsPath, 'utf8').replace(/^\uFEFF/, ''))
   : null
 const hyderabadSource = fs.readFileSync(hyderabadDataPath, 'utf8')
 const productionHelper = fs.existsSync(productionHelperPath)
@@ -151,6 +155,21 @@ const invalidVerifiedPriceSignals = verifiedPriceSignals.filter(signal => (
   !signal.records?.length
 ))
 assert(invalidVerifiedPriceSignals.length === 0, `verified pending price signals missing exact-area official values: ${invalidVerifiedPriceSignals.map(signal => signal.slug).join(', ')}`)
+assert(pendingInfrastructureSignals?.schemaVersion === 1, 'Hyderabad pending infrastructure signal audit must exist')
+assert(Array.isArray(pendingInfrastructureSignals.infrastructureSignals), 'Hyderabad pending infrastructure signal audit must include infrastructureSignals')
+assert(pendingInfrastructureSignals.infrastructureSignals.length === contextFeatures.length, `pending infrastructure signal audit must cover every context cell: expected ${contextFeatures.length}, found ${pendingInfrastructureSignals.infrastructureSignals?.length ?? 0}`)
+const verifiedInfrastructureSignals = pendingInfrastructureSignals.infrastructureSignals.filter(signal => signal.status === 'verified')
+assert(verifiedInfrastructureSignals.length > 0, 'Hyderabad pending infrastructure signal audit must verify at least one exact-area official infrastructure row')
+const invalidVerifiedInfrastructureSignals = verifiedInfrastructureSignals.filter(signal => (
+  !signal.slug ||
+  !signal.sourceUrl ||
+  !signal.officialMatch?.villageName ||
+  !signal.officialMatch?.mandalName ||
+  !signal.officialMatch?.districtName ||
+  !signal.summary?.projectName ||
+  !signal.summary?.evidenceLabel
+))
+assert(invalidVerifiedInfrastructureSignals.length === 0, `verified pending infrastructure signals missing exact-area official values: ${invalidVerifiedInfrastructureSignals.map(signal => signal.slug).join(', ')}`)
 const incorrectlyReadyRows = pendingScoringReadiness.areaAudits.filter(audit => audit.promotionReady && requiredEvidence.some(key => audit.evidence?.[key]?.status !== 'verified'))
 assert(incorrectlyReadyRows.length === 0, `pending rows marked promotion-ready without full verified evidence: ${incorrectlyReadyRows.map(audit => audit.slug).join(', ')}`)
 assert(pendingScoringReadiness.summary?.promotionReadyCount === 0, 'pending context cells must not be promotion-ready until score signal decks are attached')
@@ -203,6 +222,7 @@ assert(mapView.includes('Identified signal sources'), 'context-only hover must s
 assert(mapView.includes('verifiedSignals'), 'context-only hover must show verified pending signal evidence when available')
 assert(pendingSourceHelper.includes('official boundary source'), 'context-only hover must explain official boundary sourcing')
 assert(pendingSourceHelper.includes('Price verified'), 'pending source helper must summarize verified official price-band evidence')
+assert(pendingSourceHelper.includes('Infrastructure verified'), 'pending source helper must summarize verified official infrastructure evidence')
 assert(pendingSourceHelper.includes('needs non-HMDA boundary source'), 'context-only hover must explain pending cells that still need another boundary source')
 assert(mapView.includes('boundaryConfidence'), 'context-only hover metadata must preserve boundary confidence')
 assert(mapView.includes('areaKm2'), 'context-only hover metadata must preserve approximate area size')

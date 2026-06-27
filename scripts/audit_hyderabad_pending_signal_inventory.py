@@ -15,6 +15,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 CITY_DIR = REPO_ROOT / "data" / "cities" / "hyderabad"
 PENDING_SOURCES_PATH = CITY_DIR / "pending-context-sources.json"
 PENDING_PRICE_SIGNALS_PATH = CITY_DIR / "pending-price-signals.json"
+PENDING_INFRASTRUCTURE_SIGNALS_PATH = CITY_DIR / "pending-infrastructure-signals.json"
 OUTPUT_PATH = CITY_DIR / "pending-signal-inventory.json"
 GENERATED_AT = "2026-06-27"
 
@@ -75,7 +76,12 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def build_signal_status(signal_key: str, row: dict[str, Any], price_signal: dict[str, Any] | None) -> dict[str, Any]:
+def build_signal_status(
+    signal_key: str,
+    row: dict[str, Any],
+    price_signal: dict[str, Any] | None,
+    infrastructure_signal: dict[str, Any] | None,
+) -> dict[str, Any]:
     match = (row.get("officialMatches") or [{}])[0]
     catalog = SIGNAL_SOURCE_CATALOG[signal_key]
     if signal_key == "price_band" and price_signal and price_signal.get("status") == "verified":
@@ -86,6 +92,16 @@ def build_signal_status(signal_key: str, row: dict[str, Any], price_signal: dict
             "sourceUrl": price_signal.get("sourceUrl"),
             "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
             "summary": price_signal.get("summary"),
+            "nextAction": "Keep blocked until the other required scoring signals are verified.",
+        }
+    if signal_key == "infrastructure" and infrastructure_signal and infrastructure_signal.get("status") == "verified":
+        return {
+            "status": "verified",
+            "label": catalog["label"],
+            "sourceName": infrastructure_signal.get("sourceName"),
+            "sourceUrl": infrastructure_signal.get("sourceUrl"),
+            "verificationMethod": "Matched HMDA RRR Annexure B village and mandal rows to the exact official village/mandal.",
+            "summary": infrastructure_signal.get("summary"),
             "nextAction": "Keep blocked until the other required scoring signals are verified.",
         }
     return {
@@ -107,13 +123,22 @@ def build_signal_status(signal_key: str, row: dict[str, Any], price_signal: dict
 def main() -> None:
     pending_sources = load_json(PENDING_SOURCES_PATH)
     pending_price_signals = load_json(PENDING_PRICE_SIGNALS_PATH)
+    pending_infrastructure_signals = load_json(PENDING_INFRASTRUCTURE_SIGNALS_PATH)
     price_signal_by_slug = {
         row["slug"]: row for row in pending_price_signals["priceSignals"]
+    }
+    infrastructure_signal_by_slug = {
+        row["slug"]: row for row in pending_infrastructure_signals["infrastructureSignals"]
     }
     area_inventories = []
     for row in pending_sources["sourceAudits"]:
         signals = {
-            key: build_signal_status(key, row, price_signal_by_slug.get(row["slug"]))
+            key: build_signal_status(
+                key,
+                row,
+                price_signal_by_slug.get(row["slug"]),
+                infrastructure_signal_by_slug.get(row["slug"]),
+            )
             for key in REQUIRED_SIGNALS
         }
         signal_deck_ready = all(signal["status"] == "verified" for signal in signals.values())

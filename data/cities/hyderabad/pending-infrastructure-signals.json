@@ -1,0 +1,498 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-27",
+  "citySlug": "hyderabad",
+  "purpose": "official exact-area infrastructure evidence for Hyderabad pending context cells",
+  "sourcePolicy": "Use as infrastructure evidence only; it does not verify price, RERA, satellite, employment, or government-scheme signals.",
+  "summary": {
+    "pendingContextCellCount": 75,
+    "verifiedInfrastructureSignalCount": 2,
+    "missingInfrastructureSignalCount": 73
+  },
+  "infrastructureSignals": [
+    {
+      "slug": "ctx-ananthagiri-hills",
+      "name": "Ananthagiri Hills",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-andole-south",
+      "name": "Andole South",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-burgula",
+      "name": "Burgula",
+      "status": "verified",
+      "sourceName": "HMDA proposed alignment of 100m wide Regional Ring Road Annexure B",
+      "sourceUrl": "https://www.hmda.gov.in/wp-content/uploads/2020/07/Annexure-B.pdf",
+      "sourcePageUrl": "https://www.hmda.gov.in/proposed-alignment-of-100m-wide-regional-ring-road/",
+      "officialMatch": {
+        "villageName": "Gunded",
+        "mandalName": "Balanagar",
+        "districtName": "Mahabubnagar",
+        "sourceKey": "statewide:431"
+      },
+      "summary": {
+        "projectName": "Proposed 100m wide Regional Ring Road",
+        "evidenceLabel": "Village listed in HMDA RRR Annexure B indicative village/survey-number alignment",
+        "annexureDistrictName": "Mahabubnagar",
+        "annexureMandalName": "Balanagar",
+        "annexureVillageName": "Gunded",
+        "annexureRow": "9 Mahabubnagar Balanagar Gunded24, 25, 31, 32, 33, 36, 39, 40, 41, 67, 68, 69, 70, 71, 72, 73,"
+      },
+      "nextAction": "Keep blocked until every other required scoring signal is verified for this exact area."
+    },
+    {
+      "slug": "osm-chakrampally-1291368180",
+      "name": "Chakrampally",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-chaudergudem",
+      "name": "Chaudergudem",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-dandumalkapur",
+      "name": "Dandumalkapur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-doma",
+      "name": "Doma",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-elikatta-south",
+      "name": "Elikatta South",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-farooqnagar-west",
+      "name": "Farooqnagar West",
+      "status": "verified",
+      "sourceName": "HMDA proposed alignment of 100m wide Regional Ring Road Annexure B",
+      "sourceUrl": "https://www.hmda.gov.in/wp-content/uploads/2020/07/Annexure-B.pdf",
+      "sourcePageUrl": "https://www.hmda.gov.in/proposed-alignment-of-100m-wide-regional-ring-road/",
+      "officialMatch": {
+        "villageName": "Agiryal",
+        "mandalName": "Kondurg",
+        "districtName": "Rangareddy",
+        "sourceKey": "statewide:863"
+      },
+      "summary": {
+        "projectName": "Proposed 100m wide Regional Ring Road",
+        "evidenceLabel": "Village listed in HMDA RRR Annexure B indicative village/survey-number alignment",
+        "annexureDistrictName": "Mahabubnagar",
+        "annexureMandalName": "Kondurg",
+        "annexureVillageName": "Agiryal",
+        "annexureRow": "20 Mahabubnagar Kondurg Agiryal86, 87, 88, 89, 110, 111, 112, 113, 114, 115, 119, 130, 132,"
+      },
+      "nextAction": "Keep blocked until every other required scoring signal is verified for this exact area."
+    },
+    {
+      "slug": "ctx-kadthal",
+      "name": "Kadthal",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-kammadanam",
+      "name": "Kammadanam",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-keshampet",
+      "name": "Keshampet",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-kondurg",
+      "name": "Kondurg",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-kotepalli-245640512",
+      "name": "Kotepalli",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-madhurapur-shadnagar",
+      "name": "Madhurapur Shadnagar",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-mansanpally",
+      "name": "Mansanpally",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-mucharla",
+      "name": "Mucharla",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-narayanpur-245639706",
+      "name": "Narayanpur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-pargi-road-shadnagar",
+      "name": "Pargi Road Shadnagar",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-pudur-vikarabad",
+      "name": "Pudur Vikarabad",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-pulkal-west",
+      "name": "Pulkal West",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-raipole",
+      "name": "Raipole",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-sadasivpet-west",
+      "name": "Sadasivpet West",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-sangam-245639412",
+      "name": "Sangam",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-talakondapally",
+      "name": "Talakondapally",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-valigonda-245640522",
+      "name": "Valigonda",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-yadagirigutta",
+      "name": "Yadagirigutta",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-yenkepally",
+      "name": "Yenkepally",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-ankral-660553458",
+      "name": "Ankral",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-aushapur-662734738",
+      "name": "Aushapur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-aziznagar",
+      "name": "Aziznagar",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-bandaravirala-660551588",
+      "name": "Bandaravirala",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-batasingaram",
+      "name": "Batasingaram",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-bibinagar-east",
+      "name": "Bibinagar East",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-bongloor",
+      "name": "Bongloor",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-chegur",
+      "name": "Chegur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-chilkur",
+      "name": "Chilkur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-chitkul",
+      "name": "Chitkul",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-choutuppal",
+      "name": "Choutuppal",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-elkatta",
+      "name": "Elkatta",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-gajwel-south",
+      "name": "Gajwel South",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-gandimaisamma-571350232",
+      "name": "Gandimaisamma",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-ghatkesar-east",
+      "name": "Ghatkesar East",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-girmapur",
+      "name": "Girmapur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-gorelli-660146124",
+      "name": "Gorelli",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-hydernagar-1428934700",
+      "name": "Hydernagar",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-inmulnarva",
+      "name": "Inmulnarva",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-kandlakoya",
+      "name": "Kandlakoya",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-kandukur-rangareddy",
+      "name": "Kandukur Rangareddy",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-kardhanur",
+      "name": "Kardhanur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-kondannaguda",
+      "name": "Kondannaguda",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-kongara-kalan",
+      "name": "Kongara Kalan",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-kuntloor-981868945",
+      "name": "Kuntloor",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-lemur",
+      "name": "Lemur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-maisammaguda",
+      "name": "Maisammaguda",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-malkapur-571358646",
+      "name": "Malkapur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-mangalpally",
+      "name": "Mangalpally",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-manneguda",
+      "name": "Manneguda",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-manoharabad",
+      "name": "Manoharabad",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-mansanpally-maheshwaram",
+      "name": "Mansanpally Maheshwaram",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-mekaguda",
+      "name": "Mekaguda",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-mogiligidda",
+      "name": "Mogiligidda",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-nallavalli",
+      "name": "Nallavalli",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-narsapur-road",
+      "name": "Narsapur Road",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-peddakaparthy",
+      "name": "Peddakaparthy",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-pillai-palle-660552232",
+      "name": "Pillai Palle",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-pocharam-ibrahimpatnam",
+      "name": "Pocharam Ibrahimpatnam",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-pragnapur",
+      "name": "Pragnapur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-ravalkole",
+      "name": "Ravalkole",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-rayagiri-245641025",
+      "name": "Rayagiri",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-sheriguda",
+      "name": "Sheriguda",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-shivampet-east",
+      "name": "Shivampet East",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-solipur",
+      "name": "Solipur",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "osm-vasanth-nagar-1428934704",
+      "name": "Vasanth Nagar",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    },
+    {
+      "slug": "ctx-wargal",
+      "name": "Wargal",
+      "status": "missing",
+      "reason": "rrr_annexure_village_not_matched"
+    }
+  ]
+}

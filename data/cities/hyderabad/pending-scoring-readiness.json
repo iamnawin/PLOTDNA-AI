@@ -617,7 +617,6 @@
       "missingEvidence": [
         "price_band",
         "rera_activity",
-        "infrastructure",
         "satellite_growth",
         "employment",
         "government_scheme"
@@ -644,11 +643,11 @@
           "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
         },
         "infrastructure": {
-          "status": "source_identified",
-          "sourceName": "HMDA master planning and project references",
-          "sourceUrl": "https://www.hmda.gov.in/master-planning-2031/",
-          "verificationMethod": "Attach area-specific road, metro, RRR, ORR, master-plan, or public project evidence.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "status": "verified",
+          "sourceName": "HMDA proposed alignment of 100m wide Regional Ring Road Annexure B",
+          "sourceUrl": "https://www.hmda.gov.in/wp-content/uploads/2020/07/Annexure-B.pdf",
+          "verificationMethod": "Matched HMDA RRR Annexure B village and mandal rows to the exact official village/mandal.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "satellite_growth": {
           "status": "source_identified",
@@ -1334,7 +1333,6 @@
       "promotionReady": false,
       "missingEvidence": [
         "rera_activity",
-        "infrastructure",
         "satellite_growth",
         "employment",
         "government_scheme"
@@ -1361,11 +1359,11 @@
           "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
         },
         "infrastructure": {
-          "status": "source_identified",
-          "sourceName": "HMDA master planning and project references",
-          "sourceUrl": "https://www.hmda.gov.in/master-planning-2031/",
-          "verificationMethod": "Attach area-specific road, metro, RRR, ORR, master-plan, or public project evidence.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "status": "verified",
+          "sourceName": "HMDA proposed alignment of 100m wide Regional Ring Road Annexure B",
+          "sourceUrl": "https://www.hmda.gov.in/wp-content/uploads/2020/07/Annexure-B.pdf",
+          "verificationMethod": "Matched HMDA RRR Annexure B village and mandal rows to the exact official village/mandal.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "satellite_growth": {
           "status": "source_identified",

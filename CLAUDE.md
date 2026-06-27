@@ -416,6 +416,7 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 - Location resolver: 4-tier coordinate → locality resolution (exact/nearby/cluster/uncovered)
 - Backend live at `https://plotdna-api.onrender.com` serving auth, entitlements, verdicts, AVM, market pulse, RERA, brochure parsing, and AI chat routes.
 - Hyderabad has 310 contiguous coverage cells: 235 scored market cells plus 75 context-only subdivisions for the outer flagship area. The map and search path no longer rely on a circular disk, hidden outer pizza-slice zones, nearby-score substitution for context-only areas, a default Good Growth filter that makes valid scored cells look uncovered, or non-interactive blue no-data polygons; context cells remain approximate until sourced village/admin boundaries replace them.
+- Hyderabad pending scoring evidence as of 2026-06-27: all 75 context cells have official TGRAC/admin boundary matches; 41 have verified Telangana Registration price-band rows; 2 have verified HMDA Regional Ring Road Annexure B infrastructure rows. Promotion remains blocked for all 75 until RERA, satellite growth, employment, government-scheme, and any missing price/infrastructure evidence are verified per exact area.
 - Frontend smoke tests: 27 `test:*` scripts under `frontend/scripts/` (Node.js, no test runner required).
 - Active deployment branch: `main`
 

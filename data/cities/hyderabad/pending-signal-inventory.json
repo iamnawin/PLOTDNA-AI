@@ -15,8 +15,8 @@
   "summary": {
     "pendingContextCellCount": 75,
     "signalDeckReadyCount": 0,
-    "sourceIdentifiedSignalCount": 409,
-    "verifiedSignalCount": 41
+    "sourceIdentifiedSignalCount": 407,
+    "verifiedSignalCount": 43
   },
   "areaInventories": [
     {
@@ -935,18 +935,20 @@
           "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
         },
         "infrastructure": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Infrastructure",
-          "sourceName": "HMDA master planning and project references",
-          "sourceUrl": "https://www.hmda.gov.in/master-planning-2031/",
-          "verificationMethod": "Attach area-specific road, metro, RRR, ORR, master-plan, or public project evidence.",
-          "areaJoinBasis": {
-            "villageName": "Gunded",
-            "mandalName": "Balanagar",
-            "districtName": "Mahabubnagar",
-            "sourceKey": "statewide:431"
+          "sourceName": "HMDA proposed alignment of 100m wide Regional Ring Road Annexure B",
+          "sourceUrl": "https://www.hmda.gov.in/wp-content/uploads/2020/07/Annexure-B.pdf",
+          "verificationMethod": "Matched HMDA RRR Annexure B village and mandal rows to the exact official village/mandal.",
+          "summary": {
+            "projectName": "Proposed 100m wide Regional Ring Road",
+            "evidenceLabel": "Village listed in HMDA RRR Annexure B indicative village/survey-number alignment",
+            "annexureDistrictName": "Mahabubnagar",
+            "annexureMandalName": "Balanagar",
+            "annexureVillageName": "Gunded",
+            "annexureRow": "9 Mahabubnagar Balanagar Gunded24, 25, 31, 32, 33, 36, 39, 40, 41, 67, 68, 69, 70, 71, 72, 73,"
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "satellite_growth": {
           "status": "source_identified",
@@ -2016,18 +2018,20 @@
           "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
         },
         "infrastructure": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Infrastructure",
-          "sourceName": "HMDA master planning and project references",
-          "sourceUrl": "https://www.hmda.gov.in/master-planning-2031/",
-          "verificationMethod": "Attach area-specific road, metro, RRR, ORR, master-plan, or public project evidence.",
-          "areaJoinBasis": {
-            "villageName": "Agiryal",
-            "mandalName": "Kondurg",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:863"
+          "sourceName": "HMDA proposed alignment of 100m wide Regional Ring Road Annexure B",
+          "sourceUrl": "https://www.hmda.gov.in/wp-content/uploads/2020/07/Annexure-B.pdf",
+          "verificationMethod": "Matched HMDA RRR Annexure B village and mandal rows to the exact official village/mandal.",
+          "summary": {
+            "projectName": "Proposed 100m wide Regional Ring Road",
+            "evidenceLabel": "Village listed in HMDA RRR Annexure B indicative village/survey-number alignment",
+            "annexureDistrictName": "Mahabubnagar",
+            "annexureMandalName": "Kondurg",
+            "annexureVillageName": "Agiryal",
+            "annexureRow": "20 Mahabubnagar Kondurg Agiryal86, 87, 88, 89, 110, 111, 112, 113, 114, 115, 119, 130, 132,"
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "satellite_growth": {
           "status": "source_identified",

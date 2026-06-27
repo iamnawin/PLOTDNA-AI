@@ -18,6 +18,8 @@
 
 **Price evidence update - 2026-06-27:** `scripts/audit_hyderabad_pending_price_signals.py` writes `data/cities/hyderabad/pending-price-signals.json` from Telangana Registration unit-rate rows. 41 of 75 pending cells now have verified exact-area price-band evidence. These rows update the signal inventory/readiness files, but no pending cell is promotion-ready because RERA, infrastructure, satellite, employment, and government-scheme signals still need exact-area verification.
 
+**Infrastructure evidence update - 2026-06-27:** `scripts/audit_hyderabad_pending_infrastructure_signals.py` writes `data/cities/hyderabad/pending-infrastructure-signals.json` from HMDA's official Regional Ring Road Annexure B village/survey-number list. 2 of 75 pending cells now have verified exact-area infrastructure evidence by matching both village and mandal to the annexure. These rows update the signal inventory/readiness files, but no pending cell is promotion-ready because the remaining required signals are still incomplete.
+
 ### Task 1: Build Pending Area Source Audit
 
 **Files:**
@@ -55,6 +57,8 @@ Run: `npm run test:hyderabad-production`
 - Create: `data/cities/hyderabad/pending-signal-inventory.json`
 - Create: `scripts/audit_hyderabad_pending_price_signals.py`
 - Create: `data/cities/hyderabad/pending-price-signals.json`
+- Create: `scripts/audit_hyderabad_pending_infrastructure_signals.py`
+- Create: `data/cities/hyderabad/pending-infrastructure-signals.json`
 - Modify: `CLAUDE.md`
 
 - [x] **Step 1: Add source fields to pending hover**
@@ -93,6 +97,16 @@ Fetch Telangana Registration unit-rate rows by matching pending cells to officia
 
 Verified:
 - `python scripts\audit_hyderabad_pending_price_signals.py`
+- `python scripts\audit_hyderabad_pending_signal_inventory.py`
+- `python scripts\audit_hyderabad_pending_scoring_readiness.py`
+- `npm run test:hyderabad-production`
+
+- [x] **Step 6: Verify official infrastructure rows**
+
+Fetch HMDA Regional Ring Road Annexure B, extract village rows, and mark `infrastructure` as `verified` only when the pending cell's official village and mandal both match an annexure row. Do not treat a district/mandal-only text hit as a verified village match.
+
+Verified:
+- `python scripts\audit_hyderabad_pending_infrastructure_signals.py`
 - `python scripts\audit_hyderabad_pending_signal_inventory.py`
 - `python scripts\audit_hyderabad_pending_scoring_readiness.py`
 - `npm run test:hyderabad-production`
