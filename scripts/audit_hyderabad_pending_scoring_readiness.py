@@ -14,6 +14,7 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 CITY_DIR = REPO_ROOT / "data" / "cities" / "hyderabad"
 PENDING_SOURCES_PATH = CITY_DIR / "pending-context-sources.json"
+PENDING_SIGNAL_INVENTORY_PATH = CITY_DIR / "pending-signal-inventory.json"
 OUTPUT_PATH = CITY_DIR / "pending-scoring-readiness.json"
 GENERATED_AT = "2026-06-27"
 
@@ -35,7 +36,7 @@ def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def build_pending_evidence(row: dict[str, Any]) -> dict[str, Any]:
+def build_pending_evidence(row: dict[str, Any], signal_inventory: dict[str, Any] | None) -> dict[str, Any]:
     match = (row.get("officialMatches") or [{}])[0]
     official_boundary_verified = bool(match.get("sourceKey"))
     evidence = {
@@ -47,6 +48,16 @@ def build_pending_evidence(row: dict[str, Any]) -> dict[str, Any]:
         }
     }
     for key in REQUIRED_SIGNAL_EVIDENCE:
+        signal = (signal_inventory or {}).get("signals", {}).get(key)
+        if signal:
+            evidence[key] = {
+                "status": signal["status"],
+                "sourceName": signal.get("sourceName"),
+                "sourceUrl": signal.get("sourceUrl"),
+                "verificationMethod": signal.get("verificationMethod"),
+                "nextAction": signal.get("nextAction"),
+            }
+            continue
         evidence[key] = {
             "status": "missing",
             "nextAction": "Attach verified signal deck before assigning a PlotDNA score.",
@@ -56,9 +67,13 @@ def build_pending_evidence(row: dict[str, Any]) -> dict[str, Any]:
 
 def main() -> None:
     pending_sources = load_json(PENDING_SOURCES_PATH)
+    pending_signal_inventory = load_json(PENDING_SIGNAL_INVENTORY_PATH)
+    signal_inventory_by_slug = {
+        row["slug"]: row for row in pending_signal_inventory["areaInventories"]
+    }
     area_audits = []
     for row in pending_sources["sourceAudits"]:
-        evidence = build_pending_evidence(row)
+        evidence = build_pending_evidence(row, signal_inventory_by_slug.get(row["slug"]))
         promotion_ready = all(item["status"] == "verified" for item in evidence.values())
         missing_evidence = [
             key

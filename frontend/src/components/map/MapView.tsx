@@ -14,6 +14,8 @@ import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import {
   getHyderabadPendingSource,
   getHyderabadPendingScoringReadiness,
+  getHyderabadPendingSignalInventory,
+  getIdentifiedSignalSourceLabels,
   getMissingScoreSignalLabels,
   getOfficialMatchDetails,
   getOfficialMatchLabel,
@@ -214,6 +216,7 @@ interface ContextHoverInfo {
   officialMatchLabel: string | null
   officialMatchDetails: string[]
   missingScoreSignals: string[]
+  identifiedSignalSources: string[]
 }
 
 function getPolygonBounds(polygon: [number, number][]): [[number, number], [number, number]] {
@@ -402,10 +405,12 @@ export default function MapView() {
     const slug = String(feature.properties?.slug ?? '')
     const audit = getHyderabadPendingSource(slug)
     const readiness = getHyderabadPendingScoringReadiness(slug)
+    const signalInventory = getHyderabadPendingSignalInventory(slug)
     const officialMatch = audit?.officialMatches?.[0]
     const officialMatchLabel = getOfficialMatchLabel(officialMatch)
     const officialMatchDetails = getOfficialMatchDetails(officialMatch)
     const missingScoreSignals = getMissingScoreSignalLabels(readiness)
+    const identifiedSignalSources = getIdentifiedSignalSourceLabels(signalInventory)
     setHoveredSlug(null)
     setHoverInfo(null)
     setContextHoverSlug(slug)
@@ -422,6 +427,7 @@ export default function MapView() {
       officialMatchLabel,
       officialMatchDetails,
       missingScoreSignals,
+      identifiedSignalSources,
     })
   }, [setHoveredSlug])
 
@@ -775,6 +781,11 @@ export default function MapView() {
           {contextHover.missingScoreSignals.length > 0 && (
             <p style={{ margin: '7px 0 0', color: '#fbbf24', fontSize: 8, fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.45 }}>
               Missing score signals: {contextHover.missingScoreSignals.join(', ')}
+            </p>
+          )}
+          {contextHover.identifiedSignalSources.length > 0 && (
+            <p style={{ margin: '5px 0 0', color: '#a5b4fc', fontSize: 8, fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.45 }}>
+              Identified signal sources: {contextHover.identifiedSignalSources.slice(0, 3).join(' | ')}
             </p>
           )}
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 9 }}>

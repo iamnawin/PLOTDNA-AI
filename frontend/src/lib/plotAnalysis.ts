@@ -11,6 +11,8 @@ import {
 import {
   getHyderabadPendingSource,
   getHyderabadPendingScoringReadiness,
+  getHyderabadPendingSignalInventory,
+  getIdentifiedSignalSourceLabels,
   getMissingScoreSignalLabels,
   getOfficialMatchDetails,
   getOfficialMatchLabel,
@@ -94,6 +96,7 @@ export interface LocalityFallbackResult {
   contextOfficialMatchLabel?: string | null
   contextOfficialMatchDetails?: string[]
   contextMissingScoreSignals?: string[]
+  contextIdentifiedSignalSources?: string[]
 }
 
 function mapTier(tier: ResolutionTier): LocalityFallbackTier {
@@ -141,6 +144,9 @@ export function resolveLocalityFallback(
     const pendingReadiness = resolution.citySlug === 'hyderabad'
       ? getHyderabadPendingScoringReadiness(resolution.localitySlug)
       : null
+    const pendingSignalInventory = resolution.citySlug === 'hyderabad'
+      ? getHyderabadPendingSignalInventory(resolution.localitySlug)
+      : null
     const officialMatch = pendingSource?.officialMatches?.[0]
     return {
       tier,
@@ -159,6 +165,7 @@ export function resolveLocalityFallback(
       contextOfficialMatchLabel: getOfficialMatchLabel(officialMatch),
       contextOfficialMatchDetails: getOfficialMatchDetails(officialMatch),
       contextMissingScoreSignals: getMissingScoreSignalLabels(pendingReadiness),
+      contextIdentifiedSignalSources: getIdentifiedSignalSourceLabels(pendingSignalInventory),
     }
   }
 

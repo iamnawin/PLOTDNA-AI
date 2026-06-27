@@ -14,6 +14,8 @@
 
 **Scoring gate update - 2026-06-27:** `scripts/audit_hyderabad_pending_scoring_readiness.py` writes `data/cities/hyderabad/pending-scoring-readiness.json`. All 75 pending cells have official boundary evidence, 0 are promotion-ready, and all 75 remain blocked by missing price/RERA/infrastructure/satellite/employment/government-scheme signal decks.
 
+**Signal inventory update - 2026-06-27:** `scripts/audit_hyderabad_pending_signal_inventory.py` writes `data/cities/hyderabad/pending-signal-inventory.json`. Every pending cell now has an explicit source inventory for the six scoring signals. These are marked `source_identified`, not `verified`, so they explain the validation path in hover/search UI while still blocking scoring promotion.
+
 ### Task 1: Build Pending Area Source Audit
 
 **Files:**
@@ -47,6 +49,8 @@ Run: `npm run test:hyderabad-production`
 - Create: `data/cities/hyderabad/tgrac-pending-village-boundaries.geojson`
 - Create: `scripts/audit_hyderabad_pending_scoring_readiness.py`
 - Create: `data/cities/hyderabad/pending-scoring-readiness.json`
+- Create: `scripts/audit_hyderabad_pending_signal_inventory.py`
+- Create: `data/cities/hyderabad/pending-signal-inventory.json`
 - Modify: `CLAUDE.md`
 
 - [x] **Step 1: Add source fields to pending hover**
@@ -70,6 +74,15 @@ Verified:
 - `npm run lint`
 - `npm run build`
 
+- [x] **Step 4: Add signal source inventory**
+
+For every pending context cell, record the required source path for price band, RERA activity, infrastructure, satellite growth, employment, and government scheme evidence. Surface these as identified source paths in hover/search UI, but do not mark any pending cell promotion-ready until exact-area signal values are verified.
+
+Verified:
+- `python scripts\audit_hyderabad_pending_signal_inventory.py`
+- `python scripts\audit_hyderabad_pending_scoring_readiness.py`
+- `npm run test:hyderabad-production`
+
 ### Task 3: Promote Verified Areas Only After Signal Data
 
 **Files:**
@@ -80,6 +93,8 @@ Verified:
 Require sourced boundary or official admin match plus price/rera/infrastructure/satellite signal deck before removing pending status.
 
 Implemented with `data/cities/hyderabad/pending-scoring-readiness.json`. Required evidence is official boundary, price band, RERA activity, infrastructure, satellite growth, employment, and government scheme signal. No pending context cell is promotion-ready yet.
+
+The signal source inventory now identifies official/source-of-record paths for each required signal category, but all pending rows remain blocked because source paths are not exact-area verified signal decks.
 
 - [ ] **Step 2: Add scored records in batches**
 

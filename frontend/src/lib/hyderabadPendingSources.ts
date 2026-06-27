@@ -1,5 +1,6 @@
 import hyderabadPendingSourcesRaw from '../../../data/cities/hyderabad/pending-context-sources.json?raw'
 import hyderabadPendingScoringReadinessRaw from '../../../data/cities/hyderabad/pending-scoring-readiness.json?raw'
+import hyderabadPendingSignalInventoryRaw from '../../../data/cities/hyderabad/pending-signal-inventory.json?raw'
 
 export interface HyderabadPendingOfficialMatch {
   villageName?: string
@@ -31,12 +32,26 @@ export interface HyderabadPendingScoringReadiness {
   missingEvidence: string[]
 }
 
+export interface HyderabadPendingSignalInventory {
+  slug: string
+  signalDeckReady: boolean
+  signals: Record<string, {
+    status: 'verified' | 'source_identified' | 'missing'
+    label?: string
+    sourceName?: string
+  }>
+}
+
 const HYDERABAD_PENDING_SOURCES = JSON.parse(hyderabadPendingSourcesRaw) as {
   sourceAudits: HyderabadPendingSourceAudit[]
 }
 
 const HYDERABAD_PENDING_SCORING_READINESS = JSON.parse(hyderabadPendingScoringReadinessRaw) as {
   areaAudits: HyderabadPendingScoringReadiness[]
+}
+
+const HYDERABAD_PENDING_SIGNAL_INVENTORY = JSON.parse(hyderabadPendingSignalInventoryRaw) as {
+  areaInventories: HyderabadPendingSignalInventory[]
 }
 
 export const HYDERABAD_PENDING_SOURCE_BY_SLUG: Record<string, HyderabadPendingSourceAudit> = Object.fromEntries(
@@ -47,6 +62,10 @@ export const HYDERABAD_PENDING_SCORING_READINESS_BY_SLUG: Record<string, Hyderab
   HYDERABAD_PENDING_SCORING_READINESS.areaAudits.map(audit => [audit.slug, audit]),
 )
 
+export const HYDERABAD_PENDING_SIGNAL_INVENTORY_BY_SLUG: Record<string, HyderabadPendingSignalInventory> = Object.fromEntries(
+  HYDERABAD_PENDING_SIGNAL_INVENTORY.areaInventories.map(inventory => [inventory.slug, inventory]),
+)
+
 export function getHyderabadPendingSource(slug: string | null | undefined): HyderabadPendingSourceAudit | null {
   if (!slug) return null
   return HYDERABAD_PENDING_SOURCE_BY_SLUG[slug] ?? null
@@ -55,6 +74,11 @@ export function getHyderabadPendingSource(slug: string | null | undefined): Hyde
 export function getHyderabadPendingScoringReadiness(slug: string | null | undefined): HyderabadPendingScoringReadiness | null {
   if (!slug) return null
   return HYDERABAD_PENDING_SCORING_READINESS_BY_SLUG[slug] ?? null
+}
+
+export function getHyderabadPendingSignalInventory(slug: string | null | undefined): HyderabadPendingSignalInventory | null {
+  if (!slug) return null
+  return HYDERABAD_PENDING_SIGNAL_INVENTORY_BY_SLUG[slug] ?? null
 }
 
 export function getOfficialMatchLabel(match: HyderabadPendingOfficialMatch | null | undefined): string | null {
@@ -99,4 +123,12 @@ export function getMissingScoreSignalLabels(readiness: HyderabadPendingScoringRe
   return readiness.missingEvidence
     .filter(key => key !== 'official_boundary')
     .map(key => labels[key] ?? key.replaceAll('_', ' '))
+}
+
+export function getIdentifiedSignalSourceLabels(inventory: HyderabadPendingSignalInventory | null | undefined): string[] {
+  if (!inventory) return []
+  return Object.values(inventory.signals)
+    .filter(signal => signal.status === 'source_identified')
+    .map(signal => signal.label && signal.sourceName ? `${signal.label}: ${signal.sourceName}` : signal.label ?? signal.sourceName)
+    .filter((value): value is string => Boolean(value))
 }
