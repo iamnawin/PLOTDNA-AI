@@ -15,8 +15,8 @@
   "summary": {
     "pendingContextCellCount": 75,
     "signalDeckReadyCount": 0,
-    "sourceIdentifiedSignalCount": 450,
-    "verifiedSignalCount": 0
+    "sourceIdentifiedSignalCount": 409,
+    "verifiedSignalCount": 41
   },
   "areaInventories": [
     {
@@ -218,18 +218,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Julur",
-            "mandalName": "B.Pochampally",
-            "districtName": "Yadadri Bhuvanagiri",
-            "sourceKey": "hmda:947"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 2200,
+            "landValueMaxPerSqYard": 2200,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -313,18 +317,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Jameelapet",
-            "mandalName": "Bibinagar",
-            "districtName": "Yadadri Bhuvanagiri",
-            "sourceKey": "hmda:876"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 2200,
+            "landValueMaxPerSqYard": 2200,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -408,18 +416,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Himayathnagar",
-            "mandalName": "Moinabad",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:422"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 5,
+            "landValueMinPerSqYard": 2200,
+            "landValueMaxPerSqYard": 5600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -503,18 +515,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Edulabad",
-            "mandalName": "Ghatkesar",
-            "districtName": "Medchal_Malkajgiri",
-            "sourceKey": "hmda:289"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 19,
+            "landValueMinPerSqYard": 2700,
+            "landValueMaxPerSqYard": 2700,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -598,18 +614,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Batasingaram",
-            "mandalName": "Abdullapurmet",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:330"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 21,
+            "landValueMinPerSqYard": 2700,
+            "landValueMaxPerSqYard": 2700,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -788,18 +808,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "KongaraKalan",
-            "mandalName": "Ibrahimpatnam",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:654"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 11,
+            "landValueMinPerSqYard": 2700,
+            "landValueMaxPerSqYard": 2700,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -978,18 +1002,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Cheemaldari",
-            "mandalName": "Mominpet",
-            "districtName": "Vikarabad",
-            "sourceKey": "statewide:3035"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 2,
+            "landValueMinPerSqYard": 2000,
+            "landValueMaxPerSqYard": 2000,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1073,18 +1101,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Kankal",
-            "mandalName": "Pudur",
-            "districtName": "Vikarabad",
-            "sourceKey": "statewide:2563"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 2000,
+            "landValueMaxPerSqYard": 2000,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1168,18 +1200,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Mallapur",
-            "mandalName": "Kothur",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:16"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 2500,
+            "landValueMaxPerSqYard": 2500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1263,18 +1299,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Gandipet",
-            "mandalName": "Gandipet",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:456"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 6,
+            "landValueMinPerSqYard": 2700,
+            "landValueMaxPerSqYard": 5600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1453,18 +1493,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Choutuppal",
-            "mandalName": "Choutuppal",
-            "districtName": "Yadadri Bhuvanagiri",
-            "sourceKey": "hmda:860"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 59,
+            "landValueMinPerSqYard": 2700,
+            "landValueMaxPerSqYard": 2700,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1548,18 +1592,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Rachakonda",
-            "mandalName": "Narayanapoor",
-            "districtName": "Yadadri Bhuvanagiri",
-            "sourceKey": "statewide:9237"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 3,
+            "landValueMinPerSqYard": 1600,
+            "landValueMaxPerSqYard": 1600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1643,18 +1691,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Barkatpalle",
-            "mandalName": "Pargi",
-            "districtName": "Vikarabad",
-            "sourceKey": "statewide:3076"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 2000,
+            "landValueMaxPerSqYard": 2000,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1833,18 +1885,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Shabad",
-            "mandalName": "Shabad",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:502"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 3,
+            "landValueMinPerSqYard": 2200,
+            "landValueMaxPerSqYard": 2200,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1928,18 +1984,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Agiryal",
-            "mandalName": "Kondurg",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:863"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 7,
+            "landValueMinPerSqYard": 1600,
+            "landValueMaxPerSqYard": 1600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2023,18 +2083,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Karkapatla",
-            "mandalName": "Markook",
-            "districtName": "Siddipet",
-            "sourceKey": "hmda:171"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 12,
+            "landValueMinPerSqYard": 2200,
+            "landValueMaxPerSqYard": 2200,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2308,18 +2372,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Domadugu",
-            "mandalName": "Gummadidala",
-            "districtName": "Sangareddy",
-            "sourceKey": "hmda:143"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 13,
+            "landValueMinPerSqYard": 2200,
+            "landValueMaxPerSqYard": 2200,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2498,18 +2566,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Hydernagar",
-            "mandalName": "Kukatpally",
-            "districtName": "Medchal_Malkajgiri",
-            "sourceKey": "hmda:742"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 107,
+            "landValueMinPerSqYard": 3400,
+            "landValueMaxPerSqYard": 6600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2593,18 +2665,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Kodicherla",
-            "mandalName": "Kothur",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:14"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 2500,
+            "landValueMaxPerSqYard": 2500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2688,18 +2764,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Kadthal",
-            "mandalName": "Kadthal",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:551"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 19,
+            "landValueMinPerSqYard": 1600,
+            "landValueMaxPerSqYard": 1600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2783,18 +2863,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Kammadanam",
-            "mandalName": "Farooqnagar",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:158"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 6,
+            "landValueMinPerSqYard": 1600,
+            "landValueMaxPerSqYard": 1600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2973,18 +3057,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Nednur",
-            "mandalName": "Kandukur",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:347"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 18,
+            "landValueMinPerSqYard": 2500,
+            "landValueMaxPerSqYard": 2500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3163,18 +3251,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Mutpoor",
-            "mandalName": "Kondurg",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:878"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 7,
+            "landValueMinPerSqYard": 1600,
+            "landValueMaxPerSqYard": 1600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3258,18 +3350,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Kondannaguda",
-            "mandalName": "Farooqnagar",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:1"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 5,
+            "landValueMinPerSqYard": 2500,
+            "landValueMaxPerSqYard": 2500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3353,18 +3449,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Padmaram",
-            "mandalName": "Chowdergudem",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:879"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 8,
+            "landValueMinPerSqYard": 1600,
+            "landValueMaxPerSqYard": 1600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3733,18 +3833,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Rachloor",
-            "mandalName": "Kandukur",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:351"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 14,
+            "landValueMinPerSqYard": 2500,
+            "landValueMaxPerSqYard": 2500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3828,18 +3932,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Pomalpalle",
-            "mandalName": "Keshampeta",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:781"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 1500,
+            "landValueMaxPerSqYard": 1500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -4018,18 +4126,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Malkapur",
-            "mandalName": "Choutuppal",
-            "districtName": "Yadadri Bhuvanagiri",
-            "sourceKey": "hmda:892"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 11,
+            "landValueMinPerSqYard": 2700,
+            "landValueMaxPerSqYard": 2700,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -4588,18 +4700,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Nandigama",
-            "mandalName": "Nandigama",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:18"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 26,
+            "landValueMinPerSqYard": 2500,
+            "landValueMaxPerSqYard": 2500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -4683,18 +4799,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Mogalagidda",
-            "mandalName": "Farooqnagar",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:2"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 15,
+            "landValueMinPerSqYard": 2500,
+            "landValueMaxPerSqYard": 2500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -4778,18 +4898,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Nandiwanaparthy",
-            "mandalName": "Yacharam",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:3392"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 34,
+            "landValueMinPerSqYard": 1700,
+            "landValueMaxPerSqYard": 1700,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -5158,18 +5282,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Hajipalle",
-            "mandalName": "Farooqnagar",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:156"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 10,
+            "landValueMinPerSqYard": 1600,
+            "landValueMaxPerSqYard": 1600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -5253,18 +5381,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Nelapatla",
-            "mandalName": "Choutuppal",
-            "districtName": "Yadadri Bhuvanagiri",
-            "sourceKey": "hmda:906"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 2,
+            "landValueMinPerSqYard": 2700,
+            "landValueMaxPerSqYard": 2700,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -5348,18 +5480,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "JagatthPalle",
-            "mandalName": "B.Pochampally",
-            "districtName": "Yadadri Bhuvanagiri",
-            "sourceKey": "hmda:870"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 2200,
+            "landValueMaxPerSqYard": 2200,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -5443,18 +5579,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Kappapahad",
-            "mandalName": "Ibrahimpatnam",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:653"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 6,
+            "landValueMinPerSqYard": 2200,
+            "landValueMaxPerSqYard": 2200,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -5728,18 +5868,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Pulkal",
-            "mandalName": "Pulkal",
-            "districtName": "Sangareddy",
-            "sourceKey": "statewide:2597"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 15,
+            "landValueMinPerSqYard": 1500,
+            "landValueMaxPerSqYard": 1500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -5823,18 +5967,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Arutla",
-            "mandalName": "Manchal",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:2997"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 24,
+            "landValueMinPerSqYard": 1700,
+            "landValueMaxPerSqYard": 1700,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -6203,18 +6351,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Eklaskhampeta",
-            "mandalName": "Keshampeta",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:772"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 1500,
+            "landValueMaxPerSqYard": 1500,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -6488,18 +6640,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Ananthawaram",
-            "mandalName": "Shabad",
-            "districtName": "Rangareddy",
-            "sourceKey": "hmda:481"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 2200,
+            "landValueMaxPerSqYard": 2200,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -6583,18 +6739,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Makthamadharam",
-            "mandalName": "Kadthal",
-            "districtName": "Rangareddy",
-            "sourceKey": "statewide:1412"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 1,
+            "landValueMinPerSqYard": 1600,
+            "landValueMaxPerSqYard": 1600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -6678,18 +6838,22 @@
       "signalDeckReady": false,
       "signals": {
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "label": "Price band",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "areaJoinBasis": {
-            "villageName": "Redlarepaka",
-            "mandalName": "Valigonda",
-            "districtName": "Yadadri Bhuvanagiri",
-            "sourceKey": "statewide:9274"
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "summary": {
+            "recordCount": 22,
+            "landValueMinPerSqYard": 1600,
+            "landValueMaxPerSqYard": 1600,
+            "apartmentValueMinPerSqft": 2026,
+            "apartmentValueMaxPerSqft": 2026,
+            "effectiveDates": [
+              "05/06/2026"
+            ]
           },
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",

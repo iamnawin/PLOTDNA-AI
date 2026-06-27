@@ -20,6 +20,7 @@ import {
   getOfficialMatchDetails,
   getOfficialMatchLabel,
   getPendingSourceStatusLabel,
+  getVerifiedSignalLabels,
 } from '@/lib/hyderabadPendingSources'
 import type { ActiveProject } from '@/types'
 import hyderabadSpecialUseRaw from '../../../../data/cities/hyderabad/special-use-areas.geojson?raw'
@@ -217,6 +218,7 @@ interface ContextHoverInfo {
   officialMatchDetails: string[]
   missingScoreSignals: string[]
   identifiedSignalSources: string[]
+  verifiedSignals: string[]
 }
 
 function getPolygonBounds(polygon: [number, number][]): [[number, number], [number, number]] {
@@ -411,6 +413,7 @@ export default function MapView() {
     const officialMatchDetails = getOfficialMatchDetails(officialMatch)
     const missingScoreSignals = getMissingScoreSignalLabels(readiness)
     const identifiedSignalSources = getIdentifiedSignalSourceLabels(signalInventory)
+    const verifiedSignals = getVerifiedSignalLabels(signalInventory)
     setHoveredSlug(null)
     setHoverInfo(null)
     setContextHoverSlug(slug)
@@ -428,6 +431,7 @@ export default function MapView() {
       officialMatchDetails,
       missingScoreSignals,
       identifiedSignalSources,
+      verifiedSignals,
     })
   }, [setHoveredSlug])
 
@@ -781,6 +785,11 @@ export default function MapView() {
           {contextHover.missingScoreSignals.length > 0 && (
             <p style={{ margin: '7px 0 0', color: '#fbbf24', fontSize: 8, fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.45 }}>
               Missing score signals: {contextHover.missingScoreSignals.join(', ')}
+            </p>
+          )}
+          {contextHover.verifiedSignals.length > 0 && (
+            <p style={{ margin: '5px 0 0', color: '#22c55e', fontSize: 8, fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.45 }}>
+              {contextHover.verifiedSignals.join(' | ')}
             </p>
           )}
           {contextHover.identifiedSignalSources.length > 0 && (

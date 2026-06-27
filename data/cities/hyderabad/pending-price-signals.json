@@ -1,0 +1,4485 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-27",
+  "citySlug": "hyderabad",
+  "purpose": "official exact-area price-band evidence for Hyderabad pending context cells",
+  "sourcePolicy": "Use as price_band evidence only; it does not verify RERA, infrastructure, satellite, employment, or government-scheme signals.",
+  "summary": {
+    "pendingContextCellCount": 75,
+    "verifiedPriceSignalCount": 41,
+    "missingPriceSignalCount": 34
+  },
+  "priceSignals": [
+    {
+      "slug": "ctx-ananthagiri-hills",
+      "name": "Ananthagiri Hills",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-andole-south",
+      "name": "Andole South",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    },
+    {
+      "slug": "ctx-burgula",
+      "name": "Burgula",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    },
+    {
+      "slug": "osm-chakrampally-1291368180",
+      "name": "Chakrampally",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Cheemaldari",
+        "mandalName": "Mominpet",
+        "districtName": "Vikarabad",
+        "districtCode": "15_3",
+        "mandalCode": "11",
+        "villageCode": "1502023"
+      },
+      "summary": {
+        "recordCount": 2,
+        "landValueMinPerSqYard": 2000,
+        "landValueMaxPerSqYard": 2000,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | BALREDDYGUDA | | 1,500 | | 2,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | CHEEMALDARI | | 1,500 | | 2,000 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-chaudergudem",
+      "name": "Chaudergudem",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Kankal",
+        "mandalName": "Pudur",
+        "districtName": "Vikarabad",
+        "districtCode": "15_3",
+        "mandalCode": "15",
+        "villageCode": "1530028"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 2000,
+        "landValueMaxPerSqYard": 2000,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | KANKAL | | 1,500 | | 2,000 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-dandumalkapur",
+      "name": "Dandumalkapur",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Rachakonda",
+        "mandalName": "Narayanapoor",
+        "districtName": "Yadadri Bhuvanagiri",
+        "districtCode": "23_3",
+        "mandalCode": "11",
+        "villageCode": "2336001"
+      },
+      "summary": {
+        "recordCount": 3,
+        "landValueMinPerSqYard": 1600,
+        "landValueMaxPerSqYard": 1600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | KADILABAI THANDA | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | RACHAKONDA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 0 | | | THUMBAI THANDA | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-doma",
+      "name": "Doma",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Barkatpalle",
+        "mandalName": "Pargi",
+        "districtName": "Vikarabad",
+        "districtCode": "15_3",
+        "mandalCode": "13",
+        "villageCode": "1529005"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 2000,
+        "landValueMaxPerSqYard": 2000,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | BARKATHPALLY | | 1,100 | | 2,000 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-elikatta-south",
+      "name": "Elikatta South",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-farooqnagar-west",
+      "name": "Farooqnagar West",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Agiryal",
+        "mandalName": "Kondurg",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "13",
+        "villageCode": "1411039"
+      },
+      "summary": {
+        "recordCount": 7,
+        "landValueMinPerSqYard": 1600,
+        "landValueMaxPerSqYard": 1600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | AGIRYALA HOUSE SITE-1 | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | AGIRYALA-1 | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 2 | | | AGIRYALA-1 | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 3 | | | AGIRYALA-1 | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 4 | | | AGIRYALA-1 | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 5 | | | AGIRYALA-1 | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 6 | | | AGIRYAL-1 | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-kadthal",
+      "name": "Kadthal",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Kadthal",
+        "mandalName": "Kadthal",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "10",
+        "villageCode": "1416003"
+      },
+      "summary": {
+        "recordCount": 19,
+        "landValueMinPerSqYard": 1600,
+        "landValueMaxPerSqYard": 1600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | HOUSE SITE-1 | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | HYD TO SRISAILAM ROAD | | 4,200 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 1 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 2 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 3 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 4 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 5 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 6 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 7 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 8 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 9 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 10 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 11 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 12 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 13 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 14 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 15 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KADTHAL RESIDENTIAL",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 16 | - | 0 | | | KADTHAL RESIDENTIAL | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "19. | | | 17 | - | 0 | | | BUTTERFLY CITY | | 3,700 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-kammadanam",
+      "name": "Kammadanam",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Kammadanam",
+        "mandalName": "Farooqnagar",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "06",
+        "villageCode": "1412029"
+      },
+      "summary": {
+        "recordCount": 6,
+        "landValueMinPerSqYard": 1600,
+        "landValueMaxPerSqYard": 1600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "RESIDENTIAL AREA",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | RESIDENTIAL AREA | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | KAMMADANAM | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 2 | | | KAMMADANAM | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 3 | | | KAMMADANAM | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 4 | | | KAMMADANAM | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 5 | | | KAMMADANAM | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-keshampet",
+      "name": "Keshampet",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Mutpoor",
+        "mandalName": "Kondurg",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "13",
+        "villageCode": "1411006"
+      },
+      "summary": {
+        "recordCount": 7,
+        "landValueMinPerSqYard": 1600,
+        "landValueMaxPerSqYard": 1600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | MUTPOOR HOUSE SITE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | MUTPOOR | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 2 | | | MUTPOOR | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 3 | | | MUTPOOR | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 4 | | | MUTPOOR | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 5 | | | MUTPOOR | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 6 | | | MUTPOOR | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-kondurg",
+      "name": "Kondurg",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Padmaram",
+        "mandalName": "Chowdergudem",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "05",
+        "villageCode": "1411025"
+      },
+      "summary": {
+        "recordCount": 8,
+        "landValueMinPerSqYard": 1600,
+        "landValueMaxPerSqYard": 1600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | PADMARAM HOUSE SITE-1 | | 1,300 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | PADMARAM-1 | | 1,300 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 2 | | | PADMARAM-1 | | 1,300 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 3 | | | PADMARAM-1 | | 1,300 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 4 | | | PADMARAM-1 | | 1,300 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 5 | | | PADMARAM-1 | | 1,300 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 6 | | | PADMARAM-1 | | 1,300 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 7 | | | PADMARAM-1 | | 1,300 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "osm-kotepalli-245640512",
+      "name": "Kotepalli",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-madhurapur-shadnagar",
+      "name": "Madhurapur Shadnagar",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Pomalpalle",
+        "mandalName": "Keshampeta",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "12",
+        "villageCode": "1414011"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 1500,
+        "landValueMaxPerSqYard": 1500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | POMALPALLE HOUSE SITE-1 | | 1,500 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-mansanpally",
+      "name": "Mansanpally",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    },
+    {
+      "slug": "ctx-mucharla",
+      "name": "Mucharla",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Nandiwanaparthy",
+        "mandalName": "Yacharam",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "27",
+        "villageCode": "1536007"
+      },
+      "summary": {
+        "recordCount": 34,
+        "landValueMinPerSqYard": 1700,
+        "landValueMaxPerSqYard": 1700,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 1 | | | AYYAVARIGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | ENEKINDI THANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 1 | | | MALKIZGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 1 | | | NANDIWANAPARTHY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 2 | | | MALKIZGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 2 | | | NANDIWANAPARTHY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 3 | | | MALKIZGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 3 | | | NANDIWANAPARTHY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 4 | | | MALKIZGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 4 | | | NANDIWANAPARTHY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 5 | | | AYYAVARIGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 5 | | | BOLLIGUTTA THANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 5 | | | KOMMONI BAVI | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 0 | - | 5 | | | MALKIZGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 0 | - | 5 | | | NANDIWANAPARTHY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 0 | - | 5 | | | NELLIPOCHAMMA THANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 0 | - | 5 | | | PILLIPALY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 0 | - | 6 | | | AYYAVARIGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "19. | | | 0 | - | 6 | | | ENEKINDI THANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "20. | | | 0 | - | 6 | | | NANDIWANAPARTHY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "21. | | | 0 | - | 7 | | | NANDIWANAPARTHY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "22. | | | 0 | - | 7 | | | NELLIPOCHAMMA THANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "23. | | | 0 | - | 7 | | | PILLIPALLY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "24. | | | 0 | - | 8 | | | KOMMONI BAVI | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "25. | | | 0 | - | 8 | | | NANDIWANAPARTHY | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "osm-narayanpur-245639706",
+      "name": "Narayanpur",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-pargi-road-shadnagar",
+      "name": "Pargi Road Shadnagar",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Hajipalle",
+        "mandalName": "Farooqnagar",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "06",
+        "villageCode": "1412017"
+      },
+      "summary": {
+        "recordCount": 10,
+        "landValueMinPerSqYard": 1600,
+        "landValueMaxPerSqYard": 1600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "RESIDENTIAL AREA",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | RESIDENTIAL AREA | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | HAJIPALLY | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 2 | | | HAJIPALLY | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 3 | | | HAJIPALLY | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 4 | | | HAJIPALLY | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 5 | | | HAJIPALLY | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 6 | | | HAJIPALLY | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 7 | | | HAJIPALLY | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 8 | | | HAJIPALLY | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 9 | | | HAJIPALLY | | 3,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-pudur-vikarabad",
+      "name": "Pudur Vikarabad",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    },
+    {
+      "slug": "ctx-pulkal-west",
+      "name": "Pulkal West",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Pulkal",
+        "mandalName": "Pulkal",
+        "districtName": "Sangareddy",
+        "districtCode": "17_2",
+        "mandalCode": "19",
+        "villageCode": "1733009"
+      },
+      "summary": {
+        "recordCount": 15,
+        "landValueMinPerSqYard": 1500,
+        "landValueMaxPerSqYard": 1500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 1 | | | SC WADA KURMA WADA | | 1,600 | | 1,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 2 | | | SC WADA MUSLIM WADA OC WADA MUDIRAJ WADA KUMM | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 3 | | | ALL BC AND OC WADA CHAKALI WADA OC WADA MUDIR | | 1,600 | | 1,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 4 | | | HARIJAN WADA SC NEW COLONY SC COLONY | | 1,600 | | 1,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 5 | | | SC COLONY AND BC WADA BUS STOP | | 1,600 | | 1,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 6 | | | HOUSE SITE | | 1,300 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 7 | | | RESIDENCIAL AREA | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 8 | | | RESIDENCIAL AREA | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 9 | | | RESIDENCIAL AREA | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 10 | | | RESIDENCIAL AREA | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 11 | | | RESIDENCIAL AREA | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 12 | | | RESIDENCIAL AREA | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 13 | | | RESIDENCIAL AREA | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 0 | - | 14 | | | RESIDENCIAL AREA | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 0 | - | 15 | | | RESIDENCIAL AREA | | 1,600 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-raipole",
+      "name": "Raipole",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Arutla",
+        "mandalName": "Manchal",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "17",
+        "villageCode": "1535022"
+      },
+      "summary": {
+        "recordCount": 24,
+        "landValueMinPerSqYard": 1700,
+        "landValueMaxPerSqYard": 1700,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 1 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | CHENNAREDDYGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 1 | | | PALLECHERVU THANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 1 | | | PATELCHERVUTHANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 2 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 2 | | | CHENNAREDDYGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 3 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 3 | | | CHENNAREDDYGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 4 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 5 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 6 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 6 | | | CHENNAREDDYGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 7 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 0 | - | 8 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 0 | - | 9 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 0 | - | 9 | | | CHENNAREDDYGUDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 0 | - | 9 | | | PATELCHERVU THANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 0 | - | 10 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "19. | | | 0 | - | 10 | | | PATELCHERVUTHANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "20. | | | 0 | - | 11 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "21. | | | 0 | - | 12 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "22. | | | 0 | - | 12 | | | BUGGATHANDA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "23. | | | 1 | - | 0 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "24. | | | 2 | - | 0 | | | ARUTLA | | 1,500 | | 1,700 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-sadasivpet-west",
+      "name": "Sadasivpet West",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "osm-sangam-245639412",
+      "name": "Sangam",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Eklaskhampeta",
+        "mandalName": "Keshampeta",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "12",
+        "villageCode": "1414003"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 1500,
+        "landValueMaxPerSqYard": 1500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | EKLASKHANPET HOUSE SITE | | 1,500 | | 1,500 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-talakondapally",
+      "name": "Talakondapally",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Makthamadharam",
+        "mandalName": "Kadthal",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "10",
+        "villageCode": "1415004"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 1600,
+        "landValueMaxPerSqYard": 1600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | MAKTHAMADHARAM | | 2,000 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "osm-valigonda-245640522",
+      "name": "Valigonda",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Redlarepaka",
+        "mandalName": "Valigonda",
+        "districtName": "Yadadri Bhuvanagiri",
+        "districtCode": "23_3",
+        "mandalCode": "15",
+        "villageCode": "2315012"
+      },
+      "summary": {
+        "recordCount": 22,
+        "landValueMinPerSqYard": 1600,
+        "landValueMaxPerSqYard": 1600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | AKKAMAPALLI VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | DASIREDDIGUDEM VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 1 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 1 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 2 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 2 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 3 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 3 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 4 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 4 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 5 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 5 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 6 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 0 | - | 6 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 0 | - | 7 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 0 | - | 7 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 0 | - | 8 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 0 | - | 8 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "19. | | | 0 | - | 9 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "20. | | | 0 | - | 9 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "21. | | | 0 | - | 10 | | | REDLA REPAKA VILLAGE | | 1,500 | | 1,600 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 1600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "22. | | | 0 | - | 10 | | | VALIGONDA TO BHONGIR ROAD | | 1,500 | | 1,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-yadagirigutta",
+      "name": "Yadagirigutta",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-yenkepally",
+      "name": "Yenkepally",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "osm-ankral-660553458",
+      "name": "Ankral",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Julur",
+        "mandalName": "B.Pochampally",
+        "districtName": "Yadadri Bhuvanagiri",
+        "districtCode": "23_3",
+        "mandalCode": "04",
+        "villageCode": "2318003"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 2200,
+        "landValueMaxPerSqYard": 2200,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | ALL LOCALITIES-1 | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "osm-aushapur-662734738",
+      "name": "Aushapur",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Jameelapet",
+        "mandalName": "Bibinagar",
+        "districtName": "Yadadri Bhuvanagiri",
+        "districtCode": "23_3",
+        "mandalCode": "06",
+        "villageCode": "2317002"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 2200,
+        "landValueMaxPerSqYard": 2200,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | ALL LOCALITIES | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-aziznagar",
+      "name": "Aziznagar",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Himayathnagar",
+        "mandalName": "Moinabad",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "18",
+        "villageCode": "1517007"
+      },
+      "summary": {
+        "recordCount": 5,
+        "landValueMinPerSqYard": 2200,
+        "landValueMaxPerSqYard": 5600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | CHILKUR TO PRAGATHI ROAD | | 6,800 | | 2,200 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | HIMAYATHNAGAR | | 6,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 5600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 0 | | | NH 163 VIKARABAD ROAD | | 6,800 | | 5,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 5600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 0 | | | NH-163 CHEVELLA ROAD | | 6,800 | | 5,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 0 | | | PRAGATHI ROAD | | 6,800 | | 2,200 | --> | 02(Commercial) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "osm-bandaravirala-660551588",
+      "name": "Bandaravirala",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Edulabad",
+        "mandalName": "Ghatkesar",
+        "districtName": "Medchal_Malkajgiri",
+        "districtCode": "15_2",
+        "mandalCode": "05",
+        "villageCode": "1512020"
+      },
+      "summary": {
+        "recordCount": 19,
+        "landValueMinPerSqYard": 2700,
+        "landValueMaxPerSqYard": 2700,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 1 | | | GHANAPUR | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | KPRIT COLLEGE | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "RESIDENTIAL LOCALITIES",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 1 | | | RESIDENTIAL LOCALITIES | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 1 | | | SAI PRAGATHI COLONY | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 2 | | | INDRA NAGAR | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 2 | | | LINGAPUR | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "RESIDENTIAL LOCALITIES",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 2 | | | RESIDENTIAL LOCALITIES | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "NEW RESIDENTIAL LOCALITIES",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 3 | | | NEW RESIDENTIAL LOCALITIES | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 3 | | | PHAKEER TEKYA | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 4 | | | NEAR NTPC | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "NEW RESIDENTIAL LOCALITIES",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 4 | | | NEW RESIDENTIAL LOCALITIES | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 5 | | | MODI CHURCH | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "NEW RESIDENTIAL LOCALITIES",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 5 | | | NEW RESIDENTIAL LOCALITIES | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 0 | - | 5 | | | SUNCREST VENTURE -6 | | 4,900 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 0 | - | 6 | | | FACING OUTER RING ROAD -5 | | 7,900 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "NEW RESIDENTIAL LOCALITIES",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 0 | - | 6 | | | NEW RESIDENTIAL LOCALITIES | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "NEW RESIDENTIAL LOCALITIES",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 0 | - | 7 | | | NEW RESIDENTIAL LOCALITIES | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "NEW RESIDENTIAL LOCALITIES",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 0 | - | 8 | | | NEW RESIDENTIAL LOCALITIES | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "NEW RESIDENTIAL LOCALITIES",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "19. | | | 0 | - | 9 | | | NEW RESIDENTIAL LOCALITIES | | 3,500 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-batasingaram",
+      "name": "Batasingaram",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Batasingaram",
+        "mandalName": "Abdullapurmet",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "01",
+        "villageCode": "1514036"
+      },
+      "summary": {
+        "recordCount": 21,
+        "landValueMinPerSqYard": 2700,
+        "landValueMaxPerSqYard": 2700,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 5 | | | JAFFERGUDA-5 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 1 | | | NATIONAL HIGH WAY NH-IX-1 | | 12,500 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 2 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 3 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 3 | | | BATASINGARAM NH NO.65-1-1 | | 12,500 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 3 | | | BATASINGARAM-3-2 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 4 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 4 | | | BATASINGARAM NH NO.65-1-1 | | 12,500 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 4 | | | BATASINGARAM-4-3 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 5 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 6 | | | BATASINGARAM-6-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 7 | | | BATASINGARAM-7-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 0 | - | 8 | | | BATASINGARAM-8-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 0 | - | 9 | | | BATASINGARAM-9-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 0 | - | 10 | | | BATASINGARAM-1-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 0 | - | 11 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 0 | - | 12 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "19. | | | 0 | - | 13 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "20. | | | 0 | - | 14 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "21. | | | 0 | - | 15 | | | BATASINGARAM-1 | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-bibinagar-east",
+      "name": "Bibinagar East",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    },
+    {
+      "slug": "ctx-bongloor",
+      "name": "Bongloor",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "KongaraKalan",
+        "mandalName": "Ibrahimpatnam",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "09",
+        "villageCode": "1534001"
+      },
+      "summary": {
+        "recordCount": 11,
+        "landValueMinPerSqYard": 2700,
+        "landValueMaxPerSqYard": 2700,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | KONGARA KALAN | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | KONGARAKALAN | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 2 | | | KONGARAKALAN | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 3 | | | KONGARAKALAN | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 4 | | | KONGARAKALAN THANDA, KONGARAKALAN | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 5 | | | KONGARAKALAN | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 6 | | | KONGARAKALAN | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 7 | | | KONGARAKALAN | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 7 | | | KONGARAKALAN THANDA | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 7 | | | ORR ROAD TO BR AMBEDKAR STATUE TO COLLECTORAT | | 4,800 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 8 | | | KONGARAKALAN | | 4,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-chegur",
+      "name": "Chegur",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Mallapur",
+        "mandalName": "Kothur",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "14",
+        "villageCode": "1413004"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 2500,
+        "landValueMaxPerSqYard": 2500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | MALLAPUR HOUSE SITE-1 | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-chilkur",
+      "name": "Chilkur",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Gandipet",
+        "mandalName": "Gandipet",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "07",
+        "villageCode": "1516005"
+      },
+      "summary": {
+        "recordCount": 6,
+        "landValueMinPerSqYard": 2700,
+        "landValueMaxPerSqYard": 5600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | GANDIPET | | 22,600 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | HYD TO GANDIPET ROAD | | 22,600 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "NON RESIDENTIAL PROPERTIES",
+          "landValuePerSqYard": 5600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 0 | | | NON RESIDENTIAL PROPERTIES | | 22,600 | | 5,600 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 1 | | | GANDIPET VILLAGE ROAD | | 22,600 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 2 | | | GANDIPET VILLAGE ROAD | | 22,600 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 4 | | | GANDIPET VILLAGE ROAD | | 22,600 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-chitkul",
+      "name": "Chitkul",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    },
+    {
+      "slug": "ctx-choutuppal",
+      "name": "Choutuppal",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Choutuppal",
+        "mandalName": "Choutuppal",
+        "districtName": "Yadadri Bhuvanagiri",
+        "districtCode": "23_3",
+        "mandalCode": "08",
+        "villageCode": "2319006"
+      },
+      "summary": {
+        "recordCount": 59,
+        "landValueMinPerSqYard": 2700,
+        "landValueMaxPerSqYard": 2700,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | AFFECTING / ABUTTING RRR | | 7,300 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | B C COLONY | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 1 | | | CHINNAKONDUR ROAD FROM ZPHS TO SRIRAMA TEMPLE | | 6,300 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 1 | | | HANDLOOM SOCIETY AREA | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 1 | | | MALLIKARJUNA NAGAR | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 1 | | | MARKONDAIAH NAGAR | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 1 | | | ZPHS TO SRIRAMA TEMPLE | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 2 | | | BHARATH NAGAR | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 2 | | | BHAVANI NAGAR COLONY | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 2 | | | CHINNAKONDUR ROAD FROM ZPHS TO SANGI SHETTY S | | 7,900 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 2 | | | SHIVAJI NAGAR | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 2 | | | THIRUMALA TOWN SHIP | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 2 | | | ZPHS TO SANGI SHETTY SATHAIAH HOUSE | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 0 | - | 3 | | | BANGARIGADDA COLONY | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 0 | - | 3 | | | BHASKAR TALKIES TO NAGARAM X ROAD | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 0 | - | 3 | | | BHAVANI NAGAR COLONY | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 0 | - | 3 | | | CHERKUBAVI COLONY | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 0 | - | 3 | | | CHINNA KONDUR ROAD FROM SRIRAMA TEMPLE TO JAY | | 25,200 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "19. | | | 0 | - | 3 | | | CHOUTUPPAL TO THANGADPALLY ROAD BACK SIDE | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "20. | | | 0 | - | 3 | | | D L NARAYANA HOUSE TO BHASKAR TALKIES | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "21. | | | 0 | - | 3 | | | GANDHIPARK BACK SIDE | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "22. | | | 0 | - | 3 | | | GANESHNAGAR NAGAR | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "23. | | | 0 | - | 3 | | | HYDERABAD TO VIJAYAWADA NATIONAL HIGH WAY ROA | | 31,500 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "24. | | | 0 | - | 3 | | | HYDERABAD TO VIJAYAWADA NATIONAL HIGH WAY ROA | | 31,500 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "25. | | | 0 | - | 3 | | | KANCHARAKUNTLA COLONY | | 3,700 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-elkatta",
+      "name": "Elkatta",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Shabad",
+        "mandalName": "Shabad",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "22",
+        "villageCode": "1531020"
+      },
+      "summary": {
+        "recordCount": 3,
+        "landValueMinPerSqYard": 2200,
+        "landValueMaxPerSqYard": 2200,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 1 | | | SHABAD-1 | | 3,700 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 4 | | | ON BOTH SIDE OF THE SHABAD MAIN ROAD-4 | | 4,800 | | 2,200 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 4 | | | SHABAD TO SHAMSHABAD ROAD-9 | | 4,600 | | 2,200 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-gajwel-south",
+      "name": "Gajwel South",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Karkapatla",
+        "mandalName": "Markook",
+        "districtName": "Siddipet",
+        "districtCode": "17_3",
+        "mandalCode": "14",
+        "villageCode": "1745014"
+      },
+      "summary": {
+        "recordCount": 12,
+        "landValueMinPerSqYard": 2200,
+        "landValueMaxPerSqYard": 2200,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | GRAMAKANTAM | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | KARKAPATLA T.G.I.I.C | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 1 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 2 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 3 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 4 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 5 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 6 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 7 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 8 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 9 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "KARKAPATLA RESIDENTIAL",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 10 | | | KARKAPATLA RESIDENTIAL | | 2,000 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "osm-gandimaisamma-571350232",
+      "name": "Gandimaisamma",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-ghatkesar-east",
+      "name": "Ghatkesar East",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-girmapur",
+      "name": "Girmapur",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Domadugu",
+        "mandalName": "Gummadidala",
+        "districtName": "Sangareddy",
+        "districtCode": "17_2",
+        "mandalCode": "03",
+        "villageCode": "1739011"
+      },
+      "summary": {
+        "recordCount": 13,
+        "landValueMinPerSqYard": 2200,
+        "landValueMaxPerSqYard": 2200,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | BONTHAPALLY KAMMAN TO INDUSTRIAL AREA-1 | | 3,900 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | MEDAK TO HYDERABAD ROAD-1 | | 4,700 | | 2,200 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 0 | | | NOT COVERED BY WARD AND BLOCK-1 | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 1 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 2 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 3 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 4 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 5 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 6 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 7 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 8 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 9 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 10 | | | HOUSE SITE | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "osm-gorelli-660146124",
+      "name": "Gorelli",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "osm-hydernagar-1428934700",
+      "name": "Hydernagar",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Hydernagar",
+        "mandalName": "Kukatpally",
+        "districtName": "Medchal_Malkajgiri",
+        "districtCode": "15_2",
+        "mandalCode": "08",
+        "villageCode": "1506001"
+      },
+      "summary": {
+        "recordCount": 107,
+        "landValueMinPerSqYard": 3400,
+        "landValueMaxPerSqYard": 6600,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 6600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 1 | - | 1 | | | N H ROAD FACING-3-1 | | 67,400 | | 6,600 | --> | 01(Residential) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 1 | - | 1 | | | RAMANARESH NAGAR-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 1 | - | 1 | | | RAMNARESH NAGAR | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 1 | - | 2 | | | ALLAPUR SOCIETY | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 1 | - | 2 | | | ALLAPUR SOCIETY-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 1 | - | 2 | | | BHAVYAS NANDANAVANAM DUPLEX | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 1 | - | 2 | | | BHAVYAS NANDANAVANAM DUPLEX-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 1 | - | 2 | | | BRUNDAVAN COLONY | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 1 | - | 2 | | | BRUNDAVAN COLONY-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 1 | - | 2 | | | GOUTHAMI NAGAR | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 1 | - | 2 | | | GOUTHAMI NAGAR-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 1 | - | 2 | | | HYDERNAGAR VILLAGE | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 1 | - | 2 | | | HYDERNAGAR VILLAGE-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 1 | - | 2 | | | JAI BHARATH NAGAR | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 1 | - | 2 | | | JAI BHARATH NAGAR-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 1 | - | 2 | | | MAHESH SOCIETY | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 1 | - | 2 | | | MAHESH SOCIETY-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 1 | - | 2 | | | MITHRA HILLS | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "19. | | | 1 | - | 2 | | | MITHRA HILLS-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "20. | | | 1 | - | 2 | | | NAGARJUNA HOMES | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "21. | | | 1 | - | 2 | | | NAGARJUNA HOMES-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 3400,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "22. | | | 1 | - | 2 | | | NANDAMURI NAGAR | | 33,400 | | 3,400 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 5000,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "23. | | | 1 | - | 2 | | | NANDAMURI NAGAR-1 | | 33,400 | | 5,000 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 6600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "24. | | | 1 | - | 2 | | | NATIONAL HIGHWAY ROAD FACING-3 | | 67,400 | | 6,600 | --> | 01(Residential) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 6600,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "25. | | | 1 | - | 2 | | | NH IX ROAD FACING | | 67,400 | | 6,600 | --> | 01(Residential) | --> | 05/06/2026 | | | Get | -->"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-inmulnarva",
+      "name": "Inmulnarva",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Kodicherla",
+        "mandalName": "Kothur",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "14",
+        "villageCode": "1413014"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 2500,
+        "landValueMaxPerSqYard": 2500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | KODICHERLA HOUSE SITE-1 | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-kandlakoya",
+      "name": "Kandlakoya",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-kandukur-rangareddy",
+      "name": "Kandukur Rangareddy",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Nednur",
+        "mandalName": "Kandukur",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "11",
+        "villageCode": "1537022"
+      },
+      "summary": {
+        "recordCount": 18,
+        "landValueMinPerSqYard": 2500,
+        "landValueMaxPerSqYard": 2500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | HYD TO SRISAILAM ROAD | | 7,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | JANARDHANREDDI THANDA | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 0 | | | MANNEGUDA THANDA | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 0 | | | MANYAGUDA | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 1 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 2 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 3 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 4 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 5 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 6 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 7 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 8 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 9 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 10 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 11 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 12 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 13 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 14 | - | 0 | | | NEDNUR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-kardhanur",
+      "name": "Kardhanur",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-kondannaguda",
+      "name": "Kondannaguda",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Kondannaguda",
+        "mandalName": "Farooqnagar",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "06",
+        "villageCode": "1412009"
+      },
+      "summary": {
+        "recordCount": 5,
+        "landValueMinPerSqYard": 2500,
+        "landValueMaxPerSqYard": 2500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | KONDANNAGUDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | KONDANNAGUDA | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 2 | | | KONDANNAGUDA | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 3 | | | KONDANNAGUDA | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 4 | | | KONDANNAGUDA | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-kongara-kalan",
+      "name": "Kongara Kalan",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "osm-kuntloor-981868945",
+      "name": "Kuntloor",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-lemur",
+      "name": "Lemur",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Rachloor",
+        "mandalName": "Kandukur",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "11",
+        "villageCode": "1537011"
+      },
+      "summary": {
+        "recordCount": 14,
+        "landValueMinPerSqYard": 2500,
+        "landValueMaxPerSqYard": 2500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | BEGAMPET-1 | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | GAJULABURJU TANDA | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 0 | | | KATIKAPALLI TANDA-3 | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 0 | | | TURKA GUDA | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 1 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 2 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 3 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 4 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 5 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 6 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 7 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 8 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 9 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 10 | - | 0 | | | RACHLOOR | | 3,200 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-maisammaguda",
+      "name": "Maisammaguda",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "osm-malkapur-571358646",
+      "name": "Malkapur",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Malkapur",
+        "mandalName": "Choutuppal",
+        "districtName": "Yadadri Bhuvanagiri",
+        "districtCode": "23_3",
+        "mandalCode": "08",
+        "villageCode": "2319002"
+      },
+      "summary": {
+        "recordCount": 11,
+        "landValueMinPerSqYard": 2700,
+        "landValueMaxPerSqYard": 2700,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | HYDERABAD TO VIJAYAWADA NH WAY ROAD | | 7,400 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | TEXTILE PARK MALKAPUR | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 1 | | | MALKAPUR VILLAGE | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 2 | | | MALKAPUR VILLAGE | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 3 | | | MALKAPUR VILLAGE | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 4 | | | MALKAPUR VILLAGE | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 5 | | | MALKAPUR VILLAGE | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 6 | | | HYDERABAD TO VIJAYAWADA NH WAY ROAD | | 7,400 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 6 | | | MALKAPUR VILLAGE | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 7 | | | HYDERABAD TO VIJAYAWADA NH WAY ROAD | | 7,400 | | 2,700 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 7 | | | MALKAPUR VILLAGE | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-mangalpally",
+      "name": "Mangalpally",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-manneguda",
+      "name": "Manneguda",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-manoharabad",
+      "name": "Manoharabad",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-mansanpally-maheshwaram",
+      "name": "Mansanpally Maheshwaram",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    },
+    {
+      "slug": "ctx-mekaguda",
+      "name": "Mekaguda",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Nandigama",
+        "mandalName": "Nandigama",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "19",
+        "villageCode": "1413010"
+      },
+      "summary": {
+        "recordCount": 26,
+        "landValueMinPerSqYard": 2500,
+        "landValueMaxPerSqYard": 2500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 1 | | | NANDIGAMA HOUSE SITE | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | NANDIGAMA HOUSE SITE | | 3,700 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 1 | | | NATIONAL HIGH WAY | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 1 | | | OLD NATIONAL HIGH WAY | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 2 | | | NANDIGAMA HOUSE SITE | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 2 | | | NANDIGAMA HOUSE SITE | | 3,700 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 2 | | | OLD NATIONAL HIGH WAY 7 | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 3 | | | NANDIGAMA HOUSE SITE | | 3,700 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 3 | | | OLD NATIONAL HIGH WAY 7 | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 4 | | | NANDIGAMA HOUSE SITE | | 3,700 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 4 | | | OLD NATIONAL HIGH WAY 7 | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 5 | | | NANDIGAMA HOUSE SITE | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 5 | | | NANDIGAMA HOUSE SITE | | 3,700 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 0 | - | 5 | | | NATIONAL HIGH WAY 7-1 | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 0 | - | 6 | | | CHANDRAYANGUDA H/O NANDIGAMA | | 3,700 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "16. | | | 0 | - | 6 | | | NATIONAL HIGH WAY 7 | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "17. | | | 0 | - | 7 | | | ANTHIREDDYGUDA H/O NANDIGAMA | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "18. | | | 0 | - | 7 | | | ANTHIREDDYGUDA H/O NANDIGAMA | | 3,700 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "19. | | | 0 | - | 7 | | | NANDIGAMA TO ANTHIREDDYGUDA | | 5,600 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "20. | | | 0 | - | 7 | | | NANDIGAMA TO ANTHIREDDYGUDA | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "21. | | | 0 | - | 7 | | | PITTALAGUDA H/O NANDIGAMA-1 | | 3,700 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "22. | | | 0 | - | 7 | | | PITTALAGUDA H/O NANDIGAMA-2 | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "23. | | | 0 | - | 8 | | | AYYAPPA COLONY - 1 | | 3,700 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": "02(Commercial)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "02(Commercial)",
+          "effectiveDate": "05/06/2026",
+          "raw": "24. | | | 0 | - | 8 | | | NATIONAL HIGH WAY | | 5,600 | | 2,500 | --> | 02(Commercial) | --> | 05/06/2026 | | | Get | -->"
+        },
+        {
+          "locality": null,
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": null,
+          "effectiveDate": "05/06/2026",
+          "raw": "25. | | | 0 | - | 9 | | | INDUSTRIES-1 | | 5,600 | | 2,500 | --> | 03 | --> | 05/06/2026 | | | Get | -->"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-mogiligidda",
+      "name": "Mogiligidda",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Mogalagidda",
+        "mandalName": "Farooqnagar",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "06",
+        "villageCode": "1412002"
+      },
+      "summary": {
+        "recordCount": 15,
+        "landValueMinPerSqYard": 2500,
+        "landValueMaxPerSqYard": 2500,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "RESIDENTIAL AREA-1",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | RESIDENTIAL AREA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 1 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 2 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 3 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 4 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 5 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "7. | | | 0 | - | 6 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "8. | | | 0 | - | 7 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "9. | | | 0 | - | 8 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "10. | | | 0 | - | 9 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "11. | | | 0 | - | 10 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "12. | | | 0 | - | 11 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "13. | | | 0 | - | 12 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "14. | | | 0 | - | 13 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2500,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "15. | | | 0 | - | 14 | | | MOGILIGIDDA-1 | | 3,700 | | 2,500 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-nallavalli",
+      "name": "Nallavalli",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    },
+    {
+      "slug": "ctx-narsapur-road",
+      "name": "Narsapur Road",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-peddakaparthy",
+      "name": "Peddakaparthy",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Nelapatla",
+        "mandalName": "Choutuppal",
+        "districtName": "Yadadri Bhuvanagiri",
+        "districtCode": "23_3",
+        "mandalCode": "08",
+        "villageCode": "2319008"
+      },
+      "summary": {
+        "recordCount": 2,
+        "landValueMinPerSqYard": 2700,
+        "landValueMaxPerSqYard": 2700,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | KUNTLAGUDEM | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2700,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 0 | | | NELAPATLA VILLAGE | | 3,200 | | 2,700 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "osm-pillai-palle-660552232",
+      "name": "Pillai Palle",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "JagatthPalle",
+        "mandalName": "B.Pochampally",
+        "districtName": "Yadadri Bhuvanagiri",
+        "districtCode": "23_3",
+        "mandalCode": "04",
+        "villageCode": "2318011"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 2200,
+        "landValueMaxPerSqYard": 2200,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | ALL LOCALITIES | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-pocharam-ibrahimpatnam",
+      "name": "Pocharam Ibrahimpatnam",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Kappapahad",
+        "mandalName": "Ibrahimpatnam",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "09",
+        "villageCode": "1534027"
+      },
+      "summary": {
+        "recordCount": 6,
+        "landValueMinPerSqYard": 2200,
+        "landValueMaxPerSqYard": 2200,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 1 | | | KAPPAPAHAD | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "2. | | | 0 | - | 2 | | | KAPPAPAHAD | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "3. | | | 0 | - | 3 | | | KAPPAPAHAD | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "4. | | | 0 | - | 4 | | | KAPPAPAHAD | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "5. | | | 0 | - | 5 | | | KAPPAPAHAD | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        },
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "6. | | | 0 | - | 6 | | | KAPPAPAHAD | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "ctx-pragnapur",
+      "name": "Pragnapur",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-ravalkole",
+      "name": "Ravalkole",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "osm-rayagiri-245641025",
+      "name": "Rayagiri",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    },
+    {
+      "slug": "ctx-sheriguda",
+      "name": "Sheriguda",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-shivampet-east",
+      "name": "Shivampet East",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-solipur",
+      "name": "Solipur",
+      "status": "verified",
+      "sourceName": "Telangana Registration Market Value Search",
+      "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+      "officialMatch": {
+        "villageName": "Ananthawaram",
+        "mandalName": "Shabad",
+        "districtName": "Rangareddy",
+        "districtCode": "15_1",
+        "mandalCode": "22",
+        "villageCode": "1531023"
+      },
+      "summary": {
+        "recordCount": 1,
+        "landValueMinPerSqYard": 2200,
+        "landValueMaxPerSqYard": 2200,
+        "apartmentValueMinPerSqft": 2026,
+        "apartmentValueMaxPerSqft": 2026,
+        "effectiveDates": [
+          "05/06/2026"
+        ]
+      },
+      "records": [
+        {
+          "locality": "01(Residential)",
+          "landValuePerSqYard": 2200,
+          "apartmentValuePerSqft": 2026,
+          "classification": "01(Residential)",
+          "effectiveDate": "05/06/2026",
+          "raw": "1. | | | 0 | - | 0 | | | ANANTHAWARAM | | 3,200 | | 2,200 | --> | 01(Residential) | --> | 05/06/2026"
+        }
+      ]
+    },
+    {
+      "slug": "osm-vasanth-nagar-1428934704",
+      "name": "Vasanth Nagar",
+      "status": "missing",
+      "reason": "village_not_found"
+    },
+    {
+      "slug": "ctx-wargal",
+      "name": "Wargal",
+      "status": "missing",
+      "reason": "mandal_not_found"
+    }
+  ]
+}

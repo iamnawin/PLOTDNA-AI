@@ -152,6 +152,7 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
   const contextOfficialMatchDetails = resolvedFallback.contextOfficialMatchDetails ?? []
   const contextMissingScoreSignals = resolvedFallback.contextMissingScoreSignals ?? []
   const contextIdentifiedSignalSources = resolvedFallback.contextIdentifiedSignalSources ?? []
+  const contextVerifiedSignals = resolvedFallback.contextVerifiedSignals ?? []
 
   return (
     <motion.div
@@ -258,6 +259,11 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
                       Missing score signals: {contextMissingScoreSignals.join(', ')}
                     </p>
                   )}
+                  {contextVerifiedSignals.length > 0 && (
+                    <p className="text-[8px] font-mono text-emerald-400 mt-1 leading-relaxed">
+                      {contextVerifiedSignals.join(' | ')}
+                    </p>
+                  )}
                   {contextIdentifiedSignalSources.length > 0 && (
                     <p className="text-[8px] font-mono text-indigo-300 mt-1 leading-relaxed">
                       Identified signal sources: {contextIdentifiedSignalSources.slice(0, 3).join(' | ')}
@@ -329,6 +335,11 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
                 {contextMissingScoreSignals.length > 0 && (
                   <p className="text-[8px] font-mono text-amber-400 mt-2 leading-relaxed">
                     Missing score signals: {contextMissingScoreSignals.join(', ')}
+                  </p>
+                )}
+                {contextVerifiedSignals.length > 0 && (
+                  <p className="text-[8px] font-mono text-emerald-400 mt-2 leading-relaxed">
+                    {contextVerifiedSignals.join(' | ')}
                   </p>
                 )}
                 {contextIdentifiedSignalSources.length > 0 && (

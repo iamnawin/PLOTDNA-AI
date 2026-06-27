@@ -10,6 +10,7 @@ const pendingSourcesPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'p
 const pendingBoundariesPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'tgrac-pending-village-boundaries.geojson')
 const pendingScoringReadinessPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-scoring-readiness.json')
 const pendingSignalInventoryPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-signal-inventory.json')
+const pendingPriceSignalsPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-price-signals.json')
 const hyderabadDataPath = path.join(process.cwd(), 'src', 'data', 'hyderabad.ts')
 const productionHelperPath = path.join(process.cwd(), 'src', 'lib', 'cityProduction.ts')
 const priorityPath = path.join(process.cwd(), 'src', 'data', 'hyderabadPriority.ts')
@@ -35,6 +36,9 @@ const pendingScoringReadiness = fs.existsSync(pendingScoringReadinessPath)
   : null
 const pendingSignalInventory = fs.existsSync(pendingSignalInventoryPath)
   ? JSON.parse(fs.readFileSync(pendingSignalInventoryPath, 'utf8').replace(/^\uFEFF/, ''))
+  : null
+const pendingPriceSignals = fs.existsSync(pendingPriceSignalsPath)
+  ? JSON.parse(fs.readFileSync(pendingPriceSignalsPath, 'utf8').replace(/^\uFEFF/, ''))
   : null
 const hyderabadSource = fs.readFileSync(hyderabadDataPath, 'utf8')
 const productionHelper = fs.existsSync(productionHelperPath)
@@ -129,6 +133,24 @@ assert(unsupportedInventoryStatuses.length === 0, `pending signal inventory has 
 const signalRowsReadyWithoutVerifiedSignals = pendingSignalInventory.areaInventories.filter(inventory => inventory.signalDeckReady && pendingSignalInventory.requiredSignals.some(key => inventory.signals?.[key]?.status !== 'verified'))
 assert(signalRowsReadyWithoutVerifiedSignals.length === 0, `pending signal inventory rows marked ready without all verified signals: ${signalRowsReadyWithoutVerifiedSignals.map(inventory => inventory.slug).join(', ')}`)
 assert(pendingSignalInventory.summary?.signalDeckReadyCount === 0, 'pending signal inventory must not mark any area ready before exact-area signal decks are verified')
+assert(pendingPriceSignals?.schemaVersion === 1, 'Hyderabad pending price signal audit must exist')
+assert(Array.isArray(pendingPriceSignals.priceSignals), 'Hyderabad pending price signal audit must include priceSignals')
+const verifiedPriceSignals = pendingPriceSignals.priceSignals.filter(signal => signal.status === 'verified')
+assert(verifiedPriceSignals.length > 0, 'Hyderabad pending price signal audit must verify at least one exact-area official price row')
+const invalidVerifiedPriceSignals = verifiedPriceSignals.filter(signal => (
+  !signal.slug ||
+  !signal.sourceUrl ||
+  !signal.officialMatch?.villageName ||
+  !signal.officialMatch?.mandalName ||
+  !signal.officialMatch?.districtName ||
+  typeof signal.summary?.apartmentValueMinPerSqft !== 'number' ||
+  typeof signal.summary?.apartmentValueMaxPerSqft !== 'number' ||
+  typeof signal.summary?.landValueMinPerSqYard !== 'number' ||
+  typeof signal.summary?.landValueMaxPerSqYard !== 'number' ||
+  !signal.summary?.effectiveDates?.length ||
+  !signal.records?.length
+))
+assert(invalidVerifiedPriceSignals.length === 0, `verified pending price signals missing exact-area official values: ${invalidVerifiedPriceSignals.map(signal => signal.slug).join(', ')}`)
 const incorrectlyReadyRows = pendingScoringReadiness.areaAudits.filter(audit => audit.promotionReady && requiredEvidence.some(key => audit.evidence?.[key]?.status !== 'verified'))
 assert(incorrectlyReadyRows.length === 0, `pending rows marked promotion-ready without full verified evidence: ${incorrectlyReadyRows.map(audit => audit.slug).join(', ')}`)
 assert(pendingScoringReadiness.summary?.promotionReadyCount === 0, 'pending context cells must not be promotion-ready until score signal decks are attached')
@@ -178,7 +200,9 @@ assert(mapView.includes('officialMatchLabel'), 'context-only hover must carry ma
 assert(mapView.includes('officialMatchDetails'), 'context-only hover must carry matched official village attributes')
 assert(mapView.includes('Missing score signals'), 'context-only hover must explain why official-boundary areas remain unscored')
 assert(mapView.includes('Identified signal sources'), 'context-only hover must show identified source paths for pending scoring signals')
+assert(mapView.includes('verifiedSignals'), 'context-only hover must show verified pending signal evidence when available')
 assert(pendingSourceHelper.includes('official boundary source'), 'context-only hover must explain official boundary sourcing')
+assert(pendingSourceHelper.includes('Price verified'), 'pending source helper must summarize verified official price-band evidence')
 assert(pendingSourceHelper.includes('needs non-HMDA boundary source'), 'context-only hover must explain pending cells that still need another boundary source')
 assert(mapView.includes('boundaryConfidence'), 'context-only hover metadata must preserve boundary confidence')
 assert(mapView.includes('areaKm2'), 'context-only hover metadata must preserve approximate area size')
@@ -193,6 +217,7 @@ assert(plotAnalysis.includes('contextOfficialMatchLabel'), 'coordinate fallback 
 assert(plotAnalysisCard.includes('TGRAC village match'), 'coordinate analysis card must show matched official village context')
 assert(plotAnalysisCard.includes('Missing score signals'), 'coordinate analysis card must show missing score-signal evidence for pending areas')
 assert(plotAnalysisCard.includes('Identified signal sources'), 'coordinate analysis card must show identified source paths for pending scoring signals')
+assert(plotAnalysisCard.includes('contextVerifiedSignals'), 'coordinate analysis card must show verified pending signal evidence when available')
 assert(plotAnalysisCard.includes('official boundary source'), 'coordinate analysis card must explain official boundary sourcing')
 assert(plotAnalysisCard.includes('needs non-HMDA boundary source'), 'coordinate analysis card must identify pending areas outside the HMDA/TGRAC layer')
 

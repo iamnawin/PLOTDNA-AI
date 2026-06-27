@@ -39,6 +39,13 @@ export interface HyderabadPendingSignalInventory {
     status: 'verified' | 'source_identified' | 'missing'
     label?: string
     sourceName?: string
+    summary?: {
+      landValueMinPerSqYard?: number
+      landValueMaxPerSqYard?: number
+      apartmentValueMinPerSqft?: number
+      apartmentValueMaxPerSqft?: number
+      effectiveDates?: string[]
+    }
   }>
 }
 
@@ -131,4 +138,24 @@ export function getIdentifiedSignalSourceLabels(inventory: HyderabadPendingSigna
     .filter(signal => signal.status === 'source_identified')
     .map(signal => signal.label && signal.sourceName ? `${signal.label}: ${signal.sourceName}` : signal.label ?? signal.sourceName)
     .filter((value): value is string => Boolean(value))
+}
+
+export function getVerifiedSignalLabels(inventory: HyderabadPendingSignalInventory | null | undefined): string[] {
+  if (!inventory) return []
+  const price = inventory.signals.price_band
+  if (price?.status !== 'verified' || !price.summary) return []
+  const apartmentMin = price.summary.apartmentValueMinPerSqft
+  const apartmentMax = price.summary.apartmentValueMaxPerSqft
+  const landMin = price.summary.landValueMinPerSqYard
+  const landMax = price.summary.landValueMaxPerSqYard
+  const effectiveDate = price.summary.effectiveDates?.[0]
+  if (
+    typeof apartmentMin !== 'number' ||
+    typeof apartmentMax !== 'number' ||
+    typeof landMin !== 'number' ||
+    typeof landMax !== 'number'
+  ) return []
+  return [
+    `Price verified: apt Rs${apartmentMin.toLocaleString('en-IN')}-${apartmentMax.toLocaleString('en-IN')}/sqft, land Rs${landMin.toLocaleString('en-IN')}-${landMax.toLocaleString('en-IN')}/sqyd${effectiveDate ? ` eff. ${effectiveDate}` : ''}`,
+  ]
 }

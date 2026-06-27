@@ -159,7 +159,6 @@
       "officialMatchLabel": "Julur / B.Pochampally / Yadadri Bhuvanagiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -174,11 +173,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -225,7 +224,6 @@
       "officialMatchLabel": "Jameelapet / Bibinagar / Yadadri Bhuvanagiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -240,11 +238,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -291,7 +289,6 @@
       "officialMatchLabel": "Himayathnagar / Moinabad / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -306,11 +303,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -357,7 +354,6 @@
       "officialMatchLabel": "Edulabad / Ghatkesar / Medchal_Malkajgiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -372,11 +368,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -423,7 +419,6 @@
       "officialMatchLabel": "Batasingaram / Abdullapurmet / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -438,11 +433,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -555,7 +550,6 @@
       "officialMatchLabel": "KongaraKalan / Ibrahimpatnam / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -570,11 +564,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -687,7 +681,6 @@
       "officialMatchLabel": "Cheemaldari / Mominpet / Vikarabad",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -702,11 +695,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -753,7 +746,6 @@
       "officialMatchLabel": "Kankal / Pudur / Vikarabad",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -768,11 +760,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -819,7 +811,6 @@
       "officialMatchLabel": "Mallapur / Kothur / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -834,11 +825,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -885,7 +876,6 @@
       "officialMatchLabel": "Gandipet / Gandipet / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -900,11 +890,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1017,7 +1007,6 @@
       "officialMatchLabel": "Choutuppal / Choutuppal / Yadadri Bhuvanagiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1032,11 +1021,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1083,7 +1072,6 @@
       "officialMatchLabel": "Rachakonda / Narayanapoor / Yadadri Bhuvanagiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1098,11 +1086,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1149,7 +1137,6 @@
       "officialMatchLabel": "Barkatpalle / Pargi / Vikarabad",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1164,11 +1151,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1281,7 +1268,6 @@
       "officialMatchLabel": "Shabad / Shabad / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1296,11 +1282,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1347,7 +1333,6 @@
       "officialMatchLabel": "Agiryal / Kondurg / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1362,11 +1347,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1413,7 +1398,6 @@
       "officialMatchLabel": "Karkapatla / Markook / Siddipet",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1428,11 +1412,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1611,7 +1595,6 @@
       "officialMatchLabel": "Domadugu / Gummadidala / Sangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1626,11 +1609,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1743,7 +1726,6 @@
       "officialMatchLabel": "Hydernagar / Kukatpally / Medchal_Malkajgiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1758,11 +1740,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1809,7 +1791,6 @@
       "officialMatchLabel": "Kodicherla / Kothur / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1824,11 +1805,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1875,7 +1856,6 @@
       "officialMatchLabel": "Kadthal / Kadthal / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1890,11 +1870,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -1941,7 +1921,6 @@
       "officialMatchLabel": "Kammadanam / Farooqnagar / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -1956,11 +1935,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2073,7 +2052,6 @@
       "officialMatchLabel": "Nednur / Kandukur / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -2088,11 +2066,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2205,7 +2183,6 @@
       "officialMatchLabel": "Mutpoor / Kondurg / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -2220,11 +2197,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2271,7 +2248,6 @@
       "officialMatchLabel": "Kondannaguda / Farooqnagar / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -2286,11 +2262,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2337,7 +2313,6 @@
       "officialMatchLabel": "Padmaram / Chowdergudem / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -2352,11 +2327,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2601,7 +2576,6 @@
       "officialMatchLabel": "Rachloor / Kandukur / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -2616,11 +2590,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2667,7 +2641,6 @@
       "officialMatchLabel": "Pomalpalle / Keshampeta / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -2682,11 +2655,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -2799,7 +2772,6 @@
       "officialMatchLabel": "Malkapur / Choutuppal / Yadadri Bhuvanagiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -2814,11 +2786,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3195,7 +3167,6 @@
       "officialMatchLabel": "Nandigama / Nandigama / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -3210,11 +3181,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3261,7 +3232,6 @@
       "officialMatchLabel": "Mogalagidda / Farooqnagar / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -3276,11 +3246,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3327,7 +3297,6 @@
       "officialMatchLabel": "Nandiwanaparthy / Yacharam / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -3342,11 +3311,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3591,7 +3560,6 @@
       "officialMatchLabel": "Hajipalle / Farooqnagar / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -3606,11 +3574,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3657,7 +3625,6 @@
       "officialMatchLabel": "Nelapatla / Choutuppal / Yadadri Bhuvanagiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -3672,11 +3639,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3723,7 +3690,6 @@
       "officialMatchLabel": "JagatthPalle / B.Pochampally / Yadadri Bhuvanagiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -3738,11 +3704,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3789,7 +3755,6 @@
       "officialMatchLabel": "Kappapahad / Ibrahimpatnam / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -3804,11 +3769,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -3987,7 +3952,6 @@
       "officialMatchLabel": "Pulkal / Pulkal / Sangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -4002,11 +3966,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -4053,7 +4017,6 @@
       "officialMatchLabel": "Arutla / Manchal / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -4068,11 +4031,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -4317,7 +4280,6 @@
       "officialMatchLabel": "Eklaskhampeta / Keshampeta / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -4332,11 +4294,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -4515,7 +4477,6 @@
       "officialMatchLabel": "Ananthawaram / Shabad / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -4530,11 +4491,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -4581,7 +4542,6 @@
       "officialMatchLabel": "Makthamadharam / Kadthal / Rangareddy",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -4596,11 +4556,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",
@@ -4647,7 +4607,6 @@
       "officialMatchLabel": "Redlarepaka / Valigonda / Yadadri Bhuvanagiri",
       "promotionReady": false,
       "missingEvidence": [
-        "price_band",
         "rera_activity",
         "infrastructure",
         "satellite_growth",
@@ -4662,11 +4621,11 @@
           "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
         },
         "price_band": {
-          "status": "source_identified",
+          "status": "verified",
           "sourceName": "Telangana Registration Market Value Search",
-          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/getDistrictList.htm",
-          "verificationMethod": "Match district, mandal, village or locality to non-agricultural land/apartment unit-rate records.",
-          "nextAction": "Extract and verify exact-area signal values before scoring this pending polygon."
+          "sourceUrl": "https://registration.telangana.gov.in/UnitRateMV/unitRateMV",
+          "verificationMethod": "Matched Telangana Registration unit-rate rows to the exact official village/mandal/district.",
+          "nextAction": "Keep blocked until the other required scoring signals are verified."
         },
         "rera_activity": {
           "status": "source_identified",

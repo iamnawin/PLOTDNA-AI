@@ -16,6 +16,8 @@
 
 **Signal inventory update - 2026-06-27:** `scripts/audit_hyderabad_pending_signal_inventory.py` writes `data/cities/hyderabad/pending-signal-inventory.json`. Every pending cell now has an explicit source inventory for the six scoring signals. These are marked `source_identified`, not `verified`, so they explain the validation path in hover/search UI while still blocking scoring promotion.
 
+**Price evidence update - 2026-06-27:** `scripts/audit_hyderabad_pending_price_signals.py` writes `data/cities/hyderabad/pending-price-signals.json` from Telangana Registration unit-rate rows. 41 of 75 pending cells now have verified exact-area price-band evidence. These rows update the signal inventory/readiness files, but no pending cell is promotion-ready because RERA, infrastructure, satellite, employment, and government-scheme signals still need exact-area verification.
+
 ### Task 1: Build Pending Area Source Audit
 
 **Files:**
@@ -51,6 +53,8 @@ Run: `npm run test:hyderabad-production`
 - Create: `data/cities/hyderabad/pending-scoring-readiness.json`
 - Create: `scripts/audit_hyderabad_pending_signal_inventory.py`
 - Create: `data/cities/hyderabad/pending-signal-inventory.json`
+- Create: `scripts/audit_hyderabad_pending_price_signals.py`
+- Create: `data/cities/hyderabad/pending-price-signals.json`
 - Modify: `CLAUDE.md`
 
 - [x] **Step 1: Add source fields to pending hover**
@@ -79,6 +83,16 @@ Verified:
 For every pending context cell, record the required source path for price band, RERA activity, infrastructure, satellite growth, employment, and government scheme evidence. Surface these as identified source paths in hover/search UI, but do not mark any pending cell promotion-ready until exact-area signal values are verified.
 
 Verified:
+- `python scripts\audit_hyderabad_pending_signal_inventory.py`
+- `python scripts\audit_hyderabad_pending_scoring_readiness.py`
+- `npm run test:hyderabad-production`
+
+- [x] **Step 5: Verify official price-band rows**
+
+Fetch Telangana Registration unit-rate rows by matching pending cells to official village/mandal/district codes. Mark `price_band` as `verified` only when exact-area land/apartment value rows are parsed from the official response.
+
+Verified:
+- `python scripts\audit_hyderabad_pending_price_signals.py`
 - `python scripts\audit_hyderabad_pending_signal_inventory.py`
 - `python scripts\audit_hyderabad_pending_scoring_readiness.py`
 - `npm run test:hyderabad-production`

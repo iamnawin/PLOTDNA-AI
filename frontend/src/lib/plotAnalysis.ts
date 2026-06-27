@@ -17,6 +17,7 @@ import {
   getOfficialMatchDetails,
   getOfficialMatchLabel,
   getPendingSourceStatusLabel,
+  getVerifiedSignalLabels,
 } from '@/lib/hyderabadPendingSources'
 
 // Extracts lat/lng from Google Maps, Apple Maps, and OpenStreetMap URLs.
@@ -97,6 +98,7 @@ export interface LocalityFallbackResult {
   contextOfficialMatchDetails?: string[]
   contextMissingScoreSignals?: string[]
   contextIdentifiedSignalSources?: string[]
+  contextVerifiedSignals?: string[]
 }
 
 function mapTier(tier: ResolutionTier): LocalityFallbackTier {
@@ -166,6 +168,7 @@ export function resolveLocalityFallback(
       contextOfficialMatchDetails: getOfficialMatchDetails(officialMatch),
       contextMissingScoreSignals: getMissingScoreSignalLabels(pendingReadiness),
       contextIdentifiedSignalSources: getIdentifiedSignalSourceLabels(pendingSignalInventory),
+      contextVerifiedSignals: getVerifiedSignalLabels(pendingSignalInventory),
     }
   }
 
