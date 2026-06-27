@@ -146,6 +146,10 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
         : resolvedFallback.precisionLabel === 'broad'
           ? 'Broad region'
           : 'No coverage'
+  const contextSourceStatus =
+    resolvedFallback.contextSourceStatusLabel ??
+    (resolvedFallback.tier === 'context_area' ? 'needs non-HMDA boundary source' : null)
+  const contextOfficialMatchDetails = resolvedFallback.contextOfficialMatchDetails ?? []
 
   return (
     <motion.div
@@ -237,6 +241,18 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
                     : 'Area DNA score uses the supported micro-market shown below. Live coordinate signals are used only as nearby context.'}
                 </p>
               </div>
+              {resolvedFallback.tier === 'context_area' && (
+                <div className="px-3 pb-3">
+                  <p className="text-[9px] font-mono text-slate-300 leading-relaxed">
+                    {resolvedFallback.contextOfficialMatchLabel
+                      ? `TGRAC village match: ${resolvedFallback.contextOfficialMatchLabel}`
+                      : 'TGRAC village match: not available for this pending area yet.'}
+                  </p>
+                  <p className="text-[8px] font-mono text-slate-500 mt-1 uppercase tracking-wide">
+                    {contextSourceStatus}
+                  </p>
+                </div>
+              )}
             </>
           ) : hasStaticAreaContext && staticArea ? (
             <>
@@ -277,11 +293,37 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
               </p>
             </div>
           ) : resolvedFallback.tier === 'context_area' ? (
-            <div className="flex items-center gap-2.5 px-3 py-3">
+            <div className="px-3 py-3">
+              <div className="flex items-center gap-2.5">
               <Info size={11} className="text-amber-500 flex-shrink-0" />
               <p className="text-[9px] font-sans text-slate-400 leading-relaxed">
                 {fallbackDisplayLabel} is inside Hyderabad flagship coverage. PlotDNA will start validation for this area before assigning an exact score.
               </p>
+              </div>
+              <div className="mt-3 rounded-lg border border-slate-700/70 bg-slate-950/40 px-3 py-2.5">
+                <p className="text-[9px] font-mono text-slate-300 leading-relaxed">
+                  {resolvedFallback.contextOfficialMatchLabel
+                    ? `TGRAC village match: ${resolvedFallback.contextOfficialMatchLabel}`
+                    : 'TGRAC village match: not available for this pending area yet.'}
+                </p>
+                <p className="text-[8px] font-mono text-slate-500 mt-1 uppercase tracking-wide">
+                  {contextSourceStatus}
+                </p>
+                {contextSourceStatus === 'official boundary source' && (
+                  <p className="text-[8px] font-sans text-slate-500 mt-1 leading-relaxed">
+                    Official boundary source is attached for validation; score signals are still pending.
+                  </p>
+                )}
+                {contextOfficialMatchDetails.length > 0 && (
+                  <div className="mt-2 space-y-0.5">
+                    {contextOfficialMatchDetails.map(detail => (
+                      <p key={detail} className="text-[8px] font-mono text-slate-500">
+                        {detail}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           ) : resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional' ? (
             <div className="flex items-center gap-2.5 px-3 py-3">
@@ -310,7 +352,7 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
             style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)', lineHeight: 1.7 }}
           >
             {resolvedFallback.tier === 'context_area'
-              ? `${fallbackDisplayLabel} is identified. PlotDNA will start validation for this area before assigning an exact score.`
+              ? `${fallbackDisplayLabel} is identified. ${contextSourceStatus}. PlotDNA will start validation for this area before assigning an exact score.`
               : resolvedFallback.tier === 'city_zone_cluster' || resolvedFallback.tier === 'regional'
               ? `${fallbackDisplayLabel} is supported only at a broad region level right now.`
               : 'Coverage for this location is not available yet.'}

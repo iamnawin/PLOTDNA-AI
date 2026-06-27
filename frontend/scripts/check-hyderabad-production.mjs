@@ -7,11 +7,15 @@ const coveragePath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'coverag
 const boundaryPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'coverage-boundary.geojson')
 const aliasesPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'aliases.json')
 const pendingSourcesPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-context-sources.json')
+const pendingBoundariesPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'tgrac-pending-village-boundaries.geojson')
 const hyderabadDataPath = path.join(process.cwd(), 'src', 'data', 'hyderabad.ts')
 const productionHelperPath = path.join(process.cwd(), 'src', 'lib', 'cityProduction.ts')
 const priorityPath = path.join(process.cwd(), 'src', 'data', 'hyderabadPriority.ts')
 const areaSourcesPath = path.join(process.cwd(), 'src', 'lib', 'areaSources.ts')
 const mapViewPath = path.join(process.cwd(), 'src', 'components', 'map', 'MapView.tsx')
+const plotAnalysisCardPath = path.join(process.cwd(), 'src', 'components', 'score', 'PlotAnalysisCard.tsx')
+const plotAnalysisPath = path.join(process.cwd(), 'src', 'lib', 'plotAnalysis.ts')
+const pendingSourceHelperPath = path.join(process.cwd(), 'src', 'lib', 'hyderabadPendingSources.ts')
 const storePath = path.join(process.cwd(), 'src', 'store', 'index.ts')
 
 const localities = JSON.parse(fs.readFileSync(localitiesPath, 'utf8').replace(/^\uFEFF/, ''))
@@ -21,6 +25,9 @@ const aliases = JSON.parse(fs.readFileSync(aliasesPath, 'utf8').replace(/^\uFEFF
 const pendingSources = fs.existsSync(pendingSourcesPath)
   ? JSON.parse(fs.readFileSync(pendingSourcesPath, 'utf8').replace(/^\uFEFF/, ''))
   : null
+const pendingBoundaries = fs.existsSync(pendingBoundariesPath)
+  ? JSON.parse(fs.readFileSync(pendingBoundariesPath, 'utf8').replace(/^\uFEFF/, ''))
+  : null
 const hyderabadSource = fs.readFileSync(hyderabadDataPath, 'utf8')
 const productionHelper = fs.existsSync(productionHelperPath)
   ? fs.readFileSync(productionHelperPath, 'utf8')
@@ -28,6 +35,9 @@ const productionHelper = fs.existsSync(productionHelperPath)
 const prioritySource = fs.existsSync(priorityPath) ? fs.readFileSync(priorityPath, 'utf8') : ''
 const areaSources = fs.readFileSync(areaSourcesPath, 'utf8')
 const mapView = fs.readFileSync(mapViewPath, 'utf8')
+const plotAnalysisCard = fs.readFileSync(plotAnalysisCardPath, 'utf8')
+const plotAnalysis = fs.readFileSync(plotAnalysisPath, 'utf8')
+const pendingSourceHelper = fs.readFileSync(pendingSourceHelperPath, 'utf8')
 const storeSource = fs.readFileSync(storePath, 'utf8')
 
 function assert(condition, message) {
@@ -64,6 +74,23 @@ const missingPendingAudits = contextFeatures
 assert(missingPendingAudits.length === 0, `context cells missing pending source audit rows: ${missingPendingAudits.join(', ')}`)
 const pendingAuditsWithoutStatus = pendingSources.sourceAudits.filter(audit => !audit.status || !audit.sources?.length)
 assert(pendingAuditsWithoutStatus.length === 0, `pending source audits missing status or sources: ${pendingAuditsWithoutStatus.map(audit => audit.slug).join(', ')}`)
+const tgracMatchedAudits = pendingSources.sourceAudits.filter(audit => audit.status === 'tgrac_village_matched')
+const tgracMatchedFids = new Set(tgracMatchedAudits.map(audit => audit.officialMatches?.[0]?.fid).filter(fid => fid !== undefined && fid !== null))
+assert(pendingBoundaries?.type === 'FeatureCollection', 'TGRAC matched pending areas must have a local official-boundary GeoJSON')
+assert(pendingBoundaries.features?.length === tgracMatchedFids.size, `TGRAC official-boundary GeoJSON must contain one feature per matched FID: expected ${tgracMatchedFids.size}, found ${pendingBoundaries?.features?.length ?? 0}`)
+const boundaryFids = new Set(pendingBoundaries.features.map(feature => feature.properties?.fid).filter(fid => fid !== undefined && fid !== null))
+const missingBoundaryFids = [...tgracMatchedFids].filter(fid => !boundaryFids.has(fid))
+assert(missingBoundaryFids.length === 0, `TGRAC matched pending areas missing official boundary geometries: ${missingBoundaryFids.join(', ')}`)
+const invalidBoundaryFeatures = pendingBoundaries.features.filter(feature => (
+  !feature.properties?.villageName ||
+  !feature.properties?.mandalName ||
+  !feature.properties?.districtName ||
+  !feature.properties?.sourceUrl ||
+  !feature.properties?.retrievedAt ||
+  !feature.properties?.matchedPendingSlugs?.length ||
+  !['Polygon', 'MultiPolygon'].includes(feature.geometry?.type)
+))
+assert(invalidBoundaryFeatures.length === 0, `TGRAC boundary features missing source/detail metadata: ${invalidBoundaryFeatures.map(feature => feature.properties?.fid).join(', ')}`)
 assert(productionHelper.includes('hyderabad'), 'city production helper must include a Hyderabad override')
 assert(productionHelper.includes('Flagship production city'), 'Hyderabad must be labeled as the flagship production city')
 
@@ -101,9 +128,13 @@ assert(mapView.includes('showContextHover'), 'context-only polygons must share c
 assert(mapView.includes('setContextHoverSlug'), 'context-only polygons must visibly highlight the specific pending cell under the cursor')
 assert(mapView.includes('Data pending'), 'context-only polygon hover must explain why no score is available')
 assert(mapView.includes('PlotDNA will start validation for this area'), 'context-only pending message must tell users that exact-area validation is the next step')
-assert(mapView.includes('pending-context-sources.json?raw'), 'context-only hover must load pending source audits')
+assert(pendingSourceHelper.includes('pending-context-sources.json?raw'), 'context-only hover must load pending source audits through the shared helper')
 assert(mapView.includes('TGRAC village match'), 'context-only hover must expose official TGRAC village matches where available')
+assert(mapView.includes('not available for this pending area yet'), 'context-only hover must explicitly label pending cells without official matches')
 assert(mapView.includes('officialMatchLabel'), 'context-only hover must carry matched village/mandal/district labels')
+assert(mapView.includes('officialMatchDetails'), 'context-only hover must carry matched official village attributes')
+assert(pendingSourceHelper.includes('official boundary source'), 'context-only hover must explain official boundary sourcing')
+assert(pendingSourceHelper.includes('needs non-HMDA boundary source'), 'context-only hover must explain pending cells that still need another boundary source')
 assert(mapView.includes('boundaryConfidence'), 'context-only hover metadata must preserve boundary confidence')
 assert(mapView.includes('areaKm2'), 'context-only hover metadata must preserve approximate area size')
 assert(mapView.includes('data-pending'), 'context/no-data polygon styling must use a pending-data visual token')
@@ -111,5 +142,10 @@ assert(mapView.includes('broadGenerated'), 'large generated scored cells must be
 assert(mapView.includes("['==', ['get', 'broadGenerated'], 1], 0.16"), 'large generated scored cells must stay below primary scored fill strength')
 assert(mapView.includes("['==', ['get', 'broadGenerated'], 1], 0.74"), 'large generated scored cell borders must be readable without dominating')
 assert(mapView.includes('Generated broad market cell'), 'large generated scored cell tooltip must explain the boundary precision limit')
+assert(pendingSourceHelper.includes('pending-context-sources.json?raw'), 'coordinate analysis path must load pending source audits')
+assert(plotAnalysis.includes('contextOfficialMatchLabel'), 'coordinate fallback must carry matched official village context')
+assert(plotAnalysisCard.includes('TGRAC village match'), 'coordinate analysis card must show matched official village context')
+assert(plotAnalysisCard.includes('official boundary source'), 'coordinate analysis card must explain official boundary sourcing')
+assert(plotAnalysisCard.includes('needs non-HMDA boundary source'), 'coordinate analysis card must identify pending areas outside the HMDA/TGRAC layer')
 
 console.log(`Hyderabad production check passed: ${localities.length} localities, ${coverage.features.length} contiguous cells, ${confidenceMentions} confidence records, ${prioritySlugs.length} verified priority slugs.`)

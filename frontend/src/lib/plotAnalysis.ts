@@ -8,6 +8,12 @@ import {
   getClusterRepresentative,
   type ResolverOptions,
 } from '@/lib/location/resolver'
+import {
+  getHyderabadPendingSource,
+  getOfficialMatchDetails,
+  getOfficialMatchLabel,
+  getPendingSourceStatusLabel,
+} from '@/lib/hyderabadPendingSources'
 
 // Extracts lat/lng from Google Maps, Apple Maps, and OpenStreetMap URLs.
 // Returns null for short links (maps.app.goo.gl) because those need backend resolution.
@@ -81,6 +87,10 @@ export interface LocalityFallbackResult {
   districtSlug?: string | null
   districtName?: string | null
   stateSlug?: string | null
+  contextSlug?: string | null
+  contextSourceStatusLabel?: string | null
+  contextOfficialMatchLabel?: string | null
+  contextOfficialMatchDetails?: string[]
 }
 
 function mapTier(tier: ResolutionTier): LocalityFallbackTier {
@@ -122,6 +132,10 @@ export function resolveLocalityFallback(
   }
 
   if (resolution.tier === 'context') {
+    const pendingSource = resolution.citySlug === 'hyderabad'
+      ? getHyderabadPendingSource(resolution.localitySlug)
+      : null
+    const officialMatch = pendingSource?.officialMatches?.[0]
     return {
       tier,
       area: null,
@@ -134,6 +148,10 @@ export function resolveLocalityFallback(
       displayLabel: resolution.localityName ?? 'Hyderabad context area',
       precisionLabel: 'broad',
       shouldSelectArea: false,
+      contextSlug: resolution.localitySlug,
+      contextSourceStatusLabel: getPendingSourceStatusLabel(pendingSource?.status),
+      contextOfficialMatchLabel: getOfficialMatchLabel(officialMatch),
+      contextOfficialMatchDetails: getOfficialMatchDetails(officialMatch),
     }
   }
 

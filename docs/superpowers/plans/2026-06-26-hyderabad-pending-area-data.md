@@ -10,6 +10,8 @@
 
 ---
 
+**Status update - 2026-06-27:** TGRAC source evidence is now attached for matched pending cells without promoting them to scored localities. `scripts/fetch_hyderabad_tgrac_pending_boundaries.py` writes `data/cities/hyderabad/tgrac-pending-village-boundaries.geojson` with 45 unique official village polygons covering the 47 matched pending rows. Map hovers and coordinate analysis cards now show either the official village attributes or `needs non-HMDA boundary source` for unmatched pending cells.
+
 ### Task 1: Build Pending Area Source Audit
 
 **Files:**
@@ -38,19 +40,31 @@ Run: `npm run test:hyderabad-production`
 **Files:**
 - Modify: `frontend/src/components/map/MapView.tsx`
 - Modify: `frontend/src/components/score/PlotAnalysisCard.tsx`
+- Create: `frontend/src/lib/hyderabadPendingSources.ts`
+- Create: `scripts/fetch_hyderabad_tgrac_pending_boundaries.py`
+- Create: `data/cities/hyderabad/tgrac-pending-village-boundaries.geojson`
 - Modify: `CLAUDE.md`
 
 - [x] **Step 1: Add source fields to pending hover**
 
 Show matched village/mandal/district where the audit found an official TGRAC hit; keep the “Data pending” status until score signals exist.
 
-- [ ] **Step 2: Add analysis card source details**
+- [x] **Step 2: Add analysis card source details**
 
 For context-area searches, show the same matched administrative context.
 
-- [ ] **Step 3: Verify UI contract**
+- [x] **Step 3: Verify UI contract**
 
 Run: `npm run test:hyderabad-production`, `npm run lint`, and `npm run build`.
+
+Verified:
+- `python scripts\fetch_hyderabad_tgrac_pending_boundaries.py`
+- `npm run test:hyderabad-production`
+- `npm run test:hyderabad-location-search`
+- `python scripts\validate_hyderabad_coverage.py`
+- `PYTHONPATH=backend python -m unittest backend.tests.test_hyderabad_coverage backend.tests.test_location_search backend.tests.test_catalog_backed_resolution`
+- `npm run lint`
+- `npm run build`
 
 ### Task 3: Promote Verified Areas Only After Signal Data
 
