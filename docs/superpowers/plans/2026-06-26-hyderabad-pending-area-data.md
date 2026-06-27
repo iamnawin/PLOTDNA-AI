@@ -10,7 +10,9 @@
 
 ---
 
-**Status update - 2026-06-27:** TGRAC source evidence is now attached for matched pending cells without promoting them to scored localities. `scripts/fetch_hyderabad_tgrac_pending_boundaries.py` writes `data/cities/hyderabad/tgrac-pending-village-boundaries.geojson` with 45 unique official village polygons covering the 47 matched pending rows. Map hovers and coordinate analysis cards now show either the official village attributes or `needs non-HMDA boundary source` for unmatched pending cells.
+**Status update - 2026-06-27:** TGRAC source evidence is now attached for every pending cell without promoting them to scored localities. `scripts/audit_hyderabad_pending_context.py` matches 47 cells to the HMDA/GHMC TGRAC village layer and 28 cells to the statewide TGRAC village layer. `scripts/fetch_hyderabad_tgrac_pending_boundaries.py` writes `data/cities/hyderabad/tgrac-pending-village-boundaries.geojson` with 73 unique official village polygons covering the 75 matched pending rows. Map hovers and coordinate analysis cards now show official village attributes plus the missing score-signal categories.
+
+**Scoring gate update - 2026-06-27:** `scripts/audit_hyderabad_pending_scoring_readiness.py` writes `data/cities/hyderabad/pending-scoring-readiness.json`. All 75 pending cells have official boundary evidence, 0 are promotion-ready, and all 75 remain blocked by missing price/RERA/infrastructure/satellite/employment/government-scheme signal decks.
 
 ### Task 1: Build Pending Area Source Audit
 
@@ -25,7 +27,7 @@ Guard that `pending-context-sources.json` exists, has every context cell, and re
 
 - [x] **Step 2: Implement the audit script**
 
-Read `coverage-areas.geojson`, extract `contextOnly` cells, query TGRAC layer 9 by centroid point, and write one row per pending area with matched village, mandal, district, source URL, and status.
+Read `coverage-areas.geojson`, extract `contextOnly` cells, query TGRAC HMDA/GHMC layer 9 by centroid point, fall back to statewide TGRAC Village Boundary layer 27 when needed, and write one row per pending area with matched village, mandal, district, source URL, and status.
 
 - [x] **Step 3: Run the script**
 
@@ -43,6 +45,8 @@ Run: `npm run test:hyderabad-production`
 - Create: `frontend/src/lib/hyderabadPendingSources.ts`
 - Create: `scripts/fetch_hyderabad_tgrac_pending_boundaries.py`
 - Create: `data/cities/hyderabad/tgrac-pending-village-boundaries.geojson`
+- Create: `scripts/audit_hyderabad_pending_scoring_readiness.py`
+- Create: `data/cities/hyderabad/pending-scoring-readiness.json`
 - Modify: `CLAUDE.md`
 
 - [x] **Step 1: Add source fields to pending hover**
@@ -71,9 +75,11 @@ Verified:
 **Files:**
 - Modify only after source and scoring inputs are ready.
 
-- [ ] **Step 1: Define minimum scoring evidence**
+- [x] **Step 1: Define minimum scoring evidence**
 
 Require sourced boundary or official admin match plus price/rera/infrastructure/satellite signal deck before removing pending status.
+
+Implemented with `data/cities/hyderabad/pending-scoring-readiness.json`. Required evidence is official boundary, price band, RERA activity, infrastructure, satellite growth, employment, and government scheme signal. No pending context cell is promotion-ready yet.
 
 - [ ] **Step 2: Add scored records in batches**
 

@@ -1,0 +1,3624 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-06-27",
+  "citySlug": "hyderabad",
+  "purpose": "minimum evidence gate before promoting data-pending Hyderabad context cells to scored market cells",
+  "requiredEvidence": [
+    "official_boundary",
+    "price_band",
+    "rera_activity",
+    "infrastructure",
+    "satellite_growth",
+    "employment",
+    "government_scheme"
+  ],
+  "promotionPolicy": "Do not assign a PlotDNA score unless every required evidence item is verified for that exact area.",
+  "summary": {
+    "pendingContextCellCount": 75,
+    "officialBoundaryReadyCount": 75,
+    "promotionReadyCount": 0,
+    "blockedByMissingSignalDeckCount": 75
+  },
+  "areaAudits": [
+    {
+      "slug": "ctx-ananthagiri-hills",
+      "name": "Ananthagiri Hills",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Forest / Vikarabad / Vikarabad",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:5316",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-andole-south",
+      "name": "Andole South",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Koniyal / Hathnoora / Sangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:2175",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-ankral-660553458",
+      "name": "Ankral",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Julur / B.Pochampally / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:947",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-aushapur-662734738",
+      "name": "Aushapur",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Jameelapet / Bibinagar / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:876",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-aziznagar",
+      "name": "Aziznagar",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Himayathnagar / Moinabad / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:422",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-bandaravirala-660551588",
+      "name": "Bandaravirala",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Edulabad / Ghatkesar / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:289",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-batasingaram",
+      "name": "Batasingaram",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Batasingaram / Abdullapurmet / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:330",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-bibinagar-east",
+      "name": "Bibinagar East",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Anajipuram / Bhongiri / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:847",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-bongloor",
+      "name": "Bongloor",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "KongaraKalan / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:654",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-burgula",
+      "name": "Burgula",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Gunded / Balanagar / Mahabubnagar",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:431",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-chakrampally-1291368180",
+      "name": "Chakrampally",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Cheemaldari / Mominpet / Vikarabad",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:3035",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-chaudergudem",
+      "name": "Chaudergudem",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Kankal / Pudur / Vikarabad",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:2563",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-chegur",
+      "name": "Chegur",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Mallapur / Kothur / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:16",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-chilkur",
+      "name": "Chilkur",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Gandipet / Gandipet / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:456",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-chitkul",
+      "name": "Chitkul",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Muthangi / Patancheruvu / Sangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:76",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-choutuppal",
+      "name": "Choutuppal",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Choutuppal / Choutuppal / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:860",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-dandumalkapur",
+      "name": "Dandumalkapur",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Rachakonda / Narayanapoor / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:9237",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-doma",
+      "name": "Doma",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Barkatpalle / Pargi / Vikarabad",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:3076",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-elikatta-south",
+      "name": "Elikatta South",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Krishnanagar / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:163",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-elkatta",
+      "name": "Elkatta",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Shabad / Shabad / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:502",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-farooqnagar-west",
+      "name": "Farooqnagar West",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Agiryal / Kondurg / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:863",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-gajwel-south",
+      "name": "Gajwel South",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Karkapatla / Markook / Siddipet",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:171",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-gandimaisamma-571350232",
+      "name": "Gandimaisamma",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Dommarapochampally / Dundigal_Gandimaisamma / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:445",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-ghatkesar-east",
+      "name": "Ghatkesar East",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Raghavapuram / Bibinagar / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:952",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-girmapur",
+      "name": "Girmapur",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Domadugu / Gummadidala / Sangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:143",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-gorelli-660146124",
+      "name": "Gorelli",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Gowrelly / Abdullapurmet / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:313",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-hydernagar-1428934700",
+      "name": "Hydernagar",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Hydernagar / Kukatpally / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:742",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-inmulnarva",
+      "name": "Inmulnarva",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Kodicherla / Kothur / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:14",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-kadthal",
+      "name": "Kadthal",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Kadthal / Kadthal / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:551",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-kammadanam",
+      "name": "Kammadanam",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Kammadanam / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:158",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-kandlakoya",
+      "name": "Kandlakoya",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Gowdavelli / Medchal / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:678",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-kandukur-rangareddy",
+      "name": "Kandukur Rangareddy",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Nednur / Kandukur / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:347",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-kardhanur",
+      "name": "Kardhanur",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Bandalguda / Ramachandrapuram / Sangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:698",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-keshampet",
+      "name": "Keshampet",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Mutpoor / Kondurg / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:878",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-kondannaguda",
+      "name": "Kondannaguda",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Kondannaguda / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:1",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-kondurg",
+      "name": "Kondurg",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Padmaram / Chowdergudem / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:879",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-kongara-kalan",
+      "name": "Kongara Kalan",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Ibrahimpatnam(Khalsa) / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:728",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-kotepalli-245640512",
+      "name": "Kotepalli",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Kotepally / Kotepally / Vikarabad",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:1888",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-kuntloor-981868945",
+      "name": "Kuntloor",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "PeddaAmberpet / Abdullapurmet / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:714",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-lemur",
+      "name": "Lemur",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Rachloor / Kandukur / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:351",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-madhurapur-shadnagar",
+      "name": "Madhurapur Shadnagar",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Pomalpalle / Keshampeta / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:781",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-maisammaguda",
+      "name": "Maisammaguda",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Bahadurpally / Dundigal_Gandimaisamma / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:443",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-malkapur-571358646",
+      "name": "Malkapur",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Malkapur / Choutuppal / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:892",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-mangalpally",
+      "name": "Mangalpally",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Ibrahimpatnam(Khalsa) / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:728",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-manneguda",
+      "name": "Manneguda",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Naganpally / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:657",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-manoharabad",
+      "name": "Manoharabad",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Gangaipally / Shivampet / Medak",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:207",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-mansanpally",
+      "name": "Mansanpally",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Rampur / Dharoor / Vikarabad",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:2837",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-mansanpally-maheshwaram",
+      "name": "Mansanpally Maheshwaram",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Ghatpalle / Maheswaram / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:365",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-mekaguda",
+      "name": "Mekaguda",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Nandigama / Nandigama / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:18",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-mogiligidda",
+      "name": "Mogiligidda",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Mogalagidda / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:2",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-mucharla",
+      "name": "Mucharla",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Nandiwanaparthy / Yacharam / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:3392",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-nallavalli",
+      "name": "Nallavalli",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Lakdaram / Patancheruvu / Sangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:75",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-narayanpur-245639706",
+      "name": "Narayanpur",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Narayanapoor / Narayanapoor / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:9139",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-narsapur-road",
+      "name": "Narsapur Road",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Nallavally / Gummadidala / Sangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:155",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-pargi-road-shadnagar",
+      "name": "Pargi Road Shadnagar",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Hajipalle / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:156",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-peddakaparthy",
+      "name": "Peddakaparthy",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Nelapatla / Choutuppal / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:906",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-pillai-palle-660552232",
+      "name": "Pillai Palle",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "JagatthPalle / B.Pochampally / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:870",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-pocharam-ibrahimpatnam",
+      "name": "Pocharam Ibrahimpatnam",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Kappapahad / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:653",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-pragnapur",
+      "name": "Pragnapur",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Tunkikhalsa / Wargal / Siddipet",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:281",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-pudur-vikarabad",
+      "name": "Pudur Vikarabad",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Kacharam / Dharoor / Vikarabad",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:1858",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-pulkal-west",
+      "name": "Pulkal West",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Pulkal / Pulkal / Sangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:2597",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-raipole",
+      "name": "Raipole",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Arutla / Manchal / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:2997",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-ravalkole",
+      "name": "Ravalkole",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Ravalkole / Medchal / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:691",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-rayagiri-245641025",
+      "name": "Rayagiri",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Kesaram / Bhongiri / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:880",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-sadasivpet-west",
+      "name": "Sadasivpet West",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Munipally / Munipally / Sangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:2433",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-sangam-245639412",
+      "name": "Sangam",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Eklaskhampeta / Keshampeta / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:772",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-sheriguda",
+      "name": "Sheriguda",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Ibrahimpatnam(Khalsa) / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:728",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-shivampet-east",
+      "name": "Shivampet East",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Bandamadaram / Medchal / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:673",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-solipur",
+      "name": "Solipur",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "Ananthawaram / Shabad / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:481",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-talakondapally",
+      "name": "Talakondapally",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Makthamadharam / Kadthal / Rangareddy",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:1412",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-valigonda-245640522",
+      "name": "Valigonda",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Redlarepaka / Valigonda / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:9274",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "osm-vasanth-nagar-1428934704",
+      "name": "Vasanth Nagar",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "KPHBColony-0117 / Kukatpally / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:743",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-wargal",
+      "name": "Wargal",
+      "sourceStatus": "tgrac_village_matched",
+      "officialMatchLabel": "ChillaSagar / Mulug / Siddipet",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "hmda:28",
+          "sourceName": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-yadagirigutta",
+      "name": "Yadagirigutta",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Jangampally / Yadagirigutta / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:8806",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    },
+    {
+      "slug": "ctx-yenkepally",
+      "name": "Yenkepally",
+      "sourceStatus": "tgrac_statewide_village_matched",
+      "officialMatchLabel": "Mothkupally / Kotepally / Vikarabad",
+      "promotionReady": false,
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "evidence": {
+        "official_boundary": {
+          "status": "verified",
+          "sourceKey": "statewide:2807",
+          "sourceName": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+        },
+        "price_band": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "rera_activity": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "infrastructure": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "satellite_growth": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "employment": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        },
+        "government_scheme": {
+          "status": "missing",
+          "nextAction": "Attach verified signal deck before assigning a PlotDNA score."
+        }
+      },
+      "nextAction": "Keep as data-pending until every required signal evidence item is verified."
+    }
+  ]
+}

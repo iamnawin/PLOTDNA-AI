@@ -150,6 +150,7 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
     resolvedFallback.contextSourceStatusLabel ??
     (resolvedFallback.tier === 'context_area' ? 'needs non-HMDA boundary source' : null)
   const contextOfficialMatchDetails = resolvedFallback.contextOfficialMatchDetails ?? []
+  const contextMissingScoreSignals = resolvedFallback.contextMissingScoreSignals ?? []
 
   return (
     <motion.div
@@ -251,6 +252,11 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
                   <p className="text-[8px] font-mono text-slate-500 mt-1 uppercase tracking-wide">
                     {contextSourceStatus}
                   </p>
+                  {contextMissingScoreSignals.length > 0 && (
+                    <p className="text-[8px] font-mono text-amber-400 mt-1 leading-relaxed">
+                      Missing score signals: {contextMissingScoreSignals.join(', ')}
+                    </p>
+                  )}
                 </div>
               )}
             </>
@@ -312,6 +318,11 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
                 {contextSourceStatus === 'official boundary source' && (
                   <p className="text-[8px] font-sans text-slate-500 mt-1 leading-relaxed">
                     Official boundary source is attached for validation; score signals are still pending.
+                  </p>
+                )}
+                {contextMissingScoreSignals.length > 0 && (
+                  <p className="text-[8px] font-mono text-amber-400 mt-2 leading-relaxed">
+                    Missing score signals: {contextMissingScoreSignals.join(', ')}
                   </p>
                 )}
                 {contextOfficialMatchDetails.length > 0 && (

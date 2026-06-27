@@ -1,9 +1,9 @@
 """Audit Hyderabad data-pending context cells against public source layers.
 
 This script does not promote areas to scored coverage. It records whether each
-context-only cell has an official TGRAC HMDA/GHMC village-boundary hit at its
-generated cell centroid, so pending areas can carry source context while signal
-validation continues.
+context-only cell has an official TGRAC village-boundary hit at its generated
+cell centroid, so pending areas can carry source context while signal validation
+continues.
 """
 
 from __future__ import annotations
@@ -20,14 +20,20 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 CITY_DIR = REPO_ROOT / "data" / "cities" / "hyderabad"
 COVERAGE_PATH = CITY_DIR / "coverage-areas.geojson"
 OUTPUT_PATH = CITY_DIR / "pending-context-sources.json"
-RETRIEVED_AT = "2026-06-26"
+RETRIEVED_AT = "2026-06-27"
 
-TGRAC_LAYER_URL = (
+HMDA_LAYER_URL = (
     "https://tgrac.telangana.gov.in/arcgis/rest/services/"
     "TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9"
 )
-TGRAC_QUERY_URL = f"{TGRAC_LAYER_URL}/query"
-TGRAC_LAYER_NAME = "HMDA ORR GHMC Village Boundary"
+HMDA_QUERY_URL = f"{HMDA_LAYER_URL}/query"
+HMDA_LAYER_NAME = "HMDA ORR GHMC Village Boundary"
+STATEWIDE_LAYER_URL = (
+    "https://tgrac.telangana.gov.in/arcgis/rest/services/"
+    "AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27"
+)
+STATEWIDE_QUERY_URL = f"{STATEWIDE_LAYER_URL}/query"
+STATEWIDE_LAYER_NAME = "Village Boundary"
 
 
 def load_json(path: Path) -> Any:
@@ -62,7 +68,7 @@ def polygon_centroid(ring: list[list[float]]) -> list[float]:
     return [round(lat, 7), round(lng, 7)]
 
 
-def query_tgrac_village(lat: float, lng: float) -> list[dict[str, Any]]:
+def query_layer_by_point(query_url: str, lat: float, lng: float) -> list[dict[str, Any]]:
     params = {
         "f": "pjson",
         "where": "1=1",
@@ -73,7 +79,7 @@ def query_tgrac_village(lat: float, lng: float) -> list[dict[str, Any]]:
         "outFields": "*",
         "returnGeometry": "false",
     }
-    url = f"{TGRAC_QUERY_URL}?{urllib.parse.urlencode(params)}"
+    url = f"{query_url}?{urllib.parse.urlencode(params)}"
     request = urllib.request.Request(
         url,
         headers={"User-Agent": "PlotDNA Hyderabad pending context audit"},
@@ -83,6 +89,14 @@ def query_tgrac_village(lat: float, lng: float) -> list[dict[str, Any]]:
     if "error" in payload:
         raise RuntimeError(f"TGRAC query failed: {payload['error']}")
     return [feature.get("attributes", {}) for feature in payload.get("features", [])]
+
+
+def query_hmda_village(lat: float, lng: float) -> list[dict[str, Any]]:
+    return query_layer_by_point(HMDA_QUERY_URL, lat, lng)
+
+
+def query_statewide_village(lat: float, lng: float) -> list[dict[str, Any]]:
+    return query_layer_by_point(STATEWIDE_QUERY_URL, lat, lng)
 
 
 def source_seed_from_properties(properties: dict[str, Any]) -> dict[str, Any]:
@@ -105,7 +119,11 @@ def source_seed_from_properties(properties: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def build_audit_row(feature: dict[str, Any], tgrac_matches: list[dict[str, Any]]) -> dict[str, Any]:
+def build_audit_row(
+    feature: dict[str, Any],
+    hmda_matches: list[dict[str, Any]],
+    statewide_matches: list[dict[str, Any]],
+) -> dict[str, Any]:
     properties = feature["properties"]
     centroid = polygon_centroid(feature["geometry"]["coordinates"][0])
     sources = [source_seed_from_properties(properties)]
@@ -122,13 +140,13 @@ def build_audit_row(feature: dict[str, Any], tgrac_matches: list[dict[str, Any]]
         "officialMatches": [],
         "nextAction": "Find sourced village/admin boundary and verify score signals before promotion.",
     }
-    if tgrac_matches:
+    if hmda_matches:
         row["status"] = "tgrac_village_matched"
         row["sources"].append(
             {
                 "kind": "official_boundary_lookup",
-                "name": TGRAC_LAYER_NAME,
-                "url": TGRAC_LAYER_URL,
+                "name": HMDA_LAYER_NAME,
+                "url": HMDA_LAYER_URL,
                 "retrievedAt": RETRIEVED_AT,
                 "license": "public ArcGIS REST service",
             }
@@ -136,6 +154,11 @@ def build_audit_row(feature: dict[str, Any], tgrac_matches: list[dict[str, Any]]
         row["officialMatches"] = [
             {
                 "source": "TGRAC",
+                "sourceLayer": HMDA_LAYER_NAME,
+                "sourceUrl": HMDA_LAYER_URL,
+                "sourceIdField": "FID",
+                "sourceId": match.get("FID"),
+                "sourceKey": f"hmda:{match.get('FID')}",
                 "villageName": match.get("V_Name"),
                 "mandalName": match.get("Mandal_Nam"),
                 "districtName": match.get("Dist_Name"),
@@ -145,9 +168,43 @@ def build_audit_row(feature: dict[str, Any], tgrac_matches: list[dict[str, Any]]
                 "dmvCode": match.get("DMV_Code"),
                 "fid": match.get("FID"),
             }
-            for match in tgrac_matches
+            for match in hmda_matches
         ]
         row["nextAction"] = "Use official village match to source geometry and then attach verified score signals."
+    elif statewide_matches:
+        row["status"] = "tgrac_statewide_village_matched"
+        row["sources"].append(
+            {
+                "kind": "official_boundary_lookup",
+                "name": STATEWIDE_LAYER_NAME,
+                "url": STATEWIDE_LAYER_URL,
+                "retrievedAt": RETRIEVED_AT,
+                "license": "public ArcGIS REST service",
+            }
+        )
+        row["officialMatches"] = [
+            {
+                "source": "TGRAC",
+                "sourceLayer": STATEWIDE_LAYER_NAME,
+                "sourceUrl": STATEWIDE_LAYER_URL,
+                "sourceIdField": "OBJECTID",
+                "sourceId": match.get("OBJECTID"),
+                "sourceKey": f"statewide:{match.get('OBJECTID')}",
+                "villageName": match.get("Village") or match.get("Village_Name_"),
+                "mandalName": match.get("Mandal") or match.get("Subdistrict_Name"),
+                "districtName": match.get("District") or match.get("District_Name_"),
+                "revenueName": match.get("NewRevRema"),
+                "divisionName": match.get("Revenue_Division"),
+                "admin": match.get("Class") or match.get("ULB"),
+                "dmvCode": match.get("DMV_Code"),
+                "villageCode": match.get("Village_Code"),
+                "census2011Code": match.get("Census_2011_Code"),
+                "households": match.get("No_HH"),
+                "population": match.get("TOT_P"),
+            }
+            for match in statewide_matches
+        ]
+        row["nextAction"] = "Use official statewide village match to source geometry and then attach verified score signals."
     return row
 
 
@@ -162,20 +219,24 @@ def main() -> None:
     for index, feature in enumerate(context_features, start=1):
         lat, lng = polygon_centroid(feature["geometry"]["coordinates"][0])
         try:
-            matches = query_tgrac_village(lat, lng)
+            hmda_matches = query_hmda_village(lat, lng)
+            statewide_matches = [] if hmda_matches else query_statewide_village(lat, lng)
         except Exception as exc:
-            matches = []
-            row = build_audit_row(feature, matches)
+            hmda_matches = []
+            statewide_matches = []
+            row = build_audit_row(feature, hmda_matches, statewide_matches)
             row["status"] = "source_query_failed"
             row["queryError"] = str(exc)
             source_audits.append(row)
             continue
-        source_audits.append(build_audit_row(feature, matches))
+        source_audits.append(build_audit_row(feature, hmda_matches, statewide_matches))
         if index % 10 == 0:
             time.sleep(0.25)
 
     source_audits.sort(key=lambda row: (row["status"], row["name"], row["slug"]))
-    matched_count = sum(1 for row in source_audits if row["status"] == "tgrac_village_matched")
+    hmda_matched_count = sum(1 for row in source_audits if row["status"] == "tgrac_village_matched")
+    statewide_matched_count = sum(1 for row in source_audits if row["status"] == "tgrac_statewide_village_matched")
+    matched_count = hmda_matched_count + statewide_matched_count
     payload = {
         "schemaVersion": 1,
         "generatedAt": RETRIEVED_AT,
@@ -183,13 +244,20 @@ def main() -> None:
         "purpose": "source audit for context-only data-pending Hyderabad coverage cells",
         "sourcePolicy": "Do not promote pending cells to scored areas until boundaries and score signals are verified.",
         "primaryOfficialSource": {
-            "name": TGRAC_LAYER_NAME,
-            "url": TGRAC_LAYER_URL,
+            "name": HMDA_LAYER_NAME,
+            "url": HMDA_LAYER_URL,
             "fields": ["V_Name", "Mandal_Nam", "Dist_Name", "N_Revenue", "DMV_Code"],
+        },
+        "fallbackOfficialSource": {
+            "name": STATEWIDE_LAYER_NAME,
+            "url": STATEWIDE_LAYER_URL,
+            "fields": ["Village", "Mandal", "District", "Revenue_Division", "DMV_Code", "OBJECTID"],
         },
         "summary": {
             "pendingContextCellCount": len(source_audits),
-            "tgracVillageMatchedCount": matched_count,
+            "tgracVillageMatchedCount": hmda_matched_count,
+            "tgracStatewideVillageMatchedCount": statewide_matched_count,
+            "officialVillageMatchedCount": matched_count,
             "needsNonHmdaBoundarySourceCount": len(source_audits) - matched_count,
         },
         "sourceAudits": source_audits,

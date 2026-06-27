@@ -8,6 +8,7 @@ const boundaryPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'coverag
 const aliasesPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'aliases.json')
 const pendingSourcesPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-context-sources.json')
 const pendingBoundariesPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'tgrac-pending-village-boundaries.geojson')
+const pendingScoringReadinessPath = path.join(repoRoot, 'data', 'cities', 'hyderabad', 'pending-scoring-readiness.json')
 const hyderabadDataPath = path.join(process.cwd(), 'src', 'data', 'hyderabad.ts')
 const productionHelperPath = path.join(process.cwd(), 'src', 'lib', 'cityProduction.ts')
 const priorityPath = path.join(process.cwd(), 'src', 'data', 'hyderabadPriority.ts')
@@ -27,6 +28,9 @@ const pendingSources = fs.existsSync(pendingSourcesPath)
   : null
 const pendingBoundaries = fs.existsSync(pendingBoundariesPath)
   ? JSON.parse(fs.readFileSync(pendingBoundariesPath, 'utf8').replace(/^\uFEFF/, ''))
+  : null
+const pendingScoringReadiness = fs.existsSync(pendingScoringReadinessPath)
+  ? JSON.parse(fs.readFileSync(pendingScoringReadinessPath, 'utf8').replace(/^\uFEFF/, ''))
   : null
 const hyderabadSource = fs.readFileSync(hyderabadDataPath, 'utf8')
 const productionHelper = fs.existsSync(productionHelperPath)
@@ -74,14 +78,19 @@ const missingPendingAudits = contextFeatures
 assert(missingPendingAudits.length === 0, `context cells missing pending source audit rows: ${missingPendingAudits.join(', ')}`)
 const pendingAuditsWithoutStatus = pendingSources.sourceAudits.filter(audit => !audit.status || !audit.sources?.length)
 assert(pendingAuditsWithoutStatus.length === 0, `pending source audits missing status or sources: ${pendingAuditsWithoutStatus.map(audit => audit.slug).join(', ')}`)
-const tgracMatchedAudits = pendingSources.sourceAudits.filter(audit => audit.status === 'tgrac_village_matched')
-const tgracMatchedFids = new Set(tgracMatchedAudits.map(audit => audit.officialMatches?.[0]?.fid).filter(fid => fid !== undefined && fid !== null))
+const pendingAuditsWithoutOfficialMatch = pendingSources.sourceAudits.filter(audit => !audit.officialMatches?.length)
+assert(pendingAuditsWithoutOfficialMatch.length === 0, `pending source audits missing official village/admin matches: ${pendingAuditsWithoutOfficialMatch.map(audit => audit.slug).join(', ')}`)
+const unsupportedPendingStatuses = pendingSources.sourceAudits.filter(audit => !['tgrac_village_matched', 'tgrac_statewide_village_matched'].includes(audit.status))
+assert(unsupportedPendingStatuses.length === 0, `pending source audits still need official boundary source: ${unsupportedPendingStatuses.map(audit => `${audit.slug}:${audit.status}`).join(', ')}`)
+const officialMatchedAudits = pendingSources.sourceAudits.filter(audit => audit.officialMatches?.length)
+const officialMatchKeys = new Set(officialMatchedAudits.map(audit => audit.officialMatches?.[0]?.sourceKey).filter(Boolean))
 assert(pendingBoundaries?.type === 'FeatureCollection', 'TGRAC matched pending areas must have a local official-boundary GeoJSON')
-assert(pendingBoundaries.features?.length === tgracMatchedFids.size, `TGRAC official-boundary GeoJSON must contain one feature per matched FID: expected ${tgracMatchedFids.size}, found ${pendingBoundaries?.features?.length ?? 0}`)
-const boundaryFids = new Set(pendingBoundaries.features.map(feature => feature.properties?.fid).filter(fid => fid !== undefined && fid !== null))
-const missingBoundaryFids = [...tgracMatchedFids].filter(fid => !boundaryFids.has(fid))
-assert(missingBoundaryFids.length === 0, `TGRAC matched pending areas missing official boundary geometries: ${missingBoundaryFids.join(', ')}`)
+assert(pendingBoundaries.features?.length === officialMatchKeys.size, `TGRAC official-boundary GeoJSON must contain one feature per matched official source key: expected ${officialMatchKeys.size}, found ${pendingBoundaries?.features?.length ?? 0}`)
+const boundarySourceKeys = new Set(pendingBoundaries.features.map(feature => feature.properties?.sourceKey).filter(Boolean))
+const missingBoundarySourceKeys = [...officialMatchKeys].filter(sourceKey => !boundarySourceKeys.has(sourceKey))
+assert(missingBoundarySourceKeys.length === 0, `TGRAC matched pending areas missing official boundary geometries: ${missingBoundarySourceKeys.join(', ')}`)
 const invalidBoundaryFeatures = pendingBoundaries.features.filter(feature => (
+  !feature.properties?.sourceKey ||
   !feature.properties?.villageName ||
   !feature.properties?.mandalName ||
   !feature.properties?.districtName ||
@@ -91,6 +100,17 @@ const invalidBoundaryFeatures = pendingBoundaries.features.filter(feature => (
   !['Polygon', 'MultiPolygon'].includes(feature.geometry?.type)
 ))
 assert(invalidBoundaryFeatures.length === 0, `TGRAC boundary features missing source/detail metadata: ${invalidBoundaryFeatures.map(feature => feature.properties?.fid).join(', ')}`)
+assert(pendingScoringReadiness?.schemaVersion === 1, 'Hyderabad pending scoring-readiness audit must exist')
+assert(pendingScoringReadiness.areaAudits?.length === contextFeatures.length, `pending scoring-readiness audit must cover every context cell: expected ${contextFeatures.length}, found ${pendingScoringReadiness?.areaAudits?.length ?? 0}`)
+const scoringAuditSlugs = new Set(pendingScoringReadiness.areaAudits.map(audit => audit.slug))
+const missingScoringAudits = contextFeatures.map(feature => feature.properties.slug).filter(slug => !scoringAuditSlugs.has(slug))
+assert(missingScoringAudits.length === 0, `context cells missing scoring-readiness rows: ${missingScoringAudits.join(', ')}`)
+const requiredEvidence = ['official_boundary', 'price_band', 'rera_activity', 'infrastructure', 'satellite_growth', 'employment', 'government_scheme']
+const scoringRowsMissingEvidence = pendingScoringReadiness.areaAudits.filter(audit => requiredEvidence.some(key => !audit.evidence?.[key]?.status))
+assert(scoringRowsMissingEvidence.length === 0, `scoring-readiness rows missing required evidence statuses: ${scoringRowsMissingEvidence.map(audit => audit.slug).join(', ')}`)
+const incorrectlyReadyRows = pendingScoringReadiness.areaAudits.filter(audit => audit.promotionReady && requiredEvidence.some(key => audit.evidence?.[key]?.status !== 'verified'))
+assert(incorrectlyReadyRows.length === 0, `pending rows marked promotion-ready without full verified evidence: ${incorrectlyReadyRows.map(audit => audit.slug).join(', ')}`)
+assert(pendingScoringReadiness.summary?.promotionReadyCount === 0, 'pending context cells must not be promotion-ready until score signal decks are attached')
 assert(productionHelper.includes('hyderabad'), 'city production helper must include a Hyderabad override')
 assert(productionHelper.includes('Flagship production city'), 'Hyderabad must be labeled as the flagship production city')
 
@@ -129,10 +149,12 @@ assert(mapView.includes('setContextHoverSlug'), 'context-only polygons must visi
 assert(mapView.includes('Data pending'), 'context-only polygon hover must explain why no score is available')
 assert(mapView.includes('PlotDNA will start validation for this area'), 'context-only pending message must tell users that exact-area validation is the next step')
 assert(pendingSourceHelper.includes('pending-context-sources.json?raw'), 'context-only hover must load pending source audits through the shared helper')
+assert(pendingSourceHelper.includes('pending-scoring-readiness.json?raw'), 'context-only hover must load pending scoring-readiness audits through the shared helper')
 assert(mapView.includes('TGRAC village match'), 'context-only hover must expose official TGRAC village matches where available')
 assert(mapView.includes('not available for this pending area yet'), 'context-only hover must explicitly label pending cells without official matches')
 assert(mapView.includes('officialMatchLabel'), 'context-only hover must carry matched village/mandal/district labels')
 assert(mapView.includes('officialMatchDetails'), 'context-only hover must carry matched official village attributes')
+assert(mapView.includes('Missing score signals'), 'context-only hover must explain why official-boundary areas remain unscored')
 assert(pendingSourceHelper.includes('official boundary source'), 'context-only hover must explain official boundary sourcing')
 assert(pendingSourceHelper.includes('needs non-HMDA boundary source'), 'context-only hover must explain pending cells that still need another boundary source')
 assert(mapView.includes('boundaryConfidence'), 'context-only hover metadata must preserve boundary confidence')
@@ -145,6 +167,7 @@ assert(mapView.includes('Generated broad market cell'), 'large generated scored 
 assert(pendingSourceHelper.includes('pending-context-sources.json?raw'), 'coordinate analysis path must load pending source audits')
 assert(plotAnalysis.includes('contextOfficialMatchLabel'), 'coordinate fallback must carry matched official village context')
 assert(plotAnalysisCard.includes('TGRAC village match'), 'coordinate analysis card must show matched official village context')
+assert(plotAnalysisCard.includes('Missing score signals'), 'coordinate analysis card must show missing score-signal evidence for pending areas')
 assert(plotAnalysisCard.includes('official boundary source'), 'coordinate analysis card must explain official boundary sourcing')
 assert(plotAnalysisCard.includes('needs non-HMDA boundary source'), 'coordinate analysis card must identify pending areas outside the HMDA/TGRAC layer')
 

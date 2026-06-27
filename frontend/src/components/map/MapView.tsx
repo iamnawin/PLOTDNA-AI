@@ -13,6 +13,8 @@ import { useAppStore, type MapStyleKey } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import {
   getHyderabadPendingSource,
+  getHyderabadPendingScoringReadiness,
+  getMissingScoreSignalLabels,
   getOfficialMatchDetails,
   getOfficialMatchLabel,
   getPendingSourceStatusLabel,
@@ -211,6 +213,7 @@ interface ContextHoverInfo {
   sourceStatus: string | null
   officialMatchLabel: string | null
   officialMatchDetails: string[]
+  missingScoreSignals: string[]
 }
 
 function getPolygonBounds(polygon: [number, number][]): [[number, number], [number, number]] {
@@ -398,9 +401,11 @@ export default function MapView() {
   const showContextHover = useCallback((feature: NonNullable<MapLayerMouseEvent['features']>[number], point: { x: number; y: number }) => {
     const slug = String(feature.properties?.slug ?? '')
     const audit = getHyderabadPendingSource(slug)
+    const readiness = getHyderabadPendingScoringReadiness(slug)
     const officialMatch = audit?.officialMatches?.[0]
     const officialMatchLabel = getOfficialMatchLabel(officialMatch)
     const officialMatchDetails = getOfficialMatchDetails(officialMatch)
+    const missingScoreSignals = getMissingScoreSignalLabels(readiness)
     setHoveredSlug(null)
     setHoverInfo(null)
     setContextHoverSlug(slug)
@@ -416,6 +421,7 @@ export default function MapView() {
       sourceStatus: getPendingSourceStatusLabel(audit?.status),
       officialMatchLabel,
       officialMatchDetails,
+      missingScoreSignals,
     })
   }, [setHoveredSlug])
 
@@ -765,6 +771,11 @@ export default function MapView() {
                 <p key={detail} style={{ margin: '2px 0 0' }}>{detail}</p>
               ))}
             </div>
+          )}
+          {contextHover.missingScoreSignals.length > 0 && (
+            <p style={{ margin: '7px 0 0', color: '#fbbf24', fontSize: 8, fontFamily: 'IBM Plex Mono, monospace', lineHeight: 1.45 }}>
+              Missing score signals: {contextHover.missingScoreSignals.join(', ')}
+            </p>
           )}
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginTop: 9 }}>
             <span style={{

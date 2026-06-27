@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-26",
+  "generatedAt": "2026-06-27",
   "citySlug": "hyderabad",
   "purpose": "source audit for context-only data-pending Hyderabad coverage cells",
   "sourcePolicy": "Do not promote pending cells to scored areas until boundaries and score signals are verified.",
@@ -15,17 +15,31 @@
       "DMV_Code"
     ]
   },
+  "fallbackOfficialSource": {
+    "name": "Village Boundary",
+    "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+    "fields": [
+      "Village",
+      "Mandal",
+      "District",
+      "Revenue_Division",
+      "DMV_Code",
+      "OBJECTID"
+    ]
+  },
   "summary": {
     "pendingContextCellCount": 75,
     "tgracVillageMatchedCount": 47,
-    "needsNonHmdaBoundarySourceCount": 28
+    "tgracStatewideVillageMatchedCount": 28,
+    "officialVillageMatchedCount": 75,
+    "needsNonHmdaBoundarySourceCount": 0
   },
   "sourceAudits": [
     {
       "slug": "ctx-ananthagiri-hills",
       "name": "Ananthagiri Hills",
       "place": "locality",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.3025775,
         77.863173
@@ -40,16 +54,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 5316,
+          "sourceKey": "statewide:5316",
+          "villageName": "Forest",
+          "mandalName": "Vikarabad",
+          "districtName": "Vikarabad",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Vikarabad",
+          "admin": "Muncipality",
+          "dmvCode": "9999999",
+          "villageCode": null,
+          "census2011Code": null,
+          "households": null,
+          "population": null
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-andole-south",
       "name": "Andole South",
       "place": "locality",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.7736524,
         78.1241331
@@ -64,16 +105,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 2175,
+          "sourceKey": "statewide:2175",
+          "villageName": "Koniyal",
+          "mandalName": "Hathnoora",
+          "districtName": "Sangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Sangareddy",
+          "admin": " ",
+          "dmvCode": "1740005",
+          "villageCode": 573788,
+          "census2011Code": "573788",
+          "households": 491,
+          "population": 2309
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-burgula",
       "name": "Burgula",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         16.9533724,
         78.1637601
@@ -88,16 +156,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 431,
+          "sourceKey": "statewide:431",
+          "villageName": "Gunded",
+          "mandalName": "Balanagar",
+          "districtName": "Mahabubnagar",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Mahabubnagar",
+          "admin": " ",
+          "dmvCode": "1410007",
+          "villageCode": 575106,
+          "census2011Code": "575106",
+          "households": 377,
+          "population": 1719
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "osm-chakrampally-1291368180",
       "name": "Chakrampally",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.4791253,
         77.9931821
@@ -112,16 +207,43 @@
           "url": "https://www.openstreetmap.org/node/1291368180",
           "license": "ODbL-1.0",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 3035,
+          "sourceKey": "statewide:3035",
+          "villageName": "Cheemaldari",
+          "mandalName": "Mominpet",
+          "districtName": "Vikarabad",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Vikarabad",
+          "admin": " ",
+          "dmvCode": "1502023",
+          "villageCode": 574019,
+          "census2011Code": "574019",
+          "households": 392,
+          "population": 1782
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-chaudergudem",
       "name": "Chaudergudem",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.2017476,
         78.014854
@@ -136,16 +258,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 2563,
+          "sourceKey": "statewide:2563",
+          "villageName": "Kankal",
+          "mandalName": "Pudur",
+          "districtName": "Vikarabad",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Vikarabad",
+          "admin": " ",
+          "dmvCode": "1530028",
+          "villageCode": 574689,
+          "census2011Code": "574689",
+          "households": 681,
+          "population": 3088
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-dandumalkapur",
       "name": "Dandumalkapur",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.1852704,
         78.8302223
@@ -160,16 +309,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 9237,
+          "sourceKey": "statewide:9237",
+          "villageName": "Rachakonda",
+          "mandalName": "Narayanapoor",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Choutuppal",
+          "admin": " ",
+          "dmvCode": "2336001",
+          "villageCode": 577133,
+          "census2011Code": "577133",
+          "households": 344,
+          "population": 1300
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-doma",
       "name": "Doma",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.2333256,
         77.8584248
@@ -184,16 +360,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 3076,
+          "sourceKey": "statewide:3076",
+          "villageName": "Barkatpalle",
+          "mandalName": "Pargi",
+          "districtName": "Vikarabad",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Vikarabad",
+          "admin": " ",
+          "dmvCode": "1529005",
+          "villageCode": 574629,
+          "census2011Code": "574629",
+          "households": 282,
+          "population": 1346
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-elikatta-south",
       "name": "Elikatta South",
       "place": "locality",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.0558559,
         78.1512703
@@ -208,16 +411,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 163,
+          "sourceKey": "statewide:163",
+          "villageName": "Krishnanagar",
+          "mandalName": "Farooqnagar",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Shadhnagar",
+          "admin": " ",
+          "dmvCode": "1412019",
+          "villageCode": 575193,
+          "census2011Code": "575193",
+          "households": 893,
+          "population": 3784
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-farooqnagar-west",
       "name": "Farooqnagar West",
       "place": "locality",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.0212529,
         78.0549803
@@ -232,16 +462,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 863,
+          "sourceKey": "statewide:863",
+          "villageName": "Agiryal",
+          "mandalName": "Kondurg",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Shadhnagar",
+          "admin": " ",
+          "dmvCode": "1411039",
+          "villageCode": 575175,
+          "census2011Code": "575175",
+          "households": 491,
+          "population": 2192
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-kadthal",
       "name": "Kadthal",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         16.9866769,
         78.5471244
@@ -256,16 +513,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 551,
+          "sourceKey": "statewide:551",
+          "villageName": "Kadthal",
+          "mandalName": "Kadthal",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Kandukur",
+          "admin": " ",
+          "dmvCode": "1416003",
+          "villageCode": 575279,
+          "census2011Code": "575279",
+          "households": 2446,
+          "population": 11663
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-kammadanam",
       "name": "Kammadanam",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.021985,
         78.2241427
@@ -280,16 +564,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 158,
+          "sourceKey": "statewide:158",
+          "villageName": "Kammadanam",
+          "mandalName": "Farooqnagar",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Shadhnagar",
+          "admin": " ",
+          "dmvCode": "1412029",
+          "villageCode": 575203,
+          "census2011Code": "575203",
+          "households": 442,
+          "population": 1782
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-keshampet",
       "name": "Keshampet",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.1479697,
         78.0744857
@@ -304,16 +615,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 878,
+          "sourceKey": "statewide:878",
+          "villageName": "Mutpoor",
+          "mandalName": "Kondurg",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Shadhnagar",
+          "admin": " ",
+          "dmvCode": "1411006",
+          "villageCode": 575142,
+          "census2011Code": "575142",
+          "households": 379,
+          "population": 1610
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-kondurg",
       "name": "Kondurg",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.0804511,
         77.9662481
@@ -328,16 +666,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 879,
+          "sourceKey": "statewide:879",
+          "villageName": "Padmaram",
+          "mandalName": "Chowdergudem",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Shadhnagar",
+          "admin": " ",
+          "dmvCode": "1411025",
+          "villageCode": 575161,
+          "census2011Code": "575161",
+          "households": 555,
+          "population": 2560
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "osm-kotepalli-245640512",
       "name": "Kotepalli",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.3852649,
         77.7289396
@@ -352,16 +717,43 @@
           "url": "https://www.openstreetmap.org/node/245640512",
           "license": "ODbL-1.0",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 1888,
+          "sourceKey": "statewide:1888",
+          "villageName": "Kotepally",
+          "mandalName": "Kotepally",
+          "districtName": "Vikarabad",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Vikarabad",
+          "admin": " ",
+          "dmvCode": "1522017",
+          "villageCode": 574420,
+          "census2011Code": "574420",
+          "households": 1271,
+          "population": 5491
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-madhurapur-shadnagar",
       "name": "Madhurapur Shadnagar",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         16.9395636,
         78.2854684
@@ -376,16 +768,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 781,
+          "sourceKey": "statewide:781",
+          "villageName": "Pomalpalle",
+          "mandalName": "Keshampeta",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Shadhnagar",
+          "admin": " ",
+          "dmvCode": "1414011",
+          "villageCode": 575238,
+          "census2011Code": "575238",
+          "households": 684,
+          "population": 2900
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-mansanpally",
       "name": "Mansanpally",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.2961426,
         77.7199392
@@ -400,16 +819,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 2837,
+          "sourceKey": "statewide:2837",
+          "villageName": "Rampur",
+          "mandalName": "Dharoor",
+          "districtName": "Vikarabad",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Vikarabad",
+          "admin": " ",
+          "dmvCode": "1520013",
+          "villageCode": 574352,
+          "census2011Code": "574352",
+          "households": 186,
+          "population": 993
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-mucharla",
       "name": "Mucharla",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.0544568,
         78.6399159
@@ -424,16 +870,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 3392,
+          "sourceKey": "statewide:3392",
+          "villageName": "Nandiwanaparthy",
+          "mandalName": "Yacharam",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Ibrahimpatnam",
+          "admin": " ",
+          "dmvCode": "1536007",
+          "villageCode": 574885,
+          "census2011Code": "574885",
+          "households": 1419,
+          "population": 6035
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "osm-narayanpur-245639706",
       "name": "Narayanpur",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.1551162,
         78.8795969
@@ -448,16 +921,43 @@
           "url": "https://www.openstreetmap.org/node/245639706",
           "license": "ODbL-1.0",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 9139,
+          "sourceKey": "statewide:9139",
+          "villageName": "Narayanapoor",
+          "mandalName": "Narayanapoor",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Choutuppal",
+          "admin": " ",
+          "dmvCode": "2336006",
+          "villageCode": 577138,
+          "census2011Code": "577138",
+          "households": 1820,
+          "population": 7927
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-pargi-road-shadnagar",
       "name": "Pargi Road Shadnagar",
       "place": "locality",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.0649315,
         78.1842662
@@ -472,16 +972,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 156,
+          "sourceKey": "statewide:156",
+          "villageName": "Hajipalle",
+          "mandalName": "Farooqnagar",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Shadhnagar",
+          "admin": " ",
+          "dmvCode": "1412017",
+          "villageCode": 575191,
+          "census2011Code": "575191",
+          "households": 188,
+          "population": 795
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-pudur-vikarabad",
       "name": "Pudur Vikarabad",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.3429954,
         77.8110407
@@ -496,16 +1023,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 1858,
+          "sourceKey": "statewide:1858",
+          "villageName": "Kacharam",
+          "mandalName": "Dharoor",
+          "districtName": "Vikarabad",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Vikarabad",
+          "admin": " ",
+          "dmvCode": "1520007",
+          "villageCode": 574346,
+          "census2011Code": "574346",
+          "households": 59,
+          "population": 278
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-pulkal-west",
       "name": "Pulkal West",
       "place": "locality",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.723167,
         77.9910103
@@ -520,16 +1074,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 2597,
+          "sourceKey": "statewide:2597",
+          "villageName": "Pulkal",
+          "mandalName": "Pulkal",
+          "districtName": "Sangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Andole-Jogipet",
+          "admin": " ",
+          "dmvCode": "1733009",
+          "villageCode": 573476,
+          "census2011Code": "573476",
+          "households": 664,
+          "population": 3006
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-raipole",
       "name": "Raipole",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.1330791,
         78.7494887
@@ -544,16 +1125,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 2997,
+          "sourceKey": "statewide:2997",
+          "villageName": "Arutla",
+          "mandalName": "Manchal",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Ibrahimpatnam",
+          "admin": " ",
+          "dmvCode": "1535022",
+          "villageCode": 574875,
+          "census2011Code": "574875",
+          "households": 2319,
+          "population": 10037
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-sadasivpet-west",
       "name": "Sadasivpet West",
       "place": "locality",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.6783413,
         77.8668633
@@ -568,16 +1176,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 2433,
+          "sourceKey": "statewide:2433",
+          "villageName": "Munipally",
+          "mandalName": "Munipally",
+          "districtName": "Sangareddy",
+          "revenueName": "New Revenue Division",
+          "divisionName": "Sangareddy",
+          "admin": " ",
+          "dmvCode": "1732025",
+          "villageCode": 573463,
+          "census2011Code": "573463",
+          "households": 705,
+          "population": 3393
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "osm-sangam-245639412",
       "name": "Sangam",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.0109657,
         78.3361129
@@ -592,16 +1227,43 @@
           "url": "https://www.openstreetmap.org/node/245639412",
           "license": "ODbL-1.0",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 772,
+          "sourceKey": "statewide:772",
+          "villageName": "Eklaskhampeta",
+          "mandalName": "Keshampeta",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Shadhnagar",
+          "admin": " ",
+          "dmvCode": "1414003",
+          "villageCode": 575230,
+          "census2011Code": "575230",
+          "households": 471,
+          "population": 2008
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-talakondapally",
       "name": "Talakondapally",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         16.9655063,
         78.430859
@@ -616,16 +1278,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 1412,
+          "sourceKey": "statewide:1412",
+          "villageName": "Makthamadharam",
+          "mandalName": "Kadthal",
+          "districtName": "Rangareddy",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Kandukur",
+          "admin": " ",
+          "dmvCode": "1415004",
+          "villageCode": 575251,
+          "census2011Code": "575251",
+          "households": 405,
+          "population": 1834
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "osm-valigonda-245640522",
       "name": "Valigonda",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.3942191,
         79.0119788
@@ -640,16 +1329,43 @@
           "url": "https://www.openstreetmap.org/node/245640522",
           "license": "ODbL-1.0",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 9274,
+          "sourceKey": "statewide:9274",
+          "villageName": "Redlarepaka",
+          "mandalName": "Valigonda",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Choutuppal",
+          "admin": " ",
+          "dmvCode": "2315012",
+          "villageCode": 576734,
+          "census2011Code": "576734",
+          "households": 738,
+          "population": 3075
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-yadagirigutta",
       "name": "Yadagirigutta",
       "place": "town",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.61288,
         78.8661681
@@ -664,16 +1380,43 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 8806,
+          "sourceKey": "statewide:8806",
+          "villageName": "Jangampally",
+          "mandalName": "Yadagirigutta",
+          "districtName": "Yadadri Bhuvanagiri",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Bhongiri",
+          "admin": " ",
+          "dmvCode": "2304010",
+          "villageCode": 576524,
+          "census2011Code": "576524",
+          "households": 464,
+          "population": 1879
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "ctx-yenkepally",
       "name": "Yenkepally",
       "place": "village",
-      "status": "needs_non_hmda_boundary_source",
+      "status": "tgrac_statewide_village_matched",
       "centroid": [
         17.4398565,
         77.8435153
@@ -688,10 +1431,37 @@
           "url": "docs/HYDERABAD_UNCOVERED_AREAS.md",
           "license": "internal-derived",
           "retrievedAt": "2026-06-25"
+        },
+        {
+          "kind": "official_boundary_lookup",
+          "name": "Village Boundary",
+          "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "retrievedAt": "2026-06-27",
+          "license": "public ArcGIS REST service"
         }
       ],
-      "officialMatches": [],
-      "nextAction": "Find sourced village/admin boundary and verify score signals before promotion."
+      "officialMatches": [
+        {
+          "source": "TGRAC",
+          "sourceLayer": "Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/AdministrativeInfoSystem_Folder/Administrative_Information_System/MapServer/27",
+          "sourceIdField": "OBJECTID",
+          "sourceId": 2807,
+          "sourceKey": "statewide:2807",
+          "villageName": "Mothkupally",
+          "mandalName": "Kotepally",
+          "districtName": "Vikarabad",
+          "revenueName": "Old Revenue Division",
+          "divisionName": "Vikarabad",
+          "admin": " ",
+          "dmvCode": "1521008",
+          "villageCode": 574394,
+          "census2011Code": "574394",
+          "households": 464,
+          "population": 2072
+        }
+      ],
+      "nextAction": "Use official statewide village match to source geometry and then attach verified score signals."
     },
     {
       "slug": "osm-ankral-660553458",
@@ -717,13 +1487,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 947,
+          "sourceKey": "hmda:947",
           "villageName": "Julur",
           "mandalName": "B.Pochampally",
           "districtName": "Yadadri Bhuvanagiri",
@@ -760,13 +1535,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 876,
+          "sourceKey": "hmda:876",
           "villageName": "Jameelapet",
           "mandalName": "Bibinagar",
           "districtName": "Yadadri Bhuvanagiri",
@@ -803,13 +1583,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 422,
+          "sourceKey": "hmda:422",
           "villageName": "Himayathnagar",
           "mandalName": "Moinabad",
           "districtName": "Rangareddy",
@@ -846,13 +1631,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 289,
+          "sourceKey": "hmda:289",
           "villageName": "Edulabad",
           "mandalName": "Ghatkesar",
           "districtName": "Medchal_Malkajgiri",
@@ -889,13 +1679,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 330,
+          "sourceKey": "hmda:330",
           "villageName": "Batasingaram",
           "mandalName": "Abdullapurmet",
           "districtName": "Rangareddy",
@@ -932,13 +1727,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 847,
+          "sourceKey": "hmda:847",
           "villageName": "Anajipuram",
           "mandalName": "Bhongiri",
           "districtName": "Yadadri Bhuvanagiri",
@@ -975,13 +1775,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 654,
+          "sourceKey": "hmda:654",
           "villageName": "KongaraKalan",
           "mandalName": "Ibrahimpatnam",
           "districtName": "Rangareddy",
@@ -1018,13 +1823,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 16,
+          "sourceKey": "hmda:16",
           "villageName": "Mallapur",
           "mandalName": "Kothur",
           "districtName": "Rangareddy",
@@ -1061,13 +1871,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 456,
+          "sourceKey": "hmda:456",
           "villageName": "Gandipet",
           "mandalName": "Gandipet",
           "districtName": "Rangareddy",
@@ -1104,13 +1919,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 76,
+          "sourceKey": "hmda:76",
           "villageName": "Muthangi",
           "mandalName": "Patancheruvu",
           "districtName": "Sangareddy",
@@ -1147,13 +1967,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 860,
+          "sourceKey": "hmda:860",
           "villageName": "Choutuppal",
           "mandalName": "Choutuppal",
           "districtName": "Yadadri Bhuvanagiri",
@@ -1190,13 +2015,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 502,
+          "sourceKey": "hmda:502",
           "villageName": "Shabad",
           "mandalName": "Shabad",
           "districtName": "Rangareddy",
@@ -1233,13 +2063,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 171,
+          "sourceKey": "hmda:171",
           "villageName": "Karkapatla",
           "mandalName": "Markook",
           "districtName": "Siddipet",
@@ -1276,13 +2111,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 445,
+          "sourceKey": "hmda:445",
           "villageName": "Dommarapochampally",
           "mandalName": "Dundigal_Gandimaisamma",
           "districtName": "Medchal_Malkajgiri",
@@ -1319,13 +2159,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 952,
+          "sourceKey": "hmda:952",
           "villageName": "Raghavapuram",
           "mandalName": "Bibinagar",
           "districtName": "Yadadri Bhuvanagiri",
@@ -1362,13 +2207,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 143,
+          "sourceKey": "hmda:143",
           "villageName": "Domadugu",
           "mandalName": "Gummadidala",
           "districtName": "Sangareddy",
@@ -1405,13 +2255,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 313,
+          "sourceKey": "hmda:313",
           "villageName": "Gowrelly",
           "mandalName": "Abdullapurmet",
           "districtName": "Rangareddy",
@@ -1448,13 +2303,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 742,
+          "sourceKey": "hmda:742",
           "villageName": "Hydernagar",
           "mandalName": "Kukatpally",
           "districtName": "Medchal_Malkajgiri",
@@ -1491,13 +2351,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 14,
+          "sourceKey": "hmda:14",
           "villageName": "Kodicherla",
           "mandalName": "Kothur",
           "districtName": "Rangareddy",
@@ -1534,13 +2399,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 678,
+          "sourceKey": "hmda:678",
           "villageName": "Gowdavelli",
           "mandalName": "Medchal",
           "districtName": "Medchal_Malkajgiri",
@@ -1577,13 +2447,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 347,
+          "sourceKey": "hmda:347",
           "villageName": "Nednur",
           "mandalName": "Kandukur",
           "districtName": "Rangareddy",
@@ -1620,13 +2495,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 698,
+          "sourceKey": "hmda:698",
           "villageName": "Bandalguda",
           "mandalName": "Ramachandrapuram",
           "districtName": "Sangareddy",
@@ -1663,13 +2543,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 1,
+          "sourceKey": "hmda:1",
           "villageName": "Kondannaguda",
           "mandalName": "Farooqnagar",
           "districtName": "Rangareddy",
@@ -1706,13 +2591,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 728,
+          "sourceKey": "hmda:728",
           "villageName": "Ibrahimpatnam(Khalsa)",
           "mandalName": "Ibrahimpatnam",
           "districtName": "Rangareddy",
@@ -1749,13 +2639,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 714,
+          "sourceKey": "hmda:714",
           "villageName": "PeddaAmberpet",
           "mandalName": "Abdullapurmet",
           "districtName": "Rangareddy",
@@ -1792,13 +2687,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 351,
+          "sourceKey": "hmda:351",
           "villageName": "Rachloor",
           "mandalName": "Kandukur",
           "districtName": "Rangareddy",
@@ -1835,13 +2735,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 443,
+          "sourceKey": "hmda:443",
           "villageName": "Bahadurpally",
           "mandalName": "Dundigal_Gandimaisamma",
           "districtName": "Medchal_Malkajgiri",
@@ -1878,13 +2783,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 892,
+          "sourceKey": "hmda:892",
           "villageName": "Malkapur",
           "mandalName": "Choutuppal",
           "districtName": "Yadadri Bhuvanagiri",
@@ -1921,13 +2831,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 728,
+          "sourceKey": "hmda:728",
           "villageName": "Ibrahimpatnam(Khalsa)",
           "mandalName": "Ibrahimpatnam",
           "districtName": "Rangareddy",
@@ -1964,13 +2879,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 657,
+          "sourceKey": "hmda:657",
           "villageName": "Naganpally",
           "mandalName": "Ibrahimpatnam",
           "districtName": "Rangareddy",
@@ -2007,13 +2927,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 207,
+          "sourceKey": "hmda:207",
           "villageName": "Gangaipally",
           "mandalName": "Shivampet",
           "districtName": "Medak",
@@ -2050,13 +2975,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 365,
+          "sourceKey": "hmda:365",
           "villageName": "Ghatpalle",
           "mandalName": "Maheswaram",
           "districtName": "Rangareddy",
@@ -2093,13 +3023,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 18,
+          "sourceKey": "hmda:18",
           "villageName": "Nandigama",
           "mandalName": "Nandigama",
           "districtName": "Rangareddy",
@@ -2136,13 +3071,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 2,
+          "sourceKey": "hmda:2",
           "villageName": "Mogalagidda",
           "mandalName": "Farooqnagar",
           "districtName": "Rangareddy",
@@ -2179,13 +3119,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 75,
+          "sourceKey": "hmda:75",
           "villageName": "Lakdaram",
           "mandalName": "Patancheruvu",
           "districtName": "Sangareddy",
@@ -2222,13 +3167,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 155,
+          "sourceKey": "hmda:155",
           "villageName": "Nallavally",
           "mandalName": "Gummadidala",
           "districtName": "Sangareddy",
@@ -2265,13 +3215,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 906,
+          "sourceKey": "hmda:906",
           "villageName": "Nelapatla",
           "mandalName": "Choutuppal",
           "districtName": "Yadadri Bhuvanagiri",
@@ -2308,13 +3263,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 870,
+          "sourceKey": "hmda:870",
           "villageName": "JagatthPalle",
           "mandalName": "B.Pochampally",
           "districtName": "Yadadri Bhuvanagiri",
@@ -2351,13 +3311,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 653,
+          "sourceKey": "hmda:653",
           "villageName": "Kappapahad",
           "mandalName": "Ibrahimpatnam",
           "districtName": "Rangareddy",
@@ -2394,13 +3359,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 281,
+          "sourceKey": "hmda:281",
           "villageName": "Tunkikhalsa",
           "mandalName": "Wargal",
           "districtName": "Siddipet",
@@ -2437,13 +3407,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 691,
+          "sourceKey": "hmda:691",
           "villageName": "Ravalkole",
           "mandalName": "Medchal",
           "districtName": "Medchal_Malkajgiri",
@@ -2480,13 +3455,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 880,
+          "sourceKey": "hmda:880",
           "villageName": "Kesaram",
           "mandalName": "Bhongiri",
           "districtName": "Yadadri Bhuvanagiri",
@@ -2523,13 +3503,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 728,
+          "sourceKey": "hmda:728",
           "villageName": "Ibrahimpatnam(Khalsa)",
           "mandalName": "Ibrahimpatnam",
           "districtName": "Rangareddy",
@@ -2566,13 +3551,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 673,
+          "sourceKey": "hmda:673",
           "villageName": "Bandamadaram",
           "mandalName": "Medchal",
           "districtName": "Medchal_Malkajgiri",
@@ -2609,13 +3599,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 481,
+          "sourceKey": "hmda:481",
           "villageName": "Ananthawaram",
           "mandalName": "Shabad",
           "districtName": "Rangareddy",
@@ -2652,13 +3647,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 743,
+          "sourceKey": "hmda:743",
           "villageName": "KPHBColony-0117",
           "mandalName": "Kukatpally",
           "districtName": "Medchal_Malkajgiri",
@@ -2695,13 +3695,18 @@
           "kind": "official_boundary_lookup",
           "name": "HMDA ORR GHMC Village Boundary",
           "url": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
-          "retrievedAt": "2026-06-26",
+          "retrievedAt": "2026-06-27",
           "license": "public ArcGIS REST service"
         }
       ],
       "officialMatches": [
         {
           "source": "TGRAC",
+          "sourceLayer": "HMDA ORR GHMC Village Boundary",
+          "sourceUrl": "https://tgrac.telangana.gov.in/arcgis/rest/services/TIS_Folder/HMDA_ORR_GHMC_Water_Bodies/MapServer/9",
+          "sourceIdField": "FID",
+          "sourceId": 28,
+          "sourceKey": "hmda:28",
           "villageName": "ChillaSagar",
           "mandalName": "Mulug",
           "districtName": "Siddipet",
