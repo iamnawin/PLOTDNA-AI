@@ -419,6 +419,18 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 - Hyderabad pending scoring evidence as of 2026-06-27: all 75 context cells have official TGRAC/admin boundary matches; 41 have verified Telangana Registration price-band rows; 2 have verified HMDA Regional Ring Road Annexure B infrastructure rows. Promotion remains blocked for all 75 until RERA, satellite growth, employment, government-scheme, and any missing price/infrastructure evidence are verified per exact area.
 - Frontend smoke tests: 27 `test:*` scripts under `frontend/scripts/` (Node.js, no test runner required).
 - Active deployment branch: `main`
+- Deployment note: commit `5983c1e` was pushed to `origin/main` and GitHub/Vercel recorded a successful generated deployment, but the public alias `https://plotdna-ai.vercel.app` did not update. Treat this as a Vercel project/domain/alias mismatch, not a code-build success signal, and push the next verified batch together only after the public alias is confirmed to contain the latest frontend bundle markers.
+
+### Hyderabad Land Identity Phase 0 guardrails
+- This is an additive product layer. Before implementing, audit the current PlotDNA scoring logic, routes, map components, polygon rendering, search behavior, and data models.
+- Phase 0 foundation is documented in `docs/land-identity-phase-0.md`. It adds feature flags, optional land-identity models, isolated stubs, and standalone UI scaffolds only; the new panels are intentionally not wired into `Home.tsx` or `MapView.tsx` yet.
+- Do not rewrite or break existing PlotDNA scoring formulas, score labels, polygon rendering, green market polygons, Locate Me red-dot behavior, area search behavior, UI routes/pages, static polygon data, filters/toggles, carousel/cards/AreaDetail UI, infrastructure/market scoring, build/deployment setup, TypeScript shapes, or API/service contracts.
+- Preserve existing data shapes and extend them with optional fields only. Never rename/remove fields that existing scores, cards, routes, or polygons depend on.
+- Add new work behind feature flags where possible: `enableLandIdentityFlow`, `enableSurveyResolver`, `enableTrustSignals`, `enableMicroZoneMatching`, and `enableLocationIntelligencePanel`.
+- New trust/survey/location intelligence fields must not affect existing PlotDNA score unless explicitly connected in a later verified scoring task.
+- Prefer new isolated modules/components over direct core rewrites: `services/locationResolver.ts`, `services/polygonMatcher.ts`, `services/surveyResolver.ts`, `services/trustSignals.ts`, `components/location/LocationIntelligencePanel.tsx`, `components/survey/SurveyResolverPanel.tsx`, and `components/trust/LandTrustCards.tsx`.
+- Map behavior protection: Locate Me keeps showing the existing red dot, area search keeps working, polygons and controls keep rendering, and the new Location Intelligence panel opens in addition to existing behavior, not instead of it.
+- Survey and legal-trust language must stay conservative: never claim survey number, HMDA/DTCP/TG-bPASS approval, clear title, or ownership verification unless supported by official/cadastral/user-provided evidence.
 
 ---
 
