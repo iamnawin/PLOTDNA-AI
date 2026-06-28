@@ -61,22 +61,31 @@ def main() -> None:
     manifest = load_json(CITY_DIR / "coverage-manifest.json")
     aliases = load_json(CITY_DIR / "aliases.json")
     catalog = load_json(CATALOG_PATH)["areas"]
+    pending_sources = load_json(CITY_DIR / "pending-context-sources.json")
+    pending_readiness = load_json(CITY_DIR / "pending-scoring-readiness.json")
+    pending_inventory = load_json(CITY_DIR / "pending-signal-inventory.json")
 
     boundary_ring = boundary["features"][0]["geometry"]["coordinates"][0]
     boundary_area = area_km2(boundary_ring)
-    cell_rings = [feature["geometry"]["coordinates"][0] for feature in coverage["features"]]
+    coverage_features = coverage["features"]
+    context_features = [
+        feature
+        for feature in coverage_features
+        if feature["properties"].get("contextOnly")
+    ]
+    cell_rings = [feature["geometry"]["coordinates"][0] for feature in coverage_features]
     cell_area = sum(area_km2(ring) for ring in cell_rings)
     coverage_ratio = cell_area / boundary_area
 
     if coverage_ratio < 0.995 or coverage_ratio > 1.001:
         fail(f"area coverage ratio {coverage_ratio:.6f} is outside [0.995, 1.001]")
 
-    slugs = [feature["properties"]["slug"] for feature in coverage["features"]]
+    slugs = [feature["properties"]["slug"] for feature in coverage_features]
     if len(slugs) != len(set(slugs)):
         fail("selectable polygon slugs are not unique")
     market_slugs = {
         feature["properties"]["slug"]
-        for feature in coverage["features"]
+        for feature in coverage_features
         if not feature["properties"].get("contextOnly")
     }
     missing_aliases = sorted(market_slugs - set(aliases))
@@ -89,7 +98,7 @@ def main() -> None:
 
     missing_area = [
         feature["properties"]["slug"]
-        for feature in coverage["features"]
+        for feature in coverage_features
         if "areaKm2" not in feature["properties"]
     ]
     if missing_area:
@@ -98,7 +107,7 @@ def main() -> None:
     oversized_context = sorted(
         (
             (feature["properties"]["areaKm2"], feature["properties"]["slug"])
-            for feature in coverage["features"]
+            for feature in coverage_features
             if feature["properties"].get("contextOnly")
             and feature["properties"]["areaKm2"] > 250
         ),
@@ -109,6 +118,68 @@ def main() -> None:
             "context cells over 250 km2: "
             + ", ".join(f"{slug}={area:.1f}" for area, slug in oversized_context[:10])
         )
+
+    context_slugs = {feature["properties"]["slug"] for feature in context_features}
+    source_by_slug = {audit["slug"]: audit for audit in pending_sources.get("sourceAudits", [])}
+    readiness_by_slug = {audit["slug"]: audit for audit in pending_readiness.get("areaAudits", [])}
+    inventory_by_slug = {audit["slug"]: audit for audit in pending_inventory.get("areaInventories", [])}
+
+    for label, rows_by_slug in (
+        ("source audit", source_by_slug),
+        ("scoring-readiness audit", readiness_by_slug),
+        ("signal inventory", inventory_by_slug),
+    ):
+        missing_rows = sorted(context_slugs - set(rows_by_slug))
+        extra_rows = sorted(set(rows_by_slug) - context_slugs)
+        if missing_rows:
+            fail(f"context cells missing pending {label} rows: {', '.join(missing_rows[:10])}")
+        if extra_rows:
+            fail(f"pending {label} rows without context cells: {', '.join(extra_rows[:10])}")
+
+    official_matched = [
+        audit
+        for audit in source_by_slug.values()
+        if audit.get("status") in {"tgrac_village_matched", "tgrac_statewide_village_matched"}
+        and audit.get("officialMatches")
+    ]
+    if len(official_matched) != len(context_slugs):
+        fail("not every context cell has an official TGRAC/admin match")
+
+    required_signals = set(pending_inventory.get("requiredSignals", []))
+    if not required_signals:
+        fail("pending signal inventory is missing requiredSignals")
+
+    missing_inventory_signals = [
+        slug
+        for slug, inventory in inventory_by_slug.items()
+        if set((inventory.get("signals") or {}).keys()) != required_signals
+    ]
+    if missing_inventory_signals:
+        fail(f"pending signal inventories missing required signal rows: {', '.join(sorted(missing_inventory_signals)[:10])}")
+
+    promotion_ready = [
+        audit
+        for audit in readiness_by_slug.values()
+        if audit.get("promotionReady")
+    ]
+    inventory_ready = [
+        inventory
+        for inventory in inventory_by_slug.values()
+        if inventory.get("signalDeckReady")
+    ]
+    if promotion_ready or inventory_ready:
+        fail("pending context cells must remain unpromoted until every score signal is verified")
+
+    verified_price_count = sum(
+        1
+        for inventory in inventory_by_slug.values()
+        if (inventory.get("signals") or {}).get("price_band", {}).get("status") == "verified"
+    )
+    verified_infrastructure_count = sum(
+        1
+        for inventory in inventory_by_slug.values()
+        if (inventory.get("signals") or {}).get("infrastructure", {}).get("status") == "verified"
+    )
 
     projected_boundary = [project(lng, lat) for lng, lat in boundary_ring]
     projected_cells = [[project(lng, lat) for lng, lat in ring] for ring in cell_rings]
@@ -149,9 +220,17 @@ def main() -> None:
         "overlapSampleCount": 0,
         "missingAliasCount": 0,
         "missingCatalogCount": 0,
+        "pendingContextCellCount": len(context_slugs),
+        "pendingOfficialMatchCount": len(official_matched),
+        "pendingScoringReadinessCount": len(readiness_by_slug),
+        "pendingSignalInventoryCount": len(inventory_by_slug),
+        "pendingPromotionReadyCount": len(promotion_ready),
+        "pendingSignalDeckReadyCount": len(inventory_ready),
+        "pendingVerifiedPriceSignalCount": verified_price_count,
+        "pendingVerifiedInfrastructureSignalCount": verified_infrastructure_count,
         "maxContextAreaKm2": max(
             feature["properties"]["areaKm2"]
-            for feature in coverage["features"]
+            for feature in coverage_features
             if feature["properties"].get("contextOnly")
         ),
     }
