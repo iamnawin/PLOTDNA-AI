@@ -7,6 +7,7 @@ const api = fs.readFileSync(path.join(root, 'src', 'lib', 'api.ts'), 'utf8')
 const home = fs.readFileSync(path.join(root, 'src', 'pages', 'Home.tsx'), 'utf8')
 const contracts = fs.readFileSync(path.join(root, 'src', 'lib', 'location', 'contracts.ts'), 'utf8')
 const resolver = fs.readFileSync(path.join(root, 'src', 'lib', 'location', 'resolver.ts'), 'utf8')
+const classifier = fs.readFileSync(path.join(root, 'src', 'lib', 'location', 'classifier.ts'), 'utf8')
 const plotAnalysis = fs.readFileSync(path.join(root, 'src', 'lib', 'plotAnalysis.ts'), 'utf8')
 
 function assert(condition, message) {
@@ -26,6 +27,16 @@ assert(api.includes("'context_area'"), 'API contract must preserve context-only 
 assert(contracts.includes("'context'"), 'location resolution contract must include non-scored context tier')
 assert(resolver.includes('hyderabadCoverageRaw'), 'frontend resolver must read Hyderabad coverage cells')
 assert(resolver.includes('contextOnly'), 'frontend resolver must preserve context-only cells')
+assert(
+  classifier.indexOf('if (candidates.nearby)') !== -1 &&
+    classifier.indexOf('if (candidates.context)') !== -1 &&
+    classifier.indexOf('if (candidates.nearby)') < classifier.indexOf('if (candidates.context)'),
+  'safe nearby scored markets must not be hidden behind approximate context cells',
+)
+assert(
+  resolver.includes('ctx-kardhanur') || resolver.includes('contextCells'),
+  'frontend resolver must still retain Hyderabad context-cell coverage',
+)
 assert(plotAnalysis.includes('context_area'), 'plot analysis must map context tier to a non-selectable fallback')
 assert(home.includes('searchLocationAddress'), 'map search submit must use backend geocoding when local matches fail')
 assert(home.includes('outside the Hyderabad market coverage'), 'outside-market searches must not silently choose a nearby score')

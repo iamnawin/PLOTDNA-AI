@@ -108,6 +108,19 @@ class LocationSearchRouteTests(unittest.TestCase):
         self.assertEqual(result["resolution"]["boundaryKind"], "place_context_cell")
         self.assertEqual(result["resolution"]["scorePrecision"], "unscored_context")
 
+    def test_coordinate_near_supported_market_is_not_hidden_by_context_cell(self):
+        response = self.client.post("/api/utils/resolve", json={
+            "lat": 17.51524,
+            "lng": 78.29184,
+        })
+
+        self.assertEqual(response.status_code, 200)
+        body = response.json()
+        self.assertEqual(body["tier"], "nearby")
+        self.assertEqual(body["localitySlug"], "beeramguda")
+        self.assertEqual(body["matchedBy"], "radius")
+        self.assertLessEqual(body["distanceKm"], 2.0)
+
     def test_outside_market_address_is_not_substituted_with_nearest_hyderabad_area(self):
         provider_result = {
             "lat": 12.9716,

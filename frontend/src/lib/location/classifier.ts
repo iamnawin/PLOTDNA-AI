@@ -21,6 +21,22 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
     }
   }
 
+  if (candidates.nearby) {
+    return {
+      tier: 'nearby',
+      citySlug: candidates.nearby.citySlug,
+      localitySlug: candidates.nearby.localitySlug,
+      localityName: candidates.nearby.localityName,
+      clusterId: null,
+      districtSlug: null,
+      districtName: null,
+      stateSlug: null,
+      distanceKm: candidates.nearby.distanceKm,
+      matchedBy: 'radius',
+      reason: 'Coordinate is within the safe nearby radius of a supported micro-market.',
+    }
+  }
+
   if (candidates.context) {
     return {
       tier: 'context',
@@ -40,22 +56,6 @@ export function classifyLocalityResolution(candidates: ResolutionCandidates): Lo
       boundaryConfidence: candidates.context.boundaryConfidence,
       scorePrecision: candidates.context.scorePrecision,
       catalogArea: null,
-    }
-  }
-
-  if (candidates.nearby) {
-    return {
-      tier: 'nearby',
-      citySlug: candidates.nearby.citySlug,
-      localitySlug: candidates.nearby.localitySlug,
-      localityName: candidates.nearby.localityName,
-      clusterId: null,
-      districtSlug: null,
-      districtName: null,
-      stateSlug: null,
-      distanceKm: candidates.nearby.distanceKm,
-      matchedBy: 'radius',
-      reason: 'Coordinate is within the safe nearby radius of a supported micro-market.',
     }
   }
 

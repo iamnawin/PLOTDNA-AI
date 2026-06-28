@@ -267,7 +267,38 @@ class LocationResolverStore:
                 "reason": "Coordinate falls inside a supported locality polygon."
             }
 
-        # 3. Context-only coverage cell check.
+        # 3. NEARBY match check (closest locality within safety radius)
+        best_nearby = None
+        best_nearby_dist = float("inf")
+        best_nearby_city = None
+
+        for city_slug, city_data in self.cities.items():
+            localities = city_data["localities"]
+            nearby_radius_km = city_data["meta"].get("nearbyMicroMarketRadiusKm", 5.0)
+
+            for loc in localities:
+                distance = dist_km(lat, lng, loc["center"][0], loc["center"][1])
+                if distance <= nearby_radius_km and distance < best_nearby_dist:
+                    best_nearby_dist = distance
+                    best_nearby = loc
+                    best_nearby_city = city_slug
+
+        if best_nearby:
+            return {
+                "tier": "nearby",
+                "citySlug": best_nearby_city,
+                "localitySlug": best_nearby["slug"],
+                "localityName": best_nearby["name"],
+                "clusterId": None,
+                "districtSlug": None,
+                "districtName": None,
+                "stateSlug": None,
+                "distanceKm": round(best_nearby_dist, 1),
+                "matchedBy": "radius",
+                "reason": "Coordinate is within the safe nearby radius of a supported micro-market."
+            }
+
+        # 4. Context-only coverage cell check.
         # These cells identify outer-belt places without unlocking scored market data.
         best_context = None
         best_context_dist = float("inf")
@@ -300,38 +331,7 @@ class LocationResolverStore:
                 "scorePrecision": best_context.get("scorePrecision"),
             }
 
-        # 4. NEARBY match check (closest locality within safety radius)
-        best_nearby = None
-        best_nearby_dist = float("inf")
-        best_nearby_city = None
-        
-        for city_slug, city_data in self.cities.items():
-            localities = city_data["localities"]
-            nearby_radius_km = city_data["meta"].get("nearbyMicroMarketRadiusKm", 5.0)
-            
-            for loc in localities:
-                distance = dist_km(lat, lng, loc["center"][0], loc["center"][1])
-                if distance <= nearby_radius_km and distance < best_nearby_dist:
-                    best_nearby_dist = distance
-                    best_nearby = loc
-                    best_nearby_city = city_slug
-                    
-        if best_nearby:
-            return {
-                "tier": "nearby",
-                "citySlug": best_nearby_city,
-                "localitySlug": best_nearby["slug"],
-                "localityName": best_nearby["name"],
-                "clusterId": None,
-                "districtSlug": None,
-                "districtName": None,
-                "stateSlug": None,
-                "distanceKm": round(best_nearby_dist, 1),
-                "matchedBy": "radius",
-                "reason": "Coordinate is within the safe nearby radius of a supported micro-market."
-            }
-
-        # 3. CLUSTER match check (broad city catchment)
+        # 5. CLUSTER match check (broad city catchment)
         best_city = None
         best_city_dist = float("inf")
         
