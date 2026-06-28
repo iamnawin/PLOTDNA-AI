@@ -75,7 +75,11 @@ assert(!mapView.includes('LocationIntelligencePanel'), 'Phase 0 must not wire Lo
 assert(mapView.includes('searchCoords &&'), 'existing red searchCoords pin rendering missing')
 
 const home = read('src/pages/Home.tsx')
-assert(!home.includes('createInitialLocationIntelligence'), 'Phase 0 must not alter Home triggerCoordAnalysis flow')
+assert(
+  !home.includes('createInitialLocationIntelligence') ||
+    (home.includes('featureFlags.enableLandIdentityFlow') && home.includes('featureFlags.enableLocationIntelligencePanel')),
+  'Location Intelligence Home wiring must stay behind both feature flags',
+)
 assert(home.includes('function triggerCoordAnalysis'), 'existing triggerCoordAnalysis missing')
 
 console.log('Land Identity Phase 0 checks passed')

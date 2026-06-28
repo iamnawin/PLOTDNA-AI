@@ -12,11 +12,15 @@ import { resolveMapLink, resolveLocation, searchLocationAddress } from '@/lib/ap
 import type { LocalityResolution } from '@/lib/location/contracts'
 import { searchLocalAreas } from '@/lib/location/search'
 import { getCityProductionProfile } from '@/lib/cityProduction'
+import { featureFlags } from '@/lib/features'
+import { createInitialLocationIntelligence } from '@/lib/landIdentity/locationResolver'
+import type { LocationInputType, LocationIntelligence } from '@/lib/landIdentity/types'
 import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
 import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
 import AssistantDock from '@/components/ui/AssistantDock'
 import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
+import LocationIntelligencePanel from '@/components/location/LocationIntelligencePanel'
 import SpatialView from '@/components/view/SpatialView'
 import { type ViewMode } from '@/components/view/ViewModeToggle'
 
@@ -100,6 +104,8 @@ export default function Home() {
   const [areaReportLoading, setAreaReportLoading] = useState(false)
   const [areaReportLoaderRunId, setAreaReportLoaderRunId] = useState(0)
   const [backendResolution, setBackendResolution] = useState<LocalityResolution | null>(null)
+  const [locationIntelligence, setLocationIntelligence] = useState<LocationIntelligence | null>(null)
+  const [showLocationIntelligence, setShowLocationIntelligence] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const cityRailRef = useRef<HTMLDivElement>(null)
   const areaRailRef = useRef<HTMLDivElement>(null)
@@ -253,6 +259,29 @@ export default function Home() {
     setSearchQuery('')
     setSearchFocused(false)
     setSearchError('')
+    maybeOpenLocationIntelligence({
+      inputType: 'area_search',
+      inputValue: area.name,
+    })
+  }
+
+  function maybeOpenLocationIntelligence(input: {
+    inputType: LocationInputType
+    inputValue?: string
+    coords?: [number, number]
+    reverseGeocodedAddress?: string
+  }) {
+    if (!featureFlags.enableLandIdentityFlow || !featureFlags.enableLocationIntelligencePanel) return
+
+    const intelligence = createInitialLocationIntelligence({
+      inputType: input.inputType,
+      inputValue: input.inputValue,
+      lat: input.coords?.[0],
+      lng: input.coords?.[1],
+      reverseGeocodedAddress: input.reverseGeocodedAddress,
+    })
+    setLocationIntelligence(intelligence)
+    setShowLocationIntelligence(true)
   }
 
   function persistMapStateToUrl(coords: [number, number], citySlug = selectedCitySlug) {
@@ -299,7 +328,11 @@ export default function Home() {
     }
   }, [searchCoords, selectedCitySlug])
 
-  function triggerCoordAnalysis(coords: [number, number]) {
+  function triggerCoordAnalysis(coords: [number, number], locationInput?: {
+    inputType?: LocationInputType
+    inputValue?: string
+    reverseGeocodedAddress?: string
+  }) {
     const analysis = findNearestArea(coords[0], coords[1])
     const nextCitySlug = analysis.citySlug ?? selectedCitySlug
     if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
@@ -349,6 +382,12 @@ export default function Home() {
         setIs3D(false)
         setSearchCoords(coords)
         persistMapStateToUrl(coords, nextCitySlug)
+        maybeOpenLocationIntelligence({
+          inputType: locationInput?.inputType ?? 'place_search',
+          inputValue: locationInput?.inputValue,
+          coords,
+          reverseGeocodedAddress: locationInput?.reverseGeocodedAddress,
+        })
       }
     })
   }
@@ -378,11 +417,17 @@ export default function Home() {
   async function handleSearchSubmit() {
     setSearchError('')
     if (parsedCoords) {
-      triggerCoordAnalysis(parsedCoords)
+      triggerCoordAnalysis(parsedCoords, {
+        inputType: 'place_search',
+        inputValue: searchQuery.trim(),
+      })
       return
     }
     if (parsedMapUrl) {
-      triggerCoordAnalysis(parsedMapUrl)
+      triggerCoordAnalysis(parsedMapUrl, {
+        inputType: 'place_search',
+        inputValue: searchQuery.trim(),
+      })
       return
     }
     if (shortMapUrl || backendMapUrl) {
@@ -390,7 +435,10 @@ export default function Home() {
       const result = await resolveMapLink(searchQuery.trim())
       setResolvingUrl(false)
       if (result.coords) {
-        triggerCoordAnalysis(result.coords)
+        triggerCoordAnalysis(result.coords, {
+          inputType: 'place_search',
+          inputValue: searchQuery.trim(),
+        })
         return
       }
       setSearchError(result.detail ?? (
@@ -420,7 +468,11 @@ export default function Home() {
         return
       }
       if (result.resolution) setBackendResolution(result.resolution)
-      triggerCoordAnalysis([result.lat, result.lng])
+      triggerCoordAnalysis([result.lat, result.lng], {
+        inputType: 'place_search',
+        inputValue: searchQuery.trim(),
+        reverseGeocodedAddress: result.displayName,
+      })
     }
   }
 
@@ -439,7 +491,7 @@ export default function Home() {
           position.coords.longitude,
         ]
         setLocating(false)
-        triggerCoordAnalysis(coords)
+        triggerCoordAnalysis(coords, { inputType: 'locate_me' })
       },
       error => {
         setLocating(false)
@@ -480,6 +532,15 @@ export default function Home() {
       />
 
       {/* ── Map fills 100% of screen ── */}
+      {featureFlags.enableLandIdentityFlow &&
+        featureFlags.enableLocationIntelligencePanel && (
+          <LocationIntelligencePanel
+            intelligence={locationIntelligence}
+            open={showLocationIntelligence}
+            onClose={() => setShowLocationIntelligence(false)}
+          />
+        )}
+
       <div className="absolute inset-0 z-0">
         <SpatialView
           mode={viewMode}
@@ -665,7 +726,10 @@ export default function Home() {
                 {/* Coordinate analysis option */}
                 {(parsedCoords || parsedMapUrl) && (
                   <button
-                    onMouseDown={() => triggerCoordAnalysis(parsedCoords ?? parsedMapUrl!)}
+                    onMouseDown={() => triggerCoordAnalysis(parsedCoords ?? parsedMapUrl!, {
+                      inputType: 'place_search',
+                      inputValue: searchQuery.trim(),
+                    })}
                     className="w-full flex items-center gap-3 px-4 py-3.5 text-left hover:bg-white/[0.03] transition-colors"
                     style={{ borderBottom: searchResults.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                   >

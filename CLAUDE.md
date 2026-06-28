@@ -432,6 +432,7 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 - Prefer new isolated modules/components over direct core rewrites: `services/locationResolver.ts`, `services/polygonMatcher.ts`, `services/surveyResolver.ts`, `services/trustSignals.ts`, `components/location/LocationIntelligencePanel.tsx`, `components/survey/SurveyResolverPanel.tsx`, and `components/trust/LandTrustCards.tsx`.
 - Map behavior protection: Locate Me keeps showing the existing red dot, area search keeps working, polygons and controls keep rendering, and the new Location Intelligence panel opens in addition to existing behavior, not instead of it.
 - Survey and legal-trust language must stay conservative: never claim survey number, HMDA/DTCP/TG-bPASS approval, clear title, or ownership verification unless supported by official/cadastral/user-provided evidence.
+- Phase 1A Location Intelligence wiring is intentionally UI-only and flag-gated. `Home.tsx` may create a safe `LocationIntelligence` object after existing Locate Me/search/area-search flows, but only when both `enableLandIdentityFlow` and `enableLocationIntelligencePanel` are true. The flags still default false, no survey resolver/drop-pin/trust scoring is wired, and the panel must keep showing conservative "not checked/not confirmed" defaults.
 
 ---
 
