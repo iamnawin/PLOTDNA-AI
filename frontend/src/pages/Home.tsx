@@ -106,6 +106,8 @@ export default function Home() {
   const [backendResolution, setBackendResolution] = useState<LocalityResolution | null>(null)
   const [locationIntelligence, setLocationIntelligence] = useState<LocationIntelligence | null>(null)
   const [showLocationIntelligence, setShowLocationIntelligence] = useState(false)
+  const [isDropPinMode, setIsDropPinMode] = useState(false)
+  const [dropPinMessage, setDropPinMessage] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
   const cityRailRef = useRef<HTMLDivElement>(null)
   const areaRailRef = useRef<HTMLDivElement>(null)
@@ -262,6 +264,23 @@ export default function Home() {
     maybeOpenLocationIntelligence({
       inputType: 'area_search',
       inputValue: area.name,
+    })
+  }
+
+  function handleDroppedPin(coords: { lat: number; lng: number }) {
+    const droppedCoords: [number, number] = [coords.lat, coords.lng]
+    setViewMode('map')
+    setMapStyleKey('satellite')
+    setIs3D(false)
+    setSelectedArea(null)
+    setSearchCoords(droppedCoords)
+    setIsDropPinMode(false)
+    setDropPinMessage('Pin dropped. Location Intelligence is available for this exact point.')
+    persistMapStateToUrl(droppedCoords)
+    maybeOpenLocationIntelligence({
+      inputType: 'drop_pin',
+      inputValue: 'Dropped pin',
+      coords: droppedCoords,
     })
   }
 
@@ -550,7 +569,9 @@ export default function Home() {
           fallback={coordAnalysis}
           coords={searchCoords}
           globeSidebarExpanded={globeSidebarExpanded}
+          dropPinMode={featureFlags.enableLandIdentityFlow && isDropPinMode}
           onCityClick={handleGlobeMarkerClick}
+          onMapClick={handleDroppedPin}
         />
       </div>
 
@@ -1369,6 +1390,35 @@ export default function Home() {
             )}
           </AnimatePresence>
         </div>
+        {featureFlags.enableLandIdentityFlow && (
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setIsDropPinMode(active => {
+                  const next = !active
+                  setDropPinMessage(next ? 'Click the map to drop an exact land pin.' : '')
+                  return next
+                })
+              }}
+              className="rounded-full border px-3.5 py-2 text-[10px] font-sans font-bold uppercase tracking-[0.12em] transition-all"
+              style={{
+                background: isDropPinMode ? 'rgba(16, 185, 129, 0.18)' : 'rgba(8, 12, 24, 0.72)',
+                borderColor: isDropPinMode ? 'rgba(16, 185, 129, 0.5)' : 'rgba(148, 163, 184, 0.18)',
+                color: isDropPinMode ? '#34d399' : '#cbd5e1',
+                boxShadow: isDropPinMode ? '0 0 18px rgba(16,185,129,0.16)' : '0 10px 24px rgba(0,0,0,0.32)',
+                backdropFilter: 'blur(14px)',
+              }}
+            >
+              {isDropPinMode ? 'Cancel Drop Pin' : 'Drop Pin'}
+            </button>
+            {(isDropPinMode || dropPinMessage) && (
+              <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-2 text-[10px] font-sans font-semibold text-slate-300 backdrop-blur">
+                {isDropPinMode ? 'Click the map to drop an exact land pin.' : dropPinMessage}
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
       {/* ═══════════════════════════════════════════════

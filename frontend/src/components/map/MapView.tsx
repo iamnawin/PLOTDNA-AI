@@ -206,6 +206,10 @@ const MAP_STYLES: Record<MapStyleKey, string | StyleSpecification> = {
 }
 
 interface HoverInfo { x: number; y: number; slug: string }
+interface MapViewProps {
+  dropPinMode?: boolean
+  onMapClick?: (coords: { lat: number; lng: number }) => void
+}
 interface ContextHoverInfo {
   x: number
   y: number
@@ -239,7 +243,7 @@ function closePolygonRing(polygon: [number, number][]): [number, number][] {
   return ring
 }
 
-export default function MapView() {
+export default function MapView({ dropPinMode = false, onMapClick }: MapViewProps = {}) {
   const mapRef      = useRef<MapRef>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const navigate    = useNavigate()
@@ -437,6 +441,10 @@ export default function MapView() {
 
   // ── Event handlers ────────────────────────────────────────────────────────
   const handleClick = useCallback((e: MapLayerMouseEvent) => {
+    if (dropPinMode && onMapClick) {
+      onMapClick({ lat: e.lngLat.lat, lng: e.lngLat.lng })
+      return
+    }
     const feat = e.features?.[0]
     if (!feat) return
     if (feat.layer.id === 'special-use-fill') {
@@ -457,7 +465,7 @@ export default function MapView() {
       setSelectedArea(null)
       showContextHover(feat, e.point)
     }
-  }, [setSelectedArea, areas, showContextHover])
+  }, [dropPinMode, onMapClick, setSelectedArea, areas, showContextHover])
 
   const handleDblClick = useCallback((e: MapLayerMouseEvent) => {
     if (e.features?.[0]?.layer.id === 'special-use-fill') return
@@ -529,7 +537,7 @@ export default function MapView() {
         onMouseLeave={handleMouseLeave}
         onError={(event) => console.error('[maplibre]', event.error)}
         interactiveLayerIds={['special-use-fill', 'area-fill']}
-        cursor={hoveredSlug || specialUseHover || contextHover ? 'pointer' : 'grab'}
+        cursor={dropPinMode ? 'crosshair' : hoveredSlug || specialUseHover || contextHover ? 'pointer' : 'grab'}
         doubleClickZoom={false}
       >
         {/* ── Area polygons ── */}

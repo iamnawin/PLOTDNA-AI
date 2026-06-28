@@ -12,6 +12,7 @@
     "test:hyderabad-location-search": "node scripts/check-hyderabad-location-search.mjs",
     "test:land-identity-phase-0": "node scripts/check-land-identity-phase-0.mjs",
     "test:land-identity-phase-1a": "node scripts/check-land-identity-phase-1a.mjs",
+    "test:land-identity-phase-1b": "node scripts/check-land-identity-phase-1b.mjs",
     "test:landing-rollout-copy": "node scripts/check-landing-rollout-copy.mjs",
     "test:area-report-loader": "node scripts/check-area-report-loader.mjs",
     "test:dna-preloader-timing": "node scripts/check-dna-preloader-timing.mjs",

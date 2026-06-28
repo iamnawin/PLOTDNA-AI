@@ -11,10 +11,23 @@ interface Props {
   fallback: LocalityFallbackResult | null
   coords: [number, number] | null
   globeSidebarExpanded?: boolean
+  dropPinMode?: boolean
   onCityClick?: (slug: string, center: [number, number]) => void
+  onMapClick?: (coords: { lat: number; lng: number }) => void
 }
 
-export default function SpatialView({ mode, citySlug, cityName, cityCenter, fallback, coords, globeSidebarExpanded = false, onCityClick }: Props) {
+export default function SpatialView({
+  mode,
+  citySlug,
+  cityName,
+  cityCenter,
+  fallback,
+  coords,
+  globeSidebarExpanded = false,
+  dropPinMode = false,
+  onCityClick,
+  onMapClick,
+}: Props) {
   if (mode === 'globe') {
     return (
       <GlobeView
@@ -29,5 +42,5 @@ export default function SpatialView({ mode, citySlug, cityName, cityCenter, fall
     )
   }
 
-  return <MapView />
+  return <MapView dropPinMode={dropPinMode} onMapClick={onMapClick} />
 }

@@ -433,6 +433,7 @@ Place `.env` at the project root (`PlotDNA/.env`). Backend config reads `../env`
 - Map behavior protection: Locate Me keeps showing the existing red dot, area search keeps working, polygons and controls keep rendering, and the new Location Intelligence panel opens in addition to existing behavior, not instead of it.
 - Survey and legal-trust language must stay conservative: never claim survey number, HMDA/DTCP/TG-bPASS approval, clear title, or ownership verification unless supported by official/cadastral/user-provided evidence.
 - Phase 1A Location Intelligence wiring is intentionally UI-only and flag-gated. `Home.tsx` may create a safe `LocationIntelligence` object after existing Locate Me/search/area-search flows, but only when both `enableLandIdentityFlow` and `enableLocationIntelligencePanel` are true. The flags still default false, no survey resolver/drop-pin/trust scoring is wired, and the panel must keep showing conservative "not checked/not confirmed" defaults.
+- Phase 1B Drop Pin mode is intentionally user-initiated and flag-gated. The Drop Pin control appears only when `enableLandIdentityFlow` is true, uses the existing `searchCoords` red-pin path, passes optional click props through `SpatialView` to `MapView`, and may open Location Intelligence only when both Location Intelligence flags are true. It must not alter polygon rendering, scoring, Hyderabad validation, or survey/approval/title claims.
 
 ---
 
