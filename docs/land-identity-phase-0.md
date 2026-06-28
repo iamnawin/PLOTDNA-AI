@@ -33,16 +33,20 @@ Phase 0 adds safe foundations for the future Hyderabad Land Identity, Location I
 ## Feature Flags
 
 ```ts
+const fromEnv = (key: string): boolean => {
+  return import.meta.env[key] === "true"
+}
+
 export const featureFlags = {
-  enableLandIdentityFlow: false,
-  enableLocationIntelligencePanel: false,
-  enableSurveyResolver: false,
-  enableTrustSignals: false,
-  enableMicroZoneMatching: false,
+  enableLandIdentityFlow: fromEnv("VITE_ENABLE_LAND_IDENTITY_FLOW"),
+  enableLocationIntelligencePanel: fromEnv("VITE_ENABLE_LOCATION_INTELLIGENCE_PANEL"),
+  enableSurveyResolver: fromEnv("VITE_ENABLE_SURVEY_RESOLVER"),
+  enableTrustSignals: fromEnv("VITE_ENABLE_TRUST_SIGNALS"),
+  enableMicroZoneMatching: fromEnv("VITE_ENABLE_MICRO_ZONE_MATCHING"),
 } as const
 ```
 
-All Phase 0 UI is currently standalone and unwired. When future wiring is added, it must be guarded by these flags so production behavior remains unchanged while flags are false.
+All Phase 0 UI is currently standalone and unwired. Phase 1C allows explicit local/dev/demo overrides through Vite environment variables, but production behavior remains unchanged while variables are absent or not exactly `true`. See `docs/land-identity-feature-flags.md`.
 
 ## Scoring Protection
 

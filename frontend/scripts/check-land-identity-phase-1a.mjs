@@ -52,7 +52,14 @@ assert(scoring.includes('infrastructure: 25'), 'existing frontend scoring weight
 assert(scoring.includes('export function computeDNAScore'), 'existing frontend score function changed or missing')
 
 const features = read('src/lib/features.ts')
-assert(/enableLandIdentityFlow:\s*false/.test(features), 'enableLandIdentityFlow must default false')
-assert(/enableLocationIntelligencePanel:\s*false/.test(features), 'enableLocationIntelligencePanel must default false')
+assert(
+  features.includes('enableLandIdentityFlow: fromEnv("VITE_ENABLE_LAND_IDENTITY_FLOW")'),
+  'enableLandIdentityFlow must remain explicitly env-gated',
+)
+assert(
+  features.includes('enableLocationIntelligencePanel: fromEnv("VITE_ENABLE_LOCATION_INTELLIGENCE_PANEL")'),
+  'enableLocationIntelligencePanel must remain explicitly env-gated',
+)
+assert(features.includes('import.meta.env[key] === "true"'), 'feature flags must default false unless env is exactly "true"')
 
 console.log('Land Identity Phase 1A checks passed')

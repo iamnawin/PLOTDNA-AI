@@ -21,8 +21,15 @@ const locationResolver = read('src/lib/landIdentity/locationResolver.ts')
 const types = read('src/lib/landIdentity/types.ts')
 const features = read('src/lib/features.ts')
 
-assert(/enableLandIdentityFlow:\s*false/.test(features), 'enableLandIdentityFlow must default false')
-assert(/enableLocationIntelligencePanel:\s*false/.test(features), 'enableLocationIntelligencePanel must default false')
+assert(
+  features.includes('enableLandIdentityFlow: fromEnv("VITE_ENABLE_LAND_IDENTITY_FLOW")'),
+  'enableLandIdentityFlow must remain explicitly env-gated',
+)
+assert(
+  features.includes('enableLocationIntelligencePanel: fromEnv("VITE_ENABLE_LOCATION_INTELLIGENCE_PANEL")'),
+  'enableLocationIntelligencePanel must remain explicitly env-gated',
+)
+assert(features.includes('import.meta.env[key] === "true"'), 'feature flags must default false unless env is exactly "true"')
 assert(types.includes("| 'drop_pin'"), 'LocationInputType must support drop_pin')
 
 for (const token of [

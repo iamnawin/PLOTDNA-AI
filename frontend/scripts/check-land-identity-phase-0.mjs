@@ -14,16 +14,18 @@ function assert(condition, message) {
 }
 
 const features = read('src/lib/features.ts')
-for (const flag of [
-  'enableLandIdentityFlow',
-  'enableLocationIntelligencePanel',
-  'enableSurveyResolver',
-  'enableTrustSignals',
-  'enableMicroZoneMatching',
-]) {
+const envMapping = {
+  enableLandIdentityFlow: 'VITE_ENABLE_LAND_IDENTITY_FLOW',
+  enableLocationIntelligencePanel: 'VITE_ENABLE_LOCATION_INTELLIGENCE_PANEL',
+  enableSurveyResolver: 'VITE_ENABLE_SURVEY_RESOLVER',
+  enableTrustSignals: 'VITE_ENABLE_TRUST_SIGNALS',
+  enableMicroZoneMatching: 'VITE_ENABLE_MICRO_ZONE_MATCHING',
+}
+assert(features.includes('import.meta.env[key] === "true"'), 'feature flags must default false unless env is exactly "true"')
+for (const [flag, envKey] of Object.entries(envMapping)) {
   assert(
-    new RegExp(`${flag}:\\s*false`).test(features),
-    `${flag} must exist and default to false`,
+    features.includes(`${flag}: fromEnv("${envKey}")`),
+    `${flag} must exist and read ${envKey}`,
   )
 }
 
