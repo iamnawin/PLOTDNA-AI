@@ -72,6 +72,10 @@ Earlier phase guards also passed during the phase work:
 
 ## Left / Not Started
 
+Use the Phase 3 live QA checklist before marking public/mobile/payment validation complete:
+
+- `docs/phase-3-live-qa-checklist.md`
+
 ### Phase 3A Remaining
 
 - Replace static/configured forecast payloads only after real data exists.

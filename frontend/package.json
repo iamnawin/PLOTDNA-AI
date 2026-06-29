@@ -16,6 +16,7 @@
     "test:land-dna-card-share-qa": "node scripts/check-land-dna-card-share-qa.mjs",
     "test:founder-pass-phase-3c": "node scripts/check-founder-pass-phase-3c.mjs",
     "test:founder-pass-entitlement-qa": "node scripts/check-founder-pass-entitlement-qa.mjs",
+    "test:phase-3-live-qa-readiness": "node scripts/check-phase-3-live-qa-readiness.mjs",
     "test:land-identity-phase-0": "node scripts/check-land-identity-phase-0.mjs",
     "test:land-identity-phase-1a": "node scripts/check-land-identity-phase-1a.mjs",
     "test:land-identity-phase-1b": "node scripts/check-land-identity-phase-1b.mjs",

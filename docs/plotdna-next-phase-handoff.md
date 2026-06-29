@@ -36,6 +36,10 @@ Phase 3 initial feature work changed:
 - `frontend/src/lib/landDnaPlanConfig.ts`
 - related feature-flag, route, and guard scripts
 
+Phase 3 live QA checklist:
+
+- `docs/phase-3-live-qa-checklist.md`
+
 Latest validated state:
 
 - `pnpm run test:land-identity-phase-0`
