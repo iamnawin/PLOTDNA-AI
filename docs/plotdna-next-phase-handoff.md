@@ -10,29 +10,76 @@ This doc is the working handoff for the next agent/model. It stores product requ
 - Phase 1B Drop Pin mode complete.
 - Phase 1C env-based feature flags complete.
 - Phase 2A Survey Resolver UI wired behind feature flags.
+- Phase 2B Hyderabad red-dot resolver regression audit complete.
+- Phase 3A Growth Forecast card initial reusable layer complete behind feature flag.
+- Phase 3B Land DNA Card preview/share route initial version complete behind feature flag.
+- Phase 3C Founder Pass gating initial version complete behind feature flag.
 
-Phase 2A changed:
+Latest Phase 2A/2B resolver polish changed:
 
 - `frontend/src/pages/Home.tsx`
 - `frontend/src/components/location/LocationIntelligencePanel.tsx`
 - `frontend/src/components/survey/SurveyResolverPanel.tsx`
 - `frontend/src/lib/landIdentity/surveyResolver.ts`
+- `frontend/scripts/audit-hyderabad-red-dot-resolution.mjs`
+- `frontend/scripts/check-survey-resolver-validation.mjs`
+- `frontend/scripts/check-land-identity-phase-1b.mjs`
 - `frontend/scripts/check-land-identity-phase-2a.mjs`
 - `frontend/package.json`
 
-Phase 2A validation passed:
+Phase 3 initial feature work changed:
+
+- `frontend/src/components/forecast/GrowthForecastCard.tsx`
+- `frontend/src/pages/LandDNACardPage.tsx`
+- `frontend/src/lib/forecast/growthForecasts.ts`
+- `frontend/src/lib/landDnaCard.ts`
+- `frontend/src/lib/landDnaPlanConfig.ts`
+- related feature-flag, route, and guard scripts
+
+Latest validated state:
 
 - `pnpm run test:land-identity-phase-0`
 - `pnpm run test:land-identity-phase-1a`
 - `pnpm run test:land-identity-phase-1b`
 - `pnpm run test:land-identity-phase-1c`
 - `pnpm run test:land-identity-phase-2a`
+- `pnpm run test:survey-resolver-validation`
+- `pnpm run test:hyderabad-red-dot-resolution`
+- `pnpm run test:growth-forecast-phase-3a`
+- `pnpm run test:land-dna-card-phase-3b`
+- `pnpm run test:founder-pass-phase-3c`
+- `pnpm run test:map-navigation-state`
 - `pnpm run test:hyderabad-production`
 - `pnpm run test:hyderabad-location-search`
 - `pnpm run lint`
 - `pnpm run build`
 - `python scripts\validate_hyderabad_coverage.py`
 - `git diff --check`
+
+Latest pushed commits:
+
+- `43af7ab` - Simplify mobile survey resolver
+- `8af5570` - Tighten survey resolver validation
+
+Current product behavior:
+
+- Landing `Open Map` clears stale coordinate state and opens the map directly.
+- Drop Pin is shown as `Pin Land`; it uses the existing red-pin path.
+- Location Intelligence and Survey Resolver no longer stack over each other.
+- Survey Resolver is simplified to one selected detail type and one input.
+- Survey Resolver marks captured clues as manual verification required only.
+- Survey Resolver rejects obvious mismatches such as `Survey number` + `PB-773820`.
+- `Khata / passbook number` accepts values such as `PB-773820`.
+
+Still not built:
+
+- Official cadastral/survey-record confirmation.
+- Backend persistence for user-captured land clues.
+- Document upload/extraction.
+- Legal/title/ownership verification.
+- TimesFM forecast pipeline.
+- Historical price observation store and forecast backtesting.
+- Full mobile map redesign beyond targeted congestion fixes.
 
 ## Non-Negotiable Product Safety
 
@@ -65,6 +112,8 @@ Example user journey:
 User finds land -> PlotDNA pins it -> user opens Survey Resolver -> PlotDNA captures what they know -> marks verification required.
 
 ## Phase 2B: Hyderabad Red-Dot Resolver Regression Audit
+
+Status: complete. Keep this section as the acceptance contract for future resolver regressions.
 
 Goal: audit all red-dot/problem areas from the Hyderabad screenshot before changing polygons or data.
 The audit must respect the earlier Hyderabad coverage rule: coverage completion means resolving useful market/locality intelligence, not generating circular/radial/ring geometry.
@@ -140,6 +189,8 @@ Acceptance criteria:
 
 ## Phase 3A: Growth Forecast Card
 
+Status: initial implementation complete behind `VITE_ENABLE_GROWTH_FORECAST_CARD`. Remaining work is product QA, mobile placement review, and data-backed forecast sourcing.
+
 Goal: add a separate, reusable Growth Forecast card below Location Intelligence / PlotDNA Score and later inside Land DNA Card.
 
 Do not merge this into the main PlotDNA Score.
@@ -204,6 +255,8 @@ TimesFM note:
 
 ## Phase 3B: Land DNA Card Preview / Share URL
 
+Status: initial implementation complete behind `VITE_ENABLE_LAND_DNA_CARD`. Remaining work is share-card polish, public preview QA, and mobile/share screenshot testing.
+
 Goal: lightweight shareable Land DNA Card, not a social platform.
 
 Card content:
@@ -248,6 +301,8 @@ Initial share behavior:
 - Fallback to copy link.
 
 ## Phase 3C: Founder Pass Gating
+
+Status: initial implementation complete behind `VITE_ENABLE_FOUNDER_PASS_GATING`. Remaining work is live payment entitlement QA and production payment edge-case verification.
 
 Goal: reuse the existing Rs 99 lifetime access/payment direction instead of creating a parallel payment product.
 
@@ -300,6 +355,8 @@ Payment rule:
 - Keep payment status explicit: `unpaid`, `paid`, `failed`, `refunded`.
 
 ## Phase 4: Forecast Intelligence With TimesFM
+
+Status: not started. Do not start until clean historical price/time-series data exists.
 
 Goal: evaluate TimesFM for forecast intelligence after the data foundation exists.
 
