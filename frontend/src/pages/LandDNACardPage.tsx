@@ -2,6 +2,8 @@ import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import LandDNACard from '@/components/landDna/LandDNACard'
 import { featureFlags } from '@/lib/features'
+import { getCachedEntitlements } from '@/lib/entitlements'
+import { getLandDnaAccessState } from '@/lib/founderPass/landDnaPlan'
 import { CITIES } from '@/data/cities'
 
 function findAreaBySlug(slug: string | undefined) {
@@ -27,6 +29,9 @@ export default function LandDNACardPage() {
   }
 
   const { area, cityName } = match
+  const accessState = featureFlags.enableFounderPassGating
+    ? getLandDnaAccessState(getCachedEntitlements())
+    : null
 
   async function handleShare() {
     const url = window.location.href
@@ -40,7 +45,7 @@ export default function LandDNACardPage() {
 
   return (
     <main className="min-h-[100dvh] bg-[#050914] px-4 py-6">
-      <LandDNACard area={area} cityName={cityName} onShare={handleShare} />
+      <LandDNACard area={area} cityName={cityName} accessState={accessState} onShare={handleShare} />
       {copied && <p className="mt-3 text-center text-xs text-emerald-300">Share link copied.</p>}
     </main>
   )

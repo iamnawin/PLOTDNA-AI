@@ -35,7 +35,7 @@ assert(card.includes('PlotDNA provides location intelligence signals, not legal/
 assert(card.includes('Unlock Founder Pass - Rs 99 Lifetime Early Access'), 'card must include Founder Pass CTA copy')
 assert(scoreCard.includes('featureFlags.enableLandDnaCard') && scoreCard.includes('Share Land DNA Card'), 'ScoreCard must expose gated share entry')
 assert(plotAnalysisCard.includes('featureFlags.enableLandDnaCard') && plotAnalysisCard.includes('Share Land DNA Card'), 'PlotAnalysisCard must expose gated share entry')
-assert(!/paymentStatus|paid|refunded|card_limit|watchlist|can_compare/i.test(combined), 'Phase 3B must not implement Founder Pass gating/payment state')
+assert(!/createReportPaymentLink|recoverCustomReportPayment|razorpay/i.test(combined), 'Phase 3B must not create a parallel payment flow')
 assert(!/social feed|comments|likes|followers/i.test(combined), 'Phase 3B must not become a social platform')
 
 console.log('Land DNA Card Phase 3B checks passed')

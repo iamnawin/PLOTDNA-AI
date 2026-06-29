@@ -10,6 +10,7 @@ export const featureFlags = {
   enableMicroZoneMatching: fromEnv("VITE_ENABLE_MICRO_ZONE_MATCHING"),
   enableGrowthForecastCard: fromEnv("VITE_ENABLE_GROWTH_FORECAST_CARD"),
   enableLandDnaCard: fromEnv("VITE_ENABLE_LAND_DNA_CARD"),
+  enableFounderPassGating: fromEnv("VITE_ENABLE_FOUNDER_PASS_GATING"),
 } as const
 
 export type FeatureFlagName = keyof typeof featureFlags

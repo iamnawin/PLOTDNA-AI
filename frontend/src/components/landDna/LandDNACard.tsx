@@ -2,11 +2,13 @@ import { AlertTriangle, ArrowRight, Share2 } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreLabel } from '@/lib/utils'
 import { getGrowthForecastForArea } from '@/lib/forecast/growthForecast'
+import type { LandDnaAccessState } from '@/lib/founderPass/landDnaPlan'
 import GrowthForecastCard from '@/components/forecast/GrowthForecastCard'
 
 interface Props {
   area: MicroMarket
   cityName: string
+  accessState?: LandDnaAccessState | null
   onShare?: () => void
 }
 
@@ -16,7 +18,7 @@ function riskFromScore(score: number) {
   return 'High'
 }
 
-export default function LandDNACard({ area, cityName, onShare }: Props) {
+export default function LandDNACard({ area, cityName, accessState, onShare }: Props) {
   const forecast = getGrowthForecastForArea(area.slug)
   const risk = riskFromScore(area.score)
   const connectivity = area.livability?.connectivity
@@ -78,10 +80,22 @@ export default function LandDNACard({ area, cityName, onShare }: Props) {
         </div>
       </div>
 
+      {accessState && (
+        <div className="mb-4 rounded-xl border border-emerald-400/15 bg-emerald-400/[0.04] p-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-300">
+            Founder Pass
+          </p>
+          <p className="mt-1 text-sm font-bold text-slate-100">{accessState.cta}</p>
+          <p className="mt-1 text-xs text-slate-400">
+            Plan: {accessState.plan} - Card limit: {accessState.cardLimit} - Payment status: {accessState.paymentStatus}
+          </p>
+        </div>
+      )}
+
       <div className="flex items-center justify-between gap-3 border-t border-white/10 pt-4">
         <p className="text-xs font-bold text-slate-400">PlotDNA Land Card</p>
         <a
-          href="/map"
+          href={`/area/${area.slug}`}
           className="inline-flex items-center gap-2 rounded-lg bg-emerald-400 px-3 py-2 text-xs font-bold text-slate-950"
         >
           Unlock Founder Pass - Rs 99 Lifetime Early Access
