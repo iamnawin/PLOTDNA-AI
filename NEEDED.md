@@ -29,6 +29,7 @@ This is the quick handoff for the next model. The detailed source of truth is `d
   - PNG download/export exists as a fallback using the visible card design.
   - Card metrics are availability-filtered so placeholder values like `Not available yet` are not rendered on the shared card.
   - Automated share QA covers real Hyderabad samples: Peerzadiguda, Yapral, Ameenpur, and Beeramguda.
+  - Browser QA covers Area Pass routes in desktop and mobile Vite preview.
   - No QR/barcode added.
 - Phase 3C Founder Pass gating initial version is built behind `VITE_ENABLE_FOUNDER_PASS_GATING`.
 - Phase 3C Founder Pass entitlement QA guard is built:
@@ -55,6 +56,7 @@ This is the quick handoff for the next model. The detailed source of truth is `d
 - `pnpm run test:growth-forecast-phase-3a`
 - `pnpm run test:land-dna-card-phase-3b`
 - `pnpm run test:land-dna-card-share-qa`
+- `pnpm run test:land-dna-card-browser-qa`
 - `pnpm run test:founder-pass-phase-3c`
 - `pnpm run test:founder-pass-entitlement-qa`
 - `pnpm run lint`
@@ -67,6 +69,7 @@ Earlier phase guards also passed during the phase work:
 - `pnpm run test:growth-forecast-phase-3a`
 - `pnpm run test:land-dna-card-phase-3b`
 - `pnpm run test:land-dna-card-share-qa`
+- `pnpm run test:land-dna-card-browser-qa`
 - `pnpm run test:founder-pass-phase-3c`
 - `pnpm run test:founder-pass-entitlement-qa`
 - `uv run --with-requirements requirements.txt python -m unittest tests.test_custom_report_leads tests.test_report_entitlements tests.test_payment_reconciliation`

@@ -88,6 +88,7 @@ Current product behavior:
 - Land DNA Card share uses Web Share API with clipboard fallback, and PNG export/download is available as a secondary fallback.
 - Land DNA Card metrics are availability-filtered so unavailable growth placeholders are hidden instead of rendered.
 - Land DNA Card automated share QA covers Peerzadiguda, Yapral, Ameenpur, and Beeramguda sample cards.
+- Land DNA Card browser QA covers the required Area Pass routes in desktop and mobile Vite preview.
 - Founder Pass card gating reuses cached server entitlements and the existing Area Detail Rs 99 flow; it does not create a separate payment package.
 
 Still not built:
