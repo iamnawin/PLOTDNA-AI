@@ -72,6 +72,7 @@ Current product behavior:
 - `Khata / passbook number` accepts values such as `PB-773820`.
 - Growth Forecast card is compacted for mobile and remains behind `VITE_ENABLE_GROWTH_FORECAST_CARD`.
 - Land DNA Card forecast reuse also respects `VITE_ENABLE_GROWTH_FORECAST_CARD`.
+- Land DNA Card share page now uses an Area Pass visual direction with score, risk, infrastructure, connectivity, development signal, and indicative 5/10-year outlook.
 
 Still not built:
 
@@ -257,7 +258,7 @@ TimesFM note:
 
 ## Phase 3B: Land DNA Card Preview / Share URL
 
-Status: initial implementation complete behind `VITE_ENABLE_LAND_DNA_CARD`. Remaining work is share-card polish, public preview QA, and mobile/share screenshot testing.
+Status: initial implementation complete behind `VITE_ENABLE_LAND_DNA_CARD`; Area Pass redesign applied. Remaining work is public preview QA, mobile/share screenshot testing, and export/download image support if needed later.
 
 Goal: lightweight shareable Land DNA Card, not a social platform.
 

@@ -20,6 +20,11 @@ This is the quick handoff for the next model. The detailed source of truth is `d
   - Confidence, risk level, reason, and disclaimer remain visible.
   - Land DNA Card forecast reuse now also respects `VITE_ENABLE_GROWTH_FORECAST_CARD`.
 - Phase 3B Land DNA Card preview/share URL initial version is built behind `VITE_ENABLE_LAND_DNA_CARD`.
+- Phase 3B Land DNA Card has been redesigned as an Area Pass:
+  - Premium pass-style card instead of a plain report panel.
+  - Shows PlotDNA Score, Risk Level, Infrastructure Readiness, Connectivity Signal, Nearby Development Signal.
+  - Shows 5-Year and 10-Year indicative outlook only from available forecast data; otherwise marks it unavailable.
+  - No QR/barcode added.
 - Phase 3C Founder Pass gating initial version is built behind `VITE_ENABLE_FOUNDER_PASS_GATING`.
 
 ## Latest Pushed Commits
@@ -55,9 +60,9 @@ Earlier phase guards also passed during the phase work:
 
 ### Phase 3B Remaining
 
-- Share card polish.
 - Public preview QA.
 - Mobile/share screenshot testing.
+- Export/download image support if needed later.
 
 ### Phase 3C Remaining
 
