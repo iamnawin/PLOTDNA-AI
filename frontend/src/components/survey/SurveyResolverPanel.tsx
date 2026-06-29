@@ -73,12 +73,13 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
   return (
     <aside
       aria-label="Survey Resolver"
-      className="fixed bottom-4 left-4 z-[1200] max-h-[calc(100dvh-2rem)] w-[min(460px,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-white/10 bg-[#070910]/95 p-5 text-slate-100 shadow-2xl backdrop-blur-xl"
+      className="fixed inset-x-0 bottom-0 z-[1300] max-h-[86dvh] overflow-y-auto rounded-t-2xl border border-white/10 bg-[#070910]/95 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] text-slate-100 shadow-2xl backdrop-blur-xl sm:inset-x-auto sm:bottom-4 sm:left-4 sm:max-h-[calc(100dvh-2rem)] sm:w-[min(460px,calc(100vw-2rem))] sm:rounded-2xl sm:p-5"
     >
-      <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="sticky top-0 z-10 -mx-4 -mt-4 mb-3 flex items-start justify-between gap-3 border-b border-white/10 bg-[#070910]/95 px-4 py-4 backdrop-blur-xl sm:static sm:m-0 sm:mb-4 sm:border-b-0 sm:bg-transparent sm:p-0">
         <div>
           <p className="text-[10px] font-sans font-bold uppercase tracking-[0.18em] text-cyan-300">Survey Resolver</p>
           <h2 className="mt-1 text-xl font-display font-bold">How do you want to identify the land?</h2>
+          <p className="mt-1 text-xs text-slate-500 sm:hidden">One input path at a time. Official verification is still required.</p>
         </div>
         {onClose && (
           <button
@@ -92,7 +93,7 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
         )}
       </div>
 
-      <div className="space-y-2">
+      <div className="grid gap-2 sm:space-y-2">
         {MODES.map(option => (
           <button
             key={option.value}
@@ -159,13 +160,15 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
           </div>
         )}
 
-        <button
-          type="button"
-          onClick={handleSubmit}
-          className="w-full rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
-        >
-          Mark verification required
-        </button>
+        <div className="sticky bottom-0 -mx-4 bg-[#070910]/95 px-4 pb-1 pt-3 backdrop-blur-xl sm:static sm:mx-0 sm:bg-transparent sm:p-0">
+          <button
+            type="button"
+            onClick={handleSubmit}
+            className="w-full rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+          >
+            Mark verification required
+          </button>
+        </div>
       </div>
 
       {result && (

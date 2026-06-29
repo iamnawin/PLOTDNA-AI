@@ -304,6 +304,7 @@ export default function Home() {
     })
     setLocationIntelligence(intelligence)
     setShowLocationIntelligence(true)
+    setShowSurveyResolver(false)
   }
 
   function handleSurveyResult(result: SurveyResolverResult) {
@@ -583,7 +584,10 @@ export default function Home() {
             intelligence={locationIntelligence}
             open={showLocationIntelligence}
             onClose={() => setShowLocationIntelligence(false)}
-            onOpenSurveyResolver={() => setShowSurveyResolver(true)}
+            onOpenSurveyResolver={() => {
+              setShowSurveyResolver(true)
+              setShowLocationIntelligence(false)
+            }}
           />
         )}
       {featureFlags.enableLandIdentityFlow &&
@@ -1437,6 +1441,8 @@ export default function Home() {
                   return next
                 })
               }}
+              aria-label={isDropPinMode ? 'Cancel Drop Pin' : 'Drop Pin'}
+              title={isDropPinMode ? 'Cancel Drop Pin' : 'Drop Pin'}
               className="rounded-full border px-3.5 py-2 text-[10px] font-sans font-bold uppercase tracking-[0.12em] transition-all"
               style={{
                 background: isDropPinMode ? 'rgba(16, 185, 129, 0.18)' : 'rgba(8, 12, 24, 0.72)',
@@ -1446,11 +1452,11 @@ export default function Home() {
                 backdropFilter: 'blur(14px)',
               }}
             >
-              {isDropPinMode ? 'Cancel Drop Pin' : 'Drop Pin'}
+              {isDropPinMode ? 'Cancel Pin' : 'Pin Land'}
             </button>
             {(isDropPinMode || dropPinMessage) && (
-              <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-2 text-[10px] font-sans font-semibold text-slate-300 backdrop-blur">
-                {isDropPinMode ? 'Click the map to drop an exact land pin.' : dropPinMessage}
+              <span className="max-w-[min(78vw,340px)] rounded-full border border-white/10 bg-slate-950/70 px-3 py-2 text-[10px] font-sans font-semibold text-slate-300 backdrop-blur">
+                {isDropPinMode ? 'Tap map to place exact land pin.' : dropPinMessage}
               </span>
             )}
           </div>
