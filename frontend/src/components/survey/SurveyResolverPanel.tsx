@@ -22,28 +22,45 @@ const DETAIL_TYPES = [
   'Document reference',
 ]
 
+const NUMBER_DETAIL_TYPES = new Set([
+  'Survey number',
+  'Plot number',
+  'Land number',
+  'Khata / passbook number',
+  'Document reference',
+])
+
 export default function SurveyResolverPanel({ open, onClose, locationIntelligence, onSurveyResult }: Props) {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(['Survey number'])
+  const [selectedType, setSelectedType] = useState('Survey number')
   const [landDetail, setLandDetail] = useState('')
   const [localityNote, setLocalityNote] = useState('')
   const [result, setResult] = useState<SurveyResolverResult | null>(null)
+  const [error, setError] = useState('')
 
   if (!open) return null
 
   const lat = locationIntelligence?.lat
   const lng = locationIntelligence?.lng
   const hasPin = typeof lat === 'number' && typeof lng === 'number'
-  const canSubmit = landDetail.trim().length > 0 || localityNote.trim().length > 0 || hasPin
+  const detailValidation = validateLandDetail(selectedType, landDetail)
+  const canSubmit = detailValidation.valid || localityNote.trim().length > 0 || hasPin
 
-  function toggleType(type: string) {
-    setSelectedTypes(current =>
-      current.includes(type) ? current.filter(item => item !== type) : [...current, type],
-    )
+  function selectType(type: string) {
+    setSelectedType(type)
     setResult(null)
+    setError('')
   }
 
   function handleSubmit() {
-    if (!canSubmit) return
+    if (landDetail.trim() && !detailValidation.valid) {
+      setError(detailValidation.message)
+      return
+    }
+
+    if (!detailValidation.valid && !localityNote.trim() && !hasPin) {
+      setError(detailValidation.message)
+      return
+    }
 
     const nextResult = resolveSurveyFromUserInput({
       mode: 'known_survey_number',
@@ -51,7 +68,7 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
       village: localityNote,
       lat,
       lng,
-      documentIds: selectedTypes,
+      documentIds: detailValidation.valid ? [selectedType] : undefined,
     })
     setResult(nextResult)
     onSurveyResult?.(nextResult)
@@ -66,7 +83,7 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
         <div>
           <p className="text-[10px] font-sans font-bold uppercase tracking-[0.18em] text-cyan-300">Survey Resolver</p>
           <h2 className="mt-1 text-lg font-display font-bold">What land detail do you have?</h2>
-          <p className="mt-1 text-xs leading-5 text-slate-500">Capture the buyer's clue. PlotDNA will still mark official verification required.</p>
+          <p className="mt-1 text-xs leading-5 text-slate-500">Capture one clue. Official verification is still required.</p>
         </div>
         {onClose && (
           <button
@@ -85,7 +102,7 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
           <p className="text-xs font-sans font-bold text-slate-400">Select what this number/detail is</p>
           <div className="mt-2 grid grid-cols-2 gap-2">
             {DETAIL_TYPES.map(type => {
-              const checked = selectedTypes.includes(type)
+              const checked = selectedType === type
               return (
                 <label
                   key={type}
@@ -95,11 +112,12 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
                     borderColor: checked ? 'rgba(103, 232, 249, 0.35)' : 'rgba(255,255,255,0.1)',
                     color: checked ? '#a5f3fc' : '#cbd5e1',
                   }}
-                >
+                  >
                   <input
-                    type="checkbox"
+                    type="radio"
+                    name="survey-resolver-detail-type"
                     checked={checked}
-                    onChange={() => toggleType(type)}
+                    onChange={() => selectType(type)}
                     className="h-3.5 w-3.5 accent-cyan-300"
                   />
                   <span>{type}</span>
@@ -116,8 +134,14 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
           onChange={(value) => {
             setLandDetail(value)
             setResult(null)
+            setError('')
           }}
         />
+        {error && (
+          <p className="rounded-lg border border-amber-300/25 bg-amber-300/[0.08] px-3 py-2 text-xs leading-5 text-amber-100">
+            {error}
+          </p>
+        )}
 
         <TextField
           label="Area / village / mandal, optional"
@@ -126,6 +150,7 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
           onChange={(value) => {
             setLocalityNote(value)
             setResult(null)
+            setError('')
           }}
         />
 
@@ -148,11 +173,11 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
       </section>
 
       {result && (
-        <section className="mt-4 rounded-xl border border-cyan-300/20 bg-cyan-300/[0.06] p-4">
-          <p className="text-xs font-sans font-bold uppercase tracking-[0.14em] text-cyan-200">
-            {result.status.replaceAll('_', ' ')} / {result.confidence} confidence
+        <section className="mt-4 rounded-xl border border-cyan-300/20 bg-cyan-300/[0.06] p-3">
+          <p className="text-[11px] font-sans font-bold uppercase tracking-[0.12em] text-cyan-200">
+            Manual verification required
           </p>
-          <ul className="mt-3 space-y-2 text-xs leading-5 text-slate-300">
+          <ul className="mt-2 space-y-1.5 text-xs leading-5 text-slate-300">
             {result.notes.map(note => <li key={note}>{note}</li>)}
           </ul>
         </section>
@@ -163,6 +188,28 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
       </p>
     </aside>
   )
+}
+
+function validateLandDetail(type: string, value: string) {
+  const trimmed = value.trim()
+
+  if (!trimmed) {
+    return { valid: false, message: 'Enter the number/name you have, or keep only the pin/locality context.' }
+  }
+
+  if (trimmed.length < 2) {
+    return { valid: false, message: 'Enter a complete land detail before marking verification required.' }
+  }
+
+  if (NUMBER_DETAIL_TYPES.has(type) && !/\d/.test(trimmed)) {
+    return { valid: false, message: 'For this detail type, enter a number such as a survey, plot, land, khata, or document number.' }
+  }
+
+  if (!/[a-z0-9]/i.test(trimmed)) {
+    return { valid: false, message: 'Enter a usable number or name, not symbols only.' }
+  }
+
+  return { valid: true, message: '' }
 }
 
 function TextField({

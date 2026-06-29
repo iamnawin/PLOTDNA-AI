@@ -37,7 +37,6 @@ for (const token of [
   'handleDroppedPin',
   'Drop Pin',
   'Cancel Drop Pin',
-  'Click the map to drop an exact land pin.',
   'Pin dropped. Location Intelligence is available for this exact point.',
   "inputType: 'drop_pin'",
   "inputValue: 'Dropped pin'",
@@ -48,6 +47,10 @@ for (const token of [
 assert(
   home.includes('featureFlags.enableLandIdentityFlow') && home.includes('setIsDropPinMode'),
   'Drop Pin mode must be guarded by enableLandIdentityFlow',
+)
+assert(
+  !home.includes('Click the map to drop an exact land pin.'),
+  'Drop Pin mobile controls must not restore the congested instruction pill',
 )
 assert(
   home.includes('setSearchCoords([coords.lat, coords.lng])') || home.includes('setSearchCoords(droppedCoords)'),

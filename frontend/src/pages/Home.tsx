@@ -1437,7 +1437,7 @@ export default function Home() {
               onClick={() => {
                 setIsDropPinMode(active => {
                   const next = !active
-                  setDropPinMessage(next ? 'Click the map to drop an exact land pin.' : '')
+                  setDropPinMessage('')
                   return next
                 })
               }}
@@ -1454,9 +1454,9 @@ export default function Home() {
             >
               {isDropPinMode ? 'Cancel Pin' : 'Pin Land'}
             </button>
-            {(isDropPinMode || dropPinMessage) && (
-              <span className="max-w-[min(78vw,340px)] rounded-full border border-white/10 bg-slate-950/70 px-3 py-2 text-[10px] font-sans font-semibold text-slate-300 backdrop-blur">
-                {isDropPinMode ? 'Tap map to place exact land pin.' : dropPinMessage}
+            {dropPinMessage && (
+              <span className="hidden max-w-[min(78vw,340px)] rounded-full border border-white/10 bg-slate-950/70 px-3 py-2 text-[10px] font-sans font-semibold text-slate-300 backdrop-blur sm:inline">
+                {dropPinMessage}
               </span>
             )}
           </div>

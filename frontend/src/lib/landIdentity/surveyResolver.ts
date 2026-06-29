@@ -60,9 +60,8 @@ export function resolveSurveyFromUserInput(request: SurveyResolverRequest): Surv
       confidence: 'low',
       source: 'user_input',
       notes: [
-        'Land detail captured from user input. Official verification is still required.',
+        'Land detail captured. Official verification required.',
         providedTypes,
-        'PlotDNA does not certify title or legal ownership. Treat this as a land-intelligence workflow, not a legal certificate.',
       ],
     }
   }

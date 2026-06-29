@@ -41,14 +41,14 @@ for (const label of [
   'Document reference',
   'Enter number or name',
   'Mark verification required',
+  'Manual verification required',
 ]) {
   assert(surveyPanel.includes(label), `Survey Resolver missing mode label: ${label}`)
 }
 
 for (const copy of [
   'Official verification is still required',
-  'Land detail captured from user input. Official verification is still required.',
-  'Capture the buyer',
+  'Land detail captured. Official verification required.',
   'PlotDNA does not certify title or legal ownership',
 ]) {
   assert(surveyPanel.includes(copy) || surveyResolver.includes(copy), `Safe copy missing: ${copy}`)
