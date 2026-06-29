@@ -59,6 +59,7 @@ Latest validated state:
 
 Latest pushed commits:
 
+- `53c7714` - Harden Area Pass share QA
 - `2a57be0` - Productize Area Pass sharing
 - `43af7ab` - Simplify mobile survey resolver
 - `8af5570` - Tighten survey resolver validation
