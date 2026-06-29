@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { X, ArrowRight, TrendingUp } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { X, ArrowRight, TrendingUp, Share2 } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { featureFlags } from '@/lib/features'
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
+  const navigate = useNavigate()
   const color = getScoreColor(area.score)
   const label = getScoreLabel(area.score)
 
@@ -133,6 +135,16 @@ export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
 
       {/* CTA */}
       <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        {featureFlags.enableLandDnaCard && (
+          <button
+            type="button"
+            onClick={() => navigate(`/card/${area.slug}`)}
+            className="mb-2 w-full flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-xs font-sans font-bold text-slate-200 transition-colors hover:text-white"
+          >
+            Share Land DNA Card
+            <Share2 size={13} />
+          </button>
+        )}
         <button
           onClick={() => onOpenAreaReport(area.slug)}
           className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-sans font-black uppercase tracking-[0.08em] transition-all duration-200 btn-3d-reflective"

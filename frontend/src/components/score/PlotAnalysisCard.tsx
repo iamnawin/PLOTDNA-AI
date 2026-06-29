@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX, Activity } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX, Activity, Share2 } from 'lucide-react'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { featureFlags } from '@/lib/features'
 import { getGrowthForecastForArea } from '@/lib/forecast/growthForecast'
@@ -40,6 +41,7 @@ const PHASE_COLOR: Record<Milestone['phase'], string> = {
 }
 
 export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug, fallbackReportLabel, onOpenAreaReport, onClose }: Props) {
+  const navigate = useNavigate()
   const [geo, setGeo] = useState<ReverseGeoResult | null>(null)
   const [liveData, setLiveData] = useState<LiveDNAResult | null>(null)
   const [liveLoading, setLiveLoading] = useState(true)
@@ -692,6 +694,16 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
           className="p-4 flex-shrink-0"
           style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
         >
+          {featureFlags.enableLandDnaCard && (
+            <button
+              type="button"
+              onClick={() => navigate(`/card/${staticArea.slug}`)}
+              className="mb-2 w-full flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-xs font-sans font-bold text-slate-200 transition-colors hover:text-white"
+            >
+              Share Land DNA Card
+              <Share2 size={13} />
+            </button>
+          )}
           <button
             onClick={() => onOpenAreaReport(staticArea.slug, {
               fallbackContext: {

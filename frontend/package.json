@@ -12,6 +12,7 @@
     "test:hyderabad-location-search": "node scripts/check-hyderabad-location-search.mjs",
     "test:hyderabad-red-dot-resolution": "node scripts/audit-hyderabad-red-dot-resolution.mjs",
     "test:growth-forecast-phase-3a": "node scripts/check-growth-forecast-phase-3a.mjs",
+    "test:land-dna-card-phase-3b": "node scripts/check-land-dna-card-phase-3b.mjs",
     "test:land-identity-phase-0": "node scripts/check-land-identity-phase-0.mjs",
     "test:land-identity-phase-1a": "node scripts/check-land-identity-phase-1a.mjs",
     "test:land-identity-phase-1b": "node scripts/check-land-identity-phase-1b.mjs",
