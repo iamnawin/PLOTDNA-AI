@@ -32,6 +32,7 @@ export default function App() {
           <Route path="/map" element={<Home />} />
           <Route path="/area/:slug" element={<AreaDetail />} />
           <Route path="/card/:shareSlug" element={featureFlags.enableLandDnaCard ? <LandDNACardPage /> : <Landing />} />
+          <Route path="/c/:shareSlug" element={featureFlags.enableLandDnaCard ? <LandDNACardPage /> : <Landing />} />
           <Route path="/compare" element={<CompareAreas />} />
           <Route path="/brochure" element={<BrochurePage />} />
         </Routes>

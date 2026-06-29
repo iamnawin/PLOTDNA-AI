@@ -5,6 +5,7 @@ import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { featureFlags } from '@/lib/features'
 import { getGrowthForecastForArea } from '@/lib/forecast/growthForecast'
+import { getLandDnaCardPathForArea } from '@/lib/landDnaCard'
 import GrowthForecastCard from '@/components/forecast/GrowthForecastCard'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SignalBar from '@/components/ui/SignalBar'
@@ -138,7 +139,7 @@ export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
         {featureFlags.enableLandDnaCard && (
           <button
             type="button"
-            onClick={() => navigate(`/card/${area.slug}`)}
+            onClick={() => navigate(getLandDnaCardPathForArea(area))}
             className="mb-2 w-full flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-xs font-sans font-bold text-slate-200 transition-colors hover:text-white"
           >
             Share Land DNA Card

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX, Activity, Share2 } from 'lucide-react'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
 import { featureFlags } from '@/lib/features'
+import { getLandDnaCardPathForArea } from '@/lib/landDnaCard'
 import { getGrowthForecastForArea } from '@/lib/forecast/growthForecast'
 import {
   findNearestArea,
@@ -697,7 +698,7 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
           {featureFlags.enableLandDnaCard && (
             <button
               type="button"
-              onClick={() => navigate(`/card/${staticArea.slug}`)}
+              onClick={() => navigate(getLandDnaCardPathForArea(staticArea))}
               className="mb-2 w-full flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-xs font-sans font-bold text-slate-200 transition-colors hover:text-white"
             >
               Share Land DNA Card

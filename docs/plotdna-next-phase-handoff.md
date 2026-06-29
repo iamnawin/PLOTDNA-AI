@@ -72,7 +72,10 @@ Current product behavior:
 - `Khata / passbook number` accepts values such as `PB-773820`.
 - Growth Forecast card is compacted for mobile and remains behind `VITE_ENABLE_GROWTH_FORECAST_CARD`.
 - Land DNA Card forecast reuse also respects `VITE_ENABLE_GROWTH_FORECAST_CARD`.
-- Land DNA Card share page now uses an Area Pass visual direction with score, risk, infrastructure, connectivity, development signal, and indicative 5/10-year outlook.
+- Land DNA Card share page now uses an Area Pass visual direction with score, risk, infrastructure, connectivity, development signal, and indicative 5/10-year outlook when forecast data exists.
+- Land DNA Card public links now resolve generated area codes such as `/card/HYD-PXX-070`; existing slug URLs still resolve.
+- Land DNA Card share uses Web Share API with clipboard fallback, and PNG export/download is available as a secondary fallback.
+- Land DNA Card metrics are availability-filtered so unavailable growth placeholders are hidden instead of rendered.
 
 Still not built:
 
@@ -258,7 +261,7 @@ TimesFM note:
 
 ## Phase 3B: Land DNA Card Preview / Share URL
 
-Status: initial implementation complete behind `VITE_ENABLE_LAND_DNA_CARD`; Area Pass redesign applied. Remaining work is public preview QA, mobile/share screenshot testing, and export/download image support if needed later.
+Status: implementation complete behind `VITE_ENABLE_LAND_DNA_CARD`; Area Pass redesign, code-based public links, Web Share/copy fallback, PNG download fallback, and availability-filtered dynamic metrics are applied. Remaining work is public preview QA, mobile/share screenshot testing, and real-device PNG/share QA.
 
 Goal: lightweight shareable Land DNA Card, not a social platform.
 
@@ -302,6 +305,9 @@ Initial share behavior:
 - Public share URL.
 - Use Web Share API if available.
 - Fallback to copy link.
+- PNG download fallback.
+- Generated public card code URLs such as `/card/HYD-PXX-070`; old slug URLs remain backwards compatible.
+- Hide unavailable metric blocks. Do not show `Not available yet`, `requires historical data`, `N/A`, or empty placeholder cards on the shared card.
 
 ## Phase 3C: Founder Pass Gating
 

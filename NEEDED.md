@@ -23,7 +23,11 @@ This is the quick handoff for the next model. The detailed source of truth is `d
 - Phase 3B Land DNA Card has been redesigned as an Area Pass:
   - Premium pass-style card instead of a plain report panel.
   - Shows PlotDNA Score, Risk Level, Infrastructure Readiness, Connectivity Signal, Nearby Development Signal.
-  - Shows 5-Year and 10-Year indicative outlook only from available forecast data; otherwise marks it unavailable.
+  - Shows 5-Year and 10-Year indicative outlook only from available forecast data; unavailable forecast rows are hidden.
+  - Generates public Area Pass code URLs such as `/card/HYD-PXX-070`, while old slug URLs still resolve.
+  - Share uses Web Share API with clipboard fallback.
+  - PNG download/export exists as a fallback using the visible card design.
+  - Card metrics are availability-filtered so placeholder values like `Not available yet` are not rendered on the shared card.
   - No QR/barcode added.
 - Phase 3C Founder Pass gating initial version is built behind `VITE_ENABLE_FOUNDER_PASS_GATING`.
 
@@ -60,9 +64,10 @@ Earlier phase guards also passed during the phase work:
 
 ### Phase 3B Remaining
 
-- Public preview QA.
+- Public preview QA on Vercel.
 - Mobile/share screenshot testing.
-- Export/download image support if needed later.
+- Confirm PNG export quality on real mobile browsers and social apps.
+- True server-rendered Open Graph image generation remains not built; SPA metadata is updated client-side only.
 
 ### Phase 3C Remaining
 
