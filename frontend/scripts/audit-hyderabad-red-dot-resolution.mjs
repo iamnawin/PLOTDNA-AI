@@ -30,15 +30,16 @@ const testPoints = [
   { label: 'Shamshabad / Airport corridor', lat: 17.2512, lng: 78.4377, expectation: 'scored' },
   { label: 'Rajendranagar / Attapur', lat: 17.3544, lng: 78.4284, expectation: 'scored' },
   { label: 'Uppal', lat: 17.4058, lng: 78.5591, expectation: 'scored' },
-  { label: 'Ghatkesar', lat: 17.4508, lng: 78.6853, expectation: 'scored' },
+  { label: 'Ghatkesar', lat: 17.455, lng: 78.74, expectation: 'scored' },
+  { label: 'Ghatkesar west / Aushapur edge', lat: 17.4508, lng: 78.6853, expectation: 'pending' },
   { label: 'Kompally', lat: 17.5384, lng: 78.487, expectation: 'scored' },
   { label: 'Medchal', lat: 17.6297, lng: 78.4814, expectation: 'scored' },
   { label: 'Shamirpet', lat: 17.5949, lng: 78.573, expectation: 'scored' },
   { label: 'LB Nagar / Hayathnagar', lat: 17.345, lng: 78.552, expectation: 'scored' },
-  { label: 'Sangareddy-facing western side', lat: 17.605, lng: 78.085, expectation: 'pending' },
-  { label: 'Vikarabad-facing western side', lat: 17.35, lng: 77.90, expectation: 'pending' },
+  { label: 'Sangareddy-facing western side', lat: 17.66, lng: 77.86, expectation: 'pending' },
+  { label: 'Vikarabad-facing western side', lat: 17.42, lng: 77.52, expectation: 'pending' },
   { label: 'Bhongir-facing eastern side', lat: 17.515, lng: 78.8856, expectation: 'pending' },
-  { label: 'Farooqnagar / Mahbubnagar-facing southern side', lat: 17.0734, lng: 78.2019, expectation: 'pending' },
+  { label: 'Farooqnagar / Mahbubnagar-facing southern side', lat: 16.98, lng: 78.15, expectation: 'pending' },
 ]
 
 const scoredAreas = catalog.areas
