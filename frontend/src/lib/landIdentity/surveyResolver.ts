@@ -46,17 +46,22 @@ export function createManualSurveyPlaceholder(notes: string[] = []): SurveyResol
 
 export function resolveSurveyFromUserInput(request: SurveyResolverRequest): SurveyResolverResult {
   if (request.mode === 'known_survey_number' && request.surveyNumber?.trim()) {
+    const providedTypes = request.documentIds?.length
+      ? `Provided detail type: ${request.documentIds.join(', ')}.`
+      : 'Provided detail type not selected.'
+
     return {
-      status: 'possible_match',
+      status: 'manual_verification_required',
       surveyNumber: request.surveyNumber.trim(),
       subdivisionNumber: request.subdivisionNumber?.trim() || undefined,
       district: request.district?.trim() || undefined,
       mandal: request.mandal?.trim() || undefined,
       village: request.village?.trim() || undefined,
-      confidence: 'medium',
+      confidence: 'low',
       source: 'user_input',
       notes: [
-        'Survey number captured from user input. Official verification is still required.',
+        'Land detail captured from user input. Official verification is still required.',
+        providedTypes,
         'PlotDNA does not certify title or legal ownership. Treat this as a land-intelligence workflow, not a legal certificate.',
       ],
     }

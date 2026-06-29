@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { X } from 'lucide-react'
 import {
   resolveSurveyFromUserInput,
-  type SurveyResolverMode,
   type SurveyResolverResult,
 } from '@/lib/landIdentity/surveyResolver'
 import type { LocationIntelligence } from '@/lib/landIdentity/types'
@@ -14,57 +13,45 @@ interface Props {
   onSurveyResult?: (result: SurveyResolverResult) => void
 }
 
-const MODES: Array<{ value: SurveyResolverMode; label: string }> = [
-  { value: 'known_survey_number', label: 'I know the survey number' },
-  { value: 'known_village_mandal', label: 'I know the village / mandal' },
-  { value: 'pin_only', label: 'I only know this pin' },
-  { value: 'layout_or_venture_name', label: 'I know venture/layout name' },
-  { value: 'document_upload', label: 'I have documents' },
-]
-
-const DOCUMENTS = [
-  'Sale deed',
-  'Link documents',
-  'Encumbrance certificate',
-  'Pattadar passbook / title record',
-  'Mutation record',
-  'Layout approval letter',
-  'Approved layout plan',
-  'RERA certificate if applicable',
-  'NALA / land conversion order',
-  'Tax receipts',
+const DETAIL_TYPES = [
+  'Survey number',
+  'Plot number',
+  'Land number',
+  'Khata / passbook number',
+  'Layout / venture name',
+  'Document reference',
 ]
 
 export default function SurveyResolverPanel({ open, onClose, locationIntelligence, onSurveyResult }: Props) {
-  const [mode, setMode] = useState<SurveyResolverMode>('known_survey_number')
-  const [state, setState] = useState('Telangana')
-  const [district, setDistrict] = useState('')
-  const [mandal, setMandal] = useState('')
-  const [village, setVillage] = useState('')
-  const [surveyNumber, setSurveyNumber] = useState('')
-  const [subdivisionNumber, setSubdivisionNumber] = useState('')
-  const [nearbyArea, setNearbyArea] = useState('')
-  const [layoutName, setLayoutName] = useState('')
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(['Survey number'])
+  const [landDetail, setLandDetail] = useState('')
+  const [localityNote, setLocalityNote] = useState('')
   const [result, setResult] = useState<SurveyResolverResult | null>(null)
 
   if (!open) return null
 
   const lat = locationIntelligence?.lat
   const lng = locationIntelligence?.lng
-  const matchedArea = locationIntelligence?.matchedMicroZone?.name ?? locationIntelligence?.nearestLocality
+  const hasPin = typeof lat === 'number' && typeof lng === 'number'
+  const canSubmit = landDetail.trim().length > 0 || localityNote.trim().length > 0 || hasPin
+
+  function toggleType(type: string) {
+    setSelectedTypes(current =>
+      current.includes(type) ? current.filter(item => item !== type) : [...current, type],
+    )
+    setResult(null)
+  }
 
   function handleSubmit() {
+    if (!canSubmit) return
+
     const nextResult = resolveSurveyFromUserInput({
-      mode,
-      state,
-      district,
-      mandal,
-      village,
-      surveyNumber,
-      subdivisionNumber,
+      mode: 'known_survey_number',
+      surveyNumber: landDetail,
+      village: localityNote,
       lat,
       lng,
-      layoutName,
+      documentIds: selectedTypes,
     })
     setResult(nextResult)
     onSurveyResult?.(nextResult)
@@ -73,13 +60,13 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
   return (
     <aside
       aria-label="Survey Resolver"
-      className="fixed inset-x-0 bottom-0 z-[1300] max-h-[86dvh] overflow-y-auto rounded-t-2xl border border-white/10 bg-[#070910]/95 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] text-slate-100 shadow-2xl backdrop-blur-xl sm:inset-x-auto sm:bottom-4 sm:left-4 sm:max-h-[calc(100dvh-2rem)] sm:w-[min(460px,calc(100vw-2rem))] sm:rounded-2xl sm:p-5"
+      className="fixed inset-x-0 bottom-0 z-[1300] max-h-[76dvh] overflow-y-auto rounded-t-2xl border border-white/10 bg-[#070910]/95 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] text-slate-100 shadow-2xl backdrop-blur-xl sm:inset-x-auto sm:bottom-4 sm:left-4 sm:max-h-[calc(100dvh-2rem)] sm:w-[min(420px,calc(100vw-2rem))] sm:rounded-2xl sm:p-5"
     >
       <div className="sticky top-0 z-10 -mx-4 -mt-4 mb-3 flex items-start justify-between gap-3 border-b border-white/10 bg-[#070910]/95 px-4 py-4 backdrop-blur-xl sm:static sm:m-0 sm:mb-4 sm:border-b-0 sm:bg-transparent sm:p-0">
         <div>
           <p className="text-[10px] font-sans font-bold uppercase tracking-[0.18em] text-cyan-300">Survey Resolver</p>
-          <h2 className="mt-1 text-xl font-display font-bold">How do you want to identify the land?</h2>
-          <p className="mt-1 text-xs text-slate-500 sm:hidden">One input path at a time. Official verification is still required.</p>
+          <h2 className="mt-1 text-lg font-display font-bold">What land detail do you have?</h2>
+          <p className="mt-1 text-xs leading-5 text-slate-500">Capture the buyer's clue. PlotDNA will still mark official verification required.</p>
         </div>
         {onClose && (
           <button
@@ -93,88 +80,77 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
         )}
       </div>
 
-      <div className="grid gap-2 sm:space-y-2">
-        {MODES.map(option => (
-          <button
-            key={option.value}
-            type="button"
-            onClick={() => {
-              setMode(option.value)
-              setResult(null)
-            }}
-            className="w-full rounded-xl border px-4 py-3 text-left text-sm font-sans font-bold transition-colors"
-            style={{
-              background: mode === option.value ? 'rgba(6, 182, 212, 0.12)' : 'rgba(255,255,255,0.03)',
-              borderColor: mode === option.value ? 'rgba(103, 232, 249, 0.35)' : 'rgba(255,255,255,0.1)',
-              color: mode === option.value ? '#a5f3fc' : '#e2e8f0',
-            }}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="mt-4 space-y-3 border-t border-white/10 pt-4">
-        {(mode === 'known_survey_number' || mode === 'known_village_mandal') && (
-          <>
-            <TextField label="State" value={state} onChange={setState} />
-            <TextField label="District" value={district} onChange={setDistrict} />
-            <TextField label="Mandal" value={mandal} onChange={setMandal} />
-            <TextField label="Village / Revenue Village" value={village} onChange={setVillage} />
-          </>
-        )}
-
-        {mode === 'known_survey_number' && (
-          <>
-            <TextField label="Survey Number" value={surveyNumber} onChange={setSurveyNumber} />
-            <TextField label="Subdivision Number, optional" value={subdivisionNumber} onChange={setSubdivisionNumber} />
-          </>
-        )}
-
-        {mode === 'known_village_mandal' && (
-          <TextField label="Nearby area/locality, optional" value={nearbyArea} onChange={setNearbyArea} />
-        )}
-
-        {mode === 'pin_only' && (
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4 text-sm text-slate-300">
-            <p>Lat/Lng: {typeof lat === 'number' && typeof lng === 'number' ? `${lat.toFixed(6)}, ${lng.toFixed(6)}` : 'Exact pin not available.'}</p>
-            <p className="mt-2">Matched area/micro-zone: {matchedArea ?? 'Not matched yet.'}</p>
-            <p className="mt-3 text-slate-500">This pin gives location context, but survey identity requires cadastral or official land-record verification.</p>
+      <section className="space-y-3">
+        <div>
+          <p className="text-xs font-sans font-bold text-slate-400">Select what this number/detail is</p>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {DETAIL_TYPES.map(type => {
+              const checked = selectedTypes.includes(type)
+              return (
+                <label
+                  key={type}
+                  className="flex min-h-11 items-center gap-2 rounded-xl border px-3 py-2 text-xs font-sans font-bold transition-colors"
+                  style={{
+                    background: checked ? 'rgba(6, 182, 212, 0.12)' : 'rgba(255,255,255,0.03)',
+                    borderColor: checked ? 'rgba(103, 232, 249, 0.35)' : 'rgba(255,255,255,0.1)',
+                    color: checked ? '#a5f3fc' : '#cbd5e1',
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => toggleType(type)}
+                    className="h-3.5 w-3.5 accent-cyan-300"
+                  />
+                  <span>{type}</span>
+                </label>
+              )
+            })}
           </div>
-        )}
+        </div>
 
-        {mode === 'layout_or_venture_name' && (
-          <>
-            <TextField label="Layout / Venture / Project Name" value={layoutName} onChange={setLayoutName} />
-            <TextField label="Area / Locality" value={nearbyArea} onChange={setNearbyArea} />
-            <TextField label="Village / Mandal, optional" value={mandal} onChange={setMandal} />
-          </>
-        )}
+        <TextField
+          label="Enter number or name"
+          placeholder="Example: 5442, 12/A, plot 38, layout name"
+          value={landDetail}
+          onChange={(value) => {
+            setLandDetail(value)
+            setResult(null)
+          }}
+        />
 
-        {mode === 'document_upload' && (
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-            <p className="text-sm text-slate-300">Document upload and extraction will be added in a later phase.</p>
-            <ul className="mt-3 grid gap-2 text-xs text-slate-500 sm:grid-cols-2">
-              {DOCUMENTS.map(document => <li key={document}>{document}</li>)}
-            </ul>
-          </div>
+        <TextField
+          label="Area / village / mandal, optional"
+          placeholder="Add nearby locality if known"
+          value={localityNote}
+          onChange={(value) => {
+            setLocalityNote(value)
+            setResult(null)
+          }}
+        />
+
+        {hasPin && (
+          <p className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-xs leading-5 text-slate-400">
+            Pin captured: {lat.toFixed(6)}, {lng.toFixed(6)}
+          </p>
         )}
 
         <div className="sticky bottom-0 -mx-4 bg-[#070910]/95 px-4 pb-1 pt-3 backdrop-blur-xl sm:static sm:mx-0 sm:bg-transparent sm:p-0">
           <button
             type="button"
             onClick={handleSubmit}
-            className="w-full rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+            disabled={!canSubmit}
+            className="w-full rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-45"
           >
             Mark verification required
           </button>
         </div>
-      </div>
+      </section>
 
       {result && (
         <section className="mt-4 rounded-xl border border-cyan-300/20 bg-cyan-300/[0.06] p-4">
           <p className="text-xs font-sans font-bold uppercase tracking-[0.14em] text-cyan-200">
-            {result.status.replaceAll('_', ' ')} · {result.confidence} confidence
+            {result.status.replaceAll('_', ' ')} / {result.confidence} confidence
           </p>
           <ul className="mt-3 space-y-2 text-xs leading-5 text-slate-300">
             {result.notes.map(note => <li key={note}>{note}</li>)}
@@ -189,14 +165,25 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
   )
 }
 
-function TextField({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+function TextField({
+  label,
+  placeholder,
+  value,
+  onChange,
+}: {
+  label: string
+  placeholder?: string
+  value: string
+  onChange: (value: string) => void
+}) {
   return (
     <label className="block">
       <span className="text-xs font-sans font-bold text-slate-400">{label}</span>
       <input
         value={value}
+        placeholder={placeholder}
         onChange={event => onChange(event.target.value)}
-        className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2 text-sm text-slate-100 outline-none transition-colors focus:border-cyan-300/50"
+        className="mt-1 w-full rounded-lg border border-white/10 bg-white/[0.04] px-3 py-2.5 text-sm text-slate-100 outline-none transition-colors placeholder:text-slate-600 focus:border-cyan-300/50"
       />
     </label>
   )

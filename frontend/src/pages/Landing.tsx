@@ -19,6 +19,7 @@ import { getPublicMetrics, trackUserEvent, type PublicMetricsResponse } from '@/
 import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
 
 const MIN_LIVE_NOW_COUNT = 143
+const LAST_MAP_STATE_KEY = 'plotdna:last-map-state'
 
 const FEATURE_CARDS = [
   {
@@ -224,6 +225,13 @@ export default function Landing() {
 
   function goToMap() {
     setSelectedCitySlug(activeCity)
+    setSelectedArea(null)
+    setSearchCoords(null)
+    try {
+      window.localStorage.removeItem(LAST_MAP_STATE_KEY)
+    } catch {
+      // map still opens normally if storage is unavailable
+    }
     navigate('/map')
   }
 

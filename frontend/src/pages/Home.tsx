@@ -323,7 +323,7 @@ export default function Home() {
           village: result.village,
           confidence: result.confidence,
           message: result.surveyNumber
-            ? 'Survey number captured from user input. Official verification is still required.'
+            ? 'Land detail captured from user input. Official verification is still required.'
             : 'Survey details captured. Official verification is still required.',
         },
       }

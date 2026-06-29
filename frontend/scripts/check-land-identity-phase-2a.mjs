@@ -33,20 +33,22 @@ assert(locationPanel.includes("action === 'Check Survey Details' ? onOpenSurveyR
 assert(locationPanel.includes('Survey Number Status'), 'LocationIntelligencePanel must keep Survey Number Status visible')
 
 for (const label of [
-  'I know the survey number',
-  'I know the village / mandal',
-  'I only know this pin',
-  'I know venture/layout name',
-  'I have documents',
+  'Survey number',
+  'Plot number',
+  'Land number',
+  'Khata / passbook number',
+  'Layout / venture name',
+  'Document reference',
+  'Enter number or name',
+  'Mark verification required',
 ]) {
   assert(surveyPanel.includes(label), `Survey Resolver missing mode label: ${label}`)
 }
 
 for (const copy of [
   'Official verification is still required',
-  'This pin gives location context, but survey identity requires cadastral or official land-record verification.',
-  'Layout or venture name captured. Approval and survey linkage require verification.',
-  'Document upload and extraction will be added in a later phase.',
+  'Land detail captured from user input. Official verification is still required.',
+  'Capture the buyer',
   'PlotDNA does not certify title or legal ownership',
 ]) {
   assert(surveyPanel.includes(copy) || surveyResolver.includes(copy), `Safe copy missing: ${copy}`)
