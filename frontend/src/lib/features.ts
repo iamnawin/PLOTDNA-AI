@@ -8,6 +8,7 @@ export const featureFlags = {
   enableSurveyResolver: fromEnv("VITE_ENABLE_SURVEY_RESOLVER"),
   enableTrustSignals: fromEnv("VITE_ENABLE_TRUST_SIGNALS"),
   enableMicroZoneMatching: fromEnv("VITE_ENABLE_MICRO_ZONE_MATCHING"),
+  enableGrowthForecastCard: fromEnv("VITE_ENABLE_GROWTH_FORECAST_CARD"),
 } as const
 
 export type FeatureFlagName = keyof typeof featureFlags

@@ -2,6 +2,9 @@ import { motion } from 'framer-motion'
 import { X, ArrowRight, TrendingUp } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
+import { featureFlags } from '@/lib/features'
+import { getGrowthForecastForArea } from '@/lib/forecast/growthForecast'
+import GrowthForecastCard from '@/components/forecast/GrowthForecastCard'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SignalBar from '@/components/ui/SignalBar'
 
@@ -21,6 +24,7 @@ export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
   const dashOffset = circumference - (area.score / 100) * circumference
 
   const signals = Object.entries(area.signals) as [keyof typeof area.signals, number][]
+  const growthForecast = featureFlags.enableGrowthForecastCard ? getGrowthForecastForArea(area.slug) : null
 
   return (
     <motion.div
@@ -101,6 +105,8 @@ export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
 
       {/* Signals */}
       <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3.5">
+        {growthForecast && <GrowthForecastCard forecast={growthForecast} />}
+
         <p className="text-[10px] font-sans font-bold text-slate-500 uppercase tracking-widest mb-1">Signal Breakdown</p>
         {signals.map(([key, val]) => (
           <SignalBar

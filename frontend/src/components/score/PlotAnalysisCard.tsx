@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { X, Navigation, ArrowRight, TrendingUp, AlertTriangle, Satellite, MapPin, Info, SearchX, Activity } from 'lucide-react'
 import { getScoreColor, getScoreLabel, SIGNAL_LABELS, SIGNAL_WEIGHTS } from '@/lib/utils'
+import { featureFlags } from '@/lib/features'
+import { getGrowthForecastForArea } from '@/lib/forecast/growthForecast'
 import {
   findNearestArea,
   getGrowthMilestones,
@@ -9,6 +11,7 @@ import {
   type LocalityFallbackResult,
   type Milestone,
 } from '@/lib/plotAnalysis'
+import GrowthForecastCard from '@/components/forecast/GrowthForecastCard'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import VerdictCard from '@/components/ui/VerdictCard'
 import { analyzeCoordinate, type LiveDNAResult } from '@/lib/api'
@@ -96,6 +99,9 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
   const displayHighlights = hasStaticAreaContext && staticArea ? staticArea.highlights.slice(0, 3) : liveData?.highlights ?? []
   const milestones = hasStaticAreaContext && staticArea ? getGrowthMilestones(staticArea) : []
   const outlook = hasStaticAreaContext && staticArea ? getOutlook(staticArea) : null
+  const growthForecast = featureFlags.enableGrowthForecastCard && staticArea
+    ? getGrowthForecastForArea(staticArea.slug)
+    : null
 
   const color = getScoreColor(displayScore)
   const label = getScoreLabel(displayScore)
@@ -473,6 +479,12 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
                 resolutionTier={verdictResolutionTier}
                 resolutionLabel={fallbackDisplayLabel}
               />
+            </div>
+          )}
+
+          {growthForecast && (
+            <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+              <GrowthForecastCard forecast={growthForecast} />
             </div>
           )}
 
