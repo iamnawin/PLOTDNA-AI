@@ -49,11 +49,13 @@ Latest validated state:
 - `pnpm run test:land-dna-card-phase-3b`
 - `pnpm run test:land-dna-card-share-qa`
 - `pnpm run test:founder-pass-phase-3c`
+- `pnpm run test:founder-pass-entitlement-qa`
 - `pnpm run test:map-navigation-state`
 - `pnpm run test:hyderabad-production`
 - `pnpm run test:hyderabad-location-search`
 - `pnpm run lint`
 - `pnpm run build`
+- `uv run --with-requirements requirements.txt python -m unittest tests.test_custom_report_leads tests.test_report_entitlements tests.test_payment_reconciliation`
 - `python scripts\validate_hyderabad_coverage.py`
 - `git diff --check`
 
@@ -80,6 +82,7 @@ Current product behavior:
 - Land DNA Card share uses Web Share API with clipboard fallback, and PNG export/download is available as a secondary fallback.
 - Land DNA Card metrics are availability-filtered so unavailable growth placeholders are hidden instead of rendered.
 - Land DNA Card automated share QA covers Peerzadiguda, Yapral, Ameenpur, and Beeramguda sample cards.
+- Founder Pass card gating reuses cached server entitlements and the existing Area Detail Rs 99 flow; it does not create a separate payment package.
 
 Still not built:
 
@@ -316,13 +319,19 @@ Initial share behavior:
 
 ## Phase 3C: Founder Pass Gating
 
-Status: initial implementation complete behind `VITE_ENABLE_FOUNDER_PASS_GATING`. Remaining work is live payment entitlement QA and production payment edge-case verification.
+Status: initial implementation and automated entitlement/payment-boundary QA complete behind `VITE_ENABLE_FOUNDER_PASS_GATING`. Remaining work is live payment entitlement QA and production payment edge-case verification.
 
 Goal: reuse the existing Rs 99 lifetime access/payment direction instead of creating a parallel payment product.
 
 Marketing line:
 
 `Check one area free. Unlock the city for Rs 99.`
+
+Payment and entitlement guardrails:
+
+- Paid state must come from server entitlement `subscription_active`, not local UI state.
+- Founder Pass card CTA should route to the existing area Rs 99 flow, not create a parallel Razorpay flow.
+- Existing server-created payment link, Razorpay webhook, verified recovery, and report-access paths must remain the source of truth.
 
 Free plan:
 

@@ -31,6 +31,11 @@ This is the quick handoff for the next model. The detailed source of truth is `d
   - Automated share QA covers real Hyderabad samples: Peerzadiguda, Yapral, Ameenpur, and Beeramguda.
   - No QR/barcode added.
 - Phase 3C Founder Pass gating initial version is built behind `VITE_ENABLE_FOUNDER_PASS_GATING`.
+- Phase 3C Founder Pass entitlement QA guard is built:
+  - Confirms paid state comes from server entitlement `subscription_active`.
+  - Confirms the card reuses the existing Area Detail Rs 99 path.
+  - Confirms no separate Founder Pass payment package or generic Razorpay link was added.
+  - Confirms backend payment-link, webhook, recovery, and report-access tests remain present.
 
 ## Latest Pushed Commits
 
@@ -49,8 +54,10 @@ This is the quick handoff for the next model. The detailed source of truth is `d
 - `pnpm run test:land-dna-card-phase-3b`
 - `pnpm run test:land-dna-card-share-qa`
 - `pnpm run test:founder-pass-phase-3c`
+- `pnpm run test:founder-pass-entitlement-qa`
 - `pnpm run lint`
 - `pnpm run build`
+- `uv run --with-requirements requirements.txt python -m unittest tests.test_custom_report_leads tests.test_report_entitlements tests.test_payment_reconciliation`
 
 Earlier phase guards also passed during the phase work:
 
@@ -59,6 +66,8 @@ Earlier phase guards also passed during the phase work:
 - `pnpm run test:land-dna-card-phase-3b`
 - `pnpm run test:land-dna-card-share-qa`
 - `pnpm run test:founder-pass-phase-3c`
+- `pnpm run test:founder-pass-entitlement-qa`
+- `uv run --with-requirements requirements.txt python -m unittest tests.test_custom_report_leads tests.test_report_entitlements tests.test_payment_reconciliation`
 
 ## Left / Not Started
 
