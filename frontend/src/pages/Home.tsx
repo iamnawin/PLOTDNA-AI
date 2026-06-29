@@ -21,6 +21,8 @@ import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
 import AssistantDock from '@/components/ui/AssistantDock'
 import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
 import LocationIntelligencePanel from '@/components/location/LocationIntelligencePanel'
+import SurveyResolverPanel from '@/components/survey/SurveyResolverPanel'
+import type { SurveyResolverResult } from '@/lib/landIdentity/surveyResolver'
 import SpatialView from '@/components/view/SpatialView'
 import { type ViewMode } from '@/components/view/ViewModeToggle'
 
@@ -106,6 +108,7 @@ export default function Home() {
   const [backendResolution, setBackendResolution] = useState<LocalityResolution | null>(null)
   const [locationIntelligence, setLocationIntelligence] = useState<LocationIntelligence | null>(null)
   const [showLocationIntelligence, setShowLocationIntelligence] = useState(false)
+  const [showSurveyResolver, setShowSurveyResolver] = useState(false)
   const [isDropPinMode, setIsDropPinMode] = useState(false)
   const [dropPinMessage, setDropPinMessage] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
@@ -301,6 +304,29 @@ export default function Home() {
     })
     setLocationIntelligence(intelligence)
     setShowLocationIntelligence(true)
+  }
+
+  function handleSurveyResult(result: SurveyResolverResult) {
+    setLocationIntelligence(current => {
+      if (!current) return current
+
+      return {
+        ...current,
+        survey: {
+          ...current.survey,
+          status: result.status === 'possible_match' ? 'possible_match' : 'manual_verification_required',
+          surveyNumber: result.surveyNumber,
+          subdivisionNumber: result.subdivisionNumber,
+          district: result.district,
+          mandal: result.mandal,
+          village: result.village,
+          confidence: result.confidence,
+          message: result.surveyNumber
+            ? 'Survey number captured from user input. Official verification is still required.'
+            : 'Survey details captured. Official verification is still required.',
+        },
+      }
+    })
   }
 
   function persistMapStateToUrl(coords: [number, number], citySlug = selectedCitySlug) {
@@ -557,6 +583,16 @@ export default function Home() {
             intelligence={locationIntelligence}
             open={showLocationIntelligence}
             onClose={() => setShowLocationIntelligence(false)}
+            onOpenSurveyResolver={() => setShowSurveyResolver(true)}
+          />
+        )}
+      {featureFlags.enableLandIdentityFlow &&
+        featureFlags.enableSurveyResolver && (
+          <SurveyResolverPanel
+            open={showSurveyResolver}
+            onClose={() => setShowSurveyResolver(false)}
+            locationIntelligence={locationIntelligence}
+            onSurveyResult={handleSurveyResult}
           />
         )}
 

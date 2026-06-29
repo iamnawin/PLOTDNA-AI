@@ -5,6 +5,7 @@ interface Props {
   intelligence: LocationIntelligence | null
   open: boolean
   onClose?: () => void
+  onOpenSurveyResolver?: () => void
 }
 
 function valueOrFallback(value: string | number | undefined | null, fallback = 'Not available') {
@@ -18,7 +19,7 @@ function coordinates(intelligence: LocationIntelligence) {
   return `${intelligence.lat.toFixed(6)}, ${intelligence.lng.toFixed(6)}`
 }
 
-export default function LocationIntelligencePanel({ intelligence, open, onClose }: Props) {
+export default function LocationIntelligencePanel({ intelligence, open, onClose, onOpenSurveyResolver }: Props) {
   if (!open || !intelligence) return null
 
   const rows = [
@@ -125,6 +126,7 @@ export default function LocationIntelligencePanel({ intelligence, open, onClose 
             <button
               key={action}
               type="button"
+              onClick={action === 'Check Survey Details' ? onOpenSurveyResolver : undefined}
               className="rounded-lg border border-white/10 px-3 py-2 text-xs font-sans font-bold text-slate-300"
             >
               {action}
