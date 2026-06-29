@@ -31,7 +31,7 @@ Phase 3 initial feature work changed:
 
 - `frontend/src/components/forecast/GrowthForecastCard.tsx`
 - `frontend/src/pages/LandDNACardPage.tsx`
-- `frontend/src/lib/forecast/growthForecasts.ts`
+- `frontend/src/lib/forecast/growthForecast.ts`
 - `frontend/src/lib/landDnaCard.ts`
 - `frontend/src/lib/landDnaPlanConfig.ts`
 - related feature-flag, route, and guard scripts
@@ -47,6 +47,7 @@ Latest validated state:
 - `pnpm run test:hyderabad-red-dot-resolution`
 - `pnpm run test:growth-forecast-phase-3a`
 - `pnpm run test:land-dna-card-phase-3b`
+- `pnpm run test:land-dna-card-share-qa`
 - `pnpm run test:founder-pass-phase-3c`
 - `pnpm run test:map-navigation-state`
 - `pnpm run test:hyderabad-production`
@@ -58,6 +59,7 @@ Latest validated state:
 
 Latest pushed commits:
 
+- `2a57be0` - Productize Area Pass sharing
 - `43af7ab` - Simplify mobile survey resolver
 - `8af5570` - Tighten survey resolver validation
 
@@ -76,6 +78,7 @@ Current product behavior:
 - Land DNA Card public links now resolve generated area codes such as `/card/HYD-PXX-070`; existing slug URLs still resolve.
 - Land DNA Card share uses Web Share API with clipboard fallback, and PNG export/download is available as a secondary fallback.
 - Land DNA Card metrics are availability-filtered so unavailable growth placeholders are hidden instead of rendered.
+- Land DNA Card automated share QA covers Peerzadiguda, Yapral, Ameenpur, and Beeramguda sample cards.
 
 Still not built:
 
@@ -261,7 +264,7 @@ TimesFM note:
 
 ## Phase 3B: Land DNA Card Preview / Share URL
 
-Status: implementation complete behind `VITE_ENABLE_LAND_DNA_CARD`; Area Pass redesign, code-based public links, Web Share/copy fallback, PNG download fallback, and availability-filtered dynamic metrics are applied. Remaining work is public preview QA, mobile/share screenshot testing, and real-device PNG/share QA.
+Status: implementation and automated share QA complete behind `VITE_ENABLE_LAND_DNA_CARD`; Area Pass redesign, code-based public links, Web Share/copy fallback, PNG download fallback, and availability-filtered dynamic metrics are applied. Remaining work is public preview QA, mobile/share screenshot testing, and real-device PNG/share QA.
 
 Goal: lightweight shareable Land DNA Card, not a social platform.
 
@@ -308,6 +311,7 @@ Initial share behavior:
 - PNG download fallback.
 - Generated public card code URLs such as `/card/HYD-PXX-070`; old slug URLs remain backwards compatible.
 - Hide unavailable metric blocks. Do not show `Not available yet`, `requires historical data`, `N/A`, or empty placeholder cards on the shared card.
+- Automated sample QA covers Peerzadiguda, Yapral, Ameenpur, and Beeramguda.
 
 ## Phase 3C: Founder Pass Gating
 

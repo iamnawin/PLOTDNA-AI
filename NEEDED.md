@@ -28,11 +28,13 @@ This is the quick handoff for the next model. The detailed source of truth is `d
   - Share uses Web Share API with clipboard fallback.
   - PNG download/export exists as a fallback using the visible card design.
   - Card metrics are availability-filtered so placeholder values like `Not available yet` are not rendered on the shared card.
+  - Automated share QA covers real Hyderabad samples: Peerzadiguda, Yapral, Ameenpur, and Beeramguda.
   - No QR/barcode added.
 - Phase 3C Founder Pass gating initial version is built behind `VITE_ENABLE_FOUNDER_PASS_GATING`.
 
 ## Latest Pushed Commits
 
+- `2a57be0` - Productize Area Pass sharing
 - `43af7ab` - Simplify mobile survey resolver
 - `8af5570` - Tighten survey resolver validation
 
@@ -44,6 +46,7 @@ This is the quick handoff for the next model. The detailed source of truth is `d
 - `pnpm run test:map-navigation-state`
 - `pnpm run test:growth-forecast-phase-3a`
 - `pnpm run test:land-dna-card-phase-3b`
+- `pnpm run test:land-dna-card-share-qa`
 - `pnpm run test:founder-pass-phase-3c`
 - `pnpm run lint`
 - `pnpm run build`
@@ -53,6 +56,7 @@ Earlier phase guards also passed during the phase work:
 - `pnpm run test:hyderabad-red-dot-resolution`
 - `pnpm run test:growth-forecast-phase-3a`
 - `pnpm run test:land-dna-card-phase-3b`
+- `pnpm run test:land-dna-card-share-qa`
 - `pnpm run test:founder-pass-phase-3c`
 
 ## Left / Not Started
