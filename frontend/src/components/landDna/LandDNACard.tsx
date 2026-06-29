@@ -1,6 +1,7 @@
 import { AlertTriangle, ArrowRight, Share2 } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getScoreLabel } from '@/lib/utils'
+import { featureFlags } from '@/lib/features'
 import { getGrowthForecastForArea } from '@/lib/forecast/growthForecast'
 import type { LandDnaAccessState } from '@/lib/founderPass/landDnaPlan'
 import GrowthForecastCard from '@/components/forecast/GrowthForecastCard'
@@ -19,7 +20,7 @@ function riskFromScore(score: number) {
 }
 
 export default function LandDNACard({ area, cityName, accessState, onShare }: Props) {
-  const forecast = getGrowthForecastForArea(area.slug)
+  const forecast = featureFlags.enableGrowthForecastCard ? getGrowthForecastForArea(area.slug) : null
   const risk = riskFromScore(area.score)
   const connectivity = area.livability?.connectivity
   const developmentSignal = area.highlights[0] ?? 'Development signals are available at locality level.'

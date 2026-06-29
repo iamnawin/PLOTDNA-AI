@@ -15,6 +15,10 @@ This is the quick handoff for the next model. The detailed source of truth is `d
 - Landing `Open Map` clears stale coordinate state and opens the map directly.
 - Drop Pin visible label is `Pin Land`; it still preserves Drop Pin accessibility/test contracts.
 - Phase 3A Growth Forecast card initial layer is built behind `VITE_ENABLE_GROWTH_FORECAST_CARD`.
+- Phase 3A Growth Forecast QA pass is complete:
+  - Card is more compact for mobile.
+  - Confidence, risk level, reason, and disclaimer remain visible.
+  - Land DNA Card forecast reuse now also respects `VITE_ENABLE_GROWTH_FORECAST_CARD`.
 - Phase 3B Land DNA Card preview/share URL initial version is built behind `VITE_ENABLE_LAND_DNA_CARD`.
 - Phase 3C Founder Pass gating initial version is built behind `VITE_ENABLE_FOUNDER_PASS_GATING`.
 
@@ -29,6 +33,9 @@ This is the quick handoff for the next model. The detailed source of truth is `d
 - `pnpm run test:land-identity-phase-2a`
 - `pnpm run test:survey-resolver-validation`
 - `pnpm run test:map-navigation-state`
+- `pnpm run test:growth-forecast-phase-3a`
+- `pnpm run test:land-dna-card-phase-3b`
+- `pnpm run test:founder-pass-phase-3c`
 - `pnpm run lint`
 - `pnpm run build`
 
@@ -43,9 +50,8 @@ Earlier phase guards also passed during the phase work:
 
 ### Phase 3A Remaining
 
-- Product/UI QA for Growth Forecast card in the live map/detail flow.
-- Mobile placement review.
 - Replace static/configured forecast payloads only after real data exists.
+- Data-backed forecast sourcing remains blocked until clean historical price/time-series data exists.
 
 ### Phase 3B Remaining
 

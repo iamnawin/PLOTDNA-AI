@@ -70,6 +70,8 @@ Current product behavior:
 - Survey Resolver marks captured clues as manual verification required only.
 - Survey Resolver rejects obvious mismatches such as `Survey number` + `PB-773820`.
 - `Khata / passbook number` accepts values such as `PB-773820`.
+- Growth Forecast card is compacted for mobile and remains behind `VITE_ENABLE_GROWTH_FORECAST_CARD`.
+- Land DNA Card forecast reuse also respects `VITE_ENABLE_GROWTH_FORECAST_CARD`.
 
 Still not built:
 
@@ -189,7 +191,7 @@ Acceptance criteria:
 
 ## Phase 3A: Growth Forecast Card
 
-Status: initial implementation complete behind `VITE_ENABLE_GROWTH_FORECAST_CARD`. Remaining work is product QA, mobile placement review, and data-backed forecast sourcing.
+Status: initial implementation and UI/flag QA complete behind `VITE_ENABLE_GROWTH_FORECAST_CARD`. Remaining work is data-backed forecast sourcing after historical price/time-series data exists.
 
 Goal: add a separate, reusable Growth Forecast card below Location Intelligence / PlotDNA Score and later inside Land DNA Card.
 

@@ -19,7 +19,8 @@ const card = read('src/components/forecast/GrowthForecastCard.tsx')
 const forecast = read('src/lib/forecast/growthForecast.ts')
 const scoreCard = read('src/components/score/ScoreCard.tsx')
 const plotAnalysisCard = read('src/components/score/PlotAnalysisCard.tsx')
-const combinedNewSurface = [card, forecast, scoreCard, plotAnalysisCard].join('\n')
+const landDnaCard = read('src/components/landDna/LandDNACard.tsx')
+const combinedNewSurface = [card, forecast, scoreCard, plotAnalysisCard, landDnaCard].join('\n')
 
 assert(
   features.includes('enableGrowthForecastCard: fromEnv("VITE_ENABLE_GROWTH_FORECAST_CARD")'),
@@ -32,6 +33,7 @@ assert(forecast.includes('not a guaranteed return'), 'forecast disclaimer must r
 assert(forecast.includes('getGrowthForecastForArea') && forecast.includes('return forecast?.forecast_available ? forecast : null'), 'helper must return null when forecast is unavailable')
 assert(scoreCard.includes('featureFlags.enableGrowthForecastCard') && scoreCard.includes('getGrowthForecastForArea(area.slug)'), 'ScoreCard must gate forecast by feature flag and explicit area payload')
 assert(plotAnalysisCard.includes('featureFlags.enableGrowthForecastCard') && plotAnalysisCard.includes('getGrowthForecastForArea(staticArea.slug)'), 'PlotAnalysisCard must gate forecast by feature flag and explicit area payload')
+assert(landDnaCard.includes('featureFlags.enableGrowthForecastCard') && landDnaCard.includes('getGrowthForecastForArea(area.slug)'), 'LandDNACard must also gate forecast reuse by Growth Forecast feature flag')
 assert(!/TimesFM|timesfm/i.test(combinedNewSurface), 'Phase 3A must not integrate TimesFM')
 assert(!/Market Forecast/.test(combinedNewSurface), 'user-facing copy must not say Market Forecast')
 assert(!/Momentum/.test(combinedNewSurface), 'user-facing copy must not say Momentum')

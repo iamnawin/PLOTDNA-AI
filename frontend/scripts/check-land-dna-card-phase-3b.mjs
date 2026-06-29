@@ -30,6 +30,7 @@ assert(app.includes('/card/:shareSlug') && app.includes('featureFlags.enableLand
 assert(page.includes('navigator.share') && page.includes('navigator.clipboard.writeText'), 'share page must use Web Share API with copy fallback')
 assert(card.includes('PlotDNA Score') && card.includes('Risk Level'), 'card must show score and risk')
 assert(card.includes('GrowthForecastCard'), 'card must reuse GrowthForecastCard when forecast is available')
+assert(card.includes('featureFlags.enableGrowthForecastCard'), 'card forecast reuse must respect the Growth Forecast feature flag')
 assert(card.includes('Connectivity signal') && card.includes('Nearby development signal'), 'card must include required signal sections')
 assert(card.includes('PlotDNA provides location intelligence signals, not legal/title/approval certification'), 'card must include caution line')
 assert(card.includes('Unlock Founder Pass - Rs 99 Lifetime Early Access'), 'card must include Founder Pass CTA copy')
