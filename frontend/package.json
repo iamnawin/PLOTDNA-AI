@@ -19,6 +19,7 @@
     "test:land-identity-phase-1b": "node scripts/check-land-identity-phase-1b.mjs",
     "test:land-identity-phase-1c": "node scripts/check-land-identity-phase-1c.mjs",
     "test:land-identity-phase-2a": "node scripts/check-land-identity-phase-2a.mjs",
+    "test:survey-resolver-validation": "node --experimental-strip-types scripts/check-survey-resolver-validation.mjs",
     "test:landing-rollout-copy": "node scripts/check-landing-rollout-copy.mjs",
     "test:area-report-loader": "node scripts/check-area-report-loader.mjs",
     "test:dna-preloader-timing": "node scripts/check-dna-preloader-timing.mjs",

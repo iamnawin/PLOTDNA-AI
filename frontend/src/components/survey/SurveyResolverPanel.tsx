@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { X } from 'lucide-react'
 import {
   resolveSurveyFromUserInput,
+  validateSurveyLandDetail,
   type SurveyResolverResult,
 } from '@/lib/landIdentity/surveyResolver'
 import type { LocationIntelligence } from '@/lib/landIdentity/types'
@@ -22,14 +23,6 @@ const DETAIL_TYPES = [
   'Document reference',
 ]
 
-const NUMBER_DETAIL_TYPES = new Set([
-  'Survey number',
-  'Plot number',
-  'Land number',
-  'Khata / passbook number',
-  'Document reference',
-])
-
 export default function SurveyResolverPanel({ open, onClose, locationIntelligence, onSurveyResult }: Props) {
   const [selectedType, setSelectedType] = useState('Survey number')
   const [landDetail, setLandDetail] = useState('')
@@ -42,7 +35,7 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
   const lat = locationIntelligence?.lat
   const lng = locationIntelligence?.lng
   const hasPin = typeof lat === 'number' && typeof lng === 'number'
-  const detailValidation = validateLandDetail(selectedType, landDetail)
+  const detailValidation = validateSurveyLandDetail(selectedType, landDetail)
   const canSubmit = detailValidation.valid || localityNote.trim().length > 0 || hasPin
 
   function selectType(type: string) {
@@ -188,28 +181,6 @@ export default function SurveyResolverPanel({ open, onClose, locationIntelligenc
       </p>
     </aside>
   )
-}
-
-function validateLandDetail(type: string, value: string) {
-  const trimmed = value.trim()
-
-  if (!trimmed) {
-    return { valid: false, message: 'Enter the number/name you have, or keep only the pin/locality context.' }
-  }
-
-  if (trimmed.length < 2) {
-    return { valid: false, message: 'Enter a complete land detail before marking verification required.' }
-  }
-
-  if (NUMBER_DETAIL_TYPES.has(type) && !/\d/.test(trimmed)) {
-    return { valid: false, message: 'For this detail type, enter a number such as a survey, plot, land, khata, or document number.' }
-  }
-
-  if (!/[a-z0-9]/i.test(trimmed)) {
-    return { valid: false, message: 'Enter a usable number or name, not symbols only.' }
-  }
-
-  return { valid: true, message: '' }
 }
 
 function TextField({
