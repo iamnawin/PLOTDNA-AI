@@ -65,6 +65,7 @@ Latest validated state:
 
 Latest pushed commits:
 
+- `390c9fa` - Add Phase 3 live QA checklist
 - `99c4938` - Harden Founder Pass entitlement QA
 - `53c7714` - Harden Area Pass share QA
 - `2a57be0` - Productize Area Pass sharing
