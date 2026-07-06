@@ -28,7 +28,7 @@ import { getGrowthMilestones, getOutlook } from '@/lib/plotAnalysis'
 import { getAreaSources, SOURCE_TYPE_COLOR, SOURCE_TYPE_LABEL } from '@/lib/areaSources'
 import { getAlternativeAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
 import { getConfidenceMeta } from '@/lib/cityProduction'
-import { BUYER_DUE_DILIGENCE_CHECKLIST, getInvestmentReportSummary } from '@/lib/investmentReport'
+import { BUYER_DUE_DILIGENCE_CHECKLIST } from '@/lib/investmentReport'
 import { buildCustomBuyerVerificationBrief, type BuyerBriefInput } from '@/lib/customBuyerBrief'
 import { trackEvent } from '@/lib/analytics'
 import type { ReportPackage } from '@/lib/paymentLinks'
@@ -36,6 +36,14 @@ import { createReportPaymentLink } from '@/lib/api'
 import { checkReportAccess, getCachedEntitlements, trackUserEvent } from '@/lib/entitlements'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
 import type { Livability, Signals } from '@/types'
+import { featureFlags } from '@/lib/features'
+import { getLandDnaCardPathForArea } from '@/lib/landDnaCard'
+import { buildLocationDNAViewModel } from '@/lib/locationDnaViewModel'
+import DNAVerdictCard from '@/components/dna/DNAVerdictCard'
+import { SignalCardList } from '@/components/dna/SignalCard'
+import RecommendationPanel from '@/components/dna/RecommendationPanel'
+import RiskCheckSection from '@/components/dna/RiskCheckSection'
+import EvidenceMapSection from '@/components/dna/EvidenceMapSection'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SatelliteCompare from '@/components/ui/SatelliteCompare'
 import VerdictCard from '@/components/ui/VerdictCard'
@@ -2056,7 +2064,6 @@ export default function AreaDetail() {
   }
 
   const color = getScoreColor(area.score)
-  const label = getScoreLabel(area.score)
   const r = 70
   const circumference = 2 * Math.PI * r
   const dashOffset = circumference - (area.score / 100) * circumference
@@ -2075,10 +2082,6 @@ export default function AreaDetail() {
     : area.dataConfidence
   const isTimedPreviewLocked = reportPreviewLocked && reportPreviewLockedAreaSlug === area.slug && !reportAccessUnlocked
   const confidenceMeta = getConfidenceMeta(displayedConfidence)
-  const reportSummary = getInvestmentReportSummary({
-    ...area,
-    dataConfidence: displayedConfidence,
-  })
   const dataBasis = [
     'Catalog profile',
     'OSM proximity signals where available',
@@ -2163,6 +2166,12 @@ export default function AreaDetail() {
   // Nearby areas — same city only, ±15 DNA score range
   const nearby = getAlternativeAreas(cityEntry?.areas ?? [], area, recommendationGoal, 4)
   const goalMeta = getRecommendationGoalMeta(recommendationGoal)
+  const dnaViewModel = buildLocationDNAViewModel(area, {
+    cityName,
+    citySlug,
+    confidence: displayedConfidence,
+    mapHref: getMapReturnPath(),
+  })
   const assistantContext = {
     page: 'area' as const,
     citySlug,
@@ -2313,60 +2322,28 @@ export default function AreaDetail() {
               </div>
             </div>
 
-            <div
-              className="mt-6 p-4 rounded-2xl glass-panel relative overflow-hidden"
-              style={{ borderLeft: `4px solid ${color}` }}
-            >
-              <p className="text-xl font-display font-extrabold" style={{ color }}>{label}</p>
-              <p className="text-xs font-sans text-slate-400 mt-1">Investment outlook for this micro-market</p>
-            </div>
+            <DNAVerdictCard
+              viewModel={dnaViewModel}
+              onViewWhy={() =>
+                document.getElementById('area-feature-verdict')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }
+              onOpenEvidenceMap={() => navigate(getMapReturnPath())}
+              onGenerateCard={featureFlags.enableLandDnaCard ? () => navigate(getLandDnaCardPathForArea(area)) : undefined}
+              onCompare={() => navigate(getMapReturnPath())}
+            />
 
-            <section
-              aria-label="Investment report summary"
-              className="mt-4 rounded-2xl glass-panel-light border border-white/5 p-4"
-            >
-              <div className="flex flex-wrap items-center gap-2">
-                <span
-                  className="rounded-full px-2.5 py-1 text-[10px] font-sans font-bold uppercase tracking-[0.12em]"
-                  style={{ color, background: `${color}1f`, border: `1px solid ${color}40` }}
-                >
-                  {reportSummary.verdict}
-                </span>
-                <span className="text-[11px] font-sans font-semibold text-slate-300">
-                  {reportSummary.bestFor}
-                </span>
-              </div>
+            <SignalCardList signals={dnaViewModel.signals} />
 
-              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
-                <div>
-                  <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Main upside</p>
-                  <p className="mt-1 text-[12px] font-sans leading-relaxed text-slate-300">{reportSummary.mainUpside}</p>
-                </div>
-                <div>
-                  <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Main risk</p>
-                  <p className="mt-1 text-[12px] font-sans leading-relaxed text-slate-300">{reportSummary.mainRisk}</p>
-                </div>
-                <div>
-                  <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Next verification</p>
-                  <p className="mt-1 text-[12px] font-sans leading-relaxed text-slate-300">{reportSummary.nextVerification}</p>
-                </div>
-              </div>
+            <RecommendationPanel recommendation={dnaViewModel.recommendation} />
 
-              <div className="mt-4 flex flex-wrap gap-2">
-                {dataBasis.map(item => (
-                  <span
-                    key={item}
-                    className="rounded-full border border-white/5 bg-white/[0.03] px-2.5 py-1 text-[10px] font-sans text-slate-400"
-                  >
-                    {item}
-                  </span>
-                ))}
-              </div>
+            <EvidenceMapSection mapEvidence={dnaViewModel.mapEvidence} onOpenMap={() => navigate(getMapReturnPath())} />
 
-              <p className="mt-4 text-[11px] font-sans leading-relaxed text-slate-500">
-                Full printable evidence and checklist unlock with the Rs 99 lifetime report.
-              </p>
-            </section>
+            <RiskCheckSection risks={dnaViewModel.risks} />
+
+            <p className="mt-1 mb-4 text-[10px] font-sans leading-relaxed text-slate-600">
+              Data basis: {dataBasis.join(' · ')}. Full printable evidence and checklist unlock with the Rs 99 lifetime
+              report.
+            </p>
 
             <section
               id="area-feature-compare"
@@ -2591,6 +2568,11 @@ export default function AreaDetail() {
 
         {/* Full DNA report sections */}
         <div className="relative mt-8">
+          <div className="mb-6 flex items-center gap-2">
+            <div className="h-px flex-1 bg-white/5" />
+            <p className="text-[10px] font-sans font-bold uppercase tracking-[0.2em] text-slate-500">Full Report</p>
+            <div className="h-px flex-1 bg-white/5" />
+          </div>
           <div className="transition-all duration-500">
             {/* ── AI Verdict ── */}
             <motion.div
