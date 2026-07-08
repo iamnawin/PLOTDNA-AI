@@ -17,9 +17,12 @@ assert(compare.includes('isSafeReturnPath'), 'compare page must sanitize return 
 assert(compare.includes('const dnaReturnPath ='), 'compare page must compute a full DNA return path')
 assert(compare.includes("`/area/${selectedAreas[0]?.slug ?? 'adibatla'}`"), 'compare page must fall back to the first compared full DNA page')
 assert(compare.includes('navigate(dnaReturnPath)'), 'compare page back and close actions must return to the full DNA page')
-assert(compare.includes('aria-label="Close comparison and return to full DNA report"'), 'compare page must expose an accessible close button')
+assert(compare.includes('aria-label="Close comparison and return to verdict"'), 'compare page must expose an accessible close button')
 assert(compare.includes('<X size={15} />'), 'compare close control must render the cross icon')
 assert(!compare.includes("onClick={() => navigate('/')}"), 'compare page must not send back navigation to the landing/home screen')
 assert(!compare.includes('to="/map"'), 'compare page top-right control must not force users to the map when closing comparison')
+assert(compare.includes('Which area is better for my money?'), 'compare page must use the buyer decision framing')
+assert(compare.includes('Generate Area Pass'), 'compare page must bridge to the Area Pass screen')
+assert(compare.includes('PlotDNA compare footer navigation'), 'compare page must include bottom app navigation')
 
 console.log('Compare return navigation check passed.')

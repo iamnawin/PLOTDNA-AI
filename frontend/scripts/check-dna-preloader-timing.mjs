@@ -20,8 +20,8 @@ assert(completionDelayMatch, 'loader must use a named COMPLETE_DELAY_MS timing c
 const stepDuration = Number(stepDurationMatch[1])
 const completionDelay = Number(completionDelayMatch[1])
 
-assert(stepDuration >= 1100, 'each loader message must stay visible long enough to read')
-assert(completionDelay >= 450, 'final loader state must not disappear immediately')
+assert(stepDuration >= 350 && stepDuration <= 650, 'loader should move quickly between short transition states')
+assert(completionDelay >= 80 && completionDelay <= 220, 'final loader state should hand off quickly')
 assert(preloader.includes('window.setInterval'), 'loader must continue to advance through DNA steps')
 assert(preloader.includes('STEP_READ_MS'), 'loader interval must use the readable step timing constant')
 assert(preloader.includes('COMPLETE_DELAY_MS'), 'loader completion must use the readable completion delay constant')

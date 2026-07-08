@@ -1,0 +1,1744 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-03",
+  "citySlug": "hyderabad",
+  "purpose": "promotion review report for Hyderabad pending context cells",
+  "promotionPolicy": "Promote only rows with every required evidence item verified; this report never assigns scores.",
+  "requiredEvidence": [
+    "official_boundary",
+    "price_band",
+    "rera_activity",
+    "infrastructure",
+    "satellite_growth",
+    "employment",
+    "government_scheme"
+  ],
+  "summary": {
+    "pendingContextCellCount": 75,
+    "promotionReadyCount": 0,
+    "blockedCount": 75,
+    "verifiedEvidenceCounts": {
+      "official_boundary": 75,
+      "price_band": 41,
+      "rera_activity": 0,
+      "infrastructure": 2,
+      "satellite_growth": 0,
+      "employment": 0,
+      "government_scheme": 0
+    },
+    "missingEvidenceCounts": {
+      "official_boundary": 0,
+      "price_band": 34,
+      "rera_activity": 75,
+      "infrastructure": 73,
+      "satellite_growth": 75,
+      "employment": 75,
+      "government_scheme": 75
+    }
+  },
+  "promotionReadyRows": [],
+  "nextBestEvidenceRows": [
+    {
+      "slug": "ctx-farooqnagar-west",
+      "name": "Farooqnagar West",
+      "officialMatchLabel": "Agiryal / Kondurg / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 3,
+      "missingEvidenceCount": 4,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band",
+        "infrastructure"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-ankral-660553458",
+      "name": "Ankral",
+      "officialMatchLabel": "Julur / B.Pochampally / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-aushapur-662734738",
+      "name": "Aushapur",
+      "officialMatchLabel": "Jameelapet / Bibinagar / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-aziznagar",
+      "name": "Aziznagar",
+      "officialMatchLabel": "Himayathnagar / Moinabad / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-bandaravirala-660551588",
+      "name": "Bandaravirala",
+      "officialMatchLabel": "Edulabad / Ghatkesar / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-batasingaram",
+      "name": "Batasingaram",
+      "officialMatchLabel": "Batasingaram / Abdullapurmet / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-bongloor",
+      "name": "Bongloor",
+      "officialMatchLabel": "KongaraKalan / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-burgula",
+      "name": "Burgula",
+      "officialMatchLabel": "Gunded / Balanagar / Mahabubnagar",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "infrastructure"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-chakrampally-1291368180",
+      "name": "Chakrampally",
+      "officialMatchLabel": "Cheemaldari / Mominpet / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-chaudergudem",
+      "name": "Chaudergudem",
+      "officialMatchLabel": "Kankal / Pudur / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    }
+  ],
+  "areaPromotionRows": [
+    {
+      "slug": "ctx-farooqnagar-west",
+      "name": "Farooqnagar West",
+      "officialMatchLabel": "Agiryal / Kondurg / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 3,
+      "missingEvidenceCount": 4,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band",
+        "infrastructure"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-ankral-660553458",
+      "name": "Ankral",
+      "officialMatchLabel": "Julur / B.Pochampally / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-aushapur-662734738",
+      "name": "Aushapur",
+      "officialMatchLabel": "Jameelapet / Bibinagar / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-aziznagar",
+      "name": "Aziznagar",
+      "officialMatchLabel": "Himayathnagar / Moinabad / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-bandaravirala-660551588",
+      "name": "Bandaravirala",
+      "officialMatchLabel": "Edulabad / Ghatkesar / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-batasingaram",
+      "name": "Batasingaram",
+      "officialMatchLabel": "Batasingaram / Abdullapurmet / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-bongloor",
+      "name": "Bongloor",
+      "officialMatchLabel": "KongaraKalan / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-burgula",
+      "name": "Burgula",
+      "officialMatchLabel": "Gunded / Balanagar / Mahabubnagar",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "infrastructure"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-chakrampally-1291368180",
+      "name": "Chakrampally",
+      "officialMatchLabel": "Cheemaldari / Mominpet / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-chaudergudem",
+      "name": "Chaudergudem",
+      "officialMatchLabel": "Kankal / Pudur / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-chegur",
+      "name": "Chegur",
+      "officialMatchLabel": "Mallapur / Kothur / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-chilkur",
+      "name": "Chilkur",
+      "officialMatchLabel": "Gandipet / Gandipet / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-choutuppal",
+      "name": "Choutuppal",
+      "officialMatchLabel": "Choutuppal / Choutuppal / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-dandumalkapur",
+      "name": "Dandumalkapur",
+      "officialMatchLabel": "Rachakonda / Narayanapoor / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-doma",
+      "name": "Doma",
+      "officialMatchLabel": "Barkatpalle / Pargi / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-elkatta",
+      "name": "Elkatta",
+      "officialMatchLabel": "Shabad / Shabad / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-gajwel-south",
+      "name": "Gajwel South",
+      "officialMatchLabel": "Karkapatla / Markook / Siddipet",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-girmapur",
+      "name": "Girmapur",
+      "officialMatchLabel": "Domadugu / Gummadidala / Sangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-hydernagar-1428934700",
+      "name": "Hydernagar",
+      "officialMatchLabel": "Hydernagar / Kukatpally / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-inmulnarva",
+      "name": "Inmulnarva",
+      "officialMatchLabel": "Kodicherla / Kothur / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-kadthal",
+      "name": "Kadthal",
+      "officialMatchLabel": "Kadthal / Kadthal / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-kammadanam",
+      "name": "Kammadanam",
+      "officialMatchLabel": "Kammadanam / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-kandukur-rangareddy",
+      "name": "Kandukur Rangareddy",
+      "officialMatchLabel": "Nednur / Kandukur / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-keshampet",
+      "name": "Keshampet",
+      "officialMatchLabel": "Mutpoor / Kondurg / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-kondannaguda",
+      "name": "Kondannaguda",
+      "officialMatchLabel": "Kondannaguda / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-kondurg",
+      "name": "Kondurg",
+      "officialMatchLabel": "Padmaram / Chowdergudem / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-lemur",
+      "name": "Lemur",
+      "officialMatchLabel": "Rachloor / Kandukur / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-madhurapur-shadnagar",
+      "name": "Madhurapur Shadnagar",
+      "officialMatchLabel": "Pomalpalle / Keshampeta / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-malkapur-571358646",
+      "name": "Malkapur",
+      "officialMatchLabel": "Malkapur / Choutuppal / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-mekaguda",
+      "name": "Mekaguda",
+      "officialMatchLabel": "Nandigama / Nandigama / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-mogiligidda",
+      "name": "Mogiligidda",
+      "officialMatchLabel": "Mogalagidda / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-mucharla",
+      "name": "Mucharla",
+      "officialMatchLabel": "Nandiwanaparthy / Yacharam / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-pargi-road-shadnagar",
+      "name": "Pargi Road Shadnagar",
+      "officialMatchLabel": "Hajipalle / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-peddakaparthy",
+      "name": "Peddakaparthy",
+      "officialMatchLabel": "Nelapatla / Choutuppal / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-pillai-palle-660552232",
+      "name": "Pillai Palle",
+      "officialMatchLabel": "JagatthPalle / B.Pochampally / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-pocharam-ibrahimpatnam",
+      "name": "Pocharam Ibrahimpatnam",
+      "officialMatchLabel": "Kappapahad / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-pulkal-west",
+      "name": "Pulkal West",
+      "officialMatchLabel": "Pulkal / Pulkal / Sangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-raipole",
+      "name": "Raipole",
+      "officialMatchLabel": "Arutla / Manchal / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-sangam-245639412",
+      "name": "Sangam",
+      "officialMatchLabel": "Eklaskhampeta / Keshampeta / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-solipur",
+      "name": "Solipur",
+      "officialMatchLabel": "Ananthawaram / Shabad / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-talakondapally",
+      "name": "Talakondapally",
+      "officialMatchLabel": "Makthamadharam / Kadthal / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-valigonda-245640522",
+      "name": "Valigonda",
+      "officialMatchLabel": "Redlarepaka / Valigonda / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 2,
+      "missingEvidenceCount": 5,
+      "verifiedEvidence": [
+        "official_boundary",
+        "price_band"
+      ],
+      "missingEvidence": [
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-ananthagiri-hills",
+      "name": "Ananthagiri Hills",
+      "officialMatchLabel": "Forest / Vikarabad / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-andole-south",
+      "name": "Andole South",
+      "officialMatchLabel": "Koniyal / Hathnoora / Sangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-bibinagar-east",
+      "name": "Bibinagar East",
+      "officialMatchLabel": "Anajipuram / Bhongiri / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-chitkul",
+      "name": "Chitkul",
+      "officialMatchLabel": "Muthangi / Patancheruvu / Sangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-elikatta-south",
+      "name": "Elikatta South",
+      "officialMatchLabel": "Krishnanagar / Farooqnagar / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-gandimaisamma-571350232",
+      "name": "Gandimaisamma",
+      "officialMatchLabel": "Dommarapochampally / Dundigal_Gandimaisamma / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-ghatkesar-east",
+      "name": "Ghatkesar East",
+      "officialMatchLabel": "Raghavapuram / Bibinagar / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-gorelli-660146124",
+      "name": "Gorelli",
+      "officialMatchLabel": "Gowrelly / Abdullapurmet / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-kandlakoya",
+      "name": "Kandlakoya",
+      "officialMatchLabel": "Gowdavelli / Medchal / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-kardhanur",
+      "name": "Kardhanur",
+      "officialMatchLabel": "Bandalguda / Ramachandrapuram / Sangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-kongara-kalan",
+      "name": "Kongara Kalan",
+      "officialMatchLabel": "Ibrahimpatnam(Khalsa) / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-kotepalli-245640512",
+      "name": "Kotepalli",
+      "officialMatchLabel": "Kotepally / Kotepally / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-kuntloor-981868945",
+      "name": "Kuntloor",
+      "officialMatchLabel": "PeddaAmberpet / Abdullapurmet / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-maisammaguda",
+      "name": "Maisammaguda",
+      "officialMatchLabel": "Bahadurpally / Dundigal_Gandimaisamma / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-mangalpally",
+      "name": "Mangalpally",
+      "officialMatchLabel": "Ibrahimpatnam(Khalsa) / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-manneguda",
+      "name": "Manneguda",
+      "officialMatchLabel": "Naganpally / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-manoharabad",
+      "name": "Manoharabad",
+      "officialMatchLabel": "Gangaipally / Shivampet / Medak",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-mansanpally",
+      "name": "Mansanpally",
+      "officialMatchLabel": "Rampur / Dharoor / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-mansanpally-maheshwaram",
+      "name": "Mansanpally Maheshwaram",
+      "officialMatchLabel": "Ghatpalle / Maheswaram / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-nallavalli",
+      "name": "Nallavalli",
+      "officialMatchLabel": "Lakdaram / Patancheruvu / Sangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-narayanpur-245639706",
+      "name": "Narayanpur",
+      "officialMatchLabel": "Narayanapoor / Narayanapoor / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-narsapur-road",
+      "name": "Narsapur Road",
+      "officialMatchLabel": "Nallavally / Gummadidala / Sangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-pragnapur",
+      "name": "Pragnapur",
+      "officialMatchLabel": "Tunkikhalsa / Wargal / Siddipet",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-pudur-vikarabad",
+      "name": "Pudur Vikarabad",
+      "officialMatchLabel": "Kacharam / Dharoor / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-ravalkole",
+      "name": "Ravalkole",
+      "officialMatchLabel": "Ravalkole / Medchal / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-rayagiri-245641025",
+      "name": "Rayagiri",
+      "officialMatchLabel": "Kesaram / Bhongiri / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-sadasivpet-west",
+      "name": "Sadasivpet West",
+      "officialMatchLabel": "Munipally / Munipally / Sangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-sheriguda",
+      "name": "Sheriguda",
+      "officialMatchLabel": "Ibrahimpatnam(Khalsa) / Ibrahimpatnam / Rangareddy",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-shivampet-east",
+      "name": "Shivampet East",
+      "officialMatchLabel": "Bandamadaram / Medchal / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "osm-vasanth-nagar-1428934704",
+      "name": "Vasanth Nagar",
+      "officialMatchLabel": "KPHBColony-0117 / Kukatpally / Medchal_Malkajgiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-wargal",
+      "name": "Wargal",
+      "officialMatchLabel": "ChillaSagar / Mulug / Siddipet",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-yadagirigutta",
+      "name": "Yadagirigutta",
+      "officialMatchLabel": "Jangampally / Yadagirigutta / Yadadri Bhuvanagiri",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    },
+    {
+      "slug": "ctx-yenkepally",
+      "name": "Yenkepally",
+      "officialMatchLabel": "Mothkupally / Kotepally / Vikarabad",
+      "promotionReady": false,
+      "verifiedEvidenceCount": 1,
+      "missingEvidenceCount": 6,
+      "verifiedEvidence": [
+        "official_boundary"
+      ],
+      "missingEvidence": [
+        "price_band",
+        "rera_activity",
+        "infrastructure",
+        "satellite_growth",
+        "employment",
+        "government_scheme"
+      ],
+      "nextAction": "Keep blocked; do not assign a PlotDNA score until every missing evidence deck is verified."
+    }
+  ]
+}

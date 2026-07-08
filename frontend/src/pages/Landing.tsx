@@ -3,52 +3,52 @@ import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Search, ChevronRight, Navigation, Zap, Map, TrendingUp,
-  Shield, Activity, X, Clock, Satellite, Building2, AlertTriangle,
-  ArrowRight, Paperclip, Link2, Users,
+  Shield, Activity, X, Paperclip, Link2, MapPin, IndianRupee, FileSearch,
+  CheckCircle2,
 } from 'lucide-react'
 import { useAppStore } from '@/store'
-import { CITY_LIST, CITIES } from '@/data/cities'
-import type { MicroMarket, RecommendationGoal } from '@/types'
+import { CITIES } from '@/data/cities'
+import type { MicroMarket } from '@/types'
 import { getScoreColor } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { resolveMapLink, analyzeBrochure, resolveLocation } from '@/lib/api'
-import { getGoalTopAreas, getRecommendationGoalMeta } from '@/lib/recommendations'
-import { getCityProductionProfile } from '@/lib/cityProduction'
 import { trackEvent } from '@/lib/analytics'
-import { getPublicMetrics, trackUserEvent, type PublicMetricsResponse } from '@/lib/entitlements'
+import { trackUserEvent } from '@/lib/entitlements'
 import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
 
-const MIN_LIVE_NOW_COUNT = 143
 const LAST_MAP_STATE_KEY = 'plotdna:last-map-state'
 
-const FEATURE_CARDS = [
-  {
-    icon: Activity,
-    title: 'Coordinate-level context',
-    desc: 'Analyze a location using infrastructure, RERA, satellite, price, and growth signals.',
-  },
-  {
-    icon: Map,
-    title: 'City polygon maps',
-    desc: 'Open supported city maps and inspect locality-level market boundaries.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Past, present, future view',
-    desc: 'Understand what changed, what matters now, and where the area may be heading.',
-  },
-  {
-    icon: Shield,
-    title: 'Due diligence starter',
-    desc: 'Quickly classify locations into Good Growth, Moderate, Watchlist, or High Risk.',
-  },
+const BUYER_QUESTIONS = [
+  { icon: Shield, title: 'Can I lose money here?', desc: 'Spot risk before it is too late.', color: '#fb7185' },
+  { icon: TrendingUp, title: 'Is this area growing?', desc: 'See growth signs that matter.', color: '#22c55e' },
+  { icon: IndianRupee, title: 'Is the broker price too high?', desc: 'Check fair value with local data.', color: '#f59e0b' },
+  { icon: FileSearch, title: 'What should I verify before paying token?', desc: 'Know the must-check list.', color: '#a78bfa' },
 ]
+
+const JOURNEY_STEPS = [
+  { icon: Search, label: 'Check' },
+  { icon: Shield, label: 'Verdict' },
+  { icon: IndianRupee, label: 'Money' },
+  { icon: Map, label: 'Map' },
+  { icon: Activity, label: 'Compare' },
+  { icon: FileSearch, label: 'Pass' },
+]
+
+type SelectedLandInput = {
+  source: 'search' | 'google_maps_link' | 'locate_me' | 'drop_pin' | 'brochure'
+  rawInput?: string
+  lat?: number
+  lng?: number
+  areaName?: string
+  city?: string
+  area?: MicroMarket & { citySlug: string }
+  isReadyToCheck: boolean
+  statusMessage: string
+}
 
 export default function Landing() {
   const navigate  = useNavigate()
   const {
-    recommendationGoal,
-    setRecommendationGoal,
     setSelectedArea,
     setSearchCoords,
     setSelectedCitySlug,
@@ -56,14 +56,13 @@ export default function Landing() {
 
   const [query, setQuery]             = useState('')
   const [focused, setFocused]         = useState(false)
-  const [activeCity, setActiveCity]   = useState('hyderabad')
   const [resolving, setResolving]     = useState(false)
   const [brochureLoading, setBrochureLoading] = useState(false)
   const [locating, setLocating]       = useState(false)
   const [inputError, setInputError]   = useState('')
+  const [selectedLandInput, setSelectedLandInput] = useState<SelectedLandInput | null>(null)
   const [dnaLoading, setDnaLoading]   = useState(false)
   const [dnaLoaderRunId, setDnaLoaderRunId] = useState(0)
-  const [liveMetrics, setLiveMetrics] = useState<PublicMetricsResponse | null>(null)
   const inputRef      = useRef<HTMLInputElement>(null)
   const fileInputRef  = useRef<HTMLInputElement>(null)
   const pendingNavRef = useRef<(() => void) | null>(null)
@@ -86,9 +85,7 @@ export default function Landing() {
   )
   useEffect(() => {
     trackEvent('landing_viewed', { source: 'landing' })
-    void trackUserEvent({ eventType: 'landing_viewed' }).then(() => {
-      void getPublicMetrics().then(setLiveMetrics)
-    })
+    void trackUserEvent({ eventType: 'landing_viewed' })
   }, [])
 
   const parsedCoords  = parseCoords(query)
@@ -101,11 +98,57 @@ export default function Landing() {
     ? allAreas.filter(a => a.name.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
     : []
   const showDropdown = focused && (results.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
+  const canCheckLand = selectedLandInput?.isReadyToCheck === true && !resolving && !brochureLoading && !locating
 
   function goToArea(area: MicroMarket & { citySlug: string }) {
     setSelectedCitySlug(area.citySlug)
     setSelectedArea(area)
     navigate(`/area/${area.slug}`)
+  }
+
+  function getCoordPreview(coords: [number, number]) {
+    const localAnalysis = findNearestArea(coords[0], coords[1])
+    return {
+      areaName: localAnalysis.area?.name ?? localAnalysis.displayLabel ?? 'Exact coordinates',
+      city: localAnalysis.citySlug ? (CITIES[localAnalysis.citySlug]?.meta.name ?? localAnalysis.citySlug) : activeCityEntry.meta.name,
+    }
+  }
+
+  function selectAreaForCheck(area: MicroMarket & { citySlug: string }) {
+    setSelectedLandInput({
+      source: 'search',
+      rawInput: area.name,
+      areaName: area.name,
+      city: CITIES[area.citySlug]?.meta.name ?? area.citySlug,
+      area,
+      isReadyToCheck: true,
+      statusMessage: 'Area selected. Click Check My Land to continue.',
+    })
+    setQuery(area.name)
+    setInputError('')
+    setFocused(false)
+  }
+
+  function selectCoordsForCheck(
+    coords: [number, number],
+    source: SelectedLandInput['source'],
+    rawInput: string,
+    statusMessage: string,
+  ) {
+    const preview = getCoordPreview(coords)
+    setSelectedLandInput({
+      source,
+      rawInput,
+      lat: coords[0],
+      lng: coords[1],
+      areaName: preview.areaName,
+      city: preview.city,
+      isReadyToCheck: true,
+      statusMessage,
+    })
+    setQuery(`${coords[0].toFixed(6)}, ${coords[1].toFixed(6)}`)
+    setInputError('')
+    setFocused(false)
   }
 
   function goToCoords(coords: [number, number]) {
@@ -151,13 +194,26 @@ export default function Landing() {
 
   async function handleEnter() {
     setInputError('')
-    if (parsedCoords) { goToCoords(parsedCoords); return }
-    if (parsedMapUrl) { goToCoords(parsedMapUrl); return }
+    if (!query.trim()) {
+      setInputError('Select land first. Search an area, paste a Google Maps link, use Locate Me, or drop a pin.')
+      return
+    }
+    if (parsedCoords) {
+      selectCoordsForCheck(parsedCoords, 'search', query.trim(), 'Coordinates found. Click Check My Land to continue.')
+      return
+    }
+    if (parsedMapUrl) {
+      selectCoordsForCheck(parsedMapUrl, 'google_maps_link', query.trim(), 'Google Maps location attached. Click Check My Land to decode this area.')
+      return
+    }
     if (shortMapUrl || backendMapUrl) {
       setResolving(true)
       const result = await resolveMapLink(query.trim())
       setResolving(false)
-      if (result.coords) { goToCoords(result.coords); return }
+      if (result.coords) {
+        selectCoordsForCheck(result.coords, 'google_maps_link', query.trim(), 'Google Maps location attached. Click Check My Land to decode this area.')
+        return
+      }
       setInputError(result.detail ?? (
         result.reason === 'backend_unreachable'
           ? 'Map links need backend access to resolve. Raw coordinates still work.'
@@ -167,7 +223,25 @@ export default function Landing() {
       ))
       return
     }
-    if (results.length > 0) { goToArea(results[0]); return }
+    if (results.length > 0) { selectAreaForCheck(results[0]); return }
+    setInputError('No matching area found. Try a Hyderabad locality, Google Maps link, or coordinates.')
+  }
+
+  function handleCheckMyLand() {
+    setInputError('')
+    if (!selectedLandInput?.isReadyToCheck) {
+      setInputError('Select land first. Search, paste link, locate me, or drop a pin.')
+      return
+    }
+    if (selectedLandInput.area) {
+      goToArea(selectedLandInput.area)
+      return
+    }
+    if (typeof selectedLandInput.lat === 'number' && typeof selectedLandInput.lng === 'number') {
+      goToCoords([selectedLandInput.lat, selectedLandInput.lng])
+      return
+    }
+    setInputError('This selection is not ready yet. Try selecting the area again.')
   }
 
   async function handleBrochureUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -178,7 +252,12 @@ export default function Landing() {
     const result = await analyzeBrochure(file)
     setBrochureLoading(false)
     if (result) {
-      goToCoords([result.lat, result.lng])
+      selectCoordsForCheck(
+        [result.lat, result.lng],
+        'brochure',
+        file.name,
+        'Brochure location found. Click Check My Land to continue.',
+      )
     } else {
       setInputError('Could not extract location from this file. Try a clearer image or paste the address.')
     }
@@ -200,8 +279,7 @@ export default function Landing() {
           position.coords.longitude,
         ]
         setLocating(false)
-        setQuery(`${coords[0].toFixed(6)}, ${coords[1].toFixed(6)}`)
-        goToCoords(coords)
+        selectCoordsForCheck(coords, 'locate_me', 'Current location', 'Location found. Click Check My Land to continue.')
       },
       error => {
         setLocating(false)
@@ -224,7 +302,7 @@ export default function Landing() {
   }
 
   function goToMap() {
-    setSelectedCitySlug(activeCity)
+    setSelectedCitySlug('hyderabad')
     setSelectedArea(null)
     setSearchCoords(null)
     try {
@@ -235,14 +313,7 @@ export default function Landing() {
     navigate('/map')
   }
 
-  const activeCityEntry = CITIES[activeCity] ?? CITIES.hyderabad
-  const activeCityProfile = getCityProductionProfile(activeCityEntry.meta, activeCityEntry.areas)
-  const previewAreas = getGoalTopAreas(activeCityEntry.areas, recommendationGoal, 5)
-  const liveAreaCount = CITIES.hyderabad.areas.length
-  const liveNowCount = Math.max(MIN_LIVE_NOW_COUNT, liveMetrics?.liveUsers ?? 0)
-  const goalMeta = getRecommendationGoalMeta(recommendationGoal)
-  const showSignalPreview = activeCity === 'hyderabad'
-  const GOAL_OPTIONS: RecommendationGoal[] = ['balanced', 'growth', 'affordable', 'defensive', 'livable']
+  const activeCityEntry = CITIES.hyderabad
 
   return (
     <>
@@ -327,7 +398,7 @@ export default function Landing() {
           }}
         >
           <Zap size={10} />
-          {activeCityProfile.isFlagship ? activeCityProfile.label : 'Investment screening intelligence'}{" \u00B7 "}{activeCityEntry.meta.name}
+          Hyderabad flagship {" \u00B7 "}{activeCityEntry.meta.name}
         </motion.div>
 
         <motion.h1
@@ -346,7 +417,7 @@ export default function Landing() {
         >
           Know if the plot is worth buying
           <br />
-          <span style={{ color: '#10b981' }}>before you commit capital.</span>
+          <span style={{ color: '#10b981' }}>before you pay token.</span>
         </motion.h1>
 
         <motion.p
@@ -355,7 +426,7 @@ export default function Landing() {
           transition={{ duration: 0.4, delay: 0.18 }}
           style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 680, marginTop: 22, lineHeight: 1.7, letterSpacing: '-0.01em' }}
         >
-          Hyderabad land intelligence that helps you compare micro-markets, understand growth signals, and prepare the right verification checklist before you talk to brokers. PlotDNA is buyer-side screening, not a replacement for legal or title diligence.
+          Check money risk, possible gain, broker price, and what to verify before you visit the site or pay an advance. PlotDNA is buyer-side screening, not legal or title approval.
         </motion.p>
         <motion.p
           initial={{ opacity: 0 }}
@@ -370,7 +441,7 @@ export default function Landing() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
-          className="relative w-full mt-12"
+          className="relative w-full mt-10"
           style={{ maxWidth: 680 }}
         >
           <div
@@ -415,9 +486,9 @@ export default function Landing() {
                   <input
                     ref={inputRef}
                     type="text"
-                    placeholder="Search area, coordinates, map link"
+                    placeholder="Search area, paste Google Maps link, or enter coordinates"
                     value={query}
-                    onChange={e => { setQuery(e.target.value); setInputError('') }}
+                    onChange={e => { setQuery(e.target.value); setInputError(''); setSelectedLandInput(null) }}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setTimeout(() => setFocused(false), 160)}
                     onKeyDown={e => { if (e.key === 'Enter') handleEnter() }}
@@ -425,7 +496,7 @@ export default function Landing() {
                   />
                   {query && (
                     <button
-                      onClick={() => { setQuery(''); setInputError(''); inputRef.current?.focus() }}
+                      onClick={() => { setQuery(''); setInputError(''); setSelectedLandInput(null); inputRef.current?.focus() }}
                       className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-white/[0.05] hover:text-slate-200"
                       aria-label="Clear search"
                     >
@@ -459,7 +530,7 @@ export default function Landing() {
               </button>
 
               <button
-                title="Allow location permission and analyze your current coordinates"
+                title="Allow location permission and prepare your current coordinates"
                 onClick={handleLocateMe}
                 disabled={resolving || brochureLoading || locating}
                 className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.04] px-3 text-[11px] font-sans font-bold text-slate-300 transition-all hover:bg-white/[0.07] disabled:opacity-55"
@@ -477,6 +548,24 @@ export default function Landing() {
               </button>
 
               <button
+                title="Drop a pin on the map"
+                onClick={goToMap}
+                disabled={resolving || brochureLoading || locating}
+                className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.04] px-3 text-[11px] font-sans font-bold text-slate-300 transition-all hover:bg-white/[0.07] disabled:opacity-55"
+                style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.10)',
+                  color: '#cbd5e1',
+                  flexShrink: 0,
+                  opacity: resolving || brochureLoading || locating ? 0.55 : 1,
+                  fontWeight: 700,
+                }}
+              >
+                <MapPin size={12} />
+                Drop Pin
+              </button>
+
+              <button
                 onClick={handleEnter}
                 disabled={resolving || brochureLoading || locating}
                 className="col-span-2 flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl bg-emerald-500 px-5 text-[12px] font-sans font-black text-[#041e15] transition-all hover:bg-emerald-400 disabled:opacity-50 sm:col-span-1"
@@ -490,15 +579,82 @@ export default function Landing() {
                   boxShadow: '0 0 24px rgba(16, 185, 129, 0.25)',
                 }}
               >
-                {resolving ? 'Resolving…' : brochureLoading ? 'Reading…' : 'Analyze'}
+                {resolving ? 'Reading link...' : brochureLoading ? 'Reading...' : 'Search Area'}
                 <ChevronRight size={12} />
               </button>
               </div>
             </div>
+
+            <AnimatePresence>
+              {selectedLandInput && (
+                <motion.div
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  transition={{ duration: 0.18 }}
+                  className="mt-3 rounded-[22px] p-4 text-left"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(16,185,129,0.10), rgba(14,165,233,0.06))',
+                    border: '1px solid rgba(45, 212, 191, 0.28)',
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-400/10 text-emerald-300">
+                      <MapPin size={17} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="text-[11px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
+                          Selected location
+                        </p>
+                        <span className="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-sans font-bold text-emerald-200">
+                          Ready to check
+                        </span>
+                      </div>
+                      <p className="mt-2 truncate font-display text-lg font-black text-slate-50">
+                        {selectedLandInput.areaName ?? 'Exact land point'}
+                      </p>
+                      <div className="mt-2 grid gap-1 text-[12px] leading-5 text-slate-400 sm:grid-cols-2">
+                        <span>Source: {selectedLandInput.source.replaceAll('_', ' ')}</span>
+                        <span>City: {selectedLandInput.city ?? activeCityEntry.meta.name}</span>
+                        {typeof selectedLandInput.lat === 'number' && typeof selectedLandInput.lng === 'number' && (
+                          <>
+                            <span>Lat: {selectedLandInput.lat.toFixed(5)}</span>
+                            <span>Lng: {selectedLandInput.lng.toFixed(5)}</span>
+                          </>
+                        )}
+                      </div>
+                      <p className="mt-2 text-[12px] font-sans font-semibold text-emerald-200">
+                        {selectedLandInput.statusMessage}
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <button
+              type="button"
+              onClick={handleCheckMyLand}
+              disabled={!canCheckLand}
+              className="mt-3 flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[22px] px-5 text-[16px] font-sans font-black transition-all disabled:cursor-not-allowed"
+              style={{
+                background: canCheckLand
+                  ? 'linear-gradient(135deg, #2dd4bf, #22d3ee)'
+                  : 'rgba(148, 163, 184, 0.12)',
+                border: canCheckLand ? '1px solid rgba(45,212,191,0.55)' : '1px solid rgba(148,163,184,0.16)',
+                color: canCheckLand ? '#021617' : '#64748b',
+                boxShadow: canCheckLand ? '0 18px 42px rgba(34,211,238,0.18)' : 'none',
+              }}
+            >
+              <CheckCircle2 size={18} />
+              Check My Land
+              <ChevronRight size={18} />
+            </button>
           </div>
 
           <p className="mt-3 px-2 text-xs leading-5 text-slate-500">
-            Buyer screening only. Verify title, RERA, zoning, approvals, access, and latest pricing independently before committing capital.
+            Buyer screening only. Verify title, RERA, zoning, approvals, access, and latest pricing before paying token.
           </p>
 
           <AnimatePresence>
@@ -523,7 +679,14 @@ export default function Landing() {
                   const coords = parsedCoords ?? parsedMapUrl!
                   return (
                     <button
-                      onMouseDown={() => goToCoords(coords)}
+                      onMouseDown={() => selectCoordsForCheck(
+                        coords,
+                        parsedMapUrl ? 'google_maps_link' : 'search',
+                        query.trim(),
+                        parsedMapUrl
+                          ? 'Google Maps location attached. Click Check My Land to decode this area.'
+                          : 'Coordinates found. Click Check My Land to continue.',
+                      )}
                       className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors cursor-pointer"
                       style={{ borderBottom: results.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
@@ -531,9 +694,9 @@ export default function Landing() {
                     >
                       {parsedMapUrl ? <Link2 size={13} style={{ color: '#10b981', flexShrink: 0 }} /> : <Navigation size={13} style={{ color: '#10b981', flexShrink: 0 }} />}
                       <div className="flex-1">
-                        <span style={{ fontSize: 12, color: '#10b981' }}>Analyze this location</span>
+                        <span style={{ fontSize: 12, color: '#10b981' }}>Use this location</span>
                         <p style={{ fontSize: 10, color: '#64748b', marginTop: 2 }}>
-                          <span className="font-mono">{coords[0].toFixed(4)}°N  {coords[1].toFixed(4)}°E</span>{" \u00B7 "}DNA score + growth story
+                          <span className="font-mono">{coords[0].toFixed(4)}°N  {coords[1].toFixed(4)}°E</span>{" \u00B7 "}money risk + buyer verdict
                         </p>
                       </div>
                       <ChevronRight size={12} style={{ color: '#10b981' }} />
@@ -553,7 +716,7 @@ export default function Landing() {
                     <div className="flex-1">
                       <span style={{ fontSize: 12, color: '#10b981' }}>Resolve map link</span>
                       <p style={{ fontSize: 10, color: '#64748b', marginTop: 2 }}>
-                        Extract coordinates and analyze location
+                        Extract coordinates, then enable Check My Land
                       </p>
                     </div>
                     <ChevronRight size={12} style={{ color: '#10b981' }} />
@@ -566,7 +729,7 @@ export default function Landing() {
                   return (
                     <button
                       key={area.slug}
-                      onMouseDown={() => goToArea(areaWithCity)}
+                      onMouseDown={() => selectAreaForCheck(areaWithCity)}
                       className="w-full flex items-center gap-3 px-5 py-3 text-left transition-colors"
                       style={{ borderBottom: i < results.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
@@ -602,540 +765,64 @@ export default function Landing() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.35 }}
-          className="mt-10 w-full"
-          style={{ maxWidth: 640 }}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.32 }}
+          className="mt-10 w-full text-left"
+          style={{ maxWidth: 860 }}
         >
-          <div className="mb-6">
-            <p
-              className="font-display"
-              style={{
-                fontSize: 22,
-                fontWeight: 800,
-                letterSpacing: '-0.04em',
-                color: 'var(--text-main)',
-              }}
-            >
-              Hyderabad is live for release. More cities are next.
-            </p>
-            <p
-              style={{
-                fontSize: 13,
-                color: 'var(--text-muted)',
-                lineHeight: 1.6,
-                letterSpacing: '-0.01em',
-                maxWidth: 560,
-                margin: '8px auto 0',
-              }}
-            >
-              Use Hyderabad now for buyer-side micro-market screening. Other city rollouts are coming soon and are shown here so users understand the expansion roadmap.
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
+              <Zap size={15} />
+            </div>
+            <p className="font-display text-[22px] font-black text-slate-50">
+              Why buyers use PlotDNA
             </p>
           </div>
-
-          <div className="flex items-center justify-center flex-wrap gap-2 mb-4">
-            {CITY_LIST.map(city => {
-              const active = activeCity === city.slug
-              const isLaunchCity = city.slug === 'hyderabad'
-              return (
-                <button
-                  key={city.slug}
-                  onClick={() => setActiveCity(city.slug)}
-                  className="px-4 py-2 rounded-full text-[11px] transition-all duration-300 cursor-pointer font-sans"
-                  style={{
-                    background: active
-                      ? isLaunchCity ? 'rgba(16, 185, 129, 0.12)' : 'rgba(148, 163, 184, 0.10)'
-                      : 'rgba(255, 255, 255, 0.03)',
-                    border: active
-                      ? isLaunchCity ? '1px solid rgba(16, 185, 129, 0.4)' : '1px solid rgba(148, 163, 184, 0.22)'
-                      : '1px solid rgba(255, 255, 255, 0.06)',
-                    color: active ? isLaunchCity ? '#10b981' : '#cbd5e1' : '#94a3b8',
-                    backdropFilter: 'blur(8px)',
-                    boxShadow: active && isLaunchCity ? '0 0 15px rgba(16, 185, 129, 0.2)' : 'none',
-                    fontWeight: 600,
-                  }}
-                >
-                  {city.name === 'Delhi NCR' ? 'Delhi' : city.name}
-                  {isLaunchCity ? (
-                    <span style={{ marginLeft: 6, color: active ? '#a7f3d0' : '#10b981' }}>Flagship</span>
-                  ) : (
-                    <span style={{ marginLeft: 6, color: active ? '#cbd5e1' : '#64748b' }}>Coming soon</span>
-                  )}
-                </button>
-              )
-            })}
-          </div>
-
-          {showSignalPreview ? (
-            <>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-4">
-            {[
-              ['Covered', activeCityProfile.totalLocalities],
-              ['Verified', activeCityProfile.verifiedCount],
-              ['Project zones', activeCityProfile.activeProjectCount],
-              ['Priority target', activeCityProfile.priorityTarget],
-            ].map(([metric, value]) => (
-              <div
-                key={metric}
-                className="rounded-xl px-3 py-2"
-                style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                }}
-              >
-                <p className="font-display" style={{ fontSize: 17, fontWeight: 800, color: '#e8e8f0' }}>{value}</p>
-                <p style={{ fontSize: 9, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{metric}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex items-center justify-center flex-wrap gap-2 mb-4">
-            {GOAL_OPTIONS.map(goal => {
-              const active = goal === recommendationGoal
-              return (
-                <button
-                  key={goal}
-                  onClick={() => setRecommendationGoal(goal)}
-                  className="px-3.5 py-1.5 rounded-full text-[11px] transition-all duration-300 cursor-pointer font-sans"
-                  style={{
-                    background: active ? 'rgba(59, 130, 246, 0.12)' : 'rgba(255, 255, 255, 0.02)',
-                    border: active ? '1px solid rgba(59, 130, 246, 0.35)' : '1px solid rgba(255, 255, 255, 0.05)',
-                    color: active ? '#3b82f6' : '#64748b',
-                    fontWeight: 500,
-                  }}
-                >
-                  {getRecommendationGoalMeta(goal).shortLabel}
-                </button>
-              )
-            })}
-          </div>
-
-          <p
-            className="text-center mb-3 font-sans"
-            style={{ fontSize: 10, color: 'var(--text-soft)', letterSpacing: '0.1em', textTransform: 'uppercase' }}
-          >
-            Best matches in {CITIES[activeCity]?.meta.name} for {goalMeta.label}
-          </p>
-
-          <div className="flex items-center justify-center flex-wrap gap-2">
-            {previewAreas.map(({ area, matchScore, reasons }) => {
-              const color = getScoreColor(area.score)
-              const areaWithCity = { ...area, citySlug: activeCity }
-              return (
-                <button
-                  key={area.slug}
-                  onClick={() => goToArea(areaWithCity)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-full text-[11px] transition-all duration-300 cursor-pointer font-sans"
-                  style={{
-                    background: `${color}10`,
-                    border: `1px solid ${color}20`,
-                    color,
-                    backdropFilter: 'blur(4px)',
-                    fontWeight: 500,
-                  }}
-                  onMouseEnter={e => { 
-                    (e.currentTarget as HTMLButtonElement).style.background = `${color}20`;
-                    (e.currentTarget as HTMLButtonElement).style.transform = `scale(1.03)`;
-                  }}
-                  onMouseLeave={e => { 
-                    (e.currentTarget as HTMLButtonElement).style.background = `${color}10`;
-                    (e.currentTarget as HTMLButtonElement).style.transform = `scale(1)`;
-                  }}
-                  title={`${matchScore}/100 match \u00B7 ${reasons[0]?.value ?? ''}`}
-                >
-                  <span className="font-display" style={{ fontWeight: 700, color: '#e8e8f0' }}>{matchScore}</span>
-                  <span style={{ color: `${color}88` }}>match</span>
-                  <span className="font-display" style={{ fontWeight: 700 }}>{area.score}</span>
-                  <span style={{ color: `${color}bb` }}>{"\u00B7"}</span>
-                  {area.name}
-                </button>
-              )
-            })}
-          </div>
-            </>
-          ) : (
-            <div
-              className="mx-auto rounded-2xl px-5 py-5 text-left"
-              style={{
-                maxWidth: 560,
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.08)',
-              }}
-            >
-              <p
-                className="font-display"
-                style={{ fontSize: 18, fontWeight: 800, color: '#e8e8f0', letterSpacing: '-0.035em' }}
-              >
-                {activeCityEntry.meta.name} is coming soon.
-              </p>
-              <p style={{ marginTop: 8, fontSize: 13, lineHeight: 1.65, color: 'var(--text-muted)' }}>
-                We are keeping the first public release focused on Hyderabad so the score, report, and verification workflow stay clear. {activeCityEntry.meta.name} will open after its source deck, locality confidence, and buyer checklist reach release quality.
-              </p>
-              <div className="grid grid-cols-3 gap-2 mt-4">
-                {[
-                  ['Status', 'Roadmap'],
-                  ['Access', 'Waitlist'],
-                  ['Reports', 'Not live'],
-                ].map(([metric, value]) => (
-                  <div
-                    key={metric}
-                    className="rounded-xl px-3 py-2"
-                    style={{
-                      background: 'rgba(15, 23, 42, 0.55)',
-                      border: '1px solid rgba(255,255,255,0.06)',
-                    }}
-                  >
-                    <p className="font-display" style={{ fontSize: 15, fontWeight: 800, color: '#cbd5e1' }}>{value}</p>
-                    <p style={{ fontSize: 9, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{metric}</p>
-                  </div>
-                ))}
-              </div>
-              <button
-                onClick={() => setActiveCity('hyderabad')}
-                className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl text-[11px] transition-all cursor-pointer font-sans"
-                style={{
-                  background: 'rgba(16,185,129,0.1)',
-                  border: '1px solid rgba(16,185,129,0.3)',
-                  color: '#10b981',
-                  fontWeight: 700,
-                }}
-              >
-                View live Hyderabad market
-                <ArrowRight size={12} />
-              </button>
-            </div>
-          )}
-        </motion.div>
-      </section>
-
-      <section
-        className="px-5 py-16"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}
-      >
-        <div className="max-w-3xl mx-auto">
-
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.45 }}
-            className="text-center mb-14"
-          >
-            <div
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full mb-5 font-sans"
-              style={{
-                background: 'rgba(239, 68, 68, 0.08)',
-                border: '1px solid rgba(239, 68, 68, 0.18)',
-                fontWeight: 600,
-                fontSize: 10,
-                color: '#ef4444',
-                letterSpacing: '0.05em',
-              }}
-            >
-              <AlertTriangle size={10} />
-              THE REAL PROBLEM
-            </div>
-            <h2
-              className="font-display"
-              style={{
-                fontSize: 'clamp(28px, 4vw, 44px)',
-                fontWeight: 800,
-                letterSpacing: '-0.055em',
-                lineHeight: 1.2,
-                color: 'var(--text-main)',
-                maxWidth: 660,
-                margin: '0 auto',
-              }}
-            >
-              Land decisions should not depend on guesswork.
-            </h2>
-            <p
-              style={{
-                fontSize: 15,
-                color: 'var(--text-muted)',
-                marginTop: 16,
-                maxWidth: 620,
-                margin: '14px auto 0',
-                lineHeight: 1.7,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              Most buyers rely on broker claims, gut feeling, or friend suggestions. PlotDNA brings the missing layer: location data, growth signals, infrastructure context, and risk indicators.
-            </p>
-          </motion.div>
-
-          <div className="relative">
-
-            <div
-              className="absolute top-10 left-0 right-0 hidden md:block"
-              style={{ height: 1, background: 'linear-gradient(90deg, rgba(239,68,68,0.3) 0%, rgba(0,230,118,0.4) 50%, rgba(0,180,255,0.3) 100%)' }}
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0 }}
-                className="glass-panel glass-panel-hover relative rounded-2xl p-5"
-              >
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center mb-4 relative z-10"
-                  style={{ background: 'rgba(239,68,68,0.12)', border: '1px solid rgba(239,68,68,0.3)' }}
-                >
-                  <Clock size={14} style={{ color: '#ef4444' }} />
-                </div>
-                <p style={{ fontWeight: 600, fontSize: 9, color: '#ef4444', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
-                  10 YEARS AGO
-                </p>
-                <p className="font-display" style={{ fontSize: 17, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em', marginBottom: 8 }}>
-                  Past Context
-                </p>
-                <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
-                  Open farmland. Limited access. No strong infrastructure signal.
-                </p>
-                <div className="flex flex-col gap-2">
-                  {[
-                    'Sparse satellite density',
-                    'Low connectivity',
-                    'Few formal registrations',
-                    'Early-stage pricing',
-                  ].map(item => (
-                    <div key={item} className="flex items-center gap-2">
-                      <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#ef444460' }} />
-                      <span style={{ fontSize: 11, color: 'var(--text-soft)', lineHeight: 1.45 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                className="glass-panel glass-panel-hover relative rounded-2xl p-5"
-                style={{
-                  borderColor: 'rgba(16, 185, 129, 0.35)',
-                  boxShadow: '0 12px 40px rgba(16, 185, 129, 0.08)',
-                }}
-              >
-                <div
-                  className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full text-[9px] font-sans"
-                  style={{
-                    background: 'rgba(16, 185, 129, 0.15)',
-                    border: '1px solid rgba(16, 185, 129, 0.4)',
-                    color: '#10b981',
-                    fontWeight: 700,
-                    letterSpacing: '0.05em',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  {"\u00B7"} TODAY {"\u00B7"}
-                </div>
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center mb-4"
-                  style={{ background: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.3)' }}
-                >
-                  <Satellite size={14} style={{ color: '#10b981' }} />
-                </div>
-                <p style={{ fontWeight: 600, fontSize: 9, color: '#10b981', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
-                  RIGHT NOW
-                </p>
-                <p className="font-display" style={{ fontSize: 17, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em', marginBottom: 8 }}>
-                  Current Signals
-                </p>
-                <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
-                  Infrastructure activity, registrations, and nearby development begin changing the area profile.
-                </p>
-                <div className="flex flex-col gap-2">
-                  {[
-                    'Road and metro activity nearby',
-                    'Higher satellite-visible buildup',
-                    'RERA and project movement',
-                    'Price momentum visible',
-                  ].map(item => (
-                    <div key={item} className="flex items-center gap-2">
-                      <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#10b98160' }} />
-                      <span style={{ fontSize: 11, color: 'var(--text-soft)', lineHeight: 1.45 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-                <div
-                  className="mt-4 flex items-center gap-2 px-3.5 py-2 rounded-xl"
-                  style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.2)' }}
-                >
-                  <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>DNA Score</span>
-                  <span className="font-display" style={{ fontSize: 18, fontWeight: 800, color: '#10b981', marginLeft: 'auto' }}>82</span>
-                  <span style={{ fontSize: 9, color: '#10b981', fontWeight: 600 }}>Good Growth</span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                className="glass-panel glass-panel-hover relative rounded-2xl p-5"
-              >
-                <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center mb-4"
-                  style={{ background: 'rgba(59, 130, 246, 0.1)', border: '1px solid rgba(59, 130, 246, 0.25)' }}
-                >
-                  <Building2 size={14} style={{ color: '#3b82f6' }} />
-                </div>
-                <p style={{ fontWeight: 600, fontSize: 9, color: '#3b82f6', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
-                  5-10 YEAR VIEW
-                </p>
-                <p className="font-display" style={{ fontSize: 17, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em', marginBottom: 8 }}>
-                  Future Outlook
-                </p>
-                <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: 14 }}>
-                  A forward-looking view based on infrastructure, demand, employment, and growth signals.
-                </p>
-                <div className="flex flex-col gap-2">
-                  {[
-                    'Connectivity improvement likely',
-                    'Demand corridors expanding',
-                    'Entry window may narrow',
-                    'Risk depends on execution',
-                  ].map(item => (
-                    <div key={item} className="flex items-center gap-2">
-                      <div className="w-1 h-1 rounded-full flex-shrink-0" style={{ background: '#3b82f650' }} />
-                      <span style={{ fontSize: 11, color: 'var(--text-soft)', lineHeight: 1.45 }}>{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-
-            </div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: 0.3 }}
-            className="flex items-center justify-center gap-3 mt-12"
-          >
-            <div style={{ height: 1, flex: 1, background: 'rgba(255,255,255,0.06)' }} />
-            <div
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-sans"
-              style={{
-                background: 'rgba(16, 185, 129, 0.07)',
-                border: '1px solid rgba(16, 185, 129, 0.2)',
-                fontSize: 11,
-                color: '#10b981',
-              }}
-            >
-              <span>PlotDNA decodes all of this for any area you search</span>
-              <ArrowRight size={11} />
-            </div>
-            <div style={{ height: 1, flex: 1, background: 'rgba(255,255,255,0.06)' }} />
-          </motion.div>
-
-        </div>
-      </section>
-
-      <section
-        className="px-5 py-14"
-        style={{ borderTop: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0,0,0,0.25)' }}
-      >
-        <div className="max-w-3xl mx-auto">
-          <p
-            className="text-center mb-8 font-sans"
-            style={{ fontWeight: 600, fontSize: 11, color: '#10b981', letterSpacing: '0.08em', textTransform: 'uppercase' }}
-          >
-            What you get
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {FEATURE_CARDS.map(({ icon: Icon, title, desc }) => (
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {BUYER_QUESTIONS.map(({ icon: Icon, title, desc, color }) => (
               <div
                 key={title}
-                className="glass-panel glass-panel-hover rounded-2xl p-5"
+                className="rounded-2xl p-4"
+                style={{
+                  background: 'linear-gradient(145deg, rgba(15,23,42,0.88), rgba(8,13,28,0.96))',
+                  border: '1px solid rgba(148,163,184,0.16)',
+                }}
               >
                 <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center mb-3"
-                  style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.18)' }}
+                  className="mb-4 flex h-11 w-11 items-center justify-center rounded-full"
+                  style={{
+                    background: `${color}18`,
+                    border: `1px solid ${color}55`,
+                    color,
+                  }}
                 >
-                  <Icon size={14} style={{ color: '#10b981' }} />
+                  <Icon size={18} />
                 </div>
-                <p className="font-display" style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.025em', marginBottom: 8 }}>{title}</p>
-                <p style={{ fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.65, letterSpacing: '-0.01em' }}>{desc}</p>
+                <p className="font-display text-[16px] font-black leading-snug text-slate-50">{title}</p>
+                <p className="mt-2 text-[12px] leading-5 text-slate-400">{desc}</p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="py-14 flex flex-col items-center gap-5 font-sans" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.35 }}
-          className="mb-3 grid w-[min(92vw,560px)] grid-cols-[1fr_auto_1fr] items-center rounded-full px-6 py-4 sm:px-8"
-          style={{
-            background: 'rgba(255,255,255,0.025)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            boxShadow: '0 18px 60px rgba(0,0,0,0.32)',
-          }}
-        >
-          <div className="flex items-center justify-center gap-4 sm:justify-start">
-            <span
-              className="h-3.5 w-3.5 rounded-full bg-emerald-400"
-              style={{ boxShadow: '0 0 20px rgba(16,185,129,0.85)' }}
-            />
-            <div>
-              <p className="text-[10px] font-sans font-black uppercase tracking-[0.32em] text-slate-500">LIVE NOW</p>
-              <p className="mt-1 font-display text-lg font-black text-slate-100">{liveNowCount.toLocaleString('en-IN')}</p>
-            </div>
-          </div>
-
-          <div className="mx-5 h-12 w-px bg-white/10" />
-
-          <div className="flex items-center justify-center gap-4 sm:justify-start">
-            <Users size={22} className="text-cyan-400" />
-            <div>
-              <p className="text-[10px] font-sans font-black uppercase tracking-[0.32em] text-slate-500">AREAS LIVE</p>
-              <p className="mt-1 font-display text-lg font-black text-cyan-400">{liveAreaCount.toLocaleString('en-IN')}</p>
-            </div>
+          <div className="mt-5 grid grid-cols-6 gap-2 rounded-[24px] border border-white/10 bg-slate-950/70 p-2">
+            {JOURNEY_STEPS.map(({ icon: Icon, label }, index) => (
+              <div
+                key={label}
+                className="flex flex-col items-center justify-center gap-1 rounded-2xl py-2 text-center"
+                style={{
+                  background: index === 0 ? 'rgba(45,212,191,0.12)' : 'transparent',
+                  color: index === 0 ? '#2dd4bf' : '#94a3b8',
+                }}
+              >
+                <Icon size={17} />
+                <span className="text-[10px] font-sans font-bold">{label}</span>
+              </div>
+            ))}
           </div>
         </motion.div>
 
-        <p className="font-display" style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-main)', letterSpacing: '-0.04em' }}>
-          Ready to analyze a plot?
-        </p>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={goToMap}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl text-[13px] font-semibold transition-all cursor-pointer font-sans"
-            style={{
-              background: 'linear-gradient(135deg, #10b981, #059669)',
-              color: '#041e15',
-              boxShadow: '0 0 24px rgba(16, 185, 129, 0.25)',
-              fontWeight: 800,
-            }}
-          >
-            <Map size={13} />
-            Open Interactive Map
-          </button>
-          <button
-            onClick={() => { inputRef.current?.focus(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl text-[13px] transition-all cursor-pointer font-sans"
-            style={{
-              background: 'rgba(255,255,255,0.04)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: 'var(--text-muted)',
-              fontWeight: 700,
-            }}
-          >
-            Search Location
-          </button>
-        </div>
       </section>
+
     </div>
     </>
   )

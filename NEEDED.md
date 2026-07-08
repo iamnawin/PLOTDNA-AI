@@ -26,8 +26,11 @@ This is the quick handoff for the next model. The detailed source of truth is `d
   - Shows 5-Year and 10-Year indicative outlook only from available forecast data; unavailable forecast rows are hidden.
   - Generates public Area Pass code URLs such as `/card/HYD-PXX-070`, while old slug URLs still resolve.
   - Share uses Web Share API with clipboard fallback.
+  - Native share failures fall back to copying the public URL.
   - PNG download/export exists as a fallback using the visible card design.
   - Card metrics are availability-filtered so placeholder values like `Not available yet` are not rendered on the shared card.
+  - Forecast payloads must include source, timestamp, locality, unit, confidence, method, and data_status metadata; shared cards only render forecast-backed outlooks when `data_status` is `ready`.
+  - Basic SPA Open Graph/Twitter metadata is updated on the public card route.
   - Automated share QA covers real Hyderabad samples: Peerzadiguda, Yapral, Ameenpur, and Beeramguda.
   - Browser QA covers Area Pass routes in desktop and mobile Vite preview.
   - No QR/barcode added.
@@ -37,6 +40,16 @@ This is the quick handoff for the next model. The detailed source of truth is `d
   - Confirms the card reuses the existing Area Detail Rs 99 path.
   - Confirms no separate Founder Pass payment package or generic Razorpay link was added.
   - Confirms backend payment-link, webhook, recovery, and report-access tests remain present.
+- Hyderabad weak-area ranking guard is built:
+  - Estimated or under-4-signal records are capped below recommendation-leader range.
+  - Weak records surface limited-source-depth caution copy.
+  - Pending context cells remain blocked from promotion until every required signal deck is verified.
+- Hyderabad pending promotion compiler is built:
+  - `python scripts\compile_hyderabad_pending_promotion.py` generates `data/cities/hyderabad/pending-promotion-report.json`.
+  - Current report: 75 pending context cells, 0 promotion-ready, 75 blocked.
+  - Verified evidence now tracked in one place: 75 official boundaries, 41 price-band signals, 2 infrastructure signals.
+  - Missing evidence remains: 75 RERA, 75 satellite-growth, 75 employment, 75 government-scheme, 73 infrastructure, 34 price-band.
+  - No scores or polygon promotions were created.
 
 ## Latest Pushed Commits
 
@@ -67,6 +80,9 @@ This is the quick handoff for the next model. The detailed source of truth is `d
 Earlier phase guards also passed during the phase work:
 
 - `pnpm run test:hyderabad-red-dot-resolution`
+- `pnpm run test:hyderabad-data-quality`
+- `python scripts\compile_hyderabad_pending_promotion.py`
+- `python scripts\validate_hyderabad_coverage.py`
 - `pnpm run test:growth-forecast-phase-3a`
 - `pnpm run test:land-dna-card-phase-3b`
 - `pnpm run test:land-dna-card-share-qa`
@@ -80,6 +96,14 @@ Earlier phase guards also passed during the phase work:
 Use the Phase 3 live QA checklist before marking public/mobile/payment validation complete:
 
 - `docs/phase-3-live-qa-checklist.md`
+
+## Pending Task List
+
+### Implemented This Pass
+
+- Harden forecast readiness: configured forecast payloads now carry source, timestamp, locality, unit, method, confidence, and `data_status`; public forecast rendering stays hidden unless data is ready.
+- Harden Area Pass sharing: if native Web Share fails or is unavailable, the page falls back to copying the public card URL.
+- Harden Area Pass metadata guard: public card route maintains basic OG/Twitter metadata while true server-rendered OG image remains pending.
 
 ### Phase 3A Remaining
 

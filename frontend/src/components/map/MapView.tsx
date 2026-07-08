@@ -352,6 +352,9 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
         const areaKm2 = coverageProps.areaKm2 ?? null
         const boundaryConfidence = coverageProps.boundaryConfidence ?? (isContext ? 'approximate' : 'broad')
         const broadGenerated = hasScore && !isContext && boundaryConfidence === 'broad' && typeof areaKm2 === 'number' && areaKm2 > 50
+        const dataConfidence = area?.dataConfidence ?? (hasScore ? 'partial' : 'uncovered')
+        const signalsAvailable = area?.signalsAvailable ?? null
+        const estimatedScore = hasScore && (dataConfidence === 'estimated' || (typeof signalsAvailable === 'number' && signalsAvailable < 4))
         const color = hasScore
           ? getScoreColor(area!.score)
           : '#64748b'
@@ -370,9 +373,12 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
             noData:    !hasScore ? 1 : 0,
             contextOnly: isContext ? 1 : 0,
             broadGenerated: broadGenerated ? 1 : 0,
+            estimatedScore: estimatedScore ? 1 : 0,
             outerZone: coverageProps.outerZone ? 1 : 0,
             boundaryKind: coverageProps.boundaryKind ?? 'generated_market_cell',
             boundaryConfidence,
+            dataConfidence,
+            signalsAvailable,
             areaKm2,
             dataState: isContext || !hasScore ? 'data-pending' : 'scored',
           },
@@ -556,7 +562,8 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
                 ['==', ['get', 'hovered'], 1], 0.40,
                 ['==', ['get', 'dimmed'], 1], 0.18,
                 ['==', ['get', 'dataState'], 'data-pending'], 0.07,
-                ['==', ['get', 'broadGenerated'], 1], 0.16,
+                ['==', ['get', 'estimatedScore'], 1], 0.12,
+                ['==', ['get', 'broadGenerated'], 1], 0.13,
                 0.30,
               ],
             }}
@@ -570,6 +577,7 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
               'line-color': [
                 'case',
                 ['==', ['get', 'dataState'], 'data-pending'], '#94a3b8',
+                ['==', ['get', 'estimatedScore'], 1], '#d6a34a',
                 ['get', 'color'],
               ],
               'line-width': [
@@ -585,7 +593,8 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
                 ['all', ['==', ['get', 'dataState'], 'data-pending'], ['==', ['get', 'hovered'], 1]], 0.82,
                 ['==', ['get', 'dataState'], 'data-pending'], 0.42,
                 ['==', ['get', 'dimmed'], 1], 0.55,
-                ['==', ['get', 'broadGenerated'], 1], 0.74,
+                ['==', ['get', 'estimatedScore'], 1], 0.46,
+                ['==', ['get', 'broadGenerated'], 1], 0.58,
                 0.96,
               ],
             }}
@@ -936,6 +945,8 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
         const isTooltipBroadGenerated = tooltipCoverage?.properties.boundaryConfidence === 'broad'
           && typeof tooltipAreaKm2 === 'number'
           && tooltipAreaKm2 > 50
+        const isTooltipEstimated = tooltipArea.dataConfidence === 'estimated'
+          || (typeof tooltipArea.signalsAvailable === 'number' && tooltipArea.signalsAvailable < 4)
 
         return (
           <div
@@ -1004,6 +1015,21 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
             )}
 
             {/* ── Divider ── */}
+            {isTooltipEstimated && (
+              <p style={{
+                fontFamily: 'IBM Plex Mono, monospace',
+                fontSize: 8,
+                color: '#fbbf24',
+                background: 'rgba(251,191,36,0.08)',
+                border: '1px solid rgba(251,191,36,0.18)',
+                borderRadius: 5,
+                padding: '5px 7px',
+                lineHeight: 1.35,
+                margin: '0 0 8px',
+              }}>
+                Limited source depth - score is capped and should be treated as screening context.
+              </p>
+            )}
             <div style={{ height: 1, background: 'rgba(255,255,255,0.05)', marginBottom: 8 }} />
 
             {/* ── Stats ── */}

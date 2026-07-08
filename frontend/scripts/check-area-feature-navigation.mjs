@@ -12,31 +12,38 @@ function assert(condition, message) {
 }
 
 assert(areaDetail.includes('const AREA_FEATURE_GUIDE'), 'area page must define a guided feature vocabulary')
-for (const label of ['Verdict', 'Sources', 'Growth', 'Risk', 'Compare', 'PDF']) {
+for (const label of ['Check', 'Verdict', 'Money', 'Map', 'Compare', 'Pass']) {
   assert(areaDetail.includes(`label: '${label}'`), `feature guide must include ${label}`)
 }
 
 assert(areaDetail.includes('function AreaFeatureNavigator'), 'area page must render a feature navigator')
 assert(areaDetail.includes('aria-label="PlotDNA feature navigation"'), 'feature navigator must be discoverable')
-assert(areaDetail.includes('sticky top-14'), 'feature navigator must stay available while scanning the report')
+assert(areaDetail.includes('fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))]'), 'feature navigator must behave like a mobile app bottom nav')
 assert(areaDetail.includes('const container = useRef<HTMLDivElement>(null)'), 'area page must define a real scroll container ref')
 assert(areaDetail.includes('const { scrollYProgress } = useScroll({ container })'), 'feature navigator must drive progress from the report scroll container')
 assert(areaDetail.includes('useTransform(scrollYProgress, [0, 1], [\'0%\', \'100%\'])'), 'feature navigator must use the Motion vocabulary scroll-driven width mapping')
 assert(areaDetail.includes('ref={container}'), 'area page must attach the scroll container ref to the report surface')
 assert(areaDetail.includes('h-screen overflow-y-auto'), 'report surface must be a scrollable container for container-based useScroll')
 assert(areaDetail.includes('progressWidth={reportProgressWidth}'), 'feature navigator must receive the container-driven progress width')
-assert(areaDetail.includes('aria-hidden="true" className="mt-2 h-1 overflow-hidden rounded-full'), 'feature navigator must render the scroll progress indicator under the tabs')
-assert(areaDetail.includes('className="flex snap-x gap-2 overflow-x-auto scroll-smooth pb-1"'), 'feature tabs must remain horizontally scrollable on mobile')
+assert(areaDetail.includes('aria-hidden="true" className="mt-1.5 h-0.5 overflow-hidden rounded-full'), 'feature navigator must render a compact scroll progress indicator')
+assert(areaDetail.includes('className="grid grid-cols-6 gap-1"'), 'feature nav must expose the six buyer screens as app tabs')
 const normalAreaBranch = areaDetail.indexOf('const displayedConfidence')
 const featureNavigatorRender = areaDetail.indexOf('<AreaFeatureNavigator', normalAreaBranch)
-const heroRender = areaDetail.indexOf('className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12"', normalAreaBranch)
-assert(featureNavigatorRender > -1 && heroRender > -1 && featureNavigatorRender < heroRender, 'feature navigator must render before the main hero card')
-assert(areaDetail.includes('scrollIntoView({ behavior: \'smooth\''), 'feature nav clicks must smoothly scroll to sections')
+const buyerScreensRender = areaDetail.indexOf('<BuyerJourneyScreens', normalAreaBranch)
+assert(featureNavigatorRender > -1 && buyerScreensRender > -1 && featureNavigatorRender < buyerScreensRender, 'feature navigator must render before the buyer screen stack')
+assert(areaDetail.includes('container.current?.scrollTo({ top: 0, behavior: \'smooth\' })'), 'feature nav clicks must reset the active screen to the top')
+assert(areaDetail.includes('const [activeAreaFeatureId, setActiveAreaFeatureId]'), 'area page must keep the selected buyer screen in state')
+assert(areaDetail.includes('activeFeatureId === \'verdict\'') && areaDetail.includes('activeFeatureId === \'growth\'') && areaDetail.includes('activeFeatureId === \'sources\''), 'buyer journey must render one active screen at a time')
 assert(areaDetail.includes("trackEvent('area_feature_navigation_clicked'"), 'feature nav clicks must be tracked')
 assert(areaDetail.includes('setHighlightedFeatureId(feature.id)'), 'feature nav must briefly highlight the target section')
 assert(areaDetail.includes('layoutId="area-feature-active-pill"'), 'active feature pill must use shared layout motion')
-assert(areaDetail.includes('layoutId="area-feature-reflection"'), 'feature navigator must include a reflective active sheen')
 assert(areaDetail.includes('ease: [0.22, 1, 0.36, 1]'), 'feature navigator motion must use a smooth premium easing curve')
+assert(areaDetail.includes('function BuyerJourneyScreens'), 'area page must define the six-screen buyer journey')
+for (const phrase of ['PlotDNA Verdict', 'Money View', 'Map Proof', 'Area Details', 'Compare Areas', 'Area Pass']) {
+  assert(areaDetail.includes(phrase), `buyer journey must include ${phrase}`)
+}
+assert(areaDetail.includes('<SatelliteCompare area={area} coords={coords ?? undefined} />'), 'Map Proof must reuse the existing satellite/map proof component')
+assert(!areaDetail.includes('bg-[linear-gradient(rgba(34,211,238,0.08)_1px'), 'Map Proof must not use the placeholder grid graphic')
 
 for (const id of [
   'id="area-feature-verdict"',

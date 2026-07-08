@@ -28,6 +28,7 @@ Pass conditions:
 
 - Area name, city, score, risk, infrastructure, connectivity, and development signal render when available.
 - Unavailable forecast fields are hidden.
+- Forecast-backed outlook rows appear only when the source payload has `data_status: ready`.
 - No `Not available yet`, `requires historical data`, `N/A`, empty placeholder metric card, QR, or barcode appears.
 - Do not claim legal/title/approval certification.
 
@@ -36,7 +37,7 @@ Pass conditions:
 For at least Peerzadiguda and Ameenpur:
 
 - Native share opens on supported mobile browsers.
-- Clipboard fallback works when native share is unavailable.
+- Clipboard fallback works when native share is unavailable or fails.
 - PNG download creates an image using the visible Area Pass design.
 - PNG filename includes the public area code.
 - Shared link opens the same card route in a private/incognito window.
@@ -61,6 +62,7 @@ For live payment QA:
 ## Growth Forecast Boundary
 
 - Growth Forecast appears only where configured forecast data exists.
+- Forecast data has source, timestamp, locality, unit, confidence, method, and data_status metadata before it renders.
 - Forecast copy uses ranges, confidence, risk, reason, and disclaimer.
 - No guaranteed-return language appears.
 - TimesFM remains not started.

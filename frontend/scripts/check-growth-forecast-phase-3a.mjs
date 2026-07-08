@@ -30,7 +30,10 @@ assert(card.includes('Growth Forecast'), 'card must use Growth Forecast label')
 assert(card.includes('Expected 6-Month Growth'), 'card must label 6-month range as Expected Growth')
 assert(card.includes('Expected 12-Month Growth'), 'card must label 12-month range as Expected Growth')
 assert(forecast.includes('not a guaranteed return'), 'forecast disclaimer must reject guaranteed returns')
-assert(forecast.includes('getGrowthForecastForArea') && forecast.includes('return forecast?.forecast_available ? forecast : null'), 'helper must return null when forecast is unavailable')
+for (const field of ['source', 'timestamp', 'locality', 'unit', 'confidence', 'method', 'data_status']) {
+  assert(forecast.includes(field), `forecast payload must include metadata field: ${field}`)
+}
+assert(forecast.includes("data_status === 'ready'"), 'helper must return null unless forecast data_status is ready')
 assert(scoreCard.includes('featureFlags.enableGrowthForecastCard') && scoreCard.includes('getGrowthForecastForArea(area.slug)'), 'ScoreCard must gate forecast by feature flag and explicit area payload')
 assert(plotAnalysisCard.includes('featureFlags.enableGrowthForecastCard') && plotAnalysisCard.includes('getGrowthForecastForArea(staticArea.slug)'), 'PlotAnalysisCard must gate forecast by feature flag and explicit area payload')
 assert(landDnaCard.includes('featureFlags.enableGrowthForecastCard') && landDnaCard.includes('getGrowthForecastForArea(area.slug)'), 'LandDNACard must also gate forecast reuse by Growth Forecast feature flag')

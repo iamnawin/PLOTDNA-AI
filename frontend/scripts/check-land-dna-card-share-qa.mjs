@@ -98,6 +98,8 @@ assert(cardLib.includes('INVALID_VALUES') && cardLib.includes('not available yet
 assert(card.includes('growthSignals.length > 0'), 'growth section must render only when forecast-backed metrics exist')
 assert(!card.includes('Not available yet'), 'card UI must not render unavailable forecast copy')
 assert(page.includes('navigator.share') && page.includes('navigator.clipboard.writeText'), 'share must keep native share plus clipboard fallback')
+assert(page.includes('try {') && page.includes('await navigator.share') && page.includes('navigator.clipboard.writeText(publicUrl)'), 'native share failure must fall back to copying the public URL')
+assert(page.includes("setMeta('og:title'") && page.includes("setMeta('og:description'") && page.includes("setMeta('twitter:card'"), 'share page must set basic OG/Twitter metadata')
 assert(cardLib.includes('plotdna-area-pass-${areaCode}.png'), 'PNG export filename must include the public area code')
 
 console.log('Land DNA Card Phase 3B share QA findings')

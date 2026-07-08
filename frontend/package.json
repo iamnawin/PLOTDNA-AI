@@ -9,6 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test:hyderabad-production": "node scripts/check-hyderabad-production.mjs",
+    "test:hyderabad-data-quality": "node scripts/check-hyderabad-data-quality.mjs",
     "test:hyderabad-location-search": "node scripts/check-hyderabad-location-search.mjs",
     "test:hyderabad-red-dot-resolution": "node scripts/audit-hyderabad-red-dot-resolution.mjs",
     "test:growth-forecast-phase-3a": "node scripts/check-growth-forecast-phase-3a.mjs",

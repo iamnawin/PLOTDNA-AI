@@ -14,6 +14,8 @@ This doc is the working handoff for the next agent/model. It stores product requ
 - Phase 3A Growth Forecast card initial reusable layer complete behind feature flag.
 - Phase 3B Land DNA Card preview/share route initial version complete behind feature flag.
 - Phase 3C Founder Pass gating initial version complete behind feature flag.
+- Hyderabad weak-area ranking guard complete: estimated/under-4-signal records stay visible for screening but are capped below recommendation-leader range, and pending context cells remain unpromoted until every required evidence deck is verified.
+- Hyderabad pending promotion compiler complete: `python scripts\compile_hyderabad_pending_promotion.py` writes `data/cities/hyderabad/pending-promotion-report.json`. Current state is 75 pending context cells, 0 promotion-ready, 75 blocked; verified evidence is 75 official boundaries, 41 price-band signals, and 2 infrastructure signals.
 
 Latest Phase 2A/2B resolver polish changed:
 
@@ -57,6 +59,8 @@ Latest validated state:
 - `pnpm run test:map-navigation-state`
 - `pnpm run test:hyderabad-production`
 - `pnpm run test:hyderabad-location-search`
+- `pnpm run test:hyderabad-data-quality`
+- `python scripts\compile_hyderabad_pending_promotion.py`
 - `pnpm run lint`
 - `pnpm run build`
 - `uv run --with-requirements requirements.txt python -m unittest tests.test_custom_report_leads tests.test_report_entitlements tests.test_payment_reconciliation`
@@ -87,7 +91,10 @@ Current product behavior:
 - Land DNA Card share page now uses an Area Pass visual direction with score, risk, infrastructure, connectivity, development signal, and indicative 5/10-year outlook when forecast data exists.
 - Land DNA Card public links now resolve generated area codes such as `/card/HYD-PXX-070`; existing slug URLs still resolve.
 - Land DNA Card share uses Web Share API with clipboard fallback, and PNG export/download is available as a secondary fallback.
+- Native Web Share failure falls back to copying the public URL, so mobile share cancellation or browser blocking does not strand the user.
 - Land DNA Card metrics are availability-filtered so unavailable growth placeholders are hidden instead of rendered.
+- Forecast payloads include source, timestamp, locality, unit, confidence, method, and data_status metadata, and public forecast-backed outlooks render only when data_status is ready.
+- Basic SPA Open Graph/Twitter metadata is updated on the public Area Pass route; true server-rendered dynamic OG images remain pending.
 - Land DNA Card automated share QA covers Peerzadiguda, Yapral, Ameenpur, and Beeramguda sample cards.
 - Land DNA Card browser QA covers the required Area Pass routes in desktop and mobile Vite preview.
 - Founder Pass card gating reuses cached server entitlements and the existing Area Detail Rs 99 flow; it does not create a separate payment package.
@@ -106,7 +113,7 @@ Still not built:
 
 - Do not change scoring formulas.
 - Do not change polygon geometry.
-- Do not promote pending/context/generated polygons.
+- Do not promote pending/context/generated polygons unless the promotion report marks the exact area ready after every required evidence deck is verified.
 - Do not fake scores, survey numbers, legal/title clearance, HMDA/DTCP/TG-bPASS approval, or guaranteed returns.
 - Do not turn PlotDNA into a listing app or social platform.
 - Keep new features behind feature flags until validated.
@@ -234,6 +241,12 @@ Suggested data shape:
 ```ts
 type GrowthForecast = {
   forecast_available: boolean
+  source: string
+  timestamp: string
+  locality: string
+  unit: string
+  method: string
+  data_status: 'ready' | 'pending' | 'unavailable'
   title: string
   summary: string
   six_month_growth: { min: number; max: number; label: string }
@@ -319,8 +332,9 @@ Initial share behavior:
 
 - Public share URL.
 - Use Web Share API if available.
-- Fallback to copy link.
+- Fallback to copy link when Web Share is unavailable or fails.
 - PNG download fallback.
+- Basic OG/Twitter metadata for the SPA route.
 - Generated public card code URLs such as `/card/HYD-PXX-070`; old slug URLs remain backwards compatible.
 - Hide unavailable metric blocks. Do not show `Not available yet`, `requires historical data`, `N/A`, or empty placeholder cards on the shared card.
 - Automated sample QA covers Peerzadiguda, Yapral, Ameenpur, and Beeramguda.

@@ -1,5 +1,11 @@
 export interface GrowthForecast {
   forecast_available: boolean
+  source: string
+  timestamp: string
+  locality: string
+  unit: string
+  method: string
+  data_status: 'ready' | 'pending' | 'unavailable'
   title: string
   summary: string
   six_month_growth: { min: number; max: number; label: string }
@@ -19,6 +25,12 @@ export interface GrowthForecast {
 const configuredForecasts: Record<string, GrowthForecast> = {
   ameenpur: {
     forecast_available: true,
+    source: 'configured PlotDNA launch forecast payload',
+    timestamp: '2026-06-29',
+    locality: 'ameenpur',
+    unit: 'percent growth range',
+    method: 'configured heuristic estimate from available area signals',
+    data_status: 'ready',
     title: 'Growth Forecast',
     summary: 'This area is showing positive growth signals.',
     six_month_growth: { min: 4, max: 7, label: '+4% to +7%' },
@@ -36,6 +48,12 @@ const configuredForecasts: Record<string, GrowthForecast> = {
   },
   beeramguda: {
     forecast_available: true,
+    source: 'configured PlotDNA launch forecast payload',
+    timestamp: '2026-06-29',
+    locality: 'beeramguda',
+    unit: 'percent growth range',
+    method: 'configured heuristic estimate from available area signals',
+    data_status: 'ready',
     title: 'Growth Forecast',
     summary: 'This area is showing positive growth signals.',
     six_month_growth: { min: 4, max: 7, label: '+4% to +7%' },
@@ -56,5 +74,5 @@ const configuredForecasts: Record<string, GrowthForecast> = {
 export function getGrowthForecastForArea(areaSlug: string | null | undefined): GrowthForecast | null {
   if (!areaSlug) return null
   const forecast = configuredForecasts[areaSlug]
-  return forecast?.forecast_available ? forecast : null
+  return forecast?.forecast_available && forecast.data_status === 'ready' ? forecast : null
 }

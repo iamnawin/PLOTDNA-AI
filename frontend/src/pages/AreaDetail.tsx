@@ -16,7 +16,7 @@ import {
   ArrowLeft, TrendingUp, Building2, Zap, Download, ExternalLink, FileText,
   Hammer, Users, Globe, Shield, Briefcase, Landmark, AlertTriangle,
   Navigation, ShoppingBag, Package, Film, Leaf, Sparkles, ChevronLeft, ChevronRight,
-  HardHat, Train, Car, Home, Building, Plane, Factory, Wifi,
+  HardHat, Train, Car, Home, Building, Plane, Factory, Wifi, Map, IndianRupee, CheckCircle2,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import jsPDF from 'jspdf'
@@ -35,6 +35,8 @@ import type { ReportPackage } from '@/lib/paymentLinks'
 import { createReportPaymentLink } from '@/lib/api'
 import { checkReportAccess, getCachedEntitlements, trackUserEvent } from '@/lib/entitlements'
 import { HYDERABAD_VERIFIED_PRIORITY_SET } from '@/data/hyderabadPriority'
+import { getLandDnaCardPath } from '@/lib/landDnaCard'
+import { featureFlags } from '@/lib/features'
 import type { Livability, Signals } from '@/types'
 import ScoreBadge from '@/components/ui/ScoreBadge'
 import SatelliteCompare from '@/components/ui/SatelliteCompare'
@@ -71,36 +73,36 @@ const AREA_FEATURE_GUIDE: Array<{
   icon: LucideIcon
 }> = [
   {
+    id: 'risk',
+    label: 'Check',
+    targetId: 'area-feature-risk',
+    promise: 'What to verify',
+    preview: 'Know the site, document, and access checks before token.',
+    icon: AlertTriangle,
+  },
+  {
     id: 'verdict',
     label: 'Verdict',
     targetId: 'area-feature-verdict',
-    promise: 'Decision-grade score',
-    preview: 'See the DNA verdict before reading the evidence.',
+    promise: 'Shortlist answer',
+    preview: 'Plain-language answer before the details.',
     icon: Shield,
   },
   {
-    id: 'sources',
-    label: 'Sources',
-    targetId: 'area-feature-sources',
-    promise: 'Source trail',
-    preview: 'Open the public links and source trail behind the report.',
-    icon: FileText,
-  },
-  {
     id: 'growth',
-    label: 'Growth',
+    label: 'Money',
     targetId: 'area-feature-growth',
-    promise: 'Signal movement',
-    preview: 'Compare infrastructure, satellite, jobs, RERA, and price velocity.',
-    icon: TrendingUp,
+    promise: 'Price sanity',
+    preview: 'Check possible gain, overpaying risk, and holding view.',
+    icon: IndianRupee,
   },
   {
-    id: 'risk',
-    label: 'Risk',
-    targetId: 'area-feature-risk',
-    promise: 'Buyer checklist',
-    preview: 'Turn the area view into site-visit and document checks.',
-    icon: AlertTriangle,
+    id: 'sources',
+    label: 'Map',
+    targetId: 'area-feature-sources',
+    promise: 'Map proof',
+    preview: 'See map and source proof behind the verdict.',
+    icon: Map,
   },
   {
     id: 'compare',
@@ -112,11 +114,11 @@ const AREA_FEATURE_GUIDE: Array<{
   },
   {
     id: 'pdf',
-    label: 'PDF',
+    label: 'Pass',
     targetId: 'area-feature-pdf',
-    promise: 'Source of truth',
-    preview: 'Download the printable report instead of relying on screenshots.',
-    icon: Download,
+    promise: 'Area Pass',
+    preview: 'Save or share the simple area pass.',
+    icon: FileText,
   },
 ]
 
@@ -568,9 +570,9 @@ function AreaFeatureNavigator({
   return (
     <nav
       aria-label="PlotDNA feature navigation"
-      className="sticky top-14 z-30 -mx-4 mb-6 border-y border-white/5 bg-slate-950/82 px-4 py-3 backdrop-blur-xl sm:mx-0 sm:rounded-2xl sm:border sm:px-3"
+      className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-40 mx-auto max-w-[640px] rounded-2xl border border-white/10 bg-slate-950/92 px-2.5 py-2 shadow-[0_18px_44px_rgba(0,0,0,0.45)] backdrop-blur-xl"
     >
-      <div className="flex snap-x gap-2 overflow-x-auto scroll-smooth pb-1">
+      <div className="grid grid-cols-6 gap-1">
         {AREA_FEATURE_GUIDE.map(feature => {
           const Icon = feature.icon
           const active = activeFeatureId === feature.id
@@ -580,40 +582,29 @@ function AreaFeatureNavigator({
               key={feature.id}
               onClick={() => onSelectFeature(feature)}
               transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
-              className="relative min-w-[132px] snap-start overflow-hidden rounded-2xl border border-white/8 px-3 py-2.5 text-left transition-colors hover:border-emerald-400/35 hover:bg-white/[0.05]"
+              className="relative min-w-0 overflow-hidden rounded-xl px-1.5 py-2 text-center transition-colors hover:bg-white/[0.05]"
               style={{
-                background: active ? 'rgba(16,185,129,0.12)' : 'rgba(15,23,42,0.48)',
+                background: active ? 'rgba(16,185,129,0.14)' : 'transparent',
               }}
             >
               {active && (
                 <motion.span
                   layoutId="area-feature-active-pill"
-                  className="absolute inset-0 rounded-2xl border border-emerald-400/35"
+                  className="absolute inset-0 rounded-xl border border-emerald-400/35"
                   style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)' }}
                 />
               )}
-              {active && (
-                <motion.span
-                  layoutId="area-feature-reflection"
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/18 to-transparent"
-                  initial={{ x: '-80%', opacity: 0 }}
-                  animate={{ x: '340%', opacity: [0, 1, 0] }}
-                  transition={{ duration: 2.4, repeat: Infinity, repeatDelay: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                />
-              )}
-              <span className="relative flex items-center gap-2">
-                <Icon size={13} className={active ? 'text-emerald-300' : 'text-slate-500'} />
-                <span className="text-[11px] font-sans font-black text-slate-100">{feature.label}</span>
-              </span>
-              <span className="relative mt-1 block text-[9px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">
-                {feature.promise}
+              <span className="relative flex flex-col items-center gap-1">
+                <Icon size={15} className={active ? 'text-emerald-300' : 'text-slate-500'} />
+                <span className={`truncate text-[10px] font-sans font-black ${active ? 'text-slate-100' : 'text-slate-500'}`}>
+                  {feature.label}
+                </span>
               </span>
             </motion.button>
           )
         })}
       </div>
-      <div aria-hidden="true" className="mt-2 h-1 overflow-hidden rounded-full bg-slate-800/80">
+      <div aria-hidden="true" className="mt-1.5 h-0.5 overflow-hidden rounded-full bg-slate-800/80">
         <motion.div
           className="h-full rounded-full bg-emerald-400 shadow-[0_0_18px_rgba(52,211,153,0.42)]"
           style={{ width: progressWidth }}
@@ -707,6 +698,329 @@ function PreviewFeatureCarousel() {
           <ChevronRight size={16} />
         </button>
       </div>
+    </div>
+  )
+}
+
+function BuyerScreenShell({
+  id,
+  title,
+  subtitle,
+  icon: Icon,
+  children,
+  highlighted,
+  tone = '#22d3ee',
+}: {
+  id: string
+  title: string
+  subtitle: string
+  icon: LucideIcon
+  children: ReactNode
+  highlighted: boolean
+  tone?: string
+}) {
+  return (
+    <section
+      id={id}
+      data-highlighted-feature={highlighted ? 'true' : undefined}
+      className={`scroll-mt-20 rounded-2xl border border-white/8 bg-slate-950/62 p-4 transition-shadow sm:p-5 ${highlighted ? 'shadow-[0_0_0_1px_rgba(34,211,238,0.42),0_0_34px_rgba(34,211,238,0.16)]' : ''}`}
+    >
+      <div className="mb-4 flex items-start gap-3">
+        <div
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border"
+          style={{ color: tone, borderColor: `${tone}45`, background: `${tone}12` }}
+        >
+          <Icon size={19} />
+        </div>
+        <div className="min-w-0">
+          <h2 className="font-display text-xl font-black leading-tight text-slate-50">{title}</h2>
+          <p className="mt-1 text-sm leading-relaxed text-slate-400">{subtitle}</p>
+        </div>
+      </div>
+      {children}
+    </section>
+  )
+}
+
+function PlainStat({ label, value, tone }: { label: string; value: string; tone?: string }) {
+  return (
+    <div className="rounded-xl border border-white/8 bg-white/[0.035] px-3 py-3">
+      <p className="text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">{label}</p>
+      <p className="mt-1 text-sm font-sans font-black leading-snug text-slate-100" style={tone ? { color: tone } : undefined}>
+        {value}
+      </p>
+    </div>
+  )
+}
+
+function BuyerJourneyScreens({
+  area,
+  cityName,
+  scoreColor,
+  scoreLabel,
+  reportSummary,
+  dataBasis,
+  comparePreviewAreas,
+  sourcesCount,
+  confidenceLabel,
+  activeFeatureId,
+  coords,
+  citySlug,
+  onSelectFeatureId,
+  onOpenCompare,
+  onOpenAreaPass,
+}: {
+  area: MicroMarket
+  cityName: string
+  scoreColor: string
+  scoreLabel: string
+  reportSummary: ReturnType<typeof getInvestmentReportSummary>
+  dataBasis: string[]
+  comparePreviewAreas: MicroMarket[]
+  sourcesCount: number
+  confidenceLabel: string
+  activeFeatureId: AreaFeatureId
+  coords?: [number, number] | null
+  citySlug: string
+  onSelectFeatureId: (featureId: AreaFeatureId) => void
+  onOpenCompare: () => void
+  onOpenAreaPass: () => void
+}) {
+  const riskLevel = area.score >= 80 ? 'Lower risk' : area.score >= 60 ? 'Medium risk' : 'High risk'
+  const topCompare = comparePreviewAreas.filter(candidate => candidate.slug !== area.slug).slice(0, 2)
+
+  return (
+    <div className="mb-8">
+      {activeFeatureId === 'verdict' && (
+      <BuyerScreenShell
+        id="area-feature-verdict"
+        title="PlotDNA Verdict"
+        subtitle="Simple answer before you visit the plot."
+        icon={Shield}
+        highlighted
+        tone={scoreColor}
+      >
+        <div className="rounded-2xl border border-white/8 bg-white/[0.035] p-4">
+          <p className="text-[11px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">{area.category} / {cityName}</p>
+          <h1 className="mt-2 font-display text-3xl font-black leading-tight text-slate-50">{area.name}</h1>
+          <div className="mt-4 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-sm font-sans font-bold text-slate-400">Buyer answer</p>
+              <p className="mt-1 text-2xl font-display font-black" style={{ color: scoreColor }}>{reportSummary.verdict}</p>
+            </div>
+            <div className="rounded-2xl border px-4 py-3 text-center" style={{ borderColor: `${scoreColor}55`, color: scoreColor }}>
+              <p className="text-3xl font-display font-black leading-none">{area.score}</p>
+              <p className="mt-1 text-[10px] font-sans font-bold uppercase tracking-[0.12em]">Score</p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-3 grid gap-2">
+          {[
+            ['Can I lose money here?', reportSummary.mainRisk],
+            ['Is this area growing?', reportSummary.mainUpside],
+            ['Safe to shortlist?', reportSummary.bestFor],
+          ].map(([question, answer]) => (
+            <div key={question} className="rounded-xl border border-white/8 bg-slate-900/45 px-3 py-3">
+              <p className="text-sm font-sans font-black text-slate-100">{question}</p>
+              <p className="mt-1 text-xs leading-relaxed text-slate-400">{answer}</p>
+            </div>
+          ))}
+        </div>
+        <button
+          type="button"
+          onClick={() => onSelectFeatureId('growth')}
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+        >
+          See Money View
+          <ChevronRight size={16} />
+        </button>
+      </BuyerScreenShell>
+      )}
+
+      {activeFeatureId === 'growth' && (
+      <BuyerScreenShell
+        id="area-feature-growth"
+        title="Money View"
+        subtitle="Check gain, loss, broker price, and holding risk."
+        icon={IndianRupee}
+        highlighted
+        tone="#34d399"
+      >
+        <div className="grid grid-cols-2 gap-2">
+          <PlainStat label="Possible gain signal" value={`+${area.yoy}% YoY`} tone="#34d399" />
+          <PlainStat label="Overpay risk" value={riskLevel} tone="#fbbf24" />
+          <PlainStat label="Broker price check" value={area.priceRange} />
+          <PlainStat label="Hold view" value={scoreLabel} tone={scoreColor} />
+        </div>
+        <div className="mt-3 rounded-xl border border-amber-300/20 bg-amber-300/[0.07] p-3">
+          <p className="text-sm font-sans font-black text-amber-100">Good for investment?</p>
+          <p className="mt-1 text-xs leading-relaxed text-amber-100/80">
+            {area.score >= 75 ? 'Yes, but only with price discipline and document verification.' : 'Maybe, but do not pay token until the weak points are checked.'}
+          </p>
+        </div>
+        <div className="mt-4">
+          <SignalTrendPanel area={area} accentColor={scoreColor} />
+        </div>
+        <div className="mt-4 space-y-4">
+          <AVMCard areaSlug={area.slug} country="india" accentColor={scoreColor} />
+          <MarketPulseCard citySlug={citySlug} areaSlug={area.slug} country="india" />
+        </div>
+        <button
+          type="button"
+          onClick={() => onSelectFeatureId('sources')}
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+        >
+          See Map Proof
+          <ChevronRight size={16} />
+        </button>
+      </BuyerScreenShell>
+      )}
+
+      {activeFeatureId === 'sources' && (
+      <BuyerScreenShell
+        id="area-feature-sources"
+        title="Map Proof"
+        subtitle="See why the area verdict is not only a score."
+        icon={Map}
+        highlighted
+        tone="#22d3ee"
+      >
+        <SatelliteCompare area={area} coords={coords ?? undefined} />
+        <p className="mt-3 text-xs leading-relaxed text-slate-400">
+          Map proof uses the existing satellite and location evidence. Sources available: {sourcesCount}.
+        </p>
+        <button
+          type="button"
+          onClick={() => onSelectFeatureId('risk')}
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+        >
+          See Area Details
+          <ChevronRight size={16} />
+        </button>
+      </BuyerScreenShell>
+      )}
+
+      {activeFeatureId === 'risk' && (
+      <BuyerScreenShell
+        id="area-feature-risk"
+        title="Area Details"
+        subtitle="What to verify before paying token."
+        icon={AlertTriangle}
+        highlighted
+        tone="#fbbf24"
+      >
+        <div className="grid gap-2">
+          {BUYER_DUE_DILIGENCE_CHECKLIST.slice(0, 5).map(item => (
+            <div key={item} className="flex items-start gap-2.5 rounded-xl border border-white/8 bg-white/[0.035] px-3 py-2.5">
+              <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-emerald-300" />
+              <p className="text-xs leading-relaxed text-slate-300">{item}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-3 rounded-xl border border-white/8 bg-slate-900/45 p-3">
+          <p className="text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Confidence</p>
+          <p className="mt-1 text-sm font-sans font-black text-slate-100">{confidenceLabel}</p>
+          <p className="mt-1 text-xs leading-relaxed text-slate-500">{dataBasis.join(' / ')}</p>
+        </div>
+        {area.activeProjects && area.activeProjects.length > 0 && (
+          <div className="mt-4 rounded-2xl border border-white/8 bg-white/[0.035] p-3">
+            <p className="text-sm font-sans font-black text-slate-100">Why this area may gain value</p>
+            <div className="mt-3 grid gap-2 sm:grid-cols-3">
+              {area.activeProjects.slice(0, 3).map(project => (
+                <div key={project.id} className="rounded-xl border border-white/8 bg-slate-900/45 p-3">
+                  <p className="text-xs font-sans font-black text-slate-100">{project.name}</p>
+                  <p className="mt-1 text-[11px] leading-relaxed text-slate-500">{project.description ?? project.type}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={() => onSelectFeatureId('compare')}
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+        >
+          Compare Areas
+          <ChevronRight size={16} />
+        </button>
+      </BuyerScreenShell>
+      )}
+
+      {activeFeatureId === 'compare' && (
+      <BuyerScreenShell
+        id="area-feature-compare"
+        title="Compare Areas"
+        subtitle="Do not decide with only one locality in mind."
+        icon={Globe}
+        highlighted
+        tone="#60a5fa"
+      >
+        <div className="grid gap-2 sm:grid-cols-2">
+          {topCompare.map(candidate => {
+            const candidateColor = getScoreColor(candidate.score)
+            return (
+              <button
+                key={candidate.slug}
+                type="button"
+                className="rounded-xl border border-white/8 bg-white/[0.035] p-3 text-left"
+                onClick={onOpenCompare}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-sans font-black text-slate-100">{candidate.name}</p>
+                    <p className="mt-1 truncate text-xs text-slate-500">{candidate.priceRange}</p>
+                  </div>
+                  <span className="rounded-full px-2 py-1 text-xs font-black" style={{ color: candidateColor, background: `${candidateColor}1a` }}>
+                    {candidate.score}
+                  </span>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+        <button
+          type="button"
+          onClick={onOpenCompare}
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+        >
+          Compare with my area
+          <ChevronRight size={16} />
+        </button>
+      </BuyerScreenShell>
+      )}
+
+      {activeFeatureId === 'pdf' && (
+      <BuyerScreenShell
+        id="area-feature-pdf"
+        title="Area Pass"
+        subtitle="Save or share the simple buyer summary."
+        icon={FileText}
+        highlighted
+        tone="#a78bfa"
+      >
+        <div className="rounded-2xl border border-white/8 bg-white/[0.035] p-4">
+          <p className="text-[10px] font-sans font-bold uppercase tracking-[0.14em] text-slate-500">Share card preview</p>
+          <div className="mt-3 flex items-center justify-between gap-3">
+            <div>
+              <p className="text-xl font-display font-black text-slate-50">{area.name}</p>
+              <p className="mt-1 text-sm font-sans font-bold" style={{ color: scoreColor }}>{reportSummary.verdict}</p>
+            </div>
+            <div className="rounded-2xl border px-3 py-2 text-center" style={{ borderColor: `${scoreColor}55`, color: scoreColor }}>
+              <p className="text-2xl font-display font-black leading-none">{area.score}</p>
+              <p className="text-[9px] font-sans font-bold uppercase tracking-[0.12em]">DNA</p>
+            </div>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={onOpenAreaPass}
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+        >
+          Generate Area Pass
+          <ChevronRight size={16} />
+        </button>
+      </BuyerScreenShell>
+      )}
     </div>
   )
 }
@@ -2092,6 +2406,12 @@ export default function AreaDetail() {
   const comparePreviewAreas = compareSlugs
     .map(slug => (cityEntry?.areas ?? getAllAreas()).find(candidate => candidate.slug === slug))
     .filter((candidate): candidate is MicroMarket => Boolean(candidate))
+  const compareParams = new URLSearchParams({
+    areas: comparePreviewAreas.map(compareArea => compareArea.slug).join(','),
+    returnTo: `/area/${area.slug}`,
+  })
+  const comparePath = `/compare?${compareParams.toString()}`
+  const areaPassPath = getLandDnaCardPath(cityName, area)
   const downloadInstantPdf = (source: string) => {
     setSelectedReportPackage('instant_pdf_99')
     setSelectedReportSource(source)
@@ -2148,7 +2468,12 @@ export default function AreaDetail() {
       source: 'area_feature_navigator',
       dataConfidence: displayedConfidence ?? 'estimated',
     })
-    document.getElementById(feature.targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    container.current?.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  const selectAreaFeatureId = (featureId: AreaFeatureId) => {
+    const feature = AREA_FEATURE_GUIDE.find(item => item.id === featureId)
+    if (feature) handleAreaFeatureSelect(feature)
   }
 
   const handleEmailGateUnlocked = (nextEntitlements: NonNullable<typeof emailGateEntitlements>) => {
@@ -2207,7 +2532,7 @@ export default function AreaDetail() {
                 source: 'area_nav',
                 dataConfidence: displayedConfidence ?? 'estimated',
               })
-              navigate(getMapReturnPath())
+              navigate(comparePath)
             }}
             className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-sans transition-all glass-panel-light hover:bg-white/10 text-slate-300"
             style={{ border: '1px solid rgba(255,255,255,0.10)' }}
@@ -2245,7 +2570,7 @@ export default function AreaDetail() {
         </div>
       </nav>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      <div className="max-w-4xl mx-auto px-4 pb-32 pt-6 sm:px-6 sm:pb-36 sm:pt-10">
 
         <AreaFeatureNavigator
           activeFeatureId={activeAreaFeatureId}
@@ -2253,12 +2578,51 @@ export default function AreaDetail() {
           progressWidth={reportProgressWidth}
         />
 
+        <BuyerJourneyScreens
+          area={area}
+          cityName={cityName}
+          scoreColor={color}
+          scoreLabel={label}
+          reportSummary={reportSummary}
+          dataBasis={dataBasis}
+          comparePreviewAreas={comparePreviewAreas}
+          sourcesCount={sources.length}
+          confidenceLabel={confidenceMeta.label}
+          activeFeatureId={activeAreaFeatureId}
+          coords={fallbackContext?.coords ?? searchCoords}
+          citySlug={citySlug}
+          onSelectFeatureId={selectAreaFeatureId}
+          onOpenCompare={() => {
+            trackEvent('compare_started', {
+              citySlug,
+              areaSlug: area.slug,
+              source: 'area_buyer_journey',
+              dataConfidence: displayedConfidence ?? 'estimated',
+            })
+            navigate(comparePath)
+          }}
+          onOpenAreaPass={() => {
+            trackEvent('area_pass_opened', {
+              citySlug,
+              areaSlug: area.slug,
+              source: 'area_buyer_journey',
+              dataConfidence: displayedConfidence ?? 'estimated',
+              enabled: featureFlags.enableLandDnaCard,
+            })
+            if (featureFlags.enableLandDnaCard) {
+              navigate(areaPassPath)
+            } else {
+              document.getElementById('area-feature-pdf')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
+          }}
+        />
+
         {/* ── Hero ── */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-12"
+          className="hidden flex-col md:flex-row items-center md:items-start gap-8 mb-12"
         >
           {/* Score ring */}
           <div className="relative flex-shrink-0">
@@ -2366,6 +2730,88 @@ export default function AreaDetail() {
               <p className="mt-4 text-[11px] font-sans leading-relaxed text-slate-500">
                 Full printable evidence and checklist unlock with the Rs 99 lifetime report.
               </p>
+            </section>
+
+            <section
+              aria-label="Buyer verdict questions"
+              className="mt-4 space-y-3"
+            >
+              {[
+                {
+                  icon: Shield,
+                  question: 'Can I lose money here?',
+                  hint: 'Overpaying can eat your returns.',
+                  answer: reportSummary.mainRisk,
+                  tone: '#fb7185',
+                },
+                {
+                  icon: TrendingUp,
+                  question: 'Is this area growing?',
+                  hint: 'Growth is what builds value.',
+                  answer: reportSummary.mainUpside,
+                  tone: '#34d399',
+                },
+                {
+                  icon: CheckCircle2,
+                  question: 'Safe to shortlist?',
+                  hint: 'Shortlist only when the risk is clear.',
+                  answer: reportSummary.verdict,
+                  tone: color,
+                },
+              ].map(({ icon: Icon, question, hint, answer, tone }) => (
+                <div
+                  key={question}
+                  className="grid grid-cols-[44px_1fr] gap-3 rounded-2xl border border-white/8 bg-slate-950/45 p-3 sm:grid-cols-[48px_1fr_minmax(180px,0.9fr)] sm:items-center"
+                >
+                  <div
+                    className="flex h-11 w-11 items-center justify-center rounded-full"
+                    style={{ background: `${tone}18`, border: `1px solid ${tone}55`, color: tone }}
+                  >
+                    <Icon size={18} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-sans font-black text-slate-50">{question}</p>
+                    <p className="mt-1 text-xs font-sans text-slate-500">{hint}</p>
+                  </div>
+                  <p className="col-span-2 text-sm font-sans font-bold leading-relaxed sm:col-span-1" style={{ color: tone }}>
+                    {answer}
+                  </p>
+                </div>
+              ))}
+
+              <div className="rounded-2xl border border-teal-400/20 bg-teal-400/[0.06] p-4">
+                <div className="flex items-start gap-3">
+                  <Shield size={18} className="mt-1 flex-shrink-0 text-teal-300" />
+                  <div className="min-w-0">
+                    <p className="text-base font-display font-black text-slate-50">Why we say this</p>
+                    <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                      <div>
+                        <p className="text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Score</p>
+                        <p className="mt-1 text-3xl font-display font-black" style={{ color }}>{area.score}<span className="text-base text-slate-500">/100</span></p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Risk</p>
+                        <p className="mt-1 text-xl font-display font-black text-amber-400">{label.includes('High') ? 'Low' : 'Medium'}</p>
+                        <p className="mt-1 text-xs text-slate-500">Verify before token</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] font-sans font-bold uppercase tracking-[0.12em] text-slate-500">Growth</p>
+                        <p className="mt-1 text-xl font-display font-black text-emerald-300">+{area.yoy}% YoY</p>
+                        <p className="mt-1 text-xs text-slate-500">Positive area signal</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={() => document.getElementById('area-feature-growth')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className="inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+              >
+                <IndianRupee size={18} />
+                See Money View
+                <ChevronRight size={18} />
+              </button>
             </section>
 
             <section
@@ -2590,7 +3036,7 @@ export default function AreaDetail() {
         </motion.div>
 
         {/* Full DNA report sections */}
-        <div className="relative mt-8">
+        <div className="hidden relative mt-8">
           <div className="transition-all duration-500">
             {/* ── AI Verdict ── */}
             <motion.div
@@ -2661,20 +3107,28 @@ export default function AreaDetail() {
             >
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
-                  DNA Signal Breakdown
+                  Money View
                 </h2>
                 <span
                   className="text-[10px] font-sans text-slate-400 px-2.5 py-0.5 rounded-full glass-panel-light border border-white/5"
                 >
-                  Growth composite
+                  Buyer money check
                 </span>
               </div>
 
               <SignalTrendPanel area={area} accentColor={color} />
 
               <p className="text-[11px] font-sans text-slate-500 mt-4 leading-relaxed">
-                Growth read: infrastructure, population movement, satellite expansion, RERA activity, jobs, price velocity, and government catalysts.
+                What to watch: do not overpay for hype, verify road access and approvals, and treat resale as dependent on real future demand.
               </p>
+              <button
+                onClick={() => document.getElementById('area-feature-sources')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className="mt-4 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+              >
+                <Map size={18} />
+                See Map Proof
+                <ChevronRight size={18} />
+              </button>
             </motion.section>
 
             {/* ── Livability Index ── */}
@@ -2897,9 +3351,9 @@ export default function AreaDetail() {
               className={`mb-10 scroll-mt-28 rounded-[1.25rem] transition-shadow ${highlightedFeatureId === 'sources' ? 'shadow-[0_0_0_1px_rgba(52,211,153,0.45),0_0_32px_rgba(16,185,129,0.18)]' : ''}`}
             >
               <div className="flex items-center gap-2.5 mb-5">
-                <FileText size={11} className="text-slate-500" />
+                <Map size={16} className="text-teal-300" />
                 <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
-                  Sources &amp; References
+                  Map Proof
                 </h2>
               </div>
               <div className="space-y-2">
@@ -2942,6 +3396,13 @@ export default function AreaDetail() {
               <p className="text-[10px] font-sans text-slate-500 mt-3">
                 Links open in a new tab {" \u00B7 "} Always verify independently before making investment decisions
               </p>
+              <button
+                onClick={() => document.getElementById('area-feature-risk')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className="mt-4 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+              >
+                See Area Details
+                <ChevronRight size={18} />
+              </button>
             </motion.section>
 
             <motion.section
@@ -2955,7 +3416,7 @@ export default function AreaDetail() {
               <div className="flex items-center gap-2 mb-4">
                 <Shield size={14} style={{ color }} />
                 <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
-                  Buyer Due-Diligence Checklist
+                  Area Details
                 </h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -2969,6 +3430,13 @@ export default function AreaDetail() {
               <p className="mt-3 text-[11px] font-sans leading-relaxed text-slate-500">
                 PlotDNA narrows the area shortlist. These checks still need independent document, site, and professional verification before paying an advance.
               </p>
+              <button
+                onClick={() => document.getElementById('area-feature-compare')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+                className="mt-4 inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+              >
+                Compare Areas
+                <ChevronRight size={18} />
+              </button>
             </motion.section>
 
             {/* ── Nearby areas ── */}
@@ -2983,7 +3451,7 @@ export default function AreaDetail() {
                   <div className="flex items-center gap-2.5">
                     <Globe size={12} className="text-[#3b82f6]" />
                     <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">
-                      Alternative Markets ({goalMeta.label})
+                      Compare Areas ({goalMeta.label})
                     </h2>
                   </div>
                 </div>

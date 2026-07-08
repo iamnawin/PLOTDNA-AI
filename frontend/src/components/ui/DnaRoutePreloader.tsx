@@ -3,39 +3,24 @@ import { AnimatePresence, motion } from 'framer-motion'
 
 const DNA_STEPS = [
   {
-    label: 'Reading market signals before you commit capital...',
-    insight: 'Good land decisions start with location, access, demand, and risk.',
-    pct: 18,
+    label: 'Finding the area...',
+    insight: 'Reading location and nearby market signals.',
+    pct: 34,
   },
   {
-    label: 'Checking growth, access, risk, and price context...',
-    insight: 'PlotDNA helps you understand the market before you shortlist a site.',
-    pct: 36,
+    label: 'Checking money risk...',
+    insight: 'Checking price, growth, access, and risk signals.',
+    pct: 68,
   },
   {
-    label: 'Analysing infrastructure pipeline...',
-    insight: 'Roads, transit, employment hubs, and approvals can change the real value story.',
-    pct: 57,
-  },
-  {
-    label: 'Calculating buyer-side DNA score...',
-    insight: 'The score is a screening signal, not a replacement for title and RERA checks.',
-    pct: 76,
-  },
-  {
-    label: 'Mapping 5-year growth trajectory...',
-    insight: 'Know what changed, what is active now, and what still needs verification.',
-    pct: 91,
-  },
-  {
-    label: 'Finalising area intelligence...',
-    insight: 'Use the report to ask better questions before you trust any quoted price.',
+    label: 'Preparing verdict...',
+    insight: 'Opening your PlotDNA result.',
     pct: 100,
   },
 ]
 
-const STEP_READ_MS = 1100
-const COMPLETE_DELAY_MS = 450
+const STEP_READ_MS = 420
+const COMPLETE_DELAY_MS = 120
 
 interface Props {
   active: boolean
@@ -162,7 +147,7 @@ export default function DnaRoutePreloader({ active, onComplete }: Props) {
           </div>
 
           <p style={{ fontSize: 10, color: '#64748b', letterSpacing: '0.1em' }}>
-            <span className="font-display font-bold">{DNA_STEPS[step]?.pct ?? 0}%</span>{' - '}Decoding location DNA
+            <span className="font-display font-bold">{DNA_STEPS[step]?.pct ?? 0}%</span>{' - '}Preparing buyer verdict
           </p>
           <AnimatePresence mode="wait">
             <motion.p

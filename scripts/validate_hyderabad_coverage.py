@@ -64,6 +64,7 @@ def main() -> None:
     pending_sources = load_json(CITY_DIR / "pending-context-sources.json")
     pending_readiness = load_json(CITY_DIR / "pending-scoring-readiness.json")
     pending_inventory = load_json(CITY_DIR / "pending-signal-inventory.json")
+    pending_promotion = load_json(CITY_DIR / "pending-promotion-report.json")
 
     boundary_ring = boundary["features"][0]["geometry"]["coordinates"][0]
     boundary_area = area_km2(boundary_ring)
@@ -123,11 +124,13 @@ def main() -> None:
     source_by_slug = {audit["slug"]: audit for audit in pending_sources.get("sourceAudits", [])}
     readiness_by_slug = {audit["slug"]: audit for audit in pending_readiness.get("areaAudits", [])}
     inventory_by_slug = {audit["slug"]: audit for audit in pending_inventory.get("areaInventories", [])}
+    promotion_by_slug = {audit["slug"]: audit for audit in pending_promotion.get("areaPromotionRows", [])}
 
     for label, rows_by_slug in (
         ("source audit", source_by_slug),
         ("scoring-readiness audit", readiness_by_slug),
         ("signal inventory", inventory_by_slug),
+        ("promotion report", promotion_by_slug),
     ):
         missing_rows = sorted(context_slugs - set(rows_by_slug))
         extra_rows = sorted(set(rows_by_slug) - context_slugs)
@@ -167,8 +170,39 @@ def main() -> None:
         for inventory in inventory_by_slug.values()
         if inventory.get("signalDeckReady")
     ]
-    if promotion_ready or inventory_ready:
-        fail("pending context cells must remain unpromoted until every score signal is verified")
+    invalid_promotion_ready = [
+        audit
+        for audit in promotion_ready
+        if any(
+            item.get("status") != "verified"
+            for item in (audit.get("evidence") or {}).values()
+        )
+    ]
+    invalid_inventory_ready = [
+        inventory
+        for inventory in inventory_ready
+        if any(
+            signal.get("status") != "verified"
+            for signal in (inventory.get("signals") or {}).values()
+        )
+    ]
+    if invalid_promotion_ready or invalid_inventory_ready:
+        fail("pending context cells can only become promotion-ready after every score signal is verified")
+
+    report_ready = [
+        row
+        for row in promotion_by_slug.values()
+        if row.get("promotionReady")
+    ]
+    invalid_report_ready = [
+        row
+        for row in report_ready
+        if set(row.get("verifiedEvidence") or []) != set(pending_promotion.get("requiredEvidence") or [])
+    ]
+    if invalid_report_ready:
+        fail("pending promotion report must not mark rows ready until every score signal is verified")
+    if pending_promotion.get("summary", {}).get("promotionReadyCount") != len(report_ready):
+        fail("pending promotion report summary does not match ready rows")
 
     verified_price_count = sum(
         1
@@ -225,6 +259,7 @@ def main() -> None:
         "pendingScoringReadinessCount": len(readiness_by_slug),
         "pendingSignalInventoryCount": len(inventory_by_slug),
         "pendingPromotionReadyCount": len(promotion_ready),
+        "pendingPromotionReportReadyCount": len(report_ready),
         "pendingSignalDeckReadyCount": len(inventory_ready),
         "pendingVerifiedPriceSignalCount": verified_price_count,
         "pendingVerifiedInfrastructureSignalCount": verified_infrastructure_count,

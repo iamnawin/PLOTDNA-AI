@@ -34,10 +34,10 @@ const RISK_TIERS = [
 ]
 
 const ANALYZE_STEPS = [
-  'Reading satellite signals...',
-  'Cross-referencing infrastructure data...',
-  'Calculating DNA score...',
-  'Mapping growth trajectory...',
+  'Finding the exact land area...',
+  'Checking roads and nearby development...',
+  'Checking price and money risk...',
+  'Preparing your buyer verdict...',
 ]
 
 const LAST_MAP_STATE_KEY = 'plotdna:last-map-state'
@@ -221,7 +221,7 @@ export default function Home() {
     resolutionTier: coordAnalysis?.tier ?? null,
     resolutionLabel: coordAnalysis?.displayLabel ?? null,
     summary: selectedArea
-      ? `${selectedArea.name} has a ${selectedArea.score}/100 DNA score and ${selectedArea.priceRange} price range.`
+      ? `${selectedArea.name} has a ${selectedArea.score}/100 PlotDNA score and ${selectedArea.priceRange} price range.`
       : coordAnalysis?.area
         ? `${coordAnalysis.area.name} is the nearest supported locality.`
         : `${cityMeta.name} map view with no exact locality selected yet.`,
@@ -796,9 +796,9 @@ export default function Home() {
                   >
                     <Navigation size={13} className="text-emerald-400 flex-shrink-0" />
                     <div className="flex-1">
-                      <span className="text-[12px] font-sans font-semibold text-emerald-400">Analyze this location</span>
+                      <span className="text-[12px] font-sans font-semibold text-emerald-400">Check this location</span>
                       <p className="text-[10px] font-sans text-slate-500 mt-0.5">
-                        <span className="font-mono">{(parsedCoords ?? parsedMapUrl)![0].toFixed(4)}{"\u00B0N"}  {(parsedCoords ?? parsedMapUrl)![1].toFixed(4)}{"\u00B0E"}</span>{" \u00B7 "}DNA score + growth story
+                        <span className="font-mono">{(parsedCoords ?? parsedMapUrl)![0].toFixed(4)}{"\u00B0N"}  {(parsedCoords ?? parsedMapUrl)![1].toFixed(4)}{"\u00B0E"}</span>{" \u00B7 "}money risk + buyer verdict
                       </p>
                     </div>
                     <ChevronRight size={12} className="text-emerald-400" />
@@ -1561,7 +1561,7 @@ export default function Home() {
                   style={{ boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)', animation: 'pulse 1.4s infinite' }}
                 />
                 <span className="text-[12px] font-sans font-semibold text-emerald-400">
-                  Tap anywhere to view DNA analysis
+                  Tap anywhere to view land check
                 </span>
               </div>
               <p className="text-[9px] font-mono text-slate-500">

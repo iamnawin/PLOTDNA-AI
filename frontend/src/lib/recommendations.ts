@@ -96,6 +96,18 @@ function computeStability(area: MicroMarket, livability: number) {
   )
 }
 
+function getSignalDepth(area: MicroMarket) {
+  return area.signalsAvailable ?? Object.values(area.signals).filter((value) => value !== null).length
+}
+
+function getRecommendationConfidenceFactor(area: MicroMarket) {
+  const confidence = area.dataConfidence ?? 'partial'
+  if (confidence === 'verified') return 1
+  if (confidence === 'partial') return 0.94
+  if (confidence === 'estimated') return 0.72
+  return 0
+}
+
 function toRankedAreas(areas: MicroMarket[]): RankedArea[] {
   const priceFloors = areas
     .map((area) => parsePriceFloor(area.priceRange))
@@ -127,6 +139,15 @@ function formatCurrency(value: number) {
 
 function buildReasons(goal: RecommendationGoal, rankedArea: RankedArea): RecommendationReason[] {
   const { area, priceFloor, livability, upside, stability, affordability } = rankedArea
+  const signalDepth = getSignalDepth(area)
+
+  if ((area.dataConfidence ?? 'partial') === 'estimated' || signalDepth < 4) {
+    return [
+      { label: 'Data depth', value: `${signalDepth}/7 signal classes` },
+      { label: 'Entry', value: `${formatCurrency(priceFloor)} floor` },
+      { label: 'Use', value: 'Screen only' },
+    ]
+  }
 
   switch (goal) {
     case 'growth':
@@ -165,6 +186,11 @@ function buildReasons(goal: RecommendationGoal, rankedArea: RankedArea): Recomme
 
 function buildCaution(goal: RecommendationGoal, rankedArea: RankedArea) {
   const { area, priceFloor, affordability, stability, livability } = rankedArea
+  const signalDepth = getSignalDepth(area)
+
+  if ((area.dataConfidence ?? 'partial') === 'estimated' || signalDepth < 4) {
+    return 'Limited source depth. Treat this as an early screening area, not a ranked recommendation leader.'
+  }
 
   if (goal === 'growth' && stability < 70) {
     return 'Higher upside comes with a thinner stability cushion.'
@@ -190,12 +216,20 @@ function buildCaution(goal: RecommendationGoal, rankedArea: RankedArea) {
 
 function scoreArea(goal: RecommendationGoal, rankedArea: RankedArea) {
   const weights = GOAL_WEIGHTS[goal]
-  return Math.round(
+  const rawScore = Math.round(
     rankedArea.upside * weights.upside +
     rankedArea.stability * weights.stability +
     rankedArea.affordability * weights.affordability +
     rankedArea.livability * weights.livability,
   )
+  const signalDepth = getSignalDepth(rankedArea.area)
+  const adjustedScore = Math.round(rawScore * getRecommendationConfidenceFactor(rankedArea.area))
+
+  if ((rankedArea.area.dataConfidence ?? 'partial') === 'estimated' || signalDepth < 4) {
+    return Math.min(adjustedScore, 58)
+  }
+
+  return adjustedScore
 }
 
 export function getGoalTopAreas(areas: MicroMarket[], goal: RecommendationGoal, count: number) {
