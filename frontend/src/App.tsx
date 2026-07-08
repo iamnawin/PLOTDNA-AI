@@ -10,6 +10,7 @@ const AreaDetail = lazy(() => import('@/pages/AreaDetail'))
 const BrochurePage = lazy(() => import('@/pages/BrochurePage'))
 const CompareAreas = lazy(() => import('@/pages/CompareAreas'))
 const LandDNACardPage = lazy(() => import('@/pages/LandDNACardPage'))
+const AreaStoryShell = lazy(() => import('@/features/areaStory/AreaStoryShell'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -30,6 +31,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Landing />} />
           <Route path="/map" element={<Home />} />
+          {featureFlags.enableAreaStoryShell && (
+            <Route path="/area/:slug/:step" element={<AreaStoryShell />} />
+          )}
           <Route path="/area/:slug" element={<AreaDetail />} />
           <Route path="/card/:shareSlug" element={featureFlags.enableLandDnaCard ? <LandDNACardPage /> : <Landing />} />
           <Route path="/c/:shareSlug" element={featureFlags.enableLandDnaCard ? <LandDNACardPage /> : <Landing />} />
