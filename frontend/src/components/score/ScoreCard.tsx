@@ -136,19 +136,15 @@ export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
 
       {/* CTA */}
       <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        {featureFlags.enableLandDnaCard && (
-          <button
-            type="button"
-            onClick={() => navigate(getLandDnaCardPathForArea(area))}
-            className="mb-2 w-full flex items-center justify-center gap-2 rounded-xl border border-white/10 px-4 py-3 text-xs font-sans font-bold text-slate-200 transition-colors hover:text-white"
-          >
-            Share Land DNA Card
-            <Share2 size={13} />
-          </button>
-        )}
-        <button
+        <motion.button
           onClick={() => onOpenAreaReport(area.slug)}
-          className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-sans font-black uppercase tracking-[0.08em] transition-all duration-200 btn-3d-reflective"
+          animate={{ boxShadow: [
+            `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`,
+            `0 8px 28px rgba(0,0,0,0.4), 0 0 30px ${color}66`,
+            `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`,
+          ] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+          className="w-full flex items-center justify-center gap-2 py-4 px-4 rounded-xl text-base font-sans font-black uppercase tracking-[0.08em] transition-transform duration-200 btn-3d-reflective hover:-translate-y-0.5 active:translate-y-0.5"
           style={{
             background: `linear-gradient(135deg, ${color}dd 0%, ${color}aa 100%)`,
             borderTop: '1px solid rgba(255,255,255,0.4)',
@@ -156,32 +152,21 @@ export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
             borderRight: '1px solid rgba(0,0,0,0.2)',
             borderBottom: '4px solid rgba(0,0,0,0.45)',
             color: '#ffffff',
-            boxShadow: `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`,
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)'
-            e.currentTarget.style.borderBottomWidth = '6px'
-            e.currentTarget.style.boxShadow = `0 12px 30px rgba(0,0,0,0.45), 0 0 24px ${color}4d`
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)'
-            e.currentTarget.style.borderBottomWidth = '4px'
-            e.currentTarget.style.boxShadow = `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`
-          }}
-          onMouseDown={(e) => {
-            e.currentTarget.style.transform = 'translateY(2px)'
-            e.currentTarget.style.borderBottomWidth = '1px'
-            e.currentTarget.style.boxShadow = `0 2px 10px rgba(0,0,0,0.25)`
-          }}
-          onMouseUp={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)'
-            e.currentTarget.style.borderBottomWidth = '4px'
-            e.currentTarget.style.boxShadow = `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`
           }}
         >
-          Open Area DNA Report
-          <ArrowRight size={15} />
-        </button>
+          Open Full DNA Report
+          <ArrowRight size={17} />
+        </motion.button>
+        {featureFlags.enableLandDnaCard && (
+          <button
+            type="button"
+            onClick={() => navigate(getLandDnaCardPathForArea(area))}
+            className="mt-2 w-full flex items-center justify-center gap-1.5 rounded-xl px-4 py-2 text-[11px] font-sans font-semibold text-slate-500 transition-colors hover:text-slate-300"
+          >
+            Share Land DNA Card
+            <Share2 size={11} />
+          </button>
+        )}
       </div>
     </motion.div>
   )
