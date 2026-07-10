@@ -356,17 +356,26 @@ interface MicroMarket {
 
 ## Routing
 
-Five routes (current):
+Current routes (`frontend/src/App.tsx`):
 - `/` — Landing page
 - `/map` — Home (full map + sidebar)
-- `/area/:slug` — AreaDetail; slug must match `MicroMarket.slug`
-- `/compare` — CompareAreas side-by-side micro-market comparison
+- `/area/:slug/:step` — `AreaStoryShell` — guided 6-screen area story flow (see below)
+- `/area/:slug` — `LegacyAreaRedirect` → redirects into the guided story flow
+- `/card/:shareSlug`, `/c/:shareSlug` — `LegacyCardRedirect`
+- `/compare` — `LegacyCompareRedirect`
 - `/brochure` — BrochurePage
+
+**The old standalone AreaDetail, CompareAreas, and share-card pages were retired** (commit `475e774`) in favor of a single guided narrative flow. Do not resurrect direct AreaDetail/Compare components — extend the area story screens instead.
+
+### Guided area story flow (`frontend/src/features/areaStory/`)
+- `AreaStoryShell.tsx` — route shell for `/area/:slug/:step`; owns step routing/transitions across the 6 screens
+- `AreaStoryTabBar.tsx` — step navigation UI
+- `areaStoryNav.ts` — step order/definitions and navigation helpers
+- `screens/` — one component per step: `MapProofScreen`, `VerdictScreen`, `AreaDetailsScreen`, `MoneyScreen`, `CompareScreen`, `PassScreen`
 
 Planned routes:
 - `/district/:slug` — District-level Tier 3 summary page
 - `/state/:slug` — State-level overview
-- `/compare` — Side-by-side micro-market comparison
 - `/search` — Unified search (lat/lng, address, locality, district)
 
 ---
