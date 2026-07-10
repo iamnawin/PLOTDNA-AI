@@ -34,7 +34,7 @@ export default function AreaStoryTabBar({ slug, activeStep }: AreaStoryTabBarPro
   return (
     <nav
       aria-label="PlotDNA area story navigation"
-      className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-40 mx-auto grid max-w-[640px] grid-cols-6 gap-1 rounded-2xl border border-white/10 bg-slate-950/92 p-2 shadow-[0_18px_44px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:static sm:mb-4 sm:mt-0 sm:shadow-none sm:backdrop-blur-none"
+      className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-40 mx-auto grid max-w-[640px] grid-cols-3 gap-1 rounded-2xl border border-white/10 bg-slate-950/92 p-2 shadow-[0_18px_44px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:static sm:mb-4 sm:mt-0 sm:grid-cols-6 sm:shadow-none sm:backdrop-blur-none"
     >
       {TAB_ORDER.map(step => {
         const Icon = TAB_ICON[step]

@@ -26,15 +26,6 @@ const BUYER_QUESTIONS = [
   { icon: FileSearch, title: 'What should I verify before paying token?', desc: 'Know the must-check list.', color: '#a78bfa' },
 ]
 
-const JOURNEY_STEPS = [
-  { icon: Search, label: 'Check' },
-  { icon: Shield, label: 'Verdict' },
-  { icon: IndianRupee, label: 'Money' },
-  { icon: Map, label: 'Map' },
-  { icon: Activity, label: 'Compare' },
-  { icon: FileSearch, label: 'Pass' },
-]
-
 type SelectedLandInput = {
   source: 'search' | 'google_maps_link' | 'locate_me' | 'drop_pin' | 'brochure'
   rawInput?: string
@@ -153,44 +144,40 @@ export default function Landing() {
   }
 
   function goToCoords(coords: [number, number]) {
-    const localAnalysis = findNearestArea(coords[0], coords[1])
-    goToCoordWithLoader(() => {
-      if (localAnalysis.citySlug) setSelectedCitySlug(localAnalysis.citySlug)
-      setSearchCoords(coords)
-      setSelectedArea(localAnalysis.shouldSelectArea ? localAnalysis.area : null)
-      navigate('/map')
-    })
+    // Resolve against the backend first — it has the full district/cluster/context
+    // dataset. The local `findNearestArea` fallback is bundled static data only and
+    // can pick the wrong nearest area near coverage edges. Previously the loader's
+    // fixed animation timer fired navigation before this network call could return,
+    // so the more accurate backend result was silently dropped. Now navigation
+    // always waits for whichever result actually lands.
+    const resolutionPromise = resolveLocation(coords[0], coords[1]).catch(() => null)
 
-    resolveLocation(coords[0], coords[1]).then(res => {
-      if (res) {
-        if (res.tier === 'regional') {
-          pendingNavRef.current = () => {
-            const districtSlug = res.districtSlug || 'warangal'
-            navigate(buildAreaStoryPath(districtSlug, 'verdict'), {
-              state: {
-                fallbackContext: {
-                  tier: res.tier,
-                  displayLabel: `${res.districtName || 'Regional'} District Fallback`,
-                  precisionLabel: 'broad',
-                  coords,
-                  districtSlug: res.districtSlug,
-                  districtName: res.districtName,
-                  stateSlug: res.stateSlug,
-                }
+    goToCoordWithLoader(() => {
+      resolutionPromise.then(res => {
+        if (res && res.tier === 'regional') {
+          const districtSlug = res.districtSlug || 'warangal'
+          navigate(buildAreaStoryPath(districtSlug, 'verdict'), {
+            state: {
+              fallbackContext: {
+                tier: res.tier,
+                displayLabel: `${res.districtName || 'Regional'} District Fallback`,
+                precisionLabel: 'broad',
+                coords,
+                districtSlug: res.districtSlug,
+                districtName: res.districtName,
+                stateSlug: res.stateSlug,
               }
-            })
-          }
-        } else {
-          const backendAnalysis = findNearestArea(coords[0], coords[1], {}, res)
-          pendingNavRef.current = () => {
-            if (backendAnalysis.citySlug) setSelectedCitySlug(backendAnalysis.citySlug)
-            setSearchCoords(coords)
-            setSelectedArea(backendAnalysis.shouldSelectArea ? backendAnalysis.area : null)
-            navigate('/map')
-          }
+            }
+          })
+          return
         }
-      }
-    }).catch(() => {})
+        const analysis = findNearestArea(coords[0], coords[1], {}, res)
+        if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
+        setSearchCoords(coords)
+        setSelectedArea(analysis.shouldSelectArea ? analysis.area : null)
+        navigate('/map')
+      })
+    })
   }
 
   async function handleEnter() {
@@ -769,54 +756,32 @@ export default function Landing() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.32 }}
-          className="mt-10 w-full text-left"
-          style={{ maxWidth: 860 }}
+          className="mt-8 w-full text-left"
+          style={{ maxWidth: 640 }}
         >
-          <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-2xl border border-cyan-300/20 bg-cyan-300/10 text-cyan-200">
-              <Zap size={15} />
-            </div>
-            <p className="font-display text-[22px] font-black text-slate-50">
+          <div className="mb-3 flex items-center gap-2">
+            <Zap size={13} className="text-cyan-300" />
+            <p className="text-[11px] font-sans font-bold uppercase tracking-[0.12em] text-slate-400">
               Why buyers use PlotDNA
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {BUYER_QUESTIONS.map(({ icon: Icon, title, desc, color }) => (
+          <div className="grid grid-cols-3 gap-2">
+            {BUYER_QUESTIONS.map(({ icon: Icon, title, color }) => (
               <div
                 key={title}
-                className="rounded-2xl p-4"
+                className="flex flex-col items-center gap-1.5 rounded-xl px-2 py-3 text-center"
                 style={{
-                  background: 'linear-gradient(145deg, rgba(15,23,42,0.88), rgba(8,13,28,0.96))',
-                  border: '1px solid rgba(148,163,184,0.16)',
+                  background: 'rgba(15,23,42,0.55)',
+                  border: '1px solid rgba(148,163,184,0.14)',
                 }}
               >
                 <div
-                  className="mb-4 flex h-11 w-11 items-center justify-center rounded-full"
-                  style={{
-                    background: `${color}18`,
-                    border: `1px solid ${color}55`,
-                    color,
-                  }}
+                  className="flex h-8 w-8 items-center justify-center rounded-full"
+                  style={{ background: `${color}18`, border: `1px solid ${color}45`, color }}
                 >
-                  <Icon size={18} />
+                  <Icon size={14} />
                 </div>
-                <p className="font-display text-[16px] font-black leading-snug text-slate-50">{title}</p>
-                <p className="mt-2 text-[12px] leading-5 text-slate-400">{desc}</p>
-              </div>
-            ))}
-          </div>
-          <div className="mt-5 grid grid-cols-6 gap-2 rounded-[24px] border border-white/10 bg-slate-950/70 p-2">
-            {JOURNEY_STEPS.map(({ icon: Icon, label }, index) => (
-              <div
-                key={label}
-                className="flex flex-col items-center justify-center gap-1 rounded-2xl py-2 text-center"
-                style={{
-                  background: index === 0 ? 'rgba(45,212,191,0.12)' : 'transparent',
-                  color: index === 0 ? '#2dd4bf' : '#94a3b8',
-                }}
-              >
-                <Icon size={17} />
-                <span className="text-[10px] font-sans font-bold">{label}</span>
+                <p className="text-[10.5px] font-sans font-bold leading-tight text-slate-300">{title}</p>
               </div>
             ))}
           </div>
