@@ -15,6 +15,7 @@ import { resolveMapLink, analyzeBrochure, resolveLocation } from '@/lib/api'
 import { trackEvent } from '@/lib/analytics'
 import { trackUserEvent } from '@/lib/entitlements'
 import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
+import { buildAreaStoryPath } from '@/features/areaStory/areaStoryNav'
 
 const LAST_MAP_STATE_KEY = 'plotdna:last-map-state'
 
@@ -103,7 +104,7 @@ export default function Landing() {
   function goToArea(area: MicroMarket & { citySlug: string }) {
     setSelectedCitySlug(area.citySlug)
     setSelectedArea(area)
-    navigate(`/area/${area.slug}`)
+    navigate(buildAreaStoryPath(area.slug, 'verdict'))
   }
 
   function getCoordPreview(coords: [number, number]) {
@@ -165,7 +166,7 @@ export default function Landing() {
         if (res.tier === 'regional') {
           pendingNavRef.current = () => {
             const districtSlug = res.districtSlug || 'warangal'
-            navigate(`/area/${districtSlug}`, {
+            navigate(buildAreaStoryPath(districtSlug, 'verdict'), {
               state: {
                 fallbackContext: {
                   tier: res.tier,

@@ -6,13 +6,15 @@ import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import { getConfidenceMeta } from '@/lib/cityProduction'
 import VerdictCard from '@/components/ui/VerdictCard'
 import { buildAreaStoryPath } from '../areaStoryNav'
+import type { AreaStoryFallbackContext } from '../areaStoryNav'
 
 interface VerdictScreenProps {
   area: MicroMarket
   city: CityEntry
+  fallbackContext?: AreaStoryFallbackContext
 }
 
-export default function VerdictScreen({ area, city }: VerdictScreenProps) {
+export default function VerdictScreen({ area, city, fallbackContext }: VerdictScreenProps) {
   const scoreColor = getScoreColor(area.score)
   const scoreLabel = getScoreLabel(area.score)
   const confidenceMeta = getConfidenceMeta(area.dataConfidence)
@@ -44,7 +46,20 @@ export default function VerdictScreen({ area, city }: VerdictScreenProps) {
         </p>
       </section>
 
-      <VerdictCard citySlug={city.meta.slug} areaSlug={area.slug} />
+      {fallbackContext && fallbackContext.tier !== 'exact_locality' && (
+        <div className="mb-4 rounded-2xl border border-amber-300/20 bg-amber-300/[0.07] p-4">
+          <p className="text-sm font-sans font-black text-amber-200">Opened From Fallback Match</p>
+          <p className="mt-1 text-xs leading-relaxed text-amber-100/80">
+            Showing the closest available data for {fallbackContext.displayLabel}. This is {fallbackContext.precisionLabel === 'exact' ? 'an exact' : 'an approximate'} match, not a confirmed record for your exact point.
+          </p>
+        </div>
+      )}
+      <VerdictCard
+        citySlug={city.meta.slug}
+        areaSlug={area.slug}
+        resolutionTier={fallbackContext?.tier ?? 'exact_locality'}
+        resolutionLabel={fallbackContext?.displayLabel ?? area.name}
+      />
 
       <section
         className="mb-6 flex items-center justify-between rounded-2xl border px-4 py-3"

@@ -39,3 +39,27 @@ export function getPrevStep(step: AreaStoryStep): AreaStoryStep | null {
   if (index <= 0) return null
   return STEP_ORDER[index - 1]
 }
+
+export interface AreaStoryFallbackContext {
+  tier: 'exact_locality' | 'nearby_micro_market' | 'context_area' | 'city_zone_cluster' | 'regional' | 'uncovered'
+  displayLabel: string
+  precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
+  coords?: [number, number]
+  districtSlug?: string | null
+  districtName?: string | null
+  stateSlug?: string | null
+}
+
+export function fallbackContextFromQuery(search: string): AreaStoryFallbackContext | undefined {
+  const params = new URLSearchParams(search)
+  const lat = Number(params.get('fromLat'))
+  const lng = Number(params.get('fromLng'))
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return undefined
+
+  return {
+    tier: (params.get('fromTier') as AreaStoryFallbackContext['tier'] | null) ?? 'nearby_micro_market',
+    displayLabel: params.get('fromLabel') ?? 'Searched coordinate',
+    precisionLabel: (params.get('fromPrecision') as AreaStoryFallbackContext['precisionLabel'] | null) ?? 'approximate',
+    coords: [lat, lng],
+  }
+}

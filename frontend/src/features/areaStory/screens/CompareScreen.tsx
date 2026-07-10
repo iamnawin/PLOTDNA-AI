@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { BarChart3, TrendingUp, Shield, FileText } from 'lucide-react'
 import type { MicroMarket } from '@/types'
-import { CITIES } from '@/data/cities'
+import { CITIES, getCityForArea } from '@/data/cities'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import { getInvestmentReportSummary } from '@/lib/investmentReport'
 import { trackEvent } from '@/lib/analytics'
@@ -13,10 +13,8 @@ interface CompareScreenProps {
   area: MicroMarket
 }
 
-const CITY_SLUG = 'hyderabad'
-
 export default function CompareScreen({ area }: CompareScreenProps) {
-  const cityEntry = CITIES[CITY_SLUG]
+  const cityEntry = getCityForArea(area.slug) ?? CITIES['hyderabad']
   const areaBySlug = useMemo(
     () => new Map(cityEntry.areas.map(a => [a.slug, a])),
     [cityEntry.areas],
@@ -35,17 +33,17 @@ export default function CompareScreen({ area }: CompareScreenProps) {
 
   useEffect(() => {
     trackEvent('compare_started', {
-      citySlug: CITY_SLUG,
+      citySlug: cityEntry.meta.slug,
       areas: selectedAreas.map(a => a.slug).join(','),
       source: 'area_story_compare_screen',
     })
-  }, [selectedAreas])
+  }, [cityEntry.meta.slug, selectedAreas])
 
   function updateSelection(index: number, slug: string) {
     const next = [...selectedSlugs]
     next[index] = slug
     trackEvent('compare_area_changed', {
-      citySlug: CITY_SLUG,
+      citySlug: cityEntry.meta.slug,
       index,
       areaSlug: slug,
       areas: next.join(','),

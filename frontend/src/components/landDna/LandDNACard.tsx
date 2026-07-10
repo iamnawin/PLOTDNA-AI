@@ -6,6 +6,7 @@ import { featureFlags } from '@/lib/features'
 import { getGrowthForecastForArea } from '@/lib/forecast/growthForecast'
 import type { LandDnaAccessState } from '@/lib/founderPass/landDnaPlan'
 import { getLandDnaAreaCode, getLandDnaCardMetrics } from '@/lib/landDnaCard'
+import { buildAreaStoryPath } from '@/features/areaStory/areaStoryNav'
 
 interface Props {
   area: MicroMarket
@@ -159,7 +160,7 @@ export default function LandDNACard({ area, cityName, accessState, onShare, onDo
                   Plan: {accessState.plan} / Card limit: {accessState.cardLimit} / Payment status: {accessState.paymentStatus}
                 </p>
               </div>
-              <a href={`/area/${area.slug}`} className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-200 px-4 py-3 text-xs font-black text-slate-950">
+              <a href={buildAreaStoryPath(area.slug, 'verdict')} className="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-200 px-4 py-3 text-xs font-black text-slate-950">
                 Founder Pass
                 <ArrowRight size={14} />
               </a>

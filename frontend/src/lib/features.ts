@@ -11,7 +11,6 @@ export const featureFlags = {
   enableGrowthForecastCard: fromEnv("VITE_ENABLE_GROWTH_FORECAST_CARD"),
   enableLandDnaCard: fromEnv("VITE_ENABLE_LAND_DNA_CARD"),
   enableFounderPassGating: fromEnv("VITE_ENABLE_FOUNDER_PASS_GATING"),
-  enableAreaStoryShell: fromEnv("VITE_ENABLE_AREA_STORY_SHELL"),
 } as const
 
 export type FeatureFlagName = keyof typeof featureFlags

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { Search, MapPin, Building2, X } from 'lucide-react'
 import { getAllAreas, CITY_LIST } from '@/data/cities'
 import { getScoreColor } from '@/lib/utils'
+import { buildAreaStoryPath } from '@/features/areaStory/areaStoryNav'
 
 interface Result {
   type: 'city' | 'area'
@@ -29,7 +30,7 @@ function buildIndex(): Result[] {
       sub: area.category,
       slug: area.slug,
       score: area.score,
-      href: `/area/${area.slug}`,
+      href: buildAreaStoryPath(area.slug, 'verdict'),
     })
   })
   return results

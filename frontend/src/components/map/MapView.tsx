@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { getCityEntry } from '@/data/cities'
 import { useAppStore, type MapStyleKey } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
+import { buildAreaStoryPath } from '@/features/areaStory/areaStoryNav'
 import {
   getHyderabadPendingSource,
   getHyderabadPendingScoringReadiness,
@@ -477,7 +478,7 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
     if (e.features?.[0]?.layer.id === 'special-use-fill') return
     const slug = e.features?.[0]?.properties?.slug as string | undefined
     const area = slug ? areas.find(a => a.slug === slug) : null
-    if (area) navigate(`/area/${slug}`)
+    if (area) navigate(buildAreaStoryPath(area.slug, 'verdict'))
   }, [areas, navigate])
 
   const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {

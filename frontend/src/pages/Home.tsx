@@ -13,6 +13,7 @@ import type { LocalityResolution } from '@/lib/location/contracts'
 import { searchLocalAreas } from '@/lib/location/search'
 import { getCityProductionProfile } from '@/lib/cityProduction'
 import { featureFlags } from '@/lib/features'
+import { buildAreaStoryPath } from '@/features/areaStory/areaStoryNav'
 import { createInitialLocationIntelligence } from '@/lib/landIdentity/locationResolver'
 import type { LocationInputType, LocationIntelligence } from '@/lib/landIdentity/types'
 import ScoreCard from '@/components/score/ScoreCard'
@@ -352,7 +353,7 @@ export default function Home() {
   const buildAreaReportState = useCallback((slug: string, state?: unknown) => {
     const reportState = state as AreaReportNavigationState | undefined
     const coords = reportState?.fallbackContext?.coords ?? searchCoords
-    if (!coords) return { pathname: `/area/${slug}` }
+    if (!coords) return { pathname: buildAreaStoryPath(slug, 'verdict') }
 
     const params = new URLSearchParams()
     params.set('fromLat', coords[0].toFixed(6))
@@ -369,7 +370,7 @@ export default function Home() {
     }
 
     return {
-      pathname: `/area/${slug}`,
+      pathname: buildAreaStoryPath(slug, 'verdict'),
       search: `?${params.toString()}`,
     }
   }, [searchCoords, selectedCitySlug])
@@ -913,7 +914,7 @@ export default function Home() {
                     return (
                       <button
                         key={area.slug}
-                        onClick={() => navigate(`/area/${area.slug}`)}
+                        onClick={() => navigate(buildAreaStoryPath(area.slug, 'verdict'))}
                         className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] sm:text-[11px] font-sans font-bold transition-all duration-200 flex-shrink-0 hover:scale-[1.03]"
                         style={{
                           background: `linear-gradient(180deg, rgba(15,23,42,0.90), rgba(15,23,42,0.78)), ${color}2f`,
