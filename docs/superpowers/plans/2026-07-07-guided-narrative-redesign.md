@@ -1409,13 +1409,183 @@ git commit -m "feat: build real Pass screen reusing existing LandDNACard and sha
 - Consumes: `buildAreaStoryPath` from `frontend/src/features/areaStory/areaStoryNav.ts` (Task 1) everywhere a call site previously built a raw `` `/area/${slug}` `` string.
 - Produces: no new exports — this task is pure migration/deletion.
 
-**Known gap to resolve in this task, not silently drop:** `Home.tsx`'s `buildAreaReportState()` (`frontend/src/pages/Home.tsx:351-373`) passes `fromLat`/`fromLng`/`fromCity`/`fromLabel`/`fromTier`/`fromPrecision` query params for Tier 2+ (nearby/cluster/regional) fallback resolutions — today only `AreaDetail.tsx`'s `fallbackFromQuery()` (`frontend/src/pages/AreaDetail.tsx:53-63,125-136`) reads these. `AreaStoryShell` (Task 2) only resolves areas that exist in `getAllAreas()` and redirects to `/map` otherwise — it does not carry this fallback-context capability forward. Do not flip default routing until this is explicitly decided: either (a) port `fallbackFromQuery` parsing into `AreaStoryShell` before deleting `AreaDetail.tsx`, or (b) confirm with the user that Tier 2+ fallback areas are acceptably out of scope for v1 and will keep falling back to `/map`. **Stop and ask the user which before proceeding with Step 1 below** — this is a product behavior change (loss of nearby/regional fallback screening), not a mechanical refactor, and the user has not yet been asked about it.
+**Resolved decision:** the user has confirmed fallback-context handling must be ported forward — Tier 2+ (nearby/cluster/regional) resolutions are real, live functionality (`Home.tsx`'s `buildAreaReportState()` at `frontend/src/pages/Home.tsx:351-373` passes `fromLat`/`fromLng`/`fromCity`/`fromLabel`/`fromTier`/`fromPrecision` query params; today only `AreaDetail.tsx`'s `fallbackFromQuery()` at `frontend/src/pages/AreaDetail.tsx:125-137` reads them, and its result flows into `VerdictCard` via `resolutionTier`/`resolutionLabel` props plus a fallback banner rendered directly above the card at `frontend/src/pages/AreaDetail.tsx:3050-3062`). Step 1 below ports this exact mechanism into `AreaStoryShell` + `VerdictScreen` before `AreaDetail.tsx` is deleted.
 
-- [ ] **Step 1: Confirm fallback-context handling decision with the user (see note above), then proceed**
+- [ ] **Step 1: Port fallback-context parsing into `AreaStoryShell` and thread it into `VerdictScreen`**
 
-If the user chooses to port fallback-context handling: extend `AreaStoryShell.tsx` to accept `useLocation().search`, parse it with a copied/adapted version of `fallbackFromQuery()`, and pass the resulting context into `VerdictScreen` (which would then need a new optional prop — update the locked signature from Task 2 accordingly and note the change here). This sub-step is intentionally not fully planned yet since it depends on the user's answer; do not improvise it without that answer.
+Modify `frontend/src/features/areaStory/areaStoryNav.ts` — add the fallback-context type (mirrors `AreaDetailFallbackContext` from `AreaDetail.tsx:52-64` exactly, so no behavior changes, only relocation):
 
-If the user confirms Tier 2+ fallback is out of scope for v1: proceed directly to Step 2, and add a one-line note to `docs/plotdna-next-phase-handoff.md` (existing doc, already tracked in git status as modified this session) recording that nearby/regional fallback screening is temporarily unavailable until a follow-up task restores it.
+```typescript
+export interface AreaStoryFallbackContext {
+  tier: 'exact_locality' | 'nearby_micro_market' | 'context_area' | 'city_zone_cluster' | 'regional' | 'uncovered'
+  displayLabel: string
+  precisionLabel: 'exact' | 'approximate' | 'broad' | 'none'
+  coords?: [number, number]
+  districtSlug?: string | null
+  districtName?: string | null
+  stateSlug?: string | null
+}
+
+export function fallbackContextFromQuery(search: string): AreaStoryFallbackContext | undefined {
+  const params = new URLSearchParams(search)
+  const lat = Number(params.get('fromLat'))
+  const lng = Number(params.get('fromLng'))
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return undefined
+
+  return {
+    tier: (params.get('fromTier') as AreaStoryFallbackContext['tier'] | null) ?? 'nearby_micro_market',
+    displayLabel: params.get('fromLabel') ?? 'Searched coordinate',
+    precisionLabel: (params.get('fromPrecision') as AreaStoryFallbackContext['precisionLabel'] | null) ?? 'approximate',
+    coords: [lat, lng],
+  }
+}
+```
+
+Modify `frontend/src/features/areaStory/AreaStoryShell.tsx` — read `location.search`, parse it, and pass the result only into `VerdictScreen` (the only screen that rendered the fallback banner in `AreaDetail.tsx`):
+
+```tsx
+import { Navigate, useLocation, useParams } from 'react-router-dom'
+import { getAllAreas, getCityForArea } from '@/data/cities'
+import { isAreaStoryStep, buildAreaStoryPath, fallbackContextFromQuery } from './areaStoryNav'
+import AreaStoryTabBar from './AreaStoryTabBar'
+import VerdictScreen from './screens/VerdictScreen'
+import MoneyScreen from './screens/MoneyScreen'
+import MapProofScreen from './screens/MapProofScreen'
+import AreaDetailsScreen from './screens/AreaDetailsScreen'
+import CompareScreen from './screens/CompareScreen'
+import PassScreen from './screens/PassScreen'
+
+export default function AreaStoryShell() {
+  const { slug, step } = useParams<{ slug: string; step: string }>()
+  const location = useLocation()
+
+  if (!slug) return <Navigate to="/map" replace />
+
+  const area = getAllAreas().find(candidate => candidate.slug === slug)
+  const city = getCityForArea(slug)
+
+  if (!area || !city) return <Navigate to="/map" replace />
+
+  if (!isAreaStoryStep(step) || step === 'check') {
+    return <Navigate to={buildAreaStoryPath(slug, 'verdict')} replace />
+  }
+
+  const fallbackContext = fallbackContextFromQuery(location.search)
+
+  return (
+    <div className="min-h-[100dvh] body pb-28 text-slate-100 sm:pb-8">
+      <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
+        {step === 'verdict' && <VerdictScreen area={area} city={city} fallbackContext={fallbackContext} />}
+        {step === 'money' && <MoneyScreen area={area} />}
+        {step === 'map' && <MapProofScreen area={area} />}
+        {step === 'details' && <AreaDetailsScreen area={area} />}
+        {step === 'compare' && <CompareScreen area={area} />}
+        {step === 'pass' && <PassScreen area={area} city={city} />}
+      </main>
+      <AreaStoryTabBar slug={slug} activeStep={step} />
+    </div>
+  )
+}
+```
+
+Modify `frontend/src/features/areaStory/screens/VerdictScreen.tsx` — add the optional `fallbackContext` prop (this changes the Task 2/3 locked signature; every existing call site already passes it via the shell edit above, so no other file needs updating), render the same amber banner `AreaDetail.tsx` used, and pass `resolutionTier`/`resolutionLabel` into `VerdictCard` exactly as it did before:
+
+```tsx
+import { Link } from 'react-router-dom'
+import { ShieldCheck, ArrowRight } from 'lucide-react'
+import type { MicroMarket } from '@/types'
+import type { CityEntry } from '@/data/cities'
+import { getScoreColor, getScoreLabel } from '@/lib/utils'
+import { getConfidenceMeta } from '@/lib/cityProduction'
+import VerdictCard from '@/components/ui/VerdictCard'
+import { buildAreaStoryPath, type AreaStoryFallbackContext } from '../areaStoryNav'
+
+interface VerdictScreenProps {
+  area: MicroMarket
+  city: CityEntry
+  fallbackContext?: AreaStoryFallbackContext
+}
+
+export default function VerdictScreen({ area, city, fallbackContext }: VerdictScreenProps) {
+  const scoreColor = getScoreColor(area.score)
+  const scoreLabel = getScoreLabel(area.score)
+  const confidenceMeta = getConfidenceMeta(area.dataConfidence)
+
+  return (
+    <div>
+      <header className="mb-5 flex items-center gap-3">
+        <span
+          className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border"
+          style={{ color: scoreColor, borderColor: `${scoreColor}44`, background: `${scoreColor}14` }}
+        >
+          <ShieldCheck size={20} />
+        </span>
+        <div>
+          <p className="font-display text-xl font-black leading-tight text-slate-50">{area.name}</p>
+          <p className="text-xs text-slate-500">{city.meta.name}</p>
+        </div>
+      </header>
+
+      <section
+        className="mb-4 rounded-2xl border p-5"
+        style={{ borderColor: `${scoreColor}30`, background: `${scoreColor}0c` }}
+      >
+        <p className="font-display text-3xl font-black leading-tight" style={{ color: scoreColor }}>
+          {scoreLabel}
+        </p>
+        <p className="mt-2 text-sm leading-relaxed text-slate-300">
+          {area.highlights?.[0] ?? 'This area is being screened against PlotDNA growth, risk, and access signals.'}
+        </p>
+      </section>
+
+      {fallbackContext && fallbackContext.tier !== 'exact_locality' && (
+        <div className="mb-4 rounded-2xl px-4 py-3.5 glass-panel border border-amber-500/20 bg-amber-500/5">
+          <p className="mb-1 text-[10px] font-sans font-bold uppercase tracking-wider text-amber-400">
+            Opened From Fallback Match
+          </p>
+          <p className="text-[12px] leading-relaxed text-slate-300">
+            {fallbackContext.displayLabel} was used to open this supported area from your searched coordinate.
+            This page shows the exact micro-market analysis for {area.name}, not a plot-exact verdict for the original point.
+          </p>
+        </div>
+      )}
+
+      <VerdictCard
+        citySlug={city.meta.slug}
+        areaSlug={area.slug}
+        resolutionTier={fallbackContext?.tier ?? 'exact_locality'}
+        resolutionLabel={fallbackContext?.displayLabel ?? area.name}
+      />
+
+      <section
+        className="mb-6 flex items-center justify-between rounded-2xl border px-4 py-3"
+        style={{ borderColor: `${confidenceMeta.tone}30`, background: `${confidenceMeta.tone}0c` }}
+      >
+        <div>
+          <p className="text-[10px] font-sans font-bold uppercase tracking-[0.12em]" style={{ color: confidenceMeta.tone }}>
+            {confidenceMeta.label} data
+          </p>
+          <p className="mt-0.5 text-xs text-slate-500">{confidenceMeta.description}</p>
+        </div>
+        <div className="text-right">
+          <p className="text-2xl font-display font-black" style={{ color: scoreColor }}>{area.score}<span className="text-sm text-slate-500">/100</span></p>
+        </div>
+      </section>
+
+      <Link
+        to={buildAreaStoryPath(area.slug, 'money')}
+        className="flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-sans font-black text-slate-950"
+        style={{ background: `linear-gradient(90deg, ${scoreColor}, #38bdf8)` }}
+      >
+        See Money View
+        <ArrowRight size={16} />
+      </Link>
+    </div>
+  )
+}
+```
+
+Manually verify: navigate to `http://localhost:5173/area/<real-slug>/verdict?fromLat=17.45&fromLng=78.39&fromTier=nearby_micro_market&fromLabel=Your%20searched%20point`. Expected: amber "Opened From Fallback Match" banner renders above `VerdictCard` with the label text; navigating to the same URL without those query params shows no banner (exact-match behavior unchanged).
 
 - [ ] **Step 2: Update every raw `/area/${slug}` navigation call site to use `buildAreaStoryPath`**
 
@@ -1515,7 +1685,7 @@ Run: `cd frontend && npm run dev`. Walk through, in order:
 3. From Verdict, tap through all 6 tabs (Check/Verdict/Money/Map/Compare/Pass) — confirm each renders and the active tab highlights correctly.
 4. From Compare, change a dropdown, confirm table updates, tap "Generate Area Pass".
 5. From Pass, tap Share/Download/Copy — confirm no console errors.
-6. Visit an old-style `/area/<slug>?fromLat=...&fromTier=nearby_micro_market` URL (if Step 1 chose option (a), confirm fallback context still displays correctly; if option (b), confirm graceful redirect to `/map` rather than a crash).
+6. Visit an old-style `/area/<slug>?fromLat=...&fromTier=nearby_micro_market&fromLabel=...` URL — confirm the amber "Opened From Fallback Match" banner renders on the Verdict screen exactly as it did in `AreaDetail.tsx`, and `VerdictCard` receives the correct `resolutionTier`/`resolutionLabel`.
 7. Visit `/compare` directly — confirm it redirects to `/map` without a blank screen or error.
 8. Visit `/card/<real-share-code>` — confirm it redirects to the correct area's Pass screen (or to `/map` if no match, without a crash).
 
@@ -1548,5 +1718,5 @@ git commit -m "feat: cut over to area story shell as the default area experience
 - **Spec coverage:** All 3 locked decisions from brainstorming are covered — (1) replace entirely: Task 9 flips default routing and deletes legacy pages; (2) UI-only v1, reusing existing score/verdict/forecast/investment-summary logic: every screen task (3–8) explicitly lists only existing functions as data sources, no new scoring logic introduced anywhere; (3) mobile-first with desktop not broken: `AreaStoryTabBar` uses `sm:` breakpoints to convert from fixed bottom bar to static top-of-content bar on wider viewports, and no screen uses mobile-only units.
 - **Placeholder scan:** no "TODO"/"handle appropriately"/"similar to Task N" placeholders remain — every task step has literal, complete code or an explicit, scoped, user-facing question (Task 9 Step 1) rather than an invented answer.
 - **Type consistency:** `MicroMarket` and `CityEntry` prop types for all 6 screens were locked once in Task 2's placeholder stubs and every later task (3–8) reused the identical signature without renaming. `AreaStoryStep` type from Task 1 is consumed identically in Task 2's `AreaStoryTabBar` and `AreaStoryShell`. `buildAreaStoryPath(slug, step)` signature is used identically across Tasks 2–9.
-- **New risk surfaced during planning that the user has not yet confirmed:** the fallback-context query-param mechanism (`fromLat`/`fromTier`/etc.) used for Tier 2+ nearby/regional resolutions is real, live, existing functionality that the new shell does not carry forward unless Task 9 Step 1 is answered "port it." This must be resolved with the user before Task 9 ships, not assumed.
+- **Risk surfaced during planning, now resolved:** the fallback-context query-param mechanism (`fromLat`/`fromTier`/etc.) used for Tier 2+ nearby/regional resolutions is real, live, existing functionality. The user confirmed it must be ported forward rather than dropped; Task 9 Step 1 now contains the concrete port (new `fallbackContextFromQuery` in `areaStoryNav.ts`, `AreaStoryShell` parsing `location.search`, `VerdictScreen` gaining an optional `fallbackContext` prop and rendering the identical amber banner `AreaDetail.tsx` used) rather than an open question.
 
