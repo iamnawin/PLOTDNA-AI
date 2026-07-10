@@ -27,7 +27,6 @@ export default function CompareScreen({ area }: CompareScreenProps) {
     () => selectedSlugs.map(slug => areaBySlug.get(slug) ?? cityEntry.areas[0]),
     [areaBySlug, cityEntry.areas, selectedSlugs],
   )
-  const primaryAreas = selectedAreas.slice(0, 2)
   const bestArea = selectedAreas.reduce((best, a) => a.score > best.score ? a : best, selectedAreas[0])
   const stableArea = selectedAreas.reduce((best, a) => a.score >= best.score && a.yoy <= best.yoy ? a : best, selectedAreas[0])
 
@@ -86,13 +85,17 @@ export default function CompareScreen({ area }: CompareScreenProps) {
 
       <section className="mb-4 overflow-hidden rounded-2xl border border-white/8 bg-slate-950/62" aria-label="Buyer comparison table">
         {[
-          ['PlotDNA Score', primaryAreas.map(a => `${a.score}/100`)],
-          ['Money range', primaryAreas.map(a => a.priceRange)],
-          ['Gain signal', primaryAreas.map(a => `+${a.yoy}% YoY`)],
-          ['Risk level', primaryAreas.map(a => a.score >= 80 ? 'Lower risk' : a.score >= 60 ? 'Medium risk' : 'High risk')],
-          ['Best use', primaryAreas.map(a => getInvestmentReportSummary(a).bestFor)],
+          ['PlotDNA Score', selectedAreas.map(a => `${a.score}/100`)],
+          ['Money range', selectedAreas.map(a => a.priceRange)],
+          ['Gain signal', selectedAreas.map(a => `+${a.yoy}% YoY`)],
+          ['Risk level', selectedAreas.map(a => a.score >= 80 ? 'Lower risk' : a.score >= 60 ? 'Medium risk' : 'High risk')],
+          ['Best use', selectedAreas.map(a => getInvestmentReportSummary(a).bestFor)],
         ].map(([label, values]) => (
-          <div key={label as string} className="grid grid-cols-[0.9fr_1fr_1fr] border-b border-white/6 last:border-b-0">
+          <div
+            key={label as string}
+            className="grid border-b border-white/6 last:border-b-0"
+            style={{ gridTemplateColumns: `0.9fr repeat(${selectedAreas.length}, 1fr)` }}
+          >
             <div className="bg-white/[0.025] px-3 py-3 text-[11px] font-sans font-bold uppercase tracking-[0.08em] text-slate-500">
               {label as string}
             </div>

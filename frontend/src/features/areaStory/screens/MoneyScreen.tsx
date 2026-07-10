@@ -1,23 +1,46 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { TrendingUp, AlertTriangle, Clock, ArrowRight } from 'lucide-react'
+import { TrendingUp, AlertTriangle, Clock, ArrowRight, Calculator } from 'lucide-react'
 import type { MicroMarket } from '@/types'
-import { getGrowthForecastForArea } from '@/lib/forecast/growthForecast'
 import { getInvestmentReportSummary } from '@/lib/investmentReport'
+import { buildUserInvestmentEstimate } from '@/lib/userInvestmentEstimate'
 import { getScoreColor } from '@/lib/utils'
 import { buildAreaStoryPath } from '../areaStoryNav'
+import SignalTrendChart from './SignalTrendChart'
 
 interface MoneyScreenProps {
   area: MicroMarket
 }
 
-function formatLakh(rupees: number): string {
-  return `₹${Math.round(rupees / 100000)} lakh`
+function formatCurrency(value: number): string {
+  if (value >= 10000000) return `₹${(value / 10000000).toFixed(2)} Cr`
+  if (value >= 100000) return `₹${(value / 100000).toFixed(1)} lakh`
+  return `₹${value.toLocaleString('en-IN')}`
+}
+
+function parsePriceRangeMidpoint(priceRange: string): number | null {
+  const matches = [...priceRange.matchAll(/[\d,.]+/g)].map(m => Number(m[0].replace(/,/g, '')))
+  const valid = matches.filter(Number.isFinite)
+  if (valid.length === 0) return null
+  return valid.reduce((sum, v) => sum + v, 0) / valid.length
 }
 
 export default function MoneyScreen({ area }: MoneyScreenProps) {
-  const forecast = getGrowthForecastForArea(area.slug)
   const summary = getInvestmentReportSummary(area)
   const scoreColor = getScoreColor(area.score)
+  const basePricePerSqft = parsePriceRangeMidpoint(area.priceRange)
+
+  const [pricePerSqft, setPricePerSqft] = useState(basePricePerSqft ? String(Math.round(basePricePerSqft)) : '')
+  const [plotSizeSqft, setPlotSizeSqft] = useState('1000')
+
+  const estimate = basePricePerSqft
+    ? buildUserInvestmentEstimate({
+        pricePerSqft: Number(pricePerSqft) || basePricePerSqft,
+        plotSizeSqft: Number(plotSizeSqft) || 0,
+        baseEstimatedPricePerSqft: basePricePerSqft,
+        yoy: area.yoy,
+      })
+    : null
 
   return (
     <div>
@@ -26,22 +49,69 @@ export default function MoneyScreen({ area }: MoneyScreenProps) {
         <p className="mt-1 text-xs text-slate-500">{area.name}</p>
       </header>
 
-      {forecast?.investment_example ? (
+      {estimate ? (
         <section
           className="mb-4 rounded-2xl border p-5"
           style={{ borderColor: `${scoreColor}30`, background: `${scoreColor}0c` }}
         >
-          <p className="text-xs text-slate-400">If you invest</p>
-          <p className="font-display text-3xl font-black" style={{ color: scoreColor }}>
-            {formatLakh(forecast.investment_example.amount)}
+          <div className="mb-4 flex items-center gap-2">
+            <Calculator size={14} style={{ color: scoreColor }} />
+            <p className="text-xs font-sans font-bold text-slate-300">Enter your plot to estimate value</p>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <label className="block">
+              <span className="mb-1 block text-[10px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">Quote / sqft</span>
+              <input
+                type="number"
+                min="0"
+                inputMode="numeric"
+                value={pricePerSqft}
+                onChange={event => setPricePerSqft(event.target.value)}
+                className="w-full rounded-xl border border-white/10 bg-slate-950/55 px-3 py-2 text-sm font-display font-bold text-slate-100 outline-none focus:border-emerald-400/40"
+              />
+            </label>
+            <label className="block">
+              <span className="mb-1 block text-[10px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">Plot sqft</span>
+              <input
+                type="number"
+                min="0"
+                inputMode="numeric"
+                value={plotSizeSqft}
+                onChange={event => setPlotSizeSqft(event.target.value)}
+                className="w-full rounded-xl border border-white/10 bg-slate-950/55 px-3 py-2 text-sm font-display font-bold text-slate-100 outline-none focus:border-emerald-400/40"
+              />
+            </label>
+          </div>
+
+          {estimate.currentValue > 0 ? (
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="rounded-xl border border-white/5 bg-slate-950/35 p-3">
+                <p className="text-[9px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">Today</p>
+                <p className="mt-1 font-display text-lg font-black text-slate-100">{formatCurrency(estimate.currentValue)}</p>
+              </div>
+              <div className="rounded-xl border border-white/5 bg-slate-950/35 p-3">
+                <p className="text-[9px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">In 5 years</p>
+                <p className="mt-1 font-display text-lg font-black" style={{ color: scoreColor }}>{formatCurrency(estimate.fiveYearValue)}</p>
+                <p className="text-[10px] text-slate-500">+{estimate.fiveYearProfitPct}%</p>
+              </div>
+              <div className="rounded-xl border border-white/5 bg-slate-950/35 p-3">
+                <p className="text-[9px] font-sans font-bold uppercase tracking-[0.1em] text-slate-500">In 10 years</p>
+                <p className="mt-1 font-display text-lg font-black text-sky-300">{formatCurrency(estimate.tenYearValue)}</p>
+                <p className="text-[10px] text-slate-500">+{estimate.tenYearProfitPct}%</p>
+              </div>
+            </div>
+          ) : (
+            <p className="mt-3 text-xs text-slate-500">Enter a quote and plot size to see an estimate.</p>
+          )}
+          <p className="mt-3 text-[10px] leading-relaxed text-slate-500">
+            Directional estimate from area price and growth signals — not a valuation report. Verify against actual seller quote and recent registered comps.
           </p>
-          <p className="mt-2 text-sm leading-relaxed text-slate-300">{forecast.investment_example.label}</p>
         </section>
       ) : (
         <section className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
           <p className="text-sm leading-relaxed text-slate-400">
-            A personalized rupee forecast is not available for {area.name} yet. The figures below are based on
-            PlotDNA's current growth, risk, and demand signals for this area.
+            A price estimate is not available for {area.name} yet. The figures below are based on PlotDNA's current
+            growth, risk, and demand signals for this area.
           </p>
         </section>
       )}
@@ -62,6 +132,10 @@ export default function MoneyScreen({ area }: MoneyScreenProps) {
           <p className="text-[10px] font-sans font-bold uppercase tracking-[0.1em] text-sky-300">Best for</p>
           <p className="mt-1 text-sm font-sans font-black text-slate-100">{summary.bestFor}</p>
         </div>
+      </section>
+
+      <section className="mb-4">
+        <SignalTrendChart signals={area.signals} accentColor={scoreColor} />
       </section>
 
       <section className="mb-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">

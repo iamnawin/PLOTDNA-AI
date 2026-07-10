@@ -210,6 +210,8 @@ interface HoverInfo { x: number; y: number; slug: string }
 interface MapViewProps {
   dropPinMode?: boolean
   onMapClick?: (coords: { lat: number; lng: number }) => void
+  /** When set, hides every other area/context cell and shows only this slug's polygon. */
+  isolateSlug?: string
 }
 interface ContextHoverInfo {
   x: number
@@ -244,7 +246,7 @@ function closePolygonRing(polygon: [number, number][]): [number, number][] {
   return ring
 }
 
-export default function MapView({ dropPinMode = false, onMapClick }: MapViewProps = {}) {
+export default function MapView({ dropPinMode = false, onMapClick, isolateSlug }: MapViewProps = {}) {
   const mapRef      = useRef<MapRef>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const navigate    = useNavigate()
@@ -271,13 +273,13 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
   const [specialUseHover, setSpecialUseHover] = useState<SpecialUseHover | null>(null)
 
   const constructionProjects = useMemo(() =>
-    showConstruction ? areas.flatMap(a => a.activeProjects ?? []) : [],
-    [areas, showConstruction],
+    showConstruction && !isolateSlug ? areas.flatMap(a => a.activeProjects ?? []) : [],
+    [areas, showConstruction, isolateSlug],
   )
-  const specialUseGeojson = selectedCitySlug === 'hyderabad'
+  const specialUseGeojson = selectedCitySlug === 'hyderabad' && !isolateSlug
     ? HYDERABAD_SPECIAL_USE
     : EMPTY_FEATURE_COLLECTION
-  const flagshipBoundaryGeojson = selectedCitySlug === 'hyderabad'
+  const flagshipBoundaryGeojson = selectedCitySlug === 'hyderabad' && !isolateSlug
     ? HYDERABAD_FLAGSHIP_BOUNDARY
     : EMPTY_FEATURE_COLLECTION
 
@@ -293,21 +295,27 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
   }, [mapStyleKey, searchCoords])
 
   // ── Fly to selected area (sidebar / chip click) ───────────────────────────
-  useEffect(() => {
+  const fitToSelectedArea = useCallback(() => {
     if (!selectedArea || !mapRef.current) return
     const width = containerRef.current?.clientWidth ?? window.innerWidth
-    const padding = width >= 1200
-      ? { top: 190, right: 520, bottom: 120, left: 300 }
-      : width >= 768
-        ? { top: 160, right: 320, bottom: 110, left: 240 }
-        : { top: 130, right: 40, bottom: 120, left: 40 }
+    const padding = isolateSlug
+      ? { top: 40, right: 40, bottom: 40, left: 40 }
+      : width >= 1200
+        ? { top: 190, right: 520, bottom: 120, left: 300 }
+        : width >= 768
+          ? { top: 160, right: 320, bottom: 110, left: 240 }
+          : { top: 130, right: 40, bottom: 120, left: 40 }
     mapRef.current.fitBounds(getPolygonBounds(selectedArea.polygon), {
       padding,
       maxZoom: mapStyleKey === 'satellite' ? 15.8 : 14.8,
       duration: 1300,
       essential: true,
     })
-  }, [mapStyleKey, selectedArea])
+  }, [mapStyleKey, selectedArea, isolateSlug])
+
+  useEffect(() => {
+    fitToSelectedArea()
+  }, [fitToSelectedArea])
 
   // ── 3D / 2D camera toggle ─────────────────────────────────────────────────
   useEffect(() => {
@@ -413,6 +421,14 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
       }),
     }
   }, [selectedArea, hoveredSlug, contextHoverSlug, highlightTier, areas, selectedCitySlug])
+
+  const visibleGeojson = useMemo(() => {
+    if (!isolateSlug) return geojson
+    return {
+      ...geojson,
+      features: geojson.features.filter(feature => feature.properties?.slug === isolateSlug),
+    }
+  }, [geojson, isolateSlug])
 
   const showContextHover = useCallback((feature: NonNullable<MapLayerMouseEvent['features']>[number], point: { x: number; y: number }) => {
     const slug = String(feature.properties?.slug ?? '')
@@ -529,6 +545,7 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
     <div ref={containerRef} style={{ position: 'relative', width: '100%', height: '100%' }}>
       <Map
         ref={mapRef}
+        onLoad={fitToSelectedArea}
         mapStyle={MAP_STYLES[mapStyleKey]}
         initialViewState={{
           latitude:  cityMeta.center[0],
@@ -548,7 +565,7 @@ export default function MapView({ dropPinMode = false, onMapClick }: MapViewProp
         doubleClickZoom={false}
       >
         {/* ── Area polygons ── */}
-        <Source id="areas" type="geojson" data={geojson}>
+        <Source id="areas" type="geojson" data={visibleGeojson}>
 
           {/* Fill */}
           <Layer

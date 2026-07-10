@@ -5,6 +5,7 @@ import type { MicroMarket } from '@/types'
 import { useAppStore } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
 import MapView from '@/components/map/MapView'
+import SatelliteCompare from '@/components/ui/SatelliteCompare'
 import { buildAreaStoryPath } from '../areaStoryNav'
 
 interface MapProofScreenProps {
@@ -19,6 +20,7 @@ const LEGEND_ITEMS = [
 
 export default function MapProofScreen({ area }: MapProofScreenProps) {
   const setSelectedArea = useAppStore(state => state.setSelectedArea)
+  const searchCoords = useAppStore(state => state.searchCoords)
   const scoreColor = getScoreColor(area.score)
   const scoreLabel = getScoreLabel(area.score)
 
@@ -30,12 +32,16 @@ export default function MapProofScreen({ area }: MapProofScreenProps) {
     <div>
       <header className="mb-4">
         <p className="font-display text-xl font-black leading-tight text-slate-50">Map Proof</p>
-        <p className="mt-1 text-xs text-slate-500">Map supports the verdict.</p>
+        <p className="mt-1 text-xs text-slate-500">Only {area.name} is shown — nothing else on the map.</p>
       </header>
 
       <div className="mb-4 h-[360px] overflow-hidden rounded-2xl border border-white/10 sm:h-[440px]">
-        <MapView />
+        <MapView isolateSlug={area.slug} />
       </div>
+
+      <section className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+        <SatelliteCompare area={area} coords={searchCoords ?? undefined} />
+      </section>
 
       <section className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
         <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
