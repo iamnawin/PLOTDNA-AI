@@ -15,7 +15,7 @@ function assert(condition, message) {
 
 const appTsx = readFileSync(path.join(__dirname, '../src/App.tsx'), 'utf-8')
 assert(appTsx.includes('/area/:slug/:step'), 'App.tsx registers the area story shell route')
-assert(appTsx.includes('enableAreaStoryShell'), 'App.tsx gates the route behind enableAreaStoryShell')
+assert(appTsx.includes('LegacyAreaRedirect'), 'App.tsx redirects the legacy /area/:slug route into the story shell')
 assert(appTsx.includes('path="/area/:slug"'), 'App.tsx still registers the legacy /area/:slug route')
 
 const shellTsx = readFileSync(path.join(__dirname, '../src/features/areaStory/AreaStoryShell.tsx'), 'utf-8')
