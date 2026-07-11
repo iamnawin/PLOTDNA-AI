@@ -37,7 +37,9 @@
     "test:area-story-nav": "node --experimental-strip-types scripts/check-area-story-nav.mjs",
     "test:area-story-shell": "node scripts/check-area-story-shell.mjs",
     "test:verification-sources": "node scripts/check-verification-sources.mjs",
-    "test:buyer-recommendation": "node --experimental-strip-types scripts/check-buyer-recommendation.mjs"
+    "test:buyer-recommendation": "node --experimental-strip-types scripts/check-buyer-recommendation.mjs",
+    "test:area-story-screen": "node scripts/check-area-story-screen.mjs",
+    "test:buyer-report-pdf": "node scripts/check-buyer-report-pdf.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.3.4",

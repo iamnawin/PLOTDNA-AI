@@ -35,7 +35,7 @@ const VERIFICATION_SOURCE_SHELLS: VerificationSourceShell[] = [
     sourceType: 'gov',
     statusLabel: 'User must verify',
     warning: 'Some land/plot cases may not be RERA applicable. Ask the seller for written reason if RERA does not apply.',
-    applicableModes: ['flat', 'house', 'area'],
+    applicableModes: ['plot', 'flat', 'house', 'area'],
     titleMatch: /RERA/i,
   },
   {

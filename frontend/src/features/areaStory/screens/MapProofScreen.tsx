@@ -83,7 +83,7 @@ export default function MapProofScreen({ area }: MapProofScreenProps) {
         className="flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-sans font-black text-slate-950"
         style={{ background: `linear-gradient(90deg, ${scoreColor}, #38bdf8)` }}
       >
-        See Area Details
+        See Area Story
         <ArrowRight size={16} />
       </Link>
     </div>

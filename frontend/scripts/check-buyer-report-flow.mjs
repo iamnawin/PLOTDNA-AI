@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { readFileSync } from 'node:fs'
 import { spawn } from 'node:child_process'
 import { setTimeout as delay } from 'node:timers/promises'
 import { chromium } from 'playwright'
@@ -69,8 +70,15 @@ try {
   await page.getByRole('button', { name: /Download Buyer Report/i }).click()
   const download = await downloadPromise
   assert.equal(download.suggestedFilename(), 'plotdna-buyer-report-HYD-BXX-064.pdf')
+  const pdfPath = await download.path()
+  const pdfBody = readFileSync(pdfPath).toString('latin1')
+  assert.equal((pdfBody.match(/\/Type\s*\/Page\b/g) ?? []).length, 4)
 
   await page.goto(`${baseUrl}/area/beeramguda/details`, { waitUntil: 'domcontentloaded' })
+  for (const label of ['Area Story', 'What is happening here?', 'Infrastructure signals', 'Nearby demand drivers', 'What this means for a buyer', 'Where to verify this', 'Buyer action recommendation']) {
+    await page.getByText(label, { exact: true }).waitFor({ state: 'attached' })
+  }
+  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), 390)
   await page.getByRole('button', { name: /Download Buyer Report/i }).waitFor({ state: 'visible' })
   await page.getByRole('link', { name: /Compare Areas/i }).waitFor({ state: 'visible' })
   await page.getByRole('link', { name: /Generate Area Pass/i }).waitFor({ state: 'visible' })
