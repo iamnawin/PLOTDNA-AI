@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion'
 import {
   Search, ChevronRight, Navigation, Zap, Map, TrendingUp,
   Shield, Activity, X, Link2, MapPin, IndianRupee, FileSearch,
-  CheckCircle2,
 } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { CITIES } from '@/data/cities'
@@ -26,18 +25,6 @@ const BUYER_QUESTIONS = [
   { icon: FileSearch, title: 'What should I verify before paying token?', desc: 'Know the must-check list.', color: '#a78bfa' },
 ]
 
-type SelectedLandInput = {
-  source: 'search' | 'google_maps_link' | 'locate_me' | 'drop_pin' | 'brochure'
-  rawInput?: string
-  lat?: number
-  lng?: number
-  areaName?: string
-  city?: string
-  area?: MicroMarket & { citySlug: string }
-  isReadyToCheck: boolean
-  statusMessage: string
-}
-
 export default function Landing() {
   const navigate  = useNavigate()
   const {
@@ -51,7 +38,6 @@ export default function Landing() {
   const [resolving, setResolving]     = useState(false)
   const [locating, setLocating]       = useState(false)
   const [inputError, setInputError]   = useState('')
-  const [selectedLandInput, setSelectedLandInput] = useState<SelectedLandInput | null>(null)
   const [dnaLoading, setDnaLoading]   = useState(false)
   const [dnaLoaderRunId, setDnaLoaderRunId] = useState(0)
   const inputRef      = useRef<HTMLInputElement>(null)
@@ -88,57 +74,10 @@ export default function Landing() {
     ? allAreas.filter(a => a.name.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
     : []
   const showDropdown = focused && (results.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
-  const canCheckLand = selectedLandInput?.isReadyToCheck === true && !resolving && !locating
-
   function goToArea(area: MicroMarket & { citySlug: string }) {
     setSelectedCitySlug(area.citySlug)
     setSelectedArea(area)
     navigate(buildAreaStoryPath(area.slug, 'verdict'))
-  }
-
-  function getCoordPreview(coords: [number, number]) {
-    const localAnalysis = findNearestArea(coords[0], coords[1])
-    return {
-      areaName: localAnalysis.area?.name ?? localAnalysis.displayLabel ?? 'Exact coordinates',
-      city: localAnalysis.citySlug ? (CITIES[localAnalysis.citySlug]?.meta.name ?? localAnalysis.citySlug) : activeCityEntry.meta.name,
-    }
-  }
-
-  function selectAreaForCheck(area: MicroMarket & { citySlug: string }) {
-    setSelectedLandInput({
-      source: 'search',
-      rawInput: area.name,
-      areaName: area.name,
-      city: CITIES[area.citySlug]?.meta.name ?? area.citySlug,
-      area,
-      isReadyToCheck: true,
-      statusMessage: 'Area selected. Click Check My Land to continue.',
-    })
-    setQuery(area.name)
-    setInputError('')
-    setFocused(false)
-  }
-
-  function selectCoordsForCheck(
-    coords: [number, number],
-    source: SelectedLandInput['source'],
-    rawInput: string,
-    statusMessage: string,
-  ) {
-    const preview = getCoordPreview(coords)
-    setSelectedLandInput({
-      source,
-      rawInput,
-      lat: coords[0],
-      lng: coords[1],
-      areaName: preview.areaName,
-      city: preview.city,
-      isReadyToCheck: true,
-      statusMessage,
-    })
-    setQuery(`${coords[0].toFixed(6)}, ${coords[1].toFixed(6)}`)
-    setInputError('')
-    setFocused(false)
   }
 
   function goToCoords(coords: [number, number]) {
@@ -173,6 +112,27 @@ export default function Landing() {
         if (analysis.citySlug) setSelectedCitySlug(analysis.citySlug)
         setSearchCoords(coords)
         setSelectedArea(analysis.shouldSelectArea ? analysis.area : null)
+        if (analysis.area) {
+          const params = new URLSearchParams({
+            fromLat: coords[0].toFixed(6),
+            fromLng: coords[1].toFixed(6),
+            fromCity: analysis.citySlug ?? 'hyderabad',
+            fromLabel: analysis.displayLabel,
+            fromTier: analysis.tier,
+            fromPrecision: analysis.precisionLabel,
+          })
+          navigate(`${buildAreaStoryPath(analysis.area.slug, 'verdict')}?${params.toString()}`, {
+            state: {
+              fallbackContext: {
+                tier: analysis.tier,
+                displayLabel: analysis.displayLabel,
+                precisionLabel: analysis.precisionLabel,
+                coords,
+              },
+            },
+          })
+          return
+        }
         navigate('/map')
       })
     })
@@ -185,11 +145,11 @@ export default function Landing() {
       return
     }
     if (parsedCoords) {
-      selectCoordsForCheck(parsedCoords, 'search', query.trim(), 'Coordinates found. Click Check My Land to continue.')
+      goToCoords(parsedCoords)
       return
     }
     if (parsedMapUrl) {
-      selectCoordsForCheck(parsedMapUrl, 'google_maps_link', query.trim(), 'Google Maps location attached. Click Check My Land to decode this area.')
+      goToCoords(parsedMapUrl)
       return
     }
     if (shortMapUrl || backendMapUrl) {
@@ -197,7 +157,7 @@ export default function Landing() {
       const result = await resolveMapLink(query.trim())
       setResolving(false)
       if (result.coords) {
-        selectCoordsForCheck(result.coords, 'google_maps_link', query.trim(), 'Google Maps location attached. Click Check My Land to decode this area.')
+        goToCoords(result.coords)
         return
       }
       setInputError(result.detail ?? (
@@ -209,25 +169,8 @@ export default function Landing() {
       ))
       return
     }
-    if (results.length > 0) { selectAreaForCheck(results[0]); return }
+    if (results.length > 0) { goToArea(results[0]); return }
     setInputError('No matching area found. Try a Hyderabad locality, Google Maps link, or coordinates.')
-  }
-
-  function handleCheckMyLand() {
-    setInputError('')
-    if (!selectedLandInput?.isReadyToCheck) {
-      setInputError('Select land first. Search, paste link, locate me, or drop a pin.')
-      return
-    }
-    if (selectedLandInput.area) {
-      goToArea(selectedLandInput.area)
-      return
-    }
-    if (typeof selectedLandInput.lat === 'number' && typeof selectedLandInput.lng === 'number') {
-      goToCoords([selectedLandInput.lat, selectedLandInput.lng])
-      return
-    }
-    setInputError('This selection is not ready yet. Try selecting the area again.')
   }
 
   function handleLocateMe() {
@@ -245,7 +188,7 @@ export default function Landing() {
           position.coords.longitude,
         ]
         setLocating(false)
-        selectCoordsForCheck(coords, 'locate_me', 'Current location', 'Location found. Click Check My Land to continue.')
+        goToCoords(coords)
       },
       error => {
         setLocating(false)
@@ -275,10 +218,25 @@ export default function Landing() {
         setInputError('Clipboard is empty. Paste a Google Maps link in the search field.')
         return
       }
-      setQuery(value.trim())
-      setSelectedLandInput(null)
-      setFocused(true)
-      inputRef.current?.focus()
+      const pastedValue = value.trim()
+      setQuery(pastedValue)
+      const directCoords = parseCoords(pastedValue) ?? parseMapUrl(pastedValue)
+      if (directCoords) {
+        goToCoords(directCoords)
+        return
+      }
+      if (isMapUrl(pastedValue)) {
+        setResolving(true)
+        const result = await resolveMapLink(pastedValue)
+        setResolving(false)
+        if (result.coords) {
+          goToCoords(result.coords)
+          return
+        }
+        setInputError(result.detail ?? 'Could not extract coordinates from this map link.')
+        return
+      }
+      setInputError('Clipboard does not contain a supported Google Maps link or coordinates.')
     } catch {
       setInputError('Paste a Google Maps link in the search field.')
       inputRef.current?.focus()
@@ -464,7 +422,7 @@ export default function Landing() {
                     type="text"
                     placeholder="Search area, paste Google Maps link, or enter coordinates"
                     value={query}
-                    onChange={e => { setQuery(e.target.value); setInputError(''); setSelectedLandInput(null) }}
+                    onChange={e => { setQuery(e.target.value); setInputError('') }}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setTimeout(() => setFocused(false), 160)}
                     onKeyDown={e => { if (e.key === 'Enter') handleEnter() }}
@@ -472,7 +430,7 @@ export default function Landing() {
                   />
                   {query && (
                     <button
-                      onClick={() => { setQuery(''); setInputError(''); setSelectedLandInput(null); inputRef.current?.focus() }}
+                      onClick={() => { setQuery(''); setInputError(''); inputRef.current?.focus() }}
                       className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-white/[0.05] hover:text-slate-200"
                       aria-label="Clear search"
                     >
@@ -521,72 +479,7 @@ export default function Landing() {
               </div>
             </div>
 
-            <AnimatePresence>
-              {selectedLandInput && (
-                <motion.div
-                  initial={{ opacity: 0, y: 6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -4 }}
-                  transition={{ duration: 0.18 }}
-                  className="mt-3 rounded-xl p-3 text-left"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(16,185,129,0.10), rgba(14,165,233,0.06))',
-                    border: '1px solid rgba(45, 212, 191, 0.28)',
-                  }}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-400/10 text-emerald-300">
-                      <MapPin size={17} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between gap-3">
-                        <p className="text-[11px] font-sans font-bold uppercase tracking-[0.14em] text-emerald-300">
-                          Selected location
-                        </p>
-                        <span className="rounded-full border border-emerald-400/25 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-sans font-bold text-emerald-200">
-                          Ready to check
-                        </span>
-                      </div>
-                      <p className="mt-2 truncate font-display text-lg font-black text-slate-50">
-                        {selectedLandInput.areaName ?? 'Exact land point'}
-                      </p>
-                      <div className="mt-1 flex flex-wrap gap-x-3 text-[11px] leading-5 text-slate-400">
-                        <span>Source: {selectedLandInput.source.replaceAll('_', ' ')}</span>
-                        <span>City: {selectedLandInput.city ?? activeCityEntry.meta.name}</span>
-                        {typeof selectedLandInput.lat === 'number' && typeof selectedLandInput.lng === 'number' && (
-                          <>
-                            <span>Lat: {selectedLandInput.lat.toFixed(5)}</span>
-                            <span>Lng: {selectedLandInput.lng.toFixed(5)}</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <button
-              type="button"
-              onClick={handleCheckMyLand}
-              disabled={!canCheckLand}
-              className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-sans font-black transition-all disabled:cursor-not-allowed active:scale-[0.99]"
-              style={{
-                background: canCheckLand
-                  ? 'linear-gradient(135deg, #2dd4bf, #22d3ee)'
-                  : 'rgba(148, 163, 184, 0.12)',
-                border: canCheckLand ? '1px solid rgba(45,212,191,0.55)' : '1px solid rgba(148,163,184,0.16)',
-                color: canCheckLand ? '#021617' : '#64748b',
-                boxShadow: canCheckLand ? '0 18px 42px rgba(34,211,238,0.18)' : 'none',
-              }}
-            >
-              <CheckCircle2 size={18} />
-              Check My Land
-              <ChevronRight size={18} />
-            </button>
-            {!selectedLandInput && (
-              <p className="mt-2 text-[11px] leading-4 text-slate-500">Select land first — search, locate, paste link, or drop pin.</p>
-            )}
+            <p className="mt-3 text-[11px] leading-4 text-slate-500">Choose an action once. PlotDNA starts the land check immediately.</p>
           </div>
 
           <p className="mt-3 px-2 text-xs leading-5 text-slate-500">
@@ -615,14 +508,7 @@ export default function Landing() {
                   const coords = parsedCoords ?? parsedMapUrl!
                   return (
                     <button
-                      onMouseDown={() => selectCoordsForCheck(
-                        coords,
-                        parsedMapUrl ? 'google_maps_link' : 'search',
-                        query.trim(),
-                        parsedMapUrl
-                          ? 'Google Maps location attached. Click Check My Land to decode this area.'
-                          : 'Coordinates found. Click Check My Land to continue.',
-                      )}
+                      onMouseDown={() => goToCoords(coords)}
                       className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors cursor-pointer"
                       style={{ borderBottom: results.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
@@ -652,7 +538,7 @@ export default function Landing() {
                     <div className="flex-1">
                       <span style={{ fontSize: 12, color: '#10b981' }}>Resolve map link</span>
                       <p style={{ fontSize: 10, color: '#64748b', marginTop: 2 }}>
-                        Extract coordinates, then enable Check My Land
+                        Extract coordinates, then open the buyer verdict
                       </p>
                     </div>
                     <ChevronRight size={12} style={{ color: '#10b981' }} />
@@ -665,7 +551,7 @@ export default function Landing() {
                   return (
                     <button
                       key={area.slug}
-                      onMouseDown={() => selectAreaForCheck(areaWithCity)}
+                      onMouseDown={() => goToArea(areaWithCity)}
                       className="w-full flex items-center gap-3 px-5 py-3 text-left transition-colors"
                       style={{ borderBottom: i < results.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}

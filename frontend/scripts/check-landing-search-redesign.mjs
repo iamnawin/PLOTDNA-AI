@@ -19,6 +19,7 @@ assert(landing.includes('Search area, paste Google Maps link'), 'placeholder sho
 assert(landing.includes('grid-cols-[38px_1fr]'), 'search input should use a compact icon/input layout')
 assert(landing.includes('grid grid-cols-3 gap-2'), 'search actions must use one balanced three-tile row')
 assert(landing.includes('min-h-[62px] min-w-0'), 'search actions must preserve mobile touch targets without overflowing')
-assert(landing.includes('Select land first — search, locate, paste link, or drop pin.'), 'disabled gate must explain how to select land')
+assert(landing.includes('Choose an action once. PlotDNA starts the land check immediately.'), 'search actions must explain one-tap behavior')
+assert(!landing.includes('Check My Land'), 'landing must not add a second confirmation tap')
 
 console.log('Landing search redesign check passed.')

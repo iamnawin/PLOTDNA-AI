@@ -20,7 +20,6 @@ import ScoreCard from '@/components/score/ScoreCard'
 import PlotAnalysisCard from '@/components/score/PlotAnalysisCard'
 import BrochureUploadCard from '@/components/ui/BrochureUploadCard'
 import AssistantDock from '@/components/ui/AssistantDock'
-import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
 import LocationIntelligencePanel from '@/components/location/LocationIntelligencePanel'
 import SurveyResolverPanel from '@/components/survey/SurveyResolverPanel'
 import type { SurveyResolverResult } from '@/lib/landIdentity/surveyResolver'
@@ -104,8 +103,6 @@ export default function Home() {
   const [analyzingCoords, setAnalyzingCoords] = useState<[number, number] | null>(null)
   const [pendingCoords, setPendingCoords]     = useState<[number, number] | null>(null)
   const [analyzeStep, setAnalyzeStep]         = useState(0)
-  const [areaReportLoading, setAreaReportLoading] = useState(false)
-  const [areaReportLoaderRunId, setAreaReportLoaderRunId] = useState(0)
   const [backendResolution, setBackendResolution] = useState<LocalityResolution | null>(null)
   const [locationIntelligence, setLocationIntelligence] = useState<LocationIntelligence | null>(null)
   const [showLocationIntelligence, setShowLocationIntelligence] = useState(false)
@@ -115,7 +112,6 @@ export default function Home() {
   const inputRef = useRef<HTMLInputElement>(null)
   const cityRailRef = useRef<HTMLDivElement>(null)
   const areaRailRef = useRef<HTMLDivElement>(null)
-  const pendingAreaReportNavRef = useRef<(() => void) | null>(null)
   const resetInitialTierRef = useRef(false)
   const restoredMapStateRef = useRef(false)
 
@@ -446,20 +442,9 @@ export default function Home() {
     setViewMode('map')
   }
 
-  const openAreaReportWithLoader = useCallback((slug: string, state?: unknown) => {
-    pendingAreaReportNavRef.current = () => {
-      navigate(buildAreaReportState(slug, state), state ? { state } : undefined)
-    }
-    setAreaReportLoaderRunId(id => id + 1)
-    setAreaReportLoading(true)
+  const openAreaReport = useCallback((slug: string, state?: unknown) => {
+    navigate(buildAreaReportState(slug, state), state ? { state } : undefined)
   }, [buildAreaReportState, navigate])
-
-  const handleAreaReportLoaderComplete = useCallback(() => {
-    const pendingNav = pendingAreaReportNavRef.current
-    pendingAreaReportNavRef.current = null
-    pendingNav?.()
-    setAreaReportLoading(false)
-  }, [])
 
   async function handleSearchSubmit() {
     setSearchError('')
@@ -572,12 +557,6 @@ export default function Home() {
 
   return (
     <div className="relative w-[100dvw] h-[100dvh] overflow-hidden bg-[#060814]">
-      <DnaRoutePreloader
-        key={areaReportLoaderRunId}
-        active={areaReportLoading}
-        onComplete={handleAreaReportLoaderComplete}
-      />
-
       {/* ── Map fills 100% of screen ── */}
       {featureFlags.enableLandIdentityFlow &&
         featureFlags.enableLocationIntelligencePanel && (
@@ -1210,14 +1189,14 @@ export default function Home() {
             fallback={coordAnalysis}
             fallbackReportSlug={recommendedAreas[0]?.area.slug ?? cityAreas[0]?.slug ?? 'adibatla'}
             fallbackReportLabel={recommendedAreas[0]?.area.name ?? cityAreas[0]?.name ?? cityMeta.name}
-            onOpenAreaReport={openAreaReportWithLoader}
+            onOpenAreaReport={openAreaReport}
             onClose={() => { setSearchCoords(null); setSelectedArea(null); clearMapStateFromUrl() }}
           />
         ) : selectedArea ? (
           <ScoreCard
             key={`score-${selectedArea.slug}`}
             area={selectedArea}
-            onOpenAreaReport={openAreaReportWithLoader}
+            onOpenAreaReport={openAreaReport}
             onClose={() => setSelectedArea(null)}
           />
         ) : null}
