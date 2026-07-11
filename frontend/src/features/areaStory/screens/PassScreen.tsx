@@ -64,7 +64,7 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
     <div>
       <header className="mb-4">
         <p className="font-display text-xl font-black leading-tight text-slate-50">Area Pass</p>
-        <p className="mt-1 text-xs text-slate-500">Premium shareable pass for smart buyers</p>
+        <p className="mt-1 text-xs text-slate-400">Your premium, share-ready buyer summary</p>
       </header>
 
       <LandDNACard
@@ -72,6 +72,40 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
         cityName={cityName}
         cardRef={cardRef}
       />
+
+      {accessState.upgradeRequired && (
+        <section className="mt-4" aria-label="Founder Pass">
+          {paymentLink ? (
+            <a
+              href={paymentLink}
+              className="btn-3d-reflective relative inline-flex min-h-[76px] w-full touch-manipulation items-center justify-between gap-3 overflow-hidden rounded-xl bg-[linear-gradient(115deg,#f59e0b_0%,#facc15_24%,#2dd4bf_62%,#38bdf8_100%)] px-5 text-left text-slate-950 active:translate-y-0.5"
+            >
+              <span>
+                <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-slate-900/70">Founder Pass · One-time unlock</span>
+                <span className="mt-1 block text-base font-black leading-tight">Unlock Founder Pass — ₹99 Lifetime Access</span>
+                <span className="mt-1 block text-[10px] font-bold text-slate-900/65">More Area Pass cards, buyer reports, and comparisons</span>
+              </span>
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-950/15"><ArrowRight size={19} /></span>
+            </a>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => setPaymentError(true)}
+                className="btn-3d-reflective relative inline-flex min-h-[76px] w-full touch-manipulation items-center justify-between gap-3 overflow-hidden rounded-xl bg-[linear-gradient(115deg,#f59e0b_0%,#facc15_24%,#2dd4bf_62%,#38bdf8_100%)] px-5 text-left text-slate-950 active:translate-y-0.5"
+              >
+                <span>
+                  <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-slate-900/70">Founder Pass · One-time unlock</span>
+                  <span className="mt-1 block text-base font-black leading-tight">Unlock Founder Pass — ₹99 Lifetime Access</span>
+                  <span className="mt-1 block text-[10px] font-bold text-slate-900/65">More Area Pass cards, buyer reports, and comparisons</span>
+                </span>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-950/15"><ArrowRight size={19} /></span>
+              </button>
+              {paymentError && <p className="mt-2 rounded-xl border border-amber-200/20 bg-amber-200/[0.08] px-3 py-2 text-center text-xs text-amber-100">Payment link is temporarily unavailable. Please try again soon.</p>}
+            </>
+          )}
+        </section>
+      )}
 
       {shareState !== 'idle' && (
         <p className="mt-3 rounded-xl border border-emerald-300/18 bg-emerald-300/[0.08] px-3 py-2 text-center text-xs font-sans font-bold text-emerald-300">
@@ -81,7 +115,12 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
         </p>
       )}
 
-      <section className="mt-4 grid grid-cols-2 gap-2" aria-label="Area Pass actions">
+      <section className="mb-[calc(1rem+env(safe-area-inset-bottom))] mt-5 sm:mb-0" aria-label="Area Pass actions">
+        <div className="mb-2 flex items-center justify-between gap-3">
+          <p className="text-xs font-black text-slate-200">Share or save this pass</p>
+          <p className="text-[10px] text-slate-500">4 actions</p>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
         <button
           type="button"
           onClick={handleShare}
@@ -104,39 +143,8 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
         >
           <Copy size={16} /> Copy URL
         </button>
+        </div>
       </section>
-
-      {accessState.upgradeRequired && (
-        <section className="mb-[calc(1rem+env(safe-area-inset-bottom))] mt-5 sm:mb-0" aria-label="Founder Pass">
-          {paymentLink ? (
-            <a
-              href={paymentLink}
-              className="btn-3d-reflective relative inline-flex min-h-16 w-full touch-manipulation items-center justify-between gap-3 overflow-hidden rounded-xl bg-[linear-gradient(115deg,#f59e0b_0%,#facc15_24%,#2dd4bf_62%,#38bdf8_100%)] px-5 text-left text-slate-950 active:translate-y-0.5"
-            >
-              <span>
-                <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-slate-900/70">Founder Pass</span>
-                <span className="mt-1 block text-sm font-black leading-tight">Unlock Founder Pass — ₹99 Lifetime Access</span>
-              </span>
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-950/12"><ArrowRight size={18} /></span>
-            </a>
-          ) : (
-            <>
-              <button
-                type="button"
-                onClick={() => setPaymentError(true)}
-                className="btn-3d-reflective relative inline-flex min-h-16 w-full touch-manipulation items-center justify-between gap-3 overflow-hidden rounded-xl bg-[linear-gradient(115deg,#f59e0b_0%,#facc15_24%,#2dd4bf_62%,#38bdf8_100%)] px-5 text-left text-slate-950 active:translate-y-0.5"
-              >
-                <span>
-                  <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-slate-900/70">Founder Pass</span>
-                  <span className="mt-1 block text-sm font-black leading-tight">Unlock Founder Pass — ₹99 Lifetime Access</span>
-                </span>
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-950/12"><ArrowRight size={18} /></span>
-              </button>
-              {paymentError && <p className="mt-2 rounded-xl border border-amber-200/20 bg-amber-200/[0.08] px-3 py-2 text-center text-xs text-amber-100">Payment link is temporarily unavailable. Please try again soon.</p>}
-            </>
-          )}
-        </section>
-      )}
     </div>
   )
 }
