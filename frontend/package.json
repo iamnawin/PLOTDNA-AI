@@ -39,7 +39,8 @@
     "test:verification-sources": "node scripts/check-verification-sources.mjs",
     "test:buyer-recommendation": "node --experimental-strip-types scripts/check-buyer-recommendation.mjs",
     "test:area-story-screen": "node scripts/check-area-story-screen.mjs",
-    "test:buyer-report-pdf": "node scripts/check-buyer-report-pdf.mjs"
+    "test:buyer-report-pdf": "node scripts/check-buyer-report-pdf.mjs",
+    "test:area-pass-founder-cta": "node scripts/check-area-pass-founder-cta.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.3.4",

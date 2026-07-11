@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Share2, Download, Copy } from 'lucide-react'
+import { ArrowRight, Share2, Download, Copy } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import type { CityEntry } from '@/data/cities'
 import LandDNACard from '@/components/landDna/LandDNACard'
@@ -7,6 +7,7 @@ import BuyerReportButton from '@/components/ui/BuyerReportButton'
 import { getCachedEntitlements } from '@/lib/entitlements'
 import { getLandDnaAccessState } from '@/lib/founderPass/landDnaPlan'
 import { exportLandDnaCardPng, getLandDnaAreaCode, getLandDnaCardPath } from '@/lib/landDnaCard'
+import { getReportPaymentLink } from '@/lib/paymentLinks'
 
 interface PassScreenProps {
   area: MicroMarket
@@ -18,11 +19,13 @@ type ShareState = 'idle' | 'link-copied' | 'png-downloaded' | 'export-failed'
 
 export default function PassScreen({ area, city, usesNearbySignals }: PassScreenProps) {
   const [shareState, setShareState] = useState<ShareState>('idle')
+  const [paymentError, setPaymentError] = useState(false)
   const cardRef = useRef<HTMLElement | null>(null)
 
   const cityName = city.meta.name
   const areaCode = getLandDnaAreaCode(cityName, area)
   const accessState = getLandDnaAccessState(getCachedEntitlements())
+  const paymentLink = getReportPaymentLink('instant_pdf_99')
   const publicUrl = `${window.location.origin}${getLandDnaCardPath(cityName, area)}`
 
   async function handleShare() {
@@ -67,7 +70,6 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
       <LandDNACard
         area={area}
         cityName={cityName}
-        accessState={accessState}
         cardRef={cardRef}
       />
 
@@ -103,6 +105,38 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
           <Copy size={16} /> Copy URL
         </button>
       </section>
+
+      {accessState.upgradeRequired && (
+        <section className="mb-[calc(1rem+env(safe-area-inset-bottom))] mt-5 sm:mb-0" aria-label="Founder Pass">
+          {paymentLink ? (
+            <a
+              href={paymentLink}
+              className="btn-3d-reflective relative inline-flex min-h-16 w-full touch-manipulation items-center justify-between gap-3 overflow-hidden rounded-xl bg-[linear-gradient(115deg,#f59e0b_0%,#facc15_24%,#2dd4bf_62%,#38bdf8_100%)] px-5 text-left text-slate-950 active:translate-y-0.5"
+            >
+              <span>
+                <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-slate-900/70">Founder Pass</span>
+                <span className="mt-1 block text-sm font-black leading-tight">Unlock Founder Pass — ₹99 Lifetime Access</span>
+              </span>
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-950/12"><ArrowRight size={18} /></span>
+            </a>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => setPaymentError(true)}
+                className="btn-3d-reflective relative inline-flex min-h-16 w-full touch-manipulation items-center justify-between gap-3 overflow-hidden rounded-xl bg-[linear-gradient(115deg,#f59e0b_0%,#facc15_24%,#2dd4bf_62%,#38bdf8_100%)] px-5 text-left text-slate-950 active:translate-y-0.5"
+              >
+                <span>
+                  <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-slate-900/70">Founder Pass</span>
+                  <span className="mt-1 block text-sm font-black leading-tight">Unlock Founder Pass — ₹99 Lifetime Access</span>
+                </span>
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-950/12"><ArrowRight size={18} /></span>
+              </button>
+              {paymentError && <p className="mt-2 rounded-xl border border-amber-200/20 bg-amber-200/[0.08] px-3 py-2 text-center text-xs text-amber-100">Payment link is temporarily unavailable. Please try again soon.</p>}
+            </>
+          )}
+        </section>
+      )}
     </div>
   )
 }

@@ -65,7 +65,9 @@ try {
   for (const label of ['Share Link', 'Download PNG', 'Download Buyer Report', 'Copy URL', 'Unlock Founder Pass']) {
     await page.getByText(label, { exact: false }).first().waitFor({ state: 'visible' })
   }
-  assert.equal(await page.getByRole('link', { name: /Unlock Founder Pass/i }).getAttribute('href'), paymentUrl)
+  const founderPassCta = page.getByRole('link', { name: /Unlock Founder Pass — ₹99 Lifetime Access/i })
+  assert.equal(await founderPassCta.getAttribute('href'), paymentUrl)
+  assert.ok((await founderPassCta.getAttribute('class'))?.includes('btn-3d-reflective'))
   const downloadPromise = page.waitForEvent('download')
   await page.getByRole('button', { name: /Download Buyer Report/i }).click()
   const download = await downloadPromise
