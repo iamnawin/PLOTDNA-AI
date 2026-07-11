@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ShieldCheck, TrendingUp, AlertTriangle, Gauge, Scale } from 'lucide-react'
+import { ShieldCheck, TrendingUp, AlertTriangle, Gauge, Scale, MessageSquareText, Database } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import { getInvestmentReportSummary, BUYER_DUE_DILIGENCE_CHECKLIST } from '@/lib/investmentReport'
 import { getConfidenceMeta } from '@/lib/cityProduction'
@@ -57,16 +57,31 @@ export default function AreaDetailsScreen({ area }: AreaDetailsScreenProps) {
       </section>
 
       <section
-        className="mb-6 flex items-center justify-between rounded-2xl border px-4 py-3"
+        className="mb-4 rounded-2xl border px-4 py-3"
         style={{ borderColor: `${confidenceMeta.tone}30`, background: `${confidenceMeta.tone}0c` }}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex items-start gap-2">
           <Gauge size={15} style={{ color: confidenceMeta.tone }} />
           <div>
             <p className="text-xs font-sans font-black text-slate-100">How sure is this result?</p>
             <p className="text-[10px] text-slate-500">{confidenceMeta.label} confidence</p>
+            <p className="mt-2 text-xs leading-relaxed text-slate-400">{confidenceMeta.description}</p>
           </div>
         </div>
+      </section>
+
+      <section className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+        <div className="mb-3 flex items-center gap-2"><MessageSquareText size={15} className="text-cyan-300" /><p className="text-sm font-black text-slate-100">Ask the seller or broker</p></div>
+        <ul className="space-y-2 text-xs leading-relaxed text-slate-300">
+          <li>• Which exact survey number, title chain, and latest EC support this plot?</li>
+          <li>• Which approval authority covers the layout, and can I verify the approval number?</li>
+          <li>• Which recent registered transaction supports the quoted price?</li>
+        </ul>
+      </section>
+
+      <section className="mb-6 flex items-start gap-2 rounded-xl border border-white/8 bg-white/[0.02] px-4 py-3">
+        <Database size={14} className="mt-0.5 shrink-0 text-slate-400" />
+        <p className="text-[11px] leading-relaxed text-slate-400">Source note: PlotDNA combines the current locality profile, mapped growth signals, and available project context. Exact plot documents and live transaction evidence require independent verification.</p>
       </section>
 
       <Link

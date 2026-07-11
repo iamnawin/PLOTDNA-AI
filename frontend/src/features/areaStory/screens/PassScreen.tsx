@@ -19,10 +19,6 @@ export default function PassScreen({ area, city }: PassScreenProps) {
   const [shareState, setShareState] = useState<ShareState>('idle')
   const cardRef = useRef<HTMLElement | null>(null)
 
-  if (!featureFlags.enableLandDnaCard) {
-    return <p className="text-sm text-slate-400">Area Pass is not enabled yet.</p>
-  }
-
   const cityName = city.meta.name
   const areaCode = getLandDnaAreaCode(cityName, area)
   const accessState = featureFlags.enableFounderPassGating
@@ -84,11 +80,11 @@ export default function PassScreen({ area, city }: PassScreenProps) {
         </p>
       )}
 
-      <section className="mt-4 grid gap-2 sm:grid-cols-3" aria-label="Area Pass actions">
+      <section className="mt-4 grid grid-cols-3 gap-2" aria-label="Area Pass actions">
         <button
           type="button"
           onClick={handleShare}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 py-3 text-sm font-sans font-black text-slate-950 transition-colors hover:bg-cyan-200"
+          className="inline-flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl bg-emerald-400 px-2 py-2.5 text-[10px] font-sans font-black text-slate-950 transition-colors hover:bg-emerald-300"
         >
           <Share2 size={16} />
           Share Link
@@ -96,7 +92,7 @@ export default function PassScreen({ area, city }: PassScreenProps) {
         <button
           type="button"
           onClick={handleDownloadPng}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-sans font-black text-slate-100"
+          className="inline-flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-white/10 bg-white/[0.04] px-2 py-2.5 text-[10px] font-sans font-black text-slate-100"
         >
           <Download size={16} />
           Download PNG
@@ -104,7 +100,7 @@ export default function PassScreen({ area, city }: PassScreenProps) {
         <button
           type="button"
           onClick={handleCopyUrl}
-          className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-sans font-black text-slate-100"
+          className="inline-flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-white/10 bg-white/[0.04] px-2 py-2.5 text-[10px] font-sans font-black text-slate-100"
         >
           <Copy size={16} />
           Copy URL

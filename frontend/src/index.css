@@ -65,6 +65,35 @@ body {
   letter-spacing: 0;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+.area-story-shell {
+  scroll-behavior: smooth;
+  overscroll-behavior-y: contain;
+}
+
+.area-story-nav-spacer {
+  height: calc(4.25rem + env(safe-area-inset-bottom) + 1.5rem);
+}
+
+@media (min-width: 640px) {
+  .area-story-nav-spacer {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .area-story-shell {
+    scroll-behavior: auto;
+  }
+}
+
 /* ── Glassmorphism Utility Classes ── */
 .glass-panel {
   background: linear-gradient(180deg, rgba(15, 23, 42, 0.78), var(--surface-strong));

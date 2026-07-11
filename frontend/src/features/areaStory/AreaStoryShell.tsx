@@ -34,14 +34,15 @@ export default function AreaStoryShell() {
   const fallbackContext = fallbackContextFromQuery(location.search)
 
   return (
-    <div className="min-h-[100dvh] body pb-28 text-slate-100 sm:pb-8">
-      <main className="mx-auto max-w-4xl px-4 py-6 sm:px-6">
+    <div className="area-story-shell h-[100dvh] overflow-y-auto body text-slate-100">
+      <main className="area-story-content mx-auto max-w-4xl px-4 pt-5 sm:px-6 sm:py-6">
         {step === 'verdict' && <VerdictScreen area={area} city={city} fallbackContext={fallbackContext} />}
         {step === 'money' && <MoneyScreen area={area} />}
         {step === 'map' && <MapProofScreen area={area} />}
         {step === 'details' && <AreaDetailsScreen area={area} />}
         {step === 'compare' && <CompareScreen area={area} />}
         {step === 'pass' && <PassScreen area={area} city={city} />}
+        <div className="area-story-nav-spacer" aria-hidden="true" />
       </main>
       <AreaStoryTabBar slug={slug} activeStep={step} />
     </div>

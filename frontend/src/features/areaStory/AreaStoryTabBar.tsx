@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom'
-import { Search, ShieldCheck, IndianRupee, Map, Scale, FileText } from 'lucide-react'
+import { House, ShieldCheck, IndianRupee, Map, Scale, FileText } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 import { buildAreaStoryPath, type AreaStoryStep } from './areaStoryNav'
 
 const TAB_ICON: Record<'check' | 'verdict' | 'money' | 'map' | 'compare' | 'pass', LucideIcon> = {
-  check: Search,
+  check: House,
   verdict: ShieldCheck,
   money: IndianRupee,
   map: Map,
@@ -13,7 +13,7 @@ const TAB_ICON: Record<'check' | 'verdict' | 'money' | 'map' | 'compare' | 'pass
 }
 
 const TAB_LABEL: Record<'check' | 'verdict' | 'money' | 'map' | 'compare' | 'pass', string> = {
-  check: 'Check',
+  check: 'Home',
   verdict: 'Verdict',
   money: 'Money',
   map: 'Map',
@@ -34,7 +34,7 @@ export default function AreaStoryTabBar({ slug, activeStep }: AreaStoryTabBarPro
   return (
     <nav
       aria-label="PlotDNA area story navigation"
-      className="fixed inset-x-3 bottom-[calc(0.75rem+env(safe-area-inset-bottom))] z-40 mx-auto grid max-w-[640px] grid-cols-3 gap-1 rounded-2xl border border-white/10 bg-slate-950/92 p-2 shadow-[0_18px_44px_rgba(0,0,0,0.45)] backdrop-blur-xl sm:static sm:mb-4 sm:mt-0 sm:grid-cols-6 sm:shadow-none sm:backdrop-blur-none"
+      className="fixed inset-x-0 bottom-0 z-40 mx-auto grid h-[calc(4.25rem+env(safe-area-inset-bottom))] max-w-[640px] grid-cols-6 gap-0 border-t border-white/10 bg-slate-950/96 px-1 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl sm:static sm:mb-4 sm:h-auto sm:rounded-xl sm:border sm:p-1 sm:backdrop-blur-none"
     >
       {TAB_ORDER.map(step => {
         const Icon = TAB_ICON[step]
@@ -44,11 +44,11 @@ export default function AreaStoryTabBar({ slug, activeStep }: AreaStoryTabBarPro
           <Link
             key={step}
             to={to}
-            className={`flex flex-col items-center gap-1 rounded-xl px-2 py-2 text-[10px] font-sans font-black transition-colors ${
+            className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-lg px-0.5 py-2 text-[9px] font-sans font-bold transition-colors active:bg-white/[0.06] ${
               isActive ? 'bg-emerald-400/14 text-emerald-300' : 'text-slate-500 hover:text-slate-300'
             }`}
           >
-            <Icon size={15} />
+            <Icon size={16} strokeWidth={1.8} />
             {TAB_LABEL[step]}
           </Link>
         )

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Search, ChevronRight, Navigation, Zap, Map, TrendingUp,
-  Shield, Activity, X, Paperclip, Link2, MapPin, IndianRupee, FileSearch,
+  Shield, Activity, X, Link2, MapPin, IndianRupee, FileSearch,
   CheckCircle2,
 } from 'lucide-react'
 import { useAppStore } from '@/store'
@@ -11,7 +11,7 @@ import { CITIES } from '@/data/cities'
 import type { MicroMarket } from '@/types'
 import { getScoreColor } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
-import { resolveMapLink, analyzeBrochure, resolveLocation } from '@/lib/api'
+import { resolveMapLink, resolveLocation } from '@/lib/api'
 import { trackEvent } from '@/lib/analytics'
 import { trackUserEvent } from '@/lib/entitlements'
 import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
@@ -49,14 +49,12 @@ export default function Landing() {
   const [query, setQuery]             = useState('')
   const [focused, setFocused]         = useState(false)
   const [resolving, setResolving]     = useState(false)
-  const [brochureLoading, setBrochureLoading] = useState(false)
   const [locating, setLocating]       = useState(false)
   const [inputError, setInputError]   = useState('')
   const [selectedLandInput, setSelectedLandInput] = useState<SelectedLandInput | null>(null)
   const [dnaLoading, setDnaLoading]   = useState(false)
   const [dnaLoaderRunId, setDnaLoaderRunId] = useState(0)
   const inputRef      = useRef<HTMLInputElement>(null)
-  const fileInputRef  = useRef<HTMLInputElement>(null)
   const pendingNavRef = useRef<(() => void) | null>(null)
 
   function goToCoordWithLoader(navFn: () => void) {
@@ -90,7 +88,7 @@ export default function Landing() {
     ? allAreas.filter(a => a.name.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
     : []
   const showDropdown = focused && (results.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
-  const canCheckLand = selectedLandInput?.isReadyToCheck === true && !resolving && !brochureLoading && !locating
+  const canCheckLand = selectedLandInput?.isReadyToCheck === true && !resolving && !locating
 
   function goToArea(area: MicroMarket & { citySlug: string }) {
     setSelectedCitySlug(area.citySlug)
@@ -232,26 +230,6 @@ export default function Landing() {
     setInputError('This selection is not ready yet. Try selecting the area again.')
   }
 
-  async function handleBrochureUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    setBrochureLoading(true)
-    setInputError('')
-    const result = await analyzeBrochure(file)
-    setBrochureLoading(false)
-    if (result) {
-      selectCoordsForCheck(
-        [result.lat, result.lng],
-        'brochure',
-        file.name,
-        'Brochure location found. Click Check My Land to continue.',
-      )
-    } else {
-      setInputError('Could not extract location from this file. Try a clearer image or paste the address.')
-    }
-    if (fileInputRef.current) fileInputRef.current.value = ''
-  }
-
   function handleLocateMe() {
     setInputError('')
     if (!navigator.geolocation) {
@@ -289,6 +267,24 @@ export default function Landing() {
     )
   }
 
+  async function handlePasteLink() {
+    setInputError('')
+    try {
+      const value = await navigator.clipboard.readText()
+      if (!value.trim()) {
+        setInputError('Clipboard is empty. Paste a Google Maps link in the search field.')
+        return
+      }
+      setQuery(value.trim())
+      setSelectedLandInput(null)
+      setFocused(true)
+      inputRef.current?.focus()
+    } catch {
+      setInputError('Paste a Google Maps link in the search field.')
+      inputRef.current?.focus()
+    }
+  }
+
   function goToMap() {
     setSelectedCitySlug('hyderabad')
     setSelectedArea(null)
@@ -308,10 +304,10 @@ export default function Landing() {
     <DnaRoutePreloader key={dnaLoaderRunId} active={dnaLoading} onComplete={handleDnaLoaderComplete} />
 
     <div
-      className="min-h-screen w-full flex flex-col font-sans"
+      className="min-h-[100dvh] w-full flex flex-col font-sans"
       style={{ background: 'var(--bg-main)', color: 'var(--text-main)' }}
     >
-      <nav className="flex items-center justify-between px-6 py-4 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <nav className="flex flex-shrink-0 items-center justify-between px-5 py-3.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="flex items-center gap-2.5">
           <img
             src="/plotdna-logo.png"
@@ -368,13 +364,13 @@ export default function Landing() {
         </div>
       </nav>
 
-      <section className="flex-1 flex flex-col items-center justify-center px-5 pt-16 pb-10 text-center">
+      <section className="flex flex-1 flex-col items-center px-4 pb-8 pt-9 text-center sm:justify-center sm:px-5 sm:pb-10 sm:pt-16">
 
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6 font-sans"
+          className="mb-6 hidden items-center gap-2 rounded-full px-3 py-1.5 font-sans sm:inline-flex"
           style={{
             background: 'rgba(16, 185, 129, 0.08)',
             border: '1px solid rgba(16, 185, 129, 0.18)',
@@ -397,7 +393,7 @@ export default function Landing() {
           style={{
             fontSize: 'clamp(32px, 5vw, 56px)',
             fontWeight: 800,
-            letterSpacing: '-0.05em',
+            letterSpacing: '-0.035em',
             lineHeight: 1.08,
             maxWidth: 780,
             color: 'var(--text-main)',
@@ -414,27 +410,19 @@ export default function Landing() {
           transition={{ duration: 0.4, delay: 0.18 }}
           style={{ fontSize: 16, color: 'var(--text-muted)', maxWidth: 680, marginTop: 22, lineHeight: 1.7, letterSpacing: '-0.01em' }}
         >
-          Check money risk, possible gain, broker price, and what to verify before you visit the site or pay an advance. PlotDNA is buyer-side screening, not legal or title approval.
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.22 }}
-          className="mt-4 inline-flex rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-sans font-bold uppercase tracking-[0.12em] text-emerald-300"
-        >
-          Don't buy on broker claims. Buy with PlotDNA.
+          Check money risk, area growth, broker price, and what to verify before you visit.
         </motion.p>
 
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.26 }}
-          className="relative w-full mt-10"
+          className="relative mt-7 w-full sm:mt-10"
           style={{ maxWidth: 680 }}
         >
           <div
             aria-label="PlotDNA location search"
-            className="rounded-[28px] p-2"
+            className="rounded-[28px] p-2.5"
             style={{
               background: focused
                 ? 'linear-gradient(135deg, rgba(16,185,129,0.18), rgba(56,189,248,0.08) 46%, rgba(15,23,42,0.92))'
@@ -447,16 +435,16 @@ export default function Landing() {
               backdropFilter: 'blur(20px)',
             }}
           >
-            <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1fr_auto]">
+            <div className="grid grid-cols-1 gap-2.5">
               <div
-                className="grid min-h-[58px] grid-cols-[44px_1fr] items-center rounded-[22px] px-3"
+                className="grid min-h-12 grid-cols-[38px_1fr] items-center rounded-xl px-2.5"
                 style={{
                   background: 'rgba(2,6,23,0.62)',
                   border: '1px solid rgba(255,255,255,0.08)',
                 }}
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-white/[0.04]">
-                  {resolving || brochureLoading || locating ? (
+                  {resolving || locating ? (
                     <Activity
                       size={16}
                       style={{ color: '#10b981', flexShrink: 0, animation: 'spin 1s linear infinite' }}
@@ -494,40 +482,18 @@ export default function Landing() {
                 </div>
               </div>
 
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept=".pdf,.jpg,.jpeg,.png,.webp"
-                style={{ display: 'none' }}
-                onChange={handleBrochureUpload}
-              />
-              <div className="grid grid-cols-2 gap-2 sm:flex">
-              <button
-                title="Upload a property brochure (PDF or image)"
-                onClick={() => fileInputRef.current?.click()}
-                disabled={brochureLoading || locating}
-                className="flex min-h-[48px] items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] px-3 text-slate-400 transition-all hover:bg-white/[0.07] hover:text-slate-200 disabled:opacity-50 sm:w-12"
-                style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: brochureLoading ? '#10b981' : '#94a3b8',
-                  opacity: brochureLoading || locating ? 0.5 : 1,
-                }}
-              >
-                <Paperclip size={14} />
-              </button>
-
+              <div className="grid grid-cols-3 gap-2">
               <button
                 title="Allow location permission and prepare your current coordinates"
                 onClick={handleLocateMe}
-                disabled={resolving || brochureLoading || locating}
-                className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.04] px-3 text-[11px] font-sans font-bold text-slate-300 transition-all hover:bg-white/[0.07] disabled:opacity-55"
+                disabled={resolving || locating}
+                className="flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2 text-[10px] font-sans font-bold text-slate-300 transition-all hover:bg-white/[0.07] disabled:opacity-55"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.10)',
                   color: locating ? '#10b981' : '#cbd5e1',
                   flexShrink: 0,
-                  opacity: resolving || brochureLoading || locating ? 0.55 : 1,
+                  opacity: resolving || locating ? 0.55 : 1,
                   fontWeight: 700,
                 }}
               >
@@ -538,14 +504,14 @@ export default function Landing() {
               <button
                 title="Drop a pin on the map"
                 onClick={goToMap}
-                disabled={resolving || brochureLoading || locating}
-                className="flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl border border-white/10 bg-white/[0.04] px-3 text-[11px] font-sans font-bold text-slate-300 transition-all hover:bg-white/[0.07] disabled:opacity-55"
+                disabled={resolving || locating}
+                className="flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2 text-[10px] font-sans font-bold text-slate-300 transition-all hover:bg-white/[0.07] disabled:opacity-55"
                 style={{
                   background: 'rgba(255,255,255,0.04)',
                   border: '1px solid rgba(255,255,255,0.10)',
                   color: '#cbd5e1',
                   flexShrink: 0,
-                  opacity: resolving || brochureLoading || locating ? 0.55 : 1,
+                  opacity: resolving || locating ? 0.55 : 1,
                   fontWeight: 700,
                 }}
               >
@@ -554,21 +520,21 @@ export default function Landing() {
               </button>
 
               <button
-                onClick={handleEnter}
-                disabled={resolving || brochureLoading || locating}
-                className="col-span-2 flex min-h-[48px] items-center justify-center gap-1.5 rounded-2xl bg-emerald-500 px-5 text-[12px] font-sans font-black text-[#041e15] transition-all hover:bg-emerald-400 disabled:opacity-50 sm:col-span-1"
+                type="button"
+                onClick={handlePasteLink}
+                disabled={resolving || locating}
+                className="flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2 text-[10px] font-sans font-bold text-slate-300 transition-all hover:bg-white/[0.07] disabled:opacity-55"
                 style={{
-                  background: 'linear-gradient(135deg, #10b981, #059669)',
-                  border: '1px solid rgba(16, 185, 129, 0.35)',
-                  color: '#041e15',
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.10)',
+                  color: '#cbd5e1',
                   flexShrink: 0,
-                  opacity: resolving || brochureLoading || locating ? 0.5 : 1,
+                  opacity: resolving || locating ? 0.55 : 1,
                   fontWeight: 700,
-                  boxShadow: '0 0 24px rgba(16, 185, 129, 0.25)',
                 }}
               >
-                {resolving ? 'Reading link...' : brochureLoading ? 'Reading...' : 'Search Area'}
-                <ChevronRight size={12} />
+                <Link2 size={12} />
+                Paste Link
               </button>
               </div>
             </div>
@@ -580,14 +546,14 @@ export default function Landing() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   transition={{ duration: 0.18 }}
-                  className="mt-3 rounded-[22px] p-4 text-left"
+                  className="mt-3 rounded-xl p-3 text-left"
                   style={{
                     background: 'linear-gradient(135deg, rgba(16,185,129,0.10), rgba(14,165,233,0.06))',
                     border: '1px solid rgba(45, 212, 191, 0.28)',
                   }}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-emerald-400/10 text-emerald-300">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-400/10 text-emerald-300">
                       <MapPin size={17} />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -602,7 +568,7 @@ export default function Landing() {
                       <p className="mt-2 truncate font-display text-lg font-black text-slate-50">
                         {selectedLandInput.areaName ?? 'Exact land point'}
                       </p>
-                      <div className="mt-2 grid gap-1 text-[12px] leading-5 text-slate-400 sm:grid-cols-2">
+                      <div className="mt-1 flex flex-wrap gap-x-3 text-[11px] leading-5 text-slate-400">
                         <span>Source: {selectedLandInput.source.replaceAll('_', ' ')}</span>
                         <span>City: {selectedLandInput.city ?? activeCityEntry.meta.name}</span>
                         {typeof selectedLandInput.lat === 'number' && typeof selectedLandInput.lng === 'number' && (
@@ -612,9 +578,6 @@ export default function Landing() {
                           </>
                         )}
                       </div>
-                      <p className="mt-2 text-[12px] font-sans font-semibold text-emerald-200">
-                        {selectedLandInput.statusMessage}
-                      </p>
                     </div>
                   </div>
                 </motion.div>
@@ -625,7 +588,7 @@ export default function Landing() {
               type="button"
               onClick={handleCheckMyLand}
               disabled={!canCheckLand}
-              className="mt-3 flex min-h-[58px] w-full items-center justify-center gap-3 rounded-[22px] px-5 text-[16px] font-sans font-black transition-all disabled:cursor-not-allowed"
+              className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl px-5 text-sm font-sans font-black transition-all disabled:cursor-not-allowed active:scale-[0.99]"
               style={{
                 background: canCheckLand
                   ? 'linear-gradient(135deg, #2dd4bf, #22d3ee)'
@@ -639,6 +602,9 @@ export default function Landing() {
               Check My Land
               <ChevronRight size={18} />
             </button>
+            {!selectedLandInput && (
+              <p className="mt-2 text-[11px] leading-4 text-slate-500">Select land first — search, locate, paste link, or drop pin.</p>
+            )}
           </div>
 
           <p className="mt-3 px-2 text-xs leading-5 text-slate-500">
@@ -747,7 +713,7 @@ export default function Landing() {
           )}
           {!query && !inputError && (
             <p style={{ fontSize: 10, color: '#2e2e42', marginTop: 10, textAlign: 'center' }}>
-              Try "Kokapet", paste coords like 17.44, 78.38, paste a Google Maps link, or upload a brochure
+              Try “Kokapet”, paste coordinates, or paste a Google Maps link
             </p>
           )}
         </motion.div>
@@ -756,7 +722,7 @@ export default function Landing() {
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.32 }}
-          className="mt-8 w-full text-left"
+          className="mt-6 w-full text-left"
           style={{ maxWidth: 640 }}
         >
           <div className="mb-3 flex items-center gap-2">
@@ -765,7 +731,7 @@ export default function Landing() {
               Why buyers use PlotDNA
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {BUYER_QUESTIONS.map(({ icon: Icon, title, color }) => (
               <div
                 key={title}

@@ -195,7 +195,7 @@ export async function exportLandDnaCardPng(node: HTMLElement, areaCode: string) 
   const dataUrl = await toPng(node, {
     cacheBust: true,
     pixelRatio: 2,
-    backgroundColor: '#050a14',
+    backgroundColor: '#f5f7f4',
     style: {
       margin: '0',
     },

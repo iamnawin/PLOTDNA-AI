@@ -13,10 +13,11 @@ function assert(condition, message) {
 
 assert(landing.includes('aria-label="PlotDNA location search"'), 'landing search must expose a named search surface')
 assert(landing.includes('rounded-[28px]'), 'landing search should use a distinctive rounded premium shell')
-assert(landing.includes('grid grid-cols-1 gap-3 lg:grid-cols-[1fr_auto]'), 'search shell must stack actions on mobile and align on desktop')
-assert(landing.includes('min-h-[58px]'), 'input area must have stable tap-friendly height')
-assert(landing.includes('Search area, coordinates, map link'), 'placeholder should be shorter and fit mobile')
-assert(landing.includes('grid-cols-[44px_1fr]'), 'search input should have a structured icon/input layout')
-assert(landing.includes('grid grid-cols-2 gap-2 sm:flex'), 'search actions must be two columns on mobile and inline on wider screens')
+assert(landing.includes('grid grid-cols-1 gap-2.5'), 'search shell must keep the input and actions in a compact vertical flow')
+assert(landing.includes('min-h-12'), 'input area must have stable tap-friendly height')
+assert(landing.includes('Search area, paste Google Maps link'), 'placeholder should explain the supported mobile inputs')
+assert(landing.includes('grid-cols-[38px_1fr]'), 'search input should use a compact icon/input layout')
+assert(landing.includes('grid grid-cols-3 gap-2'), 'search actions must be one compact three-chip row')
+assert(landing.includes('Select land first — search, locate, paste link, or drop pin.'), 'disabled gate must explain how to select land')
 
 console.log('Landing search redesign check passed.')
