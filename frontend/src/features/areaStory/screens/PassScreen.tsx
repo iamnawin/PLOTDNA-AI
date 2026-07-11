@@ -3,6 +3,7 @@ import { Share2, Download, Copy } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import type { CityEntry } from '@/data/cities'
 import LandDNACard from '@/components/landDna/LandDNACard'
+import BuyerReportButton from '@/components/ui/BuyerReportButton'
 import { getCachedEntitlements } from '@/lib/entitlements'
 import { getLandDnaAccessState } from '@/lib/founderPass/landDnaPlan'
 import { exportLandDnaCardPng, getLandDnaAreaCode, getLandDnaCardPath } from '@/lib/landDnaCard'
@@ -10,11 +11,12 @@ import { exportLandDnaCardPng, getLandDnaAreaCode, getLandDnaCardPath } from '@/
 interface PassScreenProps {
   area: MicroMarket
   city: CityEntry
+  usesNearbySignals?: boolean
 }
 
 type ShareState = 'idle' | 'link-copied' | 'png-downloaded' | 'export-failed'
 
-export default function PassScreen({ area, city }: PassScreenProps) {
+export default function PassScreen({ area, city, usesNearbySignals }: PassScreenProps) {
   const [shareState, setShareState] = useState<ShareState>('idle')
   const cardRef = useRef<HTMLElement | null>(null)
 
@@ -77,30 +79,28 @@ export default function PassScreen({ area, city }: PassScreenProps) {
         </p>
       )}
 
-      <section className="mt-4 grid grid-cols-3 gap-2" aria-label="Area Pass actions">
+      <section className="mt-4 grid grid-cols-2 gap-2" aria-label="Area Pass actions">
         <button
           type="button"
           onClick={handleShare}
-          className="inline-flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl bg-emerald-400 px-2 py-2.5 text-[10px] font-sans font-black text-slate-950 transition-colors hover:bg-emerald-300"
+          className="inline-flex min-h-12 min-w-0 touch-manipulation items-center justify-center gap-2 rounded-xl bg-emerald-400 px-3 text-xs font-sans font-black text-slate-950 transition-colors active:scale-[0.99]"
         >
-          <Share2 size={16} />
-          Share Link
+          <Share2 size={16} /> Share Link
         </button>
+        <BuyerReportButton area={area} cityName={cityName} citySlug={city.meta.slug} usesNearbySignals={usesNearbySignals} className="flex min-h-12 w-full touch-manipulation items-center justify-center gap-2 rounded-xl border border-emerald-300/25 bg-emerald-300/[0.08] px-3 text-xs font-black text-emerald-200 active:scale-[0.99]" />
         <button
           type="button"
           onClick={handleDownloadPng}
-          className="inline-flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-white/10 bg-white/[0.04] px-2 py-2.5 text-[10px] font-sans font-black text-slate-100"
+          className="inline-flex min-h-11 min-w-0 touch-manipulation items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-[11px] font-sans font-black text-slate-100 active:scale-[0.99]"
         >
-          <Download size={16} />
-          Download PNG
+          <Download size={16} /> Download PNG
         </button>
         <button
           type="button"
           onClick={handleCopyUrl}
-          className="inline-flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl border border-white/10 bg-white/[0.04] px-2 py-2.5 text-[10px] font-sans font-black text-slate-100"
+          className="inline-flex min-h-11 min-w-0 touch-manipulation items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-[11px] font-sans font-black text-slate-100 active:scale-[0.99]"
         >
-          <Copy size={16} />
-          Copy URL
+          <Copy size={16} /> Copy URL
         </button>
       </section>
     </div>

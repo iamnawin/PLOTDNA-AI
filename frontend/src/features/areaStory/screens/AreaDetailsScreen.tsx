@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
-import { ShieldCheck, TrendingUp, AlertTriangle, Gauge, Scale, MessageSquareText, Database } from 'lucide-react'
+import { ShieldCheck, TrendingUp, AlertTriangle, Gauge, Scale, MessageSquareText, Database, BadgeCheck } from 'lucide-react'
 import type { MicroMarket } from '@/types'
+import type { CityEntry } from '@/data/cities'
+import BuyerReportButton from '@/components/ui/BuyerReportButton'
 import { getInvestmentReportSummary, BUYER_DUE_DILIGENCE_CHECKLIST } from '@/lib/investmentReport'
 import { getConfidenceMeta } from '@/lib/cityProduction'
 import { getScoreColor } from '@/lib/utils'
@@ -8,11 +10,13 @@ import { buildAreaStoryPath } from '../areaStoryNav'
 
 interface AreaDetailsScreenProps {
   area: MicroMarket
+  city: CityEntry
+  usesNearbySignals?: boolean
 }
 
 const VERIFY_ITEM_COUNT = 5
 
-export default function AreaDetailsScreen({ area }: AreaDetailsScreenProps) {
+export default function AreaDetailsScreen({ area, city, usesNearbySignals }: AreaDetailsScreenProps) {
   const summary = getInvestmentReportSummary(area)
   const confidenceMeta = getConfidenceMeta(area.dataConfidence)
   const scoreColor = getScoreColor(area.score)
@@ -84,14 +88,15 @@ export default function AreaDetailsScreen({ area }: AreaDetailsScreenProps) {
         <p className="text-[11px] leading-relaxed text-slate-400">Source note: PlotDNA combines the current locality profile, mapped growth signals, and available project context. Exact plot documents and live transaction evidence require independent verification.</p>
       </section>
 
-      <Link
-        to={buildAreaStoryPath(area.slug, 'compare')}
-        className="flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-sans font-black text-slate-950"
-        style={{ background: `linear-gradient(90deg, ${scoreColor}, #38bdf8)` }}
-      >
-        <Scale size={16} />
-        Compare Areas
-      </Link>
+      <div className="grid grid-cols-2 gap-2">
+        <Link to={buildAreaStoryPath(area.slug, 'compare')} className="col-span-2 flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-sm font-sans font-black text-slate-950 active:scale-[0.99]" style={{ background: `linear-gradient(90deg, ${scoreColor}, #38bdf8)` }}>
+          <Scale size={16} /> Compare Areas
+        </Link>
+        <BuyerReportButton area={area} cityName={city.meta.name} citySlug={city.meta.slug} usesNearbySignals={usesNearbySignals} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-bold text-slate-100 active:scale-[0.99]" />
+        <Link to={buildAreaStoryPath(area.slug, 'pass')} className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-bold text-slate-100 active:scale-[0.99]">
+          <BadgeCheck size={16} /> Generate Area Pass
+        </Link>
+      </div>
     </div>
   )
 }

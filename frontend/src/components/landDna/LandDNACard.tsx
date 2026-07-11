@@ -74,15 +74,15 @@ export default function LandDNACard({ area, cityName, accessState, cardRef }: Pr
       {accessState && (
         <section className="mt-4 rounded-xl border border-amber-200/30 bg-amber-200/[0.09] p-4">
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-amber-200">Founder Pass</p>
-          <p className="mt-2 text-xl font-black">{accessState.upgradeRequired ? 'Unlock the city for Rs 99' : 'Founder Pass active'}</p>
-          <p className="mt-1 text-xs leading-relaxed text-amber-100/80">Lifetime access to Area Pass sharing and buyer reports.</p>
+          <p className="mt-2 text-xl font-black">{accessState.upgradeRequired ? 'Unlock Founder Pass — ₹99 Lifetime Access' : 'Founder Pass active'}</p>
+          <p className="mt-1 text-xs leading-relaxed text-amber-100/80">Generate more Area Pass cards, buyer reports, and comparisons.</p>
           {accessState.upgradeRequired && (
             paymentLink ? (
               <a href={paymentLink} className="btn-3d-reflective mt-4 inline-flex min-h-12 w-full touch-manipulation items-center justify-center gap-2 rounded-xl bg-[linear-gradient(115deg,#f59e0b_0%,#facc15_28%,#2dd4bf_67%,#38bdf8_100%)] px-4 text-sm font-black text-slate-950 active:translate-y-0.5">
-                Get Founder Pass for Rs 99 <ArrowRight size={16} />
+                Unlock Founder Pass <ArrowRight size={16} />
               </a>
             ) : (
-              <p className="mt-3 rounded-lg border border-amber-200/20 bg-black/15 px-3 py-2 text-xs text-amber-100">Payment link is temporarily unavailable.</p>
+              <p className="mt-3 rounded-lg border border-amber-200/20 bg-black/15 px-3 py-2 text-xs text-amber-100">Payment link is temporarily unavailable. Please try again soon.</p>
             )
           )}
         </section>

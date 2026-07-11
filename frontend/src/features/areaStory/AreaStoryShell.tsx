@@ -32,6 +32,7 @@ export default function AreaStoryShell() {
   }
 
   const fallbackContext = fallbackContextFromQuery(location.search)
+  const usesNearbySignals = Boolean(fallbackContext && fallbackContext.tier !== 'exact_locality')
 
   return (
     <div className="area-story-shell h-[100dvh] overflow-y-auto body text-slate-100">
@@ -39,9 +40,9 @@ export default function AreaStoryShell() {
         {step === 'verdict' && <VerdictScreen area={area} city={city} fallbackContext={fallbackContext} />}
         {step === 'money' && <MoneyScreen area={area} />}
         {step === 'map' && <MapProofScreen area={area} />}
-        {step === 'details' && <AreaDetailsScreen area={area} />}
+        {step === 'details' && <AreaDetailsScreen area={area} city={city} usesNearbySignals={usesNearbySignals} />}
         {step === 'compare' && <CompareScreen area={area} />}
-        {step === 'pass' && <PassScreen area={area} city={city} />}
+        {step === 'pass' && <PassScreen area={area} city={city} usesNearbySignals={usesNearbySignals} />}
         <div className="area-story-nav-spacer" aria-hidden="true" />
       </main>
       <AreaStoryTabBar slug={slug} activeStep={step} />
