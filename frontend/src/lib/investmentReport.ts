@@ -68,6 +68,22 @@ export function getInvestmentReportSummary(area: MicroMarket): InvestmentReportS
   }
 }
 
+export function getBuyerRecommendation(verdict: InvestmentVerdict, dataConfidence: DataConfidence): string {
+  if (dataConfidence === 'estimated' || dataConfidence === 'uncovered') {
+    return 'Do not decide from PlotDNA alone. Use this only as early screening.'
+  }
+
+  if (verdict === 'Buy') {
+    return 'Shortlist, but verify documents and price before token.'
+  }
+
+  if (verdict === 'Investigate') {
+    return 'Proceed carefully. Good area signals, but do not overpay.'
+  }
+
+  return 'Avoid token until documents, access, and pricing are verified.'
+}
+
 export const BUYER_DUE_DILIGENCE_CHECKLIST = [
   'TG-RERA registration number, project status, promoter name, validity, and latest quarterly updates',
   'Written reason RERA does not apply, if the project is not registered',
