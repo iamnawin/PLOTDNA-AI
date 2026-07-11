@@ -35,7 +35,8 @@
     "test:compare-selector-dedupe": "node --experimental-strip-types scripts/check-compare-selector-dedupe.mjs",
     "test:vercel-analytics-events": "node scripts/check-vercel-analytics-events.mjs",
     "test:area-story-nav": "node --experimental-strip-types scripts/check-area-story-nav.mjs",
-    "test:area-story-shell": "node scripts/check-area-story-shell.mjs"
+    "test:area-story-shell": "node scripts/check-area-story-shell.mjs",
+    "test:verification-sources": "node scripts/check-verification-sources.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.3.4",
