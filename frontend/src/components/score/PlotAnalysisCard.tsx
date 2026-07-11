@@ -706,6 +706,7 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
             </button>
           )}
           <button
+            type="button"
             onClick={() => onOpenAreaReport(staticArea.slug, {
               fallbackContext: {
                 tier: resolvedFallback.tier,
@@ -827,7 +828,7 @@ export default function PlotAnalysisCard({ coords, fallback, fallbackReportSlug,
                 coords,
               },
             })}
-            className="w-full flex flex-col items-center justify-center gap-1.5 py-4 px-4 rounded-2xl font-sans transition-all duration-200 btn-3d-reflective relative overflow-hidden"
+            className="btn-3d-reflective relative flex w-full touch-manipulation flex-col items-center justify-center gap-1.5 overflow-hidden rounded-2xl px-4 py-4 font-sans transition-all duration-200"
             style={{
               background: 'linear-gradient(135deg, rgba(14,165,233,0.85) 0%, rgba(15,23,42,0.9) 100%)',
               borderTop: '1px solid rgba(255,255,255,0.35)',

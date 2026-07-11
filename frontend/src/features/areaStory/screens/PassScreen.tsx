@@ -3,7 +3,6 @@ import { Share2, Download, Copy } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import type { CityEntry } from '@/data/cities'
 import LandDNACard from '@/components/landDna/LandDNACard'
-import { featureFlags } from '@/lib/features'
 import { getCachedEntitlements } from '@/lib/entitlements'
 import { getLandDnaAccessState } from '@/lib/founderPass/landDnaPlan'
 import { exportLandDnaCardPng, getLandDnaAreaCode, getLandDnaCardPath } from '@/lib/landDnaCard'
@@ -21,9 +20,7 @@ export default function PassScreen({ area, city }: PassScreenProps) {
 
   const cityName = city.meta.name
   const areaCode = getLandDnaAreaCode(cityName, area)
-  const accessState = featureFlags.enableFounderPassGating
-    ? getLandDnaAccessState(getCachedEntitlements())
-    : null
+  const accessState = getLandDnaAccessState(getCachedEntitlements())
   const publicUrl = `${window.location.origin}${getLandDnaCardPath(cityName, area)}`
 
   async function handleShare() {

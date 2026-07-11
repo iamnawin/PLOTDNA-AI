@@ -137,6 +137,7 @@ export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
       {/* CTA */}
       <div className="p-4" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
         <motion.button
+          type="button"
           onClick={() => onOpenAreaReport(area.slug)}
           animate={{ boxShadow: [
             `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`,
@@ -144,7 +145,7 @@ export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
             `0 8px 24px rgba(0,0,0,0.35), 0 0 16px ${color}33`,
           ] }}
           transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
-          className="w-full flex items-center justify-center gap-2 py-4 px-4 rounded-xl text-base font-sans font-black uppercase tracking-[0.08em] transition-transform duration-200 btn-3d-reflective hover:-translate-y-0.5 active:translate-y-0.5"
+          className="btn-3d-reflective flex w-full touch-manipulation items-center justify-center gap-2 rounded-xl px-4 py-4 text-base font-sans font-black uppercase tracking-[0.08em] transition-transform duration-200 hover:-translate-y-0.5 active:translate-y-0.5"
           style={{
             background: `linear-gradient(135deg, ${color}dd 0%, ${color}aa 100%)`,
             borderTop: '1px solid rgba(255,255,255,0.4)',
@@ -161,7 +162,7 @@ export default function ScoreCard({ area, onOpenAreaReport, onClose }: Props) {
           <button
             type="button"
             onClick={() => navigate(getLandDnaCardPathForArea(area))}
-            className="mt-2 w-full flex items-center justify-center gap-1.5 rounded-xl px-4 py-2 text-[11px] font-sans font-semibold text-slate-500 transition-colors hover:text-slate-300"
+            className="mt-2 flex min-h-11 w-full touch-manipulation items-center justify-center gap-1.5 rounded-xl px-4 py-2 text-[11px] font-sans font-semibold text-slate-500 transition-colors hover:text-slate-300"
           >
             Share Land DNA Card
             <Share2 size={11} />

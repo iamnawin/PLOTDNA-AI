@@ -198,8 +198,10 @@ html {
   pointer-events: none;
 }
 
-.btn-3d-reflective:hover::after {
-  animation: shine-sweep 1.8s infinite ease-in-out;
+@media (hover: hover) and (pointer: fine) {
+  .btn-3d-reflective:hover::after {
+    animation: shine-sweep 1.8s infinite ease-in-out;
+  }
 }
 
 @keyframes shine-sweep {

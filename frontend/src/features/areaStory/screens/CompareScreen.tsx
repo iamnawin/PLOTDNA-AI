@@ -102,22 +102,23 @@ export default function CompareScreen({ area }: CompareScreenProps) {
         </div>
       </header>
 
-      <section className="mb-5 grid gap-2 sm:grid-cols-3" aria-label="Area selectors">
+      <section className="mb-5 grid gap-2 sm:hidden" aria-label="Area selectors">
         {selectedAreas.map((item, index) => (
-          <label key={`selector-${index}`} className="flex min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
-            <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-300/[0.08] text-[11px] font-black text-emerald-300">{index + 1}</span>
-            <select value={item.slug} onChange={event => updateSelection(index, event.target.value)} className="min-w-0 flex-1 bg-transparent text-sm font-bold text-slate-100 outline-none">
-              {getSelectableCompareSlugs(selectedSlugs, index, availableSlugs).map(slug => {
-                const option = areaBySlug.get(slug)
-                return option ? <option key={slug} value={slug} className="bg-slate-950">{option.name}</option> : null
-              })}
-            </select>
-          </label>
+          <AreaSelector key={`mobile-selector-${index}`} item={item} index={index} selectedSlugs={selectedSlugs} availableSlugs={availableSlugs} areaBySlug={areaBySlug} onChange={updateSelection} />
         ))}
       </section>
 
-      <section className="-mx-4 mb-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:grid sm:grid-cols-3 sm:overflow-visible sm:px-0" aria-label="Area comparison cards">
+      <section className="-mx-4 mb-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:hidden" aria-label="Area comparison cards">
         {selectedAreas.map(item => <AreaCard key={item.slug} area={item} cityName={cityEntry.meta.name} meta={cardMeta(item)} />)}
+      </section>
+
+      <section className="mb-5 hidden grid-cols-3 gap-3 sm:grid" aria-label="Area comparison columns">
+        {selectedAreas.map((item, index) => (
+          <div key={`desktop-column-${index}`} className="flex min-w-0 flex-col gap-3">
+            <AreaSelector item={item} index={index} selectedSlugs={selectedSlugs} availableSlugs={availableSlugs} areaBySlug={areaBySlug} onChange={updateSelection} />
+            <AreaCard area={item} cityName={cityEntry.meta.name} meta={cardMeta(item)} />
+          </div>
+        ))}
       </section>
 
       <section className="mb-4 rounded-2xl border border-emerald-300/20 bg-emerald-300/[0.05] p-4" aria-label="PlotDNA recommendation">
@@ -163,7 +164,7 @@ function AreaCard({ area, cityName, meta }: { area: MicroMarket; cityName: strin
   const toneText = meta.tone === 'rose' ? 'text-rose-300' : meta.tone === 'sky' ? 'text-sky-300' : 'text-emerald-300'
 
   return (
-    <article className={`w-[calc(100vw-3.5rem)] max-w-[340px] shrink-0 snap-center overflow-hidden rounded-2xl border bg-slate-950/55 sm:w-auto ${toneBorder}`}>
+    <article className={`w-[calc(100vw-3.5rem)] max-w-[340px] shrink-0 snap-center overflow-hidden rounded-2xl border bg-slate-950/55 sm:w-full sm:max-w-none ${toneBorder}`}>
       <header className="p-4">
         <div className="flex items-start justify-between gap-3"><div><h2 className="text-xl font-black text-slate-50">{area.name}</h2><p className="mt-1 flex items-center gap-1.5 text-xs text-slate-400"><MapPin size={13} />{cityName}</p></div><span className={`rounded-full border px-2.5 py-1 text-[10px] font-bold ${toneBorder} ${toneText}`}>{meta.badge}</span></div>
       </header>
@@ -178,6 +179,27 @@ function AreaCard({ area, cityName, meta }: { area: MicroMarket; cityName: strin
       </dl>
       <footer className="border-t border-white/8 p-4"><p className={`text-sm font-black ${toneText}`}>{meta.verdict}</p><p className="mt-1 text-xs leading-relaxed text-slate-400">{meta.explanation}</p></footer>
     </article>
+  )
+}
+
+function AreaSelector({ item, index, selectedSlugs, availableSlugs, areaBySlug, onChange }: {
+  item: MicroMarket
+  index: number
+  selectedSlugs: string[]
+  availableSlugs: string[]
+  areaBySlug: Map<string, MicroMarket>
+  onChange: (index: number, slug: string) => void
+}) {
+  return (
+    <label className="flex min-h-12 items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-300/[0.08] text-[11px] font-black text-emerald-300">{index + 1}</span>
+      <select value={item.slug} onChange={event => onChange(index, event.target.value)} className="min-w-0 flex-1 bg-transparent text-sm font-bold text-slate-100 outline-none">
+        {getSelectableCompareSlugs(selectedSlugs, index, availableSlugs).map(slug => {
+          const option = areaBySlug.get(slug)
+          return option ? <option key={slug} value={slug} className="bg-slate-950">{option.name}</option> : null
+        })}
+      </select>
+    </label>
   )
 }
 

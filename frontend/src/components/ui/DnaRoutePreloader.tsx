@@ -34,17 +34,21 @@ export default function DnaRoutePreloader({ active, onComplete }: Props) {
     if (!active) return
 
     let currentStep = 0
+    let completionTimer: number | null = null
     const interval = window.setInterval(() => {
       currentStep += 1
       if (currentStep >= DNA_STEPS.length) {
         window.clearInterval(interval)
-        window.setTimeout(onComplete, COMPLETE_DELAY_MS)
+        completionTimer = window.setTimeout(onComplete, COMPLETE_DELAY_MS)
         return
       }
       setStep(currentStep)
     }, STEP_READ_MS)
 
-    return () => window.clearInterval(interval)
+    return () => {
+      window.clearInterval(interval)
+      if (completionTimer !== null) window.clearTimeout(completionTimer)
+    }
   }, [active, onComplete])
 
   return (
