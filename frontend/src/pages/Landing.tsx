@@ -482,15 +482,15 @@ export default function Landing() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 overflow-hidden rounded-xl border border-white/10 bg-slate-950/45 p-1">
+              <div className="grid grid-cols-3 gap-2">
               <button
                 title="Allow location permission and prepare your current coordinates"
                 onClick={handleLocateMe}
                 disabled={resolving || locating}
-                className={`flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg px-1.5 text-[10px] font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-300 active:bg-white/[0.08] disabled:opacity-55 ${locating ? 'bg-emerald-400/10 text-emerald-300' : 'text-slate-300 hover:bg-white/[0.05]'}`}
+                className={`flex min-h-[62px] min-w-0 flex-col items-center justify-center gap-1.5 rounded-xl border px-1.5 text-[11px] font-bold transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300 active:scale-[0.98] disabled:opacity-55 ${locating ? 'border-emerald-300/35 bg-emerald-400/12 text-emerald-200' : 'border-emerald-300/15 bg-emerald-400/[0.055] text-slate-200 hover:border-emerald-300/30 hover:bg-emerald-400/10'}`}
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-400/10 text-emerald-300">
-                  <Navigation size={13} strokeWidth={2} />
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-emerald-300/20 bg-emerald-400/10 text-emerald-300">
+                  <Navigation size={14} strokeWidth={2} />
                 </span>
                 <span className="truncate">{locating ? 'Locating' : 'Locate me'}</span>
               </button>
@@ -499,10 +499,10 @@ export default function Landing() {
                 title="Drop a pin on the map"
                 onClick={goToMap}
                 disabled={resolving || locating}
-                className="flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg px-1.5 text-[10px] font-bold text-slate-300 transition-colors hover:bg-white/[0.05] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-300 active:bg-white/[0.08] disabled:opacity-55"
+                className="flex min-h-[62px] min-w-0 flex-col items-center justify-center gap-1.5 rounded-xl border border-cyan-300/15 bg-cyan-400/[0.05] px-1.5 text-[11px] font-bold text-slate-200 transition-all hover:border-cyan-300/30 hover:bg-cyan-400/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 active:scale-[0.98] disabled:opacity-55"
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-cyan-400/10 text-cyan-300">
-                  <MapPin size={13} strokeWidth={2} />
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-cyan-300/20 bg-cyan-400/10 text-cyan-300">
+                  <MapPin size={14} strokeWidth={2} />
                 </span>
                 <span className="truncate">Drop pin</span>
               </button>
@@ -511,10 +511,10 @@ export default function Landing() {
                 type="button"
                 onClick={handlePasteLink}
                 disabled={resolving || locating}
-                className="flex min-h-11 min-w-0 items-center justify-center gap-2 rounded-lg px-1.5 text-[10px] font-bold text-slate-300 transition-colors hover:bg-white/[0.05] focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-emerald-300 active:bg-white/[0.08] disabled:opacity-55"
+                className="flex min-h-[62px] min-w-0 flex-col items-center justify-center gap-1.5 rounded-xl border border-violet-300/15 bg-violet-400/[0.05] px-1.5 text-[11px] font-bold text-slate-200 transition-all hover:border-violet-300/30 hover:bg-violet-400/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-300 active:scale-[0.98] disabled:opacity-55"
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-violet-400/10 text-violet-300">
-                  <Link2 size={13} strokeWidth={2} />
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-violet-300/20 bg-violet-400/10 text-violet-300">
+                  <Link2 size={14} strokeWidth={2} />
                 </span>
                 <span className="truncate">Paste link</span>
               </button>
