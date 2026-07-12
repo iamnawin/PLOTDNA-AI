@@ -48,7 +48,8 @@
     "test:founder-pass-mobile-cta": "node scripts/check-founder-pass-mobile-cta.mjs",
     "test:final-screen-actions": "node scripts/check-final-screen-actions.mjs",
     "test:simple-buyer-copy": "node scripts/check-simple-buyer-copy.mjs",
-    "test:verdict-screen-resilience": "node scripts/check-verdict-screen-resilience.mjs"
+    "test:verdict-screen-resilience": "node scripts/check-verdict-screen-resilience.mjs",
+    "test:beta-product-analytics": "node scripts/check-beta-product-analytics.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.3.4",

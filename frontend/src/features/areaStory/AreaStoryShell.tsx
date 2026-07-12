@@ -10,11 +10,21 @@ import MapProofScreen from './screens/MapProofScreen'
 import AreaDetailsScreen from './screens/AreaDetailsScreen'
 import CompareScreen from './screens/CompareScreen'
 import PassScreen from './screens/PassScreen'
+import { trackEvent } from '@/lib/analytics'
 
 export default function AreaStoryShell() {
   const { slug, step } = useParams<{ slug: string; step: string }>()
   const location = useLocation()
   const setSelectedArea = useAppStore(state => state.setSelectedArea)
+
+  useEffect(() => {
+    if (!slug || !isAreaStoryStep(step) || step === 'check') return
+    const resolvedCity = getCityForArea(slug)
+    trackEvent('screen_viewed', { screen: step, marketSlug: resolvedCity?.meta.slug, areaSlug: slug })
+    if (step === 'verdict') {
+      trackEvent('area_opened', { screen: step, marketSlug: resolvedCity?.meta.slug, areaSlug: slug })
+    }
+  }, [slug, step])
 
   useEffect(() => {
     return () => setSelectedArea(null)

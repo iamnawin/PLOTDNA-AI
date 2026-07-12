@@ -12,7 +12,6 @@ import { getScoreColor } from '@/lib/utils'
 import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } from '@/lib/plotAnalysis'
 import { resolveMapLink, resolveLocation } from '@/lib/api'
 import { trackEvent } from '@/lib/analytics'
-import { trackUserEvent } from '@/lib/entitlements'
 import { buildAreaStoryPath } from '@/features/areaStory/areaStoryNav'
 
 const LAST_MAP_STATE_KEY = 'plotdna:last-map-state'
@@ -56,7 +55,6 @@ export default function Landing() {
   )
   useEffect(() => {
     trackEvent('landing_viewed', { source: 'landing' })
-    void trackUserEvent({ eventType: 'landing_viewed' })
   }, [])
 
   const parsedCoords  = parseCoords(query)
@@ -74,6 +72,7 @@ export default function Landing() {
     setQuery(area.name)
     setInputError('')
     setFocused(false)
+    trackEvent('location_selected', { inputType: 'search', marketSlug: area.citySlug, areaSlug: area.slug })
   }
 
   function selectCoords(coords: [number, number], source: SelectedLandInput['source'], rawInput?: string) {
@@ -89,11 +88,13 @@ export default function Landing() {
     setQuery(`${coords[0].toFixed(6)}, ${coords[1].toFixed(6)}`)
     setInputError('')
     setFocused(false)
+    trackEvent('location_selected', { inputType: source, marketSlug: preview.citySlug, areaSlug: preview.area?.slug, resolutionTier: preview.tier })
   }
 
   function openArea(area: MicroMarket & { citySlug: string }) {
     setSelectedCitySlug(area.citySlug)
     setSelectedArea(area)
+    trackEvent('open_area_completed', { inputType: 'search', marketSlug: area.citySlug, areaSlug: area.slug, outcome: 'success' })
     navigate(buildAreaStoryPath(area.slug, 'verdict'))
   }
 
@@ -105,8 +106,14 @@ export default function Landing() {
     // so the more accurate backend result was silently dropped. Now navigation
     // always waits for whichever result actually lands.
     const res = await resolveLocation(coords[0], coords[1]).catch(() => null)
+        trackEvent(res ? 'resolver_succeeded' : 'resolver_failed', {
+          inputType: selectedLandInput?.source,
+          resolutionTier: res?.tier,
+          outcome: res ? 'success' : 'failed',
+        })
         if (res && res.tier === 'regional') {
           const districtSlug = res.districtSlug || 'warangal'
+          trackEvent('open_area_completed', { inputType: selectedLandInput?.source, marketSlug: res.stateSlug, areaSlug: districtSlug, resolutionTier: res.tier, outcome: 'success' })
           navigate(buildAreaStoryPath(districtSlug, 'verdict'), {
             state: {
               fallbackContext: {
@@ -135,6 +142,7 @@ export default function Landing() {
             fromTier: analysis.tier,
             fromPrecision: analysis.precisionLabel,
           })
+          trackEvent('open_area_completed', { inputType: selectedLandInput?.source, marketSlug: analysis.citySlug, areaSlug: analysis.area.slug, resolutionTier: analysis.tier, outcome: 'success' })
           navigate(`${buildAreaStoryPath(analysis.area.slug, 'verdict')}?${params.toString()}`, {
             state: {
               fallbackContext: {
@@ -147,6 +155,7 @@ export default function Landing() {
           })
           return
         }
+        trackEvent('open_area_failed', { inputType: selectedLandInput?.source, resolutionTier: analysis.tier, outcome: 'failed' })
         navigate('/map')
   }
 
@@ -154,6 +163,11 @@ export default function Landing() {
     if (isOpeningArea || !selectedLandInput) return
     setInputError('')
     setIsOpeningArea(true)
+    trackEvent('open_area_started', {
+      inputType: selectedLandInput.source,
+      marketSlug: selectedLandInput.area?.citySlug,
+      areaSlug: selectedLandInput.area?.slug,
+    })
     try {
       if (selectedLandInput.area) {
         openArea(selectedLandInput.area)
@@ -165,6 +179,7 @@ export default function Landing() {
       }
       throw new Error('Selection is missing coordinates')
     } catch {
+      trackEvent('open_area_failed', { inputType: selectedLandInput.source, areaSlug: selectedLandInput.area?.slug, outcome: 'failed' })
       setInputError('Could not open this area right now. Try again.')
       setIsOpeningArea(false)
     }

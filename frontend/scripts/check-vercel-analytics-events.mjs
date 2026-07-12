@@ -12,7 +12,7 @@ function assert(condition, message) {
 }
 
 assert(analytics.includes("import { track as trackVercelEvent } from '@vercel/analytics'"), 'analytics helper must import Vercel custom-event tracking')
-assert(analytics.includes('trackVercelEvent(name, cleanPayload)'), 'analytics helper must send custom events to Vercel Analytics')
+assert(analytics.includes('trackVercelEvent(name, contextualPayload)'), 'analytics helper must send contextual custom events to Vercel Analytics')
 assert(analytics.includes('/api/analytics/events'), 'analytics helper must keep backend analytics storage')
 
 console.log('Vercel analytics event check passed.')

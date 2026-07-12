@@ -3,6 +3,7 @@ import type { MicroMarket } from '@/types'
 import { buildAreaStoryBrief, SELLER_QUESTIONS, VERIFICATION_GROUPS } from '@/lib/areaStoryBrief'
 import { getLandDnaAreaCode } from '@/lib/landDnaCard'
 import { getScoreLabel } from '@/lib/utils'
+import { trackEvent } from '@/lib/analytics'
 
 export interface BuyerReportOptions {
   area: MicroMarket
@@ -238,4 +239,5 @@ export async function generateBuyerReportPdf({ area, cityName, citySlug, usesNea
 export async function downloadBuyerReport(options: BuyerReportOptions) {
   const { doc, areaCode } = await generateBuyerReportPdf(options)
   doc.save(`plotdna-buyer-report-${areaCode}.pdf`)
+  trackEvent('buyer_report_downloaded', { marketSlug: options.citySlug, areaSlug: options.area.slug, outcome: 'success' })
 }

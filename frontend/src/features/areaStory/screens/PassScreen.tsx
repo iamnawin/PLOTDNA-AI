@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ArrowRight, Share2, Download, Copy } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import type { CityEntry } from '@/data/cities'
@@ -8,6 +8,7 @@ import { getCachedEntitlements } from '@/lib/entitlements'
 import { getLandDnaAccessState } from '@/lib/founderPass/landDnaPlan'
 import { exportLandDnaCardPng, getLandDnaAreaCode, getLandDnaCardPath } from '@/lib/landDnaCard'
 import { getReportPaymentLink } from '@/lib/paymentLinks'
+import { trackEvent } from '@/lib/analytics'
 
 interface PassScreenProps {
   area: MicroMarket
@@ -20,6 +21,7 @@ type ShareState = 'idle' | 'link-copied' | 'png-downloaded' | 'export-failed'
 export default function PassScreen({ area, city, usesNearbySignals }: PassScreenProps) {
   const [shareState, setShareState] = useState<ShareState>('idle')
   const [paymentError, setPaymentError] = useState(false)
+  const [feedback, setFeedback] = useState<'yes' | 'no' | null>(null)
   const cardRef = useRef<HTMLElement | null>(null)
 
   const cityName = city.meta.name
@@ -27,6 +29,16 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
   const accessState = getLandDnaAccessState(getCachedEntitlements())
   const paymentLink = getReportPaymentLink('instant_pdf_99')
   const publicUrl = `${window.location.origin}${getLandDnaCardPath(cityName, area)}`
+
+  useEffect(() => {
+    trackEvent('area_pass_generated', { marketSlug: city.meta.slug, areaSlug: area.slug, outcome: 'success' })
+  }, [area.slug, city.meta.slug])
+
+  function submitFeedback(value: 'yes' | 'no') {
+    if (feedback) return
+    setFeedback(value)
+    trackEvent('feedback_submitted', { marketSlug: city.meta.slug, areaSlug: area.slug, answer: value })
+  }
 
   async function handleShare() {
     if (navigator.share) {
@@ -144,6 +156,18 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
           <Copy size={16} /> Copy URL
         </button>
         </div>
+      </section>
+
+      <section className="mt-4 rounded-xl border border-white/8 bg-white/[0.025] p-4" aria-label="Beta feedback">
+        <p className="text-xs font-black text-slate-100">Was this useful before visiting the plot?</p>
+        {feedback ? (
+          <p className="mt-2 text-xs font-bold text-emerald-300">Thanks for helping improve PlotDNA.</p>
+        ) : (
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <button type="button" onClick={() => submitFeedback('yes')} className="min-h-10 rounded-lg bg-emerald-400 text-xs font-black text-slate-950">Yes</button>
+            <button type="button" onClick={() => submitFeedback('no')} className="min-h-10 rounded-lg border border-white/10 bg-white/[0.04] text-xs font-black text-slate-200">Not really</button>
+          </div>
+        )}
       </section>
     </div>
   )
