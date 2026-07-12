@@ -6,8 +6,6 @@ import path from 'node:path'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const screen = readFileSync(path.join(__dirname, '../src/features/areaStory/screens/AreaDetailsScreen.tsx'), 'utf8')
 const shell = readFileSync(path.join(__dirname, '../src/features/areaStory/AreaStoryShell.tsx'), 'utf8')
-const reportButton = readFileSync(path.join(__dirname, '../src/components/ui/BuyerReportButton.tsx'), 'utf8')
-const screenContent = `${screen}\n${reportButton}`
 
 assert.match(shell, /step === 'details'.*AreaDetailsScreen/, 'active details route renders AreaDetailsScreen')
 
@@ -23,10 +21,12 @@ for (const copy of [
   'Price Sanity',
   'Where to verify this',
   'Buyer action recommendation',
-  'Download Buyer Report',
-  'Generate Area Pass',
 ]) {
-  assert.ok(screenContent.includes(copy) || (['Documents', 'Approvals', 'Site Reality', 'Price Sanity'].includes(copy) && screen.includes('VERIFICATION_GROUPS')), `Area Story includes ${copy}`)
+  assert.ok(screen.includes(copy) || (['Documents', 'Approvals', 'Site Reality', 'Price Sanity'].includes(copy) && screen.includes('VERIFICATION_GROUPS')), `Area Story includes ${copy}`)
+}
+
+for (const action of ['Download Buyer Report', 'Generate Area Pass', 'Compare Areas']) {
+  assert.ok(!screen.includes(action), `Area Story must not repeat final-screen action: ${action}`)
 }
 
 assert.match(screen, /target="_blank"/)

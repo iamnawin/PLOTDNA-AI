@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
 import {
   AlertTriangle,
   BadgeCheck,
@@ -11,17 +10,13 @@ import {
   Gauge,
   MapPinCheck,
   MessageSquareText,
-  Scale,
   ShieldCheck,
   Sparkles,
   TrendingUp,
 } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import type { CityEntry } from '@/data/cities'
-import BuyerReportButton from '@/components/ui/BuyerReportButton'
 import { buildAreaStoryBrief, SELLER_QUESTIONS, VERIFICATION_GROUPS } from '@/lib/areaStoryBrief'
-import { getScoreColor } from '@/lib/utils'
-import { buildAreaStoryPath } from '../areaStoryNav'
 
 interface AreaDetailsScreenProps {
   area: MicroMarket
@@ -34,7 +29,6 @@ const MANUAL_CHECKS = ['RERA checked', 'Land record checked', 'Market value chec
 export default function AreaDetailsScreen({ area, city, usesNearbySignals = false }: AreaDetailsScreenProps) {
   const [checked, setChecked] = useState<string[]>([])
   const brief = buildAreaStoryBrief(area, city.meta.slug, usesNearbySignals)
-  const scoreColor = getScoreColor(area.score)
 
   function toggleCheck(item: string) {
     setChecked(current => current.includes(item) ? current.filter(value => value !== item) : [...current, item])
@@ -154,11 +148,6 @@ export default function AreaDetailsScreen({ area, city, usesNearbySignals = fals
         <p className="mt-2 text-[10px] leading-4 text-slate-400">Verify road access, approvals, documents, and price before paying token.</p>
       </section>
 
-      <div className="grid grid-cols-2 gap-2">
-        <Link to={buildAreaStoryPath(area.slug, 'compare')} className="col-span-2 flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-sm font-black text-slate-950 active:scale-[0.99]" style={{ background: `linear-gradient(90deg, ${scoreColor}, #38bdf8)` }}><Scale size={16} />Compare Areas</Link>
-        <BuyerReportButton area={area} cityName={city.meta.name} citySlug={city.meta.slug} usesNearbySignals={usesNearbySignals} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-bold text-slate-100 active:scale-[0.99]" />
-        <Link to={buildAreaStoryPath(area.slug, 'pass')} className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-bold text-slate-100 active:scale-[0.99]"><BadgeCheck size={16} />Generate Area Pass</Link>
-      </div>
     </div>
   )
 }

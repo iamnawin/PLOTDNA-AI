@@ -45,7 +45,8 @@
     "test:location-selection-gate": "node scripts/check-location-selection-gate.mjs",
     "test:open-area-loading-state": "node scripts/check-open-area-loading-state.mjs",
     "test:home-nav-route": "node scripts/check-home-nav-route.mjs",
-    "test:founder-pass-mobile-cta": "node scripts/check-founder-pass-mobile-cta.mjs"
+    "test:founder-pass-mobile-cta": "node scripts/check-founder-pass-mobile-cta.mjs",
+    "test:final-screen-actions": "node scripts/check-final-screen-actions.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.3.4",

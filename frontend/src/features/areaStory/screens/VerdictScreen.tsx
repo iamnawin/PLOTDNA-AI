@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ShieldCheck, ArrowRight, BadgeCheck, Scale } from 'lucide-react'
+import { ShieldCheck, ArrowRight } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import type { CityEntry } from '@/data/cities'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
@@ -7,7 +7,6 @@ import { getConfidenceMeta } from '@/lib/cityProduction'
 import VerdictCard from '@/components/ui/VerdictCard'
 import { buildAreaStoryPath } from '../areaStoryNav'
 import type { AreaStoryFallbackContext } from '../areaStoryNav'
-import BuyerReportButton from '@/components/ui/BuyerReportButton'
 
 interface VerdictScreenProps {
   area: MicroMarket
@@ -86,15 +85,6 @@ export default function VerdictScreen({ area, city, fallbackContext }: VerdictSc
         <ArrowRight size={16} />
       </Link>
 
-      <section className="mt-3 grid grid-cols-2 gap-2" aria-label="Result actions">
-        <Link to={buildAreaStoryPath(area.slug, 'pass')} className="col-span-2 flex min-h-12 items-center justify-center gap-2 rounded-xl border border-emerald-300/25 bg-emerald-300/[0.08] px-4 text-sm font-black text-emerald-200 active:scale-[0.99]">
-          <BadgeCheck size={16} /> Generate Area Pass
-        </Link>
-        <BuyerReportButton area={area} cityName={city.meta.name} citySlug={city.meta.slug} usesNearbySignals={Boolean(fallbackContext && fallbackContext.tier !== 'exact_locality')} className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-bold text-slate-100 active:scale-[0.99]" />
-        <Link to={buildAreaStoryPath(area.slug, 'compare')} className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-bold text-slate-100 active:scale-[0.99]">
-          <Scale size={16} /> Compare Areas
-        </Link>
-      </section>
     </div>
   )
 }
