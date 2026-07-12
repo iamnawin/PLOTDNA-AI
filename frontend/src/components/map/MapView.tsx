@@ -7,11 +7,9 @@ import Map, {
   type MapLayerMouseEvent,
 } from 'react-map-gl/maplibre'
 import type { StyleSpecification } from 'maplibre-gl'
-import { useNavigate } from 'react-router-dom'
 import { getCityEntry } from '@/data/cities'
 import { useAppStore, type MapStyleKey } from '@/store'
 import { getScoreColor, getScoreLabel } from '@/lib/utils'
-import { buildAreaStoryPath } from '@/features/areaStory/areaStoryNav'
 import {
   getHyderabadPendingSource,
   getHyderabadPendingScoringReadiness,
@@ -249,7 +247,6 @@ function closePolygonRing(polygon: [number, number][]): [number, number][] {
 export default function MapView({ dropPinMode = false, onMapClick, isolateSlug }: MapViewProps = {}) {
   const mapRef      = useRef<MapRef>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const navigate    = useNavigate()
 
   const {
     selectedArea,
@@ -490,13 +487,6 @@ export default function MapView({ dropPinMode = false, onMapClick, isolateSlug }
     }
   }, [dropPinMode, onMapClick, setSelectedArea, areas, showContextHover])
 
-  const handleDblClick = useCallback((e: MapLayerMouseEvent) => {
-    if (e.features?.[0]?.layer.id === 'special-use-fill') return
-    const slug = e.features?.[0]?.properties?.slug as string | undefined
-    const area = slug ? areas.find(a => a.slug === slug) : null
-    if (area) navigate(buildAreaStoryPath(area.slug, 'verdict'))
-  }, [areas, navigate])
-
   const handleMouseMove = useCallback((e: MapLayerMouseEvent) => {
     const feature = e.features?.[0]
     if (feature?.layer.id === 'special-use-fill') {
@@ -556,7 +546,6 @@ export default function MapView({ dropPinMode = false, onMapClick, isolateSlug }
         }}
         style={{ width: '100%', height: '100%' }}
         onClick={handleClick}
-        onDblClick={handleDblClick}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onError={(event) => console.error('[maplibre]', event.error)}

@@ -82,7 +82,7 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
             >
               <span>
                 <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-slate-900/70">Founder Pass · One-time unlock</span>
-                <span className="mt-1 block text-base font-black leading-tight">Unlock Founder Pass — ₹99 Lifetime Access</span>
+                <span className="mt-1 block whitespace-nowrap text-sm font-black leading-tight sm:text-base"><span className="sm:hidden">Unlock Founder Pass — ₹99</span><span className="hidden sm:inline">Unlock Founder Pass — ₹99 Lifetime Access</span></span>
                 <span className="mt-1 block text-[10px] font-bold text-slate-900/65">More Area Pass cards, buyer reports, and comparisons</span>
               </span>
               <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-950/15"><ArrowRight size={19} /></span>
@@ -96,7 +96,7 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
               >
                 <span>
                   <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-slate-900/70">Founder Pass · One-time unlock</span>
-                  <span className="mt-1 block text-base font-black leading-tight">Unlock Founder Pass — ₹99 Lifetime Access</span>
+                  <span className="mt-1 block whitespace-nowrap text-sm font-black leading-tight sm:text-base"><span className="sm:hidden">Unlock Founder Pass — ₹99</span><span className="hidden sm:inline">Unlock Founder Pass — ₹99 Lifetime Access</span></span>
                   <span className="mt-1 block text-[10px] font-bold text-slate-900/65">More Area Pass cards, buyer reports, and comparisons</span>
                 </span>
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-slate-950/15"><ArrowRight size={19} /></span>

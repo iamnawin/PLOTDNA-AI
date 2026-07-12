@@ -39,7 +39,7 @@ export default function AreaStoryTabBar({ slug, activeStep }: AreaStoryTabBarPro
       {TAB_ORDER.map(step => {
         const Icon = TAB_ICON[step]
         const isActive = step === activeStep
-        const to = step === 'check' ? '/map' : buildAreaStoryPath(slug, step)
+        const to = step === 'check' ? '/' : buildAreaStoryPath(slug, step)
         return (
           <Link
             key={step}

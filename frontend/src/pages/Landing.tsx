@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   Search, ChevronRight, Navigation, Zap, Map, TrendingUp,
-  Shield, Activity, X, Link2, MapPin, IndianRupee, FileSearch,
+  Shield, Activity, X, Link2, MapPin, IndianRupee, FileSearch, LoaderCircle,
 } from 'lucide-react'
 import { useAppStore } from '@/store'
 import { CITIES } from '@/data/cities'
@@ -13,7 +13,6 @@ import { parseCoords, parseMapUrl, isShortMapUrl, isMapUrl, findNearestArea } fr
 import { resolveMapLink, resolveLocation } from '@/lib/api'
 import { trackEvent } from '@/lib/analytics'
 import { trackUserEvent } from '@/lib/entitlements'
-import DnaRoutePreloader from '@/components/ui/DnaRoutePreloader'
 import { buildAreaStoryPath } from '@/features/areaStory/areaStoryNav'
 
 const LAST_MAP_STATE_KEY = 'plotdna:last-map-state'
@@ -24,6 +23,16 @@ const BUYER_QUESTIONS = [
   { icon: IndianRupee, title: 'Is the broker price too high?', desc: 'Check fair value with local data.', color: '#f59e0b' },
   { icon: FileSearch, title: 'What should I verify before paying token?', desc: 'Know the must-check list.', color: '#a78bfa' },
 ]
+
+type SelectedLandInput = {
+  source: 'search' | 'google_maps_link' | 'locate_me' | 'drop_pin'
+  rawInput?: string
+  lat?: number
+  lng?: number
+  areaName?: string
+  city?: string
+  area?: MicroMarket & { citySlug: string }
+}
 
 export default function Landing() {
   const navigate  = useNavigate()
@@ -38,23 +47,9 @@ export default function Landing() {
   const [resolving, setResolving]     = useState(false)
   const [locating, setLocating]       = useState(false)
   const [inputError, setInputError]   = useState('')
-  const [dnaLoading, setDnaLoading]   = useState(false)
-  const [dnaLoaderRunId, setDnaLoaderRunId] = useState(0)
+  const [selectedLandInput, setSelectedLandInput] = useState<SelectedLandInput | null>(null)
+  const [isOpeningArea, setIsOpeningArea] = useState(false)
   const inputRef      = useRef<HTMLInputElement>(null)
-  const pendingNavRef = useRef<(() => void) | null>(null)
-
-  function goToCoordWithLoader(navFn: () => void) {
-    pendingNavRef.current = navFn
-    setDnaLoaderRunId(id => id + 1)
-    setDnaLoading(true)
-  }
-
-  const handleDnaLoaderComplete = useCallback(() => {
-    setDnaLoading(false)
-    const pendingNav = pendingNavRef.current
-    pendingNavRef.current = null
-    pendingNav?.()
-  }, [])
 
   const allAreas: (MicroMarket & { citySlug: string })[] = Object.entries(CITIES).flatMap(
     ([slug, { areas }]) => areas.map(a => ({ ...a, citySlug: slug }))
@@ -74,23 +69,42 @@ export default function Landing() {
     ? allAreas.filter(a => a.name.toLowerCase().includes(query.toLowerCase())).slice(0, 6)
     : []
   const showDropdown = focused && (results.length > 0 || parsedCoords !== null || parsedMapUrl !== null || shortMapUrl || backendMapUrl)
-  function goToArea(area: MicroMarket & { citySlug: string }) {
+  function selectArea(area: MicroMarket & { citySlug: string }) {
+    setSelectedLandInput({ source: 'search', rawInput: area.name, areaName: area.name, city: CITIES[area.citySlug]?.meta.name ?? area.citySlug, area })
+    setQuery(area.name)
+    setInputError('')
+    setFocused(false)
+  }
+
+  function selectCoords(coords: [number, number], source: SelectedLandInput['source'], rawInput?: string) {
+    const preview = findNearestArea(coords[0], coords[1])
+    setSelectedLandInput({
+      source,
+      rawInput,
+      lat: coords[0],
+      lng: coords[1],
+      areaName: preview.area?.name ?? preview.displayLabel ?? 'Exact coordinates',
+      city: preview.citySlug ? (CITIES[preview.citySlug]?.meta.name ?? preview.citySlug) : CITIES.hyderabad.meta.name,
+    })
+    setQuery(`${coords[0].toFixed(6)}, ${coords[1].toFixed(6)}`)
+    setInputError('')
+    setFocused(false)
+  }
+
+  function openArea(area: MicroMarket & { citySlug: string }) {
     setSelectedCitySlug(area.citySlug)
     setSelectedArea(area)
     navigate(buildAreaStoryPath(area.slug, 'verdict'))
   }
 
-  function goToCoords(coords: [number, number]) {
+  async function openCoords(coords: [number, number]) {
     // Resolve against the backend first — it has the full district/cluster/context
     // dataset. The local `findNearestArea` fallback is bundled static data only and
     // can pick the wrong nearest area near coverage edges. Previously the loader's
     // fixed animation timer fired navigation before this network call could return,
     // so the more accurate backend result was silently dropped. Now navigation
     // always waits for whichever result actually lands.
-    const resolutionPromise = resolveLocation(coords[0], coords[1]).catch(() => null)
-
-    goToCoordWithLoader(() => {
-      resolutionPromise.then(res => {
+    const res = await resolveLocation(coords[0], coords[1]).catch(() => null)
         if (res && res.tier === 'regional') {
           const districtSlug = res.districtSlug || 'warangal'
           navigate(buildAreaStoryPath(districtSlug, 'verdict'), {
@@ -134,8 +148,26 @@ export default function Landing() {
           return
         }
         navigate('/map')
-      })
-    })
+  }
+
+  async function handleOpenArea() {
+    if (isOpeningArea || !selectedLandInput) return
+    setInputError('')
+    setIsOpeningArea(true)
+    try {
+      if (selectedLandInput.area) {
+        openArea(selectedLandInput.area)
+        return
+      }
+      if (typeof selectedLandInput.lat === 'number' && typeof selectedLandInput.lng === 'number') {
+        await openCoords([selectedLandInput.lat, selectedLandInput.lng])
+        return
+      }
+      throw new Error('Selection is missing coordinates')
+    } catch {
+      setInputError('Could not open this area right now. Try again.')
+      setIsOpeningArea(false)
+    }
   }
 
   async function handleEnter() {
@@ -145,11 +177,11 @@ export default function Landing() {
       return
     }
     if (parsedCoords) {
-      goToCoords(parsedCoords)
+      selectCoords(parsedCoords, 'search', query.trim())
       return
     }
     if (parsedMapUrl) {
-      goToCoords(parsedMapUrl)
+      selectCoords(parsedMapUrl, 'google_maps_link', query.trim())
       return
     }
     if (shortMapUrl || backendMapUrl) {
@@ -157,7 +189,7 @@ export default function Landing() {
       const result = await resolveMapLink(query.trim())
       setResolving(false)
       if (result.coords) {
-        goToCoords(result.coords)
+        selectCoords(result.coords, 'google_maps_link', query.trim())
         return
       }
       setInputError(result.detail ?? (
@@ -169,7 +201,7 @@ export default function Landing() {
       ))
       return
     }
-    if (results.length > 0) { goToArea(results[0]); return }
+    if (results.length > 0) { selectArea(results[0]); return }
     setInputError('No matching area found. Try a Hyderabad locality, Google Maps link, or coordinates.')
   }
 
@@ -188,7 +220,7 @@ export default function Landing() {
           position.coords.longitude,
         ]
         setLocating(false)
-        goToCoords(coords)
+        selectCoords(coords, 'locate_me', 'Current location')
       },
       error => {
         setLocating(false)
@@ -222,7 +254,7 @@ export default function Landing() {
       setQuery(pastedValue)
       const directCoords = parseCoords(pastedValue) ?? parseMapUrl(pastedValue)
       if (directCoords) {
-        goToCoords(directCoords)
+        selectCoords(directCoords, 'google_maps_link', pastedValue)
         return
       }
       if (isMapUrl(pastedValue)) {
@@ -230,7 +262,7 @@ export default function Landing() {
         const result = await resolveMapLink(pastedValue)
         setResolving(false)
         if (result.coords) {
-          goToCoords(result.coords)
+          selectCoords(result.coords, 'google_maps_link', pastedValue)
           return
         }
         setInputError(result.detail ?? 'Could not extract coordinates from this map link.')
@@ -259,8 +291,6 @@ export default function Landing() {
 
   return (
     <>
-    <DnaRoutePreloader key={dnaLoaderRunId} active={dnaLoading} onComplete={handleDnaLoaderComplete} />
-
     <div
       className="min-h-[100dvh] w-full flex flex-col font-sans"
       style={{ background: 'var(--bg-main)', color: 'var(--text-main)' }}
@@ -422,7 +452,7 @@ export default function Landing() {
                     type="text"
                     placeholder="Search area, paste Google Maps link, or enter coordinates"
                     value={query}
-                    onChange={e => { setQuery(e.target.value); setInputError('') }}
+                    onChange={e => { setQuery(e.target.value); setInputError(''); setSelectedLandInput(null) }}
                     onFocus={() => setFocused(true)}
                     onBlur={() => setTimeout(() => setFocused(false), 160)}
                     onKeyDown={e => { if (e.key === 'Enter') handleEnter() }}
@@ -430,7 +460,7 @@ export default function Landing() {
                   />
                   {query && (
                     <button
-                      onClick={() => { setQuery(''); setInputError(''); inputRef.current?.focus() }}
+                      onClick={() => { setQuery(''); setInputError(''); setSelectedLandInput(null); inputRef.current?.focus() }}
                       className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-slate-500 transition-colors hover:bg-white/[0.05] hover:text-slate-200"
                       aria-label="Clear search"
                     >
@@ -479,7 +509,27 @@ export default function Landing() {
               </div>
             </div>
 
-            <p className="mt-3 text-[11px] leading-4 text-slate-500">Choose an action once. PlotDNA starts the land check immediately.</p>
+            <AnimatePresence>
+              {selectedLandInput && (
+                <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="mt-3 rounded-xl p-3 text-left" style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.10), rgba(14,165,233,0.06))', border: '1px solid rgba(45, 212, 191, 0.28)' }}>
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-400/10 text-emerald-300"><MapPin size={17} /></div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-emerald-300">Selected location</p>
+                      <p className="mt-1 truncate font-display text-lg font-black text-slate-50">{selectedLandInput.areaName ?? 'Exact land point'}</p>
+                      <div className="flex flex-wrap gap-x-3 text-[11px] leading-5 text-slate-400">
+                        <span>{selectedLandInput.city ?? CITIES.hyderabad.meta.name}</span>
+                        {typeof selectedLandInput.lat === 'number' && typeof selectedLandInput.lng === 'number' && <><span>Lat: {selectedLandInput.lat.toFixed(5)}</span><span>Lng: {selectedLandInput.lng.toFixed(5)}</span></>}
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" onClick={handleOpenArea} disabled={isOpeningArea} className="mt-3 flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-cyan-300 px-4 text-sm font-black text-slate-950 disabled:cursor-wait disabled:opacity-70">
+                    {isOpeningArea ? <><LoaderCircle size={17} className="animate-spin" />Opening area…</> : <>Open Area<ChevronRight size={18} /></>}
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            {!selectedLandInput && <p className="mt-3 text-[11px] leading-4 text-slate-500">Select a location first — search, locate, paste link, or drop pin.</p>}
           </div>
 
           <p className="mt-3 px-2 text-xs leading-5 text-slate-500">
@@ -508,7 +558,7 @@ export default function Landing() {
                   const coords = parsedCoords ?? parsedMapUrl!
                   return (
                     <button
-                      onMouseDown={() => goToCoords(coords)}
+                      onMouseDown={() => selectCoords(coords, parsedMapUrl ? 'google_maps_link' : 'search', query.trim())}
                       className="w-full flex items-center gap-3 px-5 py-3.5 text-left transition-colors cursor-pointer"
                       style={{ borderBottom: results.length > 0 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}
@@ -551,7 +601,7 @@ export default function Landing() {
                   return (
                     <button
                       key={area.slug}
-                      onMouseDown={() => goToArea(areaWithCity)}
+                      onMouseDown={() => selectArea(areaWithCity)}
                       className="w-full flex items-center gap-3 px-5 py-3 text-left transition-colors"
                       style={{ borderBottom: i < results.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none' }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.03)' }}

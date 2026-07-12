@@ -388,50 +388,17 @@ export default function Home() {
     setAnalyzeStep(0)
     setAnalyzingCoords(coords)
 
-    Promise.all([
-      resolveLocation(coords[0], coords[1]).catch(() => null),
-      new Promise(resolve => setTimeout(resolve, 2200))
-    ]).then(([res]) => {
-      setAnalyzingCoords(null)
-      if (res && res.tier === 'regional') {
-        const districtSlug = res.districtSlug || 'warangal'
-        persistMapStateToUrl(coords, nextCitySlug)
-        navigate(buildAreaReportState(districtSlug, {
-          fallbackContext: {
-            tier: res.tier,
-            displayLabel: `${res.districtName || 'Regional'} District Fallback`,
-            precisionLabel: 'broad',
-            coords,
-            districtSlug: res.districtSlug,
-            districtName: res.districtName,
-            stateSlug: res.stateSlug,
-          }
-        }), {
-          state: {
-            fallbackContext: {
-              tier: res.tier,
-              displayLabel: `${res.districtName || 'Regional'} District Fallback`,
-              precisionLabel: 'broad',
-              coords,
-              districtSlug: res.districtSlug,
-              districtName: res.districtName,
-              stateSlug: res.stateSlug,
-            }
-          }
-        })
-      } else {
-        setViewMode('map')
-        setMapStyleKey('satellite')
-        setIs3D(false)
-        setSearchCoords(coords)
-        persistMapStateToUrl(coords, nextCitySlug)
-        maybeOpenLocationIntelligence({
-          inputType: locationInput?.inputType ?? 'place_search',
-          inputValue: locationInput?.inputValue,
-          coords,
-          reverseGeocodedAddress: locationInput?.reverseGeocodedAddress,
-        })
-      }
+    setAnalyzingCoords(null)
+    setViewMode('map')
+    setMapStyleKey('satellite')
+    setIs3D(false)
+    setSearchCoords(coords)
+    persistMapStateToUrl(coords, nextCitySlug)
+    maybeOpenLocationIntelligence({
+      inputType: locationInput?.inputType ?? 'place_search',
+      inputValue: locationInput?.inputValue,
+      coords,
+      reverseGeocodedAddress: locationInput?.reverseGeocodedAddress,
     })
   }
 
