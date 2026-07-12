@@ -15,10 +15,10 @@ const copy = files.join('\n')
 
 for (const phrase of [
   'You can consider this area, but don’t rush.',
-  'Nearest area used',
+  'Nearest match used',
   'Yes, if you overpay.',
   'Looks positive.',
-  'Yes, but only after checks.',
+  'Yes, after checks.',
   'Nearby activity looks decent.',
   'Where you may lose money',
   'Some details are available, but not everything.',
