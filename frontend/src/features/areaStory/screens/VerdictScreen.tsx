@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Download, Map, ShieldCheck } from 'lucide-react'
+import { ArrowRight, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import type { MicroMarket } from '@/types'
 import type { CityEntry } from '@/data/cities'
@@ -111,18 +111,6 @@ export default function VerdictScreen({ area, city, fallbackContext }: VerdictSc
       >
         See Money View <ArrowRight size={16} />
       </Link>
-
-      <div className="mt-2 grid grid-cols-3 gap-2">
-        {[
-          { label: 'Map Proof', step: 'map' as const, icon: Map },
-          { label: 'Area Story', step: 'details' as const, icon: BookOpen },
-          { label: 'Buyer Report', step: 'pass' as const, icon: Download },
-        ].map(({ label, step, icon: Icon }) => (
-          <Link key={step} to={buildAreaStoryPath(area.slug, step)} className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl border border-white/8 bg-white/[0.025] px-2 text-center text-[10px] font-black text-slate-300">
-            <Icon size={13} /> {label}
-          </Link>
-        ))}
-      </div>
     </div>
   )
 }

@@ -29,5 +29,8 @@ for (const phrase of ['AI analysis unavailable', 'rule-based', 'fallback intelli
 
 assert.ok(card.includes('.catch(() =>'), 'API failure must keep the local PlotDNA verdict')
 assert.ok(card.includes('buildFallbackVerdict(areaSlug, resolutionTier, resolutionLabel)'), 'API failure must restore local verdict data')
+for (const label of ['Map Proof', 'Area Story', 'Buyer Report']) {
+  assert.ok(!screen.includes(label), `${label} must not be repeated on the Verdict screen`)
+}
 
 console.log('Verdict screen resilience checks passed.')
