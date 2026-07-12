@@ -53,7 +53,7 @@ export default function AreaDetailsScreen({ area, city, usesNearbySignals = fals
       <section className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
         <div className="mb-3 flex items-center gap-2">
           <Building2 size={16} className="text-cyan-300" />
-          <h2 className="text-sm font-black text-slate-100">Infrastructure signals</h2>
+          <h2 className="text-sm font-black text-slate-100">Roads and nearby development</h2>
         </div>
         <div className="divide-y divide-white/8">
           {brief.signals.map(signal => (
@@ -71,7 +71,7 @@ export default function AreaDetailsScreen({ area, city, usesNearbySignals = fals
 
       {brief.demandDrivers.length > 0 && (
         <section className="mb-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-          <div className="mb-3 flex items-center gap-2"><TrendingUp size={16} className="text-emerald-300" /><h2 className="text-sm font-black text-slate-100">Nearby demand drivers</h2></div>
+          <div className="mb-3 flex items-center gap-2"><TrendingUp size={16} className="text-emerald-300" /><h2 className="text-sm font-black text-slate-100">Why buyers may be interested</h2></div>
           <ul className="space-y-2">
             {brief.demandDrivers.map(driver => <li key={driver} className="flex gap-2 text-xs leading-5 text-slate-300"><CheckCircle2 size={13} className="mt-1 shrink-0 text-emerald-400" />{driver}</li>)}
           </ul>
@@ -80,7 +80,7 @@ export default function AreaDetailsScreen({ area, city, usesNearbySignals = fals
       )}
 
       <section className="mb-4 rounded-2xl border border-amber-300/20 bg-amber-300/[0.05] p-4">
-        <div className="mb-3 flex items-center gap-2"><AlertTriangle size={16} className="text-amber-300" /><h2 className="text-sm font-black text-slate-100">What is weak or still uncertain?</h2></div>
+        <div className="mb-3 flex items-center gap-2"><AlertTriangle size={16} className="text-amber-300" /><h2 className="text-sm font-black text-slate-100">Where you may lose money</h2></div>
         <ul className="space-y-2">{brief.uncertainties.map(item => <li key={item} className="text-xs leading-5 text-slate-300">{item}</li>)}</ul>
       </section>
 
@@ -138,7 +138,7 @@ export default function AreaDetailsScreen({ area, city, usesNearbySignals = fals
       </section>
 
       <section className="mb-4 rounded-2xl border px-4 py-3" style={{ borderColor: `${brief.confidence.tone}30`, background: `${brief.confidence.tone}0c` }}>
-        <div className="flex items-start gap-2"><Gauge size={16} style={{ color: brief.confidence.tone }} /><div><h2 className="text-sm font-black text-slate-100">How sure is this result?</h2><p className="mt-1 text-xs font-bold" style={{ color: brief.confidence.tone }}>{brief.confidence.label} confidence</p><p className="mt-1 text-[11px] leading-4 text-slate-400">{brief.confidence.description}</p></div></div>
+        <div className="flex items-start gap-2"><Gauge size={16} style={{ color: brief.confidence.tone }} /><div><h2 className="text-sm font-black text-slate-100">How much information do we have?</h2><p className="mt-1 text-xs font-bold" style={{ color: brief.confidence.tone }}>{brief.confidence.label}</p><p className="mt-1 text-[11px] leading-4 text-slate-400">{brief.confidence.description}</p></div></div>
         <ul className="mt-3 space-y-1.5 border-t border-white/8 pt-3">{brief.confidenceReasons.map(reason => <li key={reason} className="text-[10px] text-slate-400">{reason}</li>)}</ul>
       </section>
 

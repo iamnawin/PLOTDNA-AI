@@ -19,7 +19,7 @@ export function getInvestmentReportSummary(area: MicroMarket): InvestmentReportS
   const confidence = area.dataConfidence ?? 'estimated'
   const score = area.score ?? 0
   const signals = area.signals
-  const mainUpside = area.highlights?.[0] ?? 'Location has measurable market signals, but evidence is limited.'
+  const mainUpside = area.highlights?.[0] ?? 'The area looks okay for a first check, but the exact plot still matters.'
 
   const legalRisk = signalValue(signals.rera) < 45
     ? 'RERA and approval visibility is weak for this market.'
@@ -52,8 +52,8 @@ export function getInvestmentReportSummary(area: MicroMarket): InvestmentReportS
       verdict: 'Wait',
       bestFor: 'Long-horizon watchlist',
       mainUpside,
-      mainRisk: 'Infrastructure, demand, or approval signals are not strong enough for fast conviction.',
-      nextVerification: 'Wait for stronger infra execution, RERA activity, or price discovery before committing.',
+      mainRisk: 'Roads, demand, or approvals do not look strong enough for a quick decision.',
+      nextVerification: 'Wait for clearer road work, approvals, buyer activity, and fair pricing before committing.',
       confidenceLabel: confidence,
     }
   }
@@ -62,7 +62,7 @@ export function getInvestmentReportSummary(area: MicroMarket): InvestmentReportS
     verdict: 'Avoid',
     bestFor: 'Not recommended without strong local evidence',
     mainUpside,
-    mainRisk: 'Current signals are too weak or too uncertain for buyer-side confidence.',
+    mainRisk: 'We do not have enough clear details to support a buying decision.',
     nextVerification: 'Only proceed if independent legal, access, and pricing checks strongly contradict the model.',
     confidenceLabel: confidence,
   }
@@ -78,7 +78,7 @@ export function getBuyerRecommendation(verdict: InvestmentVerdict, dataConfidenc
   }
 
   if (verdict === 'Investigate') {
-    return 'Proceed carefully. Good area signals, but do not overpay.'
+    return 'Proceed carefully. The area looks okay, but do not overpay.'
   }
 
   return 'Avoid token until documents, access, and pricing are verified.'

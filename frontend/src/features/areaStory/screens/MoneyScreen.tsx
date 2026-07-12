@@ -55,7 +55,7 @@ export default function MoneyScreen({ area }: MoneyScreenProps) {
               <div className="pointer-events-none absolute -right-12 -top-14 h-36 w-36 rounded-full opacity-20 blur-3xl" style={{ background: scoreColor }} />
               <p className="relative text-xs font-bold text-slate-400">If you invest</p>
               <p className="relative mt-1 font-display text-4xl font-black tracking-[-0.04em] text-slate-50">{formatCurrency(estimate.currentValue)}</p>
-              <p className="relative mt-4 text-xs text-slate-400">Your 5-year directional value could be</p>
+              <p className="relative mt-4 text-xs text-slate-400">Your possible value after 5 years</p>
               <p className="relative mt-1 font-display text-3xl font-black tracking-[-0.03em]" style={{ color: scoreColor }}>{formatCurrency(estimate.fiveYearValue)}</p>
               <div className="relative mt-4 flex flex-wrap gap-2">
                 <span className="rounded-full border border-emerald-300/20 bg-emerald-300/[0.08] px-3 py-1.5 text-[11px] font-bold text-emerald-200">+{formatCurrency(estimate.fiveYearProfit)} potential gain</span>
@@ -117,7 +117,7 @@ export default function MoneyScreen({ area }: MoneyScreenProps) {
       </section>
 
       <Link to={buildAreaStoryPath(area.slug, 'map')} className="flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-sans font-black text-slate-950" style={{ background: `linear-gradient(90deg, ${scoreColor}, #38bdf8)` }}>
-        See Map Proof <ArrowRight size={16} />
+        Check Map Proof <ArrowRight size={16} />
       </Link>
     </div>
   )

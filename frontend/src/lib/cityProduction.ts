@@ -35,24 +35,24 @@ const CITY_PRODUCTION_OVERRIDES: Record<string, CityProductionOverride> = {
 
 export const CONFIDENCE_META: Record<DataConfidence, { label: string; tone: string; description: string }> = {
   verified: {
-    label: 'Verified',
+    label: 'Details checked',
     tone: '#10b981',
-    description: 'Source-backed locality record',
+    description: 'Good area details are available, but the exact plot still needs checking.',
   },
   partial: {
-    label: 'Partial',
+    label: 'Some details available',
     tone: '#f59e0b',
-    description: 'Directional record with partial source coverage',
+    description: 'Some details are available, but not everything.',
   },
   estimated: {
-    label: 'Estimated',
+    label: 'Early area check',
     tone: '#38bdf8',
-    description: 'Modeled record for early market screening',
+    description: 'Use this as a first check. Visit the site and check the papers before deciding.',
   },
   uncovered: {
-    label: 'Uncovered',
+    label: 'Not enough details',
     tone: '#94a3b8',
-    description: 'Coverage not production-ready yet',
+    description: 'We do not have enough details for this area yet.',
   },
 }
 

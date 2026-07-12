@@ -11,17 +11,17 @@ const reportContent = `${report}\n${brief}`
 assert.equal((report.match(/doc\.addPage\(\)/g) ?? []).length, 3, 'report defines an exact four-page structure')
 for (const copy of [
   'PlotDNA Buyer',
-  'Due-Diligence Report',
-  'Infrastructure signals',
-  'Nearby demand drivers',
+  'Land Buying Check Report',
+  'Roads and nearby development',
+  'Why buyers may be interested',
   'Map Proof',
   'Documents',
   'Approvals',
   'Site Reality',
   'Price Sanity',
   'Where to verify',
-  'Confidence explanation',
-  'PlotDNA provides buyer-side location intelligence signals',
+  'How much information is available?',
+  'PlotDNA is a buyer-side screening tool',
 ]) {
   assert.ok(reportContent.includes(copy), `buyer report includes ${copy}`)
 }

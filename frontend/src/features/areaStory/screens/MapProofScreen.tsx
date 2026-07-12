@@ -13,7 +13,7 @@ interface MapProofScreenProps {
 }
 
 const LEGEND_ITEMS = [
-  { color: '#10b981', label: 'Verified area', description: 'Strong growth signals and data' },
+  { color: '#10b981', label: 'Details checked', description: 'Good area details are available' },
   { color: '#f59e0b', label: 'Expansion coverage', description: 'Growth potential area' },
   { color: '#94a3b8', label: 'Data pending zone', description: 'Insufficient data' },
 ]
@@ -83,7 +83,7 @@ export default function MapProofScreen({ area }: MapProofScreenProps) {
         className="flex items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-sans font-black text-slate-950"
         style={{ background: `linear-gradient(90deg, ${scoreColor}, #38bdf8)` }}
       >
-        See Area Story
+        Read Area Story
         <ArrowRight size={16} />
       </Link>
     </div>

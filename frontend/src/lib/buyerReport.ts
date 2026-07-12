@@ -116,11 +116,11 @@ export async function generateBuyerReportPdf({ area, cityName, citySlug, usesNea
   doc.setFont('helvetica', 'bold')
   doc.setFontSize(8)
   doc.setTextColor(...COLORS.green)
-  doc.text('BUYER-SIDE LOCATION INTELLIGENCE', MARGIN, 39)
+  doc.text('LAND BUYER FIRST CHECK', MARGIN, 39)
   doc.setFontSize(22)
   doc.setTextColor(...COLORS.text)
   doc.text('PlotDNA Buyer', MARGIN, 53)
-  doc.text('Due-Diligence Report', MARGIN, 64)
+  doc.text('Land Buying Check Report', MARGIN, 64)
   doc.setFontSize(18)
   doc.text(area.name, MARGIN, 84)
   writeWrapped(doc, `${cityName}  |  ${areaCode}  |  Generated ${generatedDate}`, MARGIN, 92, CONTENT_WIDTH, { size: 8, color: COLORS.muted, style: 'bold' })
@@ -139,7 +139,7 @@ export async function generateBuyerReportPdf({ area, cityName, citySlug, usesNea
   const metrics = [
     ['PlotDNA score', `${area.score}/100`, COLORS.green],
     ['Risk level', riskLabel(area.score), COLORS.amber],
-    ['Confidence', brief.confidence.label, COLORS.cyan],
+    ['Details available', brief.confidence.label, COLORS.cyan],
     ['Best for', brief.summary.bestFor, COLORS.text],
   ] as const
   metrics.forEach(([label, value, color], index) => {
@@ -163,7 +163,7 @@ export async function generateBuyerReportPdf({ area, cityName, citySlug, usesNea
   card(doc, MARGIN, y, CONTENT_WIDTH, 34, 'green')
   writeWrapped(doc, brief.story, MARGIN + 5, y + 9, CONTENT_WIDTH - 10, { size: 8, color: COLORS.text, lineHeight: 3.7 })
   y += 43
-  y = sectionTitle(doc, 'Infrastructure signals', y)
+  y = sectionTitle(doc, 'Roads and nearby development', y)
   const signalWidth = (CONTENT_WIDTH - 4) / 2
   brief.signals.forEach((signal, index) => {
     const x = MARGIN + (index % 2) * (signalWidth + 4)
@@ -174,13 +174,13 @@ export async function generateBuyerReportPdf({ area, cityName, citySlug, usesNea
     writeWrapped(doc, signal.meaning, x + 4, rowY + 21, signalWidth - 8, { size: 6.2, color: COLORS.muted, lineHeight: 2.7 })
   })
   y += 76
-  y = sectionTitle(doc, 'Nearby demand drivers', y)
+  y = sectionTitle(doc, 'Why buyers may be interested', y)
   y = bulletList(doc, brief.demandDrivers, MARGIN, y, CONTENT_WIDTH, { size: 7, limit: 4 }) + 2
   y = sectionTitle(doc, 'Money and risk', y, COLORS.amber)
   card(doc, MARGIN, y, CONTENT_WIDTH, 44, 'amber')
   writeWrapped(doc, `Price range: ${area.priceRange}`, MARGIN + 5, y + 9, 80, { size: 8, color: COLORS.text, style: 'bold' })
   if (Number.isFinite(area.yoy) && (area.dataConfidence === 'verified' || area.dataConfidence === 'partial')) {
-    writeWrapped(doc, `Current gain signal: +${area.yoy}% YoY`, MARGIN + 94, y + 9, 78, { size: 8, color: COLORS.green, style: 'bold' })
+    writeWrapped(doc, `Recent price change: +${area.yoy}% YoY`, MARGIN + 94, y + 9, 78, { size: 8, color: COLORS.green, style: 'bold' })
   }
   writeWrapped(doc, `Why this area may gain value: ${brief.summary.mainUpside}`, MARGIN + 5, y + 19, CONTENT_WIDTH - 10, { size: 7, color: COLORS.text, lineHeight: 3 })
   writeWrapped(doc, `Where buyer may lose money: ${brief.summary.mainRisk}`, MARGIN + 5, y + 31, CONTENT_WIDTH - 10, { size: 7, color: COLORS.amber, lineHeight: 3 })
@@ -194,7 +194,7 @@ export async function generateBuyerReportPdf({ area, cityName, citySlug, usesNea
   card(doc, MARGIN, y, CONTENT_WIDTH, 42, 'green')
   writeWrapped(doc, 'Structured locality proof', MARGIN + 5, y + 9, 75, { size: 9, color: COLORS.text, style: 'bold' })
   writeWrapped(doc, `Selected area: ${area.name}`, MARGIN + 5, y + 18, 80, { size: 7.5, color: COLORS.muted })
-  writeWrapped(doc, `Resolution: ${usesNearbySignals ? 'Nearby / fallback locality signals' : 'Selected locality record'}`, MARGIN + 5, y + 26, 95, { size: 7.5, color: COLORS.muted })
+  writeWrapped(doc, `Area details used: ${usesNearbySignals ? 'Nearest available area; exact plot still needs checking' : 'Selected area'}`, MARGIN + 5, y + 26, 95, { size: 7.5, color: COLORS.muted })
   writeWrapped(doc, `Locality centre: ${area.center[1].toFixed(5)} N, ${area.center[0].toFixed(5)} E`, MARGIN + 105, y + 18, 68, { size: 7.5, color: COLORS.muted })
   writeWrapped(doc, 'No synthetic map image is included. Use the in-app Map Proof screen for the interactive boundary view.', MARGIN + 105, y + 27, 68, { size: 6.5, color: COLORS.soft, lineHeight: 2.8 })
   y += 51
@@ -208,7 +208,7 @@ export async function generateBuyerReportPdf({ area, cityName, citySlug, usesNea
     bulletList(doc, group.items, x + 4, rowY + 17, groupWidth - 8, { size: 6.6, gap: 1.5, limit: 6 })
   })
 
-  // Page 4: seller questions, verification sources, confidence, and disclaimer
+  // Page 4: seller questions, verification sources, available details, and disclaimer
   doc.addPage()
   fillPage(doc)
   brandHeader(doc, 4, `${area.name} | Buyer Verification Guide`)
@@ -225,9 +225,9 @@ export async function generateBuyerReportPdf({ area, cityName, citySlug, usesNea
     writeWrapped(doc, source.url ?? source.warning, MARGIN + 94, sourceY + 7, 80, { size: 5.4, color: source.url ? COLORS.cyan : COLORS.soft, lineHeight: 2.3 })
   })
   y += shownSources.length * 20 + 4
-  y = sectionTitle(doc, 'Confidence explanation', y, COLORS.amber)
+  y = sectionTitle(doc, 'How much information is available?', y, COLORS.amber)
   card(doc, MARGIN, y, CONTENT_WIDTH, 27, 'amber')
-  writeWrapped(doc, `${brief.confidence.label} confidence: ${brief.confidence.description}. Exact plot documents, access, live transactions, and current pricing still require independent confirmation.`, MARGIN + 5, y + 9, CONTENT_WIDTH - 10, { size: 7.2, color: COLORS.text, lineHeight: 3.2 })
+  writeWrapped(doc, `${brief.confidence.description} Use this as a first check. Final decision should happen only after document and site verification.`, MARGIN + 5, y + 9, CONTENT_WIDTH - 10, { size: 7.2, color: COLORS.text, lineHeight: 3.2 })
   y += 35
   y = sectionTitle(doc, 'Final disclaimer', y)
   writeWrapped(doc, 'PlotDNA is a buyer-side screening tool, not a legal opinion, title certificate, approval certificate, valuation, or promise of appreciation. Verify documents, access, approvals, boundaries, and latest pricing with official sources and qualified professionals before paying token or purchasing.', MARGIN, y, CONTENT_WIDTH, { size: 6.7, color: COLORS.muted, lineHeight: 2.9 })

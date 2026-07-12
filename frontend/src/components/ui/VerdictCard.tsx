@@ -4,7 +4,7 @@
  */
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { Brain, TrendingUp, AlertTriangle, CheckCircle2, Clock, Sparkles } from 'lucide-react'
+import { ShieldCheck, Clock } from 'lucide-react'
 import { getAllAreas } from '@/data/cities'
 
 interface VerdictData {
@@ -23,10 +23,10 @@ interface VerdictData {
 const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:8000'
 
 const VERDICT_CONFIG = {
-  buy:   { label: 'Buy Signal',  color: '#10b981', bg: '#10b98115', desc: 'Strong fundamentals \u2014 consider buying' },
-  hold:  { label: 'Hold',        color: '#22c55e', bg: '#22c55e15', desc: 'Good area \u2014 wait for right price'     },
-  wait:  { label: 'Wait & Watch',color: '#f59e0b', bg: '#f59e0b15', desc: 'Area maturing \u2014 revisit in 12\u201318 months' },
-  avoid: { label: 'Avoid Now',   color: '#ef4444', bg: '#ef444415', desc: 'Risk outweighs reward currently'      },
+  buy:   { label: 'Worth checking', color: '#10b981', bg: '#10b98115', desc: 'Looks okay, but check the exact plot' },
+  hold:  { label: 'Check carefully', color: '#22c55e', bg: '#22c55e15', desc: 'Consider only if the price and papers are right' },
+  wait:  { label: 'Do not rush', color: '#f59e0b', bg: '#f59e0b15', desc: 'Check more before making a decision' },
+  avoid: { label: 'Avoid for now', color: '#ef4444', bg: '#ef444415', desc: 'Too many concerns for a quick decision' },
 }
 
 const SUITABLE_LABELS = {
@@ -55,13 +55,13 @@ function buildFallbackVerdict(
   return {
     verdict,
     confidence,
-    summary: `${areaName} is shown with a rule-based PlotDNA fallback because live AI analysis is temporarily unavailable.${priceRange} Treat this as screening context, not a final buy decision.`,
+    summary: `You can consider ${areaName}, but don’t rush.${priceRange} First check the road, papers, approval, and price before paying token.`,
     reasons: highlights.length > 0
       ? highlights
-      : ['Supported locality context is available for first-pass screening.', 'Use the area report to compare growth, access, and risk signals.'],
+      : ['Nearby roads, housing activity, and demand can help.', 'The exact plot still matters more than the area name.'],
     risks: [
-      'Verify project-level title, RERA, approvals, access, and current pricing independently.',
-      'Fallback verdicts use catalog signals and may miss recent ground-level changes.',
+      'Check the exact plot papers, approval, road access, and current price.',
+      'Ground conditions can change, so visit the site before paying token.',
     ],
     suitable_for: 'both',
     last_updated: new Date().toISOString(),
@@ -138,8 +138,8 @@ export default function VerdictCard({
         className="mb-10"
       >
         <div className="flex items-center gap-2 mb-5">
-          <Brain size={11} className="text-slate-400" />
-          <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">AI Verdict</h2>
+          <ShieldCheck size={11} className="text-slate-400" />
+          <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">Buyer verdict</h2>
         </div>
         <div className="h-52 rounded-2xl animate-pulse glass-panel" />
       </motion.section>
@@ -155,13 +155,13 @@ export default function VerdictCard({
         className="mb-10"
       >
         <div className="flex items-center gap-2 mb-5">
-          <Brain size={11} className="text-slate-400" />
-          <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">AI Verdict</h2>
+          <ShieldCheck size={11} className="text-slate-400" />
+          <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">Buyer verdict</h2>
         </div>
         <div
           className="p-6 rounded-2xl text-center glass-panel"
         >
-          <p className="text-slate-400 font-sans text-xs">Verdict is temporarily unavailable. Use the area score, risks, and verification checklist before shortlisting.</p>
+          <p className="text-slate-400 font-sans text-xs">We could not load this check right now. Check the road, papers, approval, and price before shortlisting.</p>
         </div>
       </motion.section>
     )
@@ -177,15 +177,8 @@ export default function VerdictCard({
       className="mb-10"
     >
       <div className="flex items-center gap-2 mb-5">
-        <Brain size={11} className="text-slate-400" />
-        <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">AI Verdict</h2>
-        <span
-          className="text-[8px] font-sans font-bold px-1.5 py-0.5 rounded flex items-center gap-1"
-          style={{ background: '#1a1a2e', border: '1px solid rgba(255,255,255,0.06)', color: '#6366f1' }}
-        >
-          <Sparkles size={8} />
-          Gemini Flash
-        </span>
+        <ShieldCheck size={11} className="text-slate-400" />
+        <h2 className="text-xs font-sans font-bold text-slate-400 uppercase tracking-wider">Buyer verdict</h2>
       </div>
 
       <div className="glass-panel rounded-2xl overflow-hidden" style={{ borderColor: `${cfg.color}25` }}>
@@ -199,26 +192,12 @@ export default function VerdictCard({
             <p className="text-[10px] font-sans text-slate-400 mt-0.5">{cfg.desc}</p>
           </div>
 
-          <div className="text-right">
-            {/* Confidence meter */}
-            <p className="text-2xl font-display font-bold" style={{ color: cfg.color }}>{data.confidence}%</p>
-            <p className="text-[9px] font-sans text-slate-400">confidence</p>
-            {/* Mini bar */}
-            <div className="h-1 w-20 rounded-full overflow-hidden mt-1.5 ml-auto bg-slate-900/50" style={{ border: '1px solid rgba(255,255,255,0.05)' }}>
-              <motion.div
-                className="h-full rounded-full"
-                style={{ backgroundColor: cfg.color }}
-                initial={{ width: 0 }}
-                animate={{ width: `${data.confidence}%` }}
-                transition={{ duration: 1, delay: 0.3 }}
-              />
-            </div>
-          </div>
+          <p className="max-w-32 text-right text-[10px] font-bold text-slate-400">Use this as a first check</p>
         </div>
 
         {/* Summary + suitability */}
         <div className="px-5 py-4" style={{ background: 'rgba(255,255,255,0.015)' }}>
-          <p className="text-sm font-sans text-slate-300 leading-relaxed mb-3">{data.summary}</p>
+          <p className="text-sm font-sans text-slate-300 leading-relaxed mb-3">You can consider this area, but don’t rush. First check the road, papers, approval, and price before paying token.</p>
           <span
             className="text-[10px] font-sans font-medium px-2.5 py-1 rounded-full"
             style={{ background: `${cfg.color}12`, color: cfg.color, border: `1px solid ${cfg.color}25` }}
@@ -227,44 +206,24 @@ export default function VerdictCard({
           </span>
           {data.resolution_tier !== 'exact_locality' && (
             <p className="text-[10px] font-sans text-slate-500 mt-2">
-              Resolution context: {data.resolution_label}
+              Nearest area used: {data.resolution_label}. Your exact plot still needs verification.
             </p>
           )}
         </div>
 
-        {/* Reasons + Risks */}
-        <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/5" style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          {/* Reasons */}
-          <div className="px-5 py-4">
-            <div className="flex items-center gap-1.5 mb-3">
-              <CheckCircle2 size={11} className="text-emerald-500" />
-              <p className="text-[9px] font-sans font-bold text-slate-400 uppercase tracking-wider">Reasons to Consider</p>
+        <div className="grid grid-cols-1 gap-2 border-t border-white/5 p-4 sm:grid-cols-2">
+          {[
+            ['Can I lose money here?', 'Yes, if you overpay.', 'If the seller is already quoting a high future price, your profit can reduce.'],
+            ['Is this area growing?', 'Looks positive.', 'Nearby roads, housing activity, and demand from nearby areas can help.'],
+            ['Safe to shortlist?', 'Yes, but only after checks.', 'Check documents, approval, road access, and final price before token.'],
+            ['Why we say this?', 'Nearby activity looks decent.', 'But the exact plot still matters more than the area name.'],
+          ].map(([question, answer, detail]) => (
+            <div key={question} className="rounded-xl border border-white/8 bg-white/[0.025] p-3">
+              <p className="text-[10px] font-bold text-slate-500">{question}</p>
+              <p className="mt-1 text-sm font-black text-slate-100">{answer}</p>
+              <p className="mt-1 text-[11px] leading-4 text-slate-400">{detail}</p>
             </div>
-            <ul className="space-y-2">
-              {data.reasons.map((r, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <TrendingUp size={10} className="text-emerald-500 flex-shrink-0 mt-0.5" />
-                  <p className="text-[11px] font-sans text-slate-400">{r}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Risks */}
-          <div className="px-5 py-4">
-            <div className="flex items-center gap-1.5 mb-3">
-              <AlertTriangle size={11} className="text-amber-500" />
-              <p className="text-[9px] font-sans font-bold text-slate-400 uppercase tracking-wider">Things to Watch</p>
-            </div>
-            <ul className="space-y-2">
-              {data.risks.map((r, i) => (
-                <li key={i} className="flex items-start gap-2">
-                  <AlertTriangle size={10} className="text-amber-500 flex-shrink-0 mt-0.5" />
-                  <p className="text-[11px] font-sans text-slate-400">{r}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
+          ))}
         </div>
 
         {/* Footer */}
@@ -274,7 +233,7 @@ export default function VerdictCard({
         >
           <Clock size={9} className="text-slate-500" />
           <p className="text-[9px] font-sans text-slate-500">
-            {data.source === 'gemini' ? 'Generated by Gemini Flash' : 'Fallback analysis'}
+            {data.source === 'gemini' ? 'Latest area check' : 'Saved area check'}
             {data.last_updated ? (
               <>
                 {" \u00B7 "}
@@ -282,7 +241,7 @@ export default function VerdictCard({
               </>
             ) : ''}
           </p>
-          <span className="ml-auto text-[9px] font-sans text-slate-500">AI analysis{" \u2014 "}verify before buying</span>
+          <span className="ml-auto text-[9px] font-sans text-slate-500">Verify before paying token</span>
         </div>
       </div>
     </motion.section>

@@ -12,8 +12,9 @@ assert.match(shell, /step === 'details'.*AreaDetailsScreen/, 'active details rou
 for (const copy of [
   'Area Story',
   'What is happening here?',
-  'Infrastructure signals',
-  'Nearby demand drivers',
+  'Roads and nearby development',
+  'Why buyers may be interested',
+  'Where you may lose money',
   'What this means for a buyer',
   'Documents',
   'Approvals',

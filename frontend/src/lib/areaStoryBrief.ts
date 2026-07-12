@@ -64,18 +64,18 @@ export const SELLER_QUESTIONS = [
 ] as const
 
 const UNCERTAINTIES = [
-  'Exact plot access and road width can differ on the ground.',
-  'Approval and title quality must be checked for the specific property.',
-  'The seller quote may already include expected future growth.',
-  'Drainage, utilities, and development quality can vary by layout.',
+  'Seller price may already be too high.',
+  'Road access may not be good for the exact plot.',
+  'Papers or approval may not be clean.',
+  'The area may grow, but your plot may still be hard to resell.',
 ] as const
 
 function signalStatus(value: number | null | undefined) {
   const score = value ?? 0
-  if (score >= 75) return 'Strong area signal'
-  if (score >= 55) return 'Moderate area signal'
-  if (score >= 40) return 'Weak area signal'
-  return 'Needs verification'
+  if (score >= 75) return 'Looks strong'
+  if (score >= 55) return 'Looks okay'
+  if (score >= 40) return 'Needs care'
+  return 'Needs checking'
 }
 
 export function buildAreaStoryBrief(area: MicroMarket, citySlug: string, usesNearbySignals = false) {
@@ -86,34 +86,33 @@ export function buildAreaStoryBrief(area: MicroMarket, citySlug: string, usesNea
   const sources = getVerificationSources(area, citySlug).filter(source => source.applicableModes.includes(mode))
   const signals: StorySignal[] = [
     {
-      title: 'Infrastructure readiness',
+      title: 'Roads and nearby development',
       meaning: highlights[0] ?? 'Road access, utilities, and commute reliability still need a site check.',
       status: signalStatus(area.signals.infrastructure),
-      confidence: `${confidence.label} locality data`,
+      confidence: confidence.description,
     },
     {
-      title: 'Development activity',
+      title: 'Building activity nearby',
       meaning: highlights[2] ?? 'Use visible construction and approved layout activity as ground-level evidence.',
       status: signalStatus(area.signals.satellite),
-      confidence: 'Area signal',
+      confidence: 'Check what is happening on the ground',
     },
     {
-      title: 'Employment and demand',
+      title: 'Jobs and buyer demand',
       meaning: highlights[1] ?? 'Employment movement can support demand, but it does not guarantee resale depth.',
       status: signalStatus(area.signals.employment),
-      confidence: 'Area signal',
+      confidence: 'Nearby demand can help, but resale is not guaranteed',
     },
     {
-      title: 'Approvals visibility',
+      title: 'Approval check',
       meaning: 'Check the exact layout or project approval independently before paying token.',
       status: signalStatus(area.signals.rera),
-      confidence: 'Needs property verification',
+      confidence: 'Check the exact project or layout papers',
     },
   ]
 
-  const storyEvidence = highlights.slice(0, 2).join(' ') || 'The available locality signals are directional and require property-level checks.'
   const fallbackWarning = usesNearbySignals
-    ? 'This is based on nearby locality signals, not exact plot-level verification.'
+    ? `Nearest area used. We found the nearest available area details for ${area.name}. This is useful for first checking, but your exact plot still needs verification.`
     : null
 
   return {
@@ -122,21 +121,21 @@ export function buildAreaStoryBrief(area: MicroMarket, citySlug: string, usesNea
     signals,
     sources,
     fallbackWarning,
-    story: `${area.name} is being screened through available locality infrastructure, demand, development, and approval signals. ${storyEvidence} Exact access, approvals, seller price, and document quality decide whether a property is safe to shortlist.`,
+    story: 'People are showing interest in this side because it connects to nearby developed areas and work zones. That can help demand. But every plot is different, so check the road, approval, documents, and price.',
     demandDrivers: highlights.slice(0, 4),
     uncertainties: [
       ...UNCERTAINTIES,
       ...(area.dataConfidence === 'partial' || area.dataConfidence === 'estimated' || area.dataConfidence === 'uncovered'
-        ? ['Current source coverage is partial and needs external confirmation.']
+        ? ['Some details are available, but not everything.']
         : []),
     ],
-    buyerMeaning: `${area.name} may be worth shortlisting only when the property has clean access, suitable approvals, a fair quote, and complete documents. Do not pay token only because the locality shows growth signals.`,
+    buyerMeaning: 'You can keep this area in your shortlist, but do not pay token in a hurry. A good area does not automatically mean every plot is safe or fairly priced.',
     recommendation: getBuyerRecommendation(summary.verdict, area.dataConfidence ?? 'partial'),
     confidenceReasons: [
-      'Nearby locality signals are available.',
-      'Exact plot documents have not been verified.',
-      'Current pricing needs external confirmation.',
-      'Data-source coverage may be partial.',
+      'Some area details are available, but not everything.',
+      'The exact plot papers have not been checked.',
+      'The seller price still needs comparison.',
+      'Visit the site and verify documents before deciding.',
     ],
   }
 }

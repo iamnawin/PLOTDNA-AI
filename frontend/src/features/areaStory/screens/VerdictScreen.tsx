@@ -42,15 +42,15 @@ export default function VerdictScreen({ area, city, fallbackContext }: VerdictSc
           {scoreLabel}
         </p>
         <p className="mt-2 text-sm leading-relaxed text-slate-300">
-          {area.highlights?.[0] ?? 'This area is being screened against PlotDNA growth, risk, and access signals.'}
+          You can consider this area, but don’t rush. First check the road, papers, approval, and price before paying token.
         </p>
       </section>
 
       {fallbackContext && fallbackContext.tier !== 'exact_locality' && (
         <div className="mb-4 rounded-2xl border border-amber-300/20 bg-amber-300/[0.07] p-4">
-          <p className="text-sm font-sans font-black text-amber-200">Opened From Fallback Match</p>
+          <p className="text-sm font-sans font-black text-amber-200">Nearest area used</p>
           <p className="mt-1 text-xs leading-relaxed text-amber-100/80">
-            Showing the closest available data for {fallbackContext.displayLabel}. This is {fallbackContext.precisionLabel === 'exact' ? 'an exact' : 'an approximate'} match, not a confirmed record for your exact point.
+            We found the nearest available area details for {fallbackContext.displayLabel}. This is useful for first checking, but your exact plot still needs verification.
           </p>
         </div>
       )}
@@ -67,7 +67,7 @@ export default function VerdictScreen({ area, city, fallbackContext }: VerdictSc
       >
         <div>
           <p className="text-[10px] font-sans font-bold uppercase tracking-[0.12em]" style={{ color: confidenceMeta.tone }}>
-            {confidenceMeta.label} data
+            {confidenceMeta.label}
           </p>
           <p className="mt-0.5 text-xs text-slate-500">{confidenceMeta.description}</p>
         </div>
