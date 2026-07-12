@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { ArrowRight, Share2, Download, Copy, Scale } from 'lucide-react'
+import { ArrowRight, Share2, Download, Copy } from 'lucide-react'
 import type { MicroMarket } from '@/types'
 import type { CityEntry } from '@/data/cities'
 import LandDNACard from '@/components/landDna/LandDNACard'
@@ -9,7 +8,6 @@ import { getCachedEntitlements } from '@/lib/entitlements'
 import { getLandDnaAccessState } from '@/lib/founderPass/landDnaPlan'
 import { exportLandDnaCardPng, getLandDnaAreaCode, getLandDnaCardPath } from '@/lib/landDnaCard'
 import { getReportPaymentLink } from '@/lib/paymentLinks'
-import { buildAreaStoryPath } from '../areaStoryNav'
 
 interface PassScreenProps {
   area: MicroMarket
@@ -131,9 +129,6 @@ export default function PassScreen({ area, city, usesNearbySignals }: PassScreen
           <Share2 size={16} /> Share Link
         </button>
         <BuyerReportButton area={area} cityName={cityName} citySlug={city.meta.slug} usesNearbySignals={usesNearbySignals} className="flex min-h-12 w-full touch-manipulation items-center justify-center gap-2 rounded-xl border border-emerald-300/25 bg-emerald-300/[0.08] px-3 text-xs font-black text-emerald-200 active:scale-[0.99]" />
-        <Link to={buildAreaStoryPath(area.slug, 'compare')} className="col-span-2 flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-black text-slate-100 active:scale-[0.99]">
-          <Scale size={16} /> Compare Areas
-        </Link>
         <button
           type="button"
           onClick={handleDownloadPng}

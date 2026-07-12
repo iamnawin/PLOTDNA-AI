@@ -13,7 +13,7 @@ for (const action of ['Download Buyer Report', 'Generate Area Pass', 'Compare Ar
   assert.ok(!details.includes(action), `Details must not repeat final-screen action: ${action}`)
 }
 assert.ok(pass.includes('BuyerReportButton'), 'final Area Pass screen must keep Buyer Report download')
-assert.ok(pass.includes('Compare Areas'), 'final Area Pass screen must expose Compare Areas')
+assert.ok(!pass.includes('Compare Areas'), 'final Area Pass screen must not repeat the preceding Compare screen')
 assert.ok(pass.includes('<LandDNACard'), 'final screen must render the generated Area Pass')
 
 console.log('Final-screen action placement checks passed.')
