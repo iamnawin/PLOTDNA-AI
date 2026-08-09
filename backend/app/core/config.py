@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     # App
     APP_ENV:  str  = "development"
     DEBUG:    bool = True
+    ENABLE_FLAT_DNA: bool = False
     JWT_SECRET: str = "plotdna-dev-only-change-me"
     FREE_SEARCH_LIMIT: int = 5
     EMAIL_OTP_TTL_MINUTES: int = 10

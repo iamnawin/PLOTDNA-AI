@@ -1,0 +1,1792 @@
+{
+  "developers": [
+    {
+      "id": "6b6ec736-49ca-43ee-ab77-a1a5c3d414ec",
+      "canonical_name": "Myscape Properties Private Limited",
+      "normalized_name": "myscape properties private limited",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "b05a4abe-9708-4903-a648-77506fea5a8b",
+      "canonical_name": "My Home Constructions",
+      "normalized_name": "my home constructions",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "ed2debfa-0062-489e-9615-807af6824d55",
+      "canonical_name": "Prestige Group",
+      "normalized_name": "prestige group",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "5416c74d-db83-47c4-9393-831ad35e4a39",
+      "canonical_name": "Rajapushpa Properties",
+      "normalized_name": "rajapushpa properties",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "04f43fc2-7c2a-4457-8ba4-dbc0d62db440",
+      "canonical_name": "EIPL Group",
+      "normalized_name": "eipl group",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "canonical_name": "Aparna Constructions",
+      "normalized_name": "aparna constructions",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "223164b8-345c-42e2-9b32-e52c78e5acb0",
+      "canonical_name": "Urbanrise",
+      "normalized_name": "urbanrise",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "d74c9240-b302-4576-8d05-68ec26eb6dcb",
+      "canonical_name": "Ramky Estates",
+      "normalized_name": "ramky estates",
+      "registry_status": "SUPPORTED"
+    }
+  ],
+  "developer_aliases": [],
+  "projects": [
+    {
+      "id": "4b2ca36e-b2ad-4f61-8686-fd8e096c731c",
+      "developer_id": "6b6ec736-49ca-43ee-ab77-a1a5c3d414ec",
+      "canonical_name": "Myscape Isle of Sky",
+      "normalized_name": "myscape isle of sky",
+      "city_slug": "hyderabad",
+      "locality_slug": "financial-district",
+      "latitude": "17.413676",
+      "longitude": "78.334903",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "421c032d-37c5-4e88-8c18-3b1185ac825f",
+      "developer_id": "b05a4abe-9708-4903-a648-77506fea5a8b",
+      "canonical_name": "My Home Nishada",
+      "normalized_name": "my home nishada",
+      "city_slug": "hyderabad",
+      "locality_slug": "kokapet",
+      "latitude": "17.405700",
+      "longitude": "78.308357",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "c75202ca-dc26-46c4-b7d8-b7fca77c9d19",
+      "developer_id": "ed2debfa-0062-489e-9615-807af6824d55",
+      "canonical_name": "Prestige Beverly Hills",
+      "normalized_name": "prestige beverly hills",
+      "city_slug": "hyderabad",
+      "locality_slug": "kokapet",
+      "latitude": "17.401908",
+      "longitude": "78.337565",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "d456e85d-a1fd-418a-9053-29b3dca717a6",
+      "developer_id": "5416c74d-db83-47c4-9393-831ad35e4a39",
+      "canonical_name": "Rajapushpa Pristinia",
+      "normalized_name": "rajapushpa pristinia",
+      "city_slug": "hyderabad",
+      "locality_slug": "kokapet",
+      "latitude": "17.396200",
+      "longitude": "78.325940",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "c3762910-130b-46a1-8835-aabada890854",
+      "developer_id": "5416c74d-db83-47c4-9393-831ad35e4a39",
+      "canonical_name": "Rajapushpa Provincia",
+      "normalized_name": "rajapushpa provincia",
+      "city_slug": "hyderabad",
+      "locality_slug": "narsingi",
+      "latitude": "17.395387",
+      "longitude": "78.355053",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "4b792811-982f-45a2-8b1c-1008d2b06755",
+      "developer_id": "04f43fc2-7c2a-4457-8ba4-dbc0d62db440",
+      "canonical_name": "EIPL Cornerstone",
+      "normalized_name": "eipl cornerstone",
+      "city_slug": "hyderabad",
+      "locality_slug": "puppalaguda",
+      "latitude": "17.399134",
+      "longitude": "78.367072",
+      "location_precision": "ENTRANCE",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "97becc5f-d926-411d-bf51-14873cb22c4e",
+      "developer_id": "b05a4abe-9708-4903-a648-77506fea5a8b",
+      "canonical_name": "My Home Tridasa",
+      "normalized_name": "my home tridasa",
+      "city_slug": "hyderabad",
+      "locality_slug": "tellapur",
+      "latitude": "17.469476",
+      "longitude": "78.259668",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "8afccfe9-f040-440c-895f-930db6a2e7fd",
+      "developer_id": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "canonical_name": "Aparna Newlands",
+      "normalized_name": "aparna newlands",
+      "city_slug": "hyderabad",
+      "locality_slug": "tellapur",
+      "latitude": "17.455744",
+      "longitude": "78.289678",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "9ffdfa60-3dd5-4f47-9f41-f5f35c8450ad",
+      "developer_id": "5416c74d-db83-47c4-9393-831ad35e4a39",
+      "canonical_name": "Rajapushpa Imperia",
+      "normalized_name": "rajapushpa imperia",
+      "city_slug": "hyderabad",
+      "locality_slug": "tellapur",
+      "latitude": "17.452700",
+      "longitude": "78.274218",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "caa5580b-97d0-496b-814d-feaedfe88672",
+      "developer_id": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "canonical_name": "Aparna Sarovar Zenith",
+      "normalized_name": "aparna sarovar zenith",
+      "city_slug": "hyderabad",
+      "locality_slug": "nallagandla",
+      "latitude": "17.467365",
+      "longitude": "78.312047",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "067db042-3467-44c1-b31a-ace541f37f3c",
+      "developer_id": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "canonical_name": "Aparna Sarovar Zicon",
+      "normalized_name": "aparna sarovar zicon",
+      "city_slug": "hyderabad",
+      "locality_slug": "nallagandla",
+      "latitude": "17.464114",
+      "longitude": "78.313728",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "0103521f-bdf6-459c-afe2-1db7620743eb",
+      "developer_id": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "canonical_name": "Aparna Luxor Park",
+      "normalized_name": "aparna luxor park",
+      "city_slug": "hyderabad",
+      "locality_slug": "kondapur",
+      "latitude": "17.465862",
+      "longitude": "78.335991",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "67f11bc5-7719-49b3-b670-c02e3aa6c1ef",
+      "developer_id": "223164b8-345c-42e2-9b32-e52c78e5acb0",
+      "canonical_name": "On Cloud 33",
+      "normalized_name": "on cloud 33",
+      "city_slug": "hyderabad",
+      "locality_slug": "bachupally",
+      "latitude": "17.539273",
+      "longitude": "78.355968",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    },
+    {
+      "id": "5c7fb656-e68f-43ce-a311-856f26b9fe05",
+      "developer_id": "d74c9240-b302-4576-8d05-68ec26eb6dcb",
+      "canonical_name": "Ramky One Harmony",
+      "normalized_name": "ramky one harmony",
+      "city_slug": "hyderabad",
+      "locality_slug": "bachupally",
+      "latitude": "17.530711",
+      "longitude": "78.389987",
+      "location_precision": "PROJECT_CENTROID",
+      "registry_status": "SUPPORTED"
+    }
+  ],
+  "project_aliases": [
+    {
+      "id": "479991fd-decf-4401-b049-4ffae3ee6d2f",
+      "project_id": "4b2ca36e-b2ad-4f61-8686-fd8e096c731c",
+      "alias": "Isle of Sky",
+      "normalized_alias": "isle of sky",
+      "alias_type": "MARKETING",
+      "active": true
+    },
+    {
+      "id": "e5260507-bd16-4921-9b87-3307524e595e",
+      "project_id": "421c032d-37c5-4e88-8c18-3b1185ac825f",
+      "alias": "Nishada",
+      "normalized_alias": "nishada",
+      "alias_type": "MARKETING",
+      "active": true
+    },
+    {
+      "id": "171f7dde-428e-4f83-a40b-841ad1ed211e",
+      "project_id": "d456e85d-a1fd-418a-9053-29b3dca717a6",
+      "alias": "Pristinia",
+      "normalized_alias": "pristinia",
+      "alias_type": "MARKETING",
+      "active": true
+    },
+    {
+      "id": "8ffc59f6-a8ef-4650-9a15-e345e9c37bce",
+      "project_id": "c3762910-130b-46a1-8835-aabada890854",
+      "alias": "Provincia",
+      "normalized_alias": "provincia",
+      "alias_type": "MARKETING",
+      "active": true
+    },
+    {
+      "id": "5ff786ac-a1a9-4aee-bfd6-558710ec0857",
+      "project_id": "4b792811-982f-45a2-8b1c-1008d2b06755",
+      "alias": "Cornerstone",
+      "normalized_alias": "cornerstone",
+      "alias_type": "MARKETING",
+      "active": true
+    },
+    {
+      "id": "7bec293d-869d-4848-9b65-6cb7510837b5",
+      "project_id": "4b792811-982f-45a2-8b1c-1008d2b06755",
+      "alias": "Corner Stone",
+      "normalized_alias": "corner stone",
+      "alias_type": "MARKETING",
+      "active": true
+    },
+    {
+      "id": "08d3fca8-d6f8-4a1b-9428-d48658af21ec",
+      "project_id": "9ffdfa60-3dd5-4f47-9f41-f5f35c8450ad",
+      "alias": "Imperia",
+      "normalized_alias": "imperia",
+      "alias_type": "MARKETING",
+      "active": true
+    },
+    {
+      "id": "e1dee97b-2b16-437f-88f6-67679afe302b",
+      "project_id": "67f11bc5-7719-49b3-b670-c02e3aa6c1ef",
+      "alias": "Urbanrise On Cloud 33",
+      "normalized_alias": "urbanrise on cloud 33",
+      "alias_type": "BUILDER_PREFIXED",
+      "active": true
+    },
+    {
+      "id": "fbabb37b-1cb8-49d3-8900-ed811ed11254",
+      "project_id": "67f11bc5-7719-49b3-b670-c02e3aa6c1ef",
+      "alias": "On Cloud33",
+      "normalized_alias": "on cloud33",
+      "alias_type": "MARKETING",
+      "active": true
+    }
+  ],
+  "rera_references": [
+    {
+      "id": "c4ffbca0-b9a1-496b-b1db-3a3e987f85a7",
+      "project_id": "4b2ca36e-b2ad-4f61-8686-fd8e096c731c",
+      "authority_code": "TSRERA",
+      "registration_number": "P02400000466",
+      "normalized_registration_number": "p02400000466",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "9be00694-730d-4213-94d5-7b831a6d58ee",
+      "project_id": "421c032d-37c5-4e88-8c18-3b1185ac825f",
+      "authority_code": "TSRERA",
+      "registration_number": "P02400004696",
+      "normalized_registration_number": "p02400004696",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "bb49cc1e-bb23-451c-a707-3e04ecce8ce4",
+      "project_id": "c75202ca-dc26-46c4-b7d8-b7fca77c9d19",
+      "authority_code": "TSRERA",
+      "registration_number": "P02400003715",
+      "normalized_registration_number": "p02400003715",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "0924de94-db0f-491b-b431-17e45fa8ab60",
+      "project_id": "d456e85d-a1fd-418a-9053-29b3dca717a6",
+      "authority_code": "TSRERA",
+      "registration_number": "P02400006086",
+      "normalized_registration_number": "p02400006086",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "78375758-8ccc-488a-adec-7188b5d5006c",
+      "project_id": "c3762910-130b-46a1-8835-aabada890854",
+      "authority_code": "TSRERA",
+      "registration_number": "P02400002487",
+      "normalized_registration_number": "p02400002487",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "8de614eb-6b3f-48e6-9f87-22add3f14bf9",
+      "project_id": "4b792811-982f-45a2-8b1c-1008d2b06755",
+      "authority_code": "TSRERA",
+      "registration_number": "P02400005057",
+      "normalized_registration_number": "p02400005057",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "1fb11ea0-650d-44a9-a236-fdf5960394b7",
+      "project_id": "97becc5f-d926-411d-bf51-14873cb22c4e",
+      "authority_code": "TSRERA",
+      "registration_number": "P01100002276",
+      "normalized_registration_number": "p01100002276",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "5642529c-353a-40e5-9df5-1fdb3e90c953",
+      "project_id": "8afccfe9-f040-440c-895f-930db6a2e7fd",
+      "authority_code": "TSRERA",
+      "registration_number": "P01100007480",
+      "normalized_registration_number": "p01100007480",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "2cef3dc6-3fd8-49f0-8fc9-e074de0c23c4",
+      "project_id": "9ffdfa60-3dd5-4f47-9f41-f5f35c8450ad",
+      "authority_code": "TSRERA",
+      "registration_number": "P01100003723",
+      "normalized_registration_number": "p01100003723",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "cb18048f-8137-45f4-b3a7-c85bd7a8bbe5",
+      "project_id": "caa5580b-97d0-496b-814d-feaedfe88672",
+      "authority_code": "TSRERA",
+      "registration_number": "P02400000022",
+      "normalized_registration_number": "p02400000022",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "b6d905c4-c62a-45e8-97db-99cf19283c90",
+      "project_id": "067db042-3467-44c1-b31a-ace541f37f3c",
+      "authority_code": "TSRERA",
+      "registration_number": "P02400002673",
+      "normalized_registration_number": "p02400002673",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "1560bfac-d4a0-449e-8fac-9c32249b76e0",
+      "project_id": "0103521f-bdf6-459c-afe2-1db7620743eb",
+      "authority_code": "TSRERA",
+      "registration_number": "P02400001260",
+      "normalized_registration_number": "p02400001260",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "4914bb86-1b22-46dd-9c24-36cfe89d0887",
+      "project_id": "67f11bc5-7719-49b3-b670-c02e3aa6c1ef",
+      "authority_code": "TSRERA",
+      "registration_number": "P02200003724",
+      "normalized_registration_number": "p02200003724",
+      "reference_status": "VERIFIED"
+    },
+    {
+      "id": "a03a1a1f-6fed-4283-ad7c-1aaab23eac69",
+      "project_id": "5c7fb656-e68f-43ce-a311-856f26b9fe05",
+      "authority_code": "TSRERA",
+      "registration_number": "P02200002611",
+      "normalized_registration_number": "p02200002611",
+      "reference_status": "VERIFIED"
+    }
+  ],
+  "evidence_sources": [
+    {
+      "id": "d5330ce3-0b15-42c8-a10a-6d7696b9bbe4",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Myscape Properties Private Limited",
+      "source_ref": "builder:myscape-isle-of-sky",
+      "url": "https://myscape.in/wp-content/uploads/2024/10/isle-of-sky.pdf",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "9a518a40-e8ef-418f-aff2-693f02c38e71",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02400000466",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400000466",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "8eee2d3f-6a92-4277-abab-0fecb90503f4",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:myscape-isle-of-sky",
+      "url": "https://www.openstreetmap.org/?mlat=17.4136763&mlon=78.3349034#map=19/17.4136763/78.3349034",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "8c35bea4-ea37-4a0a-a2a7-1d07dadb1477",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "My Home Constructions",
+      "source_ref": "builder:my-home-nishada",
+      "url": "https://www.myhomenishada.co.in/",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "3a06ae25-dc86-4ad1-8562-5bea3e97f92b",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02400004696",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400004696",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "f986fdd4-f69f-4fd4-b936-234f069b88aa",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:my-home-nishada",
+      "url": "https://www.myhomenishada.co.in/",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "63dd974a-c61e-45f5-b191-fe5c9a480d02",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Prestige Group",
+      "source_ref": "builder:prestige-beverly-hills",
+      "url": "https://www.prestigeconstructions.com/residential-projects",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "ccf180de-073d-4e83-b66d-67236943888e",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02400003715",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400003715",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "61aa0ede-a2d7-4f17-8561-f47da4857fe5",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:prestige-beverly-hills",
+      "url": "https://www.openstreetmap.org/?mlat=17.4019084&mlon=78.3375648#map=18/17.4019084/78.3375648",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "b4b997e9-5912-463b-9f92-b9a259382ea1",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Rajapushpa Properties",
+      "source_ref": "builder:rajapushpa-pristinia",
+      "url": "https://rajapushpa.in/projects/residential/pristinia-apartments-kokapet-hyderabad",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "525bea4a-9db8-451b-b9c5-261e02b9f037",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02400006086",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400006086",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "8f23a123-2103-4877-85ff-9e7a3af5e4fd",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:rajapushpa-pristinia",
+      "url": "https://rajapushpa.in/projects/residential/pristinia-apartments-kokapet-hyderabad",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "dae38d49-f78a-4ded-bb48-d627fedaa68b",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Rajapushpa Properties",
+      "source_ref": "builder:rajapushpa-provincia",
+      "url": "https://rajapushpa.in/projects/residential/provincia-apartments-narsingi-hyderabad",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "a547d145-53c3-46d5-8284-56b6021a37ad",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02400002487",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400002487",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "d3046258-002d-4e29-b625-39d02d730732",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:rajapushpa-provincia",
+      "url": "https://rajapushpa.in/projects/residential/provincia-apartments-narsingi-hyderabad",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "b446a2e9-573a-4fec-bfe8-9e57cb22511b",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "EIPL Group",
+      "source_ref": "builder:eipl-cornerstone",
+      "url": "https://www.eiplgroup.com/projects/cornerstone",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "b7ee9adb-2224-4773-aafb-da6cf2a13843",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02400005057",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400005057",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "4e13171b-da51-4a9e-b3f8-f25d9203ca56",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:eipl-cornerstone",
+      "url": "https://www.eiplgroup.com/projects/cornerstone",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "ce5b2b1f-a25c-4895-b5bb-a89e5b542e4e",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "My Home Constructions",
+      "source_ref": "builder:my-home-tridasa",
+      "url": "https://www.myhomeconstructions.com/my-home-tridasa/",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "6bdaa6ae-2507-4038-a563-b4f2c5a9bdbc",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p01100002276",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P01100002276",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "3e00bf8c-27b4-4716-bce2-a9f8c8a7244b",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:my-home-tridasa",
+      "url": "https://www.myhomeconstructions.com/my-home-tridasa/",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "d826e101-a7d5-4327-b0ce-0e1087646778",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Aparna Constructions",
+      "source_ref": "builder:aparna-newlands",
+      "url": "https://www.aparnaconstructions.com/project/apartments/aparna-newlands",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "8aed39ee-36f3-4d83-96f3-3bb1842bdec4",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p01100007480",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P01100007480",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "0d9f3509-63d3-44cd-b685-d6aa397dc081",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:aparna-newlands",
+      "url": "https://www.openstreetmap.org/?mlat=17.4557443&mlon=78.2896784#map=18/17.4557443/78.2896784",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "836426a3-fd15-4d0c-8f06-a38c66344019",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Rajapushpa Properties",
+      "source_ref": "builder:rajapushpa-imperia",
+      "url": "https://rajapushpa.in/projects/residential/imperia-apartments-tellapur-hyderabad",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "62a94c6c-fc5f-4efa-8468-5d51a9733303",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p01100003723",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P01100003723",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "0e2d7ef4-17b3-425f-b1ff-66fc6087ca2f",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:rajapushpa-imperia",
+      "url": "https://rajapushpa.in/projects/residential/imperia-apartments-tellapur-hyderabad",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "bae84310-1b50-44cc-8339-16b645ff2b8b",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Aparna Constructions",
+      "source_ref": "builder:aparna-sarovar-zenith",
+      "url": "https://www.aparnaconstructions.com/project/apartments/aparna-sarovar-zenith",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "e4535805-9e22-4810-8ba2-757774713957",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02400000022",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400000022",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "955b2b29-0dd2-4179-9f56-7a8d9347ec91",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:aparna-sarovar-zenith",
+      "url": "https://www.openstreetmap.org/?mlat=17.4673650&mlon=78.3120470#map=18/17.4673650/78.3120470",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "98a519d5-9cc7-40d7-a083-eeb858a979ac",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Aparna Constructions",
+      "source_ref": "builder:aparna-sarovar-zicon",
+      "url": "https://www.aparnaconstructions.com/project/apartments/aparna-sarovar-zicon",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "ecae4232-1e8a-4d44-9a58-3eec80013a70",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02400002673",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400002673",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "e79e620b-3fa2-4a01-8b41-db66fd747fac",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:aparna-sarovar-zicon",
+      "url": "https://www.openstreetmap.org/?mlat=17.4641144&mlon=78.3137278#map=18/17.4641144/78.3137278",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "c041da7a-5942-469c-95dd-b9479c22f4c9",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Aparna Constructions",
+      "source_ref": "builder:aparna-luxor-park",
+      "url": "https://www.aparnaconstructions.com/project/apartments/aparna-luxor-park",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "7ed77241-c6f7-4a97-8100-24c7541cff52",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02400001260",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02400001260",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "1cd8dabe-3f21-448c-9443-ce72be116d18",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:aparna-luxor-park",
+      "url": "https://www.openstreetmap.org/?mlat=17.4658619&mlon=78.3359911#map=18/17.4658619/78.3359911",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "8dfd67ba-4a9e-43e9-b583-63ef63c1c317",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Urbanrise",
+      "source_ref": "builder:on-cloud-33",
+      "url": "https://www.urbanriseoncloud33.com/",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "20efb811-d62d-409e-88ba-2cb10bed0f50",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02200003724",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02200003724",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "1a052016-772d-46c0-9e22-52d3a83bc539",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:on-cloud-33",
+      "url": "https://www.homes247.in/property/hyderabad/bachupally/urbanrise-on-cloud-33-99009",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "8358039a-4f10-4f95-95c4-6026a6d3f91f",
+      "source_class": "BUILDER_PUBLISHED",
+      "data_origin": "REAL",
+      "publisher": "Ramky Estates",
+      "source_ref": "builder:ramky-one-harmony",
+      "url": "https://www.ramkyestates.com/projects/ramky-one-harmony/",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "edb9f746-1ad6-45ff-a869-eab2e447dca5",
+      "source_class": "OFFICIAL_REGULATOR",
+      "data_origin": "REAL",
+      "publisher": "Telangana RERA",
+      "source_ref": "rera:p02200002611",
+      "url": "https://rerait.telangana.gov.in/searchlist/search?CertficateNo=P02200002611",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    },
+    {
+      "id": "f3213443-f94d-4b37-aadc-387e502bea21",
+      "source_class": "CURATED_REFERENCE",
+      "data_origin": "CURATED",
+      "publisher": "FlatDNA registry review",
+      "source_ref": "location:ramky-one-harmony",
+      "url": "https://www.openstreetmap.org/?mlat=17.5307113&mlon=78.3899865#map=18/17.5307113/78.3899865",
+      "retrieved_at": "2026-08-09T00:00:00+05:30",
+      "source_status": "ACTIVE"
+    }
+  ],
+  "claim_evidence": [
+    {
+      "id": "65d5ad7a-001d-424b-a4d5-d76e16d53196",
+      "evidence_source_id": "d5330ce3-0b15-42c8-a10a-6d7696b9bbe4",
+      "project_id": "4b2ca36e-b2ad-4f61-8686-fd8e096c731c",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "myscape isle of sky",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "33ef7f429fe944f7a13a61ab387c072945554d0498258a85ac4dd6fac32bdcbb"
+    },
+    {
+      "id": "0e93e4e5-6cfd-40b5-bb26-6fe9f62a2f3c",
+      "evidence_source_id": "d5330ce3-0b15-42c8-a10a-6d7696b9bbe4",
+      "project_id": "4b2ca36e-b2ad-4f61-8686-fd8e096c731c",
+      "claim_key": "identity.developer",
+      "observed_value": "6b6ec736-49ca-43ee-ab77-a1a5c3d414ec",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "3b7ca6ece9229cdd7a0c0154be91cecaf121b28a8cb9545da0d67a4421e63c0d"
+    },
+    {
+      "id": "5d14146c-b816-473e-a1f5-b8b0edc14076",
+      "evidence_source_id": "8eee2d3f-6a92-4277-abab-0fecb90503f4",
+      "project_id": "4b2ca36e-b2ad-4f61-8686-fd8e096c731c",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/financial-district",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "0150fed1b6b884bfc21fbb7514a9cce0877eb87fe861eb8c93674c6930fcacaa"
+    },
+    {
+      "id": "73230ecf-3615-433d-a467-643fe66792af",
+      "evidence_source_id": "8eee2d3f-6a92-4277-abab-0fecb90503f4",
+      "project_id": "4b2ca36e-b2ad-4f61-8686-fd8e096c731c",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.413676,78.334903",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "8f334153833faafabb2c73b9cb820adc685908795c7bdc4f55fdbf05b21f4914"
+    },
+    {
+      "id": "9235c3a9-1d5a-4863-8352-2a49d503769b",
+      "evidence_source_id": "9a518a40-e8ef-418f-aff2-693f02c38e71",
+      "rera_reference_id": "c4ffbca0-b9a1-496b-b1db-3a3e987f85a7",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02400000466",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "86b25d60cd625e1041ecdb4ca5ac11d50c02f7d6a6eb3d7d51256a1b7c0d7e33"
+    },
+    {
+      "id": "f2a22e81-8a2d-47ef-b2e0-120dd417afb8",
+      "evidence_source_id": "d5330ce3-0b15-42c8-a10a-6d7696b9bbe4",
+      "project_alias_id": "479991fd-decf-4401-b049-4ffae3ee6d2f",
+      "claim_key": "identity.alias",
+      "observed_value": "isle of sky",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "68432a97d37730b3713feb31f7798008281894ee32330a426f711e29b6878564"
+    },
+    {
+      "id": "40457a18-d644-4d46-92c9-83ec18a3f9be",
+      "evidence_source_id": "8c35bea4-ea37-4a0a-a2a7-1d07dadb1477",
+      "project_id": "421c032d-37c5-4e88-8c18-3b1185ac825f",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "my home nishada",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "59201b630cf5a2d8fe8fa02a29d0fadd0ae3679f84905269157a45192161425a"
+    },
+    {
+      "id": "9545a4bb-ed27-46db-9e03-896ebd51ac8d",
+      "evidence_source_id": "8c35bea4-ea37-4a0a-a2a7-1d07dadb1477",
+      "project_id": "421c032d-37c5-4e88-8c18-3b1185ac825f",
+      "claim_key": "identity.developer",
+      "observed_value": "b05a4abe-9708-4903-a648-77506fea5a8b",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "0776f266df0a36843cf9b5b0be165387f954dcbea8b7735c051503804cf19f17"
+    },
+    {
+      "id": "be8287c9-72a2-4455-bfde-d5172a582d17",
+      "evidence_source_id": "f986fdd4-f69f-4fd4-b936-234f069b88aa",
+      "project_id": "421c032d-37c5-4e88-8c18-3b1185ac825f",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/kokapet",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "13e5ed1960de5daf2398bd7feb0792940a34dcd09b9d0747075e1d2927a2a808"
+    },
+    {
+      "id": "4e41f241-6a74-42a4-a8b9-13e17ecb861e",
+      "evidence_source_id": "f986fdd4-f69f-4fd4-b936-234f069b88aa",
+      "project_id": "421c032d-37c5-4e88-8c18-3b1185ac825f",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.405700,78.308357",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "753cd16767782d3f225b38fed11b2435434c3e6c5f74768a336c214edd17ea64"
+    },
+    {
+      "id": "e4ac2c40-4b12-4fa2-98f5-06a7a9305ac0",
+      "evidence_source_id": "3a06ae25-dc86-4ad1-8562-5bea3e97f92b",
+      "rera_reference_id": "9be00694-730d-4213-94d5-7b831a6d58ee",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02400004696",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "92e3306dab09738a11f08f72d7cfcbed578cb07de90e9f42469301d3b659bb30"
+    },
+    {
+      "id": "6f86f2e5-6696-48ad-8033-7c4c1848cc93",
+      "evidence_source_id": "8c35bea4-ea37-4a0a-a2a7-1d07dadb1477",
+      "project_alias_id": "e5260507-bd16-4921-9b87-3307524e595e",
+      "claim_key": "identity.alias",
+      "observed_value": "nishada",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "4bdebaf0f4008ef3de717953bc1f36fe80ffc5b0cc51afd052a85aaa49dd9c33"
+    },
+    {
+      "id": "57f7a266-4a43-4dd8-90ec-867f62c2f452",
+      "evidence_source_id": "63dd974a-c61e-45f5-b191-fe5c9a480d02",
+      "project_id": "c75202ca-dc26-46c4-b7d8-b7fca77c9d19",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "prestige beverly hills",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "04548c5862011793f9c49151ad210d39740de5e470db37efd495476fbea11d1a"
+    },
+    {
+      "id": "3a7eedd7-2398-435c-b77c-92a430f07e76",
+      "evidence_source_id": "63dd974a-c61e-45f5-b191-fe5c9a480d02",
+      "project_id": "c75202ca-dc26-46c4-b7d8-b7fca77c9d19",
+      "claim_key": "identity.developer",
+      "observed_value": "ed2debfa-0062-489e-9615-807af6824d55",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "023c8713dac9e8ab03993e800cc75435cf8fe09843da0d0b5b2f2b422fb93c7d"
+    },
+    {
+      "id": "7de80ab9-f08a-4d22-9cd8-0a8746ab894f",
+      "evidence_source_id": "61aa0ede-a2d7-4f17-8561-f47da4857fe5",
+      "project_id": "c75202ca-dc26-46c4-b7d8-b7fca77c9d19",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/kokapet",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "de924563a7b3bc2ec0139a553c0f4910333e3ff780bc62754e88f9d7802bd8b7"
+    },
+    {
+      "id": "9585155e-a18f-4678-a149-965441fd80f4",
+      "evidence_source_id": "61aa0ede-a2d7-4f17-8561-f47da4857fe5",
+      "project_id": "c75202ca-dc26-46c4-b7d8-b7fca77c9d19",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.401908,78.337565",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "00422df2cc2e757c5d0119418f17f5965e525d5471b6c7751f59c826ee96c9c0"
+    },
+    {
+      "id": "5f8acdb7-a197-4e90-83cd-3420e466f739",
+      "evidence_source_id": "ccf180de-073d-4e83-b66d-67236943888e",
+      "rera_reference_id": "bb49cc1e-bb23-451c-a707-3e04ecce8ce4",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02400003715",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "ca8a89368de05bca60a0dc95b3ca28de6b0be563d0bd3d0f64e447e306b44c1c"
+    },
+    {
+      "id": "f2a539c8-b43d-4254-9fe0-e7241d25ff83",
+      "evidence_source_id": "b4b997e9-5912-463b-9f92-b9a259382ea1",
+      "project_id": "d456e85d-a1fd-418a-9053-29b3dca717a6",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "rajapushpa pristinia",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "9c469b0097985b25f51a565a7b384902a81f86a2fd44c3ca1769520615950285"
+    },
+    {
+      "id": "e35f2659-3797-4622-9576-63a65651c758",
+      "evidence_source_id": "b4b997e9-5912-463b-9f92-b9a259382ea1",
+      "project_id": "d456e85d-a1fd-418a-9053-29b3dca717a6",
+      "claim_key": "identity.developer",
+      "observed_value": "5416c74d-db83-47c4-9393-831ad35e4a39",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "e8899fd09c55b7fb2ae2d8585937c71ad78d3015de3c084e2ec79281aa942c49"
+    },
+    {
+      "id": "8ad065d8-3344-4b5d-8361-faa1860b4352",
+      "evidence_source_id": "8f23a123-2103-4877-85ff-9e7a3af5e4fd",
+      "project_id": "d456e85d-a1fd-418a-9053-29b3dca717a6",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/kokapet",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "ee2665b99e2b78d4452b3e9f2dbf1de405fcffd561dadcd0bb208b1de7d2b318"
+    },
+    {
+      "id": "2197b01e-f917-4b8c-908f-aede2eb8ca5d",
+      "evidence_source_id": "8f23a123-2103-4877-85ff-9e7a3af5e4fd",
+      "project_id": "d456e85d-a1fd-418a-9053-29b3dca717a6",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.396200,78.325940",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "f142ad04ff7ea776b0cf3b2d995bbcd0f31473bd6e66e86018d81dfea02981e7"
+    },
+    {
+      "id": "850c3ebc-3a15-4b97-a947-dc5256fc8a54",
+      "evidence_source_id": "525bea4a-9db8-451b-b9c5-261e02b9f037",
+      "rera_reference_id": "0924de94-db0f-491b-b431-17e45fa8ab60",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02400006086",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "cf3feb44eafa40d85fc94441ff6cf03dbd79b48c77de50feaa46bedfad74ab96"
+    },
+    {
+      "id": "b5bf929d-bca6-454d-8a7d-ffb824200766",
+      "evidence_source_id": "b4b997e9-5912-463b-9f92-b9a259382ea1",
+      "project_alias_id": "171f7dde-428e-4f83-a40b-841ad1ed211e",
+      "claim_key": "identity.alias",
+      "observed_value": "pristinia",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "c393b21a73c17ba8fdc4757151865d540a100e9cb558804c12b8af2449586f75"
+    },
+    {
+      "id": "536611fe-df14-4117-955e-efc80a96f824",
+      "evidence_source_id": "dae38d49-f78a-4ded-bb48-d627fedaa68b",
+      "project_id": "c3762910-130b-46a1-8835-aabada890854",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "rajapushpa provincia",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "18d261b2afe6aa17b5a6df9e148b513bfa3d64f852e51795dcfe5fcb11e7ab2b"
+    },
+    {
+      "id": "eda1a940-d5b1-46af-a77d-f26921357bfc",
+      "evidence_source_id": "dae38d49-f78a-4ded-bb48-d627fedaa68b",
+      "project_id": "c3762910-130b-46a1-8835-aabada890854",
+      "claim_key": "identity.developer",
+      "observed_value": "5416c74d-db83-47c4-9393-831ad35e4a39",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "948c39e851876d24b6a091a9310db708445477fb366ae4e6d66d1759c10324c4"
+    },
+    {
+      "id": "1a88bf79-d705-467a-8c7b-588488c3d18a",
+      "evidence_source_id": "d3046258-002d-4e29-b625-39d02d730732",
+      "project_id": "c3762910-130b-46a1-8835-aabada890854",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/narsingi",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "713b27fcb0a8eaabe5309899396b4d1a7f5506cc5a3ec2948681526213f74599"
+    },
+    {
+      "id": "94c0ac13-535f-4bd3-83de-7530f9659d16",
+      "evidence_source_id": "d3046258-002d-4e29-b625-39d02d730732",
+      "project_id": "c3762910-130b-46a1-8835-aabada890854",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.395387,78.355053",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "141a2b6bf514ea6c8574a0280f1b98fd4fd3cfbf5b4bd428523c49e836bb3846"
+    },
+    {
+      "id": "48b26679-1f19-4898-98d8-3787de2d4a70",
+      "evidence_source_id": "a547d145-53c3-46d5-8284-56b6021a37ad",
+      "rera_reference_id": "78375758-8ccc-488a-adec-7188b5d5006c",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02400002487",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "5a74bf3fa9d600571de619caff7e314c1061a84e1a6271998d4b18d9d8a823e2"
+    },
+    {
+      "id": "7b0caa1a-ee47-4a44-9be4-24ee6daf575e",
+      "evidence_source_id": "dae38d49-f78a-4ded-bb48-d627fedaa68b",
+      "project_alias_id": "8ffc59f6-a8ef-4650-9a15-e345e9c37bce",
+      "claim_key": "identity.alias",
+      "observed_value": "provincia",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "4f27f3de02da24448dbc85f133abc2ecebcfea8695c7e49c84ac2bbaf2fada4d"
+    },
+    {
+      "id": "ca1e9be7-af75-478e-ad86-446c425cda78",
+      "evidence_source_id": "b446a2e9-573a-4fec-bfe8-9e57cb22511b",
+      "project_id": "4b792811-982f-45a2-8b1c-1008d2b06755",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "eipl cornerstone",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "8bd15b75d11730b859363bbe76cc38195e346624ad36f5a70530a7131b99d98b"
+    },
+    {
+      "id": "320e4a91-fb24-4262-91d3-ecebd85777b4",
+      "evidence_source_id": "b446a2e9-573a-4fec-bfe8-9e57cb22511b",
+      "project_id": "4b792811-982f-45a2-8b1c-1008d2b06755",
+      "claim_key": "identity.developer",
+      "observed_value": "04f43fc2-7c2a-4457-8ba4-dbc0d62db440",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "339d8c6fbe0111c1ddf8b28b15b03e7bd83134ee87ec7f5b074e87f2b892a375"
+    },
+    {
+      "id": "82843b66-2430-4af4-a47b-ffdb5778c51c",
+      "evidence_source_id": "4e13171b-da51-4a9e-b3f8-f25d9203ca56",
+      "project_id": "4b792811-982f-45a2-8b1c-1008d2b06755",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/puppalaguda",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "bb66ab74c7fe5c39d217ffa4187dcdb6c9f666f674e94c6593956fea08eb80b6"
+    },
+    {
+      "id": "384936ec-7e97-4ff5-a067-6620206697fc",
+      "evidence_source_id": "4e13171b-da51-4a9e-b3f8-f25d9203ca56",
+      "project_id": "4b792811-982f-45a2-8b1c-1008d2b06755",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.399134,78.367072",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "c3efd2b660a6b11a689daf58e1e36437bd35df7d5c0933233d7182fde2897a5a"
+    },
+    {
+      "id": "92f0e396-9208-4e9b-8ab7-866f0a4ea543",
+      "evidence_source_id": "b7ee9adb-2224-4773-aafb-da6cf2a13843",
+      "rera_reference_id": "8de614eb-6b3f-48e6-9f87-22add3f14bf9",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02400005057",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "c48008bef7d1efef0b39301fc22125200b8334b62944a01e0b050314a9097ad7"
+    },
+    {
+      "id": "7e530fc7-17e2-4e27-954b-2243f6da6673",
+      "evidence_source_id": "b446a2e9-573a-4fec-bfe8-9e57cb22511b",
+      "project_alias_id": "5ff786ac-a1a9-4aee-bfd6-558710ec0857",
+      "claim_key": "identity.alias",
+      "observed_value": "cornerstone",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "6bb0198cbb4be9383770030451f4e1cbc907167999febb24168ecaab4dee8a02"
+    },
+    {
+      "id": "39263027-76e6-4c4d-9fee-6eb215db6b04",
+      "evidence_source_id": "b7ee9adb-2224-4773-aafb-da6cf2a13843",
+      "project_alias_id": "7bec293d-869d-4848-9b65-6cb7510837b5",
+      "claim_key": "identity.alias",
+      "observed_value": "corner stone",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "b0116c4dbc9b944b113a3122a3a6e8f5abf11c6398ff94ea9c7445849e06168d"
+    },
+    {
+      "id": "9b9de36b-4b14-47fc-8ed1-35674fc856ed",
+      "evidence_source_id": "ce5b2b1f-a25c-4895-b5bb-a89e5b542e4e",
+      "project_id": "97becc5f-d926-411d-bf51-14873cb22c4e",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "my home tridasa",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "8f32131e9be09c76d2ace4577158b0b63b94dd012ec1b50c1dd88d71eb38b74e"
+    },
+    {
+      "id": "9253db4d-b0a0-497e-af52-de7d6325558f",
+      "evidence_source_id": "ce5b2b1f-a25c-4895-b5bb-a89e5b542e4e",
+      "project_id": "97becc5f-d926-411d-bf51-14873cb22c4e",
+      "claim_key": "identity.developer",
+      "observed_value": "b05a4abe-9708-4903-a648-77506fea5a8b",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "4d7b10d19ef5c63322decaef66b8877195c710b21f71a0071b99e3521725f2df"
+    },
+    {
+      "id": "3578645c-efa4-4df3-af74-75cb325eebfe",
+      "evidence_source_id": "3e00bf8c-27b4-4716-bce2-a9f8c8a7244b",
+      "project_id": "97becc5f-d926-411d-bf51-14873cb22c4e",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/tellapur",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "074fd56812447fd4a5db28a65ec508a11a59300c583c68edd10eb752fff529c9"
+    },
+    {
+      "id": "80b604fc-e18a-4d3a-8410-ce6f32182496",
+      "evidence_source_id": "3e00bf8c-27b4-4716-bce2-a9f8c8a7244b",
+      "project_id": "97becc5f-d926-411d-bf51-14873cb22c4e",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.469476,78.259668",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "5a8ed4dd76d22f68e3b1ea474318066ed11e9709840f1e3a8dcdb86b8a62544e"
+    },
+    {
+      "id": "120a2ecd-66f9-452a-b022-930b10714e68",
+      "evidence_source_id": "6bdaa6ae-2507-4038-a563-b4f2c5a9bdbc",
+      "rera_reference_id": "1fb11ea0-650d-44a9-a236-fdf5960394b7",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p01100002276",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "99ecf9c2bd6cb951ad22f73e7c71bf311213413ce22f072974a0ef556582829d"
+    },
+    {
+      "id": "1aee5dba-1fda-4460-a9ca-3a8a6bb44429",
+      "evidence_source_id": "d826e101-a7d5-4327-b0ce-0e1087646778",
+      "project_id": "8afccfe9-f040-440c-895f-930db6a2e7fd",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "aparna newlands",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "5d320ae3057ab273368b3a81c15ed67cb798b5b89a93ca888b692ce1ff98b41a"
+    },
+    {
+      "id": "68263e7f-ca80-4a7c-badd-fb18e956fe9e",
+      "evidence_source_id": "d826e101-a7d5-4327-b0ce-0e1087646778",
+      "project_id": "8afccfe9-f040-440c-895f-930db6a2e7fd",
+      "claim_key": "identity.developer",
+      "observed_value": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "b42cab4ce7b72b60d6453d2124b28604fac421890137f47294e0373489e36c92"
+    },
+    {
+      "id": "2ae58c32-ac8b-459c-8b99-1fcaedfb2a41",
+      "evidence_source_id": "0d9f3509-63d3-44cd-b685-d6aa397dc081",
+      "project_id": "8afccfe9-f040-440c-895f-930db6a2e7fd",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/tellapur",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "2e602d376049ff09fd3a10cae5515a9513cdc41cd646f44c0875377e772a1080"
+    },
+    {
+      "id": "d8d70940-17d0-4f59-b640-69e6d45308f4",
+      "evidence_source_id": "0d9f3509-63d3-44cd-b685-d6aa397dc081",
+      "project_id": "8afccfe9-f040-440c-895f-930db6a2e7fd",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.455744,78.289678",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "5424baa362289eeb20b1c78afe7d44da3708eae3e03d1ccd16198f8b3907aa83"
+    },
+    {
+      "id": "b176812a-6d54-4ca1-bb44-eb458cb0d083",
+      "evidence_source_id": "8aed39ee-36f3-4d83-96f3-3bb1842bdec4",
+      "rera_reference_id": "5642529c-353a-40e5-9df5-1fdb3e90c953",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p01100007480",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "a94c99fb80b4f41bc7b8f4af7ef8b7eab54c8f1b3c0d291064b69bfadd879ec0"
+    },
+    {
+      "id": "79a512ed-999c-4adc-ac12-4c377062adba",
+      "evidence_source_id": "836426a3-fd15-4d0c-8f06-a38c66344019",
+      "project_id": "9ffdfa60-3dd5-4f47-9f41-f5f35c8450ad",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "rajapushpa imperia",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "b8826916783609019fc229deeb4a119a477bbb2b6b3e626fa999d36cb84470dd"
+    },
+    {
+      "id": "83711e31-88b2-4bb8-8c81-8d8f3817e06a",
+      "evidence_source_id": "836426a3-fd15-4d0c-8f06-a38c66344019",
+      "project_id": "9ffdfa60-3dd5-4f47-9f41-f5f35c8450ad",
+      "claim_key": "identity.developer",
+      "observed_value": "5416c74d-db83-47c4-9393-831ad35e4a39",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "787ecd056142bb04605f52acf68354c0c527a7fb30611d6af31607ea4fc4e7c1"
+    },
+    {
+      "id": "632fe0e5-522b-4338-aa39-52c58ac355f2",
+      "evidence_source_id": "0e2d7ef4-17b3-425f-b1ff-66fc6087ca2f",
+      "project_id": "9ffdfa60-3dd5-4f47-9f41-f5f35c8450ad",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/tellapur",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "5119df6ca9e5ff3d927227490d1215a39c4885988902ce3a44312bf468e5f172"
+    },
+    {
+      "id": "91c84b5e-16a0-499c-bc88-3fae22c71697",
+      "evidence_source_id": "0e2d7ef4-17b3-425f-b1ff-66fc6087ca2f",
+      "project_id": "9ffdfa60-3dd5-4f47-9f41-f5f35c8450ad",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.452700,78.274218",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "f8227bbd9558d94db5d09a7d4a23099f294be618c0750f5564a841f006986683"
+    },
+    {
+      "id": "022e7b12-6203-4218-817d-1ce727fec2bb",
+      "evidence_source_id": "62a94c6c-fc5f-4efa-8468-5d51a9733303",
+      "rera_reference_id": "2cef3dc6-3fd8-49f0-8fc9-e074de0c23c4",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p01100003723",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "50650ff742c1a7521045c9b6fdf4ba527dcfe4271c1d7ef8d94037d5971903b8"
+    },
+    {
+      "id": "2b031314-d7e5-4dbc-a879-52f7ac49d8ca",
+      "evidence_source_id": "836426a3-fd15-4d0c-8f06-a38c66344019",
+      "project_alias_id": "08d3fca8-d6f8-4a1b-9428-d48658af21ec",
+      "claim_key": "identity.alias",
+      "observed_value": "imperia",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "cbedafba8552aa5a1ae124709c82a4d4c9af474df9f92cd84ec10c5766ce403e"
+    },
+    {
+      "id": "bc2ddb3c-7faf-4b60-863c-c06ae1039e7c",
+      "evidence_source_id": "bae84310-1b50-44cc-8339-16b645ff2b8b",
+      "project_id": "caa5580b-97d0-496b-814d-feaedfe88672",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "aparna sarovar zenith",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "0842c88473c941373c205cfcb13fd2daf1d44a9ccaa5b2cee5d46249fbf8becf"
+    },
+    {
+      "id": "3b2b7bbe-ab68-465a-b33a-6deb7c8e743e",
+      "evidence_source_id": "bae84310-1b50-44cc-8339-16b645ff2b8b",
+      "project_id": "caa5580b-97d0-496b-814d-feaedfe88672",
+      "claim_key": "identity.developer",
+      "observed_value": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "223a06c680883e57deabacd2c6a7799b7e51b95a356b432f10ec21a96a3dd46d"
+    },
+    {
+      "id": "29a5fe27-9936-4bbe-81d5-f70a6d7e3530",
+      "evidence_source_id": "955b2b29-0dd2-4179-9f56-7a8d9347ec91",
+      "project_id": "caa5580b-97d0-496b-814d-feaedfe88672",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/nallagandla",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "9ae32ac50917e3c469aa8a4b46a03fba9bc08a44aef260e067f17831b4a1a66d"
+    },
+    {
+      "id": "c1f70f1e-06e2-45f7-b51c-f4af922edb37",
+      "evidence_source_id": "955b2b29-0dd2-4179-9f56-7a8d9347ec91",
+      "project_id": "caa5580b-97d0-496b-814d-feaedfe88672",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.467365,78.312047",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "29a531a466fabb29ff26fb66036bd67647bf4d97d3d7e3a556bffc9ec425529e"
+    },
+    {
+      "id": "678ae861-7276-459a-a5ec-7a608f2bb0b2",
+      "evidence_source_id": "e4535805-9e22-4810-8ba2-757774713957",
+      "rera_reference_id": "cb18048f-8137-45f4-b3a7-c85bd7a8bbe5",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02400000022",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "6aabc84698a28c1e656e796a297e199f83fd0152d0920bfbe4979f4122f2d604"
+    },
+    {
+      "id": "570eaad4-35bc-448c-a538-bd0430ea5bf7",
+      "evidence_source_id": "98a519d5-9cc7-40d7-a083-eeb858a979ac",
+      "project_id": "067db042-3467-44c1-b31a-ace541f37f3c",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "aparna sarovar zicon",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "5f2ca78d3a0560b3e997deaf22195bd2edf5f9865240af0dbc868cd45008396a"
+    },
+    {
+      "id": "543e1905-452c-453b-af4f-e90ec15106ed",
+      "evidence_source_id": "98a519d5-9cc7-40d7-a083-eeb858a979ac",
+      "project_id": "067db042-3467-44c1-b31a-ace541f37f3c",
+      "claim_key": "identity.developer",
+      "observed_value": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "e53823cb6b5d90c81fc332d9f66b467e5e07a2c6d21197d2e2b23c530b2c341d"
+    },
+    {
+      "id": "fded9edb-af9f-4bc6-9fc6-0eaf461837c4",
+      "evidence_source_id": "e79e620b-3fa2-4a01-8b41-db66fd747fac",
+      "project_id": "067db042-3467-44c1-b31a-ace541f37f3c",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/nallagandla",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "f4bdcb94c3dd49c43d22611448a09146d28123f85a8160e8b2263de9874ad289"
+    },
+    {
+      "id": "65a37082-4e7a-4788-8463-5a3d443ea282",
+      "evidence_source_id": "e79e620b-3fa2-4a01-8b41-db66fd747fac",
+      "project_id": "067db042-3467-44c1-b31a-ace541f37f3c",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.464114,78.313728",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "9ce9a0de0e1854e43c49242b5e11a2de46103b2c491d70a7dcea27f8c2d4410c"
+    },
+    {
+      "id": "c7e9c6c1-6254-4084-8c32-09b0a4bbfc42",
+      "evidence_source_id": "ecae4232-1e8a-4d44-9a58-3eec80013a70",
+      "rera_reference_id": "b6d905c4-c62a-45e8-97db-99cf19283c90",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02400002673",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "a4962466b7397ef8d51ad2a3e469e5bf5780b1f5a0f818c018006c480cf4ccd4"
+    },
+    {
+      "id": "8c5bdbcb-0be2-445e-8894-b3cd3441ed36",
+      "evidence_source_id": "c041da7a-5942-469c-95dd-b9479c22f4c9",
+      "project_id": "0103521f-bdf6-459c-afe2-1db7620743eb",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "aparna luxor park",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "593bf3392aa185c76c944af7d837d6ee8fc94c177eeae270b9ba888685410f20"
+    },
+    {
+      "id": "8140e119-686f-4c33-8f6d-46c00765a4c5",
+      "evidence_source_id": "c041da7a-5942-469c-95dd-b9479c22f4c9",
+      "project_id": "0103521f-bdf6-459c-afe2-1db7620743eb",
+      "claim_key": "identity.developer",
+      "observed_value": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "6c048739ef3a6abe8fa77032b254c2b7ef3615fd5896d6bd8e8b570fbd1c65ef"
+    },
+    {
+      "id": "12325bfc-cb04-4f8d-aeed-6546b007d801",
+      "evidence_source_id": "1cd8dabe-3f21-448c-9443-ce72be116d18",
+      "project_id": "0103521f-bdf6-459c-afe2-1db7620743eb",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/kondapur",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "35f24f345e67b64d458b6a8201626bca9814d105d92d0304921a63b802ab5709"
+    },
+    {
+      "id": "9aeeb1c1-587d-4e43-befa-be42cb4aed2b",
+      "evidence_source_id": "1cd8dabe-3f21-448c-9443-ce72be116d18",
+      "project_id": "0103521f-bdf6-459c-afe2-1db7620743eb",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.465862,78.335991",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "c7bba40108d304cf818328ef929b4781c8f4cb267565faf9270feee933612114"
+    },
+    {
+      "id": "f0feda58-27f6-40b8-ac1d-be673a2f094d",
+      "evidence_source_id": "7ed77241-c6f7-4a97-8100-24c7541cff52",
+      "rera_reference_id": "1560bfac-d4a0-449e-8fac-9c32249b76e0",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02400001260",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "6f13bb357226b41740da43d743d3ee4307c621499351f2033b040d786575e992"
+    },
+    {
+      "id": "8233aa23-4e9e-41b8-a19d-88a8157a7038",
+      "evidence_source_id": "8dfd67ba-4a9e-43e9-b583-63ef63c1c317",
+      "project_id": "67f11bc5-7719-49b3-b670-c02e3aa6c1ef",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "on cloud 33",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "c7b7cf30df41ddb439416bf8a1fb4c5eb7de369478608f82fe76eed86138ef48"
+    },
+    {
+      "id": "f834f4cb-3f18-448d-bcb7-47d88cdab388",
+      "evidence_source_id": "8dfd67ba-4a9e-43e9-b583-63ef63c1c317",
+      "project_id": "67f11bc5-7719-49b3-b670-c02e3aa6c1ef",
+      "claim_key": "identity.developer",
+      "observed_value": "223164b8-345c-42e2-9b32-e52c78e5acb0",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "04fee99d7eec58d1fe097f4b12bc0d9f4316ad63354c3b2c236e80c55bbf71dd"
+    },
+    {
+      "id": "fad951e1-f72a-4c38-a42a-55ee54900ef1",
+      "evidence_source_id": "1a052016-772d-46c0-9e22-52d3a83bc539",
+      "project_id": "67f11bc5-7719-49b3-b670-c02e3aa6c1ef",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/bachupally",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "d2d635ab21aec8d9dd9d0f0e3900f317e3b3d7f65ecea41e86b69c6981dfcd2e"
+    },
+    {
+      "id": "ec566748-bb74-4fa5-87f1-905ed78e815c",
+      "evidence_source_id": "1a052016-772d-46c0-9e22-52d3a83bc539",
+      "project_id": "67f11bc5-7719-49b3-b670-c02e3aa6c1ef",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.539273,78.355968",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "83e90c817b4c32ee072fd0b425777acbfe6f624023ae2271f26eb0fe3f81614f"
+    },
+    {
+      "id": "da98895c-a806-4ad6-8625-f4569c00b48b",
+      "evidence_source_id": "20efb811-d62d-409e-88ba-2cb10bed0f50",
+      "rera_reference_id": "4914bb86-1b22-46dd-9c24-36cfe89d0887",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02200003724",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "e9b0657aae8131445db6e9f8666488684f5917a6f4e6f05c4da3ad758b9d46ef"
+    },
+    {
+      "id": "c0edc24e-d495-4d59-8f41-ceea30b6b2dc",
+      "evidence_source_id": "8dfd67ba-4a9e-43e9-b583-63ef63c1c317",
+      "project_alias_id": "e1dee97b-2b16-437f-88f6-67679afe302b",
+      "claim_key": "identity.alias",
+      "observed_value": "urbanrise on cloud 33",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "863d70abe37fc8ff4aed313ebb6f5516783d4d54b4fba381820f35ed961a44dc"
+    },
+    {
+      "id": "5b48ee73-adf3-4092-ac65-b859a12b2fd2",
+      "evidence_source_id": "8dfd67ba-4a9e-43e9-b583-63ef63c1c317",
+      "project_alias_id": "fbabb37b-1cb8-49d3-8900-ed811ed11254",
+      "claim_key": "identity.alias",
+      "observed_value": "on cloud33",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "c47010382760a58902b49acbec38ac7bc32bb5ced61e6ea5c59eaef3f37884ab"
+    },
+    {
+      "id": "8dd82796-e318-4d27-b51e-0dff5d3c4da4",
+      "evidence_source_id": "8358039a-4f10-4f95-95c4-6026a6d3f91f",
+      "project_id": "5c7fb656-e68f-43ce-a311-856f26b9fe05",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "ramky one harmony",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "a0cd46a2462afc24d8a29a58d41fabbdc8a0914ebc6d36c50c41005632dc2e2f"
+    },
+    {
+      "id": "c92f0b7b-74f4-48cf-9efe-836d64c5d2e1",
+      "evidence_source_id": "8358039a-4f10-4f95-95c4-6026a6d3f91f",
+      "project_id": "5c7fb656-e68f-43ce-a311-856f26b9fe05",
+      "claim_key": "identity.developer",
+      "observed_value": "d74c9240-b302-4576-8d05-68ec26eb6dcb",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "556da5ecce7467138b0962d5709fa8e61f972720111372b219317e061d534853"
+    },
+    {
+      "id": "a863f5b9-3e15-4ae8-a88e-70760f5d5e11",
+      "evidence_source_id": "f3213443-f94d-4b37-aadc-387e502bea21",
+      "project_id": "5c7fb656-e68f-43ce-a311-856f26b9fe05",
+      "claim_key": "identity.locality",
+      "observed_value": "hyderabad/bachupally",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "1a367c832f85b94114e7c272e0310313ccb0a86c43a82f8aa028989ec6503053"
+    },
+    {
+      "id": "198b059f-695a-48cc-b1e3-378beec26b5d",
+      "evidence_source_id": "f3213443-f94d-4b37-aadc-387e502bea21",
+      "project_id": "5c7fb656-e68f-43ce-a311-856f26b9fe05",
+      "claim_key": "identity.coordinates",
+      "observed_value": "17.530711,78.389987",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "6f10a94907fa1ebc02002caa4c7c0e230cb52570d105c6158deb281b88d06c3f"
+    },
+    {
+      "id": "46b7c8a7-c558-4290-923b-053cec948d89",
+      "evidence_source_id": "edb9f746-1ad6-45ff-a869-eab2e447dca5",
+      "rera_reference_id": "a03a1a1f-6fed-4283-ad7c-1aaab23eac69",
+      "claim_key": "identity.rera_reference",
+      "observed_value": "p02200002611",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "0c2b506b41e844061691ba5f4faac06dafd758a855d7269ebab0b56b2d0450d1"
+    },
+    {
+      "id": "e950a1ae-306c-4cdf-b523-c8d4403ad67b",
+      "evidence_source_id": "d5330ce3-0b15-42c8-a10a-6d7696b9bbe4",
+      "developer_id": "6b6ec736-49ca-43ee-ab77-a1a5c3d414ec",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "myscape properties private limited",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "b16c247cde3fa7b862938c1cdd53f633f77ba95f5de51ac3e5a8eb456f8bc2b5"
+    },
+    {
+      "id": "7d3ef962-8674-454c-9897-d021ae334057",
+      "evidence_source_id": "8c35bea4-ea37-4a0a-a2a7-1d07dadb1477",
+      "developer_id": "b05a4abe-9708-4903-a648-77506fea5a8b",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "my home constructions",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "59033b143f0ad6be821e9396d99dfd84bbfc7198cd3e53f81be708540cdef975"
+    },
+    {
+      "id": "244cf5b9-f026-409b-9d83-de85dad74d96",
+      "evidence_source_id": "63dd974a-c61e-45f5-b191-fe5c9a480d02",
+      "developer_id": "ed2debfa-0062-489e-9615-807af6824d55",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "prestige group",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "8c06d666c6eccfca250f9949dcc7c0036794826a3ce9f708a003fda8870c8b57"
+    },
+    {
+      "id": "428b866d-2e6a-4861-9b03-f7bf1b5df744",
+      "evidence_source_id": "b4b997e9-5912-463b-9f92-b9a259382ea1",
+      "developer_id": "5416c74d-db83-47c4-9393-831ad35e4a39",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "rajapushpa properties",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "cbc09f885c36171e46a7e96096f964b2017b656b419ae47f3f7a2b2c681c619b"
+    },
+    {
+      "id": "ec0576a6-7a86-43e2-9129-76c80cf9408a",
+      "evidence_source_id": "b446a2e9-573a-4fec-bfe8-9e57cb22511b",
+      "developer_id": "04f43fc2-7c2a-4457-8ba4-dbc0d62db440",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "eipl group",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "52dd8fc9f111e53fc41eca6d1a1bb57322dfa4a383d8e82c4410a2ea3e1ef8fc"
+    },
+    {
+      "id": "ccff145d-0094-4be4-a5d3-6798a79bf7ea",
+      "evidence_source_id": "d826e101-a7d5-4327-b0ce-0e1087646778",
+      "developer_id": "65957891-0c35-4803-a76b-6dddf045e44d",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "aparna constructions",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "cd059cf2700ff026fb6a1448e45ae7f854e5919562719b6c0cb3283687d5c48e"
+    },
+    {
+      "id": "47e4b876-36f0-4dcd-b0be-ee83cbae84b0",
+      "evidence_source_id": "8dfd67ba-4a9e-43e9-b583-63ef63c1c317",
+      "developer_id": "223164b8-345c-42e2-9b32-e52c78e5acb0",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "urbanrise",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "d70f284097abcdbe6845b6bc76d629fca25f7b25496fd0c439ca66f0ccf3ad2a"
+    },
+    {
+      "id": "81065496-14e4-4a14-98d6-fc95903622f5",
+      "evidence_source_id": "8358039a-4f10-4f95-95c4-6026a6d3f91f",
+      "developer_id": "d74c9240-b302-4576-8d05-68ec26eb6dcb",
+      "claim_key": "identity.canonical_name",
+      "observed_value": "ramky estates",
+      "review_status": "APPROVED",
+      "reviewed_by": "Naveen",
+      "reviewed_at": "2026-08-09T00:00:00+05:30",
+      "fingerprint": "f995da15bacc2a1f4fe67561ab2f3c1c5d0cbe225cb3aec74dcd5c10126f31ac"
+    }
+  ]
+}

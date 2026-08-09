@@ -3,6 +3,7 @@ const fromEnv = (key: string): boolean => {
 }
 
 export const featureFlags = {
+  enableFlatDna: fromEnv("VITE_ENABLE_FLAT_DNA"),
   enableLandIdentityFlow: fromEnv("VITE_ENABLE_LAND_IDENTITY_FLOW"),
   enableLocationIntelligencePanel: fromEnv("VITE_ENABLE_LOCATION_INTELLIGENCE_PANEL"),
   enableSurveyResolver: fromEnv("VITE_ENABLE_SURVEY_RESOLVER"),
