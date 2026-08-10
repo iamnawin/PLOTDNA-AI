@@ -50,7 +50,9 @@
     "test:simple-buyer-copy": "node scripts/check-simple-buyer-copy.mjs",
     "test:verdict-screen-resilience": "node scripts/check-verdict-screen-resilience.mjs",
     "test:beta-product-analytics": "node scripts/check-beta-product-analytics.mjs",
-    "test:flatdna-phase-0a": "node scripts/check-flatdna-phase-0a.mjs"
+    "test:flatdna-phase-0a": "node scripts/check-flatdna-phase-0a.mjs",
+    "test:propertydna-routing": "node scripts/check-propertydna-routing.mjs",
+    "test:flatdna-search-ui": "node scripts/check-flatdna-search-ui.mjs"
   },
   "dependencies": {
     "@capacitor/core": "^8.3.4",

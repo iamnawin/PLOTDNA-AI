@@ -1,12 +1,12 @@
 {
-  "name": "PlotDNA — Real Estate Intelligence",
-  "short_name": "PlotDNA",
-  "description": "AI-powered DNA scores for land micro-markets across India. Decode any plot before you invest.",
+  "name": "PropertyDNA - Buyer-side Property Intelligence",
+  "short_name": "PropertyDNA",
+  "description": "Check plots, land, flats and apartment projects before you pay token.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#050508",
-  "theme_color": "#00e676",
+  "background_color": "#050711",
+  "theme_color": "#12d5c2",
   "categories": ["finance", "business", "utilities"],
   "icons": [
     {
@@ -24,7 +24,7 @@
   ],
   "screenshots": [
     {
-      "label": "PlotDNA Map — Hyderabad DNA scores",
+      "label": "PlotDNA Map - Hyderabad DNA scores",
       "sizes": "390x844",
       "type": "image/png"
     }
@@ -32,12 +32,12 @@
   "shortcuts": [
     {
       "name": "Hyderabad Map",
-      "url": "/?city=hyderabad",
+      "url": "/plot?city=hyderabad",
       "description": "View Hyderabad micro-market DNA scores"
     },
     {
       "name": "Analyze a Plot",
-      "url": "/?mode=analyze",
+      "url": "/plot?mode=analyze",
       "description": "Enter coordinates to analyze any plot"
     }
   ]

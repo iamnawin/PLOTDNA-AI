@@ -3,9 +3,12 @@ import { BrowserRouter, Routes, Route, useLocation, useParams, Navigate } from '
 import { Analytics } from '@vercel/analytics/react'
 import { buildAreaStoryPath } from '@/features/areaStory/areaStoryNav'
 import { findLandDnaCardMatch } from '@/lib/landDnaCard'
+import { featureFlags } from '@/lib/features'
 
 const CmdK = lazy(() => import('@/components/ui/CmdK'))
 const Landing = lazy(() => import('@/pages/Landing'))
+const PropertyEntry = lazy(() => import('@/pages/PropertyEntry'))
+const FlatProjectSearch = lazy(() => import('@/pages/FlatProjectSearch'))
 const Home = lazy(() => import('@/pages/Home'))
 const BrochurePage = lazy(() => import('@/pages/BrochurePage'))
 const AreaStoryShell = lazy(() => import('@/features/areaStory/AreaStoryShell'))
@@ -37,14 +40,20 @@ function LegacyCompareRedirect() {
   return <Navigate to="/map" replace />
 }
 
+function FlatRoute() {
+  return featureFlags.enableFlatDna ? <FlatProjectSearch /> : <Navigate to="/" replace />
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<div className="min-h-screen bg-[#060814]" />}>
+      <Suspense fallback={<div className="min-h-[100dvh] bg-[#060814]" />}>
         <ScrollToTop />
         <CmdK />
         <Routes>
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<PropertyEntry />} />
+          <Route path="/plot" element={<Landing />} />
+          <Route path="/flat" element={<FlatRoute />} />
           <Route path="/map" element={<Home />} />
           <Route path="/area/:slug/:step" element={<AreaStoryShell />} />
           <Route path="/area/:slug" element={<LegacyAreaRedirect />} />

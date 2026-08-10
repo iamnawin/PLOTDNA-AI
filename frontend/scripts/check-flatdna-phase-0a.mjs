@@ -26,19 +26,20 @@ const envExample = read('.env.example')
 assert.match(envExample, /^VITE_ENABLE_FLAT_DNA=false$/m)
 
 const app = read('src/App.tsx')
-const publicSurfaces = [
-  ['src/App.tsx', app],
-  ['src/pages/Landing.tsx', read('src/pages/Landing.tsx')],
-  ['src/pages/Home.tsx', read('src/pages/Home.tsx')],
-]
-for (const [file, source] of publicSurfaces) {
-  assert.ok(!source.includes('enableFlatDna'), `${file} must not consume the FlatDNA flag`)
-  assert.ok(!source.includes('/api/v1/flat'), `${file} must not call the FlatDNA API`)
-}
-assert.ok(!app.includes('path="/flat'), 'App.tsx must not expose a FlatDNA route')
+const entry = read('src/pages/PropertyEntry.tsx')
+const flatSearch = read('src/pages/FlatProjectSearch.tsx')
+const api = read('src/lib/api.ts')
+
+assert.ok(app.includes('featureFlags.enableFlatDna ? <FlatProjectSearch /> : <Navigate to="/" replace />'), 'direct /flat access must be feature gated')
+assert.ok(entry.includes('featureFlags.enableFlatDna ? ('), 'PropertyDNA entry must feature gate the FlatDNA action')
+assert.ok(api.includes('/api/v1/flat/projects/search?q='), 'FlatDNA search must call the existing backend endpoint')
+assert.ok(!flatSearch.includes('registry.json'), 'FlatDNA UI must not ship registry data')
+assert.ok(!flatSearch.includes('resolver'), 'FlatDNA UI must not implement resolver logic')
 
 for (const route of [
   '/',
+  '/plot',
+  '/flat',
   '/map',
   '/area/:slug/:step',
   '/area/:slug',
@@ -50,4 +51,4 @@ for (const route of [
   assert.ok(app.includes(`path="${route}"`), `existing route must remain registered: ${route}`)
 }
 
-console.log('FlatDNA Phase 0 Batch 0A checks passed.')
+console.log('FlatDNA frontend feature-boundary checks passed.')

@@ -74,6 +74,29 @@ export interface LocationSearchResponse {
   results: LocationSearchResult[]
 }
 
+export interface FlatProjectIdentity {
+  project_id: string
+  canonical_name: string
+  developer_name: string
+  city_slug: string
+  locality_slug: string
+}
+
+export type FlatProjectSearchResponse =
+  | {
+      outcome: 'MATCHED'
+      project: FlatProjectIdentity
+      match_type: 'CANONICAL' | 'ALIAS' | 'FUZZY'
+    }
+  | {
+      outcome: 'AMBIGUOUS'
+      candidates: FlatProjectIdentity[]
+    }
+  | {
+      outcome: 'NOT_FOUND'
+      code: 'PROJECT_NOT_FOUND'
+    }
+
 export interface CustomReportLeadPayload {
   name: string
   email: string
@@ -296,6 +319,15 @@ export async function searchLocationAddress(query: string): Promise<LocationSear
   } catch {
     return null
   }
+}
+
+export async function searchFlatProjects(query: string): Promise<FlatProjectSearchResponse> {
+  const res = await fetch(
+    `${BASE_URL}/api/v1/flat/projects/search?q=${encodeURIComponent(query.trim())}`,
+    { signal: AbortSignal.timeout(15_000) },
+  )
+  if (!res.ok) throw new Error('FlatDNA project search is unavailable')
+  return (await res.json()) as FlatProjectSearchResponse
 }
 
 // ── Backend-owned area catalog ──

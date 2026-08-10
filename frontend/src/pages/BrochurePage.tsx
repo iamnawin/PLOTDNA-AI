@@ -113,7 +113,7 @@ export default function BrochurePage() {
         className="sticky top-0 z-50 flex items-center justify-between px-4 sm:px-6 h-13 glass-panel border-b border-white/5"
       >
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate('/plot')}
           className="flex items-center gap-2 text-[#666680] hover:text-[#e8e8f0] transition-colors text-sm font-sans flex-shrink-0"
         >
           <ArrowLeft size={15} />
