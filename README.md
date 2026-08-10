@@ -210,6 +210,11 @@ Do not commit API keys or downloaded Razorpay CSV files.
 
 PlotDNA currently has two layers.
 
+Database ownership and environment roles are defined in
+[`docs/database-environments.md`](docs/database-environments.md): Supabase is the one
+persistent application database; Neon is disposable integration-test infrastructure
+only.
+
 ### Curated Market Intelligence
 
 This is the strongest production layer today.

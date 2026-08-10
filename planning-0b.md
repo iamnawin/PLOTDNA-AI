@@ -6,7 +6,8 @@ Last updated: 2026-08-09
 
 ## Acceptance receipt — 2026-08-09
 
-- Disposable Neon PostgreSQL 18.4 was confirmed isolated with zero existing
+- Disposable Neon PostgreSQL 18.4 (test infrastructure only, never a FlatDNA runtime
+  database) was confirmed isolated with zero existing
   non-system tables, FlatDNA acceptance schemas, or FlatDNA functions.
 - All nine PostgreSQL integration tests executed without skips and passed twice from
   clean temporary schemas.

@@ -55,7 +55,7 @@ services:
       - key: MAX_BROCHURE_SIZE_MB
         value: "10"
 
-      # Optional providers and persistence. Leave unset until configured.
+      # Optional providers. Leave unset until configured.
       - key: TOGETHER_API_KEY
         sync: false
       - key: NVIDIA_API_KEY
@@ -66,6 +66,13 @@ services:
         sync: false
       - key: API_SETU_KEY
         sync: false
+
+      # Canonical persistent database: the shared PropertyDNA/PlotDNA/FlatDNA
+      # Supabase PostgreSQL project. Set manually in Render; never point to Neon.
+      - key: DATABASE_URL
+        sync: false
+
+      # Optional Supabase HTTP API access. Must use the same project as DATABASE_URL.
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY

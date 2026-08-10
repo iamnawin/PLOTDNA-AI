@@ -2,11 +2,17 @@
 
 FlatDNA uses explicit reviewed PostgreSQL up/down migrations. Migration 0001 is additive, creates no registry rows, and does not modify existing PlotDNA persistence.
 
+See [`docs/database-environments.md`](../../docs/database-environments.md) for the
+authoritative environment model. Production FlatDNA uses the application's existing
+`DATABASE_URL`, which points to the shared Supabase project. There is no second
+FlatDNA production database.
+
 Keep `ENABLE_FLAT_DNA=false` while applying or rolling back Batch 0B.
 
 ## Disposable PostgreSQL validation
 
-Set a SQLAlchemy PostgreSQL URL for a disposable database:
+Set `FLATDNA_TEST_DATABASE_URL` to a disposable database only. The Neon project
+`plotdna-flatdna-test` may fill this role, but it is never a runtime database:
 
 ```powershell
 $env:FLATDNA_TEST_DATABASE_URL = "postgresql+psycopg2://postgres:flatdna_test@localhost:55432/plotdna_flatdna_0b"
@@ -15,23 +21,22 @@ uv run --with-requirements requirements.txt python -m unittest tests.test_flatdn
 Pop-Location
 ```
 
-The integration test creates a unique schema, applies the up migration, verifies constraints, rolls back with the down migration, proves cleanup, and reapplies the migration. It never uses SQLite.
+The integration test creates a unique schema, applies the up migration, verifies constraints, rolls back with the down migration, proves cleanup, and reapplies the migration. It never uses SQLite. Never set this variable to the persistent Supabase project.
 
-## Manual apply and rollback
+## Production apply
 
-Apply with migration credentials and stop on the first SQL error:
+Only after separate production approval, apply with migration credentials for the
+canonical Supabase `DATABASE_URL` and stop on the first SQL error:
 
 ```powershell
 psql $env:DATABASE_URL -v ON_ERROR_STOP=1 -f backend\migrations\0001_flatdna_registry.up.sql
 ```
 
-Before rollback, keep the feature flag off and export any FlatDNA data. Migration 0001 can be rolled back directly only while no later FlatDNA migration depends on it:
-
-```powershell
-psql $env:DATABASE_URL -v ON_ERROR_STOP=1 -f backend\migrations\0001_flatdna_registry.down.sql
-```
-
-The down migration drops only the Batch 0B trigger objects and seven `flat_*` tables in reverse dependency order.
+Do not run the down migration against persistent Supabase production. Destructive
+down/reapply verification belongs only in the disposable
+`FLATDNA_TEST_DATABASE_URL` workflow above. The checked-in down migration exists for
+that test/rollback proof and drops the Batch 0B trigger objects and seven `flat_*`
+tables in reverse dependency order.
 
 ## Batch 0C curated registry
 

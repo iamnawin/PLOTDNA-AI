@@ -57,8 +57,9 @@ class Settings(BaseSettings):
     GEOCODER_BASE_URL: str = "https://nominatim.openstreetmap.org"
     GEOCODER_USER_AGENT: str = "PlotDNA/1.0 (location search)"
 
-    # Database (Supabase) — Phase 2
+    # Canonical PostgreSQL runtime (shared Supabase project for PlotDNA + FlatDNA).
     DATABASE_URL:  str = ""
+    # Supabase HTTP API access for narrow writers; same project as DATABASE_URL.
     SUPABASE_URL:  str = ""
     SUPABASE_KEY:  str = ""
 
