@@ -25,6 +25,7 @@ from app.services.flatdna.resolver import (
 
 
 MAX_AMBIGUOUS_CANDIDATES = 5
+MINIMUM_PREFIX_LENGTH = 3
 SERVICE_UNAVAILABLE_DETAIL = "FlatDNA project search is temporarily unavailable."
 
 
@@ -181,11 +182,33 @@ def _catalog_response(
     if rera_matches:
         return _results_response(rera_matches, "RERA", query.offset, query.limit)
 
+    if len(normalized_query) >= MINIMUM_PREFIX_LENGTH:
+        rera_prefix_matches = [
+            project
+            for project in projects
+            if any(
+                normalize_identity(registration_number).startswith(normalized_query)
+                for registration_number in project.rera_registration_numbers
+            )
+        ]
+        if rera_prefix_matches:
+            return _results_response(rera_prefix_matches, "RERA", query.offset, query.limit)
+
     builder_matches = [
         project
         for project in projects
         if any(
             f" {normalized_query} " in f" {label} "
+            or (
+                len(normalized_query) >= MINIMUM_PREFIX_LENGTH
+                and (
+                    label.startswith(normalized_query)
+                    or (
+                        " " not in normalized_query
+                        and any(word.startswith(normalized_query) for word in label.split())
+                    )
+                )
+            )
             for label in (
                 project.developer_normalized_name,
                 *project.developer_normalized_aliases,
@@ -199,6 +222,12 @@ def _catalog_response(
         project
         for project in projects
         if normalize_identity(project.locality_slug.replace("-", " ")) == normalized_query
+        or (
+            len(normalized_query) >= MINIMUM_PREFIX_LENGTH
+            and normalize_identity(project.locality_slug.replace("-", " ")).startswith(
+                normalized_query
+            )
+        )
     ]
     if locality_matches:
         return _results_response(locality_matches, "LOCALITY", query.offset, query.limit)
@@ -207,14 +236,32 @@ def _catalog_response(
         project
         for project in projects
         if any(
-            label == normalized_query or label.startswith(f"{normalized_query} ")
+            label == normalized_query
+            or (
+                len(normalized_query) >= MINIMUM_PREFIX_LENGTH
+                and (
+                    label.startswith(normalized_query)
+                    or (
+                        " " not in normalized_query
+                        and any(word.startswith(normalized_query) for word in label.split())
+                    )
+                )
+            )
             for label in (
                 project.normalized_name,
                 *(alias.normalized_alias for alias in project.aliases),
             )
         )
     ]
-    if len(project_matches) > 1:
+    exact_project_match = any(
+        label == normalized_query
+        for project in project_matches
+        for label in (
+            project.normalized_name,
+            *(alias.normalized_alias for alias in project.aliases),
+        )
+    )
+    if project_matches and (len(project_matches) > 1 or not exact_project_match):
         return _results_response(project_matches, "PROJECT", query.offset, query.limit)
     return None
 

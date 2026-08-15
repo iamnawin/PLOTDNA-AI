@@ -23,11 +23,16 @@ for (const copy of [
   'Current developer availability is not verified.',
   'Evidence and freshness',
   'Choose the exact project and phase.',
+  'Matches appear automatically after 3 characters.',
 ]) {
   assert.ok(page.includes(copy), `FlatDNA search UI must include: ${copy}`)
 }
 
 assert.ok(page.includes('setSelectedProject(candidate)'), 'AMBIGUOUS candidates must require an explicit user selection')
+assert.ok(page.includes('const minimumSearchLength = 3'), 'search suggestions must start after 3 characters')
+assert.ok(page.includes('const searchDebounceMs = 300'), 'automatic search must debounce typing')
+assert.ok(page.includes('latestSearchRef.current'), 'automatic search must ignore stale responses')
+assert.ok(page.includes('latestDetailRef.current'), 'a new search must ignore stale project-detail responses')
 assert.ok(page.includes('disabled={!selectedProject || detailLoading}'), 'AMBIGUOUS Continue must stay disabled until selection')
 assert.ok(api.includes('q: query.trim()'), 'search query must be safely encoded through URLSearchParams')
 assert.ok(api.includes('/api/v1/flat/projects/search?${params.toString()}'), 'search must use the existing FlatDNA API')

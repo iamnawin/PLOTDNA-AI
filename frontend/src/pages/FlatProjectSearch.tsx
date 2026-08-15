@@ -1,4 +1,4 @@
-import { useRef, useState, type FormEvent } from 'react'
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import { ArrowLeft, ArrowRight, Building2, ExternalLink, MapPin, Search, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import {
@@ -8,6 +8,10 @@ import {
   type FlatProjectIdentity,
   type FlatProjectSearchResponse,
 } from '@/lib/api'
+
+const minimumSearchLength = 3
+const searchDebounceMs = 300
+const searchPageSize = 20
 
 function formatSlug(value: string) {
   return value
@@ -141,7 +145,6 @@ function ProjectSnapshot({ project, onChange }: { project: FlatProjectDetail; on
 }
 
 export default function FlatProjectSearch() {
-  const searchPageSize = 20
   const [query, setQuery] = useState('')
   const [result, setResult] = useState<FlatProjectSearchResponse | null>(null)
   const [selectedProject, setSelectedProject] = useState<FlatProjectIdentity | null>(null)
@@ -151,10 +154,14 @@ export default function FlatProjectSearch() {
   const [detailLoading, setDetailLoading] = useState(false)
   const [detailUnavailable, setDetailUnavailable] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const debounceRef = useRef<number | null>(null)
+  const latestSearchRef = useRef(0)
+  const latestDetailRef = useRef(0)
 
-  async function loadSearch(trimmedQuery: string, offset = 0) {
-    if (!trimmedQuery || loading) return
+  const loadSearch = useCallback(async (trimmedQuery: string, offset = 0) => {
+    if (trimmedQuery.length < minimumSearchLength) return
 
+    const searchId = ++latestSearchRef.current
     setLoading(true)
     setUnavailable(false)
     setResult(null)
@@ -162,20 +169,39 @@ export default function FlatProjectSearch() {
     setProjectDetail(null)
     setDetailUnavailable(false)
     try {
-      setResult(await searchFlatProjects(trimmedQuery, offset, searchPageSize))
+      const nextResult = await searchFlatProjects(trimmedQuery, offset, searchPageSize)
+      if (searchId === latestSearchRef.current) setResult(nextResult)
     } catch {
-      setUnavailable(true)
+      if (searchId === latestSearchRef.current) setUnavailable(true)
     } finally {
-      setLoading(false)
+      if (searchId === latestSearchRef.current) setLoading(false)
     }
-  }
+  }, [])
+
+  useEffect(() => {
+    const trimmedQuery = query.trim()
+    if (trimmedQuery.length < minimumSearchLength) return
+
+    debounceRef.current = window.setTimeout(() => {
+      void loadSearch(trimmedQuery)
+    }, searchDebounceMs)
+
+    return () => {
+      if (debounceRef.current !== null) window.clearTimeout(debounceRef.current)
+    }
+  }, [loadSearch, query])
 
   async function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (debounceRef.current !== null) window.clearTimeout(debounceRef.current)
     await loadSearch(query.trim())
   }
 
   function changeSearch() {
+    latestSearchRef.current += 1
+    latestDetailRef.current += 1
+    setLoading(false)
+    setDetailLoading(false)
     setQuery('')
     setResult(null)
     setSelectedProject(null)
@@ -187,14 +213,16 @@ export default function FlatProjectSearch() {
 
   async function continueToProject(project: FlatProjectIdentity) {
     if (detailLoading) return
+    const detailId = ++latestDetailRef.current
     setDetailLoading(true)
     setDetailUnavailable(false)
     try {
-      setProjectDetail(await fetchFlatProjectDetail(project.project_id))
+      const nextProjectDetail = await fetchFlatProjectDetail(project.project_id)
+      if (detailId === latestDetailRef.current) setProjectDetail(nextProjectDetail)
     } catch {
-      setDetailUnavailable(true)
+      if (detailId === latestDetailRef.current) setDetailUnavailable(true)
     } finally {
-      setDetailLoading(false)
+      if (detailId === latestDetailRef.current) setDetailLoading(false)
     }
   }
 
@@ -235,6 +263,10 @@ export default function FlatProjectSearch() {
                 id="flat-project-search"
                 value={query}
                 onChange={event => {
+                  latestSearchRef.current += 1
+                  latestDetailRef.current += 1
+                  setLoading(false)
+                  setDetailLoading(false)
                   setQuery(event.target.value)
                   setResult(null)
                   setSelectedProject(null)
@@ -244,18 +276,24 @@ export default function FlatProjectSearch() {
                 }}
                 maxLength={160}
                 autoComplete="off"
+                aria-describedby="flat-project-search-help"
                 placeholder="Search project, builder, locality or RERA"
                 className="min-w-0 flex-1 bg-transparent py-3 text-base text-slate-50 outline-none placeholder:text-slate-400"
               />
             </div>
             <button
               type="submit"
-              disabled={!query.trim() || loading}
+              disabled={query.trim().length < minimumSearchLength || loading}
               className="min-h-12 rounded-xl bg-emerald-300 px-6 font-bold text-slate-950 transition-colors hover:bg-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300 active:translate-y-px disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400"
             >
               {loading ? 'Searching...' : 'Search'}
             </button>
           </div>
+          <p id="flat-project-search-help" className="mt-3 text-sm text-slate-400">
+            {query.trim().length > 0 && query.trim().length < minimumSearchLength
+              ? `Type ${minimumSearchLength - query.trim().length} more ${minimumSearchLength - query.trim().length === 1 ? 'character' : 'characters'} to see matches.`
+              : 'Matches appear automatically after 3 characters.'}
+          </p>
         </form>
 
         <section aria-live="polite" aria-busy={loading} className="mt-8 max-w-3xl sm:mt-10">

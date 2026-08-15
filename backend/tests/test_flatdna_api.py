@@ -309,6 +309,28 @@ class FlatDnaApiTests(unittest.TestCase):
             ["Aparna Newlands", "Aparna Sarovar Zenith"],
         )
 
+    def test_three_character_builder_prefix_returns_matching_projects(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "apa"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "BUILDER")
+        self.assertEqual(payload["total"], 4)
+
+    def test_builder_word_prefix_returns_all_matching_developers(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "con"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "BUILDER")
+        self.assertEqual(payload["total"], 6)
+
     def test_locality_search_returns_all_indexed_projects(self):
         repository = FakeRepository()
         with self.enabled(repository):
@@ -320,6 +342,17 @@ class FlatDnaApiTests(unittest.TestCase):
         self.assertEqual(payload["query_type"], "LOCALITY")
         self.assertGreaterEqual(payload["total"], 2)
         self.assertTrue(all(row["locality_slug"] == "kokapet" for row in payload["candidates"]))
+
+    def test_three_character_locality_prefix_returns_matching_projects(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "kok"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "LOCALITY")
+        self.assertGreaterEqual(payload["total"], 2)
 
     def test_builder_search_accepts_approved_developer_alias(self):
         repository = FakeRepository()
@@ -346,6 +379,41 @@ class FlatDnaApiTests(unittest.TestCase):
             ["Aparna Sarovar Zenith", "Aparna Sarovar Zicon"],
         )
 
+    def test_partial_single_project_name_returns_suggestion(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "On C"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "PROJECT")
+        self.assertEqual(payload["candidates"][0]["canonical_name"], "On Cloud 33")
+
+    def test_project_word_prefix_returns_matching_phases(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "sar"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "PROJECT")
+        self.assertEqual(
+            [candidate["canonical_name"] for candidate in payload["candidates"]],
+            ["Aparna Sarovar Zenith", "Aparna Sarovar Zicon"],
+        )
+
+    def test_exact_project_name_still_returns_a_direct_match(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "On Cloud 33"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "MATCHED")
+        self.assertEqual(payload["project"]["canonical_name"], "On Cloud 33")
+
     def test_exact_rera_number_returns_project_without_fuzzy_matching(self):
         repository = FakeRepository()
         with self.enabled(repository):
@@ -357,6 +425,17 @@ class FlatDnaApiTests(unittest.TestCase):
         self.assertEqual(payload["match_type"], "RERA")
         self.assertEqual(payload["project"]["canonical_name"], "My Home Nishada")
         self.assertEqual(payload["project"]["rera_registration_numbers"], ["P02400004696"])
+
+    def test_partial_rera_number_returns_suggestions_without_auto_selecting(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "P024"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "RERA")
+        self.assertEqual(payload["candidates"][0]["canonical_name"], "My Home Nishada")
 
     def test_search_pagination_is_bounded(self):
         repository = FakeRepository()
