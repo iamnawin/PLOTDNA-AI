@@ -1,9 +1,10 @@
-const fromEnv = (key: string): boolean => {
-  return import.meta.env[key] === "true"
+const fromEnv = (key: string, fallback = false): boolean => {
+  const value = import.meta.env[key]
+  return value === undefined ? fallback : value === "true"
 }
 
 export const featureFlags = {
-  enableFlatDna: fromEnv("VITE_ENABLE_FLAT_DNA"),
+  enableFlatDna: fromEnv("VITE_ENABLE_FLAT_DNA", import.meta.env.PROD),
   enableLandIdentityFlow: fromEnv("VITE_ENABLE_LAND_IDENTITY_FLOW"),
   enableLocationIntelligencePanel: fromEnv("VITE_ENABLE_LOCATION_INTELLIGENCE_PANEL"),
   enableSurveyResolver: fromEnv("VITE_ENABLE_SURVEY_RESOLVER"),

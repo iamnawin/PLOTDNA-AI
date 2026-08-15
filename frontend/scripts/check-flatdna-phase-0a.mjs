@@ -8,18 +8,21 @@ const read = (relativePath) => readFileSync(path.join(root, relativePath), 'utf8
 
 const features = read('src/lib/features.ts')
 assert.ok(
-  features.includes('import.meta.env[key] === "true"'),
-  'FlatDNA must reuse the exact-string feature flag parser',
+  features.includes('value === undefined ? fallback : value === "true"'),
+  'FlatDNA must preserve exact-string parsing when a flag is configured',
 )
 assert.ok(
-  features.includes('enableFlatDna: fromEnv("VITE_ENABLE_FLAT_DNA")'),
-  'enableFlatDna must map to VITE_ENABLE_FLAT_DNA',
+  features.includes('enableFlatDna: fromEnv("VITE_ENABLE_FLAT_DNA", import.meta.env.PROD)'),
+  'enableFlatDna must default on only for production builds',
 )
 
-const enabled = (value) => value === 'true'
-for (const value of [undefined, '', 'false', 'TRUE', '1', 'yes']) {
+const enabled = (value, fallback = false) => value === undefined ? fallback : value === 'true'
+for (const value of ['', 'false', 'TRUE', '1', 'yes']) {
   assert.equal(enabled(value), false, `${String(value)} must not enable FlatDNA`)
 }
+assert.equal(enabled(undefined), false, 'missing local flag must keep FlatDNA disabled')
+assert.equal(enabled(undefined, true), true, 'missing production flag must enable the released FlatDNA flow')
+assert.equal(enabled('false', true), false, 'explicit false must remain the production rollback')
 assert.equal(enabled('true'), true, 'the exact literal true must enable FlatDNA')
 
 const envExample = read('.env.example')
