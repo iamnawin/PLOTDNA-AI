@@ -93,6 +93,14 @@ class FlatDnaRegistryDataTests(unittest.TestCase):
     def test_fixture_passes_launch_validation(self):
         self.assertEqual(validate_hyderabad_launch_registry(self.bundle), [])
 
+    def test_fixture_does_not_publish_retired_telangana_rera_links(self):
+        regulator_sources = [
+            source for source in self.bundle.evidence_sources
+            if source.publisher == "Telangana RERA"
+        ]
+        self.assertEqual(len(regulator_sources), 14)
+        self.assertTrue(all(source.url == "https://rera.telangana.gov.in/" for source in regulator_sources))
+
     def test_unsafe_source_invalid_locality_and_evidence_mismatch_are_rejected(self):
         unsafe = deepcopy(self.bundle)
         unsafe.evidence_sources[0].data_origin = DataOrigin.SYNTHETIC

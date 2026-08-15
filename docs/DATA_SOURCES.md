@@ -16,7 +16,7 @@
 
 | Source | Data | URL | Access |
 |---|---|---|---|
-| TSRERA | Telangana RERA projects | `rera.telangana.gov.in` | Scraping |
+| TG RERA | Telangana RERA projects | `rera.telangana.gov.in` | Permissioned export/feed preferred; manual verification fallback |
 | HMDA | Hyderabad zone maps | `hmda.gov.in` | PDF + scraping |
 | Karnataka Stamps & Registration | Registration department surface | `revenue.karnataka.gov.in` | Official portal |
 | Kaveri Online | Encumbrance and registration workflows | `kaverionline.karnataka.gov.in` | Official portal |

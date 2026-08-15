@@ -144,6 +144,9 @@ class FlatDnaApiPostgresTests(unittest.TestCase):
         self.assertEqual(payload["location_precision"], project.location_precision.value)
         self.assertEqual(len(payload["rera_references"]), 1)
         self.assertEqual(payload["rera_references"][0]["reference_status"], "VERIFIED")
+        self.assertGreaterEqual(len(payload["sources"]), 1)
+        self.assertTrue(all(source["publisher"] for source in payload["sources"]))
+        self.assertTrue(all(source["retrieved_at"] for source in payload["sources"]))
 
 
 if __name__ == "__main__":

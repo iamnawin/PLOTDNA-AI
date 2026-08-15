@@ -1,3 +1,4 @@
+from datetime import datetime
 from functools import lru_cache
 from typing import Annotated, Literal
 from uuid import UUID
@@ -29,6 +30,8 @@ SERVICE_UNAVAILABLE_DETAIL = "FlatDNA project search is temporarily unavailable.
 
 class FlatProjectSearchQuery(BaseModel):
     q: str = Field(min_length=1, max_length=MAX_QUERY_LENGTH)
+    offset: int = Field(default=0, ge=0)
+    limit: int = Field(default=20, ge=1, le=50)
 
     @field_validator("q", mode="before")
     @classmethod
@@ -49,6 +52,7 @@ class FlatProjectIdentity(BaseModel):
     developer_name: str
     city_slug: str
     locality_slug: str
+    rera_registration_numbers: list[str]
 
 
 class FlatReraReference(BaseModel):
@@ -57,11 +61,22 @@ class FlatReraReference(BaseModel):
     reference_status: Literal["RECORDED", "VERIFIED", "REVIEW_REQUIRED"]
 
 
+class FlatProjectSource(BaseModel):
+    source_class: Literal[
+        "OFFICIAL_PROJECT", "OFFICIAL_REGULATOR", "BUILDER_PUBLISHED", "CURATED_REFERENCE"
+    ]
+    publisher: str
+    title: str | None
+    url: str | None
+    retrieved_at: datetime
+
+
 class FlatProjectDetail(FlatProjectIdentity):
     latitude: float | None
     longitude: float | None
     location_precision: Literal["ENTRANCE", "PROJECT_CENTROID", "APPROXIMATE", "UNKNOWN"]
     rera_references: list[FlatReraReference]
+    sources: list[FlatProjectSource]
 
 
 class FlatDnaStatus(BaseModel):
@@ -74,7 +89,16 @@ class FlatDnaStatus(BaseModel):
 class FlatProjectMatchedResponse(BaseModel):
     outcome: Literal["MATCHED"] = "MATCHED"
     project: FlatProjectIdentity
-    match_type: Literal["CANONICAL", "ALIAS", "FUZZY"]
+    match_type: Literal["CANONICAL", "ALIAS", "FUZZY", "RERA"]
+
+
+class FlatProjectResultsResponse(BaseModel):
+    outcome: Literal["RESULTS"] = "RESULTS"
+    query_type: Literal["BUILDER", "LOCALITY", "PROJECT", "RERA"]
+    candidates: list[FlatProjectIdentity]
+    total: int
+    offset: int
+    limit: int
 
 
 class FlatProjectAmbiguousResponse(BaseModel):
@@ -88,7 +112,10 @@ class FlatProjectNotFoundResponse(BaseModel):
 
 
 FlatProjectSearchResponse = Annotated[
-    FlatProjectMatchedResponse | FlatProjectAmbiguousResponse | FlatProjectNotFoundResponse,
+    FlatProjectMatchedResponse
+    | FlatProjectResultsResponse
+    | FlatProjectAmbiguousResponse
+    | FlatProjectNotFoundResponse,
     Field(discriminator="outcome"),
 ]
 
@@ -113,7 +140,83 @@ def _project_identity(project: ProjectIdentity) -> FlatProjectIdentity:
         developer_name=project.developer_name,
         city_slug=project.city_slug,
         locality_slug=project.locality_slug,
+        rera_registration_numbers=list(project.rera_registration_numbers),
     )
+
+
+def _results_response(
+    projects: list[ProjectIdentity],
+    query_type: Literal["BUILDER", "LOCALITY", "PROJECT", "RERA"],
+    offset: int,
+    limit: int,
+) -> FlatProjectResultsResponse:
+    return FlatProjectResultsResponse(
+        query_type=query_type,
+        candidates=[_project_identity(project) for project in projects[offset:offset + limit]],
+        total=len(projects),
+        offset=offset,
+        limit=limit,
+    )
+
+
+def _catalog_response(
+    query: FlatProjectSearchQuery,
+    projects: tuple[ProjectIdentity, ...],
+) -> FlatProjectSearchResponse | None:
+    normalized_query = normalize_identity(query.q)
+
+    rera_matches = [
+        project
+        for project in projects
+        if any(
+            normalize_identity(registration_number) == normalized_query
+            for registration_number in project.rera_registration_numbers
+        )
+    ]
+    if len(rera_matches) == 1:
+        return FlatProjectMatchedResponse(
+            project=_project_identity(rera_matches[0]),
+            match_type="RERA",
+        )
+    if rera_matches:
+        return _results_response(rera_matches, "RERA", query.offset, query.limit)
+
+    builder_matches = [
+        project
+        for project in projects
+        if any(
+            f" {normalized_query} " in f" {label} "
+            for label in (
+                project.developer_normalized_name,
+                *project.developer_normalized_aliases,
+            )
+        )
+    ]
+    if builder_matches:
+        return _results_response(builder_matches, "BUILDER", query.offset, query.limit)
+
+    locality_matches = [
+        project
+        for project in projects
+        if normalize_identity(project.locality_slug.replace("-", " ")) == normalized_query
+    ]
+    if locality_matches:
+        return _results_response(locality_matches, "LOCALITY", query.offset, query.limit)
+
+    project_matches = [
+        project
+        for project in projects
+        if any(
+            label == normalized_query or label.startswith(f"{normalized_query} ")
+            for label in (
+                project.normalized_name,
+                *(alias.normalized_alias for alias in project.aliases),
+            )
+        )
+    ]
+    if len(project_matches) > 1:
+        return _results_response(project_matches, "PROJECT", query.offset, query.limit)
+    return None
 
 
 def _search_response(result: ResolverResult) -> FlatProjectSearchResponse:
@@ -172,6 +275,9 @@ def search_flatdna_projects(
         ) from exc
 
     projects = project_identities_from_rows(rows)
+    catalog_response = _catalog_response(query, projects)
+    if catalog_response is not None:
+        return catalog_response
     return _search_response(resolve_project(query.q, projects))
 
 
@@ -183,6 +289,7 @@ def get_flatdna_project(project_id: UUID) -> FlatProjectDetail:
         if project is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
         rera_references = repository.list_supported_project_rera_references(project_id)
+        sources = repository.list_supported_project_sources(project_id)
     except HTTPException:
         raise
     except (FlatDnaDatabaseConfigurationError, SQLAlchemyError) as exc:
@@ -197,8 +304,12 @@ def get_flatdna_project(project_id: UUID) -> FlatProjectDetail:
         developer_name=project["developer_name"],
         city_slug=project["city_slug"],
         locality_slug=project["locality_slug"],
+        rera_registration_numbers=[
+            reference["registration_number"] for reference in rera_references
+        ],
         latitude=project["latitude"],
         longitude=project["longitude"],
         location_precision=project["location_precision"],
         rera_references=[FlatReraReference.model_validate(reference) for reference in rera_references],
+        sources=[FlatProjectSource.model_validate(source) for source in sources],
     )

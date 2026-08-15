@@ -39,6 +39,8 @@ class ProjectIdentity:
     city_slug: str
     locality_slug: str
     aliases: tuple[ProjectAliasIdentity, ...] = ()
+    developer_normalized_aliases: tuple[str, ...] = ()
+    rera_registration_numbers: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -81,6 +83,8 @@ def project_identities_from_rows(rows: Iterable[dict[str, Any]]) -> tuple[Projec
                 "city_slug": row["city_slug"],
                 "locality_slug": row["locality_slug"],
                 "aliases": {},
+                "developer_normalized_aliases": set(),
+                "rera_registration_numbers": set(),
             },
         )
         if row.get("alias_id") is not None:
@@ -91,6 +95,10 @@ def project_identities_from_rows(rows: Iterable[dict[str, Any]]) -> tuple[Projec
                 normalized_alias=row["normalized_alias"],
                 alias_type=row["alias_type"],
             )
+        if row.get("registration_number"):
+            project["rera_registration_numbers"].add(row["registration_number"])
+        if row.get("developer_normalized_alias"):
+            project["developer_normalized_aliases"].add(row["developer_normalized_alias"])
 
     identities = []
     for project in grouped.values():
@@ -100,7 +108,18 @@ def project_identities_from_rows(rows: Iterable[dict[str, Any]]) -> tuple[Projec
                 key=lambda alias: (alias.normalized_alias, str(alias.id)),
             )
         )
-        identities.append(ProjectIdentity(**project, aliases=aliases))
+        rera_registration_numbers = tuple(sorted(project.pop("rera_registration_numbers")))
+        developer_normalized_aliases = tuple(
+            sorted(project.pop("developer_normalized_aliases"))
+        )
+        identities.append(
+            ProjectIdentity(
+                **project,
+                aliases=aliases,
+                developer_normalized_aliases=developer_normalized_aliases,
+                rera_registration_numbers=rera_registration_numbers,
+            )
+        )
     return tuple(sorted(identities, key=lambda item: (item.normalized_name, str(item.project_id))))
 
 

@@ -26,6 +26,8 @@ class FlatProjectRepository(Protocol):
 
     def list_supported_project_rera_references(self, project_id: UUID) -> list[dict[str, Any]]: ...
 
+    def list_supported_project_sources(self, project_id: UUID) -> list[dict[str, Any]]: ...
+
     def list_supported_projects(self, city_slug: str) -> list[dict[str, Any]]: ...
 
     def list_supported_project_identity_rows(self, city_slug: str) -> list[dict[str, Any]]: ...
@@ -90,6 +92,37 @@ class PostgresFlatProjectRepository:
             rows = connection.execute(query, {"project_id": str(project_id)}).mappings().all()
         return [dict(row) for row in rows]
 
+    def list_supported_project_sources(self, project_id: UUID) -> list[dict[str, Any]]:
+        query = text(
+            """
+            SELECT DISTINCT source.source_class,
+                   source.publisher,
+                   source.title,
+                   source.url,
+                   source.retrieved_at
+            FROM flat_projects project
+            JOIN flat_developers developer ON developer.id = project.developer_id
+            JOIN flat_claim_evidence claim
+              ON claim.project_id = project.id
+              OR claim.rera_reference_id IN (
+                  SELECT rera.id
+                  FROM flat_rera_references rera
+                  WHERE rera.project_id = project.id
+                    AND rera.reference_status <> 'SUPERSEDED'
+              )
+            JOIN flat_evidence_sources source ON source.id = claim.evidence_source_id
+            WHERE project.id = :project_id
+              AND project.registry_status = 'SUPPORTED'
+              AND developer.registry_status <> 'INACTIVE'
+              AND claim.review_status = 'APPROVED'
+              AND source.source_status = 'ACTIVE'
+            ORDER BY source.source_class, source.publisher, source.retrieved_at DESC, source.url
+            """
+        )
+        with self._engine.connect() as connection:
+            rows = connection.execute(query, {"project_id": str(project_id)}).mappings().all()
+        return [dict(row) for row in rows]
+
     def list_supported_project_identity_rows(self, city_slug: str) -> list[dict[str, Any]]:
         query = text(
             """
@@ -101,19 +134,30 @@ class PostgresFlatProjectRepository:
                    project.locality_slug,
                    developer.canonical_name AS developer_name,
                    developer.normalized_name AS developer_normalized_name,
+                   developer_alias.normalized_alias AS developer_normalized_alias,
                    alias.id AS alias_id,
                    alias.alias,
                    alias.normalized_alias,
-                   alias.alias_type
+                   alias.alias_type,
+                   rera.registration_number,
+                   rera.normalized_registration_number
             FROM flat_projects project
             JOIN flat_developers developer ON developer.id = project.developer_id
+            LEFT JOIN flat_developer_aliases developer_alias
+              ON developer_alias.developer_id = developer.id
+             AND developer_alias.active = true
             LEFT JOIN flat_project_aliases alias
               ON alias.project_id = project.id
              AND alias.active = true
+            LEFT JOIN flat_rera_references rera
+              ON rera.project_id = project.id
+             AND rera.reference_status <> 'SUPERSEDED'
             WHERE project.city_slug = :city_slug
               AND project.registry_status = 'SUPPORTED'
               AND developer.registry_status <> 'INACTIVE'
-            ORDER BY project.normalized_name, project.id, alias.normalized_alias, alias.id
+            ORDER BY project.normalized_name, project.id, alias.normalized_alias, alias.id,
+                     rera.normalized_registration_number, rera.id,
+                     developer_alias.normalized_alias, developer_alias.id
             """
         )
         with self._engine.connect() as connection:

@@ -1,0 +1,503 @@
+{
+  "schema_version": 1,
+  "parser_version": "aprera-quarterly-v1",
+  "source": {
+    "publisher": "Andhra Pradesh RERA",
+    "url": "https://rera.ap.gov.in/RERA/DOCUMENTS/Notice/QU%20Status%20Report.pdf",
+    "retrieved_at": "2026-08-15T16:19:34+05:30",
+    "content_sha256": "76c633971e763a48efe0e4e1b75d76b8a139e9c4b99a5704f5b3614f34368a1b"
+  },
+  "record_count": 10,
+  "records": [
+    {
+      "project_id": "P02280150024",
+      "project_name": "SATYA ANNAPURNA HEIGHTS",
+      "approval_date": "01/08/2018",
+      "validity_date": "31/08/2020",
+      "project_type": "Residential",
+      "units": 15,
+      "total_area_as_reported": "685.53",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2021-22": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2022-23": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        }
+      },
+      "closure_applied": "N",
+      "status": "-"
+    },
+    {
+      "project_id": "P07120040025",
+      "project_name": "MID VALLEY CITY",
+      "approval_date": "01/08/2018",
+      "validity_date": "21/08/2021",
+      "project_type": "Residential",
+      "units": 652,
+      "total_area_as_reported": "26863.42",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2021-22": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "Y"
+        },
+        "2022-23": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "Y",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        }
+      },
+      "closure_applied": "Y",
+      "status": "Forward to Promoter(Shortfall)"
+    },
+    {
+      "project_id": "P06180020050",
+      "project_name": "SREE RAMJI INFRATECH",
+      "approval_date": "01/11/2018",
+      "validity_date": "30/09/2019",
+      "project_type": "Residential",
+      "units": null,
+      "total_area_as_reported": "1635.18",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2021-22": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "Y",
+          "Q4": "Y"
+        },
+        "2022-23": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        }
+      },
+      "closure_applied": "Y",
+      "status": "Exempted From Submission of QU"
+    },
+    {
+      "project_id": "P07110030052",
+      "project_name": "ROHAN'S PRIDE",
+      "approval_date": "01/11/2018",
+      "validity_date": "28/02/2021",
+      "project_type": "Residential",
+      "units": null,
+      "total_area_as_reported": "5063.19",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2021-22": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "Y",
+          "Q4": "Y"
+        },
+        "2022-23": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        }
+      },
+      "closure_applied": "Y",
+      "status": "Exempted From Submission of QU"
+    },
+    {
+      "project_id": "P07090109999",
+      "project_name": "HAPPY NEST",
+      "approval_date": "01/11/2018",
+      "validity_date": "30/12/2022",
+      "project_type": "Residential",
+      "units": 600,
+      "total_area_as_reported": "29542.1",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2021-22": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "Y"
+        },
+        "2022-23": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "Y"
+        }
+      },
+      "closure_applied": "N",
+      "status": "-"
+    },
+    {
+      "project_id": "P03290010051",
+      "project_name": "SISIR MIDHILAPURI",
+      "approval_date": "01/11/2018",
+      "validity_date": "20/10/2019",
+      "project_type": "Residential",
+      "units": 10,
+      "total_area_as_reported": "630.13",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "Y"
+        },
+        "2021-22": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2022-23": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "Y"
+        }
+      },
+      "closure_applied": "Y",
+      "status": "Under Process"
+    },
+    {
+      "project_id": "P03290190071",
+      "project_name": "ABHIRAMS BLUE BAY TOWERS",
+      "approval_date": "01/12/2018",
+      "validity_date": "26/10/2020",
+      "project_type": "Residential",
+      "units": null,
+      "total_area_as_reported": "3183.98",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "Y"
+        },
+        "2021-22": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "Y"
+        },
+        "2022-23": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        }
+      },
+      "closure_applied": "Y",
+      "status": "Exempted From Submission of QU"
+    },
+    {
+      "project_id": "P04290040081",
+      "project_name": "KRISHNA LEELA RESIDENCY",
+      "approval_date": "01/12/2018",
+      "validity_date": "06/02/2021",
+      "project_type": "Residential",
+      "units": null,
+      "total_area_as_reported": "891.57",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "N",
+          "Q4": "Y"
+        },
+        "2021-22": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2022-23": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        }
+      },
+      "closure_applied": "Y",
+      "status": "Exempted From Submission of QU"
+    },
+    {
+      "project_id": "P03290020078",
+      "project_name": "SRI LALITHA RESIDENCY",
+      "approval_date": "01/12/2018",
+      "validity_date": "31/10/2020",
+      "project_type": "Residential",
+      "units": 15,
+      "total_area_as_reported": "585.29",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "N"
+        },
+        "2021-22": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2022-23": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "Y",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        }
+      },
+      "closure_applied": "Y",
+      "status": "Forward to Promoter(Shortfall)"
+    },
+    {
+      "project_id": "P07260060080",
+      "project_name": "PANCHAJANYA",
+      "approval_date": "01/12/2018",
+      "validity_date": "31/03/2020",
+      "project_type": "Residential",
+      "units": null,
+      "total_area_as_reported": "712.19",
+      "quarterly_updates": {
+        "2019-20": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2020-21": {
+          "Q1": "N",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "Y"
+        },
+        "2021-22": {
+          "Q1": "Y",
+          "Q2": "Y",
+          "Q3": "Y",
+          "Q4": "Y"
+        },
+        "2022-23": {
+          "Q1": "Y",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2023-24": {
+          "Q1": "Y",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        },
+        "2024-25": {
+          "Q1": "N",
+          "Q2": "N",
+          "Q3": "N",
+          "Q4": "N"
+        }
+      },
+      "closure_applied": "Y",
+      "status": "Exempted From Submission of QU"
+    }
+  ]
+}

@@ -71,9 +71,9 @@ def verify_rera_registration(request: ReraVerificationRequest) -> ReraVerificati
             status="manual_verification_required",
             project_name=request.project_name,
             promoter_name=request.promoter_name,
-            official_source_url="https://rerait.telangana.gov.in/SearchList/Search",
+            official_source_url="https://rera.telangana.gov.in/",
             warnings=[
-                "Telangana RERA public search is captcha-protected; verify this registration on the official portal.",
+                "Use the official Telangana RERA portal to manually verify this registration; no approved automated feed is configured.",
             ],
             confidence=0.25,
             last_checked_at=_now_iso(),

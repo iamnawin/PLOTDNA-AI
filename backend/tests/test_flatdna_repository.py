@@ -118,11 +118,16 @@ class FlatDnaRepositoryTests(unittest.TestCase):
         self.assertEqual(repository.list_supported_project_identity_rows(" Hyderabad "), [])
         statement, parameters = engine.connection.executions[0]
         self.assertIn("LEFT JOIN flat_project_aliases alias", statement)
+        self.assertIn("LEFT JOIN flat_developer_aliases developer_alias", statement)
+        self.assertIn("developer_alias.active = true", statement)
         self.assertIn("alias.active = true", statement)
+        self.assertIn("LEFT JOIN flat_rera_references rera", statement)
+        self.assertIn("rera.reference_status <> 'SUPERSEDED'", statement)
+        self.assertIn("rera.registration_number", statement)
         self.assertIn("project.registry_status = 'SUPPORTED'", statement)
         self.assertIn("developer.registry_status <> 'INACTIVE'", statement)
         self.assertIn(
-            "ORDER BY project.normalized_name, project.id, alias.normalized_alias, alias.id",
+            "ORDER BY project.normalized_name, project.id, alias.normalized_alias, alias.id, rera.normalized_registration_number, rera.id, developer_alias.normalized_alias, developer_alias.id",
             " ".join(statement.split()),
         )
         self.assertEqual(parameters, {"city_slug": "hyderabad"})
@@ -140,6 +145,20 @@ class FlatDnaRepositoryTests(unittest.TestCase):
         self.assertIn("project.registry_status = 'SUPPORTED'", statement)
         self.assertIn("rera.reference_status <> 'SUPERSEDED'", statement)
         self.assertIn("developer.registry_status <> 'INACTIVE'", statement)
+
+    def test_project_sources_are_approved_active_and_supported_only(self):
+        engine = _FakeEngine()
+        repository = PostgresFlatProjectRepository(engine)
+        self.assertEqual(
+            repository.list_supported_project_sources(make_supported_bundle().projects[0].id),
+            [],
+        )
+        statement = engine.connection.executions[0][0]
+        self.assertIn("claim.review_status = 'APPROVED'", statement)
+        self.assertIn("source.source_status = 'ACTIVE'", statement)
+        self.assertIn("project.registry_status = 'SUPPORTED'", statement)
+        self.assertIn("rera.project_id = project.id", statement)
+        self.assertIn("rera.reference_status <> 'SUPERSEDED'", statement)
 
 
 if __name__ == "__main__":

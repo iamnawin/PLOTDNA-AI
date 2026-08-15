@@ -1,5 +1,6 @@
 import unittest
 from contextlib import contextmanager
+from datetime import datetime, timezone
 from decimal import Decimal
 from pathlib import Path
 from unittest.mock import patch
@@ -31,19 +32,34 @@ def identity_rows():
                     "developer_id": project.developer_id,
                     "developer_name": project.developer_name,
                     "developer_normalized_name": project.developer_normalized_name,
+                    "developer_normalized_alias": (
+                        "aparna group"
+                        if project.developer_name == "Aparna Constructions"
+                        else None
+                    ),
                     "city_slug": project.city_slug,
                     "locality_slug": project.locality_slug,
                     "alias_id": alias.id if alias else None,
                     "alias": alias.alias if alias else None,
                     "normalized_alias": alias.normalized_alias if alias else None,
                     "alias_type": alias.alias_type if alias else None,
+                    "registration_number": (
+                        "P02400004696"
+                        if project.canonical_name == "My Home Nishada"
+                        else None
+                    ),
+                    "normalized_registration_number": (
+                        "p02400004696"
+                        if project.canonical_name == "My Home Nishada"
+                        else None
+                    ),
                 }
             )
     return rows
 
 
 class FakeRepository:
-    def __init__(self, rows=None, error=None, projects=None, rera_references=None):
+    def __init__(self, rows=None, error=None, projects=None, rera_references=None, sources=None):
         self.rows = identity_rows() if rows is None else rows
         self.error = error
         self.calls = []
@@ -64,6 +80,15 @@ class FakeRepository:
                 "authority_code": "TSRERA",
                 "registration_number": "P02400004696",
                 "reference_status": "VERIFIED",
+            }
+        ]
+        self.sources = sources if sources is not None else [
+            {
+                "source_class": "OFFICIAL_REGULATOR",
+                "publisher": "Telangana RERA",
+                "title": "Registered project record",
+                "url": "https://rera.telangana.gov.in/",
+                "retrieved_at": datetime(2026, 8, 9, tzinfo=timezone.utc),
             }
         ]
 
@@ -90,6 +115,12 @@ class FakeRepository:
         if self.error:
             raise self.error
         return self.rera_references
+
+    def list_supported_project_sources(self, project_id):
+        self.calls.append(project_id)
+        if self.error:
+            raise self.error
+        return self.sources
 
 
 class FlatDnaApiTests(unittest.TestCase):
@@ -151,6 +182,7 @@ class FlatDnaApiTests(unittest.TestCase):
                 "developer_name": "My Home Constructions",
                 "city_slug": "hyderabad",
                 "locality_slug": "kokapet",
+                "rera_registration_numbers": ["P02400004696"],
                 "latitude": 17.4057,
                 "longitude": 78.308357,
                 "location_precision": "PROJECT_CENTROID",
@@ -159,6 +191,15 @@ class FlatDnaApiTests(unittest.TestCase):
                         "authority_code": "TSRERA",
                         "registration_number": "P02400004696",
                         "reference_status": "VERIFIED",
+                    }
+                ],
+                "sources": [
+                    {
+                        "source_class": "OFFICIAL_REGULATOR",
+                        "publisher": "Telangana RERA",
+                        "title": "Registered project record",
+                        "url": "https://rera.telangana.gov.in/",
+                        "retrieved_at": "2026-08-09T00:00:00Z",
                     }
                 ],
             },
@@ -212,7 +253,10 @@ class FlatDnaApiTests(unittest.TestCase):
                     self.assertEqual(payload["match_type"], match_type)
                     self.assertEqual(
                         set(payload["project"]),
-                        {"project_id", "canonical_name", "developer_name", "city_slug", "locality_slug"},
+                        {
+                            "project_id", "canonical_name", "developer_name", "city_slug",
+                            "locality_slug", "rera_registration_numbers",
+                        },
                     )
                     self.assertNotIn("score", payload)
                     self.assertNotIn("reason", payload)
@@ -230,7 +274,7 @@ class FlatDnaApiTests(unittest.TestCase):
         self.assertEqual(matched.json()["project"]["project_id"], "421c032d-37c5-4e88-8c18-3b1185ac825f")
         self.assertEqual(unicode_query.status_code, 200)
 
-    def test_ambiguous_preserves_resolver_order_and_does_not_select(self):
+    def test_project_family_returns_ordered_results_and_does_not_select(self):
         repository = FakeRepository()
         with self.enabled(repository):
             response = self.client.get(
@@ -238,12 +282,97 @@ class FlatDnaApiTests(unittest.TestCase):
             )
         self.assertEqual(response.status_code, 200)
         payload = response.json()
-        self.assertEqual(payload["outcome"], "AMBIGUOUS")
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "PROJECT")
         self.assertEqual(
             [candidate["canonical_name"] for candidate in payload["candidates"][:2]],
-            ["Aparna Sarovar Zicon", "Aparna Sarovar Zenith"],
+            ["Aparna Sarovar Zenith", "Aparna Sarovar Zicon"],
         )
         self.assertNotIn("project", payload)
+
+    def test_builder_search_returns_every_indexed_project_with_pagination(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search",
+                params={"q": "Aparna", "offset": 1, "limit": 2},
+            )
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "BUILDER")
+        self.assertEqual(payload["total"], 4)
+        self.assertEqual(payload["offset"], 1)
+        self.assertEqual(payload["limit"], 2)
+        self.assertEqual(
+            [candidate["canonical_name"] for candidate in payload["candidates"]],
+            ["Aparna Newlands", "Aparna Sarovar Zenith"],
+        )
+
+    def test_locality_search_returns_all_indexed_projects(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "Kokapet"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "LOCALITY")
+        self.assertGreaterEqual(payload["total"], 2)
+        self.assertTrue(all(row["locality_slug"] == "kokapet" for row in payload["candidates"]))
+
+    def test_builder_search_accepts_approved_developer_alias(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "Aparna Group"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "BUILDER")
+        self.assertEqual(payload["total"], 4)
+
+    def test_project_family_search_returns_all_indexed_phases(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "Aparna Sarovar"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "RESULTS")
+        self.assertEqual(payload["query_type"], "PROJECT")
+        self.assertEqual(
+            [candidate["canonical_name"] for candidate in payload["candidates"]],
+            ["Aparna Sarovar Zenith", "Aparna Sarovar Zicon"],
+        )
+
+    def test_exact_rera_number_returns_project_without_fuzzy_matching(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            response = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "P02400004696"}
+            )
+        payload = response.json()
+        self.assertEqual(payload["outcome"], "MATCHED")
+        self.assertEqual(payload["match_type"], "RERA")
+        self.assertEqual(payload["project"]["canonical_name"], "My Home Nishada")
+        self.assertEqual(payload["project"]["rera_registration_numbers"], ["P02400004696"])
+
+    def test_search_pagination_is_bounded(self):
+        repository = FakeRepository()
+        with self.enabled(repository):
+            zero = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "Aparna", "limit": 0}
+            )
+            too_large = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "Aparna", "limit": 51}
+            )
+            negative = self.client.get(
+                "/api/v1/flat/projects/search", params={"q": "Aparna", "offset": -1}
+            )
+        self.assertEqual(zero.status_code, 422)
+        self.assertEqual(too_large.status_code, 422)
+        self.assertEqual(negative.status_code, 422)
 
     def test_ambiguous_candidates_are_capped_at_five_without_reordering(self):
         projects = fixture_projects()[:6]
@@ -263,7 +392,7 @@ class FlatDnaApiTests(unittest.TestCase):
     def test_not_found_is_a_200_domain_outcome(self):
         repository = FakeRepository()
         with self.enabled(repository):
-            for query in ("Unknown Heights", "Prestige High Fields", "Rajapushpa", "Gachibowli"):
+            for query in ("Unknown Heights", "Prestige High Fields", "Gachibowli"):
                 with self.subTest(query=query):
                     response = self.client.get("/api/v1/flat/projects/search", params={"q": query})
                     self.assertEqual(response.status_code, 200)

@@ -80,6 +80,7 @@ export interface FlatProjectIdentity {
   developer_name: string
   city_slug: string
   locality_slug: string
+  rera_registration_numbers: string[]
 }
 
 export interface FlatReraReference {
@@ -88,18 +89,35 @@ export interface FlatReraReference {
   reference_status: 'RECORDED' | 'VERIFIED' | 'REVIEW_REQUIRED'
 }
 
+export interface FlatProjectSource {
+  source_class: 'OFFICIAL_PROJECT' | 'OFFICIAL_REGULATOR' | 'BUILDER_PUBLISHED' | 'CURATED_REFERENCE'
+  publisher: string
+  title: string | null
+  url: string | null
+  retrieved_at: string
+}
+
 export interface FlatProjectDetail extends FlatProjectIdentity {
   latitude: number | null
   longitude: number | null
   location_precision: 'ENTRANCE' | 'PROJECT_CENTROID' | 'APPROXIMATE' | 'UNKNOWN'
   rera_references: FlatReraReference[]
+  sources: FlatProjectSource[]
 }
 
 export type FlatProjectSearchResponse =
   | {
       outcome: 'MATCHED'
       project: FlatProjectIdentity
-      match_type: 'CANONICAL' | 'ALIAS' | 'FUZZY'
+      match_type: 'CANONICAL' | 'ALIAS' | 'FUZZY' | 'RERA'
+    }
+  | {
+      outcome: 'RESULTS'
+      query_type: 'BUILDER' | 'LOCALITY' | 'PROJECT' | 'RERA'
+      candidates: FlatProjectIdentity[]
+      total: number
+      offset: number
+      limit: number
     }
   | {
       outcome: 'AMBIGUOUS'
@@ -334,9 +352,18 @@ export async function searchLocationAddress(query: string): Promise<LocationSear
   }
 }
 
-export async function searchFlatProjects(query: string): Promise<FlatProjectSearchResponse> {
+export async function searchFlatProjects(
+  query: string,
+  offset = 0,
+  limit = 20,
+): Promise<FlatProjectSearchResponse> {
+  const params = new URLSearchParams({
+    q: query.trim(),
+    offset: String(offset),
+    limit: String(limit),
+  })
   const res = await fetch(
-    `${BASE_URL}/api/v1/flat/projects/search?q=${encodeURIComponent(query.trim())}`,
+    `${BASE_URL}/api/v1/flat/projects/search?${params.toString()}`,
     { signal: AbortSignal.timeout(15_000) },
   )
   if (!res.ok) throw new Error('FlatDNA project search is unavailable')

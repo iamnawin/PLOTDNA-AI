@@ -8,7 +8,7 @@ from app.services.rera_verification import ReraVerificationRequest, verify_rera_
 
 
 class ReraVerificationServiceTests(unittest.TestCase):
-    def test_telangana_returns_manual_verification_for_captcha_protected_search(self):
+    def test_telangana_returns_manual_verification_for_official_portal(self):
         result = verify_rera_registration(
             ReraVerificationRequest(
                 state="Telangana",
@@ -20,9 +20,9 @@ class ReraVerificationServiceTests(unittest.TestCase):
         self.assertEqual(result.state, "telangana")
         self.assertEqual(result.registration_number, "P02400001234")
         self.assertEqual(result.status, "manual_verification_required")
-        self.assertIn("rerait.telangana.gov.in/SearchList/Search", result.official_source_url)
+        self.assertEqual(result.official_source_url, "https://rera.telangana.gov.in/")
         self.assertEqual(result.confidence, 0.25)
-        self.assertTrue(any("captcha" in warning.lower() for warning in result.warnings))
+        self.assertTrue(any("manual" in warning.lower() for warning in result.warnings))
         self.assertIn("does not by itself verify land title", result.disclaimer)
 
     def test_unknown_state_is_source_unavailable_with_warning(self):

@@ -19,20 +19,19 @@ Useful official references:
 
 Official portals:
 
-- Public authority site: `https://rera.telangana.gov.in/Home/Index`
-- Search registered projects and agents: `https://rerait.telangana.gov.in/SearchList/Search`
+- Public authority site: `https://rera.telangana.gov.in/`
+- The retired `https://rerait.telangana.gov.in/SearchList/Search` endpoint returned HTTP 404 on 2026-08-15 and must not be published or used for verification.
 
 Observed access:
 
 - The public authority site links to "Search Registered Projects and Agents".
-- The search page includes fields for project name, promoter name, registration/certificate number, district, taluka, village, project type, proposed completion date, and survey number.
-- The search page includes a captcha before search submission.
+- The replacement portal publishes registered-project and project-progress entry points, but FlatDNA does not yet have a permissioned project-directory or QPR feed.
 - The search page exposes supporting AJAX endpoints for location dropdowns, such as `/SearchList/GetDistrict`, `/SearchList/GetTaluka`, and `/SearchList/GetVillage`.
-- Because captcha protects record search, backend automation must not depend on blind scraping as the primary path for public beta.
+- Backend automation must not depend on blind portal scraping as the primary path for public release.
 
 Product implication:
 
-- For beta, Telangana should support manual RERA-number verification by opening/deep-linking the official portal and storing user-entered evidence only when available.
+- For beta, Telangana should support manual RERA-number verification by opening the official portal and storing reviewed evidence only when available.
 - If we later obtain a permitted data feed or exported official dataset, replace the current synthetic `backend/app/services/tsrera_scraper.py` seed data with verified records.
 - The existing synthetic TSRERA project cache must not be presented as official RERA verification.
 
@@ -73,6 +72,15 @@ Do not score a property as "safe" only because a RERA number exists. Score the n
 - registration/validity/completion status, if available
 - quarterly-update compliance, if available
 - phase/tower/survey-number match, if available
+
+## Production data spike gate (2026-08-15)
+
+The 25-project Telangana/AP spike must not be populated by copying search snippets or bypassing portal controls.
+
+- Telangana: the replacement RERA portal is reachable, but a permissioned project-directory/QPR feed is not configured. Existing reviewed Hyderabad identities can remain pilot records; new regulatory facts require a retained official page/PDF or authority-provided export.
+- Andhra Pradesh: the public MIS page, project-detail pages, and quarterly-status PDF are reachable. A deterministic ten-record residential staging sample now records the report URL, retrieval time, content hash, and parser version under `data/staging/aprera/`; these rows remain unsearchable until identity/location review.
+- BuildNow and APDPMS are approval-context sources. They are not substitutes for RERA identity and must use separate claim keys and authority labels.
+- Exit condition: ten Telangana and ten Andhra records each have retained official evidence, plus five reviewed resolver/conflict cases. Until then the UI remains labelled limited pilot coverage.
 
 ## Normalized Record Contract
 

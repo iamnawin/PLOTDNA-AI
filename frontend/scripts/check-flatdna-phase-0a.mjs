@@ -35,7 +35,10 @@ const api = read('src/lib/api.ts')
 
 assert.ok(app.includes('featureFlags.enableFlatDna ? <FlatProjectSearch /> : <Navigate to="/" replace />'), 'direct /flat access must be feature gated')
 assert.ok(entry.includes('featureFlags.enableFlatDna ? ('), 'PropertyDNA entry must feature gate the FlatDNA action')
-assert.ok(api.includes('/api/v1/flat/projects/search?q='), 'FlatDNA search must call the existing backend endpoint')
+assert.ok(
+  api.includes('/api/v1/flat/projects/search?${params.toString()}'),
+  'FlatDNA search must call the existing backend endpoint with encoded parameters',
+)
 assert.ok(!flatSearch.includes('registry.json'), 'FlatDNA UI must not ship registry data')
 assert.ok(!flatSearch.includes('resolver'), 'FlatDNA UI must not implement resolver logic')
 
