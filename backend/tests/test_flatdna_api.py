@@ -1,7 +1,9 @@
 import unittest
 from contextlib import contextmanager
+from decimal import Decimal
 from pathlib import Path
 from unittest.mock import patch
+from uuid import UUID
 
 from fastapi.testclient import TestClient
 from sqlalchemy.exc import OperationalError
@@ -41,16 +43,53 @@ def identity_rows():
 
 
 class FakeRepository:
-    def __init__(self, rows=None, error=None):
+    def __init__(self, rows=None, error=None, projects=None, rera_references=None):
         self.rows = identity_rows() if rows is None else rows
         self.error = error
         self.calls = []
+        self.projects = projects if projects is not None else [
+            {
+                "id": UUID("421c032d-37c5-4e88-8c18-3b1185ac825f"),
+                "canonical_name": "My Home Nishada",
+                "developer_name": "My Home Constructions",
+                "city_slug": "hyderabad",
+                "locality_slug": "kokapet",
+                "latitude": Decimal("17.405700"),
+                "longitude": Decimal("78.308357"),
+                "location_precision": "PROJECT_CENTROID",
+            }
+        ]
+        self.rera_references = rera_references if rera_references is not None else [
+            {
+                "authority_code": "TSRERA",
+                "registration_number": "P02400004696",
+                "reference_status": "VERIFIED",
+            }
+        ]
 
     def list_supported_project_identity_rows(self, city_slug):
         self.calls.append(city_slug)
         if self.error:
             raise self.error
         return self.rows
+
+    def list_supported_projects(self, city_slug):
+        self.calls.append(city_slug)
+        if self.error:
+            raise self.error
+        return self.projects
+
+    def get_supported_project(self, project_id):
+        self.calls.append(project_id)
+        if self.error:
+            raise self.error
+        return next((project for project in self.projects if project["id"] == project_id), None)
+
+    def list_supported_project_rera_references(self, project_id):
+        self.calls.append(project_id)
+        if self.error:
+            raise self.error
+        return self.rera_references
 
 
 class FlatDnaApiTests(unittest.TestCase):
@@ -79,16 +118,61 @@ class FlatDnaApiTests(unittest.TestCase):
         self.assertEqual(response.json(), {"detail": "Not Found"})
         provider.assert_not_called()
 
-    def test_status_contract_is_unchanged(self):
+    def test_status_reports_registry_readiness(self):
         with patch.object(settings, "ENABLE_FLAT_DNA", False):
             disabled = self.client.get("/api/v1/flat/status")
         self.assertEqual(disabled.status_code, 404)
         self.assertEqual(disabled.json(), {"detail": "Not Found"})
 
-        with patch.object(settings, "ENABLE_FLAT_DNA", True):
+        with self.enabled(FakeRepository()):
             response = self.client.get("/api/v1/flat/status")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"status": "enabled", "phase": "0A", "registry": "unavailable"})
+        self.assertEqual(
+            response.json(),
+            {
+                "status": "enabled",
+                "phase": "1A",
+                "registry": "available",
+                "supported_projects": 1,
+            },
+        )
+
+    def test_project_detail_returns_only_reviewed_supported_fields(self):
+        repository = FakeRepository()
+        project_id = "421c032d-37c5-4e88-8c18-3b1185ac825f"
+        with self.enabled(repository):
+            response = self.client.get(f"/api/v1/flat/projects/{project_id}")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "project_id": project_id,
+                "canonical_name": "My Home Nishada",
+                "developer_name": "My Home Constructions",
+                "city_slug": "hyderabad",
+                "locality_slug": "kokapet",
+                "latitude": 17.4057,
+                "longitude": 78.308357,
+                "location_precision": "PROJECT_CENTROID",
+                "rera_references": [
+                    {
+                        "authority_code": "TSRERA",
+                        "registration_number": "P02400004696",
+                        "reference_status": "VERIFIED",
+                    }
+                ],
+            },
+        )
+        self.assertNotIn("score", response.json())
+        self.assertNotIn("valuation", response.json())
+
+    def test_project_detail_hides_unknown_or_unsupported_identity(self):
+        with self.enabled(FakeRepository(projects=[])):
+            response = self.client.get(
+                "/api/v1/flat/projects/421c032d-37c5-4e88-8c18-3b1185ac825f"
+            )
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"detail": "Project not found"})
 
     def test_invalid_queries_return_422_without_repository_work(self):
         repository = FakeRepository()

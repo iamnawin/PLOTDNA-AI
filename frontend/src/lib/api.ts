@@ -82,6 +82,19 @@ export interface FlatProjectIdentity {
   locality_slug: string
 }
 
+export interface FlatReraReference {
+  authority_code: string
+  registration_number: string
+  reference_status: 'RECORDED' | 'VERIFIED' | 'REVIEW_REQUIRED'
+}
+
+export interface FlatProjectDetail extends FlatProjectIdentity {
+  latitude: number | null
+  longitude: number | null
+  location_precision: 'ENTRANCE' | 'PROJECT_CENTROID' | 'APPROXIMATE' | 'UNKNOWN'
+  rera_references: FlatReraReference[]
+}
+
 export type FlatProjectSearchResponse =
   | {
       outcome: 'MATCHED'
@@ -328,6 +341,15 @@ export async function searchFlatProjects(query: string): Promise<FlatProjectSear
   )
   if (!res.ok) throw new Error('FlatDNA project search is unavailable')
   return (await res.json()) as FlatProjectSearchResponse
+}
+
+export async function fetchFlatProjectDetail(projectId: string): Promise<FlatProjectDetail> {
+  const res = await fetch(
+    `${BASE_URL}/api/v1/flat/projects/${encodeURIComponent(projectId)}`,
+    { signal: AbortSignal.timeout(15_000) },
+  )
+  if (!res.ok) throw new Error('FlatDNA project detail is unavailable')
+  return (await res.json()) as FlatProjectDetail
 }
 
 // ── Backend-owned area catalog ──

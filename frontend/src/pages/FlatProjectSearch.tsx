@@ -1,8 +1,10 @@
 import { useRef, useState, type FormEvent } from 'react'
-import { ArrowLeft, ArrowRight, Building2, MapPin, Search } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Building2, MapPin, Search, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import {
+  fetchFlatProjectDetail,
   searchFlatProjects,
+  type FlatProjectDetail,
   type FlatProjectIdentity,
   type FlatProjectSearchResponse,
 } from '@/lib/api'
@@ -36,13 +38,69 @@ function ProjectDetails({ project }: { project: FlatProjectIdentity }) {
   )
 }
 
+function ProjectSnapshot({ project, onChange }: { project: FlatProjectDetail; onChange: () => void }) {
+  const coordinates = project.latitude !== null && project.longitude !== null
+    ? `${project.latitude.toFixed(6)}, ${project.longitude.toFixed(6)}`
+    : 'Not available'
+
+  return (
+    <section className="rounded-2xl border border-emerald-300/45 bg-[#091720] p-5 sm:p-7">
+      <div className="flex items-center gap-2 text-sm font-bold text-emerald-300">
+        <ShieldCheck size={19} />
+        Verified project snapshot
+      </div>
+      <div className="mt-5">
+        <ProjectDetails project={project} />
+      </div>
+
+      <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        <div className="rounded-xl border border-slate-300/15 bg-slate-950/35 p-4">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">RERA reference</p>
+          {project.rera_references.length > 0 ? project.rera_references.map(reference => (
+            <div key={`${reference.authority_code}-${reference.registration_number}`} className="mt-3">
+              <p className="font-bold text-slate-100">{reference.registration_number}</p>
+              <p className="mt-1 text-sm text-slate-300">
+                {reference.authority_code} · {formatSlug(reference.reference_status.toLowerCase())}
+              </p>
+            </div>
+          )) : (
+            <p className="mt-3 text-sm text-slate-300">No active reviewed reference.</p>
+          )}
+        </div>
+
+        <div className="rounded-xl border border-slate-300/15 bg-slate-950/35 p-4">
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Reviewed location</p>
+          <p className="mt-3 font-bold text-slate-100">{formatSlug(project.locality_slug)}</p>
+          <p className="mt-1 text-sm text-slate-300">{coordinates}</p>
+          <p className="mt-1 text-xs text-slate-400">{formatSlug(project.location_precision.toLowerCase())}</p>
+        </div>
+      </div>
+
+      <div className="mt-5 rounded-xl border border-amber-300/25 bg-amber-300/[0.05] p-4 text-sm leading-6 text-slate-300">
+        <strong className="text-amber-200">This snapshot does not verify</strong> unit ownership, title,
+        approvals, current price, construction progress, or legal due diligence.
+      </div>
+
+      <button
+        type="button"
+        onClick={onChange}
+        className="mt-5 min-h-11 rounded-xl border border-slate-400/30 px-4 font-semibold text-slate-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300"
+      >
+        Check another project
+      </button>
+    </section>
+  )
+}
+
 export default function FlatProjectSearch() {
   const [query, setQuery] = useState('')
   const [result, setResult] = useState<FlatProjectSearchResponse | null>(null)
   const [selectedProject, setSelectedProject] = useState<FlatProjectIdentity | null>(null)
   const [loading, setLoading] = useState(false)
   const [unavailable, setUnavailable] = useState(false)
-  const [confirmed, setConfirmed] = useState(false)
+  const [projectDetail, setProjectDetail] = useState<FlatProjectDetail | null>(null)
+  const [detailLoading, setDetailLoading] = useState(false)
+  const [detailUnavailable, setDetailUnavailable] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
   async function handleSearch(event: FormEvent<HTMLFormElement>) {
@@ -54,7 +112,8 @@ export default function FlatProjectSearch() {
     setUnavailable(false)
     setResult(null)
     setSelectedProject(null)
-    setConfirmed(false)
+    setProjectDetail(null)
+    setDetailUnavailable(false)
     try {
       setResult(await searchFlatProjects(trimmedQuery))
     } catch {
@@ -69,12 +128,23 @@ export default function FlatProjectSearch() {
     setResult(null)
     setSelectedProject(null)
     setUnavailable(false)
-    setConfirmed(false)
+    setProjectDetail(null)
+    setDetailUnavailable(false)
     inputRef.current?.focus()
   }
 
-  const matchedProject = result?.outcome === 'MATCHED' ? result.project : null
-  const projectToContinue = matchedProject ?? selectedProject
+  async function continueToProject(project: FlatProjectIdentity) {
+    if (detailLoading) return
+    setDetailLoading(true)
+    setDetailUnavailable(false)
+    try {
+      setProjectDetail(await fetchFlatProjectDetail(project.project_id))
+    } catch {
+      setDetailUnavailable(true)
+    } finally {
+      setDetailLoading(false)
+    }
+  }
 
   return (
     <main className="min-h-[100dvh] bg-[#050711] px-4 pb-12 text-slate-50 sm:px-6">
@@ -114,7 +184,8 @@ export default function FlatProjectSearch() {
                   setResult(null)
                   setSelectedProject(null)
                   setUnavailable(false)
-                  setConfirmed(false)
+                  setProjectDetail(null)
+                  setDetailUnavailable(false)
                 }}
                 maxLength={160}
                 autoComplete="off"
@@ -162,11 +233,11 @@ export default function FlatProjectSearch() {
               <ProjectDetails project={result.project} />
               <button
                 type="button"
-                onClick={() => setConfirmed(true)}
-                disabled={confirmed}
+                onClick={() => void continueToProject(result.project)}
+                disabled={detailLoading}
                 className="mt-6 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-300 px-5 font-bold text-slate-950 transition-colors hover:bg-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300 active:translate-y-px disabled:cursor-default disabled:bg-emerald-200 sm:w-auto"
               >
-                {confirmed ? 'Project confirmed' : 'Continue'}
+                {detailLoading ? 'Loading snapshot...' : 'Continue'}
                 <ArrowRight size={18} />
               </button>
             </div>
@@ -185,7 +256,8 @@ export default function FlatProjectSearch() {
                       type="button"
                       onClick={() => {
                         setSelectedProject(candidate)
-                        setConfirmed(false)
+                        setProjectDetail(null)
+                        setDetailUnavailable(false)
                       }}
                       aria-pressed={selected}
                       className={`rounded-2xl border p-5 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300 ${selected ? 'border-cyan-300 bg-cyan-300/[0.08]' : 'border-slate-400/25 bg-[#0a121e] hover:border-cyan-300/50'}`}
@@ -200,11 +272,11 @@ export default function FlatProjectSearch() {
               </div>
               <button
                 type="button"
-                onClick={() => setConfirmed(true)}
-                disabled={!selectedProject || confirmed}
+                onClick={() => selectedProject && void continueToProject(selectedProject)}
+                disabled={!selectedProject || detailLoading}
                 className="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-emerald-300 px-5 font-bold text-slate-950 transition-colors hover:bg-emerald-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300 active:translate-y-px disabled:cursor-not-allowed disabled:bg-slate-700 disabled:text-slate-400 sm:w-auto"
               >
-                {confirmed ? 'Project confirmed' : 'Continue'}
+                {detailLoading ? 'Loading snapshot...' : 'Continue'}
                 <ArrowRight size={18} />
               </button>
             </div>
@@ -227,10 +299,16 @@ export default function FlatProjectSearch() {
             </div>
           )}
 
-          {confirmed && projectToContinue && (
-            <div className="mt-4 rounded-xl border border-cyan-300/35 bg-cyan-300/[0.07] p-4 text-sm leading-6 text-slate-200">
-              <strong className="text-cyan-200">{projectToContinue.canonical_name} selected.</strong>{' '}
-              Search again if you meant a different apartment project.
+          {detailUnavailable && (
+            <div className="mt-4 rounded-xl border border-amber-300/35 bg-amber-300/[0.06] p-4 text-sm leading-6 text-slate-200">
+              <strong className="text-amber-200">The verified snapshot is temporarily unavailable.</strong>{' '}
+              Your project selection is unchanged. Please try Continue again.
+            </div>
+          )}
+
+          {projectDetail && (
+            <div className="mt-6">
+              <ProjectSnapshot project={projectDetail} onChange={changeSearch} />
             </div>
           )}
         </section>

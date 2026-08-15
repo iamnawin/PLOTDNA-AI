@@ -127,6 +127,20 @@ class FlatDnaRepositoryTests(unittest.TestCase):
         )
         self.assertEqual(parameters, {"city_slug": "hyderabad"})
 
+    def test_rera_references_are_supported_only_and_exclude_superseded_rows(self):
+        engine = _FakeEngine()
+        repository = PostgresFlatProjectRepository(engine)
+        self.assertEqual(
+            repository.list_supported_project_rera_references(
+                make_supported_bundle().projects[0].id
+            ),
+            [],
+        )
+        statement = engine.connection.executions[0][0]
+        self.assertIn("project.registry_status = 'SUPPORTED'", statement)
+        self.assertIn("rera.reference_status <> 'SUPERSEDED'", statement)
+        self.assertIn("developer.registry_status <> 'INACTIVE'", statement)
+
 
 if __name__ == "__main__":
     unittest.main()

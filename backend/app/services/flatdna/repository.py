@@ -24,6 +24,8 @@ class FlatDnaIdentityConflictError(ValueError):
 class FlatProjectRepository(Protocol):
     def get_supported_project(self, project_id: UUID) -> dict[str, Any] | None: ...
 
+    def list_supported_project_rera_references(self, project_id: UUID) -> list[dict[str, Any]]: ...
+
     def list_supported_projects(self, city_slug: str) -> list[dict[str, Any]]: ...
 
     def list_supported_project_identity_rows(self, city_slug: str) -> list[dict[str, Any]]: ...
@@ -66,6 +68,26 @@ class PostgresFlatProjectRepository:
         )
         with self._engine.connect() as connection:
             rows = connection.execute(query, {"city_slug": city_slug.strip().lower()}).mappings().all()
+        return [dict(row) for row in rows]
+
+    def list_supported_project_rera_references(self, project_id: UUID) -> list[dict[str, Any]]:
+        query = text(
+            """
+            SELECT rera.authority_code,
+                   rera.registration_number,
+                   rera.reference_status
+            FROM flat_rera_references rera
+            JOIN flat_projects project ON project.id = rera.project_id
+            JOIN flat_developers developer ON developer.id = project.developer_id
+            WHERE project.id = :project_id
+              AND project.registry_status = 'SUPPORTED'
+              AND developer.registry_status <> 'INACTIVE'
+              AND rera.reference_status <> 'SUPERSEDED'
+            ORDER BY rera.authority_code, rera.normalized_registration_number, rera.id
+            """
+        )
+        with self._engine.connect() as connection:
+            rows = connection.execute(query, {"project_id": str(project_id)}).mappings().all()
         return [dict(row) for row in rows]
 
     def list_supported_project_identity_rows(self, city_slug: str) -> list[dict[str, Any]]:

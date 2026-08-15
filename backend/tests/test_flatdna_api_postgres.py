@@ -72,6 +72,13 @@ class FlatDnaApiPostgresTests(unittest.TestCase):
         ):
             return self.client.get("/api/v1/flat/projects/search", params={"q": query})
 
+    def request_detail(self, project_id):
+        with (
+            patch.object(settings, "ENABLE_FLAT_DNA", True),
+            patch.object(flat_route, "get_flatdna_repository", return_value=self.repository),
+        ):
+            return self.client.get(f"/api/v1/flat/projects/{project_id}")
+
     def test_complete_corpus_through_http_uses_supported_postgres_rows(self):
         self.assertEqual(len(CORPUS), 59)
         for case in CORPUS:
@@ -126,6 +133,17 @@ class FlatDnaApiPostgresTests(unittest.TestCase):
         second = self.request("Aparna Sarovar")
         self.assertEqual(first.status_code, 200)
         self.assertEqual(first.content, second.content)
+
+    def test_project_detail_reads_reviewed_registry_and_rera_fields(self):
+        project = self.bundle.projects[0]
+        response = self.request_detail(project.id)
+        self.assertEqual(response.status_code, 200)
+        payload = response.json()
+        self.assertEqual(payload["project_id"], str(project.id))
+        self.assertEqual(payload["canonical_name"], project.canonical_name)
+        self.assertEqual(payload["location_precision"], project.location_precision.value)
+        self.assertEqual(len(payload["rera_references"]), 1)
+        self.assertEqual(payload["rera_references"][0]["reference_status"], "VERIFIED")
 
 
 if __name__ == "__main__":

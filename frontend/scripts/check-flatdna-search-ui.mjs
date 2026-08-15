@@ -24,9 +24,13 @@ for (const copy of [
 }
 
 assert.ok(page.includes('setSelectedProject(candidate)'), 'AMBIGUOUS candidates must require an explicit user selection')
-assert.ok(page.includes('disabled={!selectedProject || confirmed}'), 'AMBIGUOUS Continue must stay disabled until selection')
+assert.ok(page.includes('disabled={!selectedProject || detailLoading}'), 'AMBIGUOUS Continue must stay disabled until selection')
 assert.ok(api.includes('encodeURIComponent(query.trim())'), 'search query must be safely encoded')
 assert.ok(api.includes('/api/v1/flat/projects/search?q='), 'search must use the existing FlatDNA API')
+assert.ok(api.includes('/api/v1/flat/projects/${encodeURIComponent(projectId)}'), 'confirmation must load the backend-owned project detail')
+assert.ok(page.includes('Verified project snapshot'), 'confirmation must render the verified project snapshot')
+assert.ok(page.includes('RERA reference'), 'the snapshot must show the reviewed RERA reference')
+assert.ok(page.includes('This snapshot does not verify'), 'the snapshot must state its verification limits')
 assert.ok(!page.includes('registry.json'), 'frontend must not contain registry data')
 assert.ok(!page.toLowerCase().includes('resolve_project'), 'frontend must not contain backend resolver logic')
 

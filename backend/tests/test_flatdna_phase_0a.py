@@ -1,9 +1,10 @@
 import os
 import unittest
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
 
+from app.api.routes import flat as flat_route
 from app.core.config import Settings, settings
 from app.main import app
 
@@ -30,15 +31,23 @@ class FlatDnaPhase0ATests(unittest.TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"detail": "Not Found"})
 
-    def test_enabling_backend_flag_exposes_only_empty_boundary(self):
+    def test_enabled_status_reports_registry_readiness(self):
         settings.ENABLE_FLAT_DNA = True
+        repository = MagicMock()
+        repository.list_supported_projects.return_value = [{}] * 14
 
-        response = self.client.get("/api/v1/flat/status")
+        with patch.object(flat_route, "get_flatdna_repository", return_value=repository):
+            response = self.client.get("/api/v1/flat/status")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"status": "enabled", "phase": "0A", "registry": "unavailable"},
+            {
+                "status": "enabled",
+                "phase": "1A",
+                "registry": "available",
+                "supported_projects": 14,
+            },
         )
 
     def test_existing_root_and_health_routes_are_unchanged(self):

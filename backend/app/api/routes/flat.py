@@ -51,6 +51,26 @@ class FlatProjectIdentity(BaseModel):
     locality_slug: str
 
 
+class FlatReraReference(BaseModel):
+    authority_code: str
+    registration_number: str
+    reference_status: Literal["RECORDED", "VERIFIED", "REVIEW_REQUIRED"]
+
+
+class FlatProjectDetail(FlatProjectIdentity):
+    latitude: float | None
+    longitude: float | None
+    location_precision: Literal["ENTRANCE", "PROJECT_CENTROID", "APPROXIMATE", "UNKNOWN"]
+    rera_references: list[FlatReraReference]
+
+
+class FlatDnaStatus(BaseModel):
+    status: Literal["enabled"] = "enabled"
+    phase: Literal["1A"] = "1A"
+    registry: Literal["available"] = "available"
+    supported_projects: int
+
+
 class FlatProjectMatchedResponse(BaseModel):
     outcome: Literal["MATCHED"] = "MATCHED"
     project: FlatProjectIdentity
@@ -126,9 +146,16 @@ def _search_response(result: ResolverResult) -> FlatProjectSearchResponse:
     )
 
 
-@router.get("/status")
-def flatdna_status() -> dict[str, str]:
-    return {"status": "enabled", "phase": "0A", "registry": "unavailable"}
+@router.get("/status", response_model=FlatDnaStatus)
+def flatdna_status() -> FlatDnaStatus:
+    try:
+        projects = get_flatdna_repository().list_supported_projects("hyderabad")
+    except (FlatDnaDatabaseConfigurationError, SQLAlchemyError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=SERVICE_UNAVAILABLE_DETAIL,
+        ) from exc
+    return FlatDnaStatus(supported_projects=len(projects))
 
 
 @router.get("/projects/search", response_model=FlatProjectSearchResponse)
@@ -146,3 +173,32 @@ def search_flatdna_projects(
 
     projects = project_identities_from_rows(rows)
     return _search_response(resolve_project(query.q, projects))
+
+
+@router.get("/projects/{project_id}", response_model=FlatProjectDetail)
+def get_flatdna_project(project_id: UUID) -> FlatProjectDetail:
+    try:
+        repository = get_flatdna_repository()
+        project = repository.get_supported_project(project_id)
+        if project is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Project not found")
+        rera_references = repository.list_supported_project_rera_references(project_id)
+    except HTTPException:
+        raise
+    except (FlatDnaDatabaseConfigurationError, SQLAlchemyError) as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail=SERVICE_UNAVAILABLE_DETAIL,
+        ) from exc
+
+    return FlatProjectDetail(
+        project_id=project["id"],
+        canonical_name=project["canonical_name"],
+        developer_name=project["developer_name"],
+        city_slug=project["city_slug"],
+        locality_slug=project["locality_slug"],
+        latitude=project["latitude"],
+        longitude=project["longitude"],
+        location_precision=project["location_precision"],
+        rera_references=[FlatReraReference.model_validate(reference) for reference in rera_references],
+    )
