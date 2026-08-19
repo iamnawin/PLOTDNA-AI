@@ -645,3 +645,25 @@ Verification:
 Unresolved constraint:
 
 - No database migration was applied. Migration `0002` cannot enter the production operator or Supabase until Phase 4 completes disposable apply/down/reapply, 14-project reconciliation, partially migrated environment handling, and rollback simulation.
+
+### Phase 3: Deterministic processing pipeline — 2026-08-19
+
+Implemented:
+
+- Strict TG-RERA-shaped source, existing-identity, candidate projection, and candidate snapshot contracts.
+- Exact authority-scoped registration matching that reuses existing canonical project and registration UUIDs.
+- Deterministic UUIDs for new imported registrations without merging similar phase names.
+- Duplicate-registration quarantine, identity-resolution rules, apartment/geography exclusions, customer-safe location precision, and independent confidence dimensions.
+- Snapshot-consistent measurable coverage across acquired, unique, classified, in-geography, searchable, quarantined, excluded, identity, and reviewed counts.
+- Sanitized `TEST` corpus and an offline-only builder that has no database, network, production, or publication path.
+
+Verification:
+
+- Full backend suite: 224 tests passed; 21 PostgreSQL tests skipped because `FLATDNA_TEST_DATABASE_URL` was not configured.
+- Offline sample result: 8 acquired records, 7 unique registrations, 4 searchable, 1 quarantined, 2 excluded, and 0 reviewed.
+- Reordered input and repeated CLI runs produced deterministic candidate output.
+- Git whitespace check: passed.
+
+Unresolved constraint:
+
+- The processor has only consumed sanitized fixtures. Its `within_market`, property classification, and source fields cannot be considered production evidence until Phase 1 acquisition constraints and the boundary/classifier approvals are resolved.
