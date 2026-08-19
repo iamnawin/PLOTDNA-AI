@@ -13,6 +13,7 @@
 ## File Map
 
 - Create `backend/app/services/flatdna/acquisition.py`: strict acquisition policy model, loader, approval gate, and sanitized summary.
+- Modify `backend/app/services/scoring_engine.py`: remove the synthetic TG-RERA density path until approved catalog data exists.
 - Create `backend/tests/test_flatdna_acquisition.py`: policy validation and fail-closed behavior.
 - Create `scripts/validate_flatdna_acquisition.py`: offline operator validation command.
 - Create `data/cities/hyderabad/flatdna/acquisition-policy.json`: checked-in, explicitly unapproved production policy.
@@ -123,7 +124,7 @@ class FlatDnaAcquisitionPolicyTests(unittest.TestCase):
 Run:
 
 ```powershell
-uv run --with-requirements backend/requirements.txt python -m unittest backend.tests.test_flatdna_acquisition -v
+uv --directory backend run --with-requirements requirements.txt python -m unittest tests.test_flatdna_acquisition -v
 ```
 
 Expected: failure because `app.services.flatdna.acquisition` does not exist.
@@ -205,6 +206,14 @@ def assert_automated_ingestion_allowed(policy: AcquisitionPolicy) -> None:
 Run the same unittest command.
 
 Expected: all acquisition-policy tests pass.
+
+- [ ] **Step 5: Remove the synthetic TG-RERA runtime scoring path**
+
+Add a failing test proving identical OSM counts produce the same RERA proxy inside and outside Telangana and no synthetic “RERA projects nearby” highlight. Then replace the `tsrera_scraper` branch in `backend/app/services/scoring_engine.py` with the existing OSM residential-plus-construction proxy for every region.
+
+- [ ] **Step 6: Re-run the focused tests**
+
+Run the focused command from Step 2. Expected: policy and scoring-source tests pass without importing `tsrera_scraper`.
 
 ## Task 2: Add the checked-in unapproved policy and offline validator
 
@@ -290,7 +299,7 @@ Expected: each acquisition hard-gate concept is present and no credentials or un
 Run:
 
 ```powershell
-uv run --with-requirements backend/requirements.txt python -m unittest backend.tests.test_flatdna_acquisition -v
+uv --directory backend run --with-requirements requirements.txt python -m unittest tests.test_flatdna_acquisition -v
 uv run --with-requirements backend/requirements.txt python scripts/validate_flatdna_acquisition.py
 uv run --with-requirements backend/requirements.txt python scripts/validate_flatdna_acquisition.py --require-approved
 git diff --check
@@ -305,7 +314,7 @@ Append a dated receipt stating implemented files, commands run, results, and the
 - [ ] **Step 3: Commit the complete phase**
 
 ```powershell
-git add backend/app/services/flatdna/acquisition.py backend/tests/test_flatdna_acquisition.py scripts/validate_flatdna_acquisition.py data/cities/hyderabad/flatdna/acquisition-policy.json docs/data-sources/tgrera-acquisition-constraints.md docs/DATA_SOURCES.md docs/superpowers/specs/2026-08-19-flatdna-hyderabad-catalog-design.md
+git add backend/app/services/flatdna/acquisition.py backend/app/services/scoring_engine.py backend/tests/test_flatdna_acquisition.py scripts/validate_flatdna_acquisition.py data/cities/hyderabad/flatdna/acquisition-policy.json docs/data-sources/tgrera-acquisition-constraints.md docs/DATA_SOURCES.md docs/superpowers/plans/2026-08-19-flatdna-catalog-phase-1-acquisition.md docs/superpowers/specs/2026-08-19-flatdna-hyderabad-catalog-design.md
 git commit -m "feat: enforce FlatDNA acquisition approval gate" -m "Constraint: Automated TG-RERA production ingestion remains disabled until its operating method is approved." -m "Confidence: High" -m "Tested: Acquisition policy unit tests, offline validator, fail-closed approval check, and git diff check."
 git push origin HEAD
 ```

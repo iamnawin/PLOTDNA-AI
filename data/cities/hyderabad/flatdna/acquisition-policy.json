@@ -1,0 +1,13 @@
+{
+  "approval_status": "UNAPPROVED",
+  "authority": "TG_RERA",
+  "market": "hyderabad_hmda_apartments",
+  "acquisition_method": null,
+  "approved_by": null,
+  "approved_at": null,
+  "source_identifiers": [],
+  "operating_constraints": [],
+  "boundary_version": "hmda-boundary-approval-pending",
+  "classifier_version": "residential-apartment-v1",
+  "completeness_basis": "No approved machine-readable TG-RERA source denominator is available."
+}

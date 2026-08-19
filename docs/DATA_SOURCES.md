@@ -16,7 +16,7 @@
 
 | Source | Data | URL | Access |
 |---|---|---|---|
-| TG RERA | Telangana RERA projects | `rera.telangana.gov.in` | Permissioned export/feed preferred; manual verification fallback |
+| TG RERA | Telangana RERA projects | `rera.telangana.gov.in` | Production automation is blocked until the acquisition method and operating constraints in [`data-sources/tgrera-acquisition-constraints.md`](data-sources/tgrera-acquisition-constraints.md) are approved |
 | HMDA | Hyderabad zone maps | `hmda.gov.in` | PDF + scraping |
 | Karnataka Stamps & Registration | Registration department surface | `revenue.karnataka.gov.in` | Official portal |
 | Kaveri Online | Encumbrance and registration workflows | `kaverionline.karnataka.gov.in` | Official portal |

@@ -599,3 +599,27 @@ If any assumption fails, Phase 1 must return to product and legal/operational re
 - Search and metrics read only the atomically published snapshot.
 - Every public claim reveals its catalog layer, source, precision, warning origin, and freshness as applicable.
 - A failed or incomplete ingestion run cannot change customer-visible PropertyDNA data.
+
+## Implementation Receipts
+
+### Phase 1: Acquisition proof — 2026-08-19
+
+Implemented:
+
+- Strict acquisition-policy model and fail-closed production approval gate.
+- Checked-in `UNAPPROVED` Hyderabad/HMDA apartment acquisition policy.
+- Offline policy validator with an explicit approval-required mode.
+- Removal of the synthetic TG-RERA density path from runtime DNA scoring; OSM remains the honest fallback until approved catalog data is published.
+- TG-RERA acquisition constraints, coverage measures, and approval procedure.
+- Central data-source wording that no longer implies production scraping is available.
+
+Verification:
+
+- Full backend suite: 197 tests passed; 21 PostgreSQL tests skipped because `FLATDNA_TEST_DATABASE_URL` was not configured.
+- Offline policy validation: exit 0 with sanitized `UNAPPROVED` summary.
+- Approval-required validation: correctly blocked with exit 1.
+- Git whitespace check: passed.
+
+Unresolved constraint:
+
+- Automated TG-RERA production ingestion remains prohibited until the acquisition method, operating constraints, boundary version, classifier version, source denominator, and approval metadata are documented and approved. Phase 1 adds no network acquisition or production enablement.
