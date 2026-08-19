@@ -34,6 +34,7 @@ build/
 !data/cities/**/*.json
 !data/catalog/**/*.json
 !data/india/regions.json
+!data/staging/**/*.json
 
 # IDE
 .vscode/
