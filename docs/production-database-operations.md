@@ -84,3 +84,9 @@ operator can apply migration `0002`, Phase 4 must prove ordered migration histor
 apply/down/reapply behavior, preservation of the existing 14 reviewed project and
 registration UUIDs, atomic publication rollback, and safe handling of partially
 migrated environments. Do not run migration `0002` manually against Supabase.
+
+The Phase 4 codebase contains offline snapshot validation, registry reconciliation,
+and a transactional `PostgresCatalogPublisher`, but none is reachable from this
+production operator. Unit-tested publication logic is not a substitute for the
+required disposable PostgreSQL rehearsal. Only `FLATDNA_TEST_DATABASE_URL` may be
+used for that rehearsal; the configured production URL is explicitly prohibited.

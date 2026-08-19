@@ -667,3 +667,23 @@ Verification:
 Unresolved constraint:
 
 - The processor has only consumed sanitized fixtures. Its `within_market`, property classification, and source fields cannot be considered production evidence until Phase 1 acquisition constraints and the boundary/classifier approvals are resolved.
+
+### Phase 4: Validation and publication safety code — 2026-08-19
+
+Implemented:
+
+- Deterministic snapshot validation receipts with metric reconciliation, registration uniqueness, and public-location gates.
+- Explicit reconciliation contracts for the existing 14 project UUIDs, phase-level registration UUIDs, evidence-source IDs, claim-evidence IDs, developer relationships, and customer-visible identity.
+- Transactional PostgreSQL publication service with snapshot/current-pointer locking, validated-snapshot precondition, atomic supersede/insert, rollback linkage, and injected-failure rollback tests.
+- Offline release receipt that explicitly refuses to claim database reconciliation or release acceptance.
+
+Verification:
+
+- Full backend suite: 238 tests passed; 21 PostgreSQL tests skipped because `FLATDNA_TEST_DATABASE_URL` was not configured.
+- Candidate fixture validation and committed registry baseline checks pass offline.
+- Publication unit tests prove statement ordering, parameterization, candidate rejection, rollback linkage, and transaction rollback on injected insert failure.
+- The production operator remains disconnected from migration `0002` and the publisher.
+
+Blocked acceptance:
+
+- `FLATDNA_TEST_DATABASE_URL` is not configured. Migration `0002` apply/down/reapply, migrated 14-project reconciliation, database-trigger behavior, atomic publication, and rollback have not been proven on PostgreSQL. Phase 4 code may be committed, but Phase 4 release acceptance and all production enablement remain blocked.

@@ -45,6 +45,8 @@ class FlatDnaCatalogMigrationContractTests(unittest.TestCase):
             "PRIMARY KEY (snapshot_id, registration_id)",
             "UNIQUE (authority_code, normalized_rera_number)",
             "REFERENCES flat_catalog_snapshots(snapshot_id)",
+            "validation_receipt_sha256",
+            "validation_receipt_sha256 IS NOT NULL",
         )
         for fragment in required:
             with self.subTest(fragment=fragment):

@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS flat_catalog_snapshots (
     source_as_of date NOT NULL,
     processing_version text NOT NULL,
     validation_status text NOT NULL DEFAULT 'CANDIDATE',
+    validation_receipt_sha256 text,
     metrics jsonb NOT NULL,
     reconciliation_report_ref text,
     created_at timestamptz NOT NULL DEFAULT now(),
@@ -57,6 +58,13 @@ CREATE TABLE IF NOT EXISTS flat_catalog_snapshots (
     CONSTRAINT flat_catalog_snapshots_version_check CHECK (btrim(processing_version) <> ''),
     CONSTRAINT flat_catalog_snapshots_status_check CHECK (
         validation_status IN ('CANDIDATE', 'VALIDATED', 'REJECTED')
+    ),
+    CONSTRAINT flat_catalog_snapshots_receipt_check CHECK (
+        validation_status <> 'VALIDATED'
+        OR (
+            validation_receipt_sha256 IS NOT NULL
+            AND validation_receipt_sha256 ~ '^[0-9a-f]{64}$'
+        )
     )
 );
 
@@ -71,7 +79,9 @@ CREATE TABLE IF NOT EXISTS flat_catalog_publications (
     rollback_of uuid REFERENCES flat_catalog_publications(id) ON DELETE RESTRICT,
     CONSTRAINT flat_catalog_publications_channel_check CHECK (btrim(channel) <> ''),
     CONSTRAINT flat_catalog_publications_publisher_check CHECK (btrim(published_by) <> ''),
-    CONSTRAINT flat_catalog_publications_receipt_check CHECK (btrim(validation_receipt) <> ''),
+    CONSTRAINT flat_catalog_publications_receipt_check CHECK (
+        validation_receipt ~ '^[0-9a-f]{64}$'
+    ),
     CONSTRAINT flat_catalog_publications_time_check CHECK (
         superseded_at IS NULL OR superseded_at >= published_at
     )
