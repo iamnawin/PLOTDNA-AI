@@ -623,3 +623,25 @@ Verification:
 Unresolved constraint:
 
 - Automated TG-RERA production ingestion remains prohibited until the acquisition method, operating constraints, boundary version, classifier version, source denominator, and approval metadata are documented and approved. Phase 1 adds no network acquisition or production enablement.
+
+### Phase 2: Persistence foundation — 2026-08-19
+
+Implemented:
+
+- Strict Python contracts for independent review, identity, project, catalog, warning, location, freshness, confidence, metric, snapshot, and review dimensions.
+- Additive migration `0002` for ingestion runs, immutable source records, snapshots, atomic publication pointers, phase-level registrations, immutable reviews linked to approved claim evidence, sourced regulatory warnings, match assessments, and snapshot project versions.
+- Existing RERA-reference UUIDs are reused when backfilled into phase-level registrations; canonical project UUIDs are not replaced.
+- Existing supported registry rows are staged as `RESOLVED + SEARCHABLE + REVIEW_REQUIRED`; they are not promoted into the new reviewed state without Phase 4 reconciliation.
+- Production database documentation explicitly keeps migration `0002` outside the current operator until disposable rehearsal and ordered migration-history support exist.
+
+Verification:
+
+- Full backend suite: 212 tests passed; 21 PostgreSQL tests skipped because `FLATDNA_TEST_DATABASE_URL` was not configured.
+- Migration contract suite verified table scope, status constraints, registration UUID preservation, snapshot membership, atomic publication uniqueness, warning resolution evidence, rollback scope, and non-mutation of existing evidence/claim rows.
+- PostgreSQL dialect parser accepted 54 up-migration and 31 down-migration statements; PL/pgSQL bodies remained opaque to that parser and therefore still require disposable PostgreSQL apply/down/reapply verification in Phase 4.
+- Production database operator and its tests were not broadened.
+- Git whitespace check: passed.
+
+Unresolved constraint:
+
+- No database migration was applied. Migration `0002` cannot enter the production operator or Supabase until Phase 4 completes disposable apply/down/reapply, 14-project reconciliation, partially migrated environment handling, and rollback simulation.

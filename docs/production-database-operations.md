@@ -71,3 +71,16 @@ Diagnostic categories are:
 
 These commands do not enable `ENABLE_FLAT_DNA` or `VITE_ENABLE_FLAT_DNA` and do not
 modify Vercel or Render configuration.
+
+## Catalog migration boundary
+
+`backend/migrations/0002_flatdna_catalog.up.sql` defines the additive catalog
+persistence foundation, but it is not enabled in the production operator during
+Phase 2. It may be contract-tested locally and applied only to a disposable
+PostgreSQL target identified by `FLATDNA_TEST_DATABASE_URL`.
+
+Production migration-chain support remains a Phase 4 deliverable. Before the
+operator can apply migration `0002`, Phase 4 must prove ordered migration history,
+apply/down/reapply behavior, preservation of the existing 14 reviewed project and
+registration UUIDs, atomic publication rollback, and safe handling of partially
+migrated environments. Do not run migration `0002` manually against Supabase.

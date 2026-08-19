@@ -17,8 +17,7 @@
 - Create `backend/app/services/flatdna/catalog_models.py`: independent status and persistence contract models.
 - Create `backend/tests/test_flatdna_catalog_models.py`: domain invariants.
 - Create `backend/tests/test_flatdna_catalog_migration_contract.py`: migration structure, rollback, and backfill contract.
-- Modify `backend/scripts/propertydna_db.py`: apply ordered up migrations rather than only migration `0001`.
-- Modify `backend/tests/test_propertydna_db_operator.py`: ordered migration-chain behavior.
+- Modify `docs/production-database-operations.md`: state that migration `0002` is not production-enabled until Phase 4 rehearsal.
 - Modify `docs/superpowers/specs/2026-08-19-flatdna-hyderabad-catalog-design.md`: Phase 2 receipt.
 
 ## Task 1: Define independent catalog domain contracts
@@ -116,6 +115,7 @@ flat_catalog_snapshots
 flat_catalog_publications
 flat_project_registrations
 flat_project_reviews
+flat_review_claim_evidence
 flat_regulatory_warnings
 flat_match_assessments
 flat_catalog_project_versions
@@ -150,7 +150,7 @@ Expected: failure because migration `0002` does not exist.
 
 - [ ] **Step 1: Create the additive up migration**
 
-Use existing four-digit numbering and `BEGIN`/`COMMIT`. Create the nine Phase 2 tables with explicit foreign keys, checks, timestamps, and indexes. Key rules:
+Use existing four-digit numbering and `BEGIN`/`COMMIT`. Create the ten Phase 2 tables with explicit foreign keys, checks, timestamps, and indexes. Key rules:
 
 ```sql
 CREATE UNIQUE INDEX flat_catalog_publications_current_channel_idx
@@ -162,6 +162,7 @@ ALTER TABLE flat_projects
     ADD COLUMN identity_status text NOT NULL DEFAULT 'UNRESOLVED',
     ADD COLUMN project_status text NOT NULL DEFAULT 'UNKNOWN',
     ADD COLUMN catalog_status text NOT NULL DEFAULT 'QUARANTINED',
+    ADD COLUMN exclusion_reason text,
     ADD COLUMN current_review_id uuid;
 
 INSERT INTO flat_project_registrations (
@@ -190,37 +191,22 @@ Run the focused migration tests. Expected: all pass.
 
 Verify foreign-key targets, defaults on new non-null columns, rollback symmetry, destructive-operation scope, naming, and idempotent apply/down/reapply behavior on `FLATDNA_TEST_DATABASE_URL` when configured. If the disposable URL is absent, record the integration tests as skipped rather than using production.
 
-## Task 4: Teach the guarded database operator the ordered migration chain
+## Task 4: Keep production migration execution closed
 
 **Files:**
-- Modify: `backend/scripts/propertydna_db.py`
-- Modify: `backend/tests/test_propertydna_db_operator.py`
+- Modify: `docs/production-database-operations.md`
 
-- [ ] **Step 1: Write failing operator tests**
+- [ ] **Step 1: Document the production boundary**
 
-Assert the operator discovers `0001` then `0002`, plans both in order, and never references a down migration. Existing safe confirmation, read-only inspection, and secret-redaction behavior must remain unchanged.
+State that `propertydna_db.py migrate` remains locked to the already-reviewed registry migration. Migration `0002` may be parsed, contract-tested, and applied only to a disposable PostgreSQL target until Phase 4 adds ordered migration history, rehearsal, and rollback evidence.
 
-- [ ] **Step 2: Verify RED**
+- [ ] **Step 2: Verify the operator was not broadened**
 
 ```powershell
-uv --directory backend run --with-requirements requirements.txt python -m unittest tests.test_propertydna_db_operator -v
+git diff --exit-code -- backend/scripts/propertydna_db.py backend/tests/test_propertydna_db_operator.py
 ```
 
-Expected: ordered-chain assertion fails because the operator currently stores one `UP_MIGRATION`.
-
-- [ ] **Step 3: Implement the minimal migration chain**
-
-Replace the singleton with an immutable ordered tuple:
-
-```python
-UP_MIGRATIONS = tuple(sorted((BACKEND_ROOT / "migrations").glob("*.up.sql")))
-```
-
-Inspection and migration planning must parse all up migrations in order. Applying remains one guarded operator action and never loads down migrations.
-
-- [ ] **Step 4: Verify GREEN**
-
-Run the operator tests and the original migration-contract tests. Expected: all pass.
+Expected: no changes. Production migration-chain support is a Phase 4 deliverable, after disposable apply/down/reapply validation exists.
 
 ## Task 5: Verify Phase 2 and record its receipt
 
@@ -247,7 +233,7 @@ The reviewer must check migration safety, status constraints, review drift preve
 - [ ] **Step 4: Commit and push Phase 2**
 
 ```powershell
-git add backend/migrations/0002_flatdna_catalog.up.sql backend/migrations/0002_flatdna_catalog.down.sql backend/app/services/flatdna/catalog_models.py backend/tests/test_flatdna_catalog_models.py backend/tests/test_flatdna_catalog_migration_contract.py backend/scripts/propertydna_db.py backend/tests/test_propertydna_db_operator.py docs/superpowers/plans/2026-08-19-flatdna-catalog-phase-2-persistence.md docs/superpowers/specs/2026-08-19-flatdna-hyderabad-catalog-design.md
+git add backend/migrations/0002_flatdna_catalog.up.sql backend/migrations/0002_flatdna_catalog.down.sql backend/app/services/flatdna/catalog_models.py backend/tests/test_flatdna_catalog_models.py backend/tests/test_flatdna_catalog_migration_contract.py docs/production-database-operations.md docs/superpowers/plans/2026-08-19-flatdna-catalog-phase-2-persistence.md docs/superpowers/specs/2026-08-19-flatdna-hyderabad-catalog-design.md
 git commit -m "feat: add FlatDNA catalog persistence foundation" -m "Constraint: New catalog data remains unpublished until Phase 4 validation and atomic promotion." -m "Confidence: High" -m "Tested: Full backend suite, migration contracts, operator safety tests, and disposable PostgreSQL checks when configured."
 git push origin HEAD
 ```
