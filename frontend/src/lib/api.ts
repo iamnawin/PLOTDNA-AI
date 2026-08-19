@@ -81,6 +81,14 @@ export interface FlatProjectIdentity {
   city_slug: string
   locality_slug: string
   rera_registration_numbers: string[]
+  registration_id?: string
+  catalog_layer?: 'TG_RERA_RECORD' | 'FLATDNA_REVIEWED' | 'DETAILS_BEING_VERIFIED' | 'HISTORICAL_REVIEW'
+  review_status?: 'REVIEW_REQUIRED' | 'SUPPORTED' | 'UNSUPPORTED'
+  identity_status?: 'RESOLVED' | 'PARTIALLY_RESOLVED' | 'UNRESOLVED'
+  project_status?: 'ACTIVE' | 'COMPLETED' | 'WITHDRAWN' | 'LAPSED' | 'UNKNOWN'
+  location_label?: string
+  source_as_of?: string
+  catalog_snapshot_id?: string
 }
 
 export interface FlatReraReference {
@@ -100,9 +108,84 @@ export interface FlatProjectSource {
 export interface FlatProjectDetail extends FlatProjectIdentity {
   latitude: number | null
   longitude: number | null
-  location_precision: 'ENTRANCE' | 'PROJECT_CENTROID' | 'APPROXIMATE' | 'UNKNOWN'
+  location_precision: 'ENTRANCE' | 'PROJECT_CENTROID' | 'APPROXIMATE' | 'UNKNOWN' | 'EXACT_PROJECT' | 'APPROXIMATE_PROJECT' | 'LOCALITY'
   rera_references: FlatReraReference[]
   sources: FlatProjectSource[]
+  review_freshness?: 'NONE' | 'CURRENT' | 'HISTORICAL'
+  historical_reviewed_at?: string | null
+  historical_review_valid_until?: string | null
+  warnings?: FlatCatalogWarning[]
+}
+
+export interface FlatCatalogWarning {
+  flag_type: 'REVOKED' | 'DEFAULTER' | 'LITIGATION_REPORTED' | 'OTHER_WARNING'
+  warning_origin: 'TG_RERA' | 'FLATDNA_REVIEW' | 'THIRD_PARTY'
+  warning_status: 'ACTIVE' | 'RESOLVED'
+  origin_label: string
+  source_label: string
+  source_url: string | null
+  source_as_of: string
+  observed_at: string
+}
+
+export interface FlatCatalogStatus {
+  catalog_snapshot_id: string
+  source_as_of: string
+  indexed_records: number
+  reviewed_projects: number
+  served_from_last_known_good: boolean
+}
+
+interface FlatCatalogIdentity {
+  project_id: string
+  registration_id: string
+  canonical_name: string
+  developer_name: string
+  authority_code: string
+  registration_number: string
+  city_slug: string
+  locality_slug: string | null
+  catalog_layer: 'TG_RERA_RECORD' | 'FLATDNA_REVIEWED' | 'DETAILS_BEING_VERIFIED' | 'HISTORICAL_REVIEW'
+  review_status: 'REVIEW_REQUIRED' | 'SUPPORTED' | 'UNSUPPORTED'
+  identity_status: 'RESOLVED' | 'PARTIALLY_RESOLVED' | 'UNRESOLVED'
+  project_status: 'ACTIVE' | 'COMPLETED' | 'WITHDRAWN' | 'LAPSED' | 'UNKNOWN'
+  catalog_status: 'SEARCHABLE' | 'QUARANTINED' | 'HIDDEN'
+  location_precision: 'EXACT_PROJECT' | 'APPROXIMATE_PROJECT' | 'LOCALITY' | 'UNKNOWN'
+  location_label: string
+  source_as_of: string
+  catalog_snapshot_id: string
+}
+
+interface FlatCatalogSearchPayload {
+  outcome: 'RESULTS'
+  candidates: FlatCatalogIdentity[]
+  total: number
+  offset: number
+  limit: number
+  query_type: 'BUILDER' | 'LOCALITY' | 'PROJECT' | 'RERA'
+  source_as_of: string | null
+  catalog_snapshot_id: string | null
+}
+
+interface FlatCatalogDetailPayload extends FlatCatalogIdentity {
+  latitude: number | null
+  longitude: number | null
+  review_freshness: 'NONE' | 'CURRENT' | 'HISTORICAL'
+  historical_reviewed_at: string | null
+  historical_review_valid_until: string | null
+  rera_reference: {
+    authority_code: string
+    registration_number: string
+    reference_status: 'RECORDED' | 'VERIFIED'
+  }
+  sources: Array<{
+    source_class: 'OFFICIAL_REGULATOR'
+    publisher: string
+    title: string
+    url: string | null
+    retrieved_at: string
+  }>
+  warnings: FlatCatalogWarning[]
 }
 
 export type FlatProjectSearchResponse =
@@ -377,6 +460,85 @@ export async function fetchFlatProjectDetail(projectId: string): Promise<FlatPro
   )
   if (!res.ok) throw new Error('FlatDNA project detail is unavailable')
   return (await res.json()) as FlatProjectDetail
+}
+
+export async function fetchFlatCatalogStatus(): Promise<FlatCatalogStatus> {
+  const res = await fetch(`${BASE_URL}/api/v1/flat/catalog/status`, {
+    signal: AbortSignal.timeout(15_000),
+  })
+  if (!res.ok) throw new Error('FlatDNA catalog status is unavailable')
+  return (await res.json()) as FlatCatalogStatus
+}
+
+const toFlatProjectIdentity = (project: FlatCatalogIdentity): FlatProjectIdentity => ({
+  project_id: project.project_id,
+  registration_id: project.registration_id,
+  canonical_name: project.canonical_name,
+  developer_name: project.developer_name,
+  city_slug: project.city_slug,
+  locality_slug: project.locality_slug ?? '',
+  rera_registration_numbers: [project.registration_number],
+  catalog_layer: project.catalog_layer,
+  review_status: project.review_status,
+  identity_status: project.identity_status,
+  project_status: project.project_status,
+  location_label: project.location_label,
+  source_as_of: project.source_as_of,
+  catalog_snapshot_id: project.catalog_snapshot_id,
+})
+
+export async function searchFlatCatalogProjects(
+  query: string,
+  offset = 0,
+  limit = 20,
+): Promise<FlatProjectSearchResponse> {
+  const params = new URLSearchParams({
+    q: query.trim(),
+    offset: String(offset),
+    limit: String(limit),
+  })
+  const res = await fetch(
+    `${BASE_URL}/api/v1/flat/catalog/projects/search?${params.toString()}`,
+    { signal: AbortSignal.timeout(15_000) },
+  )
+  if (!res.ok) throw new Error('FlatDNA catalog search is unavailable')
+  const payload = (await res.json()) as FlatCatalogSearchPayload
+  if (payload.candidates.length === 0) {
+    return { outcome: 'NOT_FOUND', code: 'PROJECT_NOT_FOUND' }
+  }
+  return {
+    outcome: 'RESULTS',
+    query_type: payload.query_type,
+    candidates: payload.candidates.map(toFlatProjectIdentity),
+    total: payload.total,
+    offset: payload.offset,
+    limit: payload.limit,
+  }
+}
+
+export async function fetchFlatCatalogProjectDetail(registrationId: string): Promise<FlatProjectDetail> {
+  const res = await fetch(
+    `${BASE_URL}/api/v1/flat/catalog/projects/${encodeURIComponent(registrationId)}`,
+    { signal: AbortSignal.timeout(15_000) },
+  )
+  if (!res.ok) throw new Error('FlatDNA catalog project detail is unavailable')
+  const project = (await res.json()) as FlatCatalogDetailPayload
+  return {
+    ...toFlatProjectIdentity(project),
+    latitude: project.latitude,
+    longitude: project.longitude,
+    location_precision: project.location_precision,
+    review_freshness: project.review_freshness,
+    historical_reviewed_at: project.historical_reviewed_at,
+    historical_review_valid_until: project.historical_review_valid_until,
+    warnings: project.warnings,
+    rera_references: [{
+      authority_code: project.rera_reference.authority_code,
+      registration_number: project.rera_reference.registration_number,
+      reference_status: project.rera_reference.reference_status,
+    }],
+    sources: project.sources,
+  }
 }
 
 // ── Backend-owned area catalog ──

@@ -16,7 +16,7 @@ for (const state of ["result?.outcome === 'MATCHED'", "result?.outcome === 'RESU
 for (const copy of [
   'Which apartment are you checking?',
   'Search project, builder, locality or RERA',
-  'We don&apos;t have enough verified information for this project yet.',
+  "We don't have enough verified information for this project yet.",
   'Project search is temporarily unavailable.',
   'Choose the project you mean',
   'Limited Hyderabad pilot',
@@ -47,5 +47,20 @@ assert.ok(api.includes('sources: FlatProjectSource[]'), 'project detail must exp
 assert.ok(page.includes("timeZone: 'UTC'"), 'source freshness dates must not shift with the viewer timezone')
 assert.ok(!page.includes('registry.json'), 'frontend must not contain registry data')
 assert.ok(!page.toLowerCase().includes('resolve_project'), 'frontend must not contain backend resolver logic')
+assert.ok(page.includes('Search Hyderabad apartment projects listed in TG-RERA records.'), 'catalog mode must use approved source wording')
+assert.ok(page.includes('Listed in TG-RERA records'), 'registry-only projects must show the safe customer label')
+assert.ok(page.includes('FlatDNA Reviewed'), 'reviewed projects must retain the reviewed label')
+assert.ok(page.includes('featureFlags.enableFlatDnaCatalog'), 'catalog UI must remain behind its own frontend flag')
+assert.ok(api.includes('/api/v1/flat/catalog/status'), 'catalog metrics must come from the published catalog status endpoint')
+assert.ok(api.includes('/api/v1/flat/catalog/projects/search'), 'catalog search must use the published-only endpoint')
+assert.ok(api.includes('/api/v1/flat/catalog/projects/${encodeURIComponent(registrationId)}'), 'catalog detail must use registration identity')
+assert.ok(page.includes('Details being verified'), 'partial identities must use the approved customer label')
+assert.ok(page.includes('Historical—not a current assessment.'), 'expired reviews must be clearly historical')
+assert.ok(page.includes('Regulatory and review warnings'), 'catalog detail must render sourced warnings')
+assert.ok(page.includes('warning.origin_label'), 'warning origin wording must come from the backend')
+assert.ok(api.includes('query_type: payload.query_type'), 'catalog query type must come from the backend')
+assert.ok(api.includes('reference_status: project.rera_reference.reference_status'), 'RERA reference status must come from the backend')
+assert.ok(page.includes('catalogStatus.served_from_last_known_good'), 'degraded freshness must come from backend status')
+assert.ok(page.includes('Serving the last validated catalog snapshot'), 'last-known-good mode must be disclosed')
 
 console.log('FlatDNA search-state checks passed.')

@@ -687,3 +687,39 @@ Verification:
 Blocked acceptance:
 
 - `FLATDNA_TEST_DATABASE_URL` is not configured. Migration `0002` apply/down/reapply, migrated 14-project reconciliation, database-trigger behavior, atomic publication, and rollback have not been proven on PostgreSQL. Phase 4 code may be committed, but Phase 4 release acceptance and all production enablement remain blocked.
+
+### Phase 5: Default-off product release path — 2026-08-19
+
+Implemented:
+
+- Independently gated published-catalog status, search, and registration-detail endpoints.
+- Published-only PostgreSQL queries with snapshot-flip detection, global match-type precedence, snapshot-bound warning projections, and customer-safe source/origin wording.
+- Separate customer states for **Listed in TG-RERA records**, **FlatDNA Reviewed**, **Details being verified**, and **Historical FlatDNA Review**.
+- Snapshot-consistent indexed/reviewed metrics, source-as-of date, last-known-good disclosure, safe location language, warning display, historical-review messaging, and generic registry-detail failure copy.
+- Backend-owned query type, RERA reference status, source metadata, warning origin, and freshness facts; the frontend no longer invents these claims.
+- Backend, frontend, and deployment flags default false: `ENABLE_FLATDNA_CATALOG` and `VITE_ENABLE_FLATDNA_CATALOG`.
+
+Verification:
+
+- Full backend suite: 246 tests passed; 21 PostgreSQL tests skipped because `FLATDNA_TEST_DATABASE_URL` was not configured.
+- Frontend FlatDNA contract check: passed.
+- Frontend ESLint: passed.
+- Frontend TypeScript/Vite production build: passed; existing large-chunk warnings remain unrelated to this phase.
+- Independent Phase 5 review: approved with no remaining Critical or Important findings.
+- Git whitespace check: passed.
+
+Release state:
+
+- Phase 5 code is complete but disabled. It cannot serve customers until Phase 4 disposable PostgreSQL acceptance succeeds, a validated snapshot is atomically published, and both catalog feature flags are explicitly enabled through a separate release decision.
+
+### Cross-phase delivery status — 2026-08-19
+
+| Phase | Delivery state | Production state |
+| --- | --- | --- |
+| 1. Acquisition proof | Implemented, tested, reviewed, pushed | Automated acquisition blocked by `UNAPPROVED` policy |
+| 2. Persistence foundation | Implemented, contract-tested, reviewed, pushed | Migration `0002` not enabled in production operator |
+| 3. Processing pipeline | Implemented, fixture-tested, reviewed, pushed | Live TG-RERA input prohibited |
+| 4. Validation/publication safety | Offline code implemented, tested, reviewed, pushed | PostgreSQL acceptance blocked without disposable URL |
+| 5. Product release path | Implemented, linted, built, reviewed | Both catalog flags disabled |
+
+No customer-visible catalog release has occurred. The governing release rule remains in force.

@@ -1,6 +1,7 @@
 BEGIN;
 
 DROP TRIGGER IF EXISTS flat_catalog_project_versions_immutable_guard ON flat_catalog_project_versions;
+DROP TRIGGER IF EXISTS flat_catalog_warning_versions_immutable_guard ON flat_catalog_warning_versions;
 DROP TRIGGER IF EXISTS flat_catalog_snapshots_immutable_guard ON flat_catalog_snapshots;
 DROP TRIGGER IF EXISTS flat_source_records_immutable_guard ON flat_source_records;
 DROP FUNCTION IF EXISTS flat_prevent_catalog_snapshot_mutation();
@@ -45,6 +46,7 @@ ALTER TABLE flat_projects
 
 DROP TABLE IF EXISTS flat_catalog_project_versions;
 DROP TABLE IF EXISTS flat_match_assessments;
+DROP TABLE IF EXISTS flat_catalog_warning_versions;
 DROP TABLE IF EXISTS flat_regulatory_warnings;
 DROP TABLE IF EXISTS flat_review_claim_evidence;
 DROP TABLE IF EXISTS flat_project_reviews;

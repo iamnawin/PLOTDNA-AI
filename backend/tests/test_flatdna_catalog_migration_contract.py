@@ -15,6 +15,7 @@ EXPECTED_TABLES = {
     "flat_project_reviews",
     "flat_review_claim_evidence",
     "flat_regulatory_warnings",
+    "flat_catalog_warning_versions",
     "flat_match_assessments",
     "flat_catalog_project_versions",
 }

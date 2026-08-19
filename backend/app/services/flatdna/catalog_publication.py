@@ -126,10 +126,10 @@ class PostgresCatalogPublisher:
                 """
                 INSERT INTO flat_catalog_publications (
                     id, channel, snapshot_id, published_by,
-                    validation_receipt, rollback_of
+                    validation_receipt, served_from_last_known_good, rollback_of
                 ) VALUES (
                     :id, :channel, :snapshot_id, :published_by,
-                    :validation_receipt, :rollback_of
+                    :validation_receipt, :served_from_last_known_good, :rollback_of
                 )
                 """
             ),
@@ -139,6 +139,7 @@ class PostgresCatalogPublisher:
                 "snapshot_id": snapshot_id,
                 "published_by": published_by,
                 "validation_receipt": validation_receipt,
+                "served_from_last_known_good": rollback_of is not None,
                 "rollback_of": str(rollback_of) if rollback_of else None,
             },
         )

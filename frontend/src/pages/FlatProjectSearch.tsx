@@ -3,11 +3,16 @@ import { ArrowLeft, ArrowRight, Building2, ExternalLink, MapPin, Search, ShieldC
 import { Link } from 'react-router-dom'
 import {
   fetchFlatProjectDetail,
+  fetchFlatCatalogProjectDetail,
+  fetchFlatCatalogStatus,
   searchFlatProjects,
+  searchFlatCatalogProjects,
+  type FlatCatalogStatus,
   type FlatProjectDetail,
   type FlatProjectIdentity,
   type FlatProjectSearchResponse,
 } from '@/lib/api'
+import { featureFlags } from '@/lib/features'
 
 const minimumSearchLength = 3
 const searchDebounceMs = 300
@@ -29,6 +34,13 @@ function formatReviewedDate(value: string) {
   return new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(value))
 }
 
+function catalogLabel(project: FlatProjectIdentity) {
+  if (project.catalog_layer === 'FLATDNA_REVIEWED') return 'FlatDNA Reviewed'
+  if (project.catalog_layer === 'DETAILS_BEING_VERIFIED') return 'Details being verified'
+  if (project.catalog_layer === 'HISTORICAL_REVIEW') return 'Historical FlatDNA Review'
+  return 'Listed in TG-RERA records'
+}
+
 function ProjectDetails({ project }: { project: FlatProjectIdentity }) {
   return (
     <div className="min-w-0">
@@ -36,10 +48,15 @@ function ProjectDetails({ project }: { project: FlatProjectIdentity }) {
         {project.canonical_name}
       </h2>
       <p className="mt-1 text-base font-medium text-slate-300">{project.developer_name}</p>
+      {project.catalog_layer && (
+        <p className={`mt-3 inline-flex rounded-full px-3 py-1 text-xs font-bold ${project.catalog_layer === 'FLATDNA_REVIEWED' ? 'bg-emerald-300/15 text-emerald-200' : 'bg-cyan-300/10 text-cyan-200'}`}>
+          {catalogLabel(project)}
+        </p>
+      )}
       <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-300">
         <span className="flex items-center gap-2">
           <MapPin size={16} className="text-emerald-300" />
-          {formatSlug(project.locality_slug)}
+          {project.locality_slug ? formatSlug(project.locality_slug) : 'Location being verified'}
         </span>
         <span className="flex items-center gap-2">
           <Building2 size={16} className="text-cyan-300" />
@@ -64,7 +81,7 @@ function ProjectSnapshot({ project, onChange }: { project: FlatProjectDetail; on
     <section className="rounded-2xl border border-emerald-300/45 bg-[#091720] p-5 sm:p-7">
       <div className="flex items-center gap-2 text-sm font-bold text-emerald-300">
         <ShieldCheck size={19} />
-        Verified project snapshot
+        {project.catalog_layer === 'FLATDNA_REVIEWED' ? 'Verified project snapshot' : catalogLabel(project)}
       </div>
       <div className="mt-5">
         <ProjectDetails project={project} />
@@ -87,9 +104,9 @@ function ProjectSnapshot({ project, onChange }: { project: FlatProjectDetail; on
 
         <div className="rounded-xl border border-slate-300/15 bg-slate-950/35 p-4">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">Reviewed location</p>
-          <p className="mt-3 font-bold text-slate-100">{formatSlug(project.locality_slug)}</p>
+          <p className="mt-3 font-bold text-slate-100">{project.locality_slug ? formatSlug(project.locality_slug) : 'Location being verified'}</p>
           <p className="mt-1 text-sm text-slate-300">{coordinates}</p>
-          <p className="mt-1 text-xs text-slate-400">{formatSlug(project.location_precision.toLowerCase())}</p>
+          <p className="mt-1 text-xs text-slate-400">{project.location_label ?? formatSlug(project.location_precision.toLowerCase())}</p>
         </div>
       </div>
 
@@ -98,6 +115,33 @@ function ProjectSnapshot({ project, onChange }: { project: FlatProjectDetail; on
         approvals, current price, construction progress, or legal due diligence.
         <p className="mt-2">Current developer availability is not verified.</p>
       </div>
+
+      {project.review_freshness === 'HISTORICAL' && (
+        <div className="mt-5 rounded-xl border border-slate-300/20 bg-slate-950/25 p-4 text-sm leading-6 text-slate-300">
+          <strong className="text-slate-100">Historical—not a current assessment.</strong>{' '}
+          FlatDNA analysis is being refreshed. Registry information remains available.
+          {project.historical_reviewed_at && (
+            <p className="mt-2">Historical review date: {formatReviewedDate(project.historical_reviewed_at)}</p>
+          )}
+        </div>
+      )}
+
+      {project.warnings && project.warnings.length > 0 && (
+        <section className="mt-6" aria-labelledby="flatdna-warning-heading">
+          <h3 id="flatdna-warning-heading" className="font-display text-lg font-extrabold text-slate-50">
+            Regulatory and review warnings
+          </h3>
+          <div className="mt-3 divide-y divide-amber-300/15 rounded-xl border border-amber-300/25 bg-amber-300/[0.05]">
+            {project.warnings.map(warning => (
+              <div key={`${warning.flag_type}-${warning.observed_at}`} className="p-4 text-sm leading-6 text-slate-300">
+                <p className="font-bold text-amber-200">{formatSourceClass(warning.flag_type)}</p>
+                <p>{warning.origin_label}</p>
+                <p className="text-slate-400">{warning.source_label} · Source as of {formatReviewedDate(warning.source_as_of)}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mt-6" aria-labelledby="flatdna-evidence-heading">
         <h3 id="flatdna-evidence-heading" className="font-display text-lg font-extrabold text-slate-50">
@@ -145,6 +189,7 @@ function ProjectSnapshot({ project, onChange }: { project: FlatProjectDetail; on
 }
 
 export default function FlatProjectSearch() {
+  const catalogEnabled = featureFlags.enableFlatDnaCatalog
   const [query, setQuery] = useState('')
   const [result, setResult] = useState<FlatProjectSearchResponse | null>(null)
   const [selectedProject, setSelectedProject] = useState<FlatProjectIdentity | null>(null)
@@ -153,10 +198,16 @@ export default function FlatProjectSearch() {
   const [projectDetail, setProjectDetail] = useState<FlatProjectDetail | null>(null)
   const [detailLoading, setDetailLoading] = useState(false)
   const [detailUnavailable, setDetailUnavailable] = useState(false)
+  const [catalogStatus, setCatalogStatus] = useState<FlatCatalogStatus | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const debounceRef = useRef<number | null>(null)
   const latestSearchRef = useRef(0)
   const latestDetailRef = useRef(0)
+
+  useEffect(() => {
+    if (!catalogEnabled) return
+    void fetchFlatCatalogStatus().then(setCatalogStatus).catch(() => setCatalogStatus(null))
+  }, [catalogEnabled])
 
   const loadSearch = useCallback(async (trimmedQuery: string, offset = 0) => {
     if (trimmedQuery.length < minimumSearchLength) return
@@ -169,14 +220,16 @@ export default function FlatProjectSearch() {
     setProjectDetail(null)
     setDetailUnavailable(false)
     try {
-      const nextResult = await searchFlatProjects(trimmedQuery, offset, searchPageSize)
+      const nextResult = catalogEnabled
+        ? await searchFlatCatalogProjects(trimmedQuery, offset, searchPageSize)
+        : await searchFlatProjects(trimmedQuery, offset, searchPageSize)
       if (searchId === latestSearchRef.current) setResult(nextResult)
     } catch {
       if (searchId === latestSearchRef.current) setUnavailable(true)
     } finally {
       if (searchId === latestSearchRef.current) setLoading(false)
     }
-  }, [])
+  }, [catalogEnabled])
 
   useEffect(() => {
     const trimmedQuery = query.trim()
@@ -217,7 +270,9 @@ export default function FlatProjectSearch() {
     setDetailLoading(true)
     setDetailUnavailable(false)
     try {
-      const nextProjectDetail = await fetchFlatProjectDetail(project.project_id)
+      const nextProjectDetail = catalogEnabled && project.registration_id
+        ? await fetchFlatCatalogProjectDetail(project.registration_id)
+        : await fetchFlatProjectDetail(project.project_id)
       if (detailId === latestDetailRef.current) setProjectDetail(nextProjectDetail)
     } catch {
       if (detailId === latestDetailRef.current) setDetailUnavailable(true)
@@ -247,8 +302,18 @@ export default function FlatProjectSearch() {
             Which apartment are you checking?
           </h1>
           <p className="mt-3 text-sm leading-6 text-slate-400">
-            Limited Hyderabad pilot. FlatDNA currently covers 14 reviewed projects and is not a complete market directory.
+            {catalogEnabled
+              ? 'Search Hyderabad apartment projects listed in TG-RERA records. Selected projects include additional FlatDNA review.'
+              : 'Limited Hyderabad pilot. FlatDNA currently covers 14 reviewed projects and is not a complete market directory.'}
           </p>
+          {catalogEnabled && catalogStatus && (
+            <div className="mt-2 text-sm text-slate-300">
+              <p>{catalogStatus.indexed_records.toLocaleString('en-IN')} Hyderabad apartment records indexed · {catalogStatus.reviewed_projects.toLocaleString('en-IN')} currently FlatDNA Reviewed · Data retrieved from TG-RERA on {formatReviewedDate(catalogStatus.source_as_of)}</p>
+              {catalogStatus.served_from_last_known_good && (
+                <p className="mt-1 text-amber-200">Serving the last validated catalog snapshot while newer source processing is reviewed.</p>
+              )}
+            </div>
+          )}
         </div>
 
         <form onSubmit={handleSearch} className="mt-8 max-w-3xl sm:mt-10">
@@ -299,7 +364,7 @@ export default function FlatProjectSearch() {
         <section aria-live="polite" aria-busy={loading} className="mt-8 max-w-3xl sm:mt-10">
           {loading && (
             <div className="rounded-2xl border border-slate-400/20 bg-[#0a121e] p-5 sm:p-6">
-              <p className="font-semibold text-slate-200">Finding verified project matches...</p>
+              <p className="font-semibold text-slate-200">{catalogEnabled ? 'Finding project matches...' : 'Finding verified project matches...'}</p>
               <div className="mt-5 h-5 w-2/3 animate-pulse rounded bg-slate-700 motion-reduce:animate-none" />
               <div className="mt-3 h-4 w-1/3 animate-pulse rounded bg-slate-800 motion-reduce:animate-none" />
             </div>
@@ -444,9 +509,15 @@ export default function FlatProjectSearch() {
           {result?.outcome === 'NOT_FOUND' && (
             <div className="rounded-2xl border border-slate-400/25 bg-[#0a121e] p-5 sm:p-6">
               <h2 className="font-display text-xl font-extrabold leading-7 text-slate-50">
-                We don&apos;t have enough verified information for this project yet.
+                {catalogEnabled
+                  ? 'We couldn’t find a confident match.'
+                  : "We don't have enough verified information for this project yet."}
               </h2>
-              <p className="mt-2 text-slate-300">Try another project name or return to PropertyDNA.</p>
+              <p className="mt-2 text-slate-300">
+                {catalogEnabled
+                  ? 'Check the project name or registration number, or request project verification.'
+                  : 'Try another project name or return to PropertyDNA.'}
+              </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <button type="button" onClick={changeSearch} className="min-h-11 rounded-xl bg-emerald-300 px-4 font-bold text-slate-950 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-300">
                   Change search
@@ -460,7 +531,7 @@ export default function FlatProjectSearch() {
 
           {detailUnavailable && (
             <div className="mt-4 rounded-xl border border-amber-300/35 bg-amber-300/[0.06] p-4 text-sm leading-6 text-slate-200">
-              <strong className="text-amber-200">The verified snapshot is temporarily unavailable.</strong>{' '}
+              <strong className="text-amber-200">The project record is temporarily unavailable.</strong>{' '}
               Your project selection is unchanged. Please try Continue again.
             </div>
           )}

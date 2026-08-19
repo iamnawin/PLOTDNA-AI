@@ -54,6 +54,7 @@ app.include_router(entitlements.router, prefix="/api/v1/entitlements",    tags=[
 app.include_router(brochure.router,     prefix="/api/v1",                 tags=["brochure"])
 app.include_router(rera.router,         prefix="/api/v1/rera",            tags=["rera"])
 app.include_router(flat.router,         prefix="/api/v1/flat",            tags=["flat"])
+app.include_router(flat.catalog_router, prefix="/api/v1/flat",            tags=["flat-catalog"])
 app.include_router(land_verify.router,  prefix="/api/india",              tags=["india"])
 app.include_router(dld_routes.router,   prefix="/api/uae",                tags=["uae"])
 

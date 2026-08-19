@@ -5,6 +5,7 @@ const fromEnv = (key: string, fallback = false): boolean => {
 
 export const featureFlags = {
   enableFlatDna: fromEnv("VITE_ENABLE_FLAT_DNA", import.meta.env.PROD),
+  enableFlatDnaCatalog: fromEnv("VITE_ENABLE_FLATDNA_CATALOG"),
   enableLandIdentityFlow: fromEnv("VITE_ENABLE_LAND_IDENTITY_FLOW"),
   enableLocationIntelligencePanel: fromEnv("VITE_ENABLE_LOCATION_INTELLIGENCE_PANEL"),
   enableSurveyResolver: fromEnv("VITE_ENABLE_SURVEY_RESOLVER"),

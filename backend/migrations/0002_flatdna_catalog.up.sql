@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS flat_catalog_publications (
     superseded_at timestamptz,
     published_by text NOT NULL,
     validation_receipt text NOT NULL,
+    served_from_last_known_good boolean NOT NULL DEFAULT false,
     rollback_of uuid REFERENCES flat_catalog_publications(id) ON DELETE RESTRICT,
     CONSTRAINT flat_catalog_publications_channel_check CHECK (btrim(channel) <> ''),
     CONSTRAINT flat_catalog_publications_publisher_check CHECK (btrim(published_by) <> ''),
@@ -270,6 +271,34 @@ CREATE TABLE IF NOT EXISTS flat_regulatory_warnings (
 CREATE INDEX IF NOT EXISTS flat_regulatory_warnings_project_status_idx
     ON flat_regulatory_warnings (project_id, warning_status);
 
+CREATE TABLE IF NOT EXISTS flat_catalog_warning_versions (
+    snapshot_id text NOT NULL REFERENCES flat_catalog_snapshots(snapshot_id) ON DELETE RESTRICT,
+    warning_id uuid NOT NULL REFERENCES flat_regulatory_warnings(id) ON DELETE RESTRICT,
+    project_id uuid NOT NULL REFERENCES flat_projects(id) ON DELETE RESTRICT,
+    registration_id uuid REFERENCES flat_project_registrations(id) ON DELETE RESTRICT,
+    flag_type text NOT NULL,
+    warning_origin text NOT NULL,
+    warning_status text NOT NULL,
+    public_origin_label text NOT NULL,
+    source_label text NOT NULL,
+    source_url text,
+    observed_at timestamptz NOT NULL,
+    source_as_of date NOT NULL,
+    PRIMARY KEY (snapshot_id, warning_id),
+    CONSTRAINT flat_catalog_warning_versions_flag_check CHECK (
+        flag_type IN ('REVOKED', 'DEFAULTER', 'LITIGATION_REPORTED', 'OTHER_WARNING')
+    ),
+    CONSTRAINT flat_catalog_warning_versions_origin_check CHECK (
+        warning_origin IN ('TG_RERA', 'FLATDNA_REVIEW', 'THIRD_PARTY')
+    ),
+    CONSTRAINT flat_catalog_warning_versions_status_check CHECK (
+        warning_status IN ('ACTIVE', 'RESOLVED')
+    ),
+    CONSTRAINT flat_catalog_warning_versions_labels_check CHECK (
+        btrim(public_origin_label) <> '' AND btrim(source_label) <> ''
+    )
+);
+
 CREATE TABLE IF NOT EXISTS flat_match_assessments (
     id uuid PRIMARY KEY,
     source_record_id uuid NOT NULL REFERENCES flat_source_records(id) ON DELETE RESTRICT,
@@ -315,6 +344,8 @@ CREATE TABLE IF NOT EXISTS flat_catalog_project_versions (
     duplicate_suspected boolean NOT NULL,
     location_only_uncertainty boolean NOT NULL,
     current_review_id uuid REFERENCES flat_project_reviews(id) ON DELETE RESTRICT,
+    historical_reviewed_at timestamptz,
+    historical_review_valid_until timestamptz,
     source_as_of date NOT NULL,
     created_at timestamptz NOT NULL DEFAULT now(),
     PRIMARY KEY (snapshot_id, registration_id),
@@ -612,6 +643,7 @@ $$;
 DROP TRIGGER IF EXISTS flat_source_records_immutable_guard ON flat_source_records;
 DROP TRIGGER IF EXISTS flat_catalog_snapshots_immutable_guard ON flat_catalog_snapshots;
 DROP TRIGGER IF EXISTS flat_catalog_project_versions_immutable_guard ON flat_catalog_project_versions;
+DROP TRIGGER IF EXISTS flat_catalog_warning_versions_immutable_guard ON flat_catalog_warning_versions;
 
 CREATE TRIGGER flat_source_records_immutable_guard
 BEFORE UPDATE OR DELETE ON flat_source_records
@@ -623,6 +655,10 @@ FOR EACH ROW EXECUTE FUNCTION flat_prevent_catalog_snapshot_mutation();
 
 CREATE TRIGGER flat_catalog_project_versions_immutable_guard
 BEFORE UPDATE OR DELETE ON flat_catalog_project_versions
+FOR EACH ROW EXECUTE FUNCTION flat_prevent_catalog_snapshot_mutation();
+
+CREATE TRIGGER flat_catalog_warning_versions_immutable_guard
+BEFORE UPDATE OR DELETE ON flat_catalog_warning_versions
 FOR EACH ROW EXECUTE FUNCTION flat_prevent_catalog_snapshot_mutation();
 
 COMMIT;
